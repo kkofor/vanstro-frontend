@@ -1,0 +1,8 @@
+.next/
+out/
+node_modules/
+qa/
+*.tsbuildinfo
+*.log
+.env*.local
+footer-redesign-*.png

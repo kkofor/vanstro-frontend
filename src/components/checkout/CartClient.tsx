@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { getEffectivePrice } from "@/lib/commerce/product-commerce";
 
 function formatCad(amount: number) {
   return new Intl.NumberFormat("en-CA", {
@@ -66,7 +67,7 @@ export function CartClient() {
               </div>
             </div>
             <div className="cart-line-actions">
-              <strong>{formatCad(item.product.price.amount * item.quantity)}</strong>
+              <strong>{formatCad(getEffectivePrice(item.product).amount * item.quantity)}</strong>
               <button
                 className="icon-only"
                 type="button"

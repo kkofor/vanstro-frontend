@@ -1,18 +1,32 @@
 # VanStro Frontend
 
-Frontend rebuild demo for VanStro Global Supply, a Canada-focused home materials
-commerce and supply platform.
-
-The site is designed for two primary audiences:
-
-- Homeowners and project buyers who browse products, add items to cart, checkout
-  online, and have the paid order fulfilled by a local VanStro dealer.
-- Contractors, dealers, and B2B partners who evaluate the platform and apply for
-  the dealer program.
+Static storefront demo for VanStro Global Supply, a Canada-focused home
+materials commerce and dealer-fulfillment platform.
 
 Live demo:
 
 [https://kkofor.github.io/vanstro-frontend/](https://kkofor.github.io/vanstro-frontend/)
+
+Repository:
+
+[https://github.com/kkofor/vanstro-frontend](https://github.com/kkofor/vanstro-frontend)
+
+## Project Positioning
+
+VanStro is not a cross-border marketplace. The current site is a frontend
+foundation for a Canadian commerce and supply-chain platform:
+
+- Homeowners and project buyers browse products, add items to cart, and move
+  toward online checkout.
+- Contractors and B2B buyers browse the same catalog with dealer-backed
+  fulfillment context.
+- Paid orders are handed to a selected or local VanStro dealer for pickup,
+  delivery coordination, and project support.
+- Qualified businesses can apply to become VanStro dealers.
+
+The current implementation is a static demo with typed mock data. It is prepared
+so a backend, dashboard, dealer portal, payment system, and inventory service can
+replace mock data later without rewriting page components.
 
 ## Tech Stack
 
@@ -20,19 +34,13 @@ Live demo:
 | --- | --- |
 | Core platform | Next.js App Router static export |
 | Language | TypeScript |
-| Framework versions | Next.js 16.2.9, React 19.2.7 |
-| Styling | Global CSS with design tokens in `src/app/globals.css` |
-| Icons | `lucide-react` plus a small inline social icon set |
-| Data layer | Typed mock data and API contracts |
+| Runtime versions | Next.js 16.2.9, React 19.2.7, TypeScript 6.0.3 |
+| Styling | Global CSS in `src/app/globals.css` |
+| Icons | `lucide-react` |
+| Data layer | Typed API contracts plus mock data adapters |
 | Client state | React context with `localStorage` persistence |
-| Runtime used in CI | Node.js 24 |
 | Package manager | pnpm |
 | Deployment | GitHub Pages through GitHub Actions |
-| Character encoding | UTF-8 |
-
-This repository is currently a frontend/static demo. It does not include the
-production backend, database, ERP, payment gateway, dealer portal backend, or
-inventory system.
 
 ## Run Locally
 
@@ -48,35 +56,41 @@ Open:
 http://localhost:3000
 ```
 
-If port `3000` is already in use:
+If port `3000` is busy:
 
 ```bash
 pnpm dev -- -p 3001
 ```
 
-## Build And Validate
+## Validate
 
 ```bash
 pnpm run typecheck
 pnpm run build:pages
 ```
 
-The static export is written to:
+Product and homepage smoke QA:
 
-```text
-out/
+```powershell
+$env:VANSTRO_QA_BASE_URL='http://127.0.0.1:3001'
+node qa\verify_product_pages.mjs
 ```
+
+Current verified routes:
+
+- `/`
+- `/products`
+- `/products/base-cabinet-b33`
 
 ## Main Routes
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Current VanStro homepage direction |
-| `/v1-1` | Earlier alternate homepage iteration kept for reference |
-| `/products` | Product listing |
-| `/products/[slug]` | Product detail page with stock-oriented structure |
+| `/` | Approved homepage direction |
+| `/products` | First-level product listing/catalog page |
+| `/products/[slug]` | Product detail page |
 | `/cart` | Cart preview and quantity management |
-| `/checkout` | Checkout flow placeholder |
+| `/checkout` | Checkout placeholder |
 | `/orders/demo-order` | Demo order tracking view |
 | `/favorites` | Saved products |
 | `/account/login` | Customer or partner login entry |
@@ -86,7 +100,39 @@ out/
 | `/articles/[slug]` | Article detail placeholder |
 | `/about` | Company overview |
 | `/contact` | Contact page |
-| `/cookie-settings` | Cookie preference drawer route |
+| `/privacy` | Privacy placeholder |
+| `/cookie-settings` | Cookie preference route |
+
+## Current Page Rules
+
+Homepage:
+
+- Preserve the approved v1 visual direction.
+- Hero copy must communicate Canada-wide delivery/service and local dealer
+  fulfillment.
+- Popular products must show exactly 6 product windows.
+- Product windows use 1:1 image frames with `object-fit: contain`.
+- Homepage must not expose detailed inventory numbers.
+
+Product listing:
+
+- `/products` shows catalog browsing, search, filters, sort, category tiles,
+  dealer fulfillment support, and product cards.
+- Listing cards show category, title, SKU, size, color, rating, price, and cart
+  action.
+- Listing cards must not show detailed inventory numbers.
+- Cabinet and vanity colors are white-facing only in the current catalog.
+- Future categories such as flooring and doors/windows remain visible so the
+  platform does not look too narrow.
+
+Product detail:
+
+- PDP is where buyer decision detail belongs: gallery, SKU/model, price, finish,
+  quantity, add to cart, selected dealer, pickup/delivery context, overview,
+  specifications, documents, Q&A, reviews, and related products.
+- PDP may show dealer fulfillment quantity because the buyer is near a purchase
+  decision.
+- Finish selection is wired for variant SKU/model/image mapping.
 
 ## Project Structure
 
@@ -95,48 +141,47 @@ src/app/                         App Router pages and layout
 src/app/globals.css              Brand tokens, layout, responsive CSS
 src/components/home/             Homepage sections
 src/components/layout/           Header, footer, cookie UI, support widget
-src/components/product/          Product cards and purchase actions
-src/components/checkout/         Cart, checkout, order detail clients
-src/components/storefront/       Client-side cart/favorites/order context
+src/components/product/          Product listing, product detail, purchase UI
+src/components/checkout/         Cart, checkout, order detail, cart drawer
+src/components/storefront/       Cart/favorites/dealer context
 src/lib/api/                     Reserved API contracts and client wrapper
-src/lib/data/mock-data.ts        Temporary mock data
+src/lib/commerce/                Price, promotion, inventory helpers
+src/lib/data/mock-data.ts        Composed mock storefront data
+src/lib/data/original-site-*     Imported original-site product/image data
+src/lib/product/                 Catalog config and PDP view model
 src/lib/assets.ts                GitHub Pages-safe asset path helper
-public/assets/                   Brand, generated, and legacy site assets
-.github/workflows/deploy-pages.yml  GitHub Pages deployment workflow
+public/assets/                   Brand, generated, and original-site assets
+qa/                              Smoke QA scripts and screenshots
+.github/workflows/               GitHub Pages deployment
 ```
 
-## API Boundary
+## Backend/API Boundary
 
-The frontend reserves a typed API layer so production backend integration can
-replace mock data without rewriting UI components.
+Visual components should receive data from `src/lib/api/server.ts`,
+`src/lib/api/api-client.ts`, and typed contracts in `src/lib/api/api-contract.ts`.
+Do not call raw backend URLs directly from page components.
 
-Important files:
+Important future backend/admin data:
+
+- Product title, brand, slug, category, model, SKU
+- Finish variants and variant-level SKU/model/image data
+- Price, compare-at price, price labels, promotions, campaign rules
+- Dealer assignment, service areas, fulfillment mode, product quantity by dealer
+- Product images, documents, specifications, overview copy
+- Reviews, Q&A, related products, saved products, cart and checkout state
+- Homepage sections, category cards, campaign banners, footer links, cookie text
+
+Config and composition files:
 
 ```text
-src/lib/api/api-contract.ts
-src/lib/api/api-client.ts
-src/lib/api/server.ts
+src/lib/product/catalog-config.ts
+src/lib/product/product-detail-view-model.ts
 src/lib/data/mock-data.ts
+src/lib/api/api-contract.ts
+src/lib/api/server.ts
 ```
 
-Reserved endpoint groups include:
-
-- Homepage products, banners, and articles
-- Product list and product detail
-- Cart add/list/remove
-- Favorites add/list/remove
-- Dealer list and dealer selection
-- Direct product order and cart checkout order
-- Payment callback
-- Customer login and registration
-- Dealer application submission
-
-When backend endpoints are ready, replace the mock functions in
-`src/lib/api/server.ts` with calls to `vanstroApi` or a backend-for-frontend
-adapter. Page components should continue to call the server/data layer instead
-of calling raw backend URLs directly.
-
-Set the backend URL with:
+Set the backend URL later with:
 
 ```text
 NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.example/api/v1
@@ -144,25 +189,20 @@ NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.example/api/v1
 
 ## Design Direction
 
-The current homepage follows the approved v1.0 direction with incremental
-refinements:
-
-- Brand color is the primary visual anchor: deep VanStro green with orange as
-  the action/accent color.
-- Header proportions are informed by large North American commerce sites while
-  keeping VanStro-specific navigation and dealer CTAs.
-- The nav keeps `Become a Dealer` and `Partner Login` as separate B2B actions.
-- `Quote` is intentionally not part of the current business flow.
-- Stock is not shown on homepage product cards; stock belongs on product detail
-  and checkout/dealer selection flows.
-- Shop by category uses image cards with text overlay. This style is intentional
-  and should be preserved unless the whole category system is redesigned.
-- Cabinet-related product imagery should remain white to match the actual
-  product line.
+- Use VanStro deep green as the site-wide brand anchor.
+- Use orange for purchase, dealer, and high-intent actions.
+- Keep content surfaces mostly white with restrained borders.
+- Avoid heavy repeated overlays outside image-led category modules.
+- Keep navigation, search, logo, and CTA modules aligned on fixed heights.
+- Keep product imagery crisp, square where expected, and never destructively
+  cropped when the buyer needs to inspect the item.
+- Keep `Become a Dealer` and `Partner Login` visible as B2B entry points.
+- Do not introduce a separate estimate/request workflow unless the business
+  explicitly approves it.
 
 ## Deployment
 
-The repository deploys automatically to GitHub Pages whenever `main` is pushed.
+The repository deploys automatically to GitHub Pages on pushes to `main`.
 
 Workflow:
 
@@ -170,15 +210,9 @@ Workflow:
 .github/workflows/deploy-pages.yml
 ```
 
-The workflow:
-
-1. Installs dependencies with pnpm.
-2. Runs TypeScript validation.
-3. Builds a static Next.js export.
-4. Uploads `out/` to GitHub Pages.
-
-For project pages, `NEXT_PUBLIC_BASE_PATH` is set automatically to the repository
-name so static assets load correctly under `/vanstro-frontend/`.
+For GitHub project pages, `NEXT_PUBLIC_BASE_PATH` is set automatically to the
+repository name. Use `assetPath("/assets/...")` for public assets so images work
+both locally and under `/vanstro-frontend/`.
 
 Manual redeploy:
 
@@ -186,8 +220,12 @@ Manual redeploy:
 gh workflow run deploy-pages.yml
 ```
 
-## Handoff
+## Related Notes
 
-For a detailed continuation guide, see:
+Detailed handoff:
 
 [HANDOFF.md](./HANDOFF.md)
+
+Product experience notes:
+
+[PRODUCT.md](./PRODUCT.md)

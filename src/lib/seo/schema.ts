@@ -1,5 +1,7 @@
 import { ProductDetail } from "@/lib/api/api-contract";
 import { assetPath } from "@/lib/assets";
+import { getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { getTotalAvailable } from "@/lib/commerce/product-inventory";
 
 export function organizationSchema() {
   return {
@@ -12,6 +14,8 @@ export function organizationSchema() {
 }
 
 export function productSchema(product: ProductDetail) {
+  const price = getEffectivePrice(product);
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -21,9 +25,9 @@ export function productSchema(product: ProductDetail) {
     description: product.description,
     offers: {
       "@type": "Offer",
-      price: product.price.amount,
-      priceCurrency: product.price.currency,
-      availability: product.inStock
+      price: price.amount,
+      priceCurrency: price.currency,
+      availability: getTotalAvailable(product) > 0
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock"
     }

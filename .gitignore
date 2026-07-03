@@ -1,7 +1,9 @@
 .next/
 out/
 node_modules/
-qa/
+.impeccable/
+qa/*
+!qa/verify_product_pages.mjs
 *.tsbuildinfo
 *.log
 .env*.local

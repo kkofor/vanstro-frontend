@@ -14,8 +14,16 @@ import {
   Locale,
   LoginInput,
   Order,
+  InventoryReservationInput,
+  ProductCommerce,
+  ProductCommerceQuery,
   ProductDetail,
+  ProductAssetUploadInput,
+  ProductInventory,
+  ProductInventoryQuery,
+  ProductReviewSubmissionInput,
   ProductSummary,
+  ProductUpsertInput,
   RegisterInput
 } from "./api-contract";
 
@@ -88,6 +96,13 @@ function postJson<T>(path: string, body: unknown) {
   });
 }
 
+function putJson<T>(path: string, body: unknown) {
+  return apiFetch<T>(path, {
+    method: "PUT",
+    body: JSON.stringify(body)
+  });
+}
+
 export const vanstroApi = {
   getHomeProducts(input?: { locale?: Locale; limit?: number }) {
     return apiFetch<ProductSummary[]>(
@@ -113,6 +128,58 @@ export const vanstroApi = {
   ) {
     return apiFetch<ProductDetail>(
       withQuery(API_ENDPOINTS.productDetail(productId), input)
+    );
+  },
+  createProduct(input: ProductUpsertInput) {
+    return postJson<ProductDetail>(API_ENDPOINTS.adminProducts, input);
+  },
+  updateProduct(productId: string, input: ProductUpsertInput) {
+    return putJson<ProductDetail>(API_ENDPOINTS.adminProduct(productId), input);
+  },
+  createProductAssetUpload(input: ProductAssetUploadInput) {
+    return postJson<{ uploadUrl: string; asset: { url: string; id: string } }>(
+      API_ENDPOINTS.productAssets(input.productId),
+      input
+    );
+  },
+  submitProductReview(input: ProductReviewSubmissionInput) {
+    return postJson<{ reviewId: string; status: "pending" | "published" }>(
+      API_ENDPOINTS.productReviews(input.productId),
+      input
+    );
+  },
+  getProductCommerce(input: ProductCommerceQuery) {
+    return postJson<Record<string, ProductCommerce>>(
+      API_ENDPOINTS.productCommerce,
+      input
+    );
+  },
+  getProductCommerceDetail(
+    productId: string,
+    input?: Omit<ProductCommerceQuery, "productIds">
+  ) {
+    return apiFetch<ProductCommerce>(
+      withQuery(API_ENDPOINTS.productCommerceDetail(productId), input)
+    );
+  },
+  getProductInventory(input: ProductInventoryQuery) {
+    return postJson<Record<string, ProductInventory>>(
+      API_ENDPOINTS.productInventory,
+      input
+    );
+  },
+  getProductInventoryDetail(
+    productId: string,
+    input?: Omit<ProductInventoryQuery, "productIds">
+  ) {
+    return apiFetch<ProductInventory>(
+      withQuery(API_ENDPOINTS.productInventoryDetail(productId), input)
+    );
+  },
+  reserveInventory(input: InventoryReservationInput) {
+    return postJson<{ reservationId: string; expiresAt: string }>(
+      API_ENDPOINTS.inventoryReservations,
+      input
     );
   },
   addCartItem(input: { productId: string; quantity: number }) {

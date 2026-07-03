@@ -4,13 +4,14 @@ import Link from "next/link";
 import { Heart, Star } from "lucide-react";
 import { ProductSummary } from "@/lib/api/api-contract";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-
-function formatMoney(amount: number) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD"
-  }).format(amount);
-}
+import {
+  formatMoney,
+  getCompareAtPrice,
+  getEffectivePrice,
+  getPrimaryPromotion,
+  getProductPricing,
+  getSavingsLabel
+} from "@/lib/commerce/product-commerce";
 
 function getReviewCount(productId: string) {
   const reviewCounts: Record<string, number> = {
@@ -32,6 +33,11 @@ export function ProductCard({ product }: { product: ProductSummary }) {
   const reviewCount = getReviewCount(product.id);
   const colorName = product.colorName ?? product.finish ?? "White";
   const colorHex = product.colorHex ?? "#f8f7f3";
+  const pricing = getProductPricing(product);
+  const effectivePrice = getEffectivePrice(product);
+  const compareAtPrice = getCompareAtPrice(product);
+  const primaryPromotion = getPrimaryPromotion(product);
+  const savingsLabel = getSavingsLabel(product);
 
   return (
     <article className="product-card">
@@ -64,6 +70,13 @@ export function ProductCard({ product }: { product: ProductSummary }) {
         </div>
 
         <div className="product-card-commerce">
+          {primaryPromotion || savingsLabel ? (
+            <div className="commerce-badge-row" aria-label="Product promotion">
+              {savingsLabel ? <span className="commerce-badge strong">{savingsLabel}</span> : null}
+              {primaryPromotion ? <span className="commerce-badge">{primaryPromotion.label}</span> : null}
+            </div>
+          ) : null}
+
           <div className="product-rating" aria-label={`4 out of 5 stars from ${reviewCount} reviews`}>
             <span aria-hidden="true">
               {[0, 1, 2, 3, 4].map((index) => (
@@ -79,9 +92,15 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             <small>({reviewCount})</small>
           </div>
 
-          <div className="price-line">
-            {formatMoney(product.price.amount)}
-            <span>/ {product.unit}</span>
+          <div className="price-stack">
+            {compareAtPrice ? (
+              <span className="compare-price">{formatMoney(compareAtPrice)}</span>
+            ) : null}
+            <div className="price-line">
+              {formatMoney(effectivePrice)}
+              <span>/ {product.unit}</span>
+            </div>
+            {pricing.priceLabel ? <small className="price-label">{pricing.priceLabel}</small> : null}
           </div>
 
           <div className="product-actions">

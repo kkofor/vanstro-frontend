@@ -26,7 +26,7 @@ type HomePageProps = {
 const categoryCards = [
   {
     title: "Kitchen",
-    text: "Cabinets, vanities, hardware",
+    text: "Ready-to-order cabinets and hardware",
     href: "/products?category=kitchen-cabinets",
     image: assetPath("/assets/generated/vanstro-hero-white-v1.png"),
     large: true
@@ -39,14 +39,14 @@ const categoryCards = [
   },
   {
     title: "Flooring",
-    text: "Laminate and vinyl",
+    text: "Laminate, vinyl and future surfaces",
     href: "/products?category=flooring",
     image: assetPath("/assets/original-site/img-b02.gif"),
     comingSoon: true
   },
   {
     title: "Trim",
-    text: "Baseboards and casings",
+    text: "Baseboards, casings and profiles",
     href: "/products?category=baseboards",
     image: assetPath("/assets/original-site/img-b04.gif")
   },
@@ -61,30 +61,34 @@ const categoryCards = [
 
 const resources = [
   {
-    title: "Project Gallery",
-    text: "See real projects for inspiration.",
-    action: "View gallery",
+    title: "Planning ideas",
+    text: "Compare room layouts and stocked product combinations.",
+    action: "View planning ideas",
+    href: "/articles",
     icon: BookOpen,
     image: assetPath("/assets/generated/vanstro-hero-white-v1.png")
   },
   {
     title: "3D Design Tool",
-    text: "Visualize your space and plan with ease.",
+    text: "Visualize layouts before you build a product list.",
     action: "Start designing",
+    href: "https://tools.vanstro.ca/",
     icon: Laptop,
     image: assetPath("/assets/generated/vanstro-guide-white-v1.png")
   },
   {
-    title: "Product Brochures",
-    text: "Download specs and installation guides.",
-    action: "View brochures",
+    title: "Product specs",
+    text: "Download specs, warranty notes and installation guides.",
+    action: "Read specs guide",
+    href: "/articles/how-to-measure-for-cabinets",
     icon: ClipboardList,
     image: assetPath("/assets/generated/vanstro-dealer-white-v1.png")
   },
   {
-    title: "Samples",
-    text: "Order cabinet door and finish samples.",
-    action: "Order samples",
+    title: "Materials and finishes",
+    text: "Review white cabinet finishes and primed trim materials.",
+    action: "View finishes",
+    href: "/articles/what-finishes-are-available",
     icon: PackageCheck,
     image: assetPath("/assets/original-site/img-b02.gif")
   }
@@ -107,9 +111,9 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         <div className="container hero-grid">
           <div className="hero-copy">
             <h1>
-              <span>Kitchen cabinets and</span>
+              <span>Kitchen cabinets and home materials</span>
               {" "}
-              <span>home materials across Canada</span>
+              <span>delivered across Canada</span>
             </h1>
             <p>{banner.subtitle}</p>
             <div className="hero-actions">
@@ -117,7 +121,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
                 Shop Products
               </Link>
               <Link className="button button-secondary" href="#stores">
-                View Stores
+                Find a Dealer
               </Link>
             </div>
           </div>
@@ -175,8 +179,12 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
       <section className="section dealer-section">
         <div className="container dealer-band">
           <div className="dealer-copy">
-            <h2>For contractors and dealers</h2>
-            <p>Access trade pricing, stocked inventory and dedicated support across Canada.</p>
+            <h2>For trade buyers and dealer partners</h2>
+            <p>
+              Contractors can order stocked products for projects, while qualified
+              businesses can apply to join the VanStro dealer network with onboarding,
+              operations and marketing support across Canada.
+            </p>
             <div className="button-row">
               <Link className="button button-accent" href="/dealers/apply">
                 Become a Dealer
@@ -196,12 +204,12 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
       <section className="section resource-section">
         <div className="container">
           <div className="section-heading">
-            <h2 className="section-title">Design Studio Resources</h2>
+            <h2 className="section-title">Project planning resources</h2>
           </div>
           <div className="resource-row">
             {resources.map((resource) => {
               return (
-                <Link href="/" className="resource-item" key={resource.title}>
+                <Link href={resource.href} className="resource-item" key={resource.title}>
                   <img src={resource.image} alt={resource.title} />
                   <span>
                     <h3>{resource.title}</h3>
@@ -222,8 +230,8 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         <div className="container store-band">
           <MapPin size={42} strokeWidth={1.8} />
           <div>
-            <h2>Find a store near you</h2>
-            <p>Visit one of our showrooms across Canada.</p>
+            <h2>Find a dealer or showroom</h2>
+            <p>Choose a local VanStro dealer for pickup, delivery coordination and project support.</p>
           </div>
           <div className="store-list">
             {dealers.slice(0, 4).map((dealer) => (
@@ -237,8 +245,8 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
               </button>
             ))}
           </div>
-          <Link className="button button-primary" href="/dealers/apply">
-            Find a Store
+          <Link className="button button-primary" href="/contact">
+            Contact a Dealer
           </Link>
         </div>
       </section>

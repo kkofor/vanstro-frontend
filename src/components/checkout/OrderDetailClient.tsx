@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CheckCircle2, Circle } from "lucide-react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { getEffectivePrice } from "@/lib/commerce/product-commerce";
 
 function formatCad(amount: number) {
   return new Intl.NumberFormat("en-CA", {
@@ -58,7 +59,7 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
             <div className="mini-line" key={item.product.id}>
               <span>{item.product.name}</span>
               <strong>
-                {item.quantity} x {formatCad(item.product.price.amount)}
+                {item.quantity} x {formatCad(getEffectivePrice(item.product).amount)}
               </strong>
             </div>
           ))}

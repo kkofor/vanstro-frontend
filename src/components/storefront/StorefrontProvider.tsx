@@ -9,6 +9,10 @@ import {
   useState
 } from "react";
 import { Dealer, ProductSummary } from "@/lib/api/api-contract";
+import {
+  getEffectivePrice,
+  withEffectiveProductPrice
+} from "@/lib/commerce/product-commerce";
 
 export type CartLine = {
   product: ProductSummary;
@@ -119,7 +123,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const cartSubtotal = useMemo(
     () =>
       cartItems.reduce(
-        (total, item) => total + item.product.price.amount * item.quantity,
+        (total, item) => total + getEffectivePrice(item.product).amount * item.quantity,
         0
       ),
     [cartItems]
@@ -144,17 +148,26 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         setPostalCodeState(nextPostalCode.trim().toUpperCase());
       },
       addToCart(product, quantity = 1) {
+        const pricedProduct = withEffectiveProductPrice(product);
         setCartItems((current) => {
-          const existing = current.find((item) => item.product.id === product.id);
+          const existing = current.find((item) => item.product.id === pricedProduct.id);
           if (existing) {
             return current.map((item) =>
-              item.product.id === product.id
-                ? { ...item, quantity: item.quantity + quantity }
+              item.product.id === pricedProduct.id
+                ? { ...item, product: pricedProduct, quantity: item.quantity + quantity }
                 : item
             );
           }
-          return [...current, { product, quantity }];
+          return [...current, { product: pricedProduct, quantity }];
         });
+        window.dispatchEvent(
+          new CustomEvent("vanstro-cart-added", {
+            detail: {
+              product: pricedProduct,
+              quantity
+            }
+          })
+        );
       },
       updateCartQuantity(productId, quantity) {
         setCartItems((current) =>
@@ -176,11 +189,12 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         setCartItems([]);
       },
       toggleFavorite(product) {
+        const pricedProduct = withEffectiveProductPrice(product);
         setFavoriteItems((current) => {
-          if (current.some((item) => item.id === product.id)) {
-            return current.filter((item) => item.id !== product.id);
+          if (current.some((item) => item.id === pricedProduct.id)) {
+            return current.filter((item) => item.id !== pricedProduct.id);
           }
-          return [product, ...current];
+          return [pricedProduct, ...current];
         });
       },
       removeFavorite(productId) {

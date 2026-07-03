@@ -6,13 +6,15 @@ import {
   mockCart,
   mockFavorites,
   productDetails,
-  products
+  products,
+  productsWithCommerce
 } from "@/lib/data/mock-data";
+import { HOME_PRODUCT_LIMIT } from "@/lib/product/catalog-config";
 
 export async function getHomePageData() {
   return {
     banner: banners[0],
-    products,
+    products: productsWithCommerce.slice(0, HOME_PRODUCT_LIMIT),
     articles,
     dealers
   };

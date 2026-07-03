@@ -16,8 +16,18 @@ import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { dealers } from "@/lib/data/mock-data";
 import { assetPath } from "@/lib/assets";
 
+const productCategories = [
+  { href: "/products", label: "All Products" },
+  { href: "/products?category=kitchen-cabinets", label: "Kitchen Cabinets" },
+  { href: "/products?category=bathroom-vanities", label: "Bathroom Vanities" },
+  { href: "/products?category=baseboards", label: "Baseboards & Mouldings" },
+  { href: "/products?category=doors-windows", label: "Doors & Windows" },
+  { href: "/products?category=flooring", label: "Flooring" },
+  { href: "/products", label: "Additional Categories" }
+] as const;
+
 const navItems = [
-  { href: "/products", label: "Products" },
+  { href: "/", label: "Home" },
   { href: "/articles", label: "Resource Center" },
   { href: "https://tools.vanstro.ca/", label: "Design Studio" },
   { href: "/about", label: "About us" },
@@ -123,6 +133,7 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [catalogOpen, setCatalogOpen] = useState(false);
   const { cartCount, favoriteCount } = useStorefront();
 
   return (
@@ -133,7 +144,7 @@ export function SiteHeader() {
             <span>CA - EN</span>
             <Link href="/">FR</Link>
           </div>
-          <p>Shop online, checkout, then a local VanStro dealer fulfills your order.</p>
+          <p>Shop online across Canada. A local VanStro dealer fulfills your order.</p>
           <div className="utility-links">
             <Link href="/orders/demo-order">Track order</Link>
             <Link href="/articles">Support</Link>
@@ -182,10 +193,38 @@ export function SiteHeader() {
       <div className="header-nav-bar">
         <div className="container header-nav-inner">
           <nav className="desktop-nav" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <Link key={item.label} href={item.href}>
-                {item.label}
+            <div
+              className="desktop-nav-item catalog-nav-item"
+              onMouseEnter={() => setCatalogOpen(true)}
+              onMouseLeave={() => setCatalogOpen(false)}
+              onFocusCapture={() => setCatalogOpen(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setCatalogOpen(false);
+                }
+              }}
+            >
+              <Link className="catalog-nav-trigger" href="/products" aria-haspopup="menu" aria-expanded={catalogOpen}>
+                <span>Products</span>
+                <ChevronDown size={15} strokeWidth={2.35} />
               </Link>
+
+              <div className="catalog-dropdown" hidden={!catalogOpen}>
+                <span className="catalog-dropdown-heading">All Products</span>
+                <div className="catalog-dropdown-list" role="menu" aria-label="Product categories">
+                  {productCategories.map((category) => (
+                    <Link key={category.label} href={category.href} role="menuitem" onClick={() => setCatalogOpen(false)}>
+                      {category.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {navItems.map((item) => (
+              <div className="desktop-nav-item" key={item.label}>
+                <Link href={item.href}>{item.label}</Link>
+              </div>
             ))}
           </nav>
 

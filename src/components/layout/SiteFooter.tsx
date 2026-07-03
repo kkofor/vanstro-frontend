@@ -39,7 +39,7 @@ const footerGroups = [
       { label: "About us", href: "/about" },
       { label: "Resource Center", href: "/articles" },
       { label: "Design Studio", href: "https://tools.vanstro.ca/" },
-      { label: "Privacy policy", href: "/articles" }
+      { label: "Privacy policy", href: "/privacy" }
     ]
   }
 ];
@@ -129,12 +129,12 @@ export function SiteFooter() {
             </Link>
             <p>
               Canadian home materials supply platform for homeowners, contractors
-              and local VanStro dealers.
+              and VanStro dealer partners.
             </p>
             <div className="footer-contact-list" aria-label="Contact information">
               <span>
                 <MapPin size={16} strokeWidth={2.2} />
-                Toronto, Calgary, Vancouver and partner markets
+                Nationwide delivery with local dealer service
               </span>
               <span>
                 <Mail size={16} strokeWidth={2.2} />
@@ -161,7 +161,7 @@ export function SiteFooter() {
             <h3>Checkout online. Fulfillment stays local.</h3>
             <p>
               Your selected VanStro dealer receives the paid order and coordinates
-              pickup, delivery or project support.
+              pickup, delivery, project support or after-sales service.
             </p>
             <div className="footer-help-actions">
               <Link className="button button-primary" href="/products">
@@ -196,7 +196,7 @@ export function SiteFooter() {
             <Link className="footer-legal-link" href="/articles">
               Terms and Conditions
             </Link>
-            <Link className="footer-legal-link" href="/articles">
+            <Link className="footer-legal-link" href="/privacy">
               Privacy Policy
             </Link>
             <CookiePreferencesButton />

@@ -1004,8 +1004,8 @@ button {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 28px 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px 24px;
 }
 
 .product-card {
@@ -5200,12 +5200,6 @@ body:has(.catalog-page) .support-widget {
 
   .dealer-image {
     min-height: 260px;
-  }
-}
-
-@media (min-width: 981px) and (max-width: 1240px) {
-  .product-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

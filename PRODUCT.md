@@ -24,7 +24,7 @@ dealer-backed fulfillment, not a generic marketplace page.
 - Keep the accepted v1 direction as the baseline.
 - The hero should quickly communicate home materials, Canada-wide delivery or
   service, and local VanStro dealer fulfillment.
-- `Popular products` must show exactly 6 product windows.
+- `Popular products` must show exactly 8 product windows in a 4x2 desktop grid.
 - Homepage product image frames are 1:1.
 - Homepage product images use `object-fit: contain`.
 - Homepage and listing pages do not show detailed product quantities.
@@ -34,7 +34,7 @@ Primary config:
 
 ```text
 src/lib/product/catalog-config.ts
-HOME_PRODUCT_LIMIT = 6
+HOME_PRODUCT_LIMIT = 8
 ```
 
 ## Product Listing Page Direction
@@ -274,7 +274,7 @@ src/lib/commerce/product-inventory.ts
 Before considering homepage/product work stable, verify:
 
 - Homepage hero does not clip or cover the CTAs.
-- Homepage product windows count is exactly 6.
+- Homepage product windows count is exactly 8.
 - Homepage and listing pages have no horizontal overflow.
 - PLP product image windows are square.
 - PDP gallery thumbnails and hover zoom work.

@@ -110,7 +110,7 @@ Homepage:
 - Preserve the approved v1 visual direction.
 - Hero copy must communicate Canada-wide delivery/service and local dealer
   fulfillment.
-- Popular products must show exactly 6 product windows.
+- Popular products must show exactly 8 product windows in a 4x2 desktop grid.
 - Product windows use 1:1 image frames with `object-fit: contain`.
 - Homepage must not expose detailed inventory numbers.
 

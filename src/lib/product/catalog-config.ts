@@ -1,4 +1,4 @@
-export const HOME_PRODUCT_LIMIT = 6;
+export const HOME_PRODUCT_LIMIT = 8;
 
 export const CATALOG_PAGE_SIZE = 24;
 

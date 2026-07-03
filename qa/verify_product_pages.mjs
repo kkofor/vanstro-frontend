@@ -100,8 +100,8 @@ await acceptCookiesIfVisible(page);
 await assertNoHorizontalOverflow(page, "Homepage");
 await assertNoPublicListingStockText(page, "Homepage");
 const homeProductCards = await page.locator(".product-grid .product-card").count();
-if (homeProductCards !== 6) {
-  throw new Error(`Expected 6 homepage product windows, found ${homeProductCards}`);
+if (homeProductCards !== 8) {
+  throw new Error(`Expected 8 homepage product windows, found ${homeProductCards}`);
 }
 await page.screenshot({ path: `${SHOT_DIR}/home-desktop.png`, fullPage: true });
 

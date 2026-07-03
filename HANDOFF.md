@@ -23,7 +23,7 @@ export, typed mock data, and a reserved API boundary for future backend,
 dashboard, inventory, dealer, payment, and order integrations.
 
 The approved v1 homepage direction remains the baseline. The latest pass fixed
-the homepage collapse, reduced homepage product windows to 6, cleaned up catalog
+the homepage collapse, set homepage product windows to 8 in a 4x2 desktop grid, cleaned up catalog
 copy, normalized cabinet/vanity color output to white, and revalidated three
 primary commerce pages:
 
@@ -74,7 +74,7 @@ Changes:
   first screen.
 - Kept the approved v1 visual direction rather than replacing it with the v1.1
   exploration.
-- Set homepage popular products through `HOME_PRODUCT_LIMIT = 6`.
+- Set homepage popular products through `HOME_PRODUCT_LIMIT = 8`.
 - Ensured homepage product image frames are 1:1 and use `object-fit: contain`.
 - Preserved Canada-wide delivery/service messaging and local dealer handoff.
 - Kept inventory quantities off homepage cards.
@@ -188,7 +188,7 @@ node qa\verify_product_pages.mjs
 QA currently verifies:
 
 - Homepage loads with no horizontal overflow.
-- Homepage has exactly 6 product windows.
+- Homepage has exactly 8 product windows.
 - Homepage does not show detailed product quantity text.
 - Product listing loads with filters and category routes.
 - Product listing has no horizontal overflow.

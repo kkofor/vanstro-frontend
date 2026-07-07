@@ -2050,12 +2050,6 @@ body.cookie-drawer-open {
   pointer-events: none;
 }
 
-body:has(.product-detail-panel) .support-widget,
-body:has(.pdp-page) .support-widget,
-body:has(.catalog-page) .support-widget {
-  display: none;
-}
-
 .support-widget > * {
   pointer-events: auto;
 }

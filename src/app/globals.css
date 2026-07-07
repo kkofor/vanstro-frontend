@@ -2199,13 +2199,17 @@ body.cookie-drawer-open {
 
 .support-messages {
   display: grid;
-  min-height: 240px;
+  min-height: 156px;
   max-height: 388px;
   gap: 10px;
   overflow-y: auto;
   padding: 3px 8px 5px;
   scrollbar-width: thin;
   scrollbar-color: #cbd6d3 transparent;
+}
+
+.support-messages:has(.support-message:nth-of-type(2)) {
+  min-height: 240px;
 }
 
 .support-message {
@@ -5727,8 +5731,12 @@ body.cookie-drawer-open {
   }
 
   .support-messages {
-    min-height: 230px;
+    min-height: 156px;
     max-height: 320px;
+  }
+
+  .support-messages:has(.support-message:nth-of-type(2)) {
+    min-height: 230px;
   }
 
   body:has(.cookie-bar) .support-widget {

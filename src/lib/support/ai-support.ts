@@ -6,12 +6,20 @@ export type AiSupportIntent =
   | "order-help"
   | "dealer-program";
 
+export type SupportAction = {
+  label: string;
+  href: string;
+  description?: string;
+  tone?: "primary" | "secondary";
+};
+
 export type SupportMessage = {
   id: string;
   role: "assistant" | "user";
   text: string;
   meta?: string;
   handoff?: boolean;
+  actions?: SupportAction[];
 };
 
 export type AiSupportContext = {
@@ -51,14 +59,21 @@ export function makeSupportMessage(
   role: SupportMessage["role"],
   text: string,
   meta?: string,
-  handoff = false
+  handoffOrOptions: boolean | { handoff?: boolean; actions?: SupportAction[] } = false,
+  legacyActions: SupportAction[] = []
 ): SupportMessage {
+  const options =
+    typeof handoffOrOptions === "boolean"
+      ? { handoff: handoffOrOptions, actions: legacyActions }
+      : handoffOrOptions;
+
   return {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     role,
     text,
     meta,
-    handoff
+    handoff: options.handoff ?? false,
+    actions: options.actions?.length ? options.actions : undefined
   };
 }
 
@@ -69,28 +84,53 @@ export function createOpeningMessage(context: AiSupportContext) {
 
   return makeSupportMessage(
     "assistant",
-    `Hi, I am VanStro's assistant. ${pageHint}`,
+    `Hi, I am VanStro's AI assistant. ${pageHint}`,
     `${context.selectedDealerName} selected`
   );
 }
 
 export function resolveAiSupportReply(input: string, context: AiSupportContext) {
   const text = input.toLowerCase();
+  const asksForHuman =
+    /\b(human|person|agent|representative|live|teammate|staff|support)\b/.test(text) ||
+    text.includes("\u4eba\u5de5") ||
+    text.includes("\u771f\u4eba") ||
+    text.includes("\u5ba2\u670d") ||
+    text.includes("\u8f6c\u4eba\u5de5");
 
-  if (/\b(human|person|agent|representative|live|人工|真人|客服|转人工)\b/.test(text)) {
+  if (asksForHuman) {
     return makeSupportMessage(
       "assistant",
-      "I can help collect the key details first, then route this to a VanStro support teammate. Please share your order number, email or the product/SKU involved.",
+      "I can collect the key details first, then route this to a VanStro support teammate with the context included. Please share your order number, email, dealer location or product/SKU.",
       "Human support available",
-      true
+      {
+        handoff: true,
+        actions: [
+          {
+            label: "Contact page",
+            href: "/contact",
+            description: "Use the full support form if you prefer email follow-up."
+          }
+        ]
+      }
     );
   }
 
   if (/\b(dealer|pickup|delivery|deliver|fulfill|fulfillment|store|postal|location)\b/.test(text)) {
     return makeSupportMessage(
       "assistant",
-      `Your current fulfillment dealer is ${context.selectedDealerName}. You can choose a dealer in the header, then place the product order online. Pickup, delivery coordination or project support is handled by the assigned local dealer after checkout.`,
-      "Dealer fulfillment"
+      `Your current fulfillment dealer is ${context.selectedDealerName}. Choose a dealer in the header, place the order online, and the assigned local dealer coordinates pickup, delivery or project support after checkout.`,
+      "Dealer fulfillment",
+      {
+        actions: [
+          {
+            label: "Delivery article",
+            href: "/articles/delivery-fulfillment",
+            description: "Review how dealer handoff works after checkout.",
+            tone: "primary"
+          }
+        ]
+      }
     );
   }
 
@@ -99,28 +139,65 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
       context.cartCount > 0
         ? `I see ${context.cartCount} item${context.cartCount === 1 ? "" : "s"} in the cart.`
         : "Your cart is currently empty.";
+    const orderAction =
+      context.cartCount > 0
+        ? {
+            label: "Open cart",
+            href: "/cart",
+            description: "Review quantity and selected products.",
+            tone: "primary" as const
+          }
+        : {
+            label: "Track demo order",
+            href: "/orders/demo-order",
+            description: "See the current order status pattern.",
+            tone: "primary" as const
+          };
 
     return makeSupportMessage(
       "assistant",
-      `${cartNote} For checkout, confirm product quantity, selected dealer and payment details. For an existing order, use Track order from the top bar or contact support with your order number.`,
+      `${cartNote} For checkout, confirm quantity, selected dealer and payment details. For an existing order, use Track order or share your order number for handoff.`,
       "Checkout support",
-      true
+      {
+        handoff: true,
+        actions: [orderAction]
+      }
     );
   }
 
   if (/\b(dealer program|partner|join|contractor|trade|business|b2b)\b/.test(text)) {
     return makeSupportMessage(
       "assistant",
-      "VanStro works with trade buyers and dealer partners across Canada. For dealer onboarding, prepare your company name, service area, contact details and current business type, then submit the dealer application.",
-      "Dealer program"
+      "VanStro works with trade buyers and dealer partners across Canada. For onboarding, prepare your company name, service area, contact details and business type.",
+      "Dealer program",
+      {
+        actions: [
+          {
+            label: "Apply as dealer",
+            href: "/dealers/apply",
+            description: "Start the partner application flow.",
+            tone: "primary"
+          }
+        ]
+      }
     );
   }
 
   if (/\b(product|sku|cabinet|vanity|baseboard|trim|door|window|size|finish|white)\b/.test(text)) {
     return makeSupportMessage(
       "assistant",
-      "For product selection, compare category, SKU, dimensions, finish and price. Current public cabinet and vanity finishes are white-focused, and product detail pages carry the SKU, dimensions, dealer quantity and add-to-cart action.",
-      "Product guidance"
+      "For product selection, compare category, SKU, dimensions, finish and price. Cabinet and vanity finishes are white-focused, and detail pages show SKU, size, dealer quantity and add-to-cart.",
+      "Product guidance",
+      {
+        actions: [
+          {
+            label: "All products",
+            href: "/products",
+            description: "Search by product, SKU, category or size.",
+            tone: "primary"
+          }
+        ]
+      }
     );
   }
 
@@ -128,6 +205,15 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
     "assistant",
     "I can help route this. Tell me whether this is about product selection, dealer pickup or delivery, checkout, an existing order, or joining the dealer program. If this needs a person, I can prepare a handoff.",
     "Need one detail",
-    true
+    {
+      handoff: true,
+      actions: [
+        {
+          label: "Support options",
+          href: "/contact",
+          description: "Share more detail with the VanStro team."
+        }
+      ]
+    }
   );
 }

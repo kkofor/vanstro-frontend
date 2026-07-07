@@ -1,6 +1,7 @@
 "use client";
 
-import { Bot, Headphones, Send, X } from "lucide-react";
+import Link from "next/link";
+import { Bot, CheckCircle2, Headphones, MapPin, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
@@ -16,12 +17,13 @@ import {
 
 export function FloatingSupportWidget() {
   const widgetRef = useRef<HTMLElement>(null);
+  const latestAssistantRef = useRef<HTMLDivElement>(null);
   const messageEndRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { cartCount, selectedDealerName } = useStorefront();
   const [open, setOpen] = useState(false);
   const [openedFromPage, setOpenedFromPage] = useState(false);
-  const [status, setStatus] = useState("AI assistant ready");
+  const [status, setStatus] = useState("Ready to help");
   const [handoffRequested, setHandoffRequested] = useState(false);
   const [messages, setMessages] = useState<SupportMessage[]>([]);
   const [draft, setDraft] = useState("");
@@ -35,9 +37,10 @@ export function FloatingSupportWidget() {
     [cartCount, pathname, selectedDealerName]
   );
 
-  const latestAssistantMessage = [...messages]
-    .reverse()
-    .find((message) => message.role === "assistant");
+  const latestAssistantMessage = useMemo(
+    () => [...messages].reverse().find((message) => message.role === "assistant"),
+    [messages]
+  );
   const showHandoffPrompt = Boolean(latestAssistantMessage?.handoff && !handoffRequested);
 
   const closeSupport = useCallback(() => {
@@ -49,7 +52,7 @@ export function FloatingSupportWidget() {
     (source: "widget" | "page" = "widget") => {
       setOpen(true);
       setOpenedFromPage(source === "page");
-      setStatus("AI assistant ready");
+      setStatus("Ready to help");
       setMessages((current) =>
         current.length > 0 ? current : [createOpeningMessage(supportContext)]
       );
@@ -66,7 +69,8 @@ export function FloatingSupportWidget() {
       const assistantMessage = resolveAiSupportReply(cleanPrompt, supportContext);
 
       setOpen(true);
-      setStatus(assistantMessage.handoff ? "AI can prepare a handoff" : "AI assistant responded");
+      setStatus(assistantMessage.handoff ? "May need a teammate" : "Answer ready");
+      setHandoffRequested(false);
       setMessages((current) => [
         ...(current.length > 0 ? current : [createOpeningMessage(supportContext)]),
         userMessage,
@@ -81,7 +85,16 @@ export function FloatingSupportWidget() {
     const handoffMessage = makeSupportMessage(
       "assistant",
       "I can route this to a VanStro support teammate. Please leave your name, email, order number if available, and the product or dealer location involved.",
-      "Human handoff prepared"
+      "Handoff prepared",
+      {
+        actions: [
+          {
+            label: "Open contact form",
+            href: "/contact",
+            description: "Use this for files, project details or email follow-up."
+          }
+        ]
+      }
     );
 
     window.dispatchEvent(
@@ -94,7 +107,7 @@ export function FloatingSupportWidget() {
     );
 
     setHandoffRequested(true);
-    setStatus("Human handoff prepared");
+    setStatus("Handoff prepared");
     setMessages((current) => [...current, handoffMessage]);
   };
 
@@ -149,9 +162,14 @@ export function FloatingSupportWidget() {
 
   useEffect(() => {
     if (open) {
+      if (latestAssistantRef.current) {
+        latestAssistantRef.current.scrollIntoView({ block: "start" });
+        return;
+      }
+
       messageEndRef.current?.scrollIntoView({ block: "end" });
     }
-  }, [messages, open]);
+  }, [latestAssistantMessage?.id, open]);
 
   return (
     <aside
@@ -174,13 +192,43 @@ export function FloatingSupportWidget() {
             </button>
           </div>
 
+          <div className="support-context-strip" aria-label="Support context">
+            <span>
+              <MapPin size={14} strokeWidth={2.2} />
+              {supportContext.selectedDealerName}
+            </span>
+            <span>
+              <CheckCircle2 size={14} strokeWidth={2.2} />
+              AI first, human handoff when needed
+            </span>
+          </div>
+
           <div className="support-chat">
             <div className="support-messages" role="log" aria-live="polite">
               {messages.map((message) => (
-                <div className={`support-message ${message.role}`} key={message.id}>
+                <div
+                  className={`support-message ${message.role}`}
+                  key={message.id}
+                  ref={message.id === latestAssistantMessage?.id ? latestAssistantRef : undefined}
+                >
                   <div className="support-message-bubble">
                     <p>{message.text}</p>
                     {message.meta ? <small>{message.meta}</small> : null}
+                    {message.actions?.length ? (
+                      <div className="support-message-actions">
+                        {message.actions.map((action) => (
+                          <Link
+                            className={action.tone === "primary" ? "support-action-link primary" : "support-action-link"}
+                            href={action.href}
+                            key={`${message.id}-${action.href}-${action.label}`}
+                            onClick={closeSupport}
+                          >
+                            <strong>{action.label}</strong>
+                            {action.description ? <span>{action.description}</span> : null}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                 </div>
               ))}
@@ -203,9 +251,12 @@ export function FloatingSupportWidget() {
             {showHandoffPrompt ? (
               <div className="support-handoff-prompt" role="status">
                 <Headphones size={18} strokeWidth={2.2} />
-                <span>Need a person for this case?</span>
+                <span>
+                  <strong>AI can prepare a teammate handoff</strong>
+                  <em>It will pass the dealer, page context and conversation summary.</em>
+                </span>
                 <button type="button" onClick={requestHumanHandoff}>
-                  Request human support
+                  Transfer with context
                 </button>
               </div>
             ) : null}

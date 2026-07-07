@@ -1,6 +1,6 @@
 # VanStro Frontend Handoff
 
-Last updated: 2026-07-03
+Last updated: 2026-07-07
 
 Repository:
 
@@ -14,6 +14,13 @@ Local dev URL used during this handoff:
 
 ```text
 http://127.0.0.1:3001
+```
+
+Related handoffs:
+
+```text
+SKILL-HANDOFF.md
+PRODUCT.md
 ```
 
 ## Current Status

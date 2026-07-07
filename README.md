@@ -187,6 +187,23 @@ Set the backend URL later with:
 NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.example/api/v1
 ```
 
+## Customer Support / Tiledesk
+
+The support entry is Tiledesk-ready. During the static demo phase, the site falls
+back to the VanStro-branded mock AI support widget. When a Tiledesk project is
+available, set:
+
+```text
+NEXT_PUBLIC_TILEDESK_PROJECT_ID=your_tiledesk_project_id
+NEXT_PUBLIC_TILEDESK_DEPARTMENT_ID=optional_department_id
+NEXT_PUBLIC_TILEDESK_WIDGET_URL=https://widget.tiledesk.com/v6/launch.js
+```
+
+The frontend passes page, selected dealer, postal code, and cart count as
+`customAttributes` so the later AI/human handoff can keep order and dealer
+context. Contact-page chat buttons dispatch `vanstro:support-request`; with
+Tiledesk enabled, that event opens the Tiledesk widget.
+
 ## Design Direction
 
 - Use VanStro deep green as the site-wide brand anchor.

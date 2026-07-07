@@ -20,6 +20,7 @@ Related handoffs:
 
 ```text
 SKILL-HANDOFF.md
+docs/skill-handoff-2026-07-07/SKILL-HANDOFF.md
 PRODUCT.md
 ```
 

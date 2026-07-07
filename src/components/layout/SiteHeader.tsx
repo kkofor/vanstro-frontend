@@ -11,7 +11,7 @@ import {
   UserCircle,
   X
 } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { dealers } from "@/lib/data/mock-data";
 import { assetPath } from "@/lib/assets";
@@ -65,6 +65,7 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
     setPostalCode,
     setSelectedDealer
   } = useStorefront();
+  const navRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [postalDraft, setPostalDraft] = useState(postalCode);
 
@@ -77,6 +78,28 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
     setPostalDraft(postalCode);
   }, [postalCode]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      const target = event.target;
+      if (target instanceof Node && navRef.current?.contains(target)) return;
+      setOpen(false);
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
   function handlePostalSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPostalCode(postalDraft);
@@ -85,7 +108,7 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
   }
 
   return (
-    <div className={compact ? "dealer-nav compact" : "dealer-nav"}>
+    <div className={compact ? "dealer-nav compact" : "dealer-nav"} ref={navRef}>
       <button
         className="dealer-current-button"
         type="button"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { formatProductSize } from "@/lib/product/product-display";
 
 function formatCad(amount: number) {
   return new Intl.NumberFormat("en-CA", {
@@ -42,7 +43,7 @@ export function CartClient() {
             <div>
               <h2 className="product-name">{item.product.name}</h2>
               <p className="product-meta">
-                {item.product.dimensions} - {selectedDealerName}
+                {formatProductSize(item.product.dimensions)} - {selectedDealerName}
               </p>
               <div className="quantity-stepper" aria-label={`Quantity for ${item.product.name}`}>
                 <button

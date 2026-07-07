@@ -11,11 +11,7 @@ type ProductImageGalleryProps = {
 };
 
 export function ProductImageGallery({ images, finishOptions = [] }: ProductImageGalleryProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [zoomed, setZoomed] = useState(false);
-  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
   const productVariant = useProductVariant();
-  const activeImage = images[activeIndex] ?? images[0];
   const finishImageByName = useMemo(
     () =>
       new Map(
@@ -25,6 +21,23 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
       ),
     [finishOptions]
   );
+  const initialActiveIndex = useMemo(() => {
+    const initialFinishName =
+      productVariant?.selectedFinishName ??
+      finishOptions.find((option) => option.active)?.name;
+    const initialImageUrl = initialFinishName
+      ? finishImageByName.get(initialFinishName)
+      : undefined;
+    const nextIndex = initialImageUrl
+      ? images.findIndex((image) => image.url === initialImageUrl)
+      : -1;
+
+    return nextIndex >= 0 ? nextIndex : 0;
+  }, [finishImageByName, finishOptions, images, productVariant?.selectedFinishName]);
+  const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
+  const [zoomed, setZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
+  const activeImage = images[activeIndex] ?? images[0];
   const finishNameByImageUrl = useMemo(
     () =>
       new Map(

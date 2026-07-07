@@ -33,6 +33,7 @@ import {
   CATALOG_WIDTH_OPTIONS,
   CatalogCategoryOption
 } from "@/lib/product/catalog-config";
+import { formatProductSize } from "@/lib/product/product-display";
 
 type ProductsExplorerProps = {
   products: ProductSummary[];
@@ -186,7 +187,7 @@ function CatalogProductCard({ product }: { product: ProductSummary }) {
           <Link href={`/products/${product.slug}`}>{product.name}</Link>
         </h3>
         <p>SKU {product.sku}</p>
-        <p className="catalog-key-spec">{product.dimensions}</p>
+        <p className="catalog-key-spec">{formatProductSize(product.dimensions)}</p>
         <div className="catalog-card-footer">
           <div className="catalog-price">
             {compareAtPrice ? <del>{formatMoney(compareAtPrice)}</del> : null}

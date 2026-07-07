@@ -53,14 +53,16 @@ export function CookieBar() {
         functional: false,
         analytics: false,
         targeting: false,
-        source: "essential-only"
+        source: "reject-all"
       })
     );
     window.dispatchEvent(new Event(COOKIE_PREFERENCES_SAVED_EVENT));
     setVisible(false);
   };
 
-  if (!visible || pathname === "/cookie-settings") return null;
+  const normalizedPathname = pathname.replace(/\/$/, "") || "/";
+
+  if (!visible || normalizedPathname === "/cookie-settings") return null;
 
   return (
     <aside className="cookie-bar" role="dialog" aria-labelledby="cookie-notice-title">
@@ -68,7 +70,7 @@ export function CookieBar() {
         <button
           className="cookie-close"
           type="button"
-          aria-label="Close cookie notice"
+          aria-label="Reject non-essential cookies and close"
           onClick={closeWithEssentialOnly}
         >
           <X size={20} strokeWidth={2.2} />
@@ -79,14 +81,17 @@ export function CookieBar() {
             We use cookies and similar technologies which are required for our
             website to function. Optional cookies help us understand how people
             use VanStro, improve services and personalize product offers. For
-            more information, see our <Link href="/privacy">Privacy Policy</Link>.
+            more information, see our <Link href="/cookie-settings">Cookie Policy</Link>.
           </p>
         </div>
         <div className="cookie-actions">
-          <button className="cookie-button ghost" type="button" onClick={openPreferences}>
-            Manage Cookie Preferences
+          <button className="cookie-button equal" type="button" onClick={closeWithEssentialOnly}>
+            Reject All
           </button>
-          <button className="cookie-button primary" type="button" onClick={acceptAll}>
+          <button className="cookie-button ghost" type="button" onClick={openPreferences}>
+            Customize
+          </button>
+          <button className="cookie-button equal" type="button" onClick={acceptAll}>
             Accept All
           </button>
         </div>

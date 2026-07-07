@@ -8,3 +8,4 @@ qa/*
 *.log
 .env*.local
 footer-redesign-*.png
+tmp/

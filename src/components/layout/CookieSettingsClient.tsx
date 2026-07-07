@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Plus, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   COOKIE_PREFERENCES_SAVED_EVENT,
@@ -116,9 +116,7 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
 
               return (
                 <div className="cookie-preference-row" key={row.key}>
-                  <button className="preference-expand" type="button" aria-label={row.title}>
-                    <Plus size={18} strokeWidth={2.2} />
-                  </button>
+                  <span className="preference-expand" aria-hidden="true" />
                   <div className="preference-text">
                     <strong>{row.title}</strong>
                     <span>{row.description}</span>
@@ -129,6 +127,7 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
                     <button
                       className={`preference-toggle ${enabled ? "is-on" : ""}`}
                       type="button"
+                      aria-label={`${enabled ? "Disable" : "Enable"} ${row.title}`}
                       aria-pressed={enabled}
                       onClick={() => togglePreference(row.key as OptionalPreference)}
                     >

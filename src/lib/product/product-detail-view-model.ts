@@ -15,6 +15,7 @@ import {
   getPromotionBadges,
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
+import { formatProductSize } from "@/lib/product/product-display";
 
 export type SpecificationRow = [label: string, value: string];
 export type PackageQuantityRow = [label: string, value: number];
@@ -204,7 +205,11 @@ export function createProductDetailViewModel(
   const colorHex = product.colorHex ?? product.finishOptions?.find((option) => option.active)?.colorHex ?? "#f4f2ee";
   const documents = product.documents ?? [];
   const packageRows = formatPackageQuantity(product.packageQuantity);
-  const specRows = buildSpecRows(product.specifications);
+  const displayDimensions = formatProductSize(product.specifications.Dimensions ?? product.dimensions);
+  const specRows = buildSpecRows({
+    ...product.specifications,
+    Dimensions: displayDimensions
+  });
   const pricing = getProductPricing(product);
 
   return {

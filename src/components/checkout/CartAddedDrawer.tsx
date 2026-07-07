@@ -73,6 +73,10 @@ export function CartAddedDrawer() {
             <p>
               {formatMoney(getEffectivePrice(lastAdded.product))} / {lastAdded.product.unit} | Qty: {lastAdded.quantity}
             </p>
+            <p>
+              SKU {lastAdded.product.sku}
+              {lastAdded.product.colorName ? ` / ${lastAdded.product.colorName}` : ""}
+            </p>
             <small>{selectedDealerName} pickup or coordinated local delivery</small>
           </div>
           <strong>{formatMoney({ amount: itemTotal, currency: lastAdded.product.price.currency })}</strong>

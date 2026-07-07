@@ -9,9 +9,9 @@ import {
   getCompareAtPrice,
   getEffectivePrice,
   getPrimaryPromotion,
-  getProductPricing,
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
+import { formatProductSize } from "@/lib/product/product-display";
 
 function getReviewCount(productId: string) {
   const reviewCounts: Record<string, number> = {
@@ -33,11 +33,12 @@ export function ProductCard({ product }: { product: ProductSummary }) {
   const reviewCount = getReviewCount(product.id);
   const colorName = product.colorName ?? product.finish ?? "White";
   const colorHex = product.colorHex ?? "#f8f7f3";
-  const pricing = getProductPricing(product);
+  const displaySize = formatProductSize(product.dimensions);
   const effectivePrice = getEffectivePrice(product);
   const compareAtPrice = getCompareAtPrice(product);
   const primaryPromotion = getPrimaryPromotion(product);
   const savingsLabel = getSavingsLabel(product);
+  const hasPromotion = Boolean(primaryPromotion || savingsLabel);
 
   return (
     <article className="product-card">
@@ -57,7 +58,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             </div>
             <div>
               <dt>Size</dt>
-              <dd>{product.dimensions}</dd>
+              <dd>{displaySize}</dd>
             </div>
             <div>
               <dt>Color</dt>
@@ -70,13 +71,6 @@ export function ProductCard({ product }: { product: ProductSummary }) {
         </div>
 
         <div className="product-card-commerce">
-          {primaryPromotion || savingsLabel ? (
-            <div className="commerce-badge-row" aria-label="Product promotion">
-              {savingsLabel ? <span className="commerce-badge strong">{savingsLabel}</span> : null}
-              {primaryPromotion ? <span className="commerce-badge">{primaryPromotion.label}</span> : null}
-            </div>
-          ) : null}
-
           <div className="product-rating" aria-label={`4 out of 5 stars from ${reviewCount} reviews`}>
             <span aria-hidden="true">
               {[0, 1, 2, 3, 4].map((index) => (
@@ -93,14 +87,29 @@ export function ProductCard({ product }: { product: ProductSummary }) {
           </div>
 
           <div className="price-stack">
-            {compareAtPrice ? (
-              <span className="compare-price">{formatMoney(compareAtPrice)}</span>
-            ) : null}
-            <div className="price-line">
-              {formatMoney(effectivePrice)}
-              <span>/ {product.unit}</span>
+            <div className="commerce-price-row">
+              <div className="price-line">
+                {formatMoney(effectivePrice)}
+                <span>/ {product.unit}</span>
+              </div>
+              {compareAtPrice ? (
+                <span className="compare-price">{formatMoney(compareAtPrice)}</span>
+              ) : (
+                <span className="compare-price is-empty" aria-hidden="true" />
+              )}
+              <div
+                className={
+                  hasPromotion
+                    ? "commerce-badge-row price-badge-row"
+                    : "commerce-badge-row price-badge-row is-empty"
+                }
+                aria-label={hasPromotion ? "Product promotion" : undefined}
+                aria-hidden={hasPromotion ? undefined : true}
+              >
+                {savingsLabel ? <span className="commerce-badge strong">{savingsLabel}</span> : null}
+                {primaryPromotion ? <span className="commerce-badge">{primaryPromotion.label}</span> : null}
+              </div>
             </div>
-            {pricing.priceLabel ? <small className="price-label">{pricing.priceLabel}</small> : null}
           </div>
 
           <div className="product-actions">

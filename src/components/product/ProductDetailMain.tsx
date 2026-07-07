@@ -4,11 +4,10 @@ import {
   CheckCircle2,
   FileText,
   PackageCheck,
-  Ruler,
-  Star,
-  X
+  Ruler
 } from "lucide-react";
 import type { ProductSummary } from "@/lib/api/api-contract";
+import { ProductReviewSection } from "@/components/product/ProductReviewSection";
 import {
   formatMoney,
   getCompareAtPrice,
@@ -16,6 +15,7 @@ import {
   getPromotionBadges,
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
+import { formatProductSize } from "@/lib/product/product-display";
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
 
 type ProductDetailMainProps = {
@@ -39,7 +39,7 @@ function ProductProjectCard({ product }: { product: ProductSummary }) {
       </Link>
       <div className="pdp-project-copy">
         <Link href={`/products/${product.slug}`}>{product.name}</Link>
-        <small>{product.dimensions}</small>
+        <small>{formatProductSize(product.dimensions)}</small>
         {savingsLabel || primaryPromotion ? (
           <span className="commerce-badge-row">
             {savingsLabel ? <em className="commerce-badge strong">{savingsLabel}</em> : null}
@@ -96,7 +96,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
             <Ruler size={18} strokeWidth={2.3} />
             <span>
               <strong>Dimensions</strong>
-              <small>{product.dimensions}</small>
+              <small>{formatProductSize(product.dimensions)}</small>
             </span>
           </div>
           <div>
@@ -182,159 +182,11 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
         </div>
       </section>
 
-      <section className="pdp-detail-section" id="reviews" aria-labelledby="pdp-reviews-title">
-        <div className="pdp-section-heading">
-          <h2 id="pdp-reviews-title">Customer Reviews</h2>
-          <span>{reviewSummary.count} reviews</span>
-        </div>
-        <div className="pdp-review-summary">
-          <strong>{reviewSummary.average.toFixed(1)}</strong>
-          <span aria-hidden="true">
-            {[0, 1, 2, 3, 4].map((index) => (
-              <Star
-                className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
-                size={15}
-                strokeWidth={2}
-                fill={index < Math.round(reviewSummary.average) ? "currentColor" : "none"}
-                key={index}
-              />
-            ))}
-          </span>
-          <small>{reviewSummary.sourceLabel ?? "Based on verified product feedback."}</small>
-        </div>
-        <div className="pdp-community-list">
-          {reviews.map((review) => (
-            <article className="pdp-community-card" key={review.id}>
-              <strong>{review.title}</strong>
-              <p>{review.body}</p>
-              <small>{review.name}</small>
-            </article>
-          ))}
-        </div>
-        {reviewSummary.writeReviewEnabled ?? true ? (
-          <button className="pdp-review-section-cta" type="button" data-review-modal-open>
-            Write a Review
-          </button>
-        ) : null}
-        <div className="pdp-review-modal" data-review-modal hidden>
-          <button
-            className="pdp-review-modal-backdrop"
-            type="button"
-            aria-label="Close review form"
-            data-review-modal-close
-          />
-          <form
-            className="pdp-review-modal-sheet"
-            id="write-review"
-            aria-labelledby="write-review-title"
-            data-product-id={product.id}
-          >
-            <div className="pdp-review-modal-head">
-              <img src={product.images[0].url} alt={product.images[0].alt} />
-              <span>
-                <small>My Review</small>
-                <h3 id="write-review-title">{product.name}</h3>
-              </span>
-              <button className="pdp-review-modal-close" type="button" aria-label="Close review form" data-review-modal-close>
-                <X size={18} strokeWidth={2.4} aria-hidden="true" />
-              </button>
-            </div>
-            <p className="pdp-review-required">Required fields are marked with *</p>
-            <div className="pdp-review-step-row">
-              <span className="pdp-review-step-number">1</span>
-              <strong>YOUR REVIEWS</strong>
-              <small>In Progress</small>
-            </div>
-            <fieldset className="pdp-review-stars">
-              <legend>Overall Rating*</legend>
-              <div>
-                {[1, 2, 3, 4, 5].map((rating) => (
-                  <label key={rating}>
-                    <input type="radio" name="review-rating" value={rating} defaultChecked={rating === 4} />
-                    <span aria-hidden="true">&#9733;</span>
-                    <small>{rating} star</small>
-                  </label>
-                ))}
-              </div>
-              <p data-review-rating-status>4 out of 5 stars selected.</p>
-            </fieldset>
-            <div className="pdp-review-label-row">
-              <strong>Review</strong>
-              <button type="button" data-review-guidelines-open>
-                Review guidelines
-              </button>
-            </div>
-            <section className="pdp-review-topic-box" aria-label="Suggested review topics">
-              <div>
-                <strong>Suggested review topics</strong>
-                <button type="button">Hide</button>
-              </div>
-              <p>Suggested review topics</p>
-              <div className="pdp-review-topic-list">
-                {["Cabinet fit", "Finish quality", "Pickup", "Delivery", "Packaging"].map((topic) => (
-                  <button type="button" aria-pressed="false" data-review-topic key={topic}>
-                    {topic}
-                  </button>
-                ))}
-              </div>
-            </section>
-            <label className="pdp-review-textarea">
-              <span>Review*</span>
-              <textarea
-                name="review-body"
-                rows={5}
-                placeholder="Example: The cabinet finish matched our project and pickup was ready as expected..."
-              />
-              <small data-review-topic-count>0/5 topics used</small>
-            </label>
-            <label className="pdp-review-input">
-              <span>Review Title</span>
-              <input name="review-title" type="text" placeholder="Example: Clean finish and accurate sizing" />
-            </label>
-            <label className="pdp-review-input">
-              <span>Nickname*</span>
-              <input name="review-name" type="text" placeholder="Example: TorontoProject27" />
-            </label>
-            <label className="pdp-review-input">
-              <span>Email Address*</span>
-              <input name="review-email" type="email" placeholder="Example: yourname@example.com" />
-            </label>
-            <label className="pdp-review-terms">
-              <input type="checkbox" name="review-terms" />
-              <span>I agree to the Terms of Use</span>
-            </label>
-            <p className="pdp-review-privacy">
-              Reviews are staged for moderation and backend API connection before publishing.
-            </p>
-            <p className="pdp-review-submit-status" data-review-submit-status aria-live="polite" hidden />
-            <button className="button button-accent" type="submit" data-review-submit>
-              Submit & Continue
-            </button>
-            <details className="pdp-review-optional">
-              <summary>Other Details (Optional)</summary>
-              <p>Project type, room, installation notes, and photos can be connected in the next backend pass.</p>
-            </details>
-            <div className="pdp-review-guidelines" data-review-guidelines hidden>
-              <section className="pdp-review-guidelines-card" role="dialog" aria-modal="true" aria-labelledby="review-guidelines-title">
-                <button className="pdp-review-guidelines-x" type="button" aria-label="Close review guidelines" data-review-guidelines-close>
-                  <X size={18} strokeWidth={2.4} aria-hidden="true" />
-                </button>
-                <h4 id="review-guidelines-title">Writing guidelines</h4>
-                <p>We want to publish your review, so please:</p>
-                <ul>
-                  <li>Keep your review focused on the product.</li>
-                  <li>Avoid writing about customer service or order issues that require immediate attention.</li>
-                  <li>Do not mention competitors or the specific price you paid.</li>
-                  <li>Do not include personally identifiable information, such as full names.</li>
-                </ul>
-                <button className="button button-primary" type="button" data-review-guidelines-close>
-                  Close
-                </button>
-              </section>
-            </div>
-          </form>
-        </div>
-      </section>
+      <ProductReviewSection
+        product={product}
+        reviews={reviews}
+        reviewSummary={reviewSummary}
+      />
 
       <section className="pdp-detail-section" id="complete-project" aria-labelledby="pdp-project-title">
         <div className="pdp-section-heading">

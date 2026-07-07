@@ -8,7 +8,7 @@ export function organizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "VanStro Global Supply",
-    url: "https://vanstro.vip",
+    url: "https://vanstro.ca",
     logo: assetPath("/assets/vanstro-logo.png")
   };
 }

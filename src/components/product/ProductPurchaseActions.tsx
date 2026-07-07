@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Dealer, ProductSummary } from "@/lib/api/api-contract";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { useProductVariant } from "@/components/product/ProductVariantContext";
 import { ProductDealerSelector } from "@/components/product/ProductDealerSelector";
 import {
   canFulfillQuantity,
@@ -23,6 +24,7 @@ import {
   formatMoney,
   getEffectivePrice
 } from "@/lib/commerce/product-commerce";
+import { resolveProductVariant } from "@/lib/product/product-variants";
 
 type ProductPurchaseActionsProps = {
   product: ProductSummary;
@@ -37,10 +39,15 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
     selectedDealerName,
     toggleFavorite
   } = useStorefront();
+  const productVariant = useProductVariant();
   const [quantity, setQuantity] = useState(1);
   const [quantityNotice, setQuantityNotice] = useState("");
   const [addFeedback, setAddFeedback] = useState(false);
-  const saved = isFavorite(product.id);
+  const purchaseProduct = useMemo(
+    () => resolveProductVariant(product, productVariant?.selectedFinishName),
+    [product, productVariant?.selectedFinishName]
+  );
+  const saved = isFavorite(purchaseProduct.id);
 
   const selectedDealer = useMemo(
     () =>
@@ -79,7 +86,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
 
   function handleAddToCart() {
     if (!canBuy) return;
-    addToCart(product, quantity);
+    addToCart(purchaseProduct, quantity);
     setAddFeedback(true);
     window.setTimeout(() => setAddFeedback(false), 650);
   }
@@ -121,7 +128,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           className={saved ? "button button-soft pdp-save-button saved" : "button button-soft pdp-save-button"}
           type="button"
           aria-pressed={saved}
-          onClick={() => toggleFavorite(product)}
+          onClick={() => toggleFavorite(purchaseProduct)}
         >
           <Heart size={18} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
           {saved ? "Saved" : "Save"}

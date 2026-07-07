@@ -26,9 +26,26 @@ import {
   ProductUpsertInput,
   RegisterInput
 } from "./api-contract";
+import {
+  ContactLeadInput,
+  DASHBOARD_API_ENDPOINTS,
+  DashboardModuleConfig,
+  DashboardModuleKey,
+  DashboardModuleReadiness,
+  DashboardModuleUpsertInput,
+  DealerAssignmentInput,
+  FooterConfig,
+  HomePageModuleInput,
+  LegalPageUpsertInput,
+  NavigationConfig,
+  PaymentSession,
+  PaymentSessionInput,
+  ProductReviewModerationInput,
+  SupportHandoffInput
+} from "./dashboard-contract";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "/api/v1";
+  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
 
 export class VanstroApiError extends Error {
   code: string;
@@ -222,6 +239,63 @@ export const vanstroApi = {
   submitDealerApplication(input: DealerApplicationInput) {
     return postJson<{ applicationId: string; status: "submitted" | "under_review" }>(
       API_ENDPOINTS.dealerApplications,
+      input
+    );
+  },
+  getDashboardModuleReadiness() {
+    return apiFetch<DashboardModuleReadiness[]>(DASHBOARD_API_ENDPOINTS.moduleReadiness);
+  },
+  getDashboardModuleConfig<T = unknown>(moduleKey: DashboardModuleKey) {
+    return apiFetch<DashboardModuleConfig<T>>(DASHBOARD_API_ENDPOINTS.moduleConfig(moduleKey));
+  },
+  updateDashboardModuleConfig<T = unknown>(
+    moduleKey: DashboardModuleKey,
+    input: DashboardModuleUpsertInput<T>
+  ) {
+    return putJson<DashboardModuleConfig<T>>(
+      DASHBOARD_API_ENDPOINTS.moduleConfig(moduleKey),
+      input
+    );
+  },
+  updateNavigation(input: NavigationConfig) {
+    return putJson<NavigationConfig>(DASHBOARD_API_ENDPOINTS.navigation, input);
+  },
+  updateHomePage(input: HomePageModuleInput) {
+    return putJson<HomePageModuleInput>(DASHBOARD_API_ENDPOINTS.homePage, input);
+  },
+  updateFooter(input: FooterConfig) {
+    return putJson<FooterConfig>(DASHBOARD_API_ENDPOINTS.footer, input);
+  },
+  upsertLegalPage(input: LegalPageUpsertInput) {
+    return putJson<LegalPageUpsertInput>(
+      DASHBOARD_API_ENDPOINTS.legalPage(input.slug),
+      input
+    );
+  },
+  submitContactLead(input: ContactLeadInput) {
+    return postJson<{ leadId: string; status: "new" | "routed" }>(
+      DASHBOARD_API_ENDPOINTS.contactLeads,
+      input
+    );
+  },
+  requestSupportHandoff(input: SupportHandoffInput) {
+    return postJson<{ handoffId: string; status: "queued" | "assigned" }>(
+      DASHBOARD_API_ENDPOINTS.supportHandoffs,
+      input
+    );
+  },
+  createPaymentSession(input: PaymentSessionInput) {
+    return postJson<PaymentSession>(DASHBOARD_API_ENDPOINTS.paymentSessions, input);
+  },
+  assignOrderDealer(orderId: string, input: DealerAssignmentInput) {
+    return putJson<Order>(
+      DASHBOARD_API_ENDPOINTS.dealerAssignment(orderId),
+      input
+    );
+  },
+  moderateProductReview(productId: string, input: ProductReviewModerationInput) {
+    return postJson<{ reviewId: string; status: "pending" | "published" | "rejected" }>(
+      DASHBOARD_API_ENDPOINTS.reviewModeration(productId),
       input
     );
   }

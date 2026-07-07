@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
   description:
     "Shop kitchen cabinets, bathroom vanities, baseboards and home materials with local Canadian stock and dealer support.",
-  metadataBase: new URL("https://vanstro.vip"),
+  metadataBase: new URL("https://vanstro.ca"),
   alternates: {
     canonical: "/"
   },
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title: "VanStro Global Supply",
     description:
       "Ready-to-order cabinets, vanities and home materials across Canada.",
-    url: "https://vanstro.vip",
+    url: "https://vanstro.ca",
     siteName: "VanStro Global Supply",
     locale: "en_CA",
     type: "website"

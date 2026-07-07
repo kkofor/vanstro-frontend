@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { dealers } from "@/lib/data/mock-data";
+import {
+  COOKIE_PREFERENCES_SAVED_EVENT,
+  readCookiePreferences
+} from "@/lib/privacy/cookie-preferences";
 
 const LOCATION_REQUEST_KEY = "vanstro-location-request-v1";
 
@@ -48,16 +52,26 @@ function findNearestDealer(latitude: number, longitude: number) {
 
 export function LocationDetector() {
   const { setPostalCode, setSelectedDealer } = useStorefront();
+  const [consentRevision, setConsentRevision] = useState(0);
 
   useEffect(() => {
-    if (window.localStorage.getItem(LOCATION_REQUEST_KEY)) return;
+    const preferences = readCookiePreferences();
+    if (!preferences?.functional) return;
+
+    try {
+      if (window.localStorage.getItem(LOCATION_REQUEST_KEY)) return;
+    } catch {
+      return;
+    }
 
     const requestTimer = window.setTimeout(() => {
       if (!("geolocation" in navigator)) {
-        window.localStorage.setItem(
-          LOCATION_REQUEST_KEY,
-          JSON.stringify({ status: "unavailable", updatedAt: new Date().toISOString() })
-        );
+        try {
+          window.localStorage.setItem(
+            LOCATION_REQUEST_KEY,
+            JSON.stringify({ status: "unavailable", updatedAt: new Date().toISOString() })
+          );
+        } catch {}
         return;
       }
 
@@ -73,26 +87,30 @@ export function LocationDetector() {
             setPostalCode(nearest.dealer.postalCode);
           }
 
-          window.localStorage.setItem(
-            LOCATION_REQUEST_KEY,
-            JSON.stringify({
-              status: "granted",
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              dealerId: nearest?.dealer.id ?? null,
-              updatedAt: new Date().toISOString()
-            })
-          );
+          try {
+            window.localStorage.setItem(
+              LOCATION_REQUEST_KEY,
+              JSON.stringify({
+                status: "granted",
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                dealerId: nearest?.dealer.id ?? null,
+                updatedAt: new Date().toISOString()
+              })
+            );
+          } catch {}
         },
         (error) => {
-          window.localStorage.setItem(
-            LOCATION_REQUEST_KEY,
-            JSON.stringify({
-              status: error.code === error.PERMISSION_DENIED ? "denied" : "error",
-              message: error.message,
-              updatedAt: new Date().toISOString()
-            })
-          );
+          try {
+            window.localStorage.setItem(
+              LOCATION_REQUEST_KEY,
+              JSON.stringify({
+                status: error.code === error.PERMISSION_DENIED ? "denied" : "error",
+                message: error.message,
+                updatedAt: new Date().toISOString()
+              })
+            );
+          } catch {}
         },
         {
           enableHighAccuracy: false,
@@ -103,7 +121,21 @@ export function LocationDetector() {
     }, 800);
 
     return () => window.clearTimeout(requestTimer);
-  }, [setPostalCode, setSelectedDealer]);
+  }, [consentRevision, setPostalCode, setSelectedDealer]);
+
+  useEffect(() => {
+    const handlePreferencesSaved = () => {
+      const preferences = readCookiePreferences();
+      if (!preferences?.functional) return;
+      try {
+        window.localStorage.removeItem(LOCATION_REQUEST_KEY);
+      } catch {}
+      setConsentRevision((current) => current + 1);
+    };
+
+    window.addEventListener(COOKIE_PREFERENCES_SAVED_EVENT, handlePreferencesSaved);
+    return () => window.removeEventListener(COOKIE_PREFERENCES_SAVED_EVENT, handlePreferencesSaved);
+  }, []);
 
   return null;
 }

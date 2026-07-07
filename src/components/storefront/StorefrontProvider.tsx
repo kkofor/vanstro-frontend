@@ -80,9 +80,9 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      try {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
         const parsed = JSON.parse(raw);
         setCartItems(parsed.cartItems ?? []);
         setFavoriteItems(parsed.favoriteItems ?? []);
@@ -90,26 +90,30 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         setSelectedDealerId(parsed.selectedDealerId ?? "toronto");
         setSelectedDealerName(parsed.selectedDealerName ?? "VanStro Toronto");
         setPostalCodeState(parsed.postalCode ?? "");
-      } catch {
-        window.localStorage.removeItem(STORAGE_KEY);
       }
+    } catch {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {}
     }
     setHydrated(true);
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
-    window.localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({
-        cartItems,
-        favoriteItems,
-        orders,
-        selectedDealerId,
-        selectedDealerName,
-        postalCode
-      })
-    );
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          cartItems,
+          favoriteItems,
+          orders,
+          selectedDealerId,
+          selectedDealerName,
+          postalCode
+        })
+      );
+    } catch {}
   }, [
     cartItems,
     favoriteItems,

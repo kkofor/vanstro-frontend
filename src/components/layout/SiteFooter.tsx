@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
+import { footerLegalLinks } from "@/content/legalPages";
 import { assetPath } from "@/lib/assets";
 
 const footerGroups = [
@@ -27,10 +28,11 @@ const footerGroups = [
   {
     title: "Dealer program",
     links: [
+      { label: "Dealer program", href: "/dealer-program" },
       { label: "Become a dealer", href: "/dealers/apply" },
       { label: "Partner login", href: "/account/login" },
-      { label: "Dealer benefits", href: "/dealers/apply" },
-      { label: "Trade resources", href: "/articles" }
+      { label: "Dealer benefits", href: "/dealer-program#benefits" },
+      { label: "Trade resources", href: "/dealer-program#resources" }
     ]
   },
   {
@@ -138,7 +140,7 @@ export function SiteFooter() {
               </span>
               <span>
                 <Mail size={16} strokeWidth={2.2} />
-                support@vanstro.ca
+                info@vanstro.ca
               </span>
               <span>
                 <Phone size={16} strokeWidth={2.2} />
@@ -188,27 +190,19 @@ export function SiteFooter() {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2026 VanStro Global Supply Inc. All rights reserved.</p>
+          <p>&copy; 2026 VanStro Global Supply Inc. All rights reserved. | Tous droits r&eacute;serv&eacute;s.</p>
           <div className="footer-legal">
-            <Link className="footer-legal-link" href="/articles">
-              Legal Disclaimer
-            </Link>
-            <Link className="footer-legal-link" href="/articles">
-              Terms and Conditions
-            </Link>
-            <Link className="footer-legal-link" href="/privacy">
-              Privacy Policy
-            </Link>
+            {footerLegalLinks.slice(0, 3).map((link) => (
+              <Link className="footer-legal-link" href={link.href} key={link.href}>
+                {link.label}
+              </Link>
+            ))}
             <CookiePreferencesButton />
-            <Link className="footer-legal-link" href="/articles">
-              Return Policy
-            </Link>
-            <Link className="footer-legal-link" href="/dealers/apply">
-              Dealer Services &amp; Responsibility
-            </Link>
-            <Link className="footer-legal-link" href="/about">
-              Careers
-            </Link>
+            {footerLegalLinks.slice(3).map((link) => (
+              <Link className="footer-legal-link" href={link.href} key={link.href}>
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

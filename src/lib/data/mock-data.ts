@@ -14,6 +14,7 @@ import { assetPath } from "@/lib/assets";
 import { getInventoryStatus } from "@/lib/commerce/product-inventory";
 import { originalSiteImageLibrary } from "@/lib/data/original-site-image-library";
 import { originalSiteImportedProducts } from "@/lib/data/original-site-products";
+import { formatProductSize } from "@/lib/product/product-display";
 
 export const banners: Banner[] = [
   {
@@ -36,7 +37,7 @@ const featuredProducts: ProductSummary[] = [
     sku: "011090130",
     name: "Base Cabinet B33",
     category: "Kitchen Cabinets",
-    dimensions: "33 in W, MDF + PVC white, 18 mm plywood",
+    dimensions: "33 in W x 34 in H x 24 in D",
     finish: "MDF + PVC",
     colorName: "PVC white",
     colorHex: "#f4f2ee",
@@ -276,7 +277,7 @@ const featuredProducts: ProductSummary[] = [
     sku: "017600130",
     name: "Tall Cabinet U249624",
     category: "Kitchen Cabinets",
-    dimensions: "24 in W x 96 in H x 24 in D, MDF + PVC",
+    dimensions: "24 in W x 96 in H x 24 in D",
     finish: "MDF + PVC",
     colorName: "PVC white",
     colorHex: "#f5f4f0",
@@ -1023,6 +1024,7 @@ const detailCopyById: Record<
 export const productDetails: ProductDetail[] = products.map((product) => {
   const detailCopy = detailCopyById[product.id];
   const availability = mockInventoryByProductId[product.id] ?? buildMockInventory(product);
+  const displayDimensions = formatProductSize(product.dimensions);
 
   return applyDynamicProductState({
     ...product,
@@ -1043,11 +1045,11 @@ export const productDetails: ProductDetail[] = products.map((product) => {
     certificationRequired: product.category !== "Baseboards & Mouldings",
     description:
       detailCopy?.description ??
-      `${product.name} is a ${product.category.toLowerCase()} item with ${product.dimensions}. It is prepared from the original VanStro catalog assets for dealer stock, pickup, and local delivery workflows.`,
+      `${product.name} is a ${product.category.toLowerCase()} item with ${displayDimensions}. It is prepared from the original VanStro catalog assets for dealer stock, pickup, and local delivery workflows.`,
     productHighlights:
       detailCopy?.productHighlights ?? [
         `${product.name} is mapped from the original VanStro product source imagery.`,
-        `${product.dimensions} shown for project planning before checkout.`,
+        `${displayDimensions} shown for project planning before checkout.`,
         `${product.finish ?? product.colorName ?? "Selected finish"} finish information is ready for backend product management.`,
         "Dealer inventory can be replaced by live stock and fulfillment APIs."
       ],
@@ -1077,7 +1079,7 @@ export const productDetails: ProductDetail[] = products.map((product) => {
       SKU: product.sku,
       "Manufacturer Part #": detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
       Category: product.category,
-      Dimensions: product.dimensions,
+      Dimensions: displayDimensions,
       Finish: product.finish ?? "Painted or stained finish",
       Color: product.colorName ?? "White",
       Unit: product.unit,

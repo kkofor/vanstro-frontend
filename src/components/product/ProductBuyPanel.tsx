@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
 import { ProductFinishSelector } from "@/components/product/ProductFinishSelector";
 import { ProductPurchaseActions } from "@/components/product/ProductPurchaseActions";
+import { ProductReviewOpenButton } from "@/components/product/ProductReviewOpenButton";
+import { ProductVariantIdentifiers } from "@/components/product/ProductVariantIdentifiers";
 import type { Dealer } from "@/lib/api/api-contract";
 import { formatMoney } from "@/lib/commerce/product-commerce";
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
@@ -28,16 +30,10 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
       <article className="purchase-panel pdp-buy-panel">
         <p className="pdp-buy-brand">{brandName}</p>
         <h1>{product.name}</h1>
-        <dl className="pdp-meta-line" aria-label="Product identifiers">
-          <div>
-            <dt>Model #</dt>
-            <dd data-product-model>{manufacturerPartNumber}</dd>
-          </div>
-          <div>
-            <dt>SKU</dt>
-            <dd data-product-sku>{product.sku}</dd>
-          </div>
-        </dl>
+        <ProductVariantIdentifiers
+          manufacturerPartNumber={manufacturerPartNumber}
+          product={product}
+        />
         <div
           className="pdp-rating-line"
           aria-label={`${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`}
@@ -57,9 +53,7 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
             {reviewSummary.average.toFixed(1)} ({reviewSummary.count} reviews)
           </small>
           {reviewSummary.writeReviewEnabled ?? true ? (
-            <button className="pdp-review-open" type="button" data-review-modal-open>
-              Write a Review
-            </button>
+            <ProductReviewOpenButton />
           ) : null}
         </div>
 

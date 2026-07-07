@@ -2064,7 +2064,7 @@ body.cookie-drawer-open {
   border: 1px solid #cbd6d3;
   border-radius: var(--radius-lg);
   background: white;
-  box-shadow: var(--shadow-floating);
+  box-shadow: 0 10px 16px rgba(0, 63, 63, 0.13);
   color: var(--color-ink);
   padding: 6px 13px 6px 6px;
   text-align: left;
@@ -2078,34 +2078,31 @@ body.cookie-drawer-open {
 }
 
 .support-launcher span,
-.support-option span,
 .support-panel-head div {
   display: grid;
   gap: 3px;
 }
 
 .support-launcher strong,
-.support-panel-head strong,
-.support-option strong {
+.support-panel-head strong {
   color: var(--color-ink);
   font-size: 14px;
   line-height: 1.15;
 }
 
 .support-launcher small,
-.support-panel-head small,
-.support-option small {
+.support-panel-head small {
   color: #4d686c;
   font-size: 11px;
   line-height: 1.25;
 }
 
 .support-panel {
-  width: min(326px, calc(100vw - 32px));
+  width: min(386px, calc(100vw - 32px));
   border: 1px solid var(--color-line);
   border-radius: var(--radius-lg);
   background: white;
-  box-shadow: var(--shadow-floating);
+  box-shadow: 0 12px 18px rgba(0, 63, 63, 0.14);
   padding: 12px;
 }
 
@@ -2168,6 +2165,218 @@ body.cookie-drawer-open {
 .support-option:hover {
   border-color: var(--color-ink);
   background: white;
+}
+
+.support-channel-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.support-channel-tab {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.support-channel-tab.active {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: white;
+}
+
+.support-chat {
+  display: grid;
+  gap: 10px;
+}
+
+.support-messages {
+  display: grid;
+  max-height: 278px;
+  gap: 8px;
+  overflow-y: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: #f6fbfa;
+  padding: 10px;
+}
+
+.support-message {
+  display: flex;
+}
+
+.support-message.user {
+  justify-content: flex-end;
+}
+
+.support-message-bubble {
+  max-width: min(285px, 84%);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  background: white;
+  padding: 9px 10px;
+}
+
+.support-message.user .support-message-bubble {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: white;
+}
+
+.support-message-bubble p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.support-message-bubble small {
+  display: block;
+  margin-top: 6px;
+  color: #4d686c;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.support-message.user .support-message-bubble small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.support-prompt-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.support-prompt-grid button {
+  min-height: 32px;
+  border: 1px solid #cbd6d3;
+  border-radius: 999px;
+  background: white;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 0 10px;
+}
+
+.support-prompt-grid button:hover,
+.support-prompt-grid button:focus-visible {
+  border-color: var(--color-ink);
+  background: var(--color-soft);
+}
+
+.support-chat-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 8px;
+}
+
+.support-chat-form input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  color: var(--color-ink);
+  font-size: 13px;
+  outline: none;
+  padding: 0 12px;
+}
+
+.support-chat-form input::placeholder {
+  color: #526c70;
+}
+
+.support-chat-form input:focus {
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 3px rgba(0, 76, 76, 0.13);
+}
+
+.support-chat-form button {
+  display: grid;
+  min-height: 42px;
+  place-items: center;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  background: var(--color-ink);
+  color: white;
+}
+
+.support-chat-form button:disabled {
+  border-color: var(--color-line);
+  background: #d9e2df;
+  color: #6f8588;
+  cursor: not-allowed;
+}
+
+.support-disclaimer {
+  margin: -2px 0 0;
+  color: #526c70;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.support-live-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: var(--color-soft);
+  padding: 14px;
+}
+
+.support-live-card > svg {
+  color: var(--color-accent-dark);
+}
+
+.support-live-card strong {
+  color: var(--color-ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.support-live-card p {
+  margin: 7px 0 0;
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.support-live-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.support-live-actions a,
+.support-live-actions button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 0 10px;
+  text-decoration: none;
+}
+
+.support-live-actions a:first-child {
+  background: var(--color-ink);
+  color: white;
 }
 
 .page-hero {
@@ -5411,6 +5620,10 @@ body.cookie-drawer-open {
 
   .support-panel {
     width: min(330px, calc(100vw - 28px));
+  }
+
+  .support-messages {
+    max-height: 210px;
   }
 
   body:has(.cookie-bar) .support-widget {

@@ -11,6 +11,7 @@ export type SupportMessage = {
   role: "assistant" | "user";
   text: string;
   meta?: string;
+  handoff?: boolean;
 };
 
 export type AiSupportContext = {
@@ -31,7 +32,7 @@ export const AI_SUPPORT_PROMPTS: Array<{
   },
   {
     id: "dealer-fulfillment",
-    label: "Dealer pickup",
+    label: "Pickup / delivery",
     prompt: "How does dealer pickup or delivery support work?"
   },
   {
@@ -49,19 +50,21 @@ export const AI_SUPPORT_PROMPTS: Array<{
 export function makeSupportMessage(
   role: SupportMessage["role"],
   text: string,
-  meta?: string
+  meta?: string,
+  handoff = false
 ): SupportMessage {
   return {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     role,
     text,
-    meta
+    meta,
+    handoff
   };
 }
 
 export function createOpeningMessage(context: AiSupportContext) {
   const pageHint = context.pathname.startsWith("/products/")
-    ? "I can help with this product page, SKU details, dealer pickup and cart questions."
+    ? "I can help with this product, SKU, pickup, delivery and checkout questions."
     : "I can help with product selection, dealer fulfillment, checkout and dealer program questions.";
 
   return makeSupportMessage(
@@ -73,6 +76,15 @@ export function createOpeningMessage(context: AiSupportContext) {
 
 export function resolveAiSupportReply(input: string, context: AiSupportContext) {
   const text = input.toLowerCase();
+
+  if (/\b(human|person|agent|representative|live|人工|真人|客服|转人工)\b/.test(text)) {
+    return makeSupportMessage(
+      "assistant",
+      "I can help collect the key details first, then route this to a VanStro support teammate. Please share your order number, email or the product/SKU involved.",
+      "Human support available",
+      true
+    );
+  }
 
   if (/\b(dealer|pickup|delivery|deliver|fulfill|fulfillment|store|postal|location)\b/.test(text)) {
     return makeSupportMessage(
@@ -91,7 +103,8 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
     return makeSupportMessage(
       "assistant",
       `${cartNote} For checkout, confirm product quantity, selected dealer and payment details. For an existing order, use Track order from the top bar or contact support with your order number.`,
-      "Checkout support"
+      "Checkout support",
+      true
     );
   }
 
@@ -113,7 +126,8 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
 
   return makeSupportMessage(
     "assistant",
-    "I can help route this. Tell me whether this is about product selection, dealer pickup or delivery, checkout, an existing order, or joining the dealer program.",
-    "Need one detail"
+    "I can help route this. Tell me whether this is about product selection, dealer pickup or delivery, checkout, an existing order, or joining the dealer program. If this needs a person, I can prepare a handoff.",
+    "Need one detail",
+    true
   );
 }

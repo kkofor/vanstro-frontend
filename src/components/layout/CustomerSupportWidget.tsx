@@ -74,6 +74,7 @@ export function CustomerSupportWidget() {
       marginY: "24px",
       mobileMarginX: "14px",
       mobileMarginY: "14px",
+      size: "max",
       singleConversation: true,
       startFromHome: false,
       preChatForm: false,

@@ -1,14 +1,19 @@
 "use client";
 
 import { Bot, Headphones, MessageCircle, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { assetPath } from "@/lib/assets";
 
 type SupportChannel = "live" | "ai";
 
 export function FloatingSupportWidget() {
+  const widgetRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState("Ready to connect");
+
+  const closeSupport = () => {
+    setOpen(false);
+  };
 
   const requestSupport = (channel: SupportChannel) => {
     window.dispatchEvent(
@@ -19,8 +24,30 @@ export function FloatingSupportWidget() {
     setStatus(channel === "live" ? "Live support hook ready" : "AI support hook ready");
   };
 
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      const target = event.target;
+      if (target instanceof Node && widgetRef.current?.contains(target)) return;
+      closeSupport();
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeSupport();
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
+
   return (
-    <aside className="support-widget" aria-label="Online customer support">
+    <aside className="support-widget" ref={widgetRef} aria-label="Online customer support">
       {open ? (
         <div className="support-panel" role="dialog" aria-label="Support options">
           <div className="support-panel-head">
@@ -31,7 +58,7 @@ export function FloatingSupportWidget() {
               <strong>VanStro support</strong>
               <small>{status}</small>
             </div>
-            <button type="button" aria-label="Close support panel" onClick={() => setOpen(false)}>
+            <button type="button" aria-label="Close support panel" onClick={closeSupport}>
               <X size={18} strokeWidth={2.2} />
             </button>
           </div>

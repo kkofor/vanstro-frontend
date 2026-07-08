@@ -269,7 +269,7 @@ export default function DealerProgramZhPage() {
             <Link className="button button-primary" href="/zh/dealers/apply/#application-form">
               开始申请
             </Link>
-            <Link className="button button-secondary" href="/contact">
+            <Link className="button button-secondary" href="/zh/contact">
               联系经销商计划团队
             </Link>
           </div>

@@ -88,7 +88,7 @@ export default function DealerProgramZhPage() {
               本地履约由合作经销商承担。
             </p>
             <div className="dealer-program-actions">
-              <Link className="button button-primary" href="/dealers/apply">
+              <Link className="button button-primary" href="/zh/dealers/apply/#application-form">
                 提交经销商申请
               </Link>
               <Link className="button button-secondary" href="#fit">
@@ -266,7 +266,7 @@ export default function DealerProgramZhPage() {
             </p>
           </div>
           <div className="dealer-program-actions">
-            <Link className="button button-primary" href="/dealers/apply">
+            <Link className="button button-primary" href="/zh/dealers/apply/#application-form">
               开始申请
             </Link>
             <Link className="button button-secondary" href="/contact">

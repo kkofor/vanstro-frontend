@@ -22,6 +22,14 @@ export function CartClient() {
     removeFromCart
   } = useStorefront();
 
+  function changeQuantity(productId: string, quantity: number) {
+    updateCartQuantity(productId, quantity);
+  }
+
+  function removeItem(productId: string) {
+    removeFromCart(productId);
+  }
+
   if (!cartItems.length) {
     return (
       <div className="empty-panel">
@@ -49,7 +57,7 @@ export function CartClient() {
                 <button
                   type="button"
                   onClick={() =>
-                    updateCartQuantity(item.product.id, item.quantity - 1)
+                    changeQuantity(item.product.id, item.quantity - 1)
                   }
                   aria-label="Decrease quantity"
                 >
@@ -59,7 +67,7 @@ export function CartClient() {
                 <button
                   type="button"
                   onClick={() =>
-                    updateCartQuantity(item.product.id, item.quantity + 1)
+                    changeQuantity(item.product.id, item.quantity + 1)
                   }
                   aria-label="Increase quantity"
                 >
@@ -72,7 +80,7 @@ export function CartClient() {
               <button
                 className="icon-only"
                 type="button"
-                onClick={() => removeFromCart(item.product.id)}
+                onClick={() => removeItem(item.product.id)}
                 aria-label={`Remove ${item.product.name}`}
               >
                 <Trash2 size={18} strokeWidth={2} />

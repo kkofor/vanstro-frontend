@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Star, X } from "lucide-react";
 import type {
   ProductDetail,
@@ -8,6 +8,7 @@ import type {
   ProductReview
 } from "@/lib/api/api-contract";
 import { PRODUCT_REVIEW_OPEN_EVENT } from "@/components/product/ProductReviewOpenButton";
+import { vanstroApi } from "@/lib/api/api-client";
 
 type ProductReviewSectionProps = {
   product: ProductDetail;
@@ -15,7 +16,6 @@ type ProductReviewSectionProps = {
   reviewSummary: ProductRatingSummary;
 };
 
-const REVIEW_STORAGE_KEY = "vanstro-review-submissions:v1";
 const reviewTopics = ["Cabinet fit", "Finish quality", "Pickup", "Delivery", "Packaging"];
 const ratingLabels = ["", "Poor", "Fair", "Average", "Good", "Excellent"];
 
@@ -95,13 +95,7 @@ export function ProductReviewSection({
     );
   }
 
-  function saveReviewSubmission(payload: Record<string, unknown>) {
-    const current = JSON.parse(window.localStorage.getItem(REVIEW_STORAGE_KEY) || "[]");
-    current.push(payload);
-    window.localStorage.setItem(REVIEW_STORAGE_KEY, JSON.stringify(current));
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const body = String(formData.get("review-body") ?? "").trim();
@@ -147,17 +141,17 @@ export function ProductReviewSection({
     setSubmitting(true);
 
     try {
-      saveReviewSubmission(payload);
+      await vanstroApi.submitProductReview(payload);
       window.dispatchEvent(new CustomEvent("vanstro-review-submitted", { detail: payload }));
       setStatus({
         tone: "success",
-        message: "Review submitted. It is saved in the moderation queue for backend sync."
+        message: "Review submitted. It is now pending Dashboard moderation."
       });
       event.currentTarget.reset();
       setRating(4);
       setSelectedTopics([]);
     } catch {
-      setStatus({ tone: "error", message: "Review could not be saved. Please try again." });
+      setStatus({ tone: "error", message: "Review could not be submitted. Please try again." });
     } finally {
       window.setTimeout(() => setSubmitting(false), 650);
     }
@@ -308,7 +302,7 @@ export function ProductReviewSection({
               <span>I agree to the Terms of Use</span>
             </label>
             <p className="pdp-review-privacy">
-              Reviews are staged for moderation and backend API connection before publishing.
+              Reviews are submitted to VanStro for Dashboard moderation before publishing.
             </p>
             {status ? (
               <p className={`pdp-review-submit-status ${status.tone}`} aria-live="polite">

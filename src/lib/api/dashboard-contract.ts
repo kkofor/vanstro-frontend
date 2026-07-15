@@ -182,7 +182,7 @@ export type DealerAssignmentInput = {
 
 export type ProductReviewModerationInput = ProductReviewSubmissionInput & {
   sourcePath?: string;
-  status?: "pending" | "published" | "rejected";
+  status?: "pending" | "published" | "rejected" | "archived";
 };
 
 export type DashboardModuleConfig<T = unknown> = {
@@ -212,7 +212,7 @@ export const DASHBOARD_API_ENDPOINTS = {
   supportHandoffs: "/support/handoffs",
   paymentSessions: "/payments/sessions",
   dealerAssignment: (orderId: string) => `/orders/${orderId}/dealer-assignment`,
-  reviewModeration: (productId: string) => `/products/${productId}/reviews/moderation`,
+  reviewModeration: (reviewId: string) => `/dashboard/product-reviews/${reviewId}/status`,
   dealerPortalSettings: "/dashboard/dealer-portal/settings",
   cookieConsentLog: "/privacy/consent-events"
 } as const;

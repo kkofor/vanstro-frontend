@@ -182,6 +182,14 @@ export type ProductSummary = {
   inStock: boolean;
 };
 
+export type CategorySummary = {
+  id: string;
+  slug: string;
+  name: string;
+  description?: string;
+  parentId?: string;
+};
+
 export type ProductDetail = ProductSummary & {
   description: string;
   productHighlights?: string[];
@@ -267,6 +275,7 @@ export type CartItem = {
   id: string;
   product: ProductSummary;
   quantity: number;
+  unitPrice: Money;
   lineTotal: Money;
 };
 
@@ -381,27 +390,29 @@ export const API_ENDPOINTS = {
   homeBanners: "/home/banners",
   homeArticles: "/home/articles",
   articleDetail: (articleId: string) => `/articles/${articleId}`,
+  categories: "/categories",
+  products: "/products",
   productDetail: (productId: string) => `/products/${productId}`,
   productAssets: (productId: string) => `/products/${productId}/assets`,
   productReviews: (productId: string) => `/products/${productId}/reviews`,
-  adminProducts: "/admin/products",
-  adminProduct: (productId: string) => `/admin/products/${productId}`,
+  dashboardProducts: "/dashboard/products",
+  dashboardProduct: (productId: string) => `/dashboard/products/${productId}`,
   productCommerce: "/products/commerce",
   productCommerceDetail: (productId: string) => `/products/${productId}/commerce`,
   productInventory: "/products/inventory",
   productInventoryDetail: (productId: string) => `/products/${productId}/inventory`,
   inventoryReservations: "/inventory/reservations",
-  promotions: "/promotions",
+  activePromotions: "/promotions/active",
   cart: "/cart",
   cartItems: "/cart/items",
   cartItem: (cartItemId: string) => `/cart/items/${cartItemId}`,
-  favorites: "/favorites",
-  favorite: (favoriteId: string) => `/favorites/${favoriteId}`,
+  favorites: "/account/favorites",
+  favorite: (productId: string) => `/account/favorites/${productId}`,
   dealers: "/dealers",
   directOrder: "/orders/direct",
   cartOrder: "/orders/cart",
   paymentCallback: "/payments/callback",
   login: "/auth/login",
-  register: "/auth/register",
+  register: "/auth/customer/register",
   dealerApplications: "/dealer-applications"
 } as const;

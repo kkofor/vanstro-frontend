@@ -6,9 +6,11 @@ import {
   COOKIE_PREFERENCES_SAVED_EVENT,
   DEFAULT_COOKIE_PREFERENCES,
   makeCookiePreferences,
+  getConsentAnonymousId,
   readCookiePreferences,
   writeCookiePreferences
 } from "@/lib/privacy/cookie-preferences";
+import { vanstroApi } from "@/lib/api/api-client";
 
 type OptionalPreference = "functional" | "analytics" | "targeting";
 
@@ -76,12 +78,13 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
   };
 
   const savePreferences = () => {
-    writeCookiePreferences(
-      makeCookiePreferences({
-        ...preferences,
-        source: "custom"
-      })
-    );
+    const savedPreferences = makeCookiePreferences({ ...preferences, source: "custom" });
+    writeCookiePreferences(savedPreferences);
+    void vanstroApi.recordConsentEvent({
+      anonymousId: getConsentAnonymousId(),
+      source: savedPreferences.source,
+      preferences: savedPreferences
+    }).catch(() => {});
     setSaved(true);
     window.dispatchEvent(new Event(COOKIE_PREFERENCES_SAVED_EVENT));
     onSaved?.();

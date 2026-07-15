@@ -1182,12 +1182,14 @@ export const mockCart: Cart = {
       id: "cart-item-1",
       product: productsWithCommerce[0],
       quantity: 2,
+      unitPrice: productsWithCommerce[0].price,
       lineTotal: { amount: productsWithCommerce[0].price.amount * 2, currency: "CAD" }
     },
     {
       id: "cart-item-2",
       product: productsWithCommerce[3],
       quantity: 10,
+      unitPrice: productsWithCommerce[3].price,
       lineTotal: { amount: productsWithCommerce[3].price.amount * 10, currency: "CAD" }
     }
   ],

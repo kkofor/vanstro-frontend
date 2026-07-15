@@ -1,5 +1,6 @@
 export const COOKIE_PREFERENCES_KEY = "vs_consent_v1";
 export const LEGACY_COOKIE_CHOICE_KEY = "vanstro-cookie-choice";
+const CONSENT_ANONYMOUS_ID_KEY = "vs_consent_id_v1";
 export const COOKIE_PREFERENCES_OPEN_EVENT = "vanstro:open-cookie-preferences";
 export const COOKIE_PREFERENCES_SAVED_EVENT = "vanstro:cookie-preferences-saved";
 
@@ -74,6 +75,17 @@ export function writeCookiePreferences(preferences: CookiePreferences) {
     window.localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(preferences));
     window.localStorage.removeItem(LEGACY_COOKIE_CHOICE_KEY);
   } catch {}
+}
+
+export function getConsentAnonymousId() {
+  if (typeof window === "undefined") return "";
+
+  const existing = window.localStorage.getItem(CONSENT_ANONYMOUS_ID_KEY);
+  if (existing) return existing;
+
+  const anonymousId = crypto.randomUUID();
+  window.localStorage.setItem(CONSENT_ANONYMOUS_ID_KEY, anonymousId);
+  return anonymousId;
 }
 
 function getCookieValue(name: string) {

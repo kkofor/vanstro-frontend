@@ -1,9 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { vanstroApi } from "@/lib/api/api-client";
 
 function formatCad(amount: number) {
   return new Intl.NumberFormat("en-CA", {
@@ -13,16 +13,27 @@ function formatCad(amount: number) {
 }
 
 export function CheckoutClient() {
-  const router = useRouter();
-  const { cartItems, cartSubtotal, selectedDealerName, createOrder } = useStorefront();
+  const { cartItems, cartSubtotal, selectedDealerName } = useStorefront();
   const [fulfillment, setFulfillment] = useState<"pickup" | "delivery">("pickup");
   const [paymentMethod, setPaymentMethod] = useState<"pos" | "cash">("pos");
+  const [checkoutMessage, setCheckoutMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!cartItems.length) return;
-    const order = createOrder({ fulfillment, paymentMethod });
-    router.push(`/orders/${order.id}`);
+    const form = new FormData(event.currentTarget);
+    setCheckoutMessage("");
+    try {
+      const session = await vanstroApi.createCheckoutSession({
+        email: String(form.get("email") ?? ""),
+        fulfillment
+      });
+      setCheckoutMessage(
+        `Payment session ${session.data.id} is pending. Payment confirmation will create your order.`
+      );
+    } catch {
+      setCheckoutMessage("Checkout could not reserve inventory. Please review your cart and try again.");
+    }
   }
 
   if (!cartItems.length) {
@@ -109,8 +120,9 @@ export function CheckoutClient() {
           </div>
         </div>
         <button className="button button-primary" type="submit">
-          Place order
+          Continue to payment
         </button>
+        {checkoutMessage ? <p className="quantity-limit-note" aria-live="polite">{checkoutMessage}</p> : null}
       </aside>
     </form>
   );

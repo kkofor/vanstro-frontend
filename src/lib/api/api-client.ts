@@ -6,6 +6,7 @@ import {
   AuthSession,
   Banner,
   Cart,
+  CategorySummary,
   CartOrderInput,
   Dealer,
   DealerApplicationInput,
@@ -46,6 +47,12 @@ import {
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
+const CART_TOKEN_KEY = "vanstro-cart-token";
+const ACCESS_TOKEN_KEY = "vanstro-access-token";
+
+function browserStorage() {
+  return typeof window === "undefined" ? undefined : window.sessionStorage;
+}
 
 export class VanstroApiError extends Error {
   code: string;
@@ -87,6 +94,12 @@ async function apiFetch<T>(
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      ...(browserStorage()?.getItem(ACCESS_TOKEN_KEY)
+        ? { Authorization: `Bearer ${browserStorage()?.getItem(ACCESS_TOKEN_KEY)}` }
+        : {}),
+      ...(browserStorage()?.getItem(CART_TOKEN_KEY)
+        ? { "X-Cart-Token": browserStorage()?.getItem(CART_TOKEN_KEY)! }
+        : {}),
       ...init.headers
     },
     credentials: "include"
@@ -102,6 +115,9 @@ async function apiFetch<T>(
       fields: payload?.error?.fields
     });
   }
+
+  const cartToken = payload?.meta?.cartToken;
+  if (typeof cartToken === "string") browserStorage()?.setItem(CART_TOKEN_KEY, cartToken);
 
   return payload as ApiResult<T>;
 }
@@ -120,6 +136,13 @@ function putJson<T>(path: string, body: unknown) {
   });
 }
 
+function patchJson<T>(path: string, body: unknown) {
+  return apiFetch<T>(path, {
+    method: "PATCH",
+    body: JSON.stringify(body)
+  });
+}
+
 export const vanstroApi = {
   getHomeProducts(input?: { locale?: Locale; limit?: number }) {
     return apiFetch<ProductSummary[]>(
@@ -133,6 +156,9 @@ export const vanstroApi = {
     return apiFetch<ArticleSummary[]>(
       withQuery(API_ENDPOINTS.homeArticles, input)
     );
+  },
+  getCategories() {
+    return apiFetch<CategorySummary[]>(API_ENDPOINTS.categories);
   },
   getArticleDetail(articleId: string, input?: { locale?: Locale }) {
     return apiFetch<ArticleDetail>(
@@ -148,10 +174,10 @@ export const vanstroApi = {
     );
   },
   createProduct(input: ProductUpsertInput) {
-    return postJson<ProductDetail>(API_ENDPOINTS.adminProducts, input);
+    return postJson<ProductDetail>(API_ENDPOINTS.dashboardProducts, input);
   },
   updateProduct(productId: string, input: ProductUpsertInput) {
-    return putJson<ProductDetail>(API_ENDPOINTS.adminProduct(productId), input);
+    return patchJson<ProductDetail>(API_ENDPOINTS.dashboardProduct(productId), input);
   },
   createProductAssetUpload(input: ProductAssetUploadInput) {
     return postJson<{ uploadUrl: string; asset: { url: string; id: string } }>(
@@ -205,19 +231,40 @@ export const vanstroApi = {
   getCart() {
     return apiFetch<Cart>(API_ENDPOINTS.cart);
   },
+  createCheckoutSession(input: { email: string; fulfillment: "pickup" | "delivery" }) {
+    return postJson<{ id: string; status: "pending"; expiresAt: string; total: { amount: number; currency: string } }>(
+      "/checkout/session",
+      input
+    );
+  },
   removeCartItem(cartItemId: string) {
     return apiFetch<Cart>(API_ENDPOINTS.cartItem(cartItemId), {
       method: "DELETE"
     });
   },
+  clearCart() {
+    return apiFetch<{ ok: true }>(API_ENDPOINTS.cart, { method: "DELETE" });
+  },
+  async setCartProductQuantity(productId: string, quantity: number) {
+    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart);
+    const item = cart.data.items.find((candidate) => candidate.product.id === productId);
+    if (!item) throw new VanstroApiError({ status: 404, code: "CART_ITEM_NOT_FOUND", message: "Cart item not found." });
+    return patchJson<Cart>(API_ENDPOINTS.cartItem(item.id), { quantity });
+  },
+  async removeCartProduct(productId: string) {
+    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart);
+    const item = cart.data.items.find((candidate) => candidate.product.id === productId);
+    if (!item) return cart;
+    return apiFetch<Cart>(API_ENDPOINTS.cartItem(item.id), { method: "DELETE" });
+  },
   addFavorite(productId: string) {
-    return postJson<FavoriteItem[]>(API_ENDPOINTS.favorites, { productId });
+    return postJson<FavoriteItem>(API_ENDPOINTS.favorites, { productId });
   },
   getFavorites() {
     return apiFetch<FavoriteItem[]>(API_ENDPOINTS.favorites);
   },
-  removeFavorite(favoriteId: string) {
-    return apiFetch<FavoriteItem[]>(API_ENDPOINTS.favorite(favoriteId), {
+  removeFavorite(productId: string) {
+    return apiFetch<{ ok: true }>(API_ENDPOINTS.favorite(productId), {
       method: "DELETE"
     });
   },
@@ -231,16 +278,31 @@ export const vanstroApi = {
     return postJson<Order>(API_ENDPOINTS.cartOrder, input);
   },
   login(input: LoginInput) {
-    return postJson<AuthSession>(API_ENDPOINTS.login, input);
+    return postJson<AuthSession>(API_ENDPOINTS.login, input).then((result) => {
+      if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
+      window.dispatchEvent(new Event("vanstro-authenticated"));
+      return result;
+    });
   },
   register(input: RegisterInput) {
-    return postJson<AuthSession>(API_ENDPOINTS.register, input);
+    return postJson<AuthSession>(API_ENDPOINTS.register, input).then((result) => {
+      if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
+      window.dispatchEvent(new Event("vanstro-authenticated"));
+      return result;
+    });
   },
   submitDealerApplication(input: DealerApplicationInput) {
     return postJson<{ applicationId: string; status: "submitted" | "under_review" }>(
       API_ENDPOINTS.dealerApplications,
       input
     );
+  },
+  recordConsentEvent(input: {
+    anonymousId: string;
+    source: string;
+    preferences: { strictlyNecessary: true; functional: boolean; analytics: boolean; targeting: boolean };
+  }) {
+    return postJson<{ id: string; createdAt: string }>("/privacy/consent-events", input);
   },
   getDashboardModuleReadiness() {
     return apiFetch<DashboardModuleReadiness[]>(DASHBOARD_API_ENDPOINTS.moduleReadiness);
@@ -293,9 +355,9 @@ export const vanstroApi = {
       input
     );
   },
-  moderateProductReview(productId: string, input: ProductReviewModerationInput) {
-    return postJson<{ reviewId: string; status: "pending" | "published" | "rejected" }>(
-      DASHBOARD_API_ENDPOINTS.reviewModeration(productId),
+  moderateProductReview(reviewId: string, input: Pick<ProductReviewModerationInput, "status">) {
+    return patchJson<{ id: string; status: "pending" | "published" | "rejected" | "archived" }>(
+      DASHBOARD_API_ENDPOINTS.reviewModeration(reviewId),
       input
     );
   }

@@ -13,6 +13,7 @@ import {
   getEffectivePrice,
   withEffectiveProductPrice
 } from "@/lib/commerce/product-commerce";
+import { vanstroApi } from "@/lib/api/api-client";
 
 export type CartLine = {
   product: ProductSummary;
@@ -70,6 +71,24 @@ function makeOrderId() {
   return `VS-${Date.now().toString(36).toUpperCase()}`;
 }
 
+function formatCartItems(items: Array<{
+  product: ProductSummary;
+  quantity: number;
+  unitPrice: { amount: number };
+}>) {
+  return items.map((item) => ({
+    product: {
+      ...item.product,
+      price: item.unitPrice,
+      images: item.product.images ?? [],
+      dimensions: item.product.dimensions ?? "",
+      unit: item.product.unit ?? "each",
+      inStock: item.product.inStock ?? true
+    } as ProductSummary,
+    quantity: item.quantity
+  }));
+}
+
 export function StorefrontProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartLine[]>([]);
   const [favoriteItems, setFavoriteItems] = useState<ProductSummary[]>([]);
@@ -84,8 +103,6 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        setCartItems(parsed.cartItems ?? []);
-        setFavoriteItems(parsed.favoriteItems ?? []);
         setOrders(parsed.orders ?? []);
         setSelectedDealerId(parsed.selectedDealerId ?? "toronto");
         setSelectedDealerName(parsed.selectedDealerName ?? "VanStro Toronto");
@@ -96,7 +113,18 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         window.localStorage.removeItem(STORAGE_KEY);
       } catch {}
     }
+    void vanstroApi.getCart().then((response) => {
+      setCartItems(formatCartItems(response.data.items));
+    }).catch(() => {});
+    const refreshFavorites = () => {
+      void vanstroApi.getFavorites()
+        .then((response) => setFavoriteItems(response.data.map((item) => item.product)))
+        .catch(() => setFavoriteItems([]));
+    };
+    refreshFavorites();
+    window.addEventListener("vanstro-authenticated", refreshFavorites);
     setHydrated(true);
+    return () => window.removeEventListener("vanstro-authenticated", refreshFavorites);
   }, []);
 
   useEffect(() => {
@@ -105,8 +133,6 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       window.localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify({
-          cartItems,
-          favoriteItems,
           orders,
           selectedDealerId,
           selectedDealerName,
@@ -153,56 +179,48 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       },
       addToCart(product, quantity = 1) {
         const pricedProduct = withEffectiveProductPrice(product);
-        setCartItems((current) => {
-          const existing = current.find((item) => item.product.id === pricedProduct.id);
-          if (existing) {
-            return current.map((item) =>
-              item.product.id === pricedProduct.id
-                ? { ...item, product: pricedProduct, quantity: item.quantity + quantity }
-                : item
+        void vanstroApi.addCartItem({ productId: pricedProduct.id, quantity })
+          .then((response) => {
+            setCartItems(formatCartItems(response.data.items));
+            window.dispatchEvent(
+              new CustomEvent("vanstro-cart-added", {
+                detail: { product: pricedProduct, quantity }
+              })
             );
-          }
-          return [...current, { product: pricedProduct, quantity }];
-        });
-        window.dispatchEvent(
-          new CustomEvent("vanstro-cart-added", {
-            detail: {
-              product: pricedProduct,
-              quantity
-            }
           })
-        );
+          .catch(() => {});
       },
       updateCartQuantity(productId, quantity) {
-        setCartItems((current) =>
-          current
-            .map((item) =>
-              item.product.id === productId
-                ? { ...item, quantity: Math.max(1, quantity) }
-                : item
-            )
-            .filter((item) => item.quantity > 0)
-        );
+        void vanstroApi.setCartProductQuantity(productId, Math.max(1, quantity))
+          .then((response) => setCartItems(formatCartItems(response.data.items)))
+          .catch(() => {});
       },
       removeFromCart(productId) {
-        setCartItems((current) =>
-          current.filter((item) => item.product.id !== productId)
-        );
+        void vanstroApi.removeCartProduct(productId)
+          .then((response) => setCartItems(formatCartItems(response.data.items)))
+          .catch(() => {});
       },
       clearCart() {
-        setCartItems([]);
+        void vanstroApi.clearCart()
+          .then(() => setCartItems([]))
+          .catch(() => {});
       },
       toggleFavorite(product) {
         const pricedProduct = withEffectiveProductPrice(product);
-        setFavoriteItems((current) => {
-          if (current.some((item) => item.id === pricedProduct.id)) {
-            return current.filter((item) => item.id !== pricedProduct.id);
-          }
-          return [pricedProduct, ...current];
-        });
+        if (favoriteItems.some((item) => item.id === pricedProduct.id)) {
+          void vanstroApi.removeFavorite(pricedProduct.id)
+            .then(() => setFavoriteItems((current) => current.filter((item) => item.id !== pricedProduct.id)))
+            .catch(() => {});
+          return;
+        }
+        void vanstroApi.addFavorite(pricedProduct.id)
+          .then((response) => setFavoriteItems((current) => [response.data.product, ...current]))
+          .catch(() => {});
       },
       removeFavorite(productId) {
-        setFavoriteItems((current) => current.filter((item) => item.id !== productId));
+        void vanstroApi.removeFavorite(productId)
+          .then(() => setFavoriteItems((current) => current.filter((item) => item.id !== productId)))
+          .catch(() => {});
       },
       isFavorite(productId) {
         return favoriteItems.some((item) => item.id === productId);

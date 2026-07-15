@@ -167,6 +167,7 @@ export type ProductSummary = {
   manufacturerPartNumber?: string;
   name: string;
   category: string;
+  subCategory?: string;
   price: Money;
   commerce?: ProductCommerce;
   availability?: ProductInventory;
@@ -212,6 +213,7 @@ export type ProductUpsertInput = {
   manufacturerPartNumber?: string;
   name: string;
   category: string;
+  subCategory?: string;
   description: string;
   price: Money;
   unit: string;

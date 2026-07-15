@@ -30,6 +30,7 @@ import {
   CATALOG_CATEGORY_OPTIONS,
   CATALOG_PAGE_SIZE,
   CATALOG_SORT_OPTIONS,
+  CATALOG_SUBCATEGORY_OPTIONS,
   CATALOG_WIDTH_OPTIONS,
   CatalogCategoryOption
 } from "@/lib/product/catalog-config";
@@ -39,7 +40,7 @@ type ProductsExplorerProps = {
   products: ProductSummary[];
 };
 
-type FacetKey = "productType" | "width" | "finish" | "brand";
+type FacetKey = "subCategory" | "width" | "finish" | "brand";
 
 type FacetOption = {
   id: string;
@@ -49,7 +50,7 @@ type FacetOption = {
 };
 
 const facetLabels: Record<FacetKey, string> = {
-  productType: "Product type",
+  subCategory: "Product categories",
   width: "Width",
   finish: "Finish",
   brand: "Brand"
@@ -70,6 +71,7 @@ function matchesQuery(product: ProductSummary, query: string) {
     product.name,
     product.sku,
     product.category,
+    product.subCategory ?? "",
     product.dimensions,
     product.finish ?? "",
     product.colorName ?? ""
@@ -100,14 +102,15 @@ function getPrimaryWidth(product: ProductSummary) {
 }
 
 function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOption[]> {
-  const productTypes = Array.from(new Set(products.map((product) => product.category))).map(
-    (category) => ({
-      id: category,
-      label: category,
-      count: products.filter((product) => product.category === category).length,
-      matches: (product: ProductSummary) => product.category === category
-    })
-  );
+  const subCategories = CATALOG_SUBCATEGORY_OPTIONS.map((option) => ({
+    id: option.id,
+    label: option.label,
+    count: products.filter((product) =>
+      product.subCategory ? option.matches.includes(product.subCategory) : false
+    ).length,
+    matches: (product: ProductSummary) =>
+      product.subCategory ? option.matches.includes(product.subCategory) : false
+  }));
 
   const finishes = Array.from(
     new Set(products.map((product) => product.colorName ?? product.finish ?? "Standard finish"))
@@ -122,7 +125,7 @@ function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOpt
   }));
 
   return {
-    productType: productTypes,
+    subCategory: subCategories,
     width: CATALOG_WIDTH_OPTIONS.map((option) => ({
       id: option.id,
       label: option.label,
@@ -234,7 +237,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   const [draftQuery, setDraftQuery] = useState(queryParam);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedFacets, setSelectedFacets] = useState<Record<FacetKey, string[]>>({
-    productType: [],
+    subCategory: [],
     width: [],
     finish: [],
     brand: []
@@ -279,6 +282,14 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
 
   function updateFilters(next: Record<string, string | null>) {
     setCurrentPage(1);
+    if (Object.hasOwn(next, "category")) {
+      setSelectedFacets({
+        subCategory: [],
+        width: [],
+        finish: [],
+        brand: []
+      });
+    }
     const params = new URLSearchParams(searchParams.toString());
 
     Object.entries(next).forEach(([key, value]) => {
@@ -324,7 +335,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   function clearAllFacets() {
     setCurrentPage(1);
     setSelectedFacets({
-      productType: [],
+      subCategory: [],
       width: [],
       finish: [],
       brand: []
@@ -453,17 +464,20 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                   <ChevronDown size={15} strokeWidth={2.3} />
                 </button>
                 <div className="catalog-filter-options">
-                  {options.filter((option) => option.count > 0).slice(0, 6).map((option) => (
-                    <label className="catalog-checkbox" key={option.id}>
-                      <input
-                        type="checkbox"
-                        checked={selectedFacets[facetKey].includes(option.id)}
-                        onChange={() => toggleFacet(facetKey, option.id)}
-                      />
-                      <span>{option.label}</span>
-                      <em>{option.count}</em>
-                    </label>
-                  ))}
+                  {options
+                    .filter((option) => option.count > 0)
+                    .slice(0, facetKey === "subCategory" ? options.length : 6)
+                    .map((option) => (
+                      <label className="catalog-checkbox" key={option.id}>
+                        <input
+                          type="checkbox"
+                          checked={selectedFacets[facetKey].includes(option.id)}
+                          onChange={() => toggleFacet(facetKey, option.id)}
+                        />
+                        <span>{option.label}</span>
+                        <em>{option.count}</em>
+                      </label>
+                    ))}
                 </div>
               </div>
             )
@@ -553,7 +567,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                 </button>
               </div>
             ) : (
-              <p>Use filters to narrow by size, finish, product type and brand.</p>
+              <p>Use filters to narrow by product category, size, finish and brand.</p>
             )}
           </div>
 

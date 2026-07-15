@@ -11,7 +11,7 @@ export type Mb01ProductMetadata = {
 };
 
 // Generated from https://mb01.vanstro.ca. Re-running this script removes SKUs no longer published there.
-// 139 source products expanded to 153 purchasable white-cabinet/trim SKUs.
+// 139 SKUs are listed on MB01 category product cards. Detail pages only supply metadata.
 export const mb01Products: ProductSummary[] = [
   {
     "id": "mb01-40",
@@ -1695,7 +1695,7 @@ export const mb01Products: ProductSummary[] = [
   },
   {
     "id": "mb01-299",
-    "slug": "CabinetPulls-ctc-96mm",
+    "slug": "CabinetPulls",
     "sku": "060101111",
     "manufacturerPartNumber": "CTC[96mm]",
     "name": "Cabinet Pulls",
@@ -1746,64 +1746,6 @@ export const mb01Products: ProductSummary[] = [
       },
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715080227_25bc40dc57f5.jpg",
-        "alt": "Cabinet Pulls alternate view 4"
-      }
-    ],
-    "inStock": true
-  },
-  {
-    "id": "mb01-300",
-    "slug": "CabinetPulls-ctc-192mm",
-    "sku": "060102411",
-    "manufacturerPartNumber": "CTC[192mm]",
-    "name": "Cabinet Pulls",
-    "category": "Kitchen Cabinets",
-    "price": {
-      "amount": 8.99,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "192 mm center-to-center",
-    "finish": "Aluminum Alloy",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-300",
-      "sku": "060102411",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715080317_a65aa0fcd45a.jpg",
-        "alt": "Cabinet Pulls"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715080317_f640e3d7d853.jpg",
-        "alt": "Cabinet Pulls alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715080317_9addd365d26e.jpg",
-        "alt": "Cabinet Pulls alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715080317_8c090f1c3718.jpg",
         "alt": "Cabinet Pulls alternate view 4"
       }
     ],
@@ -10092,97 +10034,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-287",
-    "slug": "vanity-cabinet-v3021-door-tdl-400-v3021stdl-pwms-wh",
-    "sku": "023021312",
-    "manufacturerPartNumber": "V3021STDL-PWMS-WH",
-    "name": "Vanity Cabinet-V3021-Door-TDL Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 368,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "30\" W × 34\" H × 21\" D",
-    "finish": "MDF door with thermofoil finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-287",
-      "sku": "023021312",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991331396.JPG",
-        "alt": "Vanity Cabinet-V3021-Door-TDL Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991343560.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991343528.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991352898.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163008_de555f072be4.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991361049.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-288",
-    "slug": "vanity-cabinet-v3021-door-tdl-400-v3021stdl-pwms-wh-top",
+    "slug": "vanity-cabinet-v3021-door-tdl-400",
     "sku": "023021311",
     "manufacturerPartNumber": "V3021STDL-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Door-TDL with Top",
+    "name": "Vanity Cabinet-V3021-Door-TDL",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 538,
@@ -10218,7 +10074,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991376801.JPG",
-        "alt": "Vanity Cabinet-V3021-Door-TDL with Top"
+        "alt": "Vanity Cabinet-V3021-Door-TDL"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991409333.jpg",
@@ -10268,97 +10124,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-291",
-    "slug": "vanity-cabinet-v3021-door-tdr-398-v3021stdr-pwms-wh",
-    "sku": "023021212",
-    "manufacturerPartNumber": "V3021STDR-PWMS-WH",
-    "name": "Vanity Cabinet-V3021-Door-TDR Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 368,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "30\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-291",
-      "sku": "023021212",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990791362.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990800420.JPG",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990808190.JPG",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163136_c47d4e1f0e56.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990873664.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990881272.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-292",
-    "slug": "vanity-cabinet-v3021-door-tdr-398-v3021stdr-pwms-wh-top",
+    "slug": "vanity-cabinet-v3021-door-tdr-398",
     "sku": "023021211",
     "manufacturerPartNumber": "V3021STDR-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Door-TDR with Top",
+    "name": "Vanity Cabinet-V3021-Door-TDR",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 538,
@@ -10394,7 +10164,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990903867.JPG",
-        "alt": "Vanity Cabinet-V3021-Door-TDR with Top"
+        "alt": "Vanity Cabinet-V3021-Door-TDR"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990917935.JPG",
@@ -10444,93 +10214,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-277",
-    "slug": "vanity-cabinet-v3021-doors-tdl-415-v3021tdl-pwms-wh",
-    "sku": "023021512",
-    "manufacturerPartNumber": "V3021TDL-PWMS-WH",
-    "name": "Vanity Cabinet-V3021-Doors-TDL Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 387,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "30\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-277",
-      "sku": "023021512",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/415_P_1780891060517.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/415_P_1780891060509.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/415_P_1781992839165.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163320_4757350d231e.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/415_P_1781992895375.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 10"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-278",
-    "slug": "vanity-cabinet-v3021-doors-tdl-415-v3021tdl-pwms-wh-top",
+    "slug": "vanity-cabinet-v3021-doors-tdl-415",
     "sku": "023021511",
     "manufacturerPartNumber": "V3021TDL-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Doors-TDL with Top",
+    "name": "Vanity Cabinet-V3021-Doors-TDL",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 554,
@@ -10566,7 +10254,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124025_17384a828908.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL with Top"
+        "alt": "Vanity Cabinet-V3021-Doors-TDL"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/415_P_1780891099427.jpg",
@@ -10616,93 +10304,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-271",
-    "slug": "vanity-cabinet-v3021-doors-tdr-414-v3021tdr-pwms-wh",
-    "sku": "023021412",
-    "manufacturerPartNumber": "V3021TDR-PWMS-WH",
-    "name": "Vanity Cabinet-V3021-Doors-TDR Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 387,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "30\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-271",
-      "sku": "023021412",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/414_P_1781138695147.JPG",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/414_P_1781138695318.JPG",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/414_P_1781992590753.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163404_6244f05b7ce4.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/414_P_1781992599501.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 10"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-272",
-    "slug": "vanity-cabinet-v3021-doors-tdr-414-v3021tdr-pwms-wh-top",
+    "slug": "vanity-cabinet-v3021-doors-tdr-414",
     "sku": "023021411",
     "manufacturerPartNumber": "V3021TDR-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Doors-TDR with Top",
+    "name": "Vanity Cabinet-V3021-Doors-TDR",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 554,
@@ -10738,7 +10344,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124731_782285cb24c4.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR with Top"
+        "alt": "Vanity Cabinet-V3021-Doors-TDR"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/414_P_1781138720012.JPG",
@@ -10788,93 +10394,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-283",
-    "slug": "vanity-cabinet-v3621tdl-412-v3621tdl-pwms-wh",
-    "sku": "023621512",
-    "manufacturerPartNumber": "V3621TDL-PWMS-WH",
-    "name": "Vanity Cabinet-V3621TDL Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 400,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "36\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-283",
-      "sku": "023621512",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163748_805be343ab21.jpg",
-        "alt": "Vanity Cabinet-V3621TDL Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163748_79d47068de18.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708163550_1221d853e6b1.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/412_P_1781993489162.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/412_P_1781993500973.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3621TDL alternate view 10"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-284",
-    "slug": "vanity-cabinet-v3621tdl-412-v3621tdl-pwms-wh-top",
+    "slug": "vanity-cabinet-v3621tdl-412",
     "sku": "023621511",
     "manufacturerPartNumber": "V3621TDL-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3621TDL with Top",
+    "name": "Vanity Cabinet-V3621TDL",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 589,
@@ -10910,7 +10434,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124218_55ec953afc96.jpg",
-        "alt": "Vanity Cabinet-V3621TDL with Top"
+        "alt": "Vanity Cabinet-V3621TDL"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/412_P_1780891317104.jpg",
@@ -10960,93 +10484,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-8",
-    "slug": "vanity-cabinet-v3621tdr-413-v3621tdr-pwms-wh",
-    "sku": "023621412",
-    "manufacturerPartNumber": "V3621TDR-PWMS-WH",
-    "name": "Vanity Cabinet-V3621TDR Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 400,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "36\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-8",
-      "sku": "023621412",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708164006_267ca18ecb60.jpg",
-        "alt": "Vanity Cabinet-V3621TDR Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/413_P_1780891460580.JPG",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708164022_c6cb8e0b930a.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/413_P_1781993619005.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/413_P_1781993628481.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V3621TDR alternate view 10"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-9",
-    "slug": "vanity-cabinet-v3621tdr-413-v3621tdr-pwms-wh-top",
+    "slug": "vanity-cabinet-v3621tdr-413",
     "sku": "023621411",
     "manufacturerPartNumber": "V3621TDR-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3621TDR with Top",
+    "name": "Vanity Cabinet-V3621TDR",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 589,
@@ -11082,7 +10524,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708170724_d41a18503692.jpg",
-        "alt": "Vanity Cabinet-V3621TDR with Top"
+        "alt": "Vanity Cabinet-V3621TDR"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/413_P_1780891477675.JPG",
@@ -11132,97 +10574,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-267",
-    "slug": "vanity-cabinet-v4221-401-v4221-pwms-wh",
-    "sku": "024221612",
-    "manufacturerPartNumber": "V4221-PWMS-WH",
-    "name": "Vanity Cabinet-V4221 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 643,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "42\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-267",
-      "sku": "024221612",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876494389.JPG",
-        "alt": "Vanity Cabinet-V4221 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876504301.JPG",
-        "alt": "Vanity Cabinet-V4221 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876504194.JPG",
-        "alt": "Vanity Cabinet-V4221 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708164156_390fe43735a7.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/401_P_1781995763848.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/401_P_1781995773929.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V4221 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-268",
-    "slug": "vanity-cabinet-v4221-401-v4221-pwms-wh-top",
+    "slug": "vanity-cabinet-v4221-401",
     "sku": "024221611",
     "manufacturerPartNumber": "V4221-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V4221 with Top",
+    "name": "Vanity Cabinet-V4221",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 804,
@@ -11258,7 +10614,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876548147.JPG",
-        "alt": "Vanity Cabinet-V4221 with Top"
+        "alt": "Vanity Cabinet-V4221"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876549194.JPG",
@@ -11308,97 +10664,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-281",
-    "slug": "vanity-cabinet-v4821-402-v4821-pwms-wh",
-    "sku": "024821612",
-    "manufacturerPartNumber": "V4821-PWMS-WH",
-    "name": "Vanity Cabinet-V4821 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 655,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "48\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-281",
-      "sku": "024821612",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879495912.JPG",
-        "alt": "Vanity Cabinet-V4821 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879488676.JPG",
-        "alt": "Vanity Cabinet-V4821 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879482495.JPG",
-        "alt": "Vanity Cabinet-V4821 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708164540_2c3b3b7bb8a8.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/402_P_1781995867588.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/402_P_1781995877658.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V4821 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-280",
-    "slug": "vanity-cabinet-v4821-402-v4821-pwms-wh-top",
+    "slug": "vanity-cabinet-v4821-402",
     "sku": "024821611",
     "manufacturerPartNumber": "V4821-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V4821 with Top",
+    "name": "Vanity Cabinet-V4821",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 845,
@@ -11434,7 +10704,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879537358.JPG",
-        "alt": "Vanity Cabinet-V4821 with Top"
+        "alt": "Vanity Cabinet-V4821"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879537677.JPG",
@@ -11484,97 +10754,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-14",
-    "slug": "vanity-cabinet-v663522-403-v663522-pwms-wh",
-    "sku": "026621712",
-    "manufacturerPartNumber": "V663522-PWMS-WH",
-    "name": "Vanity Cabinet-V663522 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 780,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "66\" W × 35\" H × 22\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-14",
-      "sku": "026621712",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952446697.JPG",
-        "alt": "Vanity Cabinet-V663522 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952460726.JPG",
-        "alt": "Vanity Cabinet-V663522 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952454373.JPG",
-        "alt": "Vanity Cabinet-V663522 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708164655_ff23d7a19ac0.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/403_P_1781996022483.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/403_P_1781996034444.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-V663522 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-16",
-    "slug": "vanity-cabinet-v663522-403-v663522-pwms-wh-top",
+    "slug": "vanity-cabinet-v663522-403",
     "sku": "026621711",
     "manufacturerPartNumber": "V663522-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V663522 with Top",
+    "name": "Vanity Cabinet-V663522",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 1214,
@@ -11610,7 +10794,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952496972.JPG",
-        "alt": "Vanity Cabinet-V663522 with Top"
+        "alt": "Vanity Cabinet-V663522"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952489394.JPG",
@@ -11660,97 +10844,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-254",
-    "slug": "vanity-cabinet-vs24-384-vs24-pwms-wh",
-    "sku": "022421012",
-    "manufacturerPartNumber": "VS24-PWMS-WH",
-    "name": "Vanity Cabinet-VS24 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 209,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "24\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-254",
-      "sku": "022421012",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781570224686.JPG",
-        "alt": "Vanity Cabinet-VS24 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781570232053.JPG",
-        "alt": "Vanity Cabinet-VS24 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781570243916.JPG",
-        "alt": "Vanity Cabinet-VS24 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781570243736.JPG",
-        "alt": "Vanity Cabinet-VS24 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781988373682.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781988381976.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-VS24 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-255",
-    "slug": "vanity-cabinet-vs24-384-vs24-pwms-wh-top",
+    "slug": "vanity-cabinet-vs24-384",
     "sku": "022421011",
     "manufacturerPartNumber": "VS24-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-VS24 with Top",
+    "name": "Vanity Cabinet-VS24",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 361,
@@ -11786,7 +10884,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781572513220.JPG",
-        "alt": "Vanity Cabinet-VS24 with Top"
+        "alt": "Vanity Cabinet-VS24"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781572530616.JPG",
@@ -11836,97 +10934,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-263",
-    "slug": "vanity-cabinet-vs27-404-vs27-pwms-wh",
-    "sku": "022721012",
-    "manufacturerPartNumber": "VS27-PWMS-WH",
-    "name": "Vanity Cabinet-VS27 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 221,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "27\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-263",
-      "sku": "022721012",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579678174.JPG",
-        "alt": "Vanity Cabinet-VS27 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579688786.JPG",
-        "alt": "Vanity Cabinet-VS27 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579700414.JPG",
-        "alt": "Vanity Cabinet-VS27 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579700160.JPG",
-        "alt": "Vanity Cabinet-VS27 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781988564204.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781988573174.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-VS27 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-266",
-    "slug": "vanity-cabinet-vs27-404-vs27-pwms-wh-top",
+    "slug": "vanity-cabinet-vs27-404",
     "sku": "022721011",
     "manufacturerPartNumber": "VS27-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-VS27 with Top",
+    "name": "Vanity Cabinet-VS27",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 387,
@@ -11962,7 +10974,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781678494615.JPG",
-        "alt": "Vanity Cabinet-VS27 with Top"
+        "alt": "Vanity Cabinet-VS27"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781678504322.JPG",
@@ -12012,97 +11024,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-298",
-    "slug": "vanity-cabinet-vs30-405-vs30-pwms-wh",
-    "sku": "023021012",
-    "manufacturerPartNumber": "VS30-PWMS-WH",
-    "name": "Vanity Cabinet-VS30 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 234,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "30\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-298",
-      "sku": "023021012",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963329390.JPG",
-        "alt": "Vanity Cabinet-VS30 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963337717.JPG",
-        "alt": "Vanity Cabinet-VS30 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963345381.JPG",
-        "alt": "Vanity Cabinet-VS30 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963350594.JPG",
-        "alt": "Vanity Cabinet-VS30 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/405_P_1781988660548.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/405_P_1781988676728.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-VS30 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-296",
-    "slug": "vanity-cabinet-vs30-405-vs30-pwms-wh-top",
+    "slug": "vanity-cabinet-vs30-405",
     "sku": "023021011",
     "manufacturerPartNumber": "VS30-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-VS30 with Top",
+    "name": "Vanity Cabinet-VS30",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 404,
@@ -12138,7 +11064,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963372411.JPG",
-        "alt": "Vanity Cabinet-VS30 with Top"
+        "alt": "Vanity Cabinet-VS30"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963379589.JPG",
@@ -12188,97 +11114,11 @@ export const mb01Products: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-260",
-    "slug": "vanity-cabinet-vs36-406-vs36-pwms-wh",
-    "sku": "023621012",
-    "manufacturerPartNumber": "VS36-PWMS-WH",
-    "name": "Vanity Cabinet-VS36 Cabinet Only",
-    "category": "Bathroom Vanities",
-    "price": {
-      "amount": 256,
-      "currency": "CAD"
-    },
-    "unit": "each",
-    "dimensions": "36\" W × 34\" H × 21\" D",
-    "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-    "colorName": "White",
-    "colorHex": "#f7f6f2",
-    "dealerStock": {
-      "winnipeg": 0
-    },
-    "availability": {
-      "productId": "mb01-260",
-      "sku": "023621012",
-      "locations": [
-        {
-          "dealerId": "winnipeg",
-          "quantity": 0,
-          "quantityKnown": false,
-          "status": "in_stock",
-          "pickupAvailable": true,
-          "deliveryAvailable": true,
-          "updatedAt": "source-catalog"
-        }
-      ],
-      "totalAvailable": 0,
-      "status": "in_stock",
-      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
-      "updatedAt": "source-catalog"
-    },
-    "images": [
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781579999939.JPG",
-        "alt": "Vanity Cabinet-VS36 Cabinet Only"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580011848.JPG",
-        "alt": "Vanity Cabinet-VS36 alternate view 2"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580021338.JPG",
-        "alt": "Vanity Cabinet-VS36 alternate view 3"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580021432.JPG",
-        "alt": "Vanity Cabinet-VS36 alternate view 4"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781988780636.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 5"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781988792015.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 6"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_47e959f8fadc.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 7"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_5706afcb73e1.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 8"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_208ce7f1347b.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 9"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_f49dc5c3d014.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 10"
-      },
-      {
-        "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
-        "alt": "Vanity Cabinet-VS36 alternate view 11"
-      }
-    ],
-    "inStock": true
-  },
-  {
     "id": "mb01-261",
-    "slug": "vanity-cabinet-vs36-406-vs36-pwms-wh-top",
+    "slug": "vanity-cabinet-vs36-406",
     "sku": "023621011",
     "manufacturerPartNumber": "VS36-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-VS36 with Top",
+    "name": "Vanity Cabinet-VS36",
     "category": "Bathroom Vanities",
     "price": {
       "amount": 437,
@@ -12314,7 +11154,7 @@ export const mb01Products: ProductSummary[] = [
     "images": [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580047077.JPG",
-        "alt": "Vanity Cabinet-VS36 with Top"
+        "alt": "Vanity Cabinet-VS36"
       },
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580059593.JPG",
@@ -13059,33 +11899,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Accessories",
       "Source product ID": "CabinetPulls",
       "Option name": "CTC[96mm]"
-    }
-  },
-  "mb01-300": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/CabinetPulls",
-    "sourceProductId": "CabinetPulls",
-    "sourceProductName": "Cabinet Pulls",
-    "sourceCategory": "Accessories",
-    "description": "Matte Black Center-to-Center: 192 mm Overall Length: 210 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
-    "productHighlights": [
-      "Matte Black",
-      "Center-to-Center: 192 mm",
-      "Overall Length: 210 mm",
-      "Projection: 23.2 mm",
-      "Bar Width: 11.7 mm",
-      "Bar Thickness: 5 mm",
-      "Material: Aluminum Alloy"
-    ],
-    "specifications": {
-      "Center-to-Center": "192 mm",
-      "Overall Length": "210 mm",
-      "Projection": "23.2 mm",
-      "Bar Width": "11.7 mm",
-      "Bar Thickness": "5 mm",
-      "Material": "Aluminum Alloy",
-      "Source category": "Accessories",
-      "Source product ID": "CabinetPulls",
-      "Option name": "CTC[192mm]"
     }
   },
   "mb01-231": {
@@ -15266,28 +14079,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "WEP1242-MS-WH"
     }
   },
-  "mb01-287": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-door-tdl-400",
-    "sourceProductId": "400",
-    "sourceProductName": "Vanity Cabinet-V3021-Door-TDL",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 30\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF door with thermofoil finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 30\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF door with thermofoil finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "30\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF door with thermofoil finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "400",
-      "Option name": "V3021STDL-PWMS-WH"
-    }
-  },
   "mb01-288": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-door-tdl-400",
     "sourceProductId": "400",
@@ -15308,28 +14099,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "400",
       "Option name": "V3021STDL-PWMS-WH-TOP"
-    }
-  },
-  "mb01-291": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-door-tdr-398",
-    "sourceProductId": "398",
-    "sourceProductName": "Vanity Cabinet-V3021-Door-TDR",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 30\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 30\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "30\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "398",
-      "Option name": "V3021STDR-PWMS-WH"
     }
   },
   "mb01-292": {
@@ -15354,28 +14123,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "V3021STDR-PWMS-WH-TOP"
     }
   },
-  "mb01-277": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-doors-tdl-415",
-    "sourceProductId": "415",
-    "sourceProductName": "Vanity Cabinet-V3021-Doors-TDL",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 30\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 30\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "30\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "415",
-      "Option name": "V3021TDL-PWMS-WH"
-    }
-  },
   "mb01-278": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-doors-tdl-415",
     "sourceProductId": "415",
@@ -15396,28 +14143,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "415",
       "Option name": "V3021TDL-PWMS-WH-TOP"
-    }
-  },
-  "mb01-271": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3021-doors-tdr-414",
-    "sourceProductId": "414",
-    "sourceProductName": "Vanity Cabinet-V3021-Doors-TDR",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 30\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 30\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "30\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "414",
-      "Option name": "V3021TDR-PWMS-WH"
     }
   },
   "mb01-272": {
@@ -15442,28 +14167,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "V3021TDR-PWMS-WH-TOP"
     }
   },
-  "mb01-283": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3621tdl-412",
-    "sourceProductId": "412",
-    "sourceProductName": "Vanity Cabinet-V3621TDL",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 36\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 36\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "36\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "412",
-      "Option name": "V3621TDL-PWMS-WH"
-    }
-  },
   "mb01-284": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3621tdl-412",
     "sourceProductId": "412",
@@ -15484,28 +14187,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "412",
       "Option name": "V3621TDL-PWMS-WH-TOP"
-    }
-  },
-  "mb01-8": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v3621tdr-413",
-    "sourceProductId": "413",
-    "sourceProductName": "Vanity Cabinet-V3621TDR",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 36\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 36\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "36\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "413",
-      "Option name": "V3621TDR-PWMS-WH"
     }
   },
   "mb01-9": {
@@ -15530,28 +14211,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "V3621TDR-PWMS-WH-TOP"
     }
   },
-  "mb01-267": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v4221-401",
-    "sourceProductId": "401",
-    "sourceProductName": "Vanity Cabinet-V4221",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 42\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 42\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "42\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "401",
-      "Option name": "V4221-PWMS-WH"
-    }
-  },
   "mb01-268": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v4221-401",
     "sourceProductId": "401",
@@ -15572,28 +14231,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "401",
       "Option name": "V4221-PWMS-WH-TOP"
-    }
-  },
-  "mb01-281": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v4821-402",
-    "sourceProductId": "402",
-    "sourceProductName": "Vanity Cabinet-V4821",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 48\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 48\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "48\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "402",
-      "Option name": "V4821-PWMS-WH"
     }
   },
   "mb01-280": {
@@ -15618,28 +14255,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "V4821-PWMS-WH-TOP"
     }
   },
-  "mb01-14": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v663522-403",
-    "sourceProductId": "403",
-    "sourceProductName": "Vanity Cabinet-V663522",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 66\" W × 35\" H × 22\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 66\" W × 35\" H × 22\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "66\" W × 35\" H × 22\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "403",
-      "Option name": "V663522-PWMS-WH"
-    }
-  },
   "mb01-16": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-v663522-403",
     "sourceProductId": "403",
@@ -15660,28 +14275,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "403",
       "Option name": "V663522-PWMS-WH-TOP"
-    }
-  },
-  "mb01-254": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs24-384",
-    "sourceProductId": "384",
-    "sourceProductName": "Vanity Cabinet-VS24",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 24\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 24\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "24\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "384",
-      "Option name": "VS24-PWMS-WH"
     }
   },
   "mb01-255": {
@@ -15706,28 +14299,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "VS24-PWMS-WH-TOP"
     }
   },
-  "mb01-263": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs27-404",
-    "sourceProductId": "404",
-    "sourceProductName": "Vanity Cabinet-VS27",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 27\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 27\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "27\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "404",
-      "Option name": "VS27-PWMS-WH"
-    }
-  },
   "mb01-266": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs27-404",
     "sourceProductId": "404",
@@ -15750,28 +14321,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "VS27-PWMS-WH-TOP"
     }
   },
-  "mb01-298": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs30-405",
-    "sourceProductId": "405",
-    "sourceProductName": "Vanity Cabinet-VS30",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 30\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 30\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "30\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "405",
-      "Option name": "VS30-PWMS-WH"
-    }
-  },
   "mb01-296": {
     "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs30-405",
     "sourceProductId": "405",
@@ -15792,28 +14341,6 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Source category": "Bathroom Vanities",
       "Source product ID": "405",
       "Option name": "VS30-PWMS-WH-TOP"
-    }
-  },
-  "mb01-260": {
-    "sourceUrl": "https://mb01.vanstro.ca/product/vanity-cabinet-vs36-406",
-    "sourceProductId": "406",
-    "sourceProductName": "Vanity Cabinet-VS36",
-    "sourceCategory": "Bathroom Vanities",
-    "description": "Dimensions: 36\" W × 34\" H × 21\" D Carcass: ¾\" plywood cabinet box with double-sided melamine Door: MDF with PVC Matte Soft-Touch Finish Shaker Style Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-    "productHighlights": [
-      "Dimensions: 36\" W × 34\" H × 21\" D",
-      "Carcass: ¾\" plywood cabinet box with double-sided melamine",
-      "Door: MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware: DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides"
-    ],
-    "specifications": {
-      "Dimensions": "36\" W × 34\" H × 21\" D",
-      "Carcass": "¾\" plywood cabinet box with double-sided melamine",
-      "Door": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
-      "Hardware": "DTC 6-Way Adj.Soft-Close Hinges& Drawer Slides",
-      "Source category": "Bathroom Vanities",
-      "Source product ID": "406",
-      "Option name": "VS36-PWMS-WH"
     }
   },
   "mb01-261": {

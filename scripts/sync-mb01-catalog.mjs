@@ -80,19 +80,30 @@ function mapCategory(sourceCategory) {
   return "Kitchen Cabinets";
 }
 
-function selectWhiteOptions(options, category) {
-  if (!/Cabinets|Vanities/.test(category)) return options;
-  const hasWhiteCodes = options.some((option) => /(?:^|-)(?:WH|WHITE)(?:-|$)/i.test(option.name));
-  if (!hasWhiteCodes) return options;
-  return options.filter((option) => /(?:^|-)(?:WH|WHITE)(?:-|$)/i.test(option.name));
-}
+function parseListingCards(html, categoryUrl) {
+  return [...html.matchAll(/<article class="card">([\s\S]*?)<\/article>/gi)].map((match) => {
+    const card = match[1];
+    const sourceUrl = card.match(/https:\/\/mb01\.vanstro\.ca\/product\/[^"'?\s<]+/)?.[0];
+    const sku = cleanText(card.match(/<p class="muted">SKU:\s*([\s\S]*?)<\/p>/i)?.[1] ?? "");
+    const optionId = card.match(/data-option-id="(\d+)"/i)?.[1];
+    const priceMain = cleanText(card.match(/class="price-main">([\s\S]*?)<\/span>/i)?.[1] ?? "");
+    const priceCents = cleanText(card.match(/class="price-cents">([\s\S]*?)<\/span>/i)?.[1] ?? "00");
+    const primaryImage = card.match(/data-primary="([^"]+)"/i)?.[1];
+    const hoverImage = card.match(/data-hover="([^"]+)"/i)?.[1];
 
-function displayName(productName, option, siblingOptions) {
-  const hasTopChoice = siblingOptions.some((item) => /(?:^|-)TOP(?:-|$)/i.test(item.name));
-  if (!hasTopChoice) return productName;
-  return /(?:^|-)TOP(?:-|$)/i.test(option.name)
-    ? `${productName} with Top`
-    : `${productName} Cabinet Only`;
+    if (!sourceUrl || !sku || !optionId || !priceMain) {
+      throw new Error(`Incomplete product card in ${categoryUrl}`);
+    }
+
+    return {
+      sourceUrl,
+      categoryUrl,
+      sku,
+      optionId,
+      price: Number(`${priceMain.replace(/,/g, "")}.${priceCents}`),
+      cardImages: [primaryImage, hoverImage].filter(Boolean).map(absoluteUrl)
+    };
+  });
 }
 
 async function crawl() {
@@ -102,15 +113,17 @@ async function crawl() {
 
   for (const categoryUrl of categoryUrls) {
     const html = await fetchHtml(categoryUrl);
-    for (const productUrl of extractUrls(html, /https:\/\/mb01\.vanstro\.ca\/product\/[^"'?\s<]+/g)) {
-      if (!productSources.has(productUrl)) productSources.set(productUrl, categoryUrl);
+    for (const listing of parseListingCards(html, categoryUrl)) {
+      const source = productSources.get(listing.sourceUrl) ?? { listings: new Map() };
+      source.listings.set(listing.sku, listing);
+      productSources.set(listing.sourceUrl, source);
     }
   }
 
   const products = [];
   const details = {};
 
-  for (const [sourceUrl] of productSources) {
+  for (const [sourceUrl, source] of productSources) {
     const html = await fetchHtml(sourceUrl);
     const sourceSlug = new URL(sourceUrl).pathname.split("/").filter(Boolean).at(-1);
     const sourceProductId = sourceSlug.match(/-(\d+)$/)?.[1] ?? sourceSlug;
@@ -122,15 +135,26 @@ async function crawl() {
     if (!optionJson) throw new Error(`Missing optionData: ${sourceUrl}`);
 
     const allOptions = JSON.parse(optionJson);
-    const selectedOptions = selectWhiteOptions(allOptions, category);
+    const selectedOptions = [...source.listings.values()].map((listing) => {
+      const option = allOptions.find(
+        (candidate) => String(candidate.id) === listing.optionId && candidate.sku === listing.sku
+      );
+      if (!option) {
+        throw new Error(`Listed SKU ${listing.sku} does not match option ${listing.optionId}: ${sourceUrl}`);
+      }
+      return { listing, option };
+    });
 
-    for (const option of selectedOptions) {
+    for (const { listing, option } of selectedOptions) {
       const id = `mb01-${option.id}`;
       const multiple = selectedOptions.length > 1;
       const slug = multiple ? `${sourceSlug}-${slugify(option.name)}` : sourceSlug;
-      const images = [...new Set(option.images.map(absoluteUrl))].map((url, index) => ({
+      const sourceImages = option.images.length > 0
+        ? option.images.map(absoluteUrl)
+        : listing.cardImages;
+      const images = [...new Set(sourceImages)].map((url, index) => ({
         url,
-        alt: index === 0 ? displayName(productName, option, selectedOptions) : `${productName} alternate view ${index + 1}`
+        alt: index === 0 ? productName : `${productName} alternate view ${index + 1}`
       }));
       const length = option.name.match(/(\d+)FT/i)?.[1];
       const dimensions =
@@ -140,16 +164,18 @@ async function crawl() {
           ? `${specifications["Center-to-Center"]} center-to-center`
           : "See product specifications");
       const finish = specifications.Door ?? specifications.Material ?? "White finish";
-      const name = displayName(productName, option, selectedOptions);
+      if (option.price !== listing.price) {
+        throw new Error(`Listed price does not match detail option for ${listing.sku}: ${sourceUrl}`);
+      }
 
       products.push({
         id,
         slug,
         sku: option.sku,
         manufacturerPartNumber: option.name,
-        name,
+        name: productName,
         category,
-        price: { amount: option.price, currency: "CAD" },
+        price: { amount: listing.price, currency: "CAD" },
         unit: "each",
         dimensions,
         finish,
@@ -217,7 +243,7 @@ const output = `import type { ProductSummary } from "@/lib/api/api-contract";\n\
   `  sourceUrl: string;\n  sourceProductId: string;\n  sourceProductName: string;\n  sourceCategory: string;\n` +
   `  description: string;\n  productHighlights: string[];\n  specifications: Record<string, string>;\n};\n\n` +
   `// Generated from ${BASE_URL}. Re-running this script removes SKUs no longer published there.\n` +
-  `// ${result.parentProductCount} source products expanded to ${result.products.length} purchasable white-cabinet/trim SKUs.\n` +
+  `// ${result.products.length} SKUs are listed on MB01 category product cards. Detail pages only supply metadata.\n` +
   `export const mb01Products: ProductSummary[] = ${JSON.stringify(result.products, null, 2)};\n\n` +
   `export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = ${JSON.stringify(result.details, null, 2)};\n`;
 

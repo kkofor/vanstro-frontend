@@ -5368,6 +5368,32 @@ body.cookie-drawer-open {
   gap: 14px;
 }
 
+@media (min-width: 761px) {
+  .catalog-layout {
+    height: calc(100dvh - 32px);
+    min-height: 520px;
+    max-height: 920px;
+  }
+
+  .catalog-filter-panel,
+  .catalog-results {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-color: #9eb1ae transparent;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+  }
+
+  .catalog-filter-panel {
+    position: static;
+  }
+
+  .catalog-results {
+    align-content: start;
+    padding-right: 6px;
+  }
+}
+
 .catalog-results .catalog-toolbar {
   grid-template-columns: minmax(260px, 1fr) auto auto;
   gap: 10px;

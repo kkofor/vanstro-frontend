@@ -428,7 +428,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
       </div>
 
       <div className="catalog-layout">
-        <aside className="catalog-filter-panel" aria-label="Product filters">
+        <aside className="catalog-filter-panel" aria-label="Product filters" tabIndex={0}>
           <div className="catalog-filter-head">
             <strong>Filters</strong>
             <button type="button" onClick={clearAllFacets}>
@@ -484,7 +484,12 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           )}
         </aside>
 
-        <div className="catalog-results">
+        <div
+          className="catalog-results"
+          role="region"
+          aria-label="Product results"
+          tabIndex={0}
+        >
           <div className="catalog-toolbar" aria-label="Product search and sort">
             <form className="catalog-search" onSubmit={handleSearchSubmit}>
               <Search size={18} strokeWidth={2.2} aria-hidden="true" />

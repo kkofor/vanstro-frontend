@@ -29,6 +29,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012710130",
+        "manufacturerPartNumber": "3DB12-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/272_P_1777097169902.JPG",
+          "alt": "3-Drawer Base 3DB12 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012710230",
+        "manufacturerPartNumber": "3DB12-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/272_P_1777097196462.JPG",
+          "alt": "3-Drawer Base 3DB12 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -95,6 +119,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB12 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/272_P_1777097196462.JPG",
+        "alt": "3-Drawer Base 3DB12 alternate view 12"
       }
     ],
     "inStock": true
@@ -115,6 +143,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012720130",
+        "manufacturerPartNumber": "3DB15-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/273_P_1777099754384.JPG",
+          "alt": "3-Drawer Base 3DB15 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012720230",
+        "manufacturerPartNumber": "3DB15-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/273_P_1777099789328.JPG",
+          "alt": "3-Drawer Base 3DB15 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -181,6 +233,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB15 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/273_P_1777099789328.JPG",
+        "alt": "3-Drawer Base 3DB15 alternate view 12"
       }
     ],
     "inStock": true
@@ -201,6 +257,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012730130",
+        "manufacturerPartNumber": "3DB18-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/274_P_1777101272379.JPG",
+          "alt": "3-Drawer Base 3DB18 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012730230",
+        "manufacturerPartNumber": "3DB18-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/274_P_1777101302264.JPG",
+          "alt": "3-Drawer Base 3DB18 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -267,6 +347,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB18 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/274_P_1777101302264.JPG",
+        "alt": "3-Drawer Base 3DB18 alternate view 12"
       }
     ],
     "inStock": true
@@ -287,6 +371,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012740130",
+        "manufacturerPartNumber": "3DB21-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/275_P_1777102197220.JPG",
+          "alt": "3-Drawer Base 3DB21 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012740230",
+        "manufacturerPartNumber": "3DB21-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/275_P_1777102233853.JPG",
+          "alt": "3-Drawer Base 3DB21 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -353,6 +461,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB21 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/275_P_1777102233853.JPG",
+        "alt": "3-Drawer Base 3DB21 alternate view 12"
       }
     ],
     "inStock": true
@@ -373,6 +485,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012750130",
+        "manufacturerPartNumber": "3DB24-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/276_P_1777101411422.JPG",
+          "alt": "3-Drawer Base 3DB24 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012750230",
+        "manufacturerPartNumber": "3DB24-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/276_P_1777101447407.JPG",
+          "alt": "3-Drawer Base 3DB24 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -439,6 +575,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB24 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/276_P_1777101447407.JPG",
+        "alt": "3-Drawer Base 3DB24 alternate view 12"
       }
     ],
     "inStock": true
@@ -459,6 +599,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012770130",
+        "manufacturerPartNumber": "3DB30-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/277_P_1777102437242.JPG",
+          "alt": "3-Drawer Base 3DB30 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012770230",
+        "manufacturerPartNumber": "3DB30-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/277_P_1777102466071.JPG",
+          "alt": "3-Drawer Base 3DB30 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -525,6 +689,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB30 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/277_P_1777102466071.JPG",
+        "alt": "3-Drawer Base 3DB30 alternate view 12"
       }
     ],
     "inStock": true
@@ -545,6 +713,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012780130",
+        "manufacturerPartNumber": "3DB33-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/278_P_1777102556140.JPG",
+          "alt": "3-Drawer Base 3DB33 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012780230",
+        "manufacturerPartNumber": "3DB33-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/278_P_1777102591763.JPG",
+          "alt": "3-Drawer Base 3DB33 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -611,6 +803,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB33 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/278_P_1777102591763.JPG",
+        "alt": "3-Drawer Base 3DB33 alternate view 12"
       }
     ],
     "inStock": true
@@ -631,6 +827,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "012790130",
+        "manufacturerPartNumber": "3DB36-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/279_P_1777102710403.JPG",
+          "alt": "3-Drawer Base 3DB36 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "012790230",
+        "manufacturerPartNumber": "3DB36-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/279_P_1777102743805.JPG",
+          "alt": "3-Drawer Base 3DB36 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -697,6 +917,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "3-Drawer Base 3DB36 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/279_P_1777102743805.JPG",
+        "alt": "3-Drawer Base 3DB36 alternate view 12"
       }
     ],
     "inStock": true
@@ -717,6 +941,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "Light Grey",
+        "sku": "011710230",
+        "manufacturerPartNumber": "B12-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/252_P_1781959074686.JPG",
+          "alt": "Base Cabinet B12 in Light Grey"
+        },
+        "active": false
+      },
+      {
+        "name": "White",
+        "sku": "011710130",
+        "manufacturerPartNumber": "B12-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/252_P_1781959031651.JPG",
+          "alt": "Base Cabinet B12 in White"
+        },
+        "active": true
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -783,6 +1031,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B12 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/252_P_1781959074686.JPG",
+        "alt": "Base Cabinet B12 alternate view 12"
       }
     ],
     "inStock": true
@@ -803,6 +1055,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011720130",
+        "manufacturerPartNumber": "B15-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/253_P_1777011235651.JPG",
+          "alt": "Base Cabinet B15 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011720230",
+        "manufacturerPartNumber": "B15-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/253_P_1777011262744.JPG",
+          "alt": "Base Cabinet B15 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -869,6 +1145,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B15 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/253_P_1777011262744.JPG",
+        "alt": "Base Cabinet B15 alternate view 12"
       }
     ],
     "inStock": true
@@ -889,6 +1169,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011730130",
+        "manufacturerPartNumber": "B18-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/254_P_1777011369088.JPG",
+          "alt": "Base Cabinet B18 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011730230",
+        "manufacturerPartNumber": "B18-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/254_P_1777011396389.JPG",
+          "alt": "Base Cabinet B18 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -955,6 +1259,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B18 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/254_P_1777011396389.JPG",
+        "alt": "Base Cabinet B18 alternate view 12"
       }
     ],
     "inStock": true
@@ -975,6 +1283,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011740130",
+        "manufacturerPartNumber": "B21-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/265_P_1777094251418.JPG",
+          "alt": "Base Cabinet B21 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011740230",
+        "manufacturerPartNumber": "B21-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/265_P_1777094276250.JPG",
+          "alt": "Base Cabinet B21 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1041,6 +1373,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B21 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202604/source_img/265_P_1777094276250.JPG",
+        "alt": "Base Cabinet B21 alternate view 12"
       }
     ],
     "inStock": true
@@ -1061,6 +1397,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011750130",
+        "manufacturerPartNumber": "B24-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/266_P_1777096025208.JPG",
+          "alt": "Base Cabinet B24 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011750230",
+        "manufacturerPartNumber": "B24-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/266_P_1778652968726.JPG",
+          "alt": "Base Cabinet B24 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1127,6 +1487,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B24 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/266_P_1778652968726.JPG",
+        "alt": "Base Cabinet B24 alternate view 12"
       }
     ],
     "inStock": true
@@ -1147,6 +1511,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011760130",
+        "manufacturerPartNumber": "B27-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/267_P_1778653209785.JPG",
+          "alt": "Base Cabinet B27 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011760230",
+        "manufacturerPartNumber": "B27-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/267_P_1778653327125.JPG",
+          "alt": "Base Cabinet B27 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1213,6 +1601,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B27 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/267_P_1778653327125.JPG",
+        "alt": "Base Cabinet B27 alternate view 12"
       }
     ],
     "inStock": true
@@ -1233,6 +1625,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011770130",
+        "manufacturerPartNumber": "B30-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/268_P_1777096702523.JPG",
+          "alt": "Base Cabinet B30 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011770230",
+        "manufacturerPartNumber": "B30-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/268_P_1778653472237.JPG",
+          "alt": "Base Cabinet B30 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1303,6 +1719,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B30 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/268_P_1778653472237.JPG",
+        "alt": "Base Cabinet B30 alternate view 13"
       }
     ],
     "inStock": true
@@ -1323,6 +1743,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011780130",
+        "manufacturerPartNumber": "B33-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/269_P_1778653680827.JPG",
+          "alt": "Base Cabinet B33 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011780230",
+        "manufacturerPartNumber": "B33-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/269_P_1778653725514.JPG",
+          "alt": "Base Cabinet B33 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1393,6 +1837,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B33 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/269_P_1778653725514.JPG",
+        "alt": "Base Cabinet B33 alternate view 13"
       }
     ],
     "inStock": true
@@ -1413,6 +1861,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011790130",
+        "manufacturerPartNumber": "B36-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708170903_9f5c9aef57a5.jpg",
+          "alt": "Base Cabinet B36 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011790230",
+        "manufacturerPartNumber": "B36-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/270_P_1778654625741.JPG",
+          "alt": "Base Cabinet B36 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1483,6 +1955,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B36 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/270_P_1778654625741.JPG",
+        "alt": "Base Cabinet B36 alternate view 13"
       }
     ],
     "inStock": true
@@ -1503,6 +1979,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011800130",
+        "manufacturerPartNumber": "B42-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202604/source_img/271_P_1777097055228.JPG",
+          "alt": "Base Cabinet B42 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011800230",
+        "manufacturerPartNumber": "B42-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/271_P_1778800139081.JPG",
+          "alt": "Base Cabinet B42 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1573,6 +2073,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Base Cabinet B42 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/271_P_1778800139081.JPG",
+        "alt": "Base Cabinet B42 alternate view 13"
       }
     ],
     "inStock": true
@@ -1593,6 +2097,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018860942",
+        "manufacturerPartNumber": "BEP2535-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/381_P_1778831493421.JPG",
+          "alt": "Base End Panel BEP2535 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018861042",
+        "manufacturerPartNumber": "BEP2535-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/381_P_1778831516848.JPG",
+          "alt": "Base End Panel BEP2535 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1631,6 +2159,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/381_P_1779793217929.gif",
         "alt": "Base End Panel BEP2535 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/381_P_1778831516848.JPG",
+        "alt": "Base End Panel BEP2535 alternate view 5"
       }
     ],
     "inStock": true
@@ -1651,6 +2183,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018850942",
+        "manufacturerPartNumber": "VEP2230-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/380_P_1778831259010.JPG",
+          "alt": "Base End Panel VEP2230 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018851042",
+        "manufacturerPartNumber": "VEP2230-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/380_P_1778831296302.JPG",
+          "alt": "Base End Panel VEP2230 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1689,6 +2245,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/380_P_1779793177783.gif",
         "alt": "Base End Panel VEP2230 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/380_P_1778831296302.JPG",
+        "alt": "Base End Panel VEP2230 alternate view 5"
       }
     ],
     "inStock": true
@@ -1767,6 +2327,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "019900142",
+        "manufacturerPartNumber": "BCM8(DCM)-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/372_P_1778671092941.JPG",
+          "alt": "Decorative Moulding BCM8(DCM) in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "019900242",
+        "manufacturerPartNumber": "BCM8(DCM)-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/372_P_1778671123215.JPG",
+          "alt": "Decorative Moulding BCM8(DCM) in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1805,6 +2389,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/372_P_1779792548527.gif",
         "alt": "Decorative Moulding BCM8(DCM) alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/372_P_1778671123215.JPG",
+        "alt": "Decorative Moulding BCM8(DCM) alternate view 5"
       }
     ],
     "inStock": true
@@ -1825,6 +2413,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015490130",
+        "manufacturerPartNumber": "DCW2430-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/343_P_1778659067152.JPG",
+          "alt": "Diagonal Corner Wall DCW2430 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015490230",
+        "manufacturerPartNumber": "DCW2430-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/343_P_1778659093462.JPG",
+          "alt": "Diagonal Corner Wall DCW2430 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1891,6 +2503,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Diagonal Corner Wall DCW2430 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/343_P_1778659093462.JPG",
+        "alt": "Diagonal Corner Wall DCW2430 alternate view 12"
       }
     ],
     "inStock": true
@@ -1911,6 +2527,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015500130",
+        "manufacturerPartNumber": "DCW2436-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/344_P_1778661731374.JPG",
+          "alt": "Diagonal Corner Wall DCW2436 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015500230",
+        "manufacturerPartNumber": "DCW2436-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/344_P_1778661760492.JPG",
+          "alt": "Diagonal Corner Wall DCW2436 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -1977,6 +2617,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Diagonal Corner Wall DCW2436 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/344_P_1778661760492.JPG",
+        "alt": "Diagonal Corner Wall DCW2436 alternate view 12"
       }
     ],
     "inStock": true
@@ -1997,6 +2641,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015510130",
+        "manufacturerPartNumber": "DCW2442-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/345_P_1778663495532.JPG",
+          "alt": "Diagonal Corner Wall DCW2442 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015510230",
+        "manufacturerPartNumber": "DCW2442-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/345_P_1778663532072.JPG",
+          "alt": "Diagonal Corner Wall DCW2442 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2063,6 +2731,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Diagonal Corner Wall DCW2442 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/345_P_1778663532072.JPG",
+        "alt": "Diagonal Corner Wall DCW2442 alternate view 12"
       }
     ],
     "inStock": true
@@ -2083,6 +2755,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018810742",
+        "manufacturerPartNumber": "F342-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/373_P_1778671955927.JPG",
+          "alt": "Filler F342 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018810842",
+        "manufacturerPartNumber": "F342-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/373_P_1778671993738.JPG",
+          "alt": "Filler F342 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2121,6 +2817,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/373_P_1779792700783.gif",
         "alt": "Filler F342 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/373_P_1778671993738.JPG",
+        "alt": "Filler F342 alternate view 5"
       }
     ],
     "inStock": true
@@ -2141,6 +2841,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018830742",
+        "manufacturerPartNumber": "F642-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/374_P_1778672287094.JPG",
+          "alt": "Filler F642 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018830842",
+        "manufacturerPartNumber": "F642-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/374_P_1778672320994.JPG",
+          "alt": "Filler F642 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2179,6 +2903,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/374_P_1779792732696.gif",
         "alt": "Filler F642 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/374_P_1778672320994.JPG",
+        "alt": "Filler F642 alternate view 5"
       }
     ],
     "inStock": true
@@ -2199,6 +2927,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "013780130",
+        "manufacturerPartNumber": "LSB33-W-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/280_P_1778654484445.JPG",
+          "alt": "Lazy Susan Base LSB33 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "013780230",
+        "manufacturerPartNumber": "LSB33-W-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/280_P_1778654539423.JPG",
+          "alt": "Lazy Susan Base LSB33 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2265,6 +3017,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Lazy Susan Base LSB33 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/280_P_1778654539423.JPG",
+        "alt": "Lazy Susan Base LSB33 alternate view 12"
       }
     ],
     "inStock": true
@@ -2285,6 +3041,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "013790130",
+        "manufacturerPartNumber": "LSB36-W-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/281_P_1778654961190.JPG",
+          "alt": "Lazy Susan Base LSB36 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "013790230",
+        "manufacturerPartNumber": "LSB36-W-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/281_P_1778654999838.JPG",
+          "alt": "Lazy Susan Base LSB36 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2351,6 +3131,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Lazy Susan Base LSB36 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/281_P_1778654999838.JPG",
+        "alt": "Lazy Susan Base LSB36 alternate view 12"
       }
     ],
     "inStock": true
@@ -2371,6 +3155,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "016290130",
+        "manufacturerPartNumber": "MO3030-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/346_P_1778668091639.JPG",
+          "alt": "Microwave Cabinet MO3030 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "016290230",
+        "manufacturerPartNumber": "MO3030-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/346_P_1778668116700.JPG",
+          "alt": "Microwave Cabinet MO3030 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2437,6 +3245,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Microwave Cabinet MO3030 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/346_P_1778668116700.JPG",
+        "alt": "Microwave Cabinet MO3030 alternate view 12"
       }
     ],
     "inStock": true
@@ -2457,6 +3269,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "016300130",
+        "manufacturerPartNumber": "MO3036-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/347_P_1778668186102.JPG",
+          "alt": "Microwave Cabinet MO3036 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "016300230",
+        "manufacturerPartNumber": "MO3036-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/347_P_1778668212572.JPG",
+          "alt": "Microwave Cabinet MO3036 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2523,6 +3359,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Microwave Cabinet MO3036 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/347_P_1778668212572.JPG",
+        "alt": "Microwave Cabinet MO3036 alternate view 12"
       }
     ],
     "inStock": true
@@ -2543,6 +3383,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "016310130",
+        "manufacturerPartNumber": "MO3042-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/348_P_1778668283332.JPG",
+          "alt": "Microwave Cabinet MO3042 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "016310230",
+        "manufacturerPartNumber": "MO3042-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/348_P_1778668309748.JPG",
+          "alt": "Microwave Cabinet MO3042 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2609,6 +3473,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Microwave Cabinet MO3042 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/348_P_1778668309748.JPG",
+        "alt": "Microwave Cabinet MO3042 alternate view 12"
       }
     ],
     "inStock": true
@@ -2629,6 +3497,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015520532",
+        "manufacturerPartNumber": "OE630-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/349_P_1778667397065.JPG",
+          "alt": "Open End Shelf OE630 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015520632",
+        "manufacturerPartNumber": "OE630-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/349_P_1778667151021.JPG",
+          "alt": "Open End Shelf OE630 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2671,6 +3563,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/349_P_1779790366689.gif",
         "alt": "Open End Shelf OE630 alternate view 5"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/349_P_1778667151021.JPG",
+        "alt": "Open End Shelf OE630 alternate view 6"
       }
     ],
     "inStock": true
@@ -2691,6 +3587,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015530532",
+        "manufacturerPartNumber": "OE636-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/350_P_1778667467342.JPG",
+          "alt": "Open End Shelf OE636 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015530632",
+        "manufacturerPartNumber": "OE636-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/350_P_1778667487468.JPG",
+          "alt": "Open End Shelf OE636 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2733,6 +3653,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/350_P_1779790406372.gif",
         "alt": "Open End Shelf OE636 alternate view 5"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/350_P_1778667487468.JPG",
+        "alt": "Open End Shelf OE636 alternate view 6"
       }
     ],
     "inStock": true
@@ -2753,6 +3677,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015540532",
+        "manufacturerPartNumber": "OE642-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/351_P_1778667554325.JPG",
+          "alt": "Open End Shelf OE642 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015540632",
+        "manufacturerPartNumber": "OE642-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/351_P_1778667579793.JPG",
+          "alt": "Open End Shelf OE642 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2795,6 +3743,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/351_P_1779790440916.gif",
         "alt": "Open End Shelf OE642 alternate view 5"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/351_P_1778667579793.JPG",
+        "alt": "Open End Shelf OE642 alternate view 6"
       }
     ],
     "inStock": true
@@ -2815,6 +3767,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017640130",
+        "manufacturerPartNumber": "O308424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/361_P_1778745870735.JPG",
+          "alt": "Oven Tall Cabinet O308424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017640230",
+        "manufacturerPartNumber": "O308424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/361_P_1778745939611.JPG",
+          "alt": "Oven Tall Cabinet O308424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2885,6 +3861,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O308424 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/361_P_1778745939611.JPG",
+        "alt": "Oven Tall Cabinet O308424 alternate view 13"
       }
     ],
     "inStock": true
@@ -2905,6 +3885,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017650130",
+        "manufacturerPartNumber": "O309024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/362_P_1778746120014.JPG",
+          "alt": "Oven Tall Cabinet O309024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017650230",
+        "manufacturerPartNumber": "O309024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/362_P_1778746170515.JPG",
+          "alt": "Oven Tall Cabinet O309024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -2975,6 +3979,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O309024 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/362_P_1778746170515.JPG",
+        "alt": "Oven Tall Cabinet O309024 alternate view 13"
       }
     ],
     "inStock": true
@@ -2995,6 +4003,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017660130",
+        "manufacturerPartNumber": "O309624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/363_P_1778746254182.JPG",
+          "alt": "Oven Tall Cabinet O309624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017660230",
+        "manufacturerPartNumber": "O309624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/363_P_1778746297142.JPG",
+          "alt": "Oven Tall Cabinet O309624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3065,6 +4097,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O309624 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/363_P_1778746297142.JPG",
+        "alt": "Oven Tall Cabinet O309624 alternate view 13"
       }
     ],
     "inStock": true
@@ -3085,6 +4121,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017670130",
+        "manufacturerPartNumber": "O338424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/364_P_1778746387101.JPG",
+          "alt": "Oven Tall Cabinet O338424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017670230",
+        "manufacturerPartNumber": "O338424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/364_P_1778746428677.JPG",
+          "alt": "Oven Tall Cabinet O338424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3155,6 +4215,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O338424 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/364_P_1778746428677.JPG",
+        "alt": "Oven Tall Cabinet O338424 alternate view 13"
       }
     ],
     "inStock": true
@@ -3175,6 +4239,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017680130",
+        "manufacturerPartNumber": "O339024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/365_P_1778746501699.JPG",
+          "alt": "Oven Tall Cabinet O339024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017680230",
+        "manufacturerPartNumber": "O339024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/365_P_1778746542640.JPG",
+          "alt": "Oven Tall Cabinet O339024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3245,6 +4333,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O339024 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/365_P_1778746542640.JPG",
+        "alt": "Oven Tall Cabinet O339024 alternate view 13"
       }
     ],
     "inStock": true
@@ -3265,6 +4357,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017690130",
+        "manufacturerPartNumber": "O339624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/366_P_1778746620025.JPG",
+          "alt": "Oven Tall Cabinet O339624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017690230",
+        "manufacturerPartNumber": "O339624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/366_P_1778746661896.JPG",
+          "alt": "Oven Tall Cabinet O339624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3335,6 +4451,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Oven Tall Cabinet O339624 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/366_P_1778746661896.JPG",
+        "alt": "Oven Tall Cabinet O339624 alternate view 13"
       }
     ],
     "inStock": true
@@ -3355,6 +4475,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011950130",
+        "manufacturerPartNumber": "SB30-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/368_P_1778653528712.JPG",
+          "alt": "Sink Base SB30 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011950230",
+        "manufacturerPartNumber": "SB30-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/368_P_1778653559546.JPG",
+          "alt": "Sink Base SB30 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3417,6 +4561,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Sink Base SB30 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/368_P_1778653559546.JPG",
+        "alt": "Sink Base SB30 alternate view 11"
       }
     ],
     "inStock": true
@@ -3437,6 +4585,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011960130",
+        "manufacturerPartNumber": "SB33-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/369_P_1778654378424.JPG",
+          "alt": "Sink Base SB33 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011960230",
+        "manufacturerPartNumber": "SB33-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/369_P_1778654421545.JPG",
+          "alt": "Sink Base SB33 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3499,6 +4671,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Sink Base SB33 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/369_P_1778654421545.JPG",
+        "alt": "Sink Base SB33 alternate view 11"
       }
     ],
     "inStock": true
@@ -3519,6 +4695,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "011970130",
+        "manufacturerPartNumber": "SB36-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/370_P_1778654687201.JPG",
+          "alt": "Sink Base SB36 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "011970230",
+        "manufacturerPartNumber": "SB36-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/370_P_1778654806637.JPG",
+          "alt": "Sink Base SB36 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3585,6 +4785,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Sink Base SB36 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/370_P_1778654806637.JPG",
+        "alt": "Sink Base SB36 alternate view 12"
       }
     ],
     "inStock": true
@@ -3605,6 +4809,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "014700131",
+        "manufacturerPartNumber": "SPB9-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/282_P_1778655247433.JPG",
+          "alt": "SPB9 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "014700231",
+        "manufacturerPartNumber": "SPB9-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/282_P_1778655214790.JPG",
+          "alt": "SPB9 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3667,6 +4895,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "SPB9 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/282_P_1778655214790.JPG",
+        "alt": "SPB9 alternate view 11"
       }
     ],
     "inStock": true
@@ -3687,6 +4919,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017550130",
+        "manufacturerPartNumber": "U188424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/352_P_1778668384629.JPG",
+          "alt": "Tall Cabinet U188424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017550230",
+        "manufacturerPartNumber": "U188424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/352_P_1778668410234.JPG",
+          "alt": "Tall Cabinet U188424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3753,6 +5009,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U188424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/352_P_1778668410234.JPG",
+        "alt": "Tall Cabinet U188424 alternate view 12"
       }
     ],
     "inStock": true
@@ -3773,6 +5033,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017560130",
+        "manufacturerPartNumber": "U189024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/353_P_1778668483966.JPG",
+          "alt": "Tall Cabinet U189024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017560230",
+        "manufacturerPartNumber": "U189024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/353_P_1778668509400.JPG",
+          "alt": "Tall Cabinet U189024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3839,6 +5123,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U189024 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/353_P_1778668509400.JPG",
+        "alt": "Tall Cabinet U189024 alternate view 12"
       }
     ],
     "inStock": true
@@ -3859,6 +5147,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017570130",
+        "manufacturerPartNumber": "U189624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/354_P_1778668580437.JPG",
+          "alt": "Tall Cabinet U189624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017570230",
+        "manufacturerPartNumber": "U189624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/354_P_1778668603506.JPG",
+          "alt": "Tall Cabinet U189624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -3925,6 +5237,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U189624 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/354_P_1778668603506.JPG",
+        "alt": "Tall Cabinet U189624 alternate view 12"
       }
     ],
     "inStock": true
@@ -3945,6 +5261,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017580130",
+        "manufacturerPartNumber": "U248424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/355_P_1778668691281.JPG",
+          "alt": "Tall Cabinet U248424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017580230",
+        "manufacturerPartNumber": "U248424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/355_P_1778668722140.JPG",
+          "alt": "Tall Cabinet U248424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4011,6 +5351,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U248424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/355_P_1778668722140.JPG",
+        "alt": "Tall Cabinet U248424 alternate view 12"
       }
     ],
     "inStock": true
@@ -4031,6 +5375,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017590130",
+        "manufacturerPartNumber": "U249024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/356_P_1778668815123.JPG",
+          "alt": "Tall Cabinet U249024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017590230",
+        "manufacturerPartNumber": "U249024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/356_P_1778668849786.JPG",
+          "alt": "Tall Cabinet U249024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4097,6 +5465,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U249024 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/356_P_1778668849786.JPG",
+        "alt": "Tall Cabinet U249024 alternate view 12"
       }
     ],
     "inStock": true
@@ -4117,6 +5489,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017600130",
+        "manufacturerPartNumber": "U249624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/357_P_1778668923547.JPG",
+          "alt": "Tall Cabinet U249624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017600230",
+        "manufacturerPartNumber": "U249624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/357_P_1778668985135.JPG",
+          "alt": "Tall Cabinet U249624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4183,6 +5579,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U249624 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/357_P_1778668985135.JPG",
+        "alt": "Tall Cabinet U249624 alternate view 12"
       }
     ],
     "inStock": true
@@ -4203,6 +5603,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017610130",
+        "manufacturerPartNumber": "U308424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/358_P_1778669052528.JPG",
+          "alt": "Tall Cabinet U308424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017610230",
+        "manufacturerPartNumber": "U308424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/358_P_1778669080729.JPG",
+          "alt": "Tall Cabinet U308424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4269,6 +5693,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U308424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/358_P_1778669080729.JPG",
+        "alt": "Tall Cabinet U308424 alternate view 12"
       }
     ],
     "inStock": true
@@ -4289,6 +5717,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017620130",
+        "manufacturerPartNumber": "U309024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/359_P_1778669147785.JPG",
+          "alt": "Tall Cabinet U309024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017620230",
+        "manufacturerPartNumber": "U309024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/359_P_1778669171998.JPG",
+          "alt": "Tall Cabinet U309024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4355,6 +5807,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U309024 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/359_P_1778669171998.JPG",
+        "alt": "Tall Cabinet U309024 alternate view 12"
       }
     ],
     "inStock": true
@@ -4375,6 +5831,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "017630130",
+        "manufacturerPartNumber": "U309624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/360_P_1778669256375.JPG",
+          "alt": "Tall Cabinet U309624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "017630230",
+        "manufacturerPartNumber": "U309624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/360_P_1778669281019.JPG",
+          "alt": "Tall Cabinet U309624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4441,6 +5921,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Tall Cabinet U309624 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/360_P_1778669281019.JPG",
+        "alt": "Tall Cabinet U309624 alternate view 12"
       }
     ],
     "inStock": true
@@ -4461,6 +5945,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018870942",
+        "manufacturerPartNumber": "TEP2596-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/382_P_1778831590666.JPG",
+          "alt": "Tall End Panel TEP2596 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018871042",
+        "manufacturerPartNumber": "TEP2596-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/382_P_1778831610088.JPG",
+          "alt": "Tall End Panel TEP2596 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4499,6 +6007,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/382_P_1779793648325.gif",
         "alt": "Tall End Panel TEP2596 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/382_P_1778831610088.JPG",
+        "alt": "Tall End Panel TEP2596 alternate view 5"
       }
     ],
     "inStock": true
@@ -4519,6 +6031,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018880942",
+        "manufacturerPartNumber": "TEP3596-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/383_P_1778831691814.JPG",
+          "alt": "Tall End Panel TEP3596 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018881042",
+        "manufacturerPartNumber": "TEP3596-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/383_P_1778831719035.JPG",
+          "alt": "Tall End Panel TEP3596 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4557,6 +6093,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/383_P_1779793682173.gif",
         "alt": "Tall End Panel TEP3596 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/383_P_1778831719035.JPG",
+        "alt": "Tall End Panel TEP3596 alternate view 5"
       }
     ],
     "inStock": true
@@ -4577,6 +6117,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018820742",
+        "manufacturerPartNumber": "F396-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/375_P_1778672490998.JPG",
+          "alt": "Tall Filler F396 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018820842",
+        "manufacturerPartNumber": "F396-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/375_P_1778672520565.JPG",
+          "alt": "Tall Filler F396 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4615,6 +6179,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/375_P_1779792852951.gif",
         "alt": "Tall Filler F396 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/375_P_1778672520565.JPG",
+        "alt": "Tall Filler F396 alternate view 5"
       }
     ],
     "inStock": true
@@ -4635,6 +6203,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018840742",
+        "manufacturerPartNumber": "F696-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/376_P_1778672740001.JPG",
+          "alt": "Tall Filler F696 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018840842",
+        "manufacturerPartNumber": "F696-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/376_P_1778672770198.JPG",
+          "alt": "Tall Filler F696 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4673,6 +6265,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/376_P_1779792883499.gif",
         "alt": "Tall Filler F696 alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/376_P_1778672770198.JPG",
+        "alt": "Tall Filler F696 alternate view 5"
       }
     ],
     "inStock": true
@@ -4693,6 +6289,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "019890142",
+        "manufacturerPartNumber": "TKC-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/371_P_1778670786817.JPG",
+          "alt": "Toe Kick TKC-MS in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "019890242",
+        "manufacturerPartNumber": "TKC-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/371_P_1778670818307.JPG",
+          "alt": "Toe Kick TKC-MS in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4731,6 +6351,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202605/source_img/371_P_1779792368164.gif",
         "alt": "Toe Kick TKC-MS alternate view 4"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/371_P_1778670818307.JPG",
+        "alt": "Toe Kick TKC-MS alternate view 5"
       }
     ],
     "inStock": true
@@ -4751,6 +6375,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015070330",
+        "manufacturerPartNumber": "W1530GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/331_P_1778658355617.JPG",
+          "alt": "Wall Cabinet (GD)W1530GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015070430",
+        "manufacturerPartNumber": "W1530GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/331_P_1778658388693.JPG",
+          "alt": "Wall Cabinet (GD)W1530GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4817,6 +6465,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1530GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/331_P_1778658388693.JPG",
+        "alt": "Wall Cabinet (GD)W1530GD alternate view 12"
       }
     ],
     "inStock": true
@@ -4837,6 +6489,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015080330",
+        "manufacturerPartNumber": "W1536GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/332_P_1778661090772.JPG",
+          "alt": "Wall Cabinet (GD)W1536GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015080430",
+        "manufacturerPartNumber": "W1536GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/332_P_1778661122658.JPG",
+          "alt": "Wall Cabinet (GD)W1536GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4903,6 +6579,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1536GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/332_P_1778661122658.JPG",
+        "alt": "Wall Cabinet (GD)W1536GD alternate view 12"
       }
     ],
     "inStock": true
@@ -4923,6 +6603,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015090330",
+        "manufacturerPartNumber": "W1542GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/333_P_1778662960627.JPG",
+          "alt": "Wall Cabinet (GD)W1542GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015090430",
+        "manufacturerPartNumber": "W1542GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/333_P_1778662984741.JPG",
+          "alt": "Wall Cabinet (GD)W1542GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -4989,6 +6693,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1542GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/333_P_1778662984741.JPG",
+        "alt": "Wall Cabinet (GD)W1542GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5009,6 +6717,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015100330",
+        "manufacturerPartNumber": "W1830GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/334_P_1778658561850.JPG",
+          "alt": "Wall Cabinet (GD)W1830GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015100430",
+        "manufacturerPartNumber": "W1830GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/334_P_1778658604557.JPG",
+          "alt": "Wall Cabinet (GD)W1830GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5075,6 +6807,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1830GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/334_P_1778658604557.JPG",
+        "alt": "Wall Cabinet (GD)W1830GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5095,6 +6831,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015110330",
+        "manufacturerPartNumber": "W1836GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/335_P_1778661285424.JPG",
+          "alt": "Wall Cabinet (GD)W1836GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015110430",
+        "manufacturerPartNumber": "W1836GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/335_P_1778661312732.JPG",
+          "alt": "Wall Cabinet (GD)W1836GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5161,6 +6921,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1836GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/335_P_1778661312732.JPG",
+        "alt": "Wall Cabinet (GD)W1836GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5181,6 +6945,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015120330",
+        "manufacturerPartNumber": "W1842GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/336_P_1778663147634.JPG",
+          "alt": "Wall Cabinet (GD)W1842GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015120430",
+        "manufacturerPartNumber": "W1842GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/336_P_1778663173721.JPG",
+          "alt": "Wall Cabinet (GD)W1842GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5247,6 +7035,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W1842GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/336_P_1778663173721.JPG",
+        "alt": "Wall Cabinet (GD)W1842GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5267,6 +7059,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015160330",
+        "manufacturerPartNumber": "W2430GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/337_P_1778658849417.JPG",
+          "alt": "Wall Cabinet (GD)W2430GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015160430",
+        "manufacturerPartNumber": "W2430GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/337_P_1778658987921.JPG",
+          "alt": "Wall Cabinet (GD)W2430GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5333,6 +7149,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W2430GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/337_P_1778658987921.JPG",
+        "alt": "Wall Cabinet (GD)W2430GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5353,6 +7173,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015170330",
+        "manufacturerPartNumber": "W2436GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/338_P_1778661628819.JPG",
+          "alt": "Wall Cabinet (GD)W2436GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015170430",
+        "manufacturerPartNumber": "W2436GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/338_P_1778661657806.JPG",
+          "alt": "Wall Cabinet (GD)W2436GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5419,6 +7263,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W2436GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/338_P_1778661657806.JPG",
+        "alt": "Wall Cabinet (GD)W2436GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5439,6 +7287,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015180330",
+        "manufacturerPartNumber": "W2442GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/339_P_1778663408712.JPG",
+          "alt": "Wall Cabinet (GD)W2442GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015180430",
+        "manufacturerPartNumber": "W2442GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/339_P_1778663433898.JPG",
+          "alt": "Wall Cabinet (GD)W2442GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5505,6 +7377,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W2442GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/339_P_1778663433898.JPG",
+        "alt": "Wall Cabinet (GD)W2442GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5525,6 +7401,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015290330",
+        "manufacturerPartNumber": "W3030GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/340_P_1778659268965.JPG",
+          "alt": "Wall Cabinet (GD)W3030GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015290430",
+        "manufacturerPartNumber": "W3030GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/340_P_1778659302936.JPG",
+          "alt": "Wall Cabinet (GD)W3030GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5591,6 +7491,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W3030GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/340_P_1778659302936.JPG",
+        "alt": "Wall Cabinet (GD)W3030GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5611,6 +7515,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015300330",
+        "manufacturerPartNumber": "W3036GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/341_P_1778662349459.JPG",
+          "alt": "Wall Cabinet (GD)W3036GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015300430",
+        "manufacturerPartNumber": "W3036GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/341_P_1778662375216.JPG",
+          "alt": "Wall Cabinet (GD)W3036GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5677,6 +7605,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W3036GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/341_P_1778662375216.JPG",
+        "alt": "Wall Cabinet (GD)W3036GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5697,6 +7629,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015310330",
+        "manufacturerPartNumber": "W3042GD-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/342_P_1778663767818.JPG",
+          "alt": "Wall Cabinet (GD)W3042GD in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015310430",
+        "manufacturerPartNumber": "W3042GD-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/342_P_1778663793434.JPG",
+          "alt": "Wall Cabinet (GD)W3042GD in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5763,6 +7719,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet (GD)W3042GD alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/342_P_1778663793434.JPG",
+        "alt": "Wall Cabinet (GD)W3042GD alternate view 12"
       }
     ],
     "inStock": true
@@ -5783,6 +7743,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015010130",
+        "manufacturerPartNumber": "W0930-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/283_P_1778657436905.JPG",
+          "alt": "Wall Cabinet W0930 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015010230",
+        "manufacturerPartNumber": "W0930-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/283_P_1778657472771.JPG",
+          "alt": "Wall Cabinet W0930 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5849,6 +7833,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W0930 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/283_P_1778657472771.JPG",
+        "alt": "Wall Cabinet W0930 alternate view 12"
       }
     ],
     "inStock": true
@@ -5869,6 +7857,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015020130",
+        "manufacturerPartNumber": "W0936-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/284_P_1778660523971.JPG",
+          "alt": "Wall Cabinet W0936 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015020230",
+        "manufacturerPartNumber": "W0936-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/284_P_1778660709113.JPG",
+          "alt": "Wall Cabinet W0936 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -5935,6 +7947,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W0936 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/284_P_1778660709113.JPG",
+        "alt": "Wall Cabinet W0936 alternate view 12"
       }
     ],
     "inStock": true
@@ -5955,6 +7971,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015030130",
+        "manufacturerPartNumber": "W0942-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/285_P_1778662602579.JPG",
+          "alt": "Wall Cabinet W0942 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015030230",
+        "manufacturerPartNumber": "W0942-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/285_P_1778662627827.JPG",
+          "alt": "Wall Cabinet W0942 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6021,6 +8061,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W0942 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/285_P_1778662627827.JPG",
+        "alt": "Wall Cabinet W0942 alternate view 12"
       }
     ],
     "inStock": true
@@ -6041,6 +8085,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015040130",
+        "manufacturerPartNumber": "W1230-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/286_P_1778658116726.JPG",
+          "alt": "Wall Cabinet W1230 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015040230",
+        "manufacturerPartNumber": "W1230-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/286_P_1778658164964.JPG",
+          "alt": "Wall Cabinet W1230 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6103,6 +8171,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1230 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/286_P_1778658164964.JPG",
+        "alt": "Wall Cabinet W1230 alternate view 11"
       }
     ],
     "inStock": true
@@ -6123,6 +8195,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015050130",
+        "manufacturerPartNumber": "W1236-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/287_P_1778660818989.JPG",
+          "alt": "Wall Cabinet W1236 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015050230",
+        "manufacturerPartNumber": "W1236-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/287_P_1778660853093.JPG",
+          "alt": "Wall Cabinet W1236 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6189,6 +8285,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1236 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/287_P_1778660853093.JPG",
+        "alt": "Wall Cabinet W1236 alternate view 12"
       }
     ],
     "inStock": true
@@ -6209,6 +8309,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015060130",
+        "manufacturerPartNumber": "W1242-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/288_P_1778662760422.JPG",
+          "alt": "Wall Cabinet W1242 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015060230",
+        "manufacturerPartNumber": "W1242-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/288_P_1778662786088.JPG",
+          "alt": "Wall Cabinet W1242 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6275,6 +8399,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1242 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/288_P_1778662786088.JPG",
+        "alt": "Wall Cabinet W1242 alternate view 12"
       }
     ],
     "inStock": true
@@ -6295,6 +8423,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015070130",
+        "manufacturerPartNumber": "W1530-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/289_P_1778658262957.JPG",
+          "alt": "Wall Cabinet W1530 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015070230",
+        "manufacturerPartNumber": "W1530-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/289_P_1778658287447.JPG",
+          "alt": "Wall Cabinet W1530 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6357,6 +8509,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1530 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/289_P_1778658287447.JPG",
+        "alt": "Wall Cabinet W1530 alternate view 11"
       }
     ],
     "inStock": true
@@ -6377,6 +8533,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015080130",
+        "manufacturerPartNumber": "W1536-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/290_P_1778660928702.JPG",
+          "alt": "Wall Cabinet W1536 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015080230",
+        "manufacturerPartNumber": "W1536-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/290_P_1778660957279.JPG",
+          "alt": "Wall Cabinet W1536 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6439,6 +8619,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1536 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/290_P_1778660957279.JPG",
+        "alt": "Wall Cabinet W1536 alternate view 11"
       }
     ],
     "inStock": true
@@ -6459,6 +8643,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015090130",
+        "manufacturerPartNumber": "W1542-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/291_P_1778662862050.JPG",
+          "alt": "Wall Cabinet W1542 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015090230",
+        "manufacturerPartNumber": "W1542-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/291_P_1778662890116.JPG",
+          "alt": "Wall Cabinet W1542 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6525,6 +8733,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1542 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/291_P_1778662890116.JPG",
+        "alt": "Wall Cabinet W1542 alternate view 12"
       }
     ],
     "inStock": true
@@ -6545,6 +8757,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015100130",
+        "manufacturerPartNumber": "W1830-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/292_P_1778658479665.JPG",
+          "alt": "Wall Cabinet W1830 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015100230",
+        "manufacturerPartNumber": "W1830-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/292_P_1778658505525.JPG",
+          "alt": "Wall Cabinet W1830 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6611,6 +8847,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1830 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/292_P_1778658505525.JPG",
+        "alt": "Wall Cabinet W1830 alternate view 12"
       }
     ],
     "inStock": true
@@ -6631,6 +8871,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015110130",
+        "manufacturerPartNumber": "W1836-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/293_P_1778661188476.JPG",
+          "alt": "Wall Cabinet W1836 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015110230",
+        "manufacturerPartNumber": "W1836-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/293_P_1778661226113.JPG",
+          "alt": "Wall Cabinet W1836 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6693,6 +8957,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1836 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/293_P_1778661226113.JPG",
+        "alt": "Wall Cabinet W1836 alternate view 11"
       }
     ],
     "inStock": true
@@ -6713,6 +8981,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015120130",
+        "manufacturerPartNumber": "W1842-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/294_P_1778663046613.JPG",
+          "alt": "Wall Cabinet W1842 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015120230",
+        "manufacturerPartNumber": "W1842-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/294_P_1778663071210.JPG",
+          "alt": "Wall Cabinet W1842 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6779,6 +9071,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W1842 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/294_P_1778663071210.JPG",
+        "alt": "Wall Cabinet W1842 alternate view 12"
       }
     ],
     "inStock": true
@@ -6799,6 +9095,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015130130",
+        "manufacturerPartNumber": "W2130-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/295_P_1778658658704.JPG",
+          "alt": "Wall Cabinet W2130 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015130230",
+        "manufacturerPartNumber": "W2130-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/295_P_1778658698102.JPG",
+          "alt": "Wall Cabinet W2130 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6865,6 +9185,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2130 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/295_P_1778658698102.JPG",
+        "alt": "Wall Cabinet W2130 alternate view 12"
       }
     ],
     "inStock": true
@@ -6885,6 +9209,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015140130",
+        "manufacturerPartNumber": "W2136-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/296_P_1778661365989.JPG",
+          "alt": "Wall Cabinet W2136 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015140230",
+        "manufacturerPartNumber": "W2136-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/296_P_1778661400771.JPG",
+          "alt": "Wall Cabinet W2136 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -6951,6 +9299,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2136 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/296_P_1778661400771.JPG",
+        "alt": "Wall Cabinet W2136 alternate view 12"
       }
     ],
     "inStock": true
@@ -6971,6 +9323,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015150130",
+        "manufacturerPartNumber": "W2142-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/297_P_1778663234079.JPG",
+          "alt": "Wall Cabinet W2142 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015150230",
+        "manufacturerPartNumber": "W2142-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/297_P_1778663259655.JPG",
+          "alt": "Wall Cabinet W2142 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7037,6 +9413,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2142 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/297_P_1778663259655.JPG",
+        "alt": "Wall Cabinet W2142 alternate view 12"
       }
     ],
     "inStock": true
@@ -7057,6 +9437,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015160130",
+        "manufacturerPartNumber": "W2430-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/298_P_1778658759395.JPG",
+          "alt": "Wall Cabinet W2430 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015160230",
+        "manufacturerPartNumber": "W2430-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/298_P_1778658789398.JPG",
+          "alt": "Wall Cabinet W2430 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7123,6 +9527,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2430 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/298_P_1778658789398.JPG",
+        "alt": "Wall Cabinet W2430 alternate view 12"
       }
     ],
     "inStock": true
@@ -7143,6 +9551,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015170130",
+        "manufacturerPartNumber": "W2436-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/299_P_1778661468947.JPG",
+          "alt": "Wall Cabinet W2436 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015170230",
+        "manufacturerPartNumber": "W2436-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/299_P_1778661538606.JPG",
+          "alt": "Wall Cabinet W2436 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7209,6 +9641,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2436 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/299_P_1778661538606.JPG",
+        "alt": "Wall Cabinet W2436 alternate view 12"
       }
     ],
     "inStock": true
@@ -7229,6 +9665,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015180130",
+        "manufacturerPartNumber": "W2442-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/300_P_1778663322793.JPG",
+          "alt": "Wall Cabinet W2442 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015180230",
+        "manufacturerPartNumber": "W2442-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/300_P_1778663348558.JPG",
+          "alt": "Wall Cabinet W2442 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7295,6 +9755,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2442 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/300_P_1778663348558.JPG",
+        "alt": "Wall Cabinet W2442 alternate view 12"
       }
     ],
     "inStock": true
@@ -7315,6 +9779,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015190130",
+        "manufacturerPartNumber": "W2730-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/301_P_1778659178543.JPG",
+          "alt": "Wall Cabinet W2730 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015190230",
+        "manufacturerPartNumber": "W2730-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/301_P_1778659204587.JPG",
+          "alt": "Wall Cabinet W2730 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7381,6 +9869,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2730 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/301_P_1778659204587.JPG",
+        "alt": "Wall Cabinet W2730 alternate view 12"
       }
     ],
     "inStock": true
@@ -7401,6 +9893,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015200130",
+        "manufacturerPartNumber": "W2736-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/302_P_1778661871177.JPG",
+          "alt": "Wall Cabinet W2736 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015200230",
+        "manufacturerPartNumber": "W2736-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/302_P_1778661899929.JPG",
+          "alt": "Wall Cabinet W2736 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7467,6 +9983,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2736 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/302_P_1778661899929.JPG",
+        "alt": "Wall Cabinet W2736 alternate view 12"
       }
     ],
     "inStock": true
@@ -7487,6 +10007,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015210130",
+        "manufacturerPartNumber": "W2742-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/303_P_1778663605371.JPG",
+          "alt": "Wall Cabinet W2742 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015210230",
+        "manufacturerPartNumber": "W2742-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/303_P_1778663629893.JPG",
+          "alt": "Wall Cabinet W2742 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7553,6 +10097,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W2742 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/303_P_1778663629893.JPG",
+        "alt": "Wall Cabinet W2742 alternate view 12"
       }
     ],
     "inStock": true
@@ -7573,6 +10121,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015220130",
+        "manufacturerPartNumber": "W3012-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/304_P_1778655355815.JPG",
+          "alt": "Wall Cabinet W3012 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015220230",
+        "manufacturerPartNumber": "W3012-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/304_P_1778655389436.JPG",
+          "alt": "Wall Cabinet W3012 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7635,6 +10207,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3012 alternate view 10"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/304_P_1778655389436.JPG",
+        "alt": "Wall Cabinet W3012 alternate view 11"
       }
     ],
     "inStock": true
@@ -7655,6 +10231,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015230130",
+        "manufacturerPartNumber": "W301224-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/305_P_1778665551398.JPG",
+          "alt": "Wall Cabinet W301224 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015230230",
+        "manufacturerPartNumber": "W301224-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/305_P_1778665577792.JPG",
+          "alt": "Wall Cabinet W301224 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7721,6 +10321,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W301224 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/305_P_1778665577792.JPG",
+        "alt": "Wall Cabinet W301224 alternate view 12"
       }
     ],
     "inStock": true
@@ -7741,6 +10345,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015240130",
+        "manufacturerPartNumber": "W301524-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/306_P_1778665651823.JPG",
+          "alt": "Wall Cabinet W301524 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015240230",
+        "manufacturerPartNumber": "W301524-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/306_P_1778665677268.JPG",
+          "alt": "Wall Cabinet W301524 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7807,6 +10435,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W301524 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/306_P_1778665677268.JPG",
+        "alt": "Wall Cabinet W301524 alternate view 12"
       }
     ],
     "inStock": true
@@ -7827,6 +10459,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015250130",
+        "manufacturerPartNumber": "W3018-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/307_P_1778655460410.JPG",
+          "alt": "Wall Cabinet W3018 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015250230",
+        "manufacturerPartNumber": "W3018-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/307_P_1778655491196.JPG",
+          "alt": "Wall Cabinet W3018 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7893,6 +10549,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3018 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/307_P_1778655491196.JPG",
+        "alt": "Wall Cabinet W3018 alternate view 12"
       }
     ],
     "inStock": true
@@ -7913,6 +10573,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015260130",
+        "manufacturerPartNumber": "W301824-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/308_P_1778655597085.JPG",
+          "alt": "Wall Cabinet W301824 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015260230",
+        "manufacturerPartNumber": "W301824-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/308_P_1778655643710.JPG",
+          "alt": "Wall Cabinet W301824 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -7979,6 +10663,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W301824 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/308_P_1778655643710.JPG",
+        "alt": "Wall Cabinet W301824 alternate view 12"
       }
     ],
     "inStock": true
@@ -7999,6 +10687,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015270130",
+        "manufacturerPartNumber": "W3024-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/309_P_1778655724706.JPG",
+          "alt": "Wall Cabinet W3024 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015270230",
+        "manufacturerPartNumber": "W3024-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/309_P_1778655763534.JPG",
+          "alt": "Wall Cabinet W3024 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8065,6 +10777,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3024 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/309_P_1778655763534.JPG",
+        "alt": "Wall Cabinet W3024 alternate view 12"
       }
     ],
     "inStock": true
@@ -8085,6 +10801,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015280130",
+        "manufacturerPartNumber": "W302424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/310_P_1778655814895.JPG",
+          "alt": "Wall Cabinet W302424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015280230",
+        "manufacturerPartNumber": "W302424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/310_P_1778655857863.JPG",
+          "alt": "Wall Cabinet W302424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8151,6 +10891,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W302424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/310_P_1778655857863.JPG",
+        "alt": "Wall Cabinet W302424 alternate view 12"
       }
     ],
     "inStock": true
@@ -8171,6 +10915,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015290130",
+        "manufacturerPartNumber": "W3030-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/311_P_1778745687366.JPG",
+          "alt": "Wall Cabinet W3030 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015290230",
+        "manufacturerPartNumber": "W3030-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/311_P_1778745735282.JPG",
+          "alt": "Wall Cabinet W3030 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8237,6 +11005,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3030 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/311_P_1778745735282.JPG",
+        "alt": "Wall Cabinet W3030 alternate view 12"
       }
     ],
     "inStock": true
@@ -8257,6 +11029,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015300130",
+        "manufacturerPartNumber": "W3036-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/312_P_1778661989386.JPG",
+          "alt": "Wall Cabinet W3036 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015300230",
+        "manufacturerPartNumber": "W3036-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/312_P_1778662016343.JPG",
+          "alt": "Wall Cabinet W3036 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8323,6 +11119,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3036 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/312_P_1778662016343.JPG",
+        "alt": "Wall Cabinet W3036 alternate view 12"
       }
     ],
     "inStock": true
@@ -8343,6 +11143,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015310130",
+        "manufacturerPartNumber": "W3042-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/313_P_1778663693076.JPG",
+          "alt": "Wall Cabinet W3042 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015310230",
+        "manufacturerPartNumber": "W3042-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/313_P_1778663717177.JPG",
+          "alt": "Wall Cabinet W3042 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8409,6 +11233,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3042 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/313_P_1778663717177.JPG",
+        "alt": "Wall Cabinet W3042 alternate view 12"
       }
     ],
     "inStock": true
@@ -8429,6 +11257,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015320130",
+        "manufacturerPartNumber": "W331224-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/314_P_1778665750353.JPG",
+          "alt": "Wall Cabinet W331224 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015320230",
+        "manufacturerPartNumber": "W331224-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/314_P_1778665774747.JPG",
+          "alt": "Wall Cabinet W331224 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8495,6 +11347,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W331224 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/314_P_1778665774747.JPG",
+        "alt": "Wall Cabinet W331224 alternate view 12"
       }
     ],
     "inStock": true
@@ -8515,6 +11371,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015330130",
+        "manufacturerPartNumber": "W331524-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/315_P_1778665839738.JPG",
+          "alt": "Wall Cabinet W331524 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015330230",
+        "manufacturerPartNumber": "W331524-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/315_P_1778665864996.JPG",
+          "alt": "Wall Cabinet W331524 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8581,6 +11461,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W331524 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/315_P_1778665864996.JPG",
+        "alt": "Wall Cabinet W331524 alternate view 12"
       }
     ],
     "inStock": true
@@ -8601,6 +11485,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015340130",
+        "manufacturerPartNumber": "W331824-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/316_P_1778665945589.JPG",
+          "alt": "Wall Cabinet W331824 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015340230",
+        "manufacturerPartNumber": "W331824-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/316_P_1778665969739.JPG",
+          "alt": "Wall Cabinet W331824 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8667,6 +11575,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W331824 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/316_P_1778665969739.JPG",
+        "alt": "Wall Cabinet W331824 alternate view 12"
       }
     ],
     "inStock": true
@@ -8687,6 +11599,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015350130",
+        "manufacturerPartNumber": "W3324-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/317_P_1778656001299.JPG",
+          "alt": "Wall Cabinet W3324 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015350230",
+        "manufacturerPartNumber": "W3324-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/317_P_1778656039273.JPG",
+          "alt": "Wall Cabinet W3324 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8753,6 +11689,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3324 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/317_P_1778656039273.JPG",
+        "alt": "Wall Cabinet W3324 alternate view 12"
       }
     ],
     "inStock": true
@@ -8773,6 +11713,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015360130",
+        "manufacturerPartNumber": "W332424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/318_P_1778655915452.JPG",
+          "alt": "Wall Cabinet W332424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015360230",
+        "manufacturerPartNumber": "W332424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/318_P_1778655955544.JPG",
+          "alt": "Wall Cabinet W332424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8839,6 +11803,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W332424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/318_P_1778655955544.JPG",
+        "alt": "Wall Cabinet W332424 alternate view 12"
       }
     ],
     "inStock": true
@@ -8859,6 +11827,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015370130",
+        "manufacturerPartNumber": "W3330-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/319_P_1778659518471.JPG",
+          "alt": "Wall Cabinet W3330 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015370230",
+        "manufacturerPartNumber": "W3330-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/319_P_1778659577403.JPG",
+          "alt": "Wall Cabinet W3330 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -8925,6 +11917,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3330 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/319_P_1778659577403.JPG",
+        "alt": "Wall Cabinet W3330 alternate view 12"
       }
     ],
     "inStock": true
@@ -8945,6 +11941,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015380130",
+        "manufacturerPartNumber": "W3336-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/320_P_1778662115431.JPG",
+          "alt": "Wall Cabinet W3336 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015380230",
+        "manufacturerPartNumber": "W3336-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/320_P_1778662142756.JPG",
+          "alt": "Wall Cabinet W3336 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9011,6 +12031,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3336 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/320_P_1778662142756.JPG",
+        "alt": "Wall Cabinet W3336 alternate view 12"
       }
     ],
     "inStock": true
@@ -9031,6 +12055,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015390130",
+        "manufacturerPartNumber": "W3342-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/321_P_1778663859736.JPG",
+          "alt": "Wall Cabinet W3342 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015390230",
+        "manufacturerPartNumber": "W3342-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/321_P_1778663886805.JPG",
+          "alt": "Wall Cabinet W3342 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9097,6 +12145,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3342 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/321_P_1778663886805.JPG",
+        "alt": "Wall Cabinet W3342 alternate view 12"
       }
     ],
     "inStock": true
@@ -9117,6 +12169,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015400130",
+        "manufacturerPartNumber": "W361224-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/322_P_1778666017185.JPG",
+          "alt": "Wall Cabinet W361224 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015400230",
+        "manufacturerPartNumber": "W361224-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/322_P_1778666059506.JPG",
+          "alt": "Wall Cabinet W361224 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9183,6 +12259,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W361224 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/322_P_1778666059506.JPG",
+        "alt": "Wall Cabinet W361224 alternate view 12"
       }
     ],
     "inStock": true
@@ -9203,6 +12283,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015410130",
+        "manufacturerPartNumber": "W361524-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/323_P_1778666128651.JPG",
+          "alt": "Wall Cabinet W361524 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015410230",
+        "manufacturerPartNumber": "W361524-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/323_P_1778666152130.JPG",
+          "alt": "Wall Cabinet W361524 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9269,6 +12373,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W361524 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/323_P_1778666152130.JPG",
+        "alt": "Wall Cabinet W361524 alternate view 12"
       }
     ],
     "inStock": true
@@ -9289,6 +12397,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015420130",
+        "manufacturerPartNumber": "W361824-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/324_P_1778666217299.JPG",
+          "alt": "Wall Cabinet W361824 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015420230",
+        "manufacturerPartNumber": "W361824-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/324_P_1778666246541.JPG",
+          "alt": "Wall Cabinet W361824 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9355,6 +12487,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W361824 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/324_P_1778666246541.JPG",
+        "alt": "Wall Cabinet W361824 alternate view 12"
       }
     ],
     "inStock": true
@@ -9375,6 +12511,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015430130",
+        "manufacturerPartNumber": "W3624-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/325_P_1778657157181.JPG",
+          "alt": "Wall Cabinet W3624 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015430230",
+        "manufacturerPartNumber": "W3624-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/325_P_1778657196070.JPG",
+          "alt": "Wall Cabinet W3624 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9441,6 +12601,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3624 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/325_P_1778657196070.JPG",
+        "alt": "Wall Cabinet W3624 alternate view 12"
       }
     ],
     "inStock": true
@@ -9461,6 +12625,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015440130",
+        "manufacturerPartNumber": "W362424-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/326_P_1778657250468.JPG",
+          "alt": "Wall Cabinet W362424 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015440230",
+        "manufacturerPartNumber": "W362424-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/326_P_1778657286051.JPG",
+          "alt": "Wall Cabinet W362424 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9527,6 +12715,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W362424 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/326_P_1778657286051.JPG",
+        "alt": "Wall Cabinet W362424 alternate view 12"
       }
     ],
     "inStock": true
@@ -9547,6 +12739,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015450130",
+        "manufacturerPartNumber": "W3630-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/327_P_1778660286616.JPG",
+          "alt": "Wall Cabinet W3630 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015450230",
+        "manufacturerPartNumber": "W3630-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/327_P_1778660310949.JPG",
+          "alt": "Wall Cabinet W3630 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9613,6 +12829,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3630 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/327_P_1778660310949.JPG",
+        "alt": "Wall Cabinet W3630 alternate view 12"
       }
     ],
     "inStock": true
@@ -9633,6 +12853,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015460130",
+        "manufacturerPartNumber": "W3636-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/328_P_1778662209091.JPG",
+          "alt": "Wall Cabinet W3636 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015460230",
+        "manufacturerPartNumber": "W3636-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/328_P_1778662234460.JPG",
+          "alt": "Wall Cabinet W3636 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9699,6 +12943,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3636 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/328_P_1778662234460.JPG",
+        "alt": "Wall Cabinet W3636 alternate view 12"
       }
     ],
     "inStock": true
@@ -9719,6 +12967,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015470130",
+        "manufacturerPartNumber": "W3642-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/329_P_1778663958180.JPG",
+          "alt": "Wall Cabinet W3642 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015470230",
+        "manufacturerPartNumber": "W3642-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/329_P_1778663983833.JPG",
+          "alt": "Wall Cabinet W3642 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9785,6 +13057,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3642 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/329_P_1778663983833.JPG",
+        "alt": "Wall Cabinet W3642 alternate view 12"
       }
     ],
     "inStock": true
@@ -9805,6 +13081,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "015480130",
+        "manufacturerPartNumber": "W3930-PWMS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/330_P_1778660380311.JPG",
+          "alt": "Wall Cabinet W3930 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "015480230",
+        "manufacturerPartNumber": "W3930-PWMS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/330_P_1778660409537.JPG",
+          "alt": "Wall Cabinet W3930 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9871,6 +13171,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Wall Cabinet W3930 alternate view 11"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/330_P_1778660409537.JPG",
+        "alt": "Wall Cabinet W3930 alternate view 12"
       }
     ],
     "inStock": true
@@ -9891,6 +13195,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018910942",
+        "manufacturerPartNumber": "WEP1230-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/377_P_1782811612575.JPG",
+          "alt": "Wall End Panel WEP1230 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018911042",
+        "manufacturerPartNumber": "WEP1230-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/377_P_1782811643428.JPG",
+          "alt": "Wall End Panel WEP1230 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9925,6 +13253,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/377_P_1782811625164.JPG",
         "alt": "Wall End Panel WEP1230 alternate view 3"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/377_P_1782811643428.JPG",
+        "alt": "Wall End Panel WEP1230 alternate view 4"
       }
     ],
     "inStock": true
@@ -9945,6 +13277,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018920942",
+        "manufacturerPartNumber": "WEP1236-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/378_P_1782811698366.JPG",
+          "alt": "Wall End Panel WEP1236 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018921042",
+        "manufacturerPartNumber": "WEP1236-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/378_P_1782811727421.JPG",
+          "alt": "Wall End Panel WEP1236 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -9975,6 +13331,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/378_P_1782811698645.JPG",
         "alt": "Wall End Panel WEP1236 alternate view 2"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/378_P_1782811727421.JPG",
+        "alt": "Wall End Panel WEP1236 alternate view 3"
       }
     ],
     "inStock": true
@@ -9995,6 +13355,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "White finish",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "018930942",
+        "manufacturerPartNumber": "WEP1242-MS-WH",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/379_P_1782811763133.JPG",
+          "alt": "Wall End Panel WEP1242 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "018931042",
+        "manufacturerPartNumber": "WEP1242-MS-LG",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/379_P_1782811790183.JPG",
+          "alt": "Wall End Panel WEP1242 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10029,6 +13413,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/images/202606/source_img/379_P_1782811763823.JPG",
         "alt": "Wall End Panel WEP1242 alternate view 3"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/379_P_1782811790183.JPG",
+        "alt": "Wall End Panel WEP1242 alternate view 4"
       }
     ],
     "inStock": true
@@ -10049,6 +13437,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF door with thermofoil finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023021311",
+        "manufacturerPartNumber": "V3021STDL-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991376801.JPG",
+          "alt": "Vanity Cabinet-V3021-Door-TDL in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023021313",
+        "manufacturerPartNumber": "V3021STDL-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991493252.jpg",
+          "alt": "Vanity Cabinet-V3021-Door-TDL in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10119,6 +13531,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/400_P_1781991493252.jpg",
+        "alt": "Vanity Cabinet-V3021-Door-TDL alternate view 13"
       }
     ],
     "inStock": true
@@ -10139,6 +13555,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023021211",
+        "manufacturerPartNumber": "V3021STDR-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781990903867.JPG",
+          "alt": "Vanity Cabinet-V3021-Door-TDR in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023021213",
+        "manufacturerPartNumber": "V3021STDR-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781991016760.jpg",
+          "alt": "Vanity Cabinet-V3021-Door-TDR in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10209,6 +13649,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/398_P_1781991016760.jpg",
+        "alt": "Vanity Cabinet-V3021-Door-TDR alternate view 13"
       }
     ],
     "inStock": true
@@ -10229,6 +13673,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023021511",
+        "manufacturerPartNumber": "V3021TDL-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124025_17384a828908.jpg",
+          "alt": "Vanity Cabinet-V3021-Doors-TDL in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023021513",
+        "manufacturerPartNumber": "V3021TDL-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124048_6cddbc97435d.jpg",
+          "alt": "Vanity Cabinet-V3021-Doors-TDL in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10299,6 +13767,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124048_6cddbc97435d.jpg",
+        "alt": "Vanity Cabinet-V3021-Doors-TDL alternate view 13"
       }
     ],
     "inStock": true
@@ -10319,6 +13791,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023021411",
+        "manufacturerPartNumber": "V3021TDR-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124731_782285cb24c4.jpg",
+          "alt": "Vanity Cabinet-V3021-Doors-TDR in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023021413",
+        "manufacturerPartNumber": "V3021TDR-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124747_459a817f1792.jpg",
+          "alt": "Vanity Cabinet-V3021-Doors-TDR in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10389,6 +13885,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124747_459a817f1792.jpg",
+        "alt": "Vanity Cabinet-V3021-Doors-TDR alternate view 13"
       }
     ],
     "inStock": true
@@ -10409,6 +13909,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023621511",
+        "manufacturerPartNumber": "V3621TDL-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124218_55ec953afc96.jpg",
+          "alt": "Vanity Cabinet-V3621TDL in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023621513",
+        "manufacturerPartNumber": "V3621TDL-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260709050947_129d2344b2b8.jpg",
+          "alt": "Vanity Cabinet-V3621TDL in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10479,6 +14003,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3621TDL alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260709050947_129d2344b2b8.jpg",
+        "alt": "Vanity Cabinet-V3621TDL alternate view 13"
       }
     ],
     "inStock": true
@@ -10499,6 +14027,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023621411",
+        "manufacturerPartNumber": "V3621TDR-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708170724_d41a18503692.jpg",
+          "alt": "Vanity Cabinet-V3621TDR in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023621413",
+        "manufacturerPartNumber": "V3621TDR-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124938_46ec341ba863.jpg",
+          "alt": "Vanity Cabinet-V3621TDR in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10569,6 +14121,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V3621TDR alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/uploads/products/sku/20260708124938_46ec341ba863.jpg",
+        "alt": "Vanity Cabinet-V3621TDR alternate view 13"
       }
     ],
     "inStock": true
@@ -10589,6 +14145,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "024221611",
+        "manufacturerPartNumber": "V4221-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876548147.JPG",
+          "alt": "Vanity Cabinet-V4221 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "024221613",
+        "manufacturerPartNumber": "V4221-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876663023.JPG",
+          "alt": "Vanity Cabinet-V4221 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10659,6 +14239,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V4221 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/401_P_1779876663023.JPG",
+        "alt": "Vanity Cabinet-V4221 alternate view 13"
       }
     ],
     "inStock": true
@@ -10679,6 +14263,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "024821611",
+        "manufacturerPartNumber": "V4821-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879537358.JPG",
+          "alt": "Vanity Cabinet-V4821 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "024821613",
+        "manufacturerPartNumber": "V4821-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879621972.JPG",
+          "alt": "Vanity Cabinet-V4821 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10749,6 +14357,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V4821 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/402_P_1779879621972.JPG",
+        "alt": "Vanity Cabinet-V4821 alternate view 13"
       }
     ],
     "inStock": true
@@ -10769,6 +14381,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "026621711",
+        "manufacturerPartNumber": "V663522-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779952496972.JPG",
+          "alt": "Vanity Cabinet-V663522 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "026621713",
+        "manufacturerPartNumber": "V663522-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779957213279.JPG",
+          "alt": "Vanity Cabinet-V663522 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10839,6 +14475,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-V663522 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/403_P_1779957213279.JPG",
+        "alt": "Vanity Cabinet-V663522 alternate view 13"
       }
     ],
     "inStock": true
@@ -10859,6 +14499,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "022421011",
+        "manufacturerPartNumber": "VS24-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781572513220.JPG",
+          "alt": "Vanity Cabinet-VS24 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "022421013",
+        "manufacturerPartNumber": "VS24-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781572588826.JPG",
+          "alt": "Vanity Cabinet-VS24 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -10929,6 +14593,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-VS24 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/384_P_1781572588826.JPG",
+        "alt": "Vanity Cabinet-VS24 alternate view 13"
       }
     ],
     "inStock": true
@@ -10949,6 +14617,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "022721011",
+        "manufacturerPartNumber": "VS27-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781678494615.JPG",
+          "alt": "Vanity Cabinet-VS27 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "022721013",
+        "manufacturerPartNumber": "VS27-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579841818.JPG",
+          "alt": "Vanity Cabinet-VS27 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -11019,6 +14711,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-VS27 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/404_P_1781579841818.JPG",
+        "alt": "Vanity Cabinet-VS27 alternate view 13"
       }
     ],
     "inStock": true
@@ -11039,6 +14735,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023021011",
+        "manufacturerPartNumber": "VS30-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963372411.JPG",
+          "alt": "Vanity Cabinet-VS30 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023021013",
+        "manufacturerPartNumber": "VS30-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963495022.JPG",
+          "alt": "Vanity Cabinet-VS30 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -11109,6 +14829,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-VS30 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202605/source_img/405_P_1779963495022.JPG",
+        "alt": "Vanity Cabinet-VS30 alternate view 13"
       }
     ],
     "inStock": true
@@ -11129,6 +14853,30 @@ export const mb01Products: ProductSummary[] = [
     "finish": "MDF with PVC Matte Soft-Touch Finish Shaker Style",
     "colorName": "White",
     "colorHex": "#f7f6f2",
+    "finishOptions": [
+      {
+        "name": "White",
+        "sku": "023621011",
+        "manufacturerPartNumber": "VS36-PWMS-WH-TOP",
+        "colorHex": "#f7f6f2",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580047077.JPG",
+          "alt": "Vanity Cabinet-VS36 in White"
+        },
+        "active": true
+      },
+      {
+        "name": "Light Grey",
+        "sku": "023621013",
+        "manufacturerPartNumber": "VS36-PWMS-LG-TOP",
+        "colorHex": "#c9cbc7",
+        "image": {
+          "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580146932.JPG",
+          "alt": "Vanity Cabinet-VS36 in Light Grey"
+        },
+        "active": false
+      }
+    ],
     "dealerStock": {
       "winnipeg": 0
     },
@@ -11199,6 +14947,10 @@ export const mb01Products: ProductSummary[] = [
       {
         "url": "https://mb01.vanstro.ca/uploads/products/20260715083055_d933774dd462.jpg",
         "alt": "Vanity Cabinet-VS36 alternate view 12"
+      },
+      {
+        "url": "https://mb01.vanstro.ca/images/202606/source_img/406_P_1781580146932.JPG",
+        "alt": "Vanity Cabinet-VS36 alternate view 13"
       }
     ],
     "inStock": true

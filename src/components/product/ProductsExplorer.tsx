@@ -67,6 +67,9 @@ function matchesCategory(product: ProductSummary, category: CatalogCategoryOptio
 
 function matchesQuery(product: ProductSummary, query: string) {
   if (!query) return true;
+  const finishOptionText = product.finishOptions
+    ?.flatMap((option) => [option.name, option.sku ?? "", option.manufacturerPartNumber ?? ""])
+    .join(" ") ?? "";
   const haystack = [
     product.name,
     product.sku,
@@ -74,7 +77,8 @@ function matchesQuery(product: ProductSummary, query: string) {
     product.subCategory ?? "",
     product.dimensions,
     product.finish ?? "",
-    product.colorName ?? ""
+    product.colorName ?? "",
+    finishOptionText
   ]
     .join(" ")
     .toLowerCase();
@@ -112,16 +116,19 @@ function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOpt
       product.subCategory ? option.matches.includes(product.subCategory) : false
   }));
 
-  const finishes = Array.from(
-    new Set(products.map((product) => product.colorName ?? product.finish ?? "Standard finish"))
-  ).map((finish) => ({
+  const getFinishNames = (product: ProductSummary) =>
+    product.finishOptions?.length
+      ? product.finishOptions.map((option) => option.name)
+      : [
+          product.subCategory === "Accessories"
+            ? product.finish ?? product.colorName ?? "Standard finish"
+            : product.colorName ?? product.finish ?? "Standard finish"
+        ];
+  const finishes = Array.from(new Set(products.flatMap(getFinishNames))).map((finish) => ({
     id: finish,
     label: finish,
-    count: products.filter(
-      (product) => (product.colorName ?? product.finish ?? "Standard finish") === finish
-    ).length,
-    matches: (product: ProductSummary) =>
-      (product.colorName ?? product.finish ?? "Standard finish") === finish
+    count: products.filter((product) => getFinishNames(product).includes(finish)).length,
+    matches: (product: ProductSummary) => getFinishNames(product).includes(finish)
   }));
 
   return {

@@ -572,29 +572,11 @@ function normalizeCabinetColor<T extends ProductSummary>(product: T): T {
   const cabinetColor = WHITE_CABINET_CATEGORY_LABELS[product.category];
   if (!cabinetColor) return product;
 
-  const whiteFinishOptions = product.finishOptions?.filter((option) =>
-    /white/i.test(option.name)
-  );
-
   return {
     ...product,
     colorName: cabinetColor.colorName,
     colorHex: cabinetColor.colorHex,
-    finishOptions:
-      whiteFinishOptions && whiteFinishOptions.length > 0
-        ? whiteFinishOptions
-        : product.finishOptions
-          ? [
-              {
-                name: cabinetColor.colorName,
-                sku: product.sku,
-                manufacturerPartNumber: product.manufacturerPartNumber,
-                colorHex: cabinetColor.colorHex,
-                image: product.images[0],
-                active: true
-              }
-            ]
-          : product.finishOptions
+    finishOptions: product.finishOptions
   };
 }
 
@@ -1060,7 +1042,7 @@ export const productDetails: ProductDetail[] = products.map((product) => {
       innerPack: 1
     },
     finishOptions:
-      detailCopy?.finishOptions ?? [
+      product.finishOptions ?? detailCopy?.finishOptions ?? [
         {
           name: product.colorName ?? product.finish ?? "Standard finish",
           colorHex: product.colorHex,

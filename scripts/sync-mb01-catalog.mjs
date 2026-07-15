@@ -3,6 +3,10 @@ import { dirname, resolve } from "node:path";
 
 const BASE_URL = "https://mb01.vanstro.ca";
 const OUTPUT_PATH = resolve("src/lib/data/mb01-products.ts");
+const COLOR_OPTIONS = {
+  LG: { name: "Light Grey", colorHex: "#c9cbc7" },
+  WH: { name: "White", colorHex: "#f7f6f2" }
+};
 
 function decodeHtml(value) {
   const entities = {
@@ -80,6 +84,17 @@ function mapCategory(sourceCategory) {
   return "Kitchen Cabinets";
 }
 
+function getColorCode(optionName) {
+  return optionName.split("-").find((part) => COLOR_OPTIONS[part]);
+}
+
+function getColorConfigurationKey(optionName) {
+  return optionName
+    .split("-")
+    .map((part) => (COLOR_OPTIONS[part] ? "{COLOR}" : part))
+    .join("-");
+}
+
 function parseListingCards(html, categoryUrl) {
   return [...html.matchAll(/<article class="card">([\s\S]*?)<\/article>/gi)].map((match) => {
     const card = match[1];
@@ -149,13 +164,48 @@ async function crawl() {
       const id = `mb01-${option.id}`;
       const multiple = selectedOptions.length > 1;
       const slug = multiple ? `${sourceSlug}-${slugify(option.name)}` : sourceSlug;
+      const optionColorCode = getColorCode(option.name);
+      const colorVariants = optionColorCode
+        ? allOptions.filter(
+            (candidate) =>
+              getColorCode(candidate.name) &&
+              getColorConfigurationKey(candidate.name) === getColorConfigurationKey(option.name)
+          )
+        : [];
+      for (const colorVariant of colorVariants) {
+        if (colorVariant.price !== option.price) {
+          throw new Error(`Color variant price mismatch for ${colorVariant.sku}: ${sourceUrl}`);
+        }
+      }
       const sourceImages = option.images.length > 0
         ? option.images.map(absoluteUrl)
         : listing.cardImages;
-      const images = [...new Set(sourceImages)].map((url, index) => ({
+      const colorVariantImages = colorVariants
+        .filter((candidate) => candidate.id !== option.id && candidate.images[0])
+        .map((candidate) => absoluteUrl(candidate.images[0]));
+      const images = [...new Set([...sourceImages, ...colorVariantImages])].map((url, index) => ({
         url,
         alt: index === 0 ? productName : `${productName} alternate view ${index + 1}`
       }));
+      const finishOptions = colorVariants.map((candidate) => {
+        const colorCode = getColorCode(candidate.name);
+        const color = COLOR_OPTIONS[colorCode];
+        const imageUrl = candidate.images[0] ? absoluteUrl(candidate.images[0]) : undefined;
+
+        return {
+          name: color.name,
+          sku: candidate.sku,
+          manufacturerPartNumber: candidate.name,
+          colorHex: color.colorHex,
+          image: imageUrl
+            ? {
+                url: imageUrl,
+                alt: `${productName} in ${color.name}`
+              }
+            : undefined,
+          active: candidate.id === option.id
+        };
+      });
       const length = option.name.match(/(\d+)FT/i)?.[1];
       const dimensions =
         specifications.Dimensions ??
@@ -181,6 +231,7 @@ async function crawl() {
         finish,
         colorName: /Cabinets|Vanities/.test(category) ? "White" : undefined,
         colorHex: /Cabinets|Vanities/.test(category) ? "#f7f6f2" : undefined,
+        finishOptions: finishOptions.length > 1 ? finishOptions : undefined,
         dealerStock: { winnipeg: 0 },
         availability: {
           productId: id,

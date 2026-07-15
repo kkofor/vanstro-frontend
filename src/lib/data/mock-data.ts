@@ -612,15 +612,9 @@ function normalizeDealerStock<T extends ProductSummary>(product: T): T {
   };
 }
 
-const legacyCatalogProducts: ProductSummary[] = [
-  ...featuredProducts.map(applyOriginalSiteImages),
-  ...originalSiteImportedProducts.filter((product) => !featuredProductIds.has(product.id))
-];
-
-export const products: ProductSummary[] = (mb01Products.length
-  ? mb01Products
-  : legacyCatalogProducts
-).map(normalizeCabinetColor).map(normalizeDealerStock);
+export const products: ProductSummary[] = mb01Products
+  .map(normalizeCabinetColor)
+  .map(normalizeDealerStock);
 
 const INVENTORY_UPDATED_AT = "2026-07-03T12:00:00.000Z";
 

@@ -212,12 +212,11 @@ async function crawl() {
 }
 
 const result = await crawl();
-const generatedAt = new Date().toISOString();
 const output = `import type { ProductSummary } from "@/lib/api/api-contract";\n\n` +
   `export type Mb01ProductMetadata = {\n` +
   `  sourceUrl: string;\n  sourceProductId: string;\n  sourceProductName: string;\n  sourceCategory: string;\n` +
   `  description: string;\n  productHighlights: string[];\n  specifications: Record<string, string>;\n};\n\n` +
-  `// Generated from ${BASE_URL} at ${generatedAt}.\n` +
+  `// Generated from ${BASE_URL}. Re-running this script removes SKUs no longer published there.\n` +
   `// ${result.parentProductCount} source products expanded to ${result.products.length} purchasable white-cabinet/trim SKUs.\n` +
   `export const mb01Products: ProductSummary[] = ${JSON.stringify(result.products, null, 2)};\n\n` +
   `export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = ${JSON.stringify(result.details, null, 2)};\n`;

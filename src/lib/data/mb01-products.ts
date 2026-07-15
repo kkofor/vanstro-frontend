@@ -10,7 +10,7 @@ export type Mb01ProductMetadata = {
   specifications: Record<string, string>;
 };
 
-// Generated from https://mb01.vanstro.ca at 2026-07-15T17:39:49.108Z.
+// Generated from https://mb01.vanstro.ca. Re-running this script removes SKUs no longer published there.
 // 139 source products expanded to 153 purchasable white-cabinet/trim SKUs.
 export const mb01Products: ProductSummary[] = [
   {

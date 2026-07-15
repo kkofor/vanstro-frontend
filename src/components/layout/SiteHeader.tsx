@@ -43,17 +43,7 @@ function SearchBox() {
   );
 }
 
-function pickDealerFromPostalCode(postalCode: string) {
-  const normalized = postalCode.trim().toUpperCase();
-  if (normalized.startsWith("V") || normalized.startsWith("B")) {
-    return dealers.find((dealer) => dealer.id === "vancouver");
-  }
-  if (normalized.startsWith("T")) {
-    return dealers.find((dealer) => dealer.id === "calgary");
-  }
-  if (normalized.startsWith("H")) {
-    return dealers.find((dealer) => dealer.id === "montreal");
-  }
+function pickDealerFromPostalCode() {
   return dealers[0];
 }
 
@@ -103,7 +93,7 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
   function handlePostalSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setPostalCode(postalDraft);
-    const dealer = pickDealerFromPostalCode(postalDraft);
+    const dealer = pickDealerFromPostalCode();
     if (dealer) setSelectedDealer(dealer);
   }
 

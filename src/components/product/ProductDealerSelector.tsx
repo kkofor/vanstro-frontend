@@ -23,13 +23,10 @@ type DealerGeo = {
 };
 
 const DEALER_COORDINATES: Record<string, DealerGeo> = {
-  toronto: { lat: 43.769, lng: -79.381 },
-  vancouver: { lat: 49.183, lng: -123.077 },
-  calgary: { lat: 50.98, lng: -114.039 },
-  montreal: { lat: 45.487, lng: -73.699 }
+  winnipeg: { lat: 49.909, lng: -97.203 }
 };
 
-const DEFAULT_USER_LOCATION: DealerGeo = { lat: 43.653, lng: -79.383 };
+const DEFAULT_USER_LOCATION: DealerGeo = { lat: 49.895, lng: -97.138 };
 
 function estimateDistanceKm(from: DealerGeo, to?: DealerGeo) {
   if (!to) return undefined;

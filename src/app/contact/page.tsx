@@ -42,8 +42,8 @@ const quickContacts = [
   {
     title: "Phone support",
     text: "For urgent order or dealer routing questions during business hours.",
-    value: "204-221-8288",
-    href: "tel:+12042218288",
+    value: "204-505-2288",
+    href: "tel:+12045052288",
     icon: Phone
   },
   {
@@ -77,44 +77,9 @@ const dealerContacts = [
   {
     region: "Manitoba",
     dealer: "MB01 - Yuan Construction",
-    phone: "204-221-8288",
+    phone: "204-505-2288",
     email: "MB01@VANSTRO.CA",
     address: "856 Century St, Winnipeg, MB R3H 0M5"
-  },
-  {
-    region: "Alberta",
-    dealer: "AB10 - 2369783 Alberta Ltd",
-    phone: "587-973-7908",
-    email: "AB10@VANSTRO.CA",
-    address: "148 Carrington Cl NW, Calgary, AB T3P 1P8"
-  },
-  {
-    region: "Quebec",
-    dealer: "QC10 - 2897776 Quebec Ltd",
-    phone: "514-998-5147",
-    email: "qc10@vanstro.ca",
-    address: "220-4 Av. du Voyageur, Pointe-Claire, QC H9R 6A8"
-  },
-  {
-    region: "British Columbia",
-    dealer: "BC10 - Level 1 Agent",
-    phone: "250-232-8218",
-    email: "bc10@vanstro.ca",
-    address: "754 Audley St, Saanich Core, BC V8X 2V3"
-  },
-  {
-    region: "Saskatchewan",
-    dealer: "SK10 - 2456877 Saskatchewan Ltd",
-    phone: "431-877-2659",
-    email: "sk10@vanstro.ca",
-    address: "717 47 St W, Saskatoon, SK S7L 6C1"
-  },
-  {
-    region: "Ontario",
-    dealer: "ON10 - 9871451 Ontario Ltd",
-    phone: "431-877-2659",
-    email: "on10@vanstro.ca",
-    address: "Ontario dealer support"
   }
 ];
 

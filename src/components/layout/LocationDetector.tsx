@@ -11,10 +11,7 @@ import {
 const LOCATION_REQUEST_KEY = "vanstro-location-request-v1";
 
 const DEALER_COORDINATES: Record<string, { latitude: number; longitude: number }> = {
-  toronto: { latitude: 43.7615, longitude: -79.4104 },
-  vancouver: { latitude: 49.1666, longitude: -123.1336 },
-  calgary: { latitude: 50.9829, longitude: -114.0369 },
-  montreal: { latitude: 45.487, longitude: -73.693 }
+  winnipeg: { latitude: 49.909, longitude: -97.203 }
 };
 
 function distanceInKm(

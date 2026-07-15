@@ -550,6 +550,8 @@ const WHITE_CABINET_CATEGORY_LABELS: Record<string, { colorName: string; colorHe
   "Bathroom Vanities": { colorName: "White", colorHex: "#f8f7f3" }
 };
 
+const ACTIVE_DEALER_ID = "winnipeg";
+
 function applyOriginalSiteImages(product: ProductSummary): ProductSummary {
   const originalImages = originalSiteImageLibrary[product.id];
   if (!originalImages?.length) return product;
@@ -592,10 +594,24 @@ function normalizeCabinetColor<T extends ProductSummary>(product: T): T {
   };
 }
 
+function normalizeDealerStock<T extends ProductSummary>(product: T): T {
+  const totalStock = Object.values(product.dealerStock ?? {}).reduce(
+    (total, quantity) => total + quantity,
+    0
+  );
+
+  return {
+    ...product,
+    dealerStock: {
+      [ACTIVE_DEALER_ID]: totalStock
+    }
+  };
+}
+
 export const products: ProductSummary[] = [
   ...featuredProducts.map(applyOriginalSiteImages),
   ...originalSiteImportedProducts.filter((product) => !featuredProductIds.has(product.id))
-].map(normalizeCabinetColor);
+].map(normalizeCabinetColor).map(normalizeDealerStock);
 
 const INVENTORY_UPDATED_AT = "2026-07-03T12:00:00.000Z";
 
@@ -1134,43 +1150,13 @@ export const articleDetails: ArticleDetail[] = articles.map((article) => ({
 
 export const dealers: Dealer[] = [
   {
-    id: "toronto",
-    name: "VanStro Toronto",
-    address: "15 Provost Drive",
-    city: "Toronto",
-    province: "ON",
-    postalCode: "M2K 2X9",
-    phone: "+1 416 000 0000",
-    availableForPickup: true
-  },
-  {
-    id: "vancouver",
-    name: "VanStro Vancouver",
-    address: "3320 Jacombs Road",
-    city: "Richmond",
-    province: "BC",
-    postalCode: "V6V 1Z6",
-    phone: "+1 604 000 0000",
-    availableForPickup: true
-  },
-  {
-    id: "calgary",
-    name: "VanStro Calgary",
-    address: "8000 11th Street S.E.",
-    city: "Calgary",
-    province: "AB",
-    postalCode: "T2H 3B2",
-    phone: "+1 403 000 0000",
-    availableForPickup: true
-  },
-  {
-    id: "montreal",
-    name: "VanStro Montreal",
-    address: "9191 Boulevard Cavendish",
-    city: "Montreal",
-    province: "QC",
-    postalCode: "H4T 1M8",
-    phone: "+1 514 000 0000",
+    id: ACTIVE_DEALER_ID,
+    name: "Yuan Construction",
+    address: "856 Century St",
+    city: "Winnipeg",
+    province: "MB",
+    postalCode: "R3H 0M5",
+    phone: "+1 204 505 2288",
     availableForPickup: true
   }
 ];

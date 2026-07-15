@@ -291,7 +291,7 @@ export function ProductReviewSection({
             </label>
             <label className="pdp-review-input">
               <span>Nickname*</span>
-              <input name="review-name" type="text" placeholder="Example: TorontoProject27" />
+              <input name="review-name" type="text" placeholder="Example: WinnipegProject27" />
             </label>
             <label className="pdp-review-input">
               <span>Email Address*</span>

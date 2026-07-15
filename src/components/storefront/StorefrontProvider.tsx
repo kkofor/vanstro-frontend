@@ -64,6 +64,8 @@ type StorefrontContextValue = {
 };
 
 const STORAGE_KEY = "vanstro-storefront-v1";
+const DEFAULT_DEALER_ID = "winnipeg";
+const DEFAULT_DEALER_NAME = "Yuan Construction";
 
 const StorefrontContext = createContext<StorefrontContextValue | null>(null);
 
@@ -93,8 +95,8 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartLine[]>([]);
   const [favoriteItems, setFavoriteItems] = useState<ProductSummary[]>([]);
   const [orders, setOrders] = useState<CheckoutOrder[]>([]);
-  const [selectedDealerId, setSelectedDealerId] = useState("toronto");
-  const [selectedDealerName, setSelectedDealerName] = useState("VanStro Toronto");
+  const [selectedDealerId, setSelectedDealerId] = useState(DEFAULT_DEALER_ID);
+  const [selectedDealerName, setSelectedDealerName] = useState(DEFAULT_DEALER_NAME);
   const [postalCode, setPostalCodeState] = useState("");
   const [hydrated, setHydrated] = useState(false);
 
@@ -104,8 +106,8 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       if (raw) {
         const parsed = JSON.parse(raw);
         setOrders(parsed.orders ?? []);
-        setSelectedDealerId(parsed.selectedDealerId ?? "toronto");
-        setSelectedDealerName(parsed.selectedDealerName ?? "VanStro Toronto");
+        setSelectedDealerId(DEFAULT_DEALER_ID);
+        setSelectedDealerName(DEFAULT_DEALER_NAME);
         setPostalCodeState(parsed.postalCode ?? "");
       }
     } catch {

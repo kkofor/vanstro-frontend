@@ -6413,6 +6413,41 @@ body.cookie-drawer-open {
   object-fit: contain;
 }
 
+.pdp-thumb-more-image {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  aspect-ratio: 1 / 0.78;
+  border-radius: 2px;
+  background: var(--color-ink);
+}
+
+.pdp-thumb-more-image img {
+  grid-area: 1 / 1;
+  height: 100%;
+  opacity: 0.38;
+}
+
+.pdp-thumb-more-image strong {
+  grid-area: 1 / 1;
+  position: relative;
+  color: white;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.pdp-thumb-collapse {
+  place-content: center;
+  min-height: 58px;
+}
+
+.pdp-thumb-collapse strong {
+  color: var(--color-ink);
+  font-size: 22px;
+  line-height: 0.8;
+}
+
 .pdp-product-summary {
   gap: 17px;
 }

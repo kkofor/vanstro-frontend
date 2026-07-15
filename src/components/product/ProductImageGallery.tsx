@@ -10,6 +10,9 @@ type ProductImageGalleryProps = {
   finishOptions?: ProductFinishOption[];
 };
 
+const MAX_COLLAPSED_THUMBNAILS = 7;
+const COLLAPSED_IMAGE_COUNT = MAX_COLLAPSED_THUMBNAILS - 1;
+
 export function ProductImageGallery({ images, finishOptions = [] }: ProductImageGalleryProps) {
   const productVariant = useProductVariant();
   const finishImageByName = useMemo(
@@ -35,6 +38,7 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
     return nextIndex >= 0 ? nextIndex : 0;
   }, [finishImageByName, finishOptions, images, productVariant?.selectedFinishName]);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
+  const [galleryExpanded, setGalleryExpanded] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
   const activeImage = images[activeIndex] ?? images[0];
@@ -47,6 +51,11 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
       ),
     [finishOptions]
   );
+  const hasOverflowImages = images.length > MAX_COLLAPSED_THUMBNAILS;
+  const visibleImages = hasOverflowImages && !galleryExpanded
+    ? images.slice(0, COLLAPSED_IMAGE_COUNT)
+    : images;
+  const hiddenImageCount = images.length - COLLAPSED_IMAGE_COUNT;
 
   useEffect(() => {
     const selectedFinishName = productVariant?.selectedFinishName;
@@ -101,7 +110,7 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
         <span className="pdp-zoom-hint" aria-hidden="true">Hover to zoom</span>
       </div>
       <div className="pdp-thumb-row" aria-label="Product images">
-        {images.map((image, index) => (
+        {visibleImages.map((image, index) => (
           <button
             aria-label={`Show ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "primary" : `view ${index + 1}`)} image`}
             aria-pressed={activeIndex === index}
@@ -114,6 +123,32 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
             <span>{finishNameByImageUrl.get(image.url) ?? (index === 0 ? "Primary" : `View ${index + 1}`)}</span>
           </button>
         ))}
+        {hasOverflowImages && !galleryExpanded ? (
+          <button
+            aria-label={`Show ${hiddenImageCount} more product images`}
+            aria-pressed={activeIndex >= COLLAPSED_IMAGE_COUNT}
+            className={activeIndex >= COLLAPSED_IMAGE_COUNT ? "pdp-thumb pdp-thumb-more active" : "pdp-thumb pdp-thumb-more"}
+            onClick={() => setGalleryExpanded(true)}
+            type="button"
+          >
+            <span className="pdp-thumb-more-image" aria-hidden="true">
+              <img src={images[COLLAPSED_IMAGE_COUNT].url} alt="" />
+              <strong>+{hiddenImageCount}</strong>
+            </span>
+            <span>View all</span>
+          </button>
+        ) : null}
+        {hasOverflowImages && galleryExpanded ? (
+          <button
+            aria-label="Collapse product images"
+            className="pdp-thumb pdp-thumb-collapse"
+            onClick={() => setGalleryExpanded(false)}
+            type="button"
+          >
+            <strong aria-hidden="true">−</strong>
+            <span>Show less</span>
+          </button>
+        ) : null}
       </div>
     </div>
   );

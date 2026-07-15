@@ -151,6 +151,21 @@ function getSelectedCount(selectedFacets: Record<FacetKey, string[]>) {
   return Object.values(selectedFacets).reduce((total, values) => total + values.length, 0);
 }
 
+function getPaginationItems(currentPage: number, totalPages: number) {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const pages = [...new Set([1, currentPage - 1, currentPage, currentPage + 1, totalPages])]
+    .filter((page) => page >= 1 && page <= totalPages)
+    .sort((a, b) => a - b);
+
+  return pages.flatMap<(number | string)>((page, index) => {
+    const previous = pages[index - 1];
+    return previous && page - previous > 1 ? [`ellipsis-${previous}`, page] : [page];
+  });
+}
+
 function CatalogProductCard({ product }: { product: ProductSummary }) {
   const { isFavorite, toggleFavorite } = useStorefront();
   const saved = isFavorite(product.id);
@@ -217,6 +232,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     : "featured";
 
   const [draftQuery, setDraftQuery] = useState(queryParam);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedFacets, setSelectedFacets] = useState<Record<FacetKey, string[]>>({
     productType: [],
     width: [],
@@ -262,6 +278,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   }, [activeCategory, activeSort, categoryProducts, facetOptions, normalizedQuery, selectedFacets]);
 
   function updateFilters(next: Record<string, string | null>) {
+    setCurrentPage(1);
     const params = new URLSearchParams(searchParams.toString());
 
     Object.entries(next).forEach(([key, value]) => {
@@ -282,6 +299,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   }
 
   function toggleFacet(facetKey: FacetKey, optionId: string) {
+    setCurrentPage(1);
     setSelectedFacets((current) => {
       const activeValues = current[facetKey];
       const nextValues = activeValues.includes(optionId)
@@ -296,6 +314,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   }
 
   function clearFacet(facetKey: FacetKey, optionId: string) {
+    setCurrentPage(1);
     setSelectedFacets((current) => ({
       ...current,
       [facetKey]: current[facetKey].filter((value) => value !== optionId)
@@ -303,6 +322,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   }
 
   function clearAllFacets() {
+    setCurrentPage(1);
     setSelectedFacets({
       productType: [],
       width: [],
@@ -312,6 +332,11 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   }
 
   const selectedFacetCount = getSelectedCount(selectedFacets);
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / CATALOG_PAGE_SIZE));
+  const activePage = Math.min(currentPage, totalPages);
+  const pageStart = (activePage - 1) * CATALOG_PAGE_SIZE;
+  const visibleProducts = filteredProducts.slice(pageStart, pageStart + CATALOG_PAGE_SIZE);
+  const paginationItems = getPaginationItems(activePage, totalPages);
   const totalLabel =
     filteredProducts.length === 1
       ? "1 product"
@@ -535,18 +560,36 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           {filteredProducts.length ? (
             <>
               <div className="catalog-product-grid">
-                {filteredProducts.slice(0, CATALOG_PAGE_SIZE).map((product) => (
+                {visibleProducts.map((product) => (
                   <CatalogProductCard product={product} key={product.id} />
                 ))}
               </div>
-              <nav className="catalog-pagination" aria-label="Product pages">
-                <button className="active" type="button">1</button>
-                <button type="button">2</button>
-                <button type="button">3</button>
-                <span>...</span>
-                <button type="button">14</button>
-                <button type="button">Next</button>
-              </nav>
+              {totalPages > 1 ? (
+                <nav className="catalog-pagination" aria-label="Product pages">
+                  {paginationItems.map((item) =>
+                    typeof item === "number" ? (
+                      <button
+                        className={item === activePage ? "active" : undefined}
+                        type="button"
+                        aria-current={item === activePage ? "page" : undefined}
+                        onClick={() => setCurrentPage(item)}
+                        key={item}
+                      >
+                        {item}
+                      </button>
+                    ) : (
+                      <span key={item}>...</span>
+                    )
+                  )}
+                  <button
+                    type="button"
+                    disabled={activePage === totalPages}
+                    onClick={() => setCurrentPage((page) => Math.min(page + 1, totalPages))}
+                  >
+                    Next
+                  </button>
+                </nav>
+              ) : null}
             </>
           ) : (
             <div className="empty-panel catalog-empty">

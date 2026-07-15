@@ -9470,8 +9470,8 @@ body.cookie-drawer-open {
 }
 
 .pdp-page .pdp-meta-line {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
   gap: 0;
   color: var(--color-muted);
 }
@@ -9480,6 +9480,7 @@ body.cookie-drawer-open {
   display: inline-flex;
   align-items: baseline;
   gap: 4px;
+  min-width: 0;
 }
 
 .pdp-page .pdp-meta-line div + div::before {
@@ -9494,8 +9495,13 @@ body.cookie-drawer-open {
 }
 
 .pdp-page .pdp-meta-line dd {
+  min-width: 0;
+  overflow: hidden;
   margin-top: 0;
   font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .pdp-page .pdp-rating-line {

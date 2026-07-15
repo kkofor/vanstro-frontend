@@ -23,11 +23,13 @@ export function ProductVariantIdentifiers({
     <dl className="pdp-meta-line" aria-label="Product identifiers">
       <div>
         <dt>Model #</dt>
-        <dd>{selectedProduct.manufacturerPartNumber ?? manufacturerPartNumber}</dd>
+        <dd title={selectedProduct.manufacturerPartNumber ?? manufacturerPartNumber}>
+          {selectedProduct.manufacturerPartNumber ?? manufacturerPartNumber}
+        </dd>
       </div>
       <div>
         <dt>SKU</dt>
-        <dd>{selectedProduct.sku}</dd>
+        <dd title={selectedProduct.sku}>{selectedProduct.sku}</dd>
       </div>
     </dl>
   );

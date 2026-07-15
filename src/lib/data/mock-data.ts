@@ -14,6 +14,10 @@ import { assetPath } from "@/lib/assets";
 import { getInventoryStatus } from "@/lib/commerce/product-inventory";
 import { originalSiteImageLibrary } from "@/lib/data/original-site-image-library";
 import { originalSiteImportedProducts } from "@/lib/data/original-site-products";
+import {
+  mb01ProductMetadataById,
+  mb01Products
+} from "@/lib/data/mb01-products";
 import { formatProductSize } from "@/lib/product/product-display";
 
 export const banners: Banner[] = [
@@ -608,10 +612,15 @@ function normalizeDealerStock<T extends ProductSummary>(product: T): T {
   };
 }
 
-export const products: ProductSummary[] = [
+const legacyCatalogProducts: ProductSummary[] = [
   ...featuredProducts.map(applyOriginalSiteImages),
   ...originalSiteImportedProducts.filter((product) => !featuredProductIds.has(product.id))
-].map(normalizeCabinetColor).map(normalizeDealerStock);
+];
+
+export const products: ProductSummary[] = (mb01Products.length
+  ? mb01Products
+  : legacyCatalogProducts
+).map(normalizeCabinetColor).map(normalizeDealerStock);
 
 const INVENTORY_UPDATED_AT = "2026-07-03T12:00:00.000Z";
 
@@ -642,7 +651,7 @@ function buildMockInventory(product: ProductSummary): ProductInventory {
 }
 
 const mockInventoryByProductId: Record<string, ProductInventory> = Object.fromEntries(
-  products.map((product) => [product.id, buildMockInventory(product)])
+  products.map((product) => [product.id, product.availability ?? buildMockInventory(product)])
 );
 
 const mockCommerceByProductId: Record<string, ProductCommerce> = {
@@ -747,7 +756,7 @@ function applyInventory<T extends ProductSummary>(product: T): T {
   return {
     ...product,
     availability,
-    inStock: availability.totalAvailable > 0
+    inStock: ["in_stock", "low_stock", "backorder"].includes(availability.status)
   };
 }
 
@@ -1039,13 +1048,15 @@ const detailCopyById: Record<
 
 export const productDetails: ProductDetail[] = products.map((product) => {
   const detailCopy = detailCopyById[product.id];
+  const mb01Metadata = mb01ProductMetadataById[product.id];
   const availability = mockInventoryByProductId[product.id] ?? buildMockInventory(product);
   const displayDimensions = formatProductSize(product.dimensions);
 
   return applyDynamicProductState({
     ...product,
     brand: "VanStro",
-    manufacturerPartNumber: detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
+    manufacturerPartNumber:
+      product.manufacturerPartNumber ?? detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
     packageQuantity: detailCopy?.packageQuantity ?? {
       each: 1,
       innerPack: 1
@@ -1060,9 +1071,11 @@ export const productDetails: ProductDetail[] = products.map((product) => {
       ],
     certificationRequired: product.category !== "Baseboards & Mouldings",
     description:
+      mb01Metadata?.description ??
       detailCopy?.description ??
       `${product.name} is a ${product.category.toLowerCase()} item with ${displayDimensions}. It is prepared from the original VanStro catalog assets for dealer stock, pickup, and local delivery workflows.`,
     productHighlights:
+      mb01Metadata?.productHighlights ??
       detailCopy?.productHighlights ?? [
         `${product.name} is mapped from the original VanStro product source imagery.`,
         `${displayDimensions} shown for project planning before checkout.`,
@@ -1093,14 +1106,14 @@ export const productDetails: ProductDetail[] = products.map((product) => {
     specifications: {
       Brand: "VanStro",
       SKU: product.sku,
-      "Manufacturer Part #": detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
+      "Manufacturer Part #":
+        product.manufacturerPartNumber ?? detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
       Category: product.category,
       Dimensions: displayDimensions,
       Finish: product.finish ?? "Painted or stained finish",
       Color: product.colorName ?? "White",
       Unit: product.unit,
-      Warranty: "Standard VanStro product warranty",
-      ...(detailCopy?.specifications ?? {})
+      ...(mb01Metadata?.specifications ?? detailCopy?.specifications ?? {})
     },
     inventory: availability.locations
   });

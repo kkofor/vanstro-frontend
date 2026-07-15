@@ -61,6 +61,27 @@ const serverApiBaseUrl =
   process.env.VANSTRO_WEBSITE_API_BASE_URL?.replace(/\/$/, "") ??
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "");
 
+const STATIC_HOME_FEATURED_SKUS = [
+  "011780130",
+  "013780130",
+  "015010130",
+  "017550130",
+  "023021412",
+  "011950130",
+  "034114222",
+  "060101111"
+];
+
+function getStaticHomeProducts() {
+  const featured = STATIC_HOME_FEATURED_SKUS.map((sku) =>
+    productsWithCommerce.find((product) => product.sku === sku)
+  ).filter((product): product is ProductSummary => Boolean(product));
+
+  return featured.length === HOME_PRODUCT_LIMIT
+    ? featured
+    : productsWithCommerce.slice(0, HOME_PRODUCT_LIMIT);
+}
+
 function asCurrencyCode(currency?: string): CurrencyCode {
   return currency === "USD" ? "USD" : "CAD";
 }
@@ -232,7 +253,7 @@ export async function getHomePageData() {
     banner: banners[0],
     products:
       apiProducts?.map(mapWebsiteProductToSummary).slice(0, HOME_PRODUCT_LIMIT) ??
-      productsWithCommerce.slice(0, HOME_PRODUCT_LIMIT),
+      getStaticHomeProducts(),
     articles,
     dealers: apiDealers ? mapWebsiteDealers(apiDealers) : dealers
   };

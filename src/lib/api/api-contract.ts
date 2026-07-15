@@ -69,6 +69,7 @@ export type InventoryStatus =
 export type ProductInventoryLocation = {
   dealerId: string;
   quantity: number;
+  quantityKnown?: boolean;
   quantityOnHand?: number;
   quantityReserved?: number;
   safetyStock?: number;

@@ -148,7 +148,7 @@ export function ProductDealerSelector({
               Distances are estimated from your current browsing region. Choose a dealer manually if location looks off.
             </p>
             <div className="pdp-dealer-list">
-              {dealerChoices.map(({ dealer, distanceKm, inventoryClass, inventoryLabel, quantity }) => {
+              {dealerChoices.map(({ dealer, distanceKm, inventory, inventoryClass, inventoryLabel, quantity }) => {
                 const selected = dealer.id === selectedDealer.id;
 
                 return (
@@ -180,8 +180,14 @@ export function ProductDealerSelector({
                       </small>
                     </span>
                     <span className="pdp-dealer-option-stock">
-                      <strong>{quantity}</strong>
-                      <small>stock</small>
+                      {inventory?.quantityKnown === false ? (
+                        <small>Confirmed at checkout</small>
+                      ) : (
+                        <>
+                          <strong>{quantity}</strong>
+                          <small>stock</small>
+                        </>
+                      )}
                     </span>
                     {selected ? (
                       <span className="pdp-dealer-option-check" aria-label="Selected dealer">

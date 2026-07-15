@@ -67,11 +67,12 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
   const effectivePrice = formatMoney(getEffectivePrice(product));
 
   function updateQuantity(nextQuantity: number) {
-    const stockCap = selectedStock > 0 ? selectedStock : 1;
+    const quantityKnown = selectedInventory?.quantityKnown !== false;
+    const stockCap = quantityKnown ? (selectedStock > 0 ? selectedStock : 1) : Number.MAX_SAFE_INTEGER;
     const clampedQuantity = Math.min(stockCap, Math.max(1, nextQuantity));
     setQuantity(clampedQuantity);
 
-    if (nextQuantity > stockCap && selectedStock > 0) {
+    if (quantityKnown && nextQuantity > stockCap && selectedStock > 0) {
       setQuantityNotice(`Only ${selectedStock} available at ${selectedDealer.city}.`);
       return;
     }

@@ -55,6 +55,9 @@ export function getAvailableQuantity(product: ProductSummary, dealerId: string) 
 export function canFulfillQuantity(product: ProductSummary, dealerId: string, quantity: number) {
   const location = getInventoryLocation(product, dealerId);
   if (!location) return false;
+  if (location.quantityKnown === false) {
+    return ["in_stock", "low_stock"].includes(location.status);
+  }
   return location.quantity >= quantity && ["in_stock", "low_stock"].includes(location.status);
 }
 
@@ -66,6 +69,7 @@ export function getInventoryLabel(location?: ProductInventoryLocation) {
   if (!location) return "Not available at selected dealer";
   if (location.status === "backorder") return "Backorder available";
   if (location.status === "unavailable") return "Unavailable";
+  if (location.quantityKnown === false) return "Available";
   if (location.quantity <= 0) return "Out of stock";
   if (location.quantity <= 3) return `${location.quantity} left`;
   return `${location.quantity} available`;

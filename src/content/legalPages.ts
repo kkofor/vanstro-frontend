@@ -537,7 +537,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "Available Regions",
-        "The legacy form lists service regions including Toronto, Markham, North York, Mississauga, Brampton, Vaughan, Richmond Hill, and Scarborough.",
+        "Current public career and service-region communication should route through the Winnipeg team unless VanStro publishes additional openings.",
         3
       ),
       section(

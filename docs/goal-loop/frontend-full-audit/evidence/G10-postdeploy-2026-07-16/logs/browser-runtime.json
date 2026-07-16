@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-07-16T08:38:30Z",
+  "baseUrl": "https://kkofor.github.io/vanstro-frontend/",
+  "method": "Codex in-app browser, load-state wait, rendered DOM asset inspection, natural image dimensions, and live variant interaction",
+  "routes": [
+    {
+      "route": "/",
+      "renderedImages": 23,
+      "loadedImagesAtObservation": 16,
+      "failedImages": 0,
+      "productImages": 8,
+      "loadedProductImages": 8,
+      "mb01DomReferences": 0,
+      "mb01Images": 0,
+      "emptyAltImages": 1
+    },
+    {
+      "route": "/products/",
+      "renderedImages": 31,
+      "loadedImagesAtObservation": 20,
+      "failedImages": 0,
+      "productImages": 28,
+      "loadedProductImagesAtObservation": 17,
+      "mb01DomReferences": 0,
+      "mb01Images": 0,
+      "emptyAltImages": 4,
+      "note": "Remaining product images were lazy and outside the observed viewport; none were failed."
+    },
+    {
+      "route": "/products/base-cabinet-b12-252/",
+      "renderedImages": 14,
+      "loadedImages": 14,
+      "failedImages": 0,
+      "productImages": 11,
+      "loadedProductImages": 11,
+      "mb01DomReferences": 0,
+      "mb01Images": 0,
+      "emptyAltImages": 1
+    },
+    {
+      "route": "/products/lazy-susan-base-lsb36-281/",
+      "renderedImages": 14,
+      "loadedImages": 14,
+      "failedImages": 0,
+      "productImages": 11,
+      "loadedProductImages": 11,
+      "mb01DomReferences": 0,
+      "mb01Images": 0,
+      "emptyAltImages": 1
+    }
+  ],
+  "variantInteraction": {
+    "route": "/products/lazy-susan-base-lsb36-281/",
+    "action": "Select Light Grey",
+    "checkedOption": "Light Grey",
+    "model": "LSB36-W-PWMS-LG",
+    "sku": "013790230",
+    "url": "https://kkofor.github.io/vanstro-frontend/products/lazy-susan-base-lsb36-281/?sku=013790230",
+    "overviewColorFinish": "Light Grey",
+    "imagePrefix": "/vanstro-frontend/assets/products/kitchen-cabinets/lazy-susan-base-lsb36-013790230-lsb36-w-pwms-lg-",
+    "failedImages": 0,
+    "mb01Images": 0,
+    "result": "PASS"
+  },
+  "altInterpretation": "Every rendered image has an alt attribute in the static artifact. Empty alt values belong to decorative or duplicated presentation images and are not missing attributes.",
+  "gate": "PASS"
+}

@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-07-16T04:36:31.178Z",
+  "verifiedAt": "2026-07-16T08:31:13.449Z",
+  "parentProducts": 139,
+  "authorityVariants": 300,
+  "matchedVariants": 300,
+  "mismatchedVariants": 0,
+  "uniqueSourceAssets": 1216,
+  "derivedAssets": 92,
+  "missingLocalAssets": 0,
+  "hashMismatches": 0,
+  "namingFailures": 0,
+  "missingExportAssets": 0,
+  "sourceHostMatches": [],
+  "outputHostMatches": [],
+  "pass": true
+}

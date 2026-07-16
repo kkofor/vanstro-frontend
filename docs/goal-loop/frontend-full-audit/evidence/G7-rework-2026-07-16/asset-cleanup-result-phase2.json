@@ -1,0 +1,2538 @@
+{
+  "executedAt": "2026-07-16T06:50:49.628Z",
+  "deletedCount": 281,
+  "deletedBytes": 15553288,
+  "resumedAfterProtectedStop": true,
+  "deleted": [
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-268_P_1777096728296.JPG",
+      "bytes": 55904,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-270_P_1777097002257.JPG",
+      "bytes": 58155,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b36-011790130-b36-pwms-wh-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-271_P_1777097087747.JPG",
+      "bytes": 56132,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-033.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-272_P_1777097234382.JPG",
+      "bytes": 46183,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db12-012710130-3db12-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-272_P_1777097242182.JPG",
+      "bytes": 53523,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db12-012710230-3db12-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-273_P_1777099778200.JPG",
+      "bytes": 47424,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db15-012720130-3db15-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-273_P_1777099859307.JPG",
+      "bytes": 53638,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db15-012720230-3db15-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-274_P_1777101332931.JPG",
+      "bytes": 51681,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db18-012730130-3db18-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-274_P_1777101342686.JPG",
+      "bytes": 57010,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db18-012730230-3db18-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-275_P_1777102224663.JPG",
+      "bytes": 56050,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db21-012740130-3db21-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-275_P_1777102256561.JPG",
+      "bytes": 58346,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db21-012740230-3db21-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-276_P_1777101416916.JPG",
+      "bytes": 56753,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db24-012750130-3db24-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-276_P_1777101474743.JPG",
+      "bytes": 57970,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db24-012750230-3db24-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-277_P_1777102457319.JPG",
+      "bytes": 53728,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-277_P_1777102487716.JPG",
+      "bytes": 60880,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770230-3db30-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-278_P_1777102575820.JPG",
+      "bytes": 56263,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-026.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-278_P_1777102617896.JPG",
+      "bytes": 54318,
+      "alreadyDeletedBeforeResume": true,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db33-012780230-3db33-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-279_P_1777102729104.JPG",
+      "bytes": 56263,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-026.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202604-source_img-279_P_1777102768794.JPG",
+      "bytes": 63153,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/3-drawer-base-3db36-012790230-3db36-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-267_P_1778653360648.JPG",
+      "bytes": 56121,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b27-011760130-b27-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-267_P_1778653370816.JPG",
+      "bytes": 57315,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b27-011760230-b27-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-268_P_1778653493185.JPG",
+      "bytes": 66106,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b30-011770230-b30-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-269_P_1778653752342.JPG",
+      "bytes": 57561,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b33-011780230-b33-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-270_P_1778654645059.JPG",
+      "bytes": 61868,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b36-011790230-b36-pwms-lg-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-271_P_1778800131701.JPG",
+      "bytes": 58206,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-cabinet-b42-011800230-b42-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-280_P_1778654518777.JPG",
+      "bytes": 52527,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-280_P_1778654559390.JPG",
+      "bytes": 57452,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780230-lsb33-w-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-281_P_1778654984846.JPG",
+      "bytes": 47599,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb36-013790130-lsb36-w-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-281_P_1778655020951.JPG",
+      "bytes": 57556,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb36-013790230-lsb36-w-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-282_P_1778655272892.JPG",
+      "bytes": 42825,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/spb9-014700131-spb9-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-282_P_1778655281147.JPG",
+      "bytes": 46576,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/spb9-014700231-spb9-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-283_P_1778657459384.JPG",
+      "bytes": 37510,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0930-015010130-w0930-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-283_P_1778657495902.JPG",
+      "bytes": 49393,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0930-015010230-w0930-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-284_P_1778660699360.JPG",
+      "bytes": 36597,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0936-015020130-w0936-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-284_P_1778660732243.JPG",
+      "bytes": 43724,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0936-015020230-w0936-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-285_P_1778662593697.JPG",
+      "bytes": 37245,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0942-015030130-w0942-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-285_P_1778662649888.JPG",
+      "bytes": 49041,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w0942-015030230-w0942-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-286_P_1778658149049.JPG",
+      "bytes": 40023,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1230-015040130-w1230-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-286_P_1778658186672.JPG",
+      "bytes": 45129,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1230-015040230-w1230-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-287_P_1778660843168.JPG",
+      "bytes": 36493,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1236-015050130-w1236-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-287_P_1778660874425.JPG",
+      "bytes": 42892,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1236-015050230-w1236-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-288_P_1778662754548.JPG",
+      "bytes": 37449,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1242-015060130-w1242-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-288_P_1778662810430.JPG",
+      "bytes": 47215,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1242-015060230-w1242-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-289_P_1778658255430.JPG",
+      "bytes": 40862,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1530-015070130-w1530-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-289_P_1778658309447.JPG",
+      "bytes": 51610,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1530-015070230-w1530-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-290_P_1778660948270.JPG",
+      "bytes": 38246,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1536-015080130-w1536-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-290_P_1778661012607.JPG",
+      "bytes": 44010,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1536-015080230-w1536-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-291_P_1778662856587.JPG",
+      "bytes": 36949,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1542-015090130-w1542-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-291_P_1778662913392.JPG",
+      "bytes": 46917,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1542-015090230-w1542-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-292_P_1778658471216.JPG",
+      "bytes": 42374,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1830-015100130-w1830-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-292_P_1778658534220.JPG",
+      "bytes": 49996,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1830-015100230-w1830-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-293_P_1778661194732.JPG",
+      "bytes": 37344,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1836-015110130-w1836-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-293_P_1778661248178.JPG",
+      "bytes": 49708,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1836-015110230-w1836-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-294_P_1778663040471.JPG",
+      "bytes": 39720,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1842-015120130-w1842-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-294_P_1778663093533.JPG",
+      "bytes": 46594,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w1842-015120230-w1842-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-295_P_1778658681651.JPG",
+      "bytes": 41926,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2130-015130130-w2130-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-295_P_1778658721619.JPG",
+      "bytes": 50391,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2130-015130230-w2130-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-296_P_1778661370253.JPG",
+      "bytes": 39084,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2136-015140130-w2136-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-296_P_1778661429757.JPG",
+      "bytes": 49020,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2136-015140230-w2136-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-297_P_1778663228028.JPG",
+      "bytes": 39612,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2142-015150130-w2142-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-297_P_1778663282204.JPG",
+      "bytes": 43079,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2142-015150230-w2142-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-298_P_1778658780054.JPG",
+      "bytes": 44857,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2430-015160130-w2430-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-298_P_1778658815252.JPG",
+      "bytes": 54321,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2430-015160230-w2430-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-299_P_1778661491659.JPG",
+      "bytes": 42296,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2436-015170130-w2436-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-299_P_1778661560713.JPG",
+      "bytes": 56152,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2436-015170230-w2436-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-300_P_1778663316002.JPG",
+      "bytes": 41601,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2442-015180130-w2442-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-300_P_1778663370860.JPG",
+      "bytes": 52305,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2442-015180230-w2442-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-301_P_1778659172987.JPG",
+      "bytes": 46353,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-301_P_1778659227353.JPG",
+      "bytes": 45885,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190230-w2730-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-302_P_1778661865911.JPG",
+      "bytes": 44805,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2736-015200130-w2736-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-302_P_1778661921197.JPG",
+      "bytes": 51087,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2736-015200230-w2736-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-303_P_1778663600649.JPG",
+      "bytes": 42123,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2742-015210130-w2742-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-303_P_1778663650263.JPG",
+      "bytes": 49964,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w2742-015210230-w2742-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-304_P_1778655416877.JPG",
+      "bytes": 38608,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3012-015220130-w3012-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-304_P_1778655428770.JPG",
+      "bytes": 49722,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3012-015220230-w3012-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-305_P_1778665545752.JPG",
+      "bytes": 38306,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301224-015230130-w301224-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-305_P_1778665599785.JPG",
+      "bytes": 41973,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301224-015230230-w301224-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-306_P_1778665634104.JPG",
+      "bytes": 36579,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301524-015240130-w301524-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-306_P_1778665697869.JPG",
+      "bytes": 43851,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301524-015240230-w301524-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-307_P_1778655521354.JPG",
+      "bytes": 41852,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3018-015250130-w3018-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-307_P_1778655529533.JPG",
+      "bytes": 51373,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3018-015250230-w3018-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-308_P_1778655626624.JPG",
+      "bytes": 39066,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301824-015260130-w301824-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-308_P_1778655683163.JPG",
+      "bytes": 46795,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w301824-015260230-w301824-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-309_P_1778655748523.JPG",
+      "bytes": 43717,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3024-015270130-w3024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-309_P_1778655785391.JPG",
+      "bytes": 52664,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3024-015270230-w3024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-310_P_1778655841820.JPG",
+      "bytes": 39926,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w302424-015280130-w302424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-310_P_1778655880997.JPG",
+      "bytes": 48590,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w302424-015280230-w302424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-311_P_1778745724796.JPG",
+      "bytes": 43459,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3030-015290130-w3030-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-311_P_1778745785314.JPG",
+      "bytes": 55310,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3030-015290230-w3030-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-312_P_1778661983814.JPG",
+      "bytes": 44415,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3036-015300130-w3036-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-312_P_1778662046785.JPG",
+      "bytes": 56775,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3036-015300230-w3036-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-313_P_1778663686348.JPG",
+      "bytes": 42303,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3042-015310130-w3042-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-313_P_1778663740867.JPG",
+      "bytes": 54582,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3042-015310230-w3042-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-314_P_1778665742114.JPG",
+      "bytes": 37255,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331224-015320130-w331224-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-314_P_1778665797300.JPG",
+      "bytes": 41007,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331224-015320230-w331224-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-315_P_1778665833290.JPG",
+      "bytes": 36547,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331524-015330130-w331524-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-315_P_1778665883583.JPG",
+      "bytes": 46656,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331524-015330230-w331524-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-316_P_1778665915402.JPG",
+      "bytes": 42652,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331824-015340130-w331824-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-316_P_1778665991438.JPG",
+      "bytes": 44681,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w331824-015340230-w331824-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-317_P_1778656026198.JPG",
+      "bytes": 42049,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3324-015350130-w3324-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-317_P_1778656061625.JPG",
+      "bytes": 52270,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3324-015350230-w3324-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-318_P_1778655941473.JPG",
+      "bytes": 41320,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w332424-015360130-w332424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-318_P_1778655976546.JPG",
+      "bytes": 46853,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w332424-015360230-w332424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-319_P_1778659567608.JPG",
+      "bytes": 43181,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3330-015370130-w3330-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-319_P_1778660239097.JPG",
+      "bytes": 55091,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3330-015370230-w3330-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-320_P_1778662110981.JPG",
+      "bytes": 44197,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3336-015380130-w3336-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-320_P_1778662163051.JPG",
+      "bytes": 51576,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3336-015380230-w3336-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-321_P_1778663854669.JPG",
+      "bytes": 41558,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3342-015390130-w3342-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-321_P_1778663908044.JPG",
+      "bytes": 56084,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3342-015390230-w3342-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-322_P_1778666031981.JPG",
+      "bytes": 39372,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361224-015400130-w361224-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-322_P_1778666081747.JPG",
+      "bytes": 41063,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361224-015400230-w361224-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-323_P_1778666122087.JPG",
+      "bytes": 38815,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361524-015410130-w361524-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-323_P_1778666176716.JPG",
+      "bytes": 42178,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361524-015410230-w361524-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-324_P_1778666208433.JPG",
+      "bytes": 40087,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361824-015420130-w361824-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-324_P_1778666267055.JPG",
+      "bytes": 44173,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w361824-015420230-w361824-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-325_P_1778657182678.JPG",
+      "bytes": 44367,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3624-015430130-w3624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-325_P_1778657217013.JPG",
+      "bytes": 49887,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3624-015430230-w3624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-326_P_1778657273865.JPG",
+      "bytes": 42055,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w362424-015440130-w362424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-326_P_1778657314401.JPG",
+      "bytes": 47753,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w362424-015440230-w362424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-327_P_1778660279643.JPG",
+      "bytes": 46481,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3630-015450130-w3630-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-327_P_1778660333075.JPG",
+      "bytes": 54816,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3630-015450230-w3630-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-328_P_1778662202119.JPG",
+      "bytes": 43920,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3636-015460130-w3636-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-328_P_1778662255591.JPG",
+      "bytes": 54495,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3636-015460230-w3636-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-329_P_1778663953257.JPG",
+      "bytes": 40392,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3642-015470130-w3642-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-329_P_1778664007518.JPG",
+      "bytes": 51772,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3642-015470230-w3642-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-330_P_1778660375337.JPG",
+      "bytes": 44243,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3930-015480130-w3930-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-330_P_1778660430195.JPG",
+      "bytes": 51664,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-w3930-015480230-w3930-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-331_P_1778658349631.JPG",
+      "bytes": 52568,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1530gd-015070330-w1530gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-331_P_1778658407576.JPG",
+      "bytes": 57348,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1530gd-015070430-w1530gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-332_P_1778661072598.JPG",
+      "bytes": 51577,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1536gd-015080330-w1536gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-332_P_1778661147649.JPG",
+      "bytes": 51904,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1536gd-015080430-w1536gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-333_P_1778662951068.JPG",
+      "bytes": 52215,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1542gd-015090330-w1542gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-333_P_1778663004271.JPG",
+      "bytes": 55485,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1542gd-015090430-w1542gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-334_P_1778658583256.JPG",
+      "bytes": 54215,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1830gd-015100330-w1830gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-334_P_1778658629274.JPG",
+      "bytes": 58821,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1830gd-015100430-w1830gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-335_P_1778661280965.JPG",
+      "bytes": 51994,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1836gd-015110330-w1836gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-335_P_1778661340242.JPG",
+      "bytes": 57459,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1836gd-015110430-w1836gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-336_P_1778663141871.JPG",
+      "bytes": 54082,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1842gd-015120330-w1842gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-336_P_1778663195815.JPG",
+      "bytes": 58519,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w1842gd-015120430-w1842gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-337_P_1778658975922.JPG",
+      "bytes": 60893,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2430gd-015160330-w2430gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-337_P_1778659009397.JPG",
+      "bytes": 68113,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2430gd-015160430-w2430gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-338_P_1778661596490.JPG",
+      "bytes": 55879,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2436gd-015170330-w2436gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-338_P_1778661681261.JPG",
+      "bytes": 64164,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2436gd-015170430-w2436gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-339_P_1778663403607.JPG",
+      "bytes": 58145,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2442gd-015180330-w2442gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-339_P_1778663454746.JPG",
+      "bytes": 59898,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w2442gd-015180430-w2442gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-340_P_1778659276583.JPG",
+      "bytes": 59036,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3030gd-015290330-w3030gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-340_P_1778659338567.JPG",
+      "bytes": 75020,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3030gd-015290430-w3030gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-341_P_1778662343065.JPG",
+      "bytes": 64032,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3036gd-015300330-w3036gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-341_P_1778662404546.JPG",
+      "bytes": 75302,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3036gd-015300430-w3036gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-342_P_1778663761464.JPG",
+      "bytes": 62355,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3042gd-015310330-w3042gd-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-342_P_1778663818891.JPG",
+      "bytes": 69100,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-cabinet-gd-w3042gd-015310430-w3042gd-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-343_P_1778659060829.JPG",
+      "bytes": 45934,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2430-015490130-dcw2430-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-343_P_1778659132956.JPG",
+      "bytes": 54691,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2430-015490230-dcw2430-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-344_P_1778661722545.JPG",
+      "bytes": 48655,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2436-015500130-dcw2436-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-344_P_1778661799179.JPG",
+      "bytes": 54925,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2436-015500230-dcw2436-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-345_P_1778663489791.JPG",
+      "bytes": 49283,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2442-015510130-dcw2442-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-345_P_1778663562638.JPG",
+      "bytes": 50743,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2442-015510230-dcw2442-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-346_P_1778668085611.JPG",
+      "bytes": 49118,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3030-016290130-mo3030-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-346_P_1778668144675.JPG",
+      "bytes": 58084,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3030-016290230-mo3030-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-347_P_1778668180240.JPG",
+      "bytes": 46699,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3036-016300130-mo3036-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-347_P_1778668186102.JPG",
+      "bytes": 46699,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3036-016300130-mo3036-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-347_P_1778668234617.JPG",
+      "bytes": 59504,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3036-016300230-mo3036-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-348_P_1778668277532.JPG",
+      "bytes": 44661,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3042-016310130-mo3042-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-348_P_1778668283332.JPG",
+      "bytes": 44661,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3042-016310130-mo3042-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-348_P_1778668331395.JPG",
+      "bytes": 56675,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/microwave-cabinet-mo3042-016310230-mo3042-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-349_P_1778667364966.JPG",
+      "bytes": 48053,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe630-015520532-oe630-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-349_P_1778667375583.JPG",
+      "bytes": 54545,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe630-015520632-oe630-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-349_P_1778667397065.JPG",
+      "bytes": 48053,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe630-015520532-oe630-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-350_P_1778667457985.JPG",
+      "bytes": 47498,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe636-015530532-oe636-pwms-wh-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-350_P_1778667462659.JPG",
+      "bytes": 47498,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe636-015530532-oe636-pwms-wh-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-350_P_1778667509179.JPG",
+      "bytes": 54656,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe636-015530632-oe636-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-351_P_1778667548888.JPG",
+      "bytes": 44176,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe642-015540532-oe642-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-351_P_1778667554325.JPG",
+      "bytes": 44176,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe642-015540532-oe642-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-351_P_1778667599092.JPG",
+      "bytes": 55157,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/open-end-shelf-oe642-015540632-oe642-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-352_P_1778668379911.JPG",
+      "bytes": 43139,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u188424-017550130-u188424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-352_P_1778668384629.JPG",
+      "bytes": 43139,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u188424-017550130-u188424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-352_P_1778668431619.JPG",
+      "bytes": 42042,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u188424-017550230-u188424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-353_P_1778668472540.JPG",
+      "bytes": 38453,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189024-017560130-u189024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-353_P_1778668483966.JPG",
+      "bytes": 38453,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189024-017560130-u189024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-353_P_1778668533922.JPG",
+      "bytes": 42478,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189024-017560230-u189024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-354_P_1778668574069.JPG",
+      "bytes": 41669,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189624-017570130-u189624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-354_P_1778668580437.JPG",
+      "bytes": 41669,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189624-017570130-u189624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-354_P_1778668627729.JPG",
+      "bytes": 40619,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u189624-017570230-u189624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-355_P_1778668668900.JPG",
+      "bytes": 42755,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-355_P_1778668691281.JPG",
+      "bytes": 42755,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-355_P_1778668746084.JPG",
+      "bytes": 46595,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-133.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-356_P_1778668809938.JPG",
+      "bytes": 42280,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249024-017590130-u249024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-356_P_1778668815123.JPG",
+      "bytes": 42280,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249024-017590130-u249024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-356_P_1778668876401.JPG",
+      "bytes": 47194,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249024-017590230-u249024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-357_P_1778668923547.JPG",
+      "bytes": 40523,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-357_P_1778668916793.JPG",
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249624-017600130-u249624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-357_P_1778669008466.JPG",
+      "bytes": 46203,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249624-017600230-u249624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-358_P_1778669046342.JPG",
+      "bytes": 43494,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u308424-017610130-u308424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-358_P_1778669052528.JPG",
+      "bytes": 43494,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u308424-017610130-u308424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-358_P_1778669104388.JPG",
+      "bytes": 48785,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u308424-017610230-u308424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-359_P_1778669142718.JPG",
+      "bytes": 43287,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309024-017620130-u309024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-359_P_1778669147785.JPG",
+      "bytes": 43287,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309024-017620130-u309024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-359_P_1778669192557.JPG",
+      "bytes": 50791,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309024-017620230-u309024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-360_P_1778669231918.JPG",
+      "bytes": 44038,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309624-017630130-u309624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-360_P_1778669256375.JPG",
+      "bytes": 44038,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309624-017630130-u309624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-360_P_1778669307398.JPG",
+      "bytes": 48774,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-cabinet-u309624-017630230-u309624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-361_P_1778745870735.JPG",
+      "bytes": 42141,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o308424-017640130-o308424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-361_P_1778745927615.JPG",
+      "bytes": 42141,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o308424-017640130-o308424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-361_P_1778746041798.JPG",
+      "bytes": 56134,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o308424-017640230-o308424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-362_P_1778746120014.JPG",
+      "bytes": 44094,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309024-017650130-o309024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-362_P_1778746159697.JPG",
+      "bytes": 44094,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309024-017650130-o309024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-362_P_1778746202961.JPG",
+      "bytes": 54242,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309024-017650230-o309024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-363_P_1778746254182.JPG",
+      "bytes": 42145,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309624-017660130-o309624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-363_P_1778746283278.JPG",
+      "bytes": 42145,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309624-017660130-o309624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-363_P_1778746331003.JPG",
+      "bytes": 54160,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o309624-017660230-o309624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-364_P_1778746387101.JPG",
+      "bytes": 42532,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o338424-017670130-o338424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-364_P_1778746418225.JPG",
+      "bytes": 42532,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o338424-017670130-o338424-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-364_P_1778746453512.JPG",
+      "bytes": 56111,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o338424-017670230-o338424-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-365_P_1778746501699.JPG",
+      "bytes": 45288,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339024-017680130-o339024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-365_P_1778746530574.JPG",
+      "bytes": 45288,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339024-017680130-o339024-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-365_P_1778746572211.JPG",
+      "bytes": 54918,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339024-017680230-o339024-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-366_P_1778746620025.JPG",
+      "bytes": 45378,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339624-017690130-o339624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-366_P_1778746650412.JPG",
+      "bytes": 45378,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339624-017690130-o339624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-366_P_1778746691329.JPG",
+      "bytes": 54015,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/oven-tall-cabinet-o339624-017690230-o339624-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-368_P_1778653528712.JPG",
+      "bytes": 53690,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-368_P_1778653602230.JPG",
+      "bytes": 53690,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-368_P_1778653614403.JPG",
+      "bytes": 58466,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb30-011950230-sb30-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-369_P_1778654378424.JPG",
+      "bytes": 52985,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb33-011960130-sb33-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-369_P_1778654410080.JPG",
+      "bytes": 52985,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb33-011960130-sb33-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-369_P_1778654428302.JPG",
+      "bytes": 58844,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb33-011960230-sb33-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-370_P_1778654687201.JPG",
+      "bytes": 53165,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb36-011970130-sb36-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-370_P_1778654795853.JPG",
+      "bytes": 53165,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb36-011970130-sb36-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-370_P_1778654842825.JPG",
+      "bytes": 59559,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/sink-base-sb36-011970230-sb36-pwms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-371_P_1778670828368.JPG",
+      "bytes": 40093,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/toe-kick-tkc-ms-019890142-tkc-ms-wh-gallery-03.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-371_P_1778670841646.JPG",
+      "bytes": 44718,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/toe-kick-tkc-ms-019890242-tkc-ms-lg-gallery-03.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-372_P_1778671110323.JPG",
+      "bytes": 59678,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/decorative-moulding-bcm8-dcm-019900142-bcm8-dcm-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-372_P_1778671140214.JPG",
+      "bytes": 59846,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/decorative-moulding-bcm8-dcm-019900242-bcm8-dcm-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-373_P_1778671975832.JPG",
+      "bytes": 37058,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/filler-f342-018810742-f342-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-373_P_1778672012595.JPG",
+      "bytes": 53339,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/filler-f342-018810842-f342-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-374_P_1778672309298.JPG",
+      "bytes": 43295,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/filler-f642-018830742-f642-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-374_P_1778672341472.JPG",
+      "bytes": 49437,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/filler-f642-018830842-f642-ms-lg-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-375_P_1778672564329.JPG",
+      "bytes": 40974,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-filler-f396-018820742-f396-ms-wh-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-375_P_1778672572467.JPG",
+      "bytes": 46986,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-filler-f396-018820842-f396-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-376_P_1778672747084.JPG",
+      "bytes": 40025,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-filler-f696-018840742-f696-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-376_P_1778672787333.JPG",
+      "bytes": 47444,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-filler-f696-018840842-f696-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-377_P_1778830759663.JPG",
+      "bytes": 33584,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1230-018910942-wep1230-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-377_P_1778830822558.JPG",
+      "bytes": 39586,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1230-018911042-wep1230-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-378_P_1778831049813.JPG",
+      "bytes": 37157,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1236-018920942-wep1236-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-378_P_1778831058396.JPG",
+      "bytes": 45621,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1236-018921042-wep1236-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-379_P_1778831219140.JPG",
+      "bytes": 37014,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-379_P_1778831228563.JPG",
+      "bytes": 50019,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018931042-wep1242-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-380_P_1778831266291.JPG",
+      "bytes": 41057,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-end-panel-vep2230-018850942-vep2230-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-380_P_1778831314931.JPG",
+      "bytes": 54764,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-end-panel-vep2230-018851042-vep2230-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-381_P_1778831533057.JPG",
+      "bytes": 41841,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-end-panel-bep2535-018860942-bep2535-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-381_P_1778831553005.JPG",
+      "bytes": 49252,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/base-end-panel-bep2535-018861042-bep2535-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-382_P_1778831629650.JPG",
+      "bytes": 37637,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-end-panel-tep2596-018870942-tep2596-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-382_P_1778831643880.JPG",
+      "bytes": 47856,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-end-panel-tep2596-018871042-tep2596-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-383_P_1778831739491.JPG",
+      "bytes": 42294,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-end-panel-tep3596-018880942-tep3596-ms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-383_P_1778831751023.JPG",
+      "bytes": 48011,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/kitchen-cabinets/tall-end-panel-tep3596-018881042-tep3596-ms-lg-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-384_P_1779682456404.JPG",
+      "bytes": 154379,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-384_P_1779682523208.JPG",
+      "bytes": 147692,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-401_P_1779876056378.JPG",
+      "bytes": 159142,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-401_P_1779876074479.JPG",
+      "bytes": 174658,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-171.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-402_P_1779879191950.JPG",
+      "bytes": 159142,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-402_P_1779879205827.JPG",
+      "bytes": 174658,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-171.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-403_P_1779952289354.JPG",
+      "bytes": 177059,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanity-cabinet-v663522-026621711-v663522-pwms-wh-top-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-403_P_1779952302114.JPG",
+      "bytes": 172219,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanity-cabinet-v663522-026621713-v663522-pwms-lg-top-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-404_P_1779960416327.JPG",
+      "bytes": 154379,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-404_P_1779960434320.JPG",
+      "bytes": 147692,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-405_P_1779962945881.JPG",
+      "bytes": 154379,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-405_P_1779962963145.JPG",
+      "bytes": 147692,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-406_P_1779963118719.JPG",
+      "bytes": 154379,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-406_P_1779963134821.JPG",
+      "bytes": 147692,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-407_P_1780215642366.JPG",
+      "bytes": 100694,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/baseboard-041-034114222-vs41-10ft-ea-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202605-source_img-407_P_1780215664315.JPG",
+      "bytes": 61182,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/baseboard-041-034114222-vs41-10ft-ea-gallery-04.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-409_P_1780467530017.JPG",
+      "bytes": 92824,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/baseboard-039-033918222-vs39-10ft-ea-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-409_P_1780467539816.JPG",
+      "bytes": 54888,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/baseboard-039-033918222-vs39-10ft-ea-gallery-02.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-409_P_1781592420504.JPG",
+      "bytes": 85351,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/vanstro-baseboards-mouldings-shared-product-detail-018.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-410_P_1780467394703.JPG",
+      "bytes": 92947,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/vanstro-baseboards-mouldings-shared-product-detail-031.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-410_P_1780467402775.JPG",
+      "bytes": 92947,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/vanstro-baseboards-mouldings-shared-product-detail-031.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-410_P_1780467409649.JPG",
+      "bytes": 57369,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/baseboard-035-033516222-vs35-10ft-ea-gallery-03.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-411_P_1780469866242.JPG",
+      "bytes": 96263,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/casing-049-034910320-vs49-7ft-ea-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-411_P_1780469874280.JPG",
+      "bytes": 58093,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/vanstro-baseboards-mouldings-shared-product-detail-169.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-411_P_1781592370659.JPG",
+      "bytes": 58093,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/baseboards-mouldings/vanstro-baseboards-mouldings-shared-product-detail-169.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-413_P_1780877456467.JPG",
+      "bytes": 143829,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/images-202606-source_img-415_P_1780890678462.jpg",
+      "bytes": 56486,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/original-site/themes-vanstro-images-new-logo.png",
+      "bytes": 17423,
+      "alreadyDeletedBeforeResume": false,
+      "reason": "unreferenced legacy/original-site file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/vanstro-logo.png"
+      ]
+    }
+  ]
+}

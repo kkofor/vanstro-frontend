@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-07-16T07:00:11.048Z",
+  "images": [
+    {
+      "sourcePath": "/assets/generated/category-doors-windows.png",
+      "sourceBytes": 1759115,
+      "outputPath": "/assets/generated/category-doors-windows.webp",
+      "outputBytes": 94812,
+      "bytesSaved": 1664303,
+      "reductionPercent": 94.6
+    },
+    {
+      "sourcePath": "/assets/generated/contact-support-hero-v1.png",
+      "sourceBytes": 1702025,
+      "outputPath": "/assets/generated/contact-support-hero-v1.webp",
+      "outputBytes": 67240,
+      "bytesSaved": 1634785,
+      "reductionPercent": 96
+    },
+    {
+      "sourcePath": "/assets/generated/dealer-program-handshake-v1.png",
+      "sourceBytes": 1982518,
+      "outputPath": "/assets/generated/dealer-program-handshake-v1.webp",
+      "outputBytes": 94592,
+      "bytesSaved": 1887926,
+      "reductionPercent": 95.2
+    },
+    {
+      "sourcePath": "/assets/generated/support-agent-v1.png",
+      "sourceBytes": 1712294,
+      "outputPath": "/assets/generated/support-agent-v1-192.webp",
+      "outputBytes": 7316,
+      "bytesSaved": 1704978,
+      "reductionPercent": 99.6
+    },
+    {
+      "sourcePath": "/assets/generated/vanstro-dealer-white-v1.png",
+      "sourceBytes": 2280615,
+      "outputPath": "/assets/generated/vanstro-dealer-white-v1.webp",
+      "outputBytes": 173568,
+      "bytesSaved": 2107047,
+      "reductionPercent": 92.4
+    },
+    {
+      "sourcePath": "/assets/generated/vanstro-guide-white-v1.png",
+      "sourceBytes": 1940176,
+      "outputPath": "/assets/generated/vanstro-guide-white-v1.webp",
+      "outputBytes": 96916,
+      "bytesSaved": 1843260,
+      "reductionPercent": 95
+    },
+    {
+      "sourcePath": "/assets/generated/vanstro-hero-white-v1.png",
+      "sourceBytes": 1564816,
+      "outputPath": "/assets/generated/vanstro-hero-white-v1.webp",
+      "outputBytes": 67938,
+      "bytesSaved": 1496878,
+      "reductionPercent": 95.7
+    }
+  ],
+  "totalSourceBytes": 12941559,
+  "totalOutputBytes": 602382,
+  "totalBytesSaved": 12339177,
+  "reductionPercent": 95.3
+}

@@ -1,0 +1,75 @@
+{
+  "generatedAt": "2026-07-16T08:36:34.705Z",
+  "deployedArtifact": {
+    "files": 2786,
+    "bytes": 127049624,
+    "htmlFiles": 171,
+    "textFiles": 1529,
+    "extensionCounts": {
+      ".html": 171,
+      ".txt": 1333,
+      ".js": 24,
+      ".css": 1,
+      ".png": 16,
+      ".webp": 99,
+      ".jpg": 1135,
+      ".gif": 6,
+      ".ico": 1
+    }
+  },
+  "layerScans": [
+    {
+      "layer": "deployed-commit-1eaf29e-source",
+      "scannedFiles": 86,
+      "scannedBytes": 2490495,
+      "matchingFiles": 0,
+      "occurrences": 0,
+      "uniqueUrls": 0
+    },
+    {
+      "layer": "deployed-commit-1eaf29e-pages-artifact",
+      "scannedFiles": 1529,
+      "scannedBytes": 50014849,
+      "matchingFiles": 0,
+      "occurrences": 0,
+      "uniqueUrls": 0
+    }
+  ],
+  "controlledAssets": {
+    "expected": 1216,
+    "missingPublic": 0,
+    "publicHashFailures": 0,
+    "missingExport": 0,
+    "exportHashFailures": 0,
+    "publicExportParityFailures": 0,
+    "unreferencedInExport": 0
+  },
+  "basePath": {
+    "value": "/vanstro-frontend",
+    "missingNetworkPathOccurrences": 0,
+    "routesWithMissingNetworkPaths": 0,
+    "embeddedRootAssetReferences": 0
+  },
+  "finalMetadata": {
+    "routes": 171,
+    "missingTitles": 0,
+    "missingDescriptions": 0,
+    "missingCanonicals": 0,
+    "invalidSchemas": 0,
+    "routesWithSchema": 171,
+    "missingOgTitle": 0,
+    "missingOgDescription": 0,
+    "missingOgImage": 171,
+    "missingTwitterCard": 0,
+    "missingTwitterImage": 171,
+    "missingImageAlt": 0,
+    "mb01Occurrences": 0
+  },
+  "gate": {
+    "deployedSourceZeroMb01": true,
+    "deployedArtifactZeroMb01": true,
+    "controlledAssetParity": true,
+    "basePathNetworkPaths": true,
+    "releaseReady": true
+  }
+}

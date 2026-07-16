@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-07-16T04:36:31.178Z",
+  "generatedAt": "2026-07-16T05:21:37.245Z",
+  "parentProducts": 139,
+  "publicVariants": 300,
+  "sourceAssetUrls": 1730,
+  "uniqueAssetBytes": 1216,
+  "downloaded": 1216,
+  "reused": 0,
+  "output": "/Users/zhangguannan/Documents/codex/vanstro/src/lib/data/mb01-products.ts"
+}

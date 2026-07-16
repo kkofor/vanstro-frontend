@@ -1,0 +1,207 @@
+{
+  "executedAt": "2026-07-16T06:47:07.260Z",
+  "deletedCount": 24,
+  "deletedBytes": 14793888,
+  "deleted": [
+    {
+      "publicPath": "/assets/generated/category-doors-windows.png",
+      "bytes": 1759115,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/category-doors-windows.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/contact-support-hero-v1.png",
+      "bytes": 1702025,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/contact-support-hero-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/dealer-program-handshake-v1.png",
+      "bytes": 1982518,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/dealer-program-handshake-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/support-agent-v1.png",
+      "bytes": 1712294,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/support-agent-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/support-agent-v1.webp",
+      "bytes": 84382,
+      "reason": "unreferenced full-size support image with active 192px replacement",
+      "retainedCopies": [
+        "/assets/generated/support-agent-v1-192.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-dealer-white-v1.png",
+      "bytes": 2280615,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-dealer-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-guide-white-v1.png",
+      "bytes": 1940176,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-guide-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-hero-white-v1.png",
+      "bytes": 1564816,
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-hero-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b01.gif",
+      "bytes": 147479,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b01.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b02.gif",
+      "bytes": 95321,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b02.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b03.gif",
+      "bytes": 79568,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b03.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b04.gif",
+      "bytes": 154734,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b04.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b05.gif",
+      "bytes": 221993,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b05.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b06.gif",
+      "bytes": 215910,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b06.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-logo.png",
+      "bytes": 17423,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/themes-vanstro-images-new-logo.png",
+        "/assets/vanstro-logo.png"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-269-base-cabinet.jpg",
+      "bytes": 51466,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-269_P_1778653714057.JPG",
+        "/assets/products/kitchen-cabinets/base-cabinet-b33-011780130-b33-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-281-lazy-susan.jpg",
+      "bytes": 47599,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-281_P_1778654984846.JPG",
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb36-013790130-lsb36-w-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-343-wall-cabinet.jpg",
+      "bytes": 45934,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-343_P_1778659060829.JPG",
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2430-015490130-dcw2430-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-357-pantry.jpg",
+      "bytes": 40523,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-357_P_1778668916793.JPG",
+        "/assets/original-site/images-202605-source_img-357_P_1778668923547.JPG",
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249624-017600130-u249624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-398-vanity-door.jpg",
+      "bytes": 134792,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-398_P_1780884887561.JPG"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-400-vanity-door.jpg",
+      "bytes": 93246,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-400_P_1780888348274.JPG"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-403-base-cabinet.jpg",
+      "bytes": 177059,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-403_P_1779952289354.JPG",
+        "/assets/products/bathroom-vanities/vanity-cabinet-v663522-026621711-v663522-pwms-wh-top-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-407-baseboard.jpg",
+      "bytes": 100694,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-407_P_1780215642366.JPG",
+        "/assets/products/baseboards-mouldings/baseboard-041-034114222-vs41-10ft-ea-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-414-vanity.jpg",
+      "bytes": 144206,
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-414_P_1781138572786.JPG"
+      ]
+    }
+  ]
+}

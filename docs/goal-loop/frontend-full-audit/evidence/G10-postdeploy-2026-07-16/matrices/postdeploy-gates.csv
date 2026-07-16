@@ -1,0 +1,13 @@
+gate,evidence,result
+deployed_commit,"HEAD origin/main remote main workflow and Pages deployment all 1eaf29e937333cf88f7f5cf4422c8bef93f313e8",PASS
+ci_typecheck,"workflow run 29483876321 build job",PASS
+ci_static_export,"workflow run 29483876321 generated and uploaded Pages artifact",PASS
+artifact_mb01,"0 occurrences across 1529 deployed text files",PASS
+live_route_mb01,"0 occurrences across 171 live routes",PASS
+browser_mb01,"0 DOM references and 0 rendered MB01 images across four representative routes",PASS
+controlled_asset_presence,"1216 of 1216 present in deployed artifact",PASS
+controlled_asset_hash,"1216 of 1216 match public and provenance SHA-256",PASS
+base_path,"0 missing prefixed paths and 0 root asset references",PASS
+variant_runtime,"Light Grey model SKU URL overview and images synchronized",PASS
+metadata_presence,"171 titles descriptions canonicals schemas OG titles and OG descriptions emitted",PASS
+social_images,"171 routes missing OG image and Twitter image",OPEN_G9_FINDING

@@ -1,0 +1,71 @@
+{
+  "observedAt": "2026-07-16T06:59:02.117Z",
+  "controlledAssets": 1216,
+  "controlledBytes": 73847074,
+  "formats": {
+    "jpg": 1123,
+    "png": 1,
+    "webp": 92
+  },
+  "missingExports": 0,
+  "provenanceHashFailures": 0,
+  "provenanceMimeFailures": 0,
+  "provenanceReferenceFailures": 0,
+  "pageOwnershipFailures": 0,
+  "pageRouteExportFailures": 0,
+  "filenameFailures": 0,
+  "extensionFailures": 0,
+  "controlledDuplicateGroups": 0,
+  "controlledDuplicateFiles": 0,
+  "publicFiles": 1257,
+  "publicBytes": 77034775,
+  "allPublicDuplicateGroups": 2,
+  "allPublicRedundantBytes": 91989,
+  "routes": 171,
+  "largestHtml": {
+    "path": "/products/",
+    "htmlBytes": 272603,
+    "htmlGzipBytes": 22251,
+    "htmlBrotliBytes": 15102,
+    "linkedResources": [
+      "/_next/static/chunks/3-hcgnhdc43b5.js",
+      "/_next/static/chunks/3zp-z98is50wh.js",
+      "/_next/static/chunks/0p2ef98k-888n.js",
+      "/_next/static/chunks/turbopack-2xon6kwnvj_v1.js",
+      "/_next/static/chunks/23-h494xxlz2v.js",
+      "/_next/static/chunks/0q2pe_jup165u.js",
+      "/_next/static/chunks/29z38u365gec_.js",
+      "/_next/static/chunks/0cz1d0mv5g_q7.js",
+      "/_next/static/chunks/296g9q5ul_fii.js",
+      "/_next/static/chunks/0l0nsh7ms49uh.css"
+    ],
+    "linkedResourceBytes": 867611,
+    "linkedResourceGzipBytes": 235780,
+    "linkedResourceBrotliBytes": 203244,
+    "imageTags": 3,
+    "lazyImageTags": 1,
+    "srcsetImageTags": 0,
+    "mb01Reference": false
+  },
+  "largestChunk": {
+    "url": "/_next/static/chunks/3zp-z98is50wh.js",
+    "bytes": 227522,
+    "gzipBytes": 71000,
+    "brotliBytes": 60662,
+    "controlledAssetPathOccurrences": 0,
+    "routesLinking": 171
+  },
+  "sourceHostMatches": [],
+  "buildHostMatches": [],
+  "clientModules": 31,
+  "imageMarkup": {
+    "sites": 22,
+    "images": 34,
+    "loadingAttributes": 34,
+    "srcSetAttributes": 0,
+    "sizesAttributes": 0,
+    "widthAttributes": 37,
+    "heightAttributes": 35,
+    "onErrorAttributes": 0
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "generatedAt": "2026-07-16T07:00:35.939Z",
+  "rows": [
+    {
+      "profile": "desktop",
+      "route": "home",
+      "before": {
+        "fcpMs": 1048,
+        "lcpMs": 7520,
+        "loadMs": 12887,
+        "requests": 104,
+        "encodedBytes": 17607435
+      },
+      "after": {
+        "fcpMs": 868,
+        "lcpMs": 868,
+        "loadMs": 2052,
+        "requests": 86,
+        "encodedBytes": 2460565,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 88.5,
+      "encodedBytesReductionPercent": 86
+    },
+    {
+      "profile": "desktop",
+      "route": "alternate-home",
+      "before": {
+        "fcpMs": 920,
+        "lcpMs": 7468,
+        "loadMs": 13026,
+        "requests": 109,
+        "encodedBytes": 17695745
+      },
+      "after": {
+        "fcpMs": 784,
+        "lcpMs": 784,
+        "loadMs": 2005,
+        "requests": 92,
+        "encodedBytes": 2491242,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 89.5,
+      "encodedBytesReductionPercent": 85.9
+    },
+    {
+      "profile": "desktop",
+      "route": "catalog",
+      "before": {
+        "fcpMs": 904,
+        "lcpMs": 4228,
+        "loadMs": 5256,
+        "requests": 87,
+        "encodedBytes": 7011225
+      },
+      "after": {
+        "fcpMs": 840,
+        "lcpMs": 1212,
+        "loadMs": 904,
+        "requests": 89,
+        "encodedBytes": 2484851,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 71.3,
+      "encodedBytesReductionPercent": 64.6
+    },
+    {
+      "profile": "desktop",
+      "route": "pdp",
+      "before": {
+        "fcpMs": 1204,
+        "lcpMs": 1340,
+        "loadMs": 4524,
+        "requests": 67,
+        "encodedBytes": 5034639
+      },
+      "after": {
+        "fcpMs": 788,
+        "lcpMs": 788,
+        "loadMs": 919,
+        "requests": 88,
+        "encodedBytes": 1894561,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 41.2,
+      "encodedBytesReductionPercent": 62.4
+    },
+    {
+      "profile": "desktop",
+      "route": "article",
+      "before": {
+        "fcpMs": 1124,
+        "lcpMs": 2100,
+        "loadMs": 4734,
+        "requests": 83,
+        "encodedBytes": 4404705
+      },
+      "after": {
+        "fcpMs": 812,
+        "lcpMs": 896,
+        "loadMs": 900,
+        "requests": 76,
+        "encodedBytes": 1618808,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 57.3,
+      "encodedBytesReductionPercent": 63.2
+    },
+    {
+      "profile": "desktop",
+      "route": "dashboard",
+      "before": {
+        "fcpMs": 1084,
+        "lcpMs": 1084,
+        "loadMs": 4564,
+        "requests": 72,
+        "encodedBytes": 4392313
+      },
+      "after": {
+        "fcpMs": 724,
+        "lcpMs": 724,
+        "loadMs": 742,
+        "requests": 76,
+        "encodedBytes": 1417711,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 33.2,
+      "encodedBytesReductionPercent": 67.7
+    },
+    {
+      "profile": "mobile",
+      "route": "home",
+      "before": {
+        "fcpMs": 5356,
+        "lcpMs": 46744,
+        "loadMs": 68417,
+        "requests": 47,
+        "encodedBytes": 13609472
+      },
+      "after": {
+        "fcpMs": 4504,
+        "lcpMs": 4504,
+        "loadMs": 7802,
+        "requests": 27,
+        "encodedBytes": 1519103,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 90.4,
+      "encodedBytesReductionPercent": 88.8
+    },
+    {
+      "profile": "mobile",
+      "route": "alternate-home",
+      "before": {
+        "fcpMs": 5384,
+        "lcpMs": 46680,
+        "loadMs": 75325,
+        "requests": 55,
+        "encodedBytes": 13711982
+      },
+      "after": {
+        "fcpMs": 4544,
+        "lcpMs": 4544,
+        "loadMs": 5952,
+        "requests": 38,
+        "encodedBytes": 1412808,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 90.3,
+      "encodedBytesReductionPercent": 89.7
+    },
+    {
+      "profile": "mobile",
+      "route": "catalog",
+      "before": {
+        "fcpMs": 5416,
+        "lcpMs": 26180,
+        "loadMs": 34157,
+        "requests": 56,
+        "encodedBytes": 6601883
+      },
+      "after": {
+        "fcpMs": 4792,
+        "lcpMs": 5692,
+        "loadMs": 5496,
+        "requests": 29,
+        "encodedBytes": 1276005,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 78.3,
+      "encodedBytesReductionPercent": 80.7
+    },
+    {
+      "profile": "mobile",
+      "route": "pdp",
+      "before": {
+        "fcpMs": 5424,
+        "lcpMs": 5424,
+        "loadMs": 27946,
+        "requests": 42,
+        "encodedBytes": 4623850
+      },
+      "after": {
+        "fcpMs": 5456,
+        "lcpMs": 5456,
+        "loadMs": 8329,
+        "requests": 41,
+        "encodedBytes": 1510228,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": -0.6,
+      "encodedBytesReductionPercent": 67.3
+    },
+    {
+      "profile": "mobile",
+      "route": "article",
+      "before": {
+        "fcpMs": 5408,
+        "lcpMs": 7640,
+        "loadMs": 25449,
+        "requests": 25,
+        "encodedBytes": 4133780
+      },
+      "after": {
+        "fcpMs": 4768,
+        "lcpMs": 5328,
+        "loadMs": 5448,
+        "requests": 25,
+        "encodedBytes": 1193378,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 30.3,
+      "encodedBytesReductionPercent": 71.1
+    },
+    {
+      "profile": "mobile",
+      "route": "dashboard",
+      "before": {
+        "fcpMs": 5308,
+        "lcpMs": 5308,
+        "loadMs": 25877,
+        "requests": 25,
+        "encodedBytes": 3932955
+      },
+      "after": {
+        "fcpMs": 4024,
+        "lcpMs": 4024,
+        "loadMs": 4357,
+        "requests": 25,
+        "encodedBytes": 992281,
+        "failedRequests": 0,
+        "brokenImages": 0,
+        "mb01Requests": 0
+      },
+      "lcpReductionPercent": 24.2,
+      "encodedBytesReductionPercent": 74.8
+    }
+  ]
+}

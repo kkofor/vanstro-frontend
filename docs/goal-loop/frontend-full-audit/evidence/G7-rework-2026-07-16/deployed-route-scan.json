@@ -1,0 +1,1555 @@
+{
+  "observedAt": "2026-07-16T06:03:21.145Z",
+  "baseUrl": "https://kkofor.github.io/vanstro-frontend",
+  "sourceRouteCount": 171,
+  "summary": {
+    "responses": 171,
+    "successful": 170,
+    "failed": 1,
+    "routesWithMb01References": 141,
+    "totalMb01References": 10784,
+    "routesWithLocalProductReferences": 0,
+    "totalLocalProductReferences": 0
+  },
+  "results": [
+    {
+      "route": "/",
+      "status": 200,
+      "bytes": 114798,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 109,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/_not-found/",
+      "status": 200,
+      "bytes": 41800,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/404.html",
+      "status": 200,
+      "bytes": 41800,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/404/",
+      "status": 200,
+      "bytes": 41800,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/about/",
+      "status": 200,
+      "bytes": 54982,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/account/login/",
+      "status": 200,
+      "bytes": 41546,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/account/register/",
+      "status": 200,
+      "bytes": 41935,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/articles/",
+      "status": 200,
+      "bytes": 45449,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/articles/how-to-measure-for-cabinets/",
+      "status": 200,
+      "bytes": 42252,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/articles/pickup-and-delivery-options/",
+      "status": 200,
+      "bytes": 42268,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/articles/what-finishes-are-available/",
+      "status": 200,
+      "bytes": 42300,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/careers/",
+      "status": 200,
+      "bytes": 60970,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/cart/",
+      "status": 200,
+      "bytes": 40874,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/checkout/",
+      "status": 200,
+      "bytes": 40864,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/contact/",
+      "status": 200,
+      "bytes": 66351,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/cookie-settings/",
+      "status": 200,
+      "bytes": 76310,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/dashboard/",
+      "status": 200,
+      "bytes": 40649,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/dealer-program/",
+      "status": 200,
+      "bytes": 62572,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/dealer-services-and-responsibility/",
+      "status": 200,
+      "bytes": 84731,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/dealers/apply/",
+      "status": 200,
+      "bytes": 64093,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/favorites/",
+      "status": 200,
+      "bytes": 40814,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/legal-disclaimer/",
+      "status": 200,
+      "bytes": 73047,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/orders/demo-order/",
+      "status": 200,
+      "bytes": 41480,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/privacy/",
+      "status": 200,
+      "bytes": 89277,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/",
+      "status": 200,
+      "bytes": 460352,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 1801,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db12-272/",
+      "status": 200,
+      "bytes": 103009,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db15-273/",
+      "status": 200,
+      "bytes": 103029,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db18-274/",
+      "status": 200,
+      "bytes": 103029,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db21-275/",
+      "status": 200,
+      "bytes": 103009,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db24-276/",
+      "status": 200,
+      "bytes": 103009,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db30-277/",
+      "status": 200,
+      "bytes": 103009,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db33-278/",
+      "status": 200,
+      "bytes": 103029,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/3-drawer-base-3db36-279/",
+      "status": 200,
+      "bytes": 103029,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/Aluminumalloyhandle/",
+      "status": 404,
+      "bytes": 41800,
+      "cacheControl": null,
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b12-252/",
+      "status": 200,
+      "bytes": 102855,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b15-253/",
+      "status": 200,
+      "bytes": 102855,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b18-254/",
+      "status": 200,
+      "bytes": 102855,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b21-265/",
+      "status": 200,
+      "bytes": 102877,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b24-266/",
+      "status": 200,
+      "bytes": 102857,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b27-267/",
+      "status": 200,
+      "bytes": 102857,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b30-268/",
+      "status": 200,
+      "bytes": 103206,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b33-269/",
+      "status": 200,
+      "bytes": 103186,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b36-270/",
+      "status": 200,
+      "bytes": 103218,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-cabinet-b42-271/",
+      "status": 200,
+      "bytes": 103186,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-end-panel-bep2535-381/",
+      "status": 200,
+      "bytes": 98114,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/base-end-panel-vep2230-380/",
+      "status": 200,
+      "bytes": 98114,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/baseboard-035-410/",
+      "status": 200,
+      "bytes": 96583,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 38,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/baseboard-039-409/",
+      "status": 200,
+      "bytes": 96583,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 38,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/baseboard-041-407/",
+      "status": 200,
+      "bytes": 95944,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 33,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/casing-049-411/",
+      "status": 200,
+      "bytes": 96584,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 38,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/decorative-moulding-bcm8-dcm-372/",
+      "status": 200,
+      "bytes": 98419,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/diagonal-corner-wall-dcw2430-343/",
+      "status": 200,
+      "bytes": 103500,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/diagonal-corner-wall-dcw2436-344/",
+      "status": 200,
+      "bytes": 103500,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/diagonal-corner-wall-dcw2442-345/",
+      "status": 200,
+      "bytes": 103500,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/filler-f342-373/",
+      "status": 200,
+      "bytes": 97703,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/filler-f642-374/",
+      "status": 200,
+      "bytes": 97703,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/lazy-susan-base-lsb33-280/",
+      "status": 200,
+      "bytes": 103125,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/lazy-susan-base-lsb36-281/",
+      "status": 200,
+      "bytes": 103125,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/lazy-susan-base-spb9-282/",
+      "status": 200,
+      "bytes": 102362,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/microwave-cabinet-mo3030-346/",
+      "status": 200,
+      "bytes": 103207,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/microwave-cabinet-mo3036-347/",
+      "status": 200,
+      "bytes": 103207,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/microwave-cabinet-mo3042-348/",
+      "status": 200,
+      "bytes": 103207,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/open-end-shelf-oe630-349/",
+      "status": 200,
+      "bytes": 101074,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 47,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/open-end-shelf-oe636-350/",
+      "status": 200,
+      "bytes": 101074,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 47,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/open-end-shelf-oe642-351/",
+      "status": 200,
+      "bytes": 101074,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 47,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/oven-tall-cabinet-o308424-361/",
+      "status": 200,
+      "bytes": 103681,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/oven-tall-cabinet-o309024-362/",
+      "status": 200,
+      "bytes": 103661,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/oven-tall-cabinet-o309624-363/",
+      "status": 200,
+      "bytes": 103641,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/oven-tall-cabinet-o338424-364/",
+      "status": 200,
+      "bytes": 103661,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/oven-tall-cabinet-o339024-365/",
+      "status": 200,
+      "bytes": 103641,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/sink-base-sb30-368/",
+      "status": 200,
+      "bytes": 102497,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/sink-base-sb33-369/",
+      "status": 200,
+      "bytes": 102497,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/sink-base-sb36-370/",
+      "status": 200,
+      "bytes": 102781,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-o339624-366/",
+      "status": 200,
+      "bytes": 103618,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u188424-352/",
+      "status": 200,
+      "bytes": 103061,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u189024-353/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u189624-354/",
+      "status": 200,
+      "bytes": 103061,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u248424-355/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u249024-356/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u249624-357/",
+      "status": 200,
+      "bytes": 103039,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u308424-358/",
+      "status": 200,
+      "bytes": 103039,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u309024-359/",
+      "status": 200,
+      "bytes": 103039,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-cabinet-u309624-360/",
+      "status": 200,
+      "bytes": 103050,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-end-panel-tep2596-382/",
+      "status": 200,
+      "bytes": 98121,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-end-panel-tep3596-383/",
+      "status": 200,
+      "bytes": 98121,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-filler-f396-375/",
+      "status": 200,
+      "bytes": 97863,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/tall-filler-f696-376/",
+      "status": 200,
+      "bytes": 97863,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/toe-kick-tkc-ms-371/",
+      "status": 200,
+      "bytes": 97868,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 42,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3021-door-tdl-400/",
+      "status": 200,
+      "bytes": 104236,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3021-door-tdr-398/",
+      "status": 200,
+      "bytes": 104326,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3021-doors-tdl-415/",
+      "status": 200,
+      "bytes": 104394,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3021-doors-tdr-414/",
+      "status": 200,
+      "bytes": 104394,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3621tdl-412/",
+      "status": 200,
+      "bytes": 104094,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v3621tdr-413/",
+      "status": 200,
+      "bytes": 104090,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v4221-401/",
+      "status": 200,
+      "bytes": 103864,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v4821-402/",
+      "status": 200,
+      "bytes": 103864,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-v663522-403/",
+      "status": 200,
+      "bytes": 103996,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-vs24-384/",
+      "status": 200,
+      "bytes": 103789,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-vs27-404/",
+      "status": 200,
+      "bytes": 103789,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-vs30-405/",
+      "status": 200,
+      "bytes": 103789,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/vanity-cabinet-vs36-406/",
+      "status": 200,
+      "bytes": 103789,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 70,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1530gd-331/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1536gd-332/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1542gd-333/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1830gd-334/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1836gd-335/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w1842gd-336/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w2430gd-337/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w2436gd-338/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w2442gd-339/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w3030gd-340/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w3036gd-341/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-gd-w3042gd-342/",
+      "status": 200,
+      "bytes": 103229,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w0930-283/",
+      "status": 200,
+      "bytes": 102914,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w0936-284/",
+      "status": 200,
+      "bytes": 102914,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w0942-285/",
+      "status": 200,
+      "bytes": 102914,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1230-286/",
+      "status": 200,
+      "bytes": 102643,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1236-287/",
+      "status": 200,
+      "bytes": 102931,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1242-288/",
+      "status": 200,
+      "bytes": 102931,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1530-289/",
+      "status": 200,
+      "bytes": 102643,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1536-290/",
+      "status": 200,
+      "bytes": 102643,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1542-291/",
+      "status": 200,
+      "bytes": 102951,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1830-292/",
+      "status": 200,
+      "bytes": 102951,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1836-293/",
+      "status": 200,
+      "bytes": 102643,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w1842-294/",
+      "status": 200,
+      "bytes": 102931,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2130-295/",
+      "status": 200,
+      "bytes": 102931,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2136-296/",
+      "status": 200,
+      "bytes": 102931,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2142-297/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2430-298/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2436-299/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2442-300/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2730-301/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2736-302/",
+      "status": 200,
+      "bytes": 102953,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w2742-303/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3012-304/",
+      "status": 200,
+      "bytes": 102645,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 64,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w301224-305/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w301524-306/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3018-307/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w301824-308/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3024-309/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w302424-310/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3030-311/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3036-312/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3042-313/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w331224-314/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w331524-315/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w331824-316/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3324-317/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w332424-318/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3330-319/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3336-320/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3342-321/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w361224-322/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w361524-323/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w361824-324/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3624-325/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w362424-326/",
+      "status": 200,
+      "bytes": 103041,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3630-327/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3636-328/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3642-329/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-cabinet-w3930-330/",
+      "status": 200,
+      "bytes": 102933,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 67,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-end-panel-wep1230-377/",
+      "status": 200,
+      "bytes": 97473,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 37,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-end-panel-wep1236-378/",
+      "status": 200,
+      "bytes": 96815,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 32,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/products/wall-end-panel-wep1242-379/",
+      "status": 200,
+      "bytes": 97473,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 37,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/return-policy/",
+      "status": 200,
+      "bytes": 82481,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/terms-and-conditions/",
+      "status": 200,
+      "bytes": 82242,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/v1-1/",
+      "status": 200,
+      "bytes": 119442,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 109,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/zh/about/",
+      "status": 200,
+      "bytes": 54336,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/zh/contact/",
+      "status": 200,
+      "bytes": 66513,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/zh/dealer-program/",
+      "status": 200,
+      "bytes": 61566,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    },
+    {
+      "route": "/zh/dealers/apply/",
+      "status": 200,
+      "bytes": 63858,
+      "cacheControl": "max-age=600",
+      "contentType": "text/html; charset=utf-8",
+      "mb01References": 0,
+      "localProductReferences": 0
+    }
+  ]
+}

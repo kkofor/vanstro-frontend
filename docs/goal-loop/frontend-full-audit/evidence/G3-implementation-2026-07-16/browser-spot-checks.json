@@ -1,0 +1,81 @@
+{
+  "testedAt": "2026-07-16T05:31:00.000Z",
+  "environment": "Local Next.js development server at 127.0.0.1:3002; no external writes",
+  "checks": [
+    {
+      "name": "Exact missing-variant SKU search",
+      "url": "/products?q=023021312",
+      "status": "Pass",
+      "evidence": {
+        "displayedSku": "023021312",
+        "displayedPrice": "$368.00 / each",
+        "productHref": "/products/vanity-cabinet-v3021-door-tdl-400/?sku=023021312",
+        "primaryImage": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-primary.jpg",
+        "mb01Images": 0
+      }
+    },
+    {
+      "name": "Variant PDP deep link",
+      "url": "/products/vanity-cabinet-v3021-door-tdl-400/?sku=023021312",
+      "status": "Pass",
+      "evidence": {
+        "selectedSku": "023021312",
+        "model": "V3021STDL-PWMS-WH",
+        "finish": "White cabinet only",
+        "price": "$368.00 / each",
+        "primaryImage": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-primary.jpg",
+        "mb01Images": 0
+      }
+    },
+    {
+      "name": "Variant switch changes the complete fact set",
+      "url": "/products/vanity-cabinet-v3021-door-tdl-400/?sku=023021314",
+      "status": "Pass",
+      "evidence": {
+        "selectedSku": "023021314",
+        "model": "V3021STDL-PWMS-LG",
+        "finish": "Light Grey cabinet only",
+        "price": "$368.00 / each",
+        "specificationOption": "V3021STDL-PWMS-LG",
+        "primaryImage": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021314-v3021stdl-pwms-lg-primary.jpg",
+        "mb01Images": 0
+      }
+    },
+    {
+      "name": "Handle product 192 mm variant",
+      "url": "/products/Aluminumalloyhandle/?sku=060102411",
+      "status": "Pass",
+      "evidence": {
+        "name": "Aluminum alloy handle",
+        "selectedSku": "060102411",
+        "model": "CTC[192mm]",
+        "price": "$8.99 / each",
+        "descriptionContains": "Center-to-Center: 192 mm Overall Length: 210 mm",
+        "primaryImage": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-primary.jpg",
+        "mb01Images": 0
+      }
+    },
+    {
+      "name": "Handle variant switch and URL persistence",
+      "url": "/products/Aluminumalloyhandle/?sku=060101111",
+      "status": "Pass",
+      "evidence": {
+        "selectedSku": "060101111",
+        "model": "CTC[96mm]",
+        "price": "$5.99 / each",
+        "urlUpdatedAfterSelection": true,
+        "primaryImage": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg"
+      }
+    },
+    {
+      "name": "Rendered controlled assets",
+      "status": "Pass",
+      "evidence": {
+        "allCheckedImagesComplete": true,
+        "allCheckedImagesHaveNaturalDimensions": true,
+        "consoleWarnings": 0,
+        "consoleErrors": 0
+      }
+    }
+  ]
+}

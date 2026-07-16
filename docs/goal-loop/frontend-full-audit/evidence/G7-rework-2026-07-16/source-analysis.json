@@ -1,0 +1,382 @@
+{
+  "observedAt": "2026-07-16T06:59:02.117Z",
+  "clientModules": [
+    {
+      "path": "src/components/account/CustomerAuthForm.tsx",
+      "bytes": 2364,
+      "lines": 52
+    },
+    {
+      "path": "src/components/checkout/CartAddedDrawer.tsx",
+      "bytes": 4992,
+      "lines": 125
+    },
+    {
+      "path": "src/components/checkout/CartClient.tsx",
+      "bytes": 3866,
+      "lines": 122
+    },
+    {
+      "path": "src/components/checkout/CheckoutClient.tsx",
+      "bytes": 4592,
+      "lines": 130
+    },
+    {
+      "path": "src/components/checkout/OrderDetailClient.tsx",
+      "bytes": 2432,
+      "lines": 80
+    },
+    {
+      "path": "src/components/contact/ContactChatButton.tsx",
+      "bytes": 844,
+      "lines": 36
+    },
+    {
+      "path": "src/components/dashboard/DashboardShell.tsx",
+      "bytes": 44500,
+      "lines": 1549
+    },
+    {
+      "path": "src/components/home/HomePage.tsx",
+      "bytes": 10942,
+      "lines": 338
+    },
+    {
+      "path": "src/components/home/HomePageV11.tsx",
+      "bytes": 12915,
+      "lines": 397
+    },
+    {
+      "path": "src/components/layout/CookieBar.tsx",
+      "bytes": 3032,
+      "lines": 102
+    },
+    {
+      "path": "src/components/layout/CookiePreferenceDrawer.tsx",
+      "bytes": 2971,
+      "lines": 105
+    },
+    {
+      "path": "src/components/layout/CookiePreferencesButton.tsx",
+      "bytes": 413,
+      "lines": 20
+    },
+    {
+      "path": "src/components/layout/CookieSettingsClient.tsx",
+      "bytes": 5108,
+      "lines": 159
+    },
+    {
+      "path": "src/components/layout/CustomerSupportWidget.tsx",
+      "bytes": 4188,
+      "lines": 138
+    },
+    {
+      "path": "src/components/layout/FloatingSupportWidget.tsx",
+      "bytes": 10278,
+      "lines": 303
+    },
+    {
+      "path": "src/components/layout/LocationDetector.tsx",
+      "bytes": 4330,
+      "lines": 139
+    },
+    {
+      "path": "src/components/layout/SiteHeader.tsx",
+      "bytes": 10103,
+      "lines": 297
+    },
+    {
+      "path": "src/components/product/FavoritesClient.tsx",
+      "bytes": 772,
+      "lines": 30
+    },
+    {
+      "path": "src/components/product/ProductBuyPanel.tsx",
+      "bytes": 3270,
+      "lines": 90
+    },
+    {
+      "path": "src/components/product/ProductCard.tsx",
+      "bytes": 4950,
+      "lines": 146
+    },
+    {
+      "path": "src/components/product/ProductDealerSelector.tsx",
+      "bytes": 7477,
+      "lines": 206
+    },
+    {
+      "path": "src/components/product/ProductDetailMain.tsx",
+      "bytes": 8363,
+      "lines": 230
+    },
+    {
+      "path": "src/components/product/ProductFinishSelector.tsx",
+      "bytes": 2550,
+      "lines": 74
+    },
+    {
+      "path": "src/components/product/ProductImageGallery.tsx",
+      "bytes": 6786,
+      "lines": 182
+    },
+    {
+      "path": "src/components/product/ProductPurchaseActions.tsx",
+      "bytes": 7165,
+      "lines": 217
+    },
+    {
+      "path": "src/components/product/ProductReviewOpenButton.tsx",
+      "bytes": 338,
+      "lines": 16
+    },
+    {
+      "path": "src/components/product/ProductReviewSection.tsx",
+      "bytes": 13218,
+      "lines": 353
+    },
+    {
+      "path": "src/components/product/ProductVariantContext.tsx",
+      "bytes": 1627,
+      "lines": 54
+    },
+    {
+      "path": "src/components/product/ProductVariantIdentifiers.tsx",
+      "bytes": 1041,
+      "lines": 37
+    },
+    {
+      "path": "src/components/product/ProductsExplorer.tsx",
+      "bytes": 24322,
+      "lines": 701
+    },
+    {
+      "path": "src/components/storefront/StorefrontProvider.tsx",
+      "bytes": 9012,
+      "lines": 297
+    }
+  ],
+  "imageMarkup": [
+    {
+      "path": "src/app/about/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/articles/[slug]/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/articles/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/contact/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/dealer-program/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/zh/about/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/zh/contact/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/app/zh/dealer-program/page.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/checkout/CartAddedDrawer.tsx",
+      "imageCount": 2,
+      "loadingAttributes": 2,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 2,
+      "heightAttributes": 2,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/checkout/CartClient.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/home/HomePage.tsx",
+      "imageCount": 5,
+      "loadingAttributes": 5,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 5,
+      "heightAttributes": 5,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/home/HomePageV11.tsx",
+      "imageCount": 5,
+      "loadingAttributes": 5,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 5,
+      "heightAttributes": 5,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/layout/FloatingSupportWidget.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/layout/SecondaryPageHero.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/layout/SiteFooter.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 2,
+      "heightAttributes": 2,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/layout/SiteHeader.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/legal/LegalPageTemplate.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/product/ProductCard.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/product/ProductDetailMain.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/product/ProductImageGallery.tsx",
+      "imageCount": 3,
+      "loadingAttributes": 3,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 3,
+      "heightAttributes": 3,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/product/ProductReviewSection.tsx",
+      "imageCount": 1,
+      "loadingAttributes": 1,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 1,
+      "heightAttributes": 1,
+      "onErrorAttributes": 0
+    },
+    {
+      "path": "src/components/product/ProductsExplorer.tsx",
+      "imageCount": 2,
+      "loadingAttributes": 2,
+      "srcSetAttributes": 0,
+      "sizesAttributes": 0,
+      "widthAttributes": 4,
+      "heightAttributes": 2,
+      "onErrorAttributes": 0
+    }
+  ]
+}

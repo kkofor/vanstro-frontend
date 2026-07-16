@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-07-16T06:59:02.117Z",
+  "groups": [
+    {
+      "sha256": "e034698505d883ba01be9e5e5e9f1c148d8471ddeee23751cac416657aea036d",
+      "bytesPerFile": 51466,
+      "files": [
+        {
+          "path": "assets/original-site/images-202605-source_img-269_P_1778653714057.JPG",
+          "bytes": 51466
+        },
+        {
+          "path": "assets/products/kitchen-cabinets/base-cabinet-b33-011780130-b33-pwms-wh-primary.jpg",
+          "bytes": 51466
+        }
+      ],
+      "redundantBytes": 51466,
+      "controlledProductFiles": 1,
+      "classification": "controlled-and-legacy-copy"
+    },
+    {
+      "sha256": "177592b40441f1db218e33ce838f587c29604a9203294cda524f4cb25fa71d5c",
+      "bytesPerFile": 40523,
+      "files": [
+        {
+          "path": "assets/original-site/images-202605-source_img-357_P_1778668916793.JPG",
+          "bytes": 40523
+        },
+        {
+          "path": "assets/products/kitchen-cabinets/tall-cabinet-u249624-017600130-u249624-pwms-wh-primary.jpg",
+          "bytes": 40523
+        }
+      ],
+      "redundantBytes": 40523,
+      "controlledProductFiles": 1,
+      "classification": "controlled-and-legacy-copy"
+    }
+  ]
+}

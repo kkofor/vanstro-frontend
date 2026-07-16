@@ -1,0 +1,239 @@
+{
+  "generatedAt": "2026-07-16T06:46:48.669Z",
+  "rules": [
+    "source reference count must be zero",
+    "current static export reference count must be zero",
+    "legacy files require a byte-identical retained copy",
+    "generated PNG and support candidates require an active optimized replacement"
+  ],
+  "sourceReferenceCount": 1521,
+  "exportReferenceCount": 1228,
+  "candidateCount": 24,
+  "candidateBytes": 14793888,
+  "candidates": [
+    {
+      "publicPath": "/assets/generated/category-doors-windows.png",
+      "bytes": 1759115,
+      "sha256": "3759f8da0a82b582ffb06d5c7cf5a0c208bd4ccb4adeca4ea9ee26540d33d1b2",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/category-doors-windows.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/contact-support-hero-v1.png",
+      "bytes": 1702025,
+      "sha256": "60aee11d5961f80c1b30799866556258d87b1447bb6e91826588b8ecfb1f2aca",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/contact-support-hero-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/dealer-program-handshake-v1.png",
+      "bytes": 1982518,
+      "sha256": "33d885d4d2a349c72a0a93ee098056da06e7d4d3e63b365bb50886dfde0f58fb",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/dealer-program-handshake-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/support-agent-v1.png",
+      "bytes": 1712294,
+      "sha256": "6904d69032db192c252108f65ba66926359101065bf004c58861e000f2b29125",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/support-agent-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/support-agent-v1.webp",
+      "bytes": 84382,
+      "sha256": "0d2e39d1aa761affcc089c41f6a7238ccb2f40ae8d39be3abcd6ab836b425698",
+      "reason": "unreferenced full-size support image with active 192px replacement",
+      "retainedCopies": [
+        "/assets/generated/support-agent-v1-192.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-dealer-white-v1.png",
+      "bytes": 2280615,
+      "sha256": "ac65b4f642463e87e175d6911ccd4b9380ed73649c9c47ea0ed82363cbcc023b",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-dealer-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-guide-white-v1.png",
+      "bytes": 1940176,
+      "sha256": "668c8993a902bd7ac1b18784c36cb761cd441cd2729a960652d3d16455ee68b9",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-guide-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/generated/vanstro-hero-white-v1.png",
+      "bytes": 1564816,
+      "sha256": "75af6bbb3da975db98c4c26d044103c638cec2bbebc1d4e9a4189ffde2398f38",
+      "reason": "unreferenced generated PNG with active WebP replacement",
+      "retainedCopies": [
+        "/assets/generated/vanstro-hero-white-v1.webp"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b01.gif",
+      "bytes": 147479,
+      "sha256": "9de5993c008ff8ce36b2308a9a43dd8d804a7d469c19f13b7d3a9f56f086dc38",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b01.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b02.gif",
+      "bytes": 95321,
+      "sha256": "cca1f3bf7c033a13a6bb3428e79ef7218835be3a5333e5451328087f1d6260aa",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b02.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b03.gif",
+      "bytes": 79568,
+      "sha256": "fd3dc019b7d2d61df93a64a710ef08e381496a81c4108776a49661f8bcb0da09",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b03.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b04.gif",
+      "bytes": 154734,
+      "sha256": "cac7e042c5c5abafb19ca1d6aee03f38dbea07b0f7d6af6bbca922c6f8b1119b",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b04.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b05.gif",
+      "bytes": 221993,
+      "sha256": "9679e3a0b8a430a125b7aa2f23d3c44f57bdfee04fa185462ca9f9f6697c403f",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b05.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-b06.gif",
+      "bytes": 215910,
+      "sha256": "7b6ccc6f21a6282b99e99e59871751acb1a9dcdbe7d2ece7fbb4fcf4977c02bc",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/img-b06.gif"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/legacy-logo.png",
+      "bytes": 17423,
+      "sha256": "19b621b8c91d5d75663985679256acc808bf1ee68a1eaf341ac48186097295f0",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/themes-vanstro-images-new-logo.png",
+        "/assets/vanstro-logo.png"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-269-base-cabinet.jpg",
+      "bytes": 51466,
+      "sha256": "e034698505d883ba01be9e5e5e9f1c148d8471ddeee23751cac416657aea036d",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-269_P_1778653714057.JPG",
+        "/assets/products/kitchen-cabinets/base-cabinet-b33-011780130-b33-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-281-lazy-susan.jpg",
+      "bytes": 47599,
+      "sha256": "d061531bcbbb5eb5039956f6b83fd6c6f2db285b9c1eddf99d74f1659b4376c9",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-281_P_1778654984846.JPG",
+        "/assets/products/kitchen-cabinets/lazy-susan-base-lsb36-013790130-lsb36-w-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-343-wall-cabinet.jpg",
+      "bytes": 45934,
+      "sha256": "01577e0ed2bde0882d50136094489290c4393b732e13621f2e8bebda3b8c914c",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-343_P_1778659060829.JPG",
+        "/assets/products/kitchen-cabinets/diagonal-corner-wall-dcw2430-015490130-dcw2430-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-357-pantry.jpg",
+      "bytes": 40523,
+      "sha256": "177592b40441f1db218e33ce838f587c29604a9203294cda524f4cb25fa71d5c",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-357_P_1778668916793.JPG",
+        "/assets/original-site/images-202605-source_img-357_P_1778668923547.JPG",
+        "/assets/products/kitchen-cabinets/tall-cabinet-u249624-017600130-u249624-pwms-wh-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-398-vanity-door.jpg",
+      "bytes": 134792,
+      "sha256": "7ab2adcd82e8f3f0942dda6112bc87ae8bbe0519447555d75d0c272c7c2ec41b",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-398_P_1780884887561.JPG"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-400-vanity-door.jpg",
+      "bytes": 93246,
+      "sha256": "b147444b91db6a2e6ef7688bf8e29549fd2dc58bb6d5bd110f7ce056f4a995e7",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-400_P_1780888348274.JPG"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-403-base-cabinet.jpg",
+      "bytes": 177059,
+      "sha256": "2b3d2ed77acba4e57f687b94cfe8a4c157cff1bee17df89a34f9559f5552d030",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-403_P_1779952289354.JPG",
+        "/assets/products/bathroom-vanities/vanity-cabinet-v663522-026621711-v663522-pwms-wh-top-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-407-baseboard.jpg",
+      "bytes": 100694,
+      "sha256": "c957ea0d27ca7d60dfaa76d53d41235563319e368b95cdc99c5a9861317437fd",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202605-source_img-407_P_1780215642366.JPG",
+        "/assets/products/baseboards-mouldings/baseboard-041-034114222-vs41-10ft-ea-primary.jpg"
+      ]
+    },
+    {
+      "publicPath": "/assets/legacy/product-414-vanity.jpg",
+      "bytes": 144206,
+      "sha256": "32f6f290fdd4c19eebf68c4b9f435eea4d14f7090a0a0dda3b2660038ccb7d73",
+      "reason": "unreferenced legacy file with byte-identical retained copy",
+      "retainedCopies": [
+        "/assets/original-site/images-202606-source_img-414_P_1781138572786.JPG"
+      ]
+    }
+  ]
+}

@@ -99,8 +99,13 @@ export default function DealerProgramZhPage() {
 
           <figure className="dealer-program-visual dealer-program-b2b-visual">
             <img
-              src={assetPath("/assets/generated/dealer-program-handshake-v1.png")}
+              src={assetPath("/assets/generated/dealer-program-handshake-v1.webp")}
               alt="VanStro 经销商合作业务洽谈"
+              width={1672}
+              height={941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </figure>
         </div>

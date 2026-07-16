@@ -111,6 +111,12 @@ export type ProductFinishOption = {
   manufacturerPartNumber?: string;
   colorHex?: string;
   image?: ImageAsset;
+  images?: ImageAsset[];
+  price?: Money;
+  dimensions?: string;
+  description?: string;
+  productHighlights?: string[];
+  specifications?: Record<string, string>;
   active?: boolean;
 };
 

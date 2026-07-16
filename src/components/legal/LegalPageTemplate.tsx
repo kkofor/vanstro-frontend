@@ -19,37 +19,37 @@ import { assetPath } from "@/lib/assets";
 
 const heroVisuals: Record<string, { image: string; alt: string; caption: string }> = {
   "legal-disclaimer": {
-    image: assetPath("/assets/generated/vanstro-guide-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-guide-white-v1.webp"),
     alt: "White cabinet drawer with organized samples and measuring tools",
     caption: "Reference details before ordering"
   },
   "terms-and-conditions": {
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
     alt: "Bright white kitchen cabinet installation with sample cabinet doors",
     caption: "Website terms and order documents"
   },
   privacy: {
-    image: assetPath("/assets/generated/vanstro-guide-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-guide-white-v1.webp"),
     alt: "Cabinet drawer with material samples and project tools",
     caption: "Privacy and data handling"
   },
   "cookie-settings": {
-    image: assetPath("/assets/generated/vanstro-guide-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-guide-white-v1.webp"),
     alt: "Cabinet drawer with organized finish samples",
     caption: "Manage site preferences"
   },
   "return-policy": {
-    image: assetPath("/assets/generated/vanstro-dealer-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-dealer-white-v1.webp"),
     alt: "VanStro cabinet inventory stored in a warehouse",
     caption: "Distributor return process"
   },
   "dealer-services-and-responsibility": {
-    image: assetPath("/assets/generated/vanstro-dealer-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-dealer-white-v1.webp"),
     alt: "Warehouse aisle with boxed cabinet inventory",
     caption: "Platform and dealer boundaries"
   },
   careers: {
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
     alt: "Bright kitchen showroom with white cabinets and sample doors",
     caption: "Join the VanStro network"
   }
@@ -149,7 +149,15 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
           </div>
 
           <figure className="legal-hero-visual">
-            <img src={heroVisual.image} alt={heroVisual.alt} />
+            <img
+              src={heroVisual.image}
+              alt={heroVisual.alt}
+              width={1672}
+              height={941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
             <figcaption>{heroVisual.caption}</figcaption>
           </figure>
         </div>

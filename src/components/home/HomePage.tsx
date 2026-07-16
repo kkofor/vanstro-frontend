@@ -28,33 +28,43 @@ const categoryCards = [
     title: "Kitchen",
     text: "Ready-to-order cabinets and hardware",
     href: "/products?category=kitchen-cabinets",
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.png"),
+    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
+    width: 1672,
+    height: 941,
     large: true
   },
   {
     title: "Bathroom",
     text: "Vanities and fixtures",
     href: "/products?category=bathroom-vanities",
-    image: assetPath("/assets/original-site/img-b03.gif")
+    image: assetPath("/assets/original-site/img-b03.gif"),
+    width: 602,
+    height: 292
   },
   {
     title: "Flooring",
     text: "Laminate, vinyl and future surfaces",
     href: "/products?category=flooring",
     image: assetPath("/assets/original-site/img-b02.gif"),
+    width: 602,
+    height: 292,
     comingSoon: true
   },
   {
     title: "Trim",
     text: "Baseboards, casings and profiles",
     href: "/products?category=baseboards",
-    image: assetPath("/assets/original-site/img-b04.gif")
+    image: assetPath("/assets/original-site/img-b04.gif"),
+    width: 1220,
+    height: 292
   },
   {
     title: "Doors and windows",
     text: "Interior and exterior",
     href: "/products?category=doors-windows",
-    image: assetPath("/assets/generated/category-doors-windows.png"),
+    image: assetPath("/assets/generated/category-doors-windows.webp"),
+    width: 1774,
+    height: 887,
     comingSoon: true
   }
 ];
@@ -66,7 +76,9 @@ const resources = [
     action: "View planning ideas",
     href: "/articles",
     icon: BookOpen,
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.png")
+    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
+    width: 1672,
+    height: 941
   },
   {
     title: "3D Design Tool",
@@ -74,7 +86,9 @@ const resources = [
     action: "Start designing",
     href: "https://tools.vanstro.ca/",
     icon: Laptop,
-    image: assetPath("/assets/generated/vanstro-guide-white-v1.png")
+    image: assetPath("/assets/generated/vanstro-guide-white-v1.webp"),
+    width: 1672,
+    height: 941
   },
   {
     title: "Product specs",
@@ -82,7 +96,9 @@ const resources = [
     action: "Read specs guide",
     href: "/articles/how-to-measure-for-cabinets",
     icon: ClipboardList,
-    image: assetPath("/assets/generated/vanstro-dealer-white-v1.png")
+    image: assetPath("/assets/generated/vanstro-dealer-white-v1.webp"),
+    width: 1672,
+    height: 941
   },
   {
     title: "Materials and finishes",
@@ -90,7 +106,9 @@ const resources = [
     action: "View finishes",
     href: "/articles/what-finishes-are-available",
     icon: PackageCheck,
-    image: assetPath("/assets/original-site/img-b02.gif")
+    image: assetPath("/assets/original-site/img-b02.gif"),
+    width: 602,
+    height: 292
   }
 ];
 
@@ -117,7 +135,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
             </h1>
             <p>{banner.subtitle}</p>
             <div className="hero-actions">
-              <Link className="button button-primary" href="/products">
+              <Link className="button button-primary" href="/products" prefetch={false}>
                 Shop Products
               </Link>
               <Link className="button button-secondary" href="#stores">
@@ -126,7 +144,15 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
             </div>
           </div>
           <div className="hero-media" aria-hidden="true">
-            <img src={banner.image.url} alt="" />
+            <img
+              src={banner.image.url}
+              alt=""
+              width={banner.image.width ?? 1672}
+              height={banner.image.height ?? 941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
           </div>
         </div>
       </section>
@@ -135,7 +161,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         <div className="container">
           <div className="section-heading category-heading">
             <h2 className="section-title">Shop by category</h2>
-            <Link className="section-link" href="/products">
+            <Link className="section-link" href="/products" prefetch={false}>
               View all
               <ArrowRight size={18} strokeWidth={2} />
             </Link>
@@ -145,9 +171,17 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
               <Link
                 className={category.large ? "category-card large" : "category-card"}
                 href={category.href}
+                prefetch={false}
                 key={category.title}
               >
-                <img src={category.image} alt={category.title} />
+                <img
+                  src={category.image}
+                  alt={category.title}
+                  width={category.width}
+                  height={category.height}
+                  loading="lazy"
+                  decoding="async"
+                />
                 {category.comingSoon ? <span className="category-badge">Coming soon</span> : null}
                 <div className="category-copy">
                   <h3>{category.title}</h3>
@@ -163,7 +197,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         <div className="container">
           <div className="section-heading">
             <h2 className="section-title">Popular products</h2>
-            <Link className="section-link" href="/products">
+            <Link className="section-link" href="/products" prefetch={false}>
               View all products
               <ArrowRight size={18} strokeWidth={2} />
             </Link>
@@ -196,7 +230,14 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
             </div>
           </div>
           <div className="dealer-image">
-            <img src={assetPath("/assets/generated/vanstro-dealer-white-v1.png")} alt="White VanStro cabinet products stocked in dealer warehouse inventory" />
+            <img
+              src={assetPath("/assets/generated/vanstro-dealer-white-v1.webp")}
+              alt="White VanStro cabinet products stocked in dealer warehouse inventory"
+              width={1672}
+              height={941}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </section>
@@ -209,8 +250,15 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
           <div className="resource-row">
             {resources.map((resource) => {
               return (
-                <Link href={resource.href} className="resource-item" key={resource.title}>
-                  <img src={resource.image} alt={resource.title} />
+                <Link href={resource.href} className="resource-item" prefetch={false} key={resource.title}>
+                  <img
+                    src={resource.image}
+                    alt={resource.title}
+                    width={resource.width}
+                    height={resource.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <span>
                     <h3>{resource.title}</h3>
                     <p>{resource.text}</p>
@@ -273,7 +321,14 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
             </div>
           </div>
           <div className="guide-image">
-            <img src={assetPath("/assets/generated/vanstro-guide-white-v1.png")} alt="White kitchen drawer detail with cabinet hardware and measuring tools" />
+            <img
+              src={assetPath("/assets/generated/vanstro-guide-white-v1.webp")}
+              alt="White kitchen drawer detail with cabinet hardware and measuring tools"
+              width={1672}
+              height={941}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
       </section>

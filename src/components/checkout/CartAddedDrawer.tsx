@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, ShoppingCart, X } from "lucide-react";
 import type { ProductSummary } from "@/lib/api/api-contract";
-import { productsWithCommerce } from "@/lib/data/mock-data";
 import { formatMoney, getEffectivePrice } from "@/lib/commerce/product-commerce";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 
@@ -13,7 +12,7 @@ type CartAddedEventDetail = {
   quantity: number;
 };
 
-export function CartAddedDrawer() {
+export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: ProductSummary[] }) {
   const { cartCount, cartSubtotal, selectedDealerName } = useStorefront();
   const [open, setOpen] = useState(false);
   const [lastAdded, setLastAdded] = useState<CartAddedEventDetail | null>(null);
@@ -29,13 +28,6 @@ export function CartAddedDrawer() {
     window.addEventListener("vanstro-cart-added", handleCartAdded);
     return () => window.removeEventListener("vanstro-cart-added", handleCartAdded);
   }, []);
-
-  const suggestedProducts = useMemo(() => {
-    const currentId = lastAdded?.product.id;
-    return productsWithCommerce
-      .filter((product) => product.id !== currentId)
-      .slice(0, 2);
-  }, [lastAdded?.product.id]);
 
   if (!lastAdded) return null;
 
@@ -67,7 +59,14 @@ export function CartAddedDrawer() {
         </div>
 
         <article className="cart-added-item">
-          <img src={lastAdded.product.images[0].url} alt={lastAdded.product.images[0].alt} />
+          <img
+            src={lastAdded.product.images[0].url}
+            alt={lastAdded.product.images[0].alt}
+            width={lastAdded.product.images[0].width}
+            height={lastAdded.product.images[0].height}
+            loading="lazy"
+            decoding="async"
+          />
           <div>
             <h3>{lastAdded.product.name}</h3>
             <p>
@@ -100,13 +99,23 @@ export function CartAddedDrawer() {
         <section className="cart-added-suggestions" aria-labelledby="cart-added-suggestions-title">
           <h3 id="cart-added-suggestions-title">Suggested items with your purchase</h3>
           <div>
-            {suggestedProducts.map((product) => (
-              <Link className="cart-added-suggestion" href={`/products/${product.slug}`} key={product.id} onClick={() => setOpen(false)}>
-                <img src={product.images[0].url} alt={product.images[0].alt} />
+            {suggestedProducts
+              .filter((product) => product.id !== lastAdded.product.id)
+              .slice(0, 2)
+              .map((product) => (
+              <Link className="cart-added-suggestion" href={`/products/${product.slug}`} prefetch={false} key={product.id} onClick={() => setOpen(false)}>
+                <img
+                  src={product.images[0].url}
+                  alt={product.images[0].alt}
+                  width={product.images[0].width}
+                  height={product.images[0].height}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <strong>{product.name}</strong>
                 <span>{formatMoney(getEffectivePrice(product))} / {product.unit}</span>
               </Link>
-            ))}
+              ))}
           </div>
         </section>
       </aside>

@@ -64,8 +64,13 @@ export default function AboutZhPage() {
           </div>
           <figure className="about-profile-visual">
             <img
-              src={assetPath("/assets/generated/vanstro-dealer-white-v1.png")}
+              src={assetPath("/assets/generated/vanstro-dealer-white-v1.webp")}
               alt="VanStro 白色橱柜产品存放在经销商仓储库存中"
+              width={1672}
+              height={941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </figure>
         </div>

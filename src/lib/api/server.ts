@@ -22,6 +22,12 @@ import type {
 } from "@/lib/api/api-contract";
 import { assetPath } from "@/lib/assets";
 import { HOME_PRODUCT_LIMIT } from "@/lib/product/catalog-config";
+import productImageDimensionsData from "@/lib/data/product-image-dimensions.json";
+
+const productImageDimensions = productImageDimensionsData as unknown as Record<
+  string,
+  [number, number]
+>;
 
 type WebsiteApiProduct = {
   id: string;
@@ -145,10 +151,30 @@ function mapImages(product: WebsiteApiProduct, fallback?: ProductSummary) {
 
   return [
     {
-      url: assetPath("/assets/generated/vanstro-hero-white-v1.png"),
+      url: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
       alt: product.name
     }
   ];
+}
+
+function withImageDimensions(image: ImageAsset): ImageAsset {
+  const dimensions = productImageDimensions[image.url];
+
+  return dimensions
+    ? { ...image, width: dimensions[0], height: dimensions[1] }
+    : image;
+}
+
+function withProductImageDimensions<T extends ProductSummary>(product: T): T {
+  return {
+    ...product,
+    images: product.images.map(withImageDimensions),
+    finishOptions: product.finishOptions?.map((option) => ({
+      ...option,
+      image: option.image ? withImageDimensions(option.image) : undefined,
+      images: option.images?.map(withImageDimensions)
+    }))
+  };
 }
 
 function mapWebsiteProductToSummary(product: WebsiteApiProduct): ProductSummary {
@@ -195,6 +221,50 @@ function mapWebsiteProductToSummary(product: WebsiteApiProduct): ProductSummary 
     packageQuantity: fallback?.packageQuantity,
     finishOptions: fallback?.finishOptions,
     certificationRequired: fallback?.certificationRequired
+  };
+}
+
+function projectProductCard(product: ProductSummary): ProductSummary {
+  const image = product.images[0];
+
+  return {
+    id: product.id,
+    slug: product.slug,
+    sku: product.sku,
+    brand: product.brand,
+    manufacturerPartNumber: product.manufacturerPartNumber,
+    name: product.name,
+    category: product.category,
+    subCategory: product.subCategory,
+    price: product.price,
+    commerce: product.commerce,
+    unit: product.unit,
+    dimensions: product.dimensions,
+    finish: product.finish,
+    colorName: product.colorName,
+    colorHex: product.colorHex,
+    images: image ? [withImageDimensions(image)] : [],
+    inStock: product.inStock
+  };
+}
+
+function projectCatalogProduct(product: ProductSummary): ProductSummary {
+  return {
+    ...projectProductCard(product),
+    finishOptions: product.finishOptions?.map((option) => ({
+      name: option.name,
+      sku: option.sku,
+      manufacturerPartNumber: option.manufacturerPartNumber,
+      colorHex: option.colorHex,
+      image: option.image
+        ? withImageDimensions(option.image)
+        : option.images?.[0]
+          ? withImageDimensions(option.images[0])
+          : undefined,
+      price: option.price,
+      dimensions: option.dimensions,
+      active: option.active
+    }))
   };
 }
 
@@ -252,15 +322,22 @@ export async function getHomePageData() {
   return {
     banner: banners[0],
     products:
-      apiProducts?.map(mapWebsiteProductToSummary).slice(0, HOME_PRODUCT_LIMIT) ??
-      getStaticHomeProducts(),
+      apiProducts
+        ?.map(mapWebsiteProductToSummary)
+        .slice(0, HOME_PRODUCT_LIMIT)
+        .map(projectProductCard) ??
+      getStaticHomeProducts().map(projectProductCard),
     articles,
     dealers: apiDealers ? mapWebsiteDealers(apiDealers) : dealers
   };
 }
 
 export async function getProductsForCatalog() {
-  return (await getApiProducts()) ?? productsWithCommerce;
+  return ((await getApiProducts()) ?? productsWithCommerce).map(projectCatalogProduct);
+}
+
+export function getCartSuggestions() {
+  return productsWithCommerce.slice(0, 2).map(projectProductCard);
 }
 
 export async function getProductBySlug(slug: string) {
@@ -268,9 +345,9 @@ export async function getProductBySlug(slug: string) {
     API_ENDPOINTS.productDetail(slug)
   );
 
-  if (apiProduct) return mapWebsiteProductToDetail(apiProduct);
+  if (apiProduct) return withProductImageDimensions(mapWebsiteProductToDetail(apiProduct));
 
-  return (
+  return withProductImageDimensions(
     productDetails.find((product) => product.slug === slug || product.id === slug) ??
     productDetails[0]
   );

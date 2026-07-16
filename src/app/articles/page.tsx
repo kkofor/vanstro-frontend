@@ -21,7 +21,14 @@ export default function ArticlesPage() {
         <div className="container resource-row">
           {articles.map((article) => (
             <Link className="resource-item" href={`/articles/${article.slug}`} key={article.id}>
-              <img src={article.image.url} alt={article.image.alt} />
+              <img
+                src={article.image.url}
+                alt={article.image.alt}
+                width={article.image.width ?? 614}
+                height={article.image.height ?? 909}
+                loading="lazy"
+                decoding="async"
+              />
               <span>
                 <h2 className="card-title">{article.title}</h2>
                 <p>{article.excerpt}</p>

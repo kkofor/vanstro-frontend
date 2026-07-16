@@ -64,7 +64,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
   const inventoryLabel = canBuy
     ? `${getInventoryLabel(selectedInventory)} at selected dealer`
     : "Not available at selected dealer";
-  const effectivePrice = formatMoney(getEffectivePrice(product));
+  const effectivePrice = formatMoney(getEffectivePrice(purchaseProduct));
 
   function updateQuantity(nextQuantity: number) {
     const quantityKnown = selectedInventory?.quantityKnown !== false;

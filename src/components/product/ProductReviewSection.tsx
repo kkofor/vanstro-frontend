@@ -209,7 +209,14 @@ export function ProductReviewSection({
             ref={formRef}
           >
             <div className="pdp-review-modal-head">
-              <img src={product.images[0].url} alt={product.images[0].alt} />
+              <img
+                src={product.images[0].url}
+                alt={product.images[0].alt}
+                width={product.images[0].width}
+                height={product.images[0].height}
+                loading="lazy"
+                decoding="async"
+              />
               <span>
                 <small>My Review</small>
                 <h3 id="write-review-title">{product.name}</h3>

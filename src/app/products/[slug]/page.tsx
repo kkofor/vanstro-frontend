@@ -49,7 +49,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="container">
           <ProductDetailBreadcrumb viewModel={viewModel} />
 
-          <ProductVariantProvider initialFinishName={viewModel.activeFinishName}>
+          <ProductVariantProvider
+            initialFinishName={viewModel.activeFinishName}
+            finishOptions={product.finishOptions}
+          >
             <section className="pdp-shell">
               <div className="pdp-media-column">
                 <div className="pdp-media-sheet">

@@ -3,8 +3,11 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CartAddedDrawer } from "@/components/checkout/CartAddedDrawer";
 import { CustomerSupportWidget } from "@/components/layout/CustomerSupportWidget";
 import { LocationDetector } from "@/components/layout/LocationDetector";
+import { getCartSuggestions } from "@/lib/api/server";
 
 export function AppChrome({ children }: { children: React.ReactNode }) {
+  const cartSuggestions = getCartSuggestions();
+
   return (
     <>
       <a className="skip-link" href="#main-content">
@@ -15,7 +18,7 @@ export function AppChrome({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <SiteFooter />
-      <CartAddedDrawer />
+      <CartAddedDrawer suggestedProducts={cartSuggestions} />
       <CustomerSupportWidget />
       <LocationDetector />
     </>

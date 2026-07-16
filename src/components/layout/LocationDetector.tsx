@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-import { dealers } from "@/lib/data/mock-data";
+import { dealers } from "@/lib/data/dealers";
 import {
   COOKIE_PREFERENCES_SAVED_EVENT,
   readCookiePreferences

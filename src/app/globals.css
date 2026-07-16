@@ -6404,6 +6404,7 @@ body.cookie-drawer-open {
 .pdp-gallery-frame img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 0.96;
   object-fit: contain;
   padding: 30px;
@@ -6434,7 +6435,9 @@ body.cookie-drawer-open {
 }
 
 .pdp-thumb img {
+  display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 1 / 0.78;
   object-fit: contain;
 }

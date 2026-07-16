@@ -15,6 +15,8 @@ type SecondaryPageHeroProps = {
   image?: {
     src: string;
     alt: string;
+    width?: number;
+    height?: number;
   };
   className?: string;
 };
@@ -46,7 +48,15 @@ export function SecondaryPageHero({
 
         {image ? (
           <figure className="secondary-page-hero-visual">
-            <img src={assetPath(image.src)} alt={image.alt} />
+            <img
+              src={assetPath(image.src)}
+              alt={image.alt}
+              width={image.width ?? 1672}
+              height={image.height ?? 941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
           </figure>
         ) : null}
       </div>

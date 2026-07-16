@@ -35,6 +35,7 @@ import {
   CatalogCategoryOption
 } from "@/lib/product/catalog-config";
 import { formatProductSize } from "@/lib/product/product-display";
+import { resolveProductVariant } from "@/lib/product/product-variants";
 
 type ProductsExplorerProps = {
   products: ProductSummary[];
@@ -84,6 +85,17 @@ function matchesQuery(product: ProductSummary, query: string) {
     .toLowerCase();
 
   return haystack.includes(query);
+}
+
+function resolveExactQueryVariant(product: ProductSummary, query: string) {
+  if (!query) return product;
+  const option = product.finishOptions?.find(
+    (candidate) =>
+      normalize(candidate.sku ?? "") === query ||
+      normalize(candidate.manufacturerPartNumber ?? "") === query
+  );
+
+  return option ? resolveProductVariant(product, option.name) : product;
 }
 
 function productCount(products: ProductSummary[], category: CatalogCategoryOption) {
@@ -176,7 +188,13 @@ function getPaginationItems(currentPage: number, totalPages: number) {
   });
 }
 
-function CatalogProductCard({ product }: { product: ProductSummary }) {
+function CatalogProductCard({
+  product,
+  imagePriority = false
+}: {
+  product: ProductSummary;
+  imagePriority?: boolean;
+}) {
   const { isFavorite, toggleFavorite } = useStorefront();
   const saved = isFavorite(product.id);
   const effectivePrice = getEffectivePrice(product);
@@ -184,16 +202,25 @@ function CatalogProductCard({ product }: { product: ProductSummary }) {
   const primaryPromotion = getPrimaryPromotion(product);
   const savingsLabel = getSavingsLabel(product);
   const statusLabel = product.category === "Baseboards & Mouldings" ? "Trim profile" : "Project item";
+  const productHref = `/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`;
 
   return (
     <article className="catalog-product-card">
-      <Link className="catalog-product-image" href={`/products/${product.slug}`}>
+      <Link className="catalog-product-image" href={productHref} prefetch={false}>
         {savingsLabel || primaryPromotion ? (
           <span className="catalog-promo-badge">
             {savingsLabel ?? primaryPromotion?.label}
           </span>
         ) : null}
-        <img src={product.images[0].url} alt={product.images[0].alt} />
+        <img
+          src={product.images[0].url}
+          alt={product.images[0].alt}
+          width={product.images[0].width}
+          height={product.images[0].height}
+          loading={imagePriority ? "eager" : "lazy"}
+          fetchPriority={imagePriority ? "high" : "auto"}
+          decoding="async"
+        />
       </Link>
       <div className="catalog-product-body">
         <div className="catalog-card-topline">
@@ -209,7 +236,7 @@ function CatalogProductCard({ product }: { product: ProductSummary }) {
           </button>
         </div>
         <h3>
-          <Link href={`/products/${product.slug}`}>{product.name}</Link>
+          <Link href={productHref} prefetch={false}>{product.name}</Link>
         </h3>
         <p>SKU {product.sku}</p>
         <p className="catalog-key-spec">{formatProductSize(product.dimensions)}</p>
@@ -353,7 +380,9 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / CATALOG_PAGE_SIZE));
   const activePage = Math.min(currentPage, totalPages);
   const pageStart = (activePage - 1) * CATALOG_PAGE_SIZE;
-  const visibleProducts = filteredProducts.slice(pageStart, pageStart + CATALOG_PAGE_SIZE);
+  const visibleProducts = filteredProducts
+    .slice(pageStart, pageStart + CATALOG_PAGE_SIZE)
+    .map((product) => resolveExactQueryVariant(product, normalizedQuery));
   const paginationItems = getPaginationItems(activePage, totalPages);
   const totalLabel =
     filteredProducts.length === 1
@@ -389,7 +418,17 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
               onClick={() => updateFilters({ category: category.id })}
               key={category.id}
             >
-              {image ? <img src={image.url} alt="" aria-hidden="true" /> : null}
+              {image ? (
+                <img
+                  src={image.url}
+                  alt=""
+                  aria-hidden="true"
+                  width={image.width}
+                  height={image.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : null}
               <span>
                 <strong>{category.label}</strong>
                 <small>{category.comingSoon ? "Staging" : `${count} items`}</small>
@@ -586,8 +625,12 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           {filteredProducts.length ? (
             <>
               <div className="catalog-product-grid">
-                {visibleProducts.map((product) => (
-                  <CatalogProductCard product={product} key={product.id} />
+                {visibleProducts.map((product, index) => (
+                  <CatalogProductCard
+                    product={product}
+                    imagePriority={activePage === 1 && index < 4}
+                    key={product.id}
+                  />
                 ))}
               </div>
               {totalPages > 1 ? (

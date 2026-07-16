@@ -55,7 +55,7 @@ export default function DealerApplicationPage() {
         title="Dealer application"
         className="dealer-application-hero"
         image={{
-          src: "/assets/generated/dealer-program-handshake-v1.png",
+          src: "/assets/generated/dealer-program-handshake-v1.webp",
           alt: "Business partners discussing a VanStro dealer application"
         }}
         actions={

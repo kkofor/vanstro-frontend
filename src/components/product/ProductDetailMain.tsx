@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowUpRight,
@@ -16,7 +18,12 @@ import {
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
 import { formatProductSize } from "@/lib/product/product-display";
-import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
+import {
+  buildSpecRows,
+  type ProductDetailViewModel
+} from "@/lib/product/product-detail-view-model";
+import { useProductVariant } from "@/components/product/ProductVariantContext";
+import { resolveProductVariant } from "@/lib/product/product-variants";
 
 type ProductDetailMainProps = {
   viewModel: ProductDetailViewModel;
@@ -34,11 +41,18 @@ function ProductProjectCard({ product }: { product: ProductSummary }) {
 
   return (
     <article className="pdp-project-card">
-      <Link className="pdp-project-image" href={`/products/${product.slug}`}>
-        <img src={product.images[0].url} alt={product.images[0].alt} />
+      <Link className="pdp-project-image" href={`/products/${product.slug}`} prefetch={false}>
+        <img
+          src={product.images[0].url}
+          alt={product.images[0].alt}
+          width={product.images[0].width}
+          height={product.images[0].height}
+          loading="lazy"
+          decoding="async"
+        />
       </Link>
       <div className="pdp-project-copy">
-        <Link href={`/products/${product.slug}`}>{product.name}</Link>
+        <Link href={`/products/${product.slug}`} prefetch={false}>{product.name}</Link>
         <small>{formatProductSize(product.dimensions)}</small>
         {savingsLabel || primaryPromotion ? (
           <span className="commerce-badge-row">
@@ -60,20 +74,25 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
   const {
     brandName,
     categoryFilter,
-    colorHex,
-    colorName,
     completeProjectProducts,
     documents,
-    featuredSpecRows,
     packageRows,
     product,
-    productHighlights,
     questions,
     reviews,
     reviewSummary,
-    specRows,
-    technicalSpecRows
   } = viewModel;
+  const productVariant = useProductVariant();
+  const selectedProduct = resolveProductVariant(product, productVariant?.selectedFinishName);
+  const specRows = buildSpecRows({
+    ...selectedProduct.specifications,
+    Dimensions: formatProductSize(selectedProduct.specifications.Dimensions ?? selectedProduct.dimensions)
+  });
+  const featuredSpecRows = specRows.slice(0, 6);
+  const technicalSpecRows = specRows.slice(6, 14);
+  const productHighlights = selectedProduct.productHighlights ?? [];
+  const colorName = selectedProduct.colorName ?? selectedProduct.finish ?? "Standard finish";
+  const colorHex = selectedProduct.colorHex ?? "#f4f2ee";
 
   return (
     <main className="pdp-detail-main">
@@ -82,7 +101,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
           <h2 id="pdp-overview-title">Product overview</h2>
           <span>{brandName} product details</span>
         </div>
-        <p>{product.description}</p>
+        <p>{selectedProduct.description}</p>
         <ul className="pdp-overview-list">
           {productHighlights.slice(0, 3).map((highlight) => (
             <li key={highlight}>
@@ -96,7 +115,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
             <Ruler size={18} strokeWidth={2.3} />
             <span>
               <strong>Dimensions</strong>
-              <small>{formatProductSize(product.dimensions)}</small>
+              <small>{formatProductSize(selectedProduct.dimensions)}</small>
             </span>
           </div>
           <div>

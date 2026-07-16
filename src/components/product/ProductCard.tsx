@@ -42,13 +42,20 @@ export function ProductCard({ product }: { product: ProductSummary }) {
 
   return (
     <article className="product-card">
-      <Link className="product-image" href={`/products/${product.slug}`}>
-        <img src={product.images[0].url} alt={product.images[0].alt} />
+      <Link className="product-image" href={`/products/${product.slug}`} prefetch={false}>
+        <img
+          src={product.images[0].url}
+          alt={product.images[0].alt}
+          width={product.images[0].width}
+          height={product.images[0].height}
+          loading="lazy"
+          decoding="async"
+        />
       </Link>
       <div className="product-body">
         <div className="product-card-main">
           <h3 className="product-name">
-            <Link href={`/products/${product.slug}`}>{product.name}</Link>
+            <Link href={`/products/${product.slug}`} prefetch={false}>{product.name}</Link>
           </h3>
 
           <dl className="product-specs">

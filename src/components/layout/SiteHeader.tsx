@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-import { dealers } from "@/lib/data/mock-data";
+import { dealers } from "@/lib/data/dealers";
 import { assetPath } from "@/lib/assets";
 
 const productCategories = [
@@ -168,7 +168,15 @@ export function SiteHeader() {
       <div className="header-main">
         <div className="container header-inner">
           <Link href="/" className="brand-link" aria-label="VanStro home">
-            <img className="brand-logo" src={assetPath("/assets/vanstro-logo.png")} alt="VanStro Global Supply" />
+            <img
+              className="brand-logo"
+              src={assetPath("/assets/vanstro-logo.png")}
+              alt="VanStro Global Supply"
+              width={315}
+              height={63}
+              loading="eager"
+              decoding="async"
+            />
           </Link>
 
           <SearchBox />
@@ -217,7 +225,7 @@ export function SiteHeader() {
                 }
               }}
             >
-              <Link className="catalog-nav-trigger" href="/products" aria-haspopup="menu" aria-expanded={catalogOpen}>
+              <Link className="catalog-nav-trigger" href="/products" prefetch={false} aria-haspopup="menu" aria-expanded={catalogOpen}>
                 <span>Products</span>
                 <ChevronDown size={15} strokeWidth={2.35} />
               </Link>
@@ -226,7 +234,7 @@ export function SiteHeader() {
                 <span className="catalog-dropdown-heading">All Products</span>
                 <div className="catalog-dropdown-list" role="menu" aria-label="Product categories">
                   {productCategories.map((category) => (
-                    <Link key={category.label} href={category.href} role="menuitem" onClick={() => setCatalogOpen(false)}>
+                    <Link key={category.label} href={category.href} prefetch={false} role="menuitem" onClick={() => setCatalogOpen(false)}>
                       {category.label}
                     </Link>
                   ))}

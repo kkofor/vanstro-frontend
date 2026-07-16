@@ -55,7 +55,7 @@ export default function DealerApplicationZhPage() {
         title="经销商申请"
         className="dealer-application-hero"
         image={{
-          src: "/assets/generated/dealer-program-handshake-v1.png",
+          src: "/assets/generated/dealer-program-handshake-v1.webp",
           alt: "业务伙伴讨论 VanStro 经销商申请"
         }}
         actions={

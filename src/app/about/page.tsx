@@ -66,8 +66,13 @@ export default function AboutPage() {
           </div>
           <figure className="about-profile-visual">
             <img
-              src={assetPath("/assets/generated/vanstro-dealer-white-v1.png")}
+              src={assetPath("/assets/generated/vanstro-dealer-white-v1.webp")}
               alt="White VanStro cabinet products stocked in dealer warehouse inventory"
+              width={1672}
+              height={941}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </figure>
         </div>

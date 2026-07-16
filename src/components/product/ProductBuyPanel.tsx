@@ -1,11 +1,20 @@
+"use client";
+
 import { Star } from "lucide-react";
 import { ProductFinishSelector } from "@/components/product/ProductFinishSelector";
 import { ProductPurchaseActions } from "@/components/product/ProductPurchaseActions";
 import { ProductReviewOpenButton } from "@/components/product/ProductReviewOpenButton";
 import { ProductVariantIdentifiers } from "@/components/product/ProductVariantIdentifiers";
 import type { Dealer } from "@/lib/api/api-contract";
-import { formatMoney } from "@/lib/commerce/product-commerce";
+import {
+  formatMoney,
+  getCompareAtPrice,
+  getEffectivePrice,
+  getProductPricing
+} from "@/lib/commerce/product-commerce";
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
+import { useProductVariant } from "@/components/product/ProductVariantContext";
+import { resolveProductVariant } from "@/lib/product/product-variants";
 
 type ProductBuyPanelProps = {
   viewModel: ProductDetailViewModel;
@@ -17,13 +26,15 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
     brandName,
     colorHex,
     colorName,
-    compareAtPrice,
-    effectivePrice,
     manufacturerPartNumber,
-    pricing,
     product,
     reviewSummary
   } = viewModel;
+  const productVariant = useProductVariant();
+  const selectedProduct = resolveProductVariant(product, productVariant?.selectedFinishName);
+  const pricing = getProductPricing(selectedProduct);
+  const effectivePrice = getEffectivePrice(selectedProduct);
+  const compareAtPrice = getCompareAtPrice(selectedProduct);
 
   return (
     <aside className="pdp-sticky-column">
@@ -61,7 +72,7 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
           {compareAtPrice ? <span className="compare-price">{formatMoney(compareAtPrice)}</span> : null}
           <div className="price-line pdp-price">
             {formatMoney(effectivePrice)}
-            <span>/ {product.unit}</span>
+            <span>/ {selectedProduct.unit}</span>
           </div>
           <small>{pricing.priceLabel ?? "Current price"}</small>
         </div>

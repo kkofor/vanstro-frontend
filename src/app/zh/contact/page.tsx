@@ -111,8 +111,13 @@ export default function ContactZhPage() {
           </div>
           <figure className="contact-page-hero-visual">
             <img
-              src={assetPath("/assets/generated/contact-support-hero-v1.png")}
+              src={assetPath("/assets/generated/contact-support-hero-v1.webp")}
               alt="VanStro 支持人员协调建材订单"
+              width={1774}
+              height={887}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </figure>
         </div>

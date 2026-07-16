@@ -49,7 +49,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </p>
           </article>
           <div className="guide-image">
-            <img src={article.image.url} alt={article.image.alt} />
+            <img
+              src={article.image.url}
+              alt={article.image.alt}
+              width={article.image.width ?? 614}
+              height={article.image.height ?? 909}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
           </div>
         </div>
       </section>

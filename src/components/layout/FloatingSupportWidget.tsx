@@ -284,7 +284,14 @@ export function FloatingSupportWidget() {
         aria-expanded={open}
         onClick={() => openSupport()}
       >
-        <img src={assetPath("/assets/generated/support-agent-v1.png")} alt="VanStro AI support" />
+        <img
+          src={assetPath("/assets/generated/support-agent-v1-192.webp")}
+          alt="VanStro AI support"
+          width={192}
+          height={192}
+          loading="eager"
+          decoding="async"
+        />
         <span>
           <strong>AI support</strong>
           <small>Ask VanStro</small>

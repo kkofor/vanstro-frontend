@@ -15,6 +15,10 @@ const COLLAPSED_IMAGE_COUNT = MAX_COLLAPSED_THUMBNAILS - 1;
 
 export function ProductImageGallery({ images, finishOptions = [] }: ProductImageGalleryProps) {
   const productVariant = useProductVariant();
+  const selectedFinish = finishOptions.find(
+    (option) => option.name === productVariant?.selectedFinishName
+  ) ?? finishOptions.find((option) => option.active);
+  const selectedImages = selectedFinish?.images?.length ? selectedFinish.images : images;
   const finishImageByName = useMemo(
     () =>
       new Map(
@@ -32,16 +36,16 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
       ? finishImageByName.get(initialFinishName)
       : undefined;
     const nextIndex = initialImageUrl
-      ? images.findIndex((image) => image.url === initialImageUrl)
+      ? selectedImages.findIndex((image) => image.url === initialImageUrl)
       : -1;
 
     return nextIndex >= 0 ? nextIndex : 0;
-  }, [finishImageByName, finishOptions, images, productVariant?.selectedFinishName]);
+  }, [finishImageByName, finishOptions, productVariant?.selectedFinishName, selectedImages]);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
   const [galleryExpanded, setGalleryExpanded] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
-  const activeImage = images[activeIndex] ?? images[0];
+  const activeImage = selectedImages[activeIndex] ?? selectedImages[0];
   const finishNameByImageUrl = useMemo(
     () =>
       new Map(
@@ -51,11 +55,11 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
       ),
     [finishOptions]
   );
-  const hasOverflowImages = images.length > MAX_COLLAPSED_THUMBNAILS;
+  const hasOverflowImages = selectedImages.length > MAX_COLLAPSED_THUMBNAILS;
   const visibleImages = hasOverflowImages && !galleryExpanded
-    ? images.slice(0, COLLAPSED_IMAGE_COUNT)
-    : images;
-  const hiddenImageCount = images.length - COLLAPSED_IMAGE_COUNT;
+    ? selectedImages.slice(0, COLLAPSED_IMAGE_COUNT)
+    : selectedImages;
+  const hiddenImageCount = selectedImages.length - COLLAPSED_IMAGE_COUNT;
 
   useEffect(() => {
     const selectedFinishName = productVariant?.selectedFinishName;
@@ -64,11 +68,11 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
     const selectedImageUrl = finishImageByName.get(selectedFinishName);
     if (!selectedImageUrl) return;
 
-    const nextIndex = images.findIndex((image) => image.url === selectedImageUrl);
-    if (nextIndex >= 0) {
-      setActiveIndex(nextIndex);
-    }
-  }, [finishImageByName, images, productVariant?.selectedFinishName]);
+    const nextIndex = selectedImages.findIndex((image) => image.url === selectedImageUrl);
+    setActiveIndex(nextIndex >= 0 ? nextIndex : 0);
+    setGalleryExpanded(false);
+    setZoomed(false);
+  }, [finishImageByName, productVariant?.selectedFinishName, selectedImages]);
 
   if (!activeImage) return null;
 
@@ -106,7 +110,15 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
           "--pdp-zoom-y": `${zoomOrigin.y}%`
         } as React.CSSProperties}
       >
-        <img src={activeImage.url} alt={activeImage.alt} />
+        <img
+          src={activeImage.url}
+          alt={activeImage.alt}
+          width={activeImage.width}
+          height={activeImage.height}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
         <span className="pdp-zoom-hint" aria-hidden="true">Hover to zoom</span>
       </div>
       <div className="pdp-thumb-row" aria-label="Product images">
@@ -119,7 +131,14 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
             type="button"
             key={image.url}
           >
-            <img src={image.url} alt={image.alt || `${finishNameByImageUrl.get(image.url) ?? `View ${index + 1}`} thumbnail`} />
+            <img
+              src={image.url}
+              alt={image.alt || `${finishNameByImageUrl.get(image.url) ?? `View ${index + 1}`} thumbnail`}
+              width={image.width}
+              height={image.height}
+              loading="lazy"
+              decoding="async"
+            />
             <span>{finishNameByImageUrl.get(image.url) ?? (index === 0 ? "Primary" : `View ${index + 1}`)}</span>
           </button>
         ))}
@@ -132,7 +151,14 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
             type="button"
           >
             <span className="pdp-thumb-more-image" aria-hidden="true">
-              <img src={images[COLLAPSED_IMAGE_COUNT].url} alt="" />
+              <img
+                src={selectedImages[COLLAPSED_IMAGE_COUNT].url}
+                alt=""
+                width={selectedImages[COLLAPSED_IMAGE_COUNT].width}
+                height={selectedImages[COLLAPSED_IMAGE_COUNT].height}
+                loading="lazy"
+                decoding="async"
+              />
               <strong>+{hiddenImageCount}</strong>
             </span>
             <span>View all</span>

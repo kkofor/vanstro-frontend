@@ -127,7 +127,14 @@ export function SiteFooter() {
         <div className="footer-top">
           <div className="footer-brand">
             <Link href="/" aria-label="VanStro home">
-              <img src={assetPath("/assets/vanstro-logo.png")} alt="VanStro Global Supply" />
+              <img
+                src={assetPath("/assets/vanstro-logo.png")}
+                alt="VanStro Global Supply"
+                width={315}
+                height={63}
+                loading="lazy"
+                decoding="async"
+              />
             </Link>
             <p>
               Canadian home materials supply platform for homeowners, contractors

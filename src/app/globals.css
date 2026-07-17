@@ -5549,6 +5549,7 @@ body:has(.pdp-page) .site-footer {
     position: sticky;
     top: 18px;
     max-height: calc(100dvh - 36px);
+    margin-bottom: 60px;
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-color: #9eb1ae transparent;
@@ -5703,16 +5704,6 @@ body:has(.pdp-page) .site-footer {
   color: var(--color-ink);
   font-size: 11px;
   font-weight: 800;
-}
-
-.catalog-status {
-  width: fit-content;
-  border-radius: 999px;
-  background: #eef7f3;
-  color: #006b46;
-  padding: 5px 8px;
-  font-size: 11px;
-  font-weight: 900;
 }
 
 .catalog-pagination {

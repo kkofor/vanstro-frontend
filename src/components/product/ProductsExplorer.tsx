@@ -185,7 +185,6 @@ function CatalogProductCard({
   const compareAtPrice = getCompareAtPrice(product);
   const primaryPromotion = getPrimaryPromotion(product);
   const savingsLabel = getSavingsLabel(product);
-  const statusLabel = product.category === "Baseboards & Mouldings" ? "Trim profile" : "Project item";
   const productHref = `/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`;
 
   return (
@@ -230,7 +229,6 @@ function CatalogProductCard({
             <strong>{formatMoney(effectivePrice)}</strong>
             <span>/ {product.unit}</span>
           </div>
-          <span className="catalog-status">{statusLabel}</span>
         </div>
       </div>
     </article>

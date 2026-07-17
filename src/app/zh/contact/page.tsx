@@ -78,7 +78,7 @@ const contactDetails = [
 const dealerContacts = [
   {
     region: "Manitoba",
-    dealer: "MB01 - Yuan Construction",
+    dealer: "MB01 - Yuan Construction Ltd.",
     phone: "204-505-2288",
     email: "MB01@VANSTRO.CA",
     address: "856 Century St, Winnipeg, MB R3H 0M5"

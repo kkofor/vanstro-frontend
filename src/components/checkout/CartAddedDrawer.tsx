@@ -95,7 +95,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
               {formatMoney(getEffectivePrice(lastAdded.product))} / {lastAdded.product.unit} | Qty: {lastAdded.quantity}
             </p>
             <p>
-              SKU {lastAdded.product.sku}
+              SKU: {lastAdded.product.sku}
               {lastAdded.product.colorName ? ` / ${lastAdded.product.colorName}` : ""}
             </p>
             <small>{selectedDealerName} pickup or coordinated local delivery</small>

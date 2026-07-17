@@ -28,7 +28,7 @@ export function ProductVariantIdentifiers({
         </dd>
       </div>
       <div>
-        <dt>SKU</dt>
+        <dt>SKU:</dt>
         <dd title={selectedProduct.sku}>{selectedProduct.sku}</dd>
       </div>
     </dl>

@@ -355,83 +355,89 @@ export const legalPageEntries: LegalPageEntry[] = [
   {
     slug: "return-policy",
     title: "Return Policy",
-    description: "Return Policy content from the VanStro legacy site.",
+    description:
+      "Return conditions for retail customers and professional or wholesale clients purchasing kitchen cabinets and bathroom vanities through the VanStro dealer network.",
     intro:
-      "Return conditions and procedures for retail customers and professional or wholesale clients within the VanStro distributor network.",
-    updated: "Last updated: 2026-05-16",
+      "Return conditions and procedures for retail customers and professional or wholesale clients within the VanStro dealer network.",
+    updated: "Effective Date: May 12, 2026",
     sourceSummary:
-      "Applicable to Retail Customers and Professional / Wholesale Clients - Kitchen Cabinets and Bathroom Vanities. Effective Date: May 12, 2026.",
+      "Applicable to Retail Customers and Professional / Wholesale Clients - Kitchen Cabinets and Bathroom Vanities.",
     sections: [
       section(
-        "1. Purpose",
-        'This policy sets out the conditions and procedures for product returns within the VanStro Global Supply Inc. ("VanStro") distributor network. It provides a single, consistent return process across the network.',
-        0
+        "Our Commitment",
+        "If we supplied the wrong product or made a shipping error, you pay nothing - we will make it right.\n\nIf you change your mind, return the product unopened within 7 days and no restocking fee applies.\n\nIf the packaging has been opened, a restocking fee applies.",
+        0,
+        "Wrong product or shipping error: no charge. Unopened retail return within 7 days: no restocking fee. Opened packaging: a restocking fee applies."
       ),
       section(
-        "2. Scope and Application",
-        "This policy applies to purchases by two classes of customers:\n- Retail Customers\n- Professional / Wholesale Clients - builders, contractors, designers, and commercial customers\n\nIt does not apply to VanStro's distributors, whose rights and obligations are set out in the applicable distributor cooperation agreement. Where a separate written agreement exists, that agreement prevails.",
+        "1. Purpose",
+        'This policy sets out the conditions and procedures for product returns within the VanStro Global Supply Inc. ("VanStro") dealer network. It provides a single, consistent return process across the network.',
         1
       ),
       section(
+        "2. Scope and Application",
+        "This policy applies to purchases by two classes of customers:\n- Retail Customers\n- Professional / Wholesale Clients - builders, contractors, designers, and commercial customers\n\nIt does not apply to VanStro's dealers, whose rights and obligations are set out in the applicable dealer cooperation agreement. Where a separate written agreement exists, that agreement prevails.",
+        2
+      ),
+      section(
         "3. Sales Channel, Delivery and Scope of Responsibility",
-        'VanStro sells through its distributor network. Each sale to a customer is completed by a distributor, who holds the inventory and handles delivery and returns. This policy sets the return terms that apply across the network.\n\nIn this policy, "Delivery" means the handover of the goods to the customer by the distributor. All time periods run from the date of Delivery.\n\nOwnership and risk pass to the customer on Delivery. The customer should inspect the goods on Delivery; by accepting Delivery, the customer accepts their quantity and external condition.\n\nTransportation, installation, and other on-site or extended services are arranged between the customer and the relevant distributor.',
-        2,
+        'VanStro sells through its dealer network. Each sale to a customer is completed by a dealer, who holds the inventory and handles delivery and returns. This policy sets the return terms that apply across the network.\n\nIn this policy, "Delivery" means the handover of the goods to the customer by the dealer. All time periods run from the date of Delivery.\n\nOwnership and risk pass to the customer on Delivery. The customer should inspect the goods on Delivery; by accepting Delivery, the customer accepts their quantity and external condition.\n\nTransportation, installation, and other on-site or extended services are arranged between the customer and the relevant dealer.',
+        3,
         "Important: ownership and risk pass to the customer on Delivery, and return time periods run from the Delivery date."
       ),
       section(
         "4. Return Authorization",
-        "For returns and related enquiries, the customer should contact the customer service of the local distributor from whom the product was purchased.\n\nAll returns must be authorized in advance. The distributor reviews the request against this policy and, if eligible, obtains a Return Merchandise Authorization (RMA) number from VanStro; the product is then returned to the distributor.\n\nAny product returned without a valid RMA number may be refused.",
-        3,
-        "Important: returns without a valid RMA number may be refused."
+        "For returns and related enquiries, the customer should contact the customer service of the local dealer from whom the product was purchased.\n\nAll returns must be authorized in advance. The dealer reviews the request against this policy and, if eligible, obtains a Return Merchandise Authorization (RMA) number from VanStro; the product is then returned to the dealer.\n\nPlease obtain an RMA number before returning any product; returns received without one cannot be processed.",
+        4,
+        "Important: returns received without a valid RMA number cannot be processed."
       ),
       section(
         "5. Complaints and Escalation to the Platform",
-        "Returns are handled by the distributor. If a distributor does not follow this policy, or the customer considers its handling of a return unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review the matter and intervene where appropriate. VanStro's direct involvement is limited to such escalations.",
-        4
+        "Returns are handled by the dealer. If a dealer does not follow this policy, or the customer considers its handling of a return unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review the matter and intervene where appropriate. VanStro's direct involvement is limited to such escalations.",
+        5
       ),
       section(
         "6. Return Eligibility and Conditions",
-        "Standard stock products may be returned to the distributor within seven (7) days after Delivery if all of the following are met:\n- Product has not been installed\n- Product has not been used\n- Product remains in original packaging\n- Product is in resalable condition\n- Product is free from damage",
-        5,
+        "Standard stock products may be returned to the dealer within seven (7) days after Delivery if all of the following are met:\n- Product has not been installed\n- Product has not been used\n- Product remains in original packaging\n- Product is in resalable condition\n- Product is free from damage",
+        6,
         "Important: eligible standard stock products must be returned within seven (7) days after Delivery and must remain unused, uninstalled, packaged, resalable and undamaged."
       ),
       section(
         "7. Non-Returnable Items",
         "The following products are non-returnable:\n- Installed products\n- Custom-made products - special sizes, special colors, custom configurations, and special-order items",
-        6
+        7
       ),
       section(
-        "8. Restocking Fee",
-        "Approved returns of standard stock products are subject to a restocking fee of twenty percent (20%) of the product price.\n\nThe restocking fee covers:\n- Inspection\n- Handling\n- Repackaging\n- Inventory processing\n- Administrative costs",
-        7,
-        "Important: approved standard stock returns are subject to a twenty percent (20%) restocking fee."
+        "8. Return Charges",
+        "1. Our error - no charge. Where a return results from an incorrect product supplied, a shipping error, or damage occurring before Delivery, no charge of any kind applies. The dealer arranges replacement or a full refund, including return transportation.\n\nClaims relating to product defects are handled under the VanStro Cabinetry Warranty Policy and are not treated as returns under this policy.\n\n2. Retail Customers - unopened packaging - no restocking fee. Where a Retail Customer returns a standard stock product in its original packaging, unopened and with seals intact, within seven (7) days after Delivery, no restocking fee applies. The customer arranges and bears return transportation.\n\n3. Retail Customers - opened packaging - 20%. Where the packaging has been opened but the product has not been installed or used and remains in resalable condition, a restocking fee of twenty percent (20%) of the product price applies, covering inspection, repackaging, relabeling, and inventory processing.\n\n4. Professional / Wholesale Clients - 20%. Paragraph 2 does not apply to Professional / Wholesale Clients. Approved returns by Professional / Wholesale Clients are subject to a restocking fee of twenty percent (20%) of the product price.",
+        8,
+        "Retail customers returning unopened standard stock products within seven (7) days pay no restocking fee. Opened retail returns and approved professional or wholesale returns are subject to a twenty percent (20%) restocking fee."
       ),
       section(
         "9. Refunds",
-        "Approved refunds are issued to the original payment method after the distributor has received and inspected the returned product, less any applicable restocking fee.",
-        8
+        "Approved refunds are issued to the original payment method, less any applicable restocking fee, within five (5) business days after the dealer has received and inspected the returned product. Depending on your bank or card issuer, funds may take additional time to appear in your account.",
+        9
       ),
       section(
         "10. Inspection Rights",
-        "VanStro or its distributor may inspect any product before a return is approved:\n- Photographs\n- Video evidence\n- Third-party inspection\n- Physical inspection",
-        9
+        "VanStro or its dealer may inspect any product before a return is approved.\n- Photographs\n- Video evidence\n- Third-party inspection\n- Physical inspection",
+        10
       ),
       section(
         "11. Exclusions",
         "A return will not be accepted in the following situations:\n- Improper installation\n- Improper handling\n- Abuse or misuse\n- Customer-caused damage\n- Normal wear and tear\n- Improper storage\n- Transportation damage or loss occurring after Delivery",
-        10
-      ),
-      section(
-        "12. Final Interpretation and Updates",
-        "VanStro makes the final determination on all return requests and may update this policy from time to time without prior notice.",
         11
       ),
-      contactSection(12)
+      section(
+        "12. Policy Updates",
+        "The version of this policy in effect on the date of Delivery applies to your purchase. VanStro may update this policy from time to time; updates do not affect purchases already delivered.",
+        12
+      )
     ],
     summaryTitle: "Need help with a return?",
     summaryBody:
-      "Start with your local distributor. VanStro can review policy escalations where distributor handling appears inconsistent with this policy.",
-    supportNote: "Have your distributor name, order reference, delivery date, photos, and RMA status ready before escalating.",
+      "Start with the local dealer from whom the product was purchased. VanStro can review policy escalations where dealer handling appears inconsistent with this policy.",
+    supportNote: "Have your dealer name, order reference, delivery date, photos, and RMA status ready before escalating.",
     primaryCta: { label: "Contact support", href: "/contact" },
     secondaryCta: { label: "Track an order", href: "/orders/demo-order" }
   },

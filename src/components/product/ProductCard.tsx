@@ -51,7 +51,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
 
           <dl className="product-specs">
             <div>
-              <dt>SKU</dt>
+              <dt>SKU:</dt>
               <dd>{product.sku}</dd>
             </div>
             <div>

@@ -3,7 +3,7 @@ import type { Dealer } from "@/lib/api/api-contract";
 export const dealers: Dealer[] = [
   {
     id: "winnipeg",
-    name: "Yuan Construction",
+    name: "Yuan Construction Ltd.",
     address: "856 Century St",
     city: "Winnipeg",
     province: "MB",

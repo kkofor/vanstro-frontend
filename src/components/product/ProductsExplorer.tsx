@@ -6,14 +6,9 @@ import {
   ChevronDown,
   Grid2X2,
   Heart,
-  Headphones,
   List,
-  MapPin,
-  PackageCheck,
   Search,
   SlidersHorizontal,
-  Tag,
-  Truck,
   X
 } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -171,10 +166,6 @@ function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOpt
   };
 }
 
-function getSelectedCount(selectedFacets: Record<FacetKey, string[]>) {
-  return Object.values(selectedFacets).reduce((total, values) => total + values.length, 0);
-}
-
 function getPaginationItems(currentPage: number, totalPages: number) {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1);
@@ -240,7 +231,7 @@ function CatalogProductCard({
         <h3>
           <Link href={productHref} prefetch={false}>{product.name}</Link>
         </h3>
-        <p>SKU {product.sku}</p>
+        <p>SKU: {product.sku}</p>
         <p className="catalog-key-spec">{formatProductSize(product.dimensions)}</p>
         <div className="catalog-card-footer">
           <div className="catalog-price">
@@ -368,14 +359,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     });
   }
 
-  function clearFacet(facetKey: FacetKey, optionId: string) {
-    setCurrentPage(1);
-    setSelectedFacets((current) => ({
-      ...current,
-      [facetKey]: current[facetKey].filter((value) => value !== optionId)
-    }));
-  }
-
   function clearAllFacets() {
     setCurrentPage(1);
     setSelectedFacets({
@@ -390,7 +373,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     setOpenSections((current) => ({ ...current, [section]: !current[section] }));
   }
 
-  const selectedFacetCount = getSelectedCount(selectedFacets);
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / CATALOG_PAGE_SIZE));
   const activePage = Math.min(currentPage, totalPages);
   const pageStart = (activePage - 1) * CATALOG_PAGE_SIZE;
@@ -398,22 +380,12 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     .slice(pageStart, pageStart + CATALOG_PAGE_SIZE)
     .map((product) => resolveExactQueryVariant(product, normalizedQuery));
   const paginationItems = getPaginationItems(activePage, totalPages);
-  const totalLabel =
-    filteredProducts.length === 1
-      ? "1 product"
-      : `${filteredProducts.length} products`;
-
   return (
     <div className="catalog-shell">
       <div className="catalog-heading">
         <div>
           <span>Home / Products</span>
           <h1>Products</h1>
-          <p>
-            Browse VanStro cabinets, vanities, trim and future home material
-            categories. Dealer fulfillment details are confirmed on product pages
-            and at checkout.
-          </p>
         </div>
         <strong>{products.length} products</strong>
       </div>
@@ -450,41 +422,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
             </button>
           );
         })}
-      </div>
-
-      <div className="catalog-dealer-strip" aria-label="Dealer fulfillment support">
-        <div>
-          <PackageCheck size={18} strokeWidth={2.1} />
-          <span>
-            <strong>Dealer fulfilled</strong>
-            <small>Orders are handed to a selected VanStro dealer</small>
-          </span>
-        </div>
-        <div>
-          <Truck size={18} strokeWidth={2.1} />
-          <span>
-            <strong>Pickup or local delivery</strong>
-            <small>Options confirmed after dealer selection</small>
-          </span>
-        </div>
-        <div>
-          <Headphones size={18} strokeWidth={2.1} />
-          <span>
-            <strong>Project support</strong>
-            <small>Help for cabinets, vanities and trim</small>
-          </span>
-        </div>
-        <div>
-          <Tag size={18} strokeWidth={2.1} />
-          <span>
-            <strong>Volume pricing</strong>
-            <small>Campaign pricing can be managed by admin</small>
-          </span>
-        </div>
-        <Link href="/contact">
-          <MapPin size={17} strokeWidth={2.2} />
-          Contact dealer
-        </Link>
       </div>
 
       <div className="catalog-layout">
@@ -599,6 +536,12 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                   </option>
                 ))}
               </select>
+              <ChevronDown
+                className="catalog-sort-chevron"
+                size={16}
+                strokeWidth={2.3}
+                aria-hidden="true"
+              />
             </label>
 
             <div className="catalog-view-toggle" aria-label="View options">
@@ -621,41 +564,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                 <List size={18} strokeWidth={2.1} />
               </button>
             </div>
-          </div>
-
-          <div className="catalog-results-bar">
-            <div>
-              <strong>{totalLabel}</strong>
-              <span>
-                {activeCategory.id === "all" ? "All VanStro products" : activeCategory.label}
-                {queryParam ? ` matching "${queryParam}"` : ""}
-              </span>
-            </div>
-            {selectedFacetCount ? (
-              <div className="catalog-applied-filters" aria-label="Applied filters">
-                {(Object.entries(selectedFacets) as Array<[FacetKey, string[]]>).flatMap(
-                  ([facetKey, values]) =>
-                    values.map((value) => {
-                      const option = facetOptions[facetKey].find((item) => item.id === value);
-                      return option ? (
-                        <button
-                          type="button"
-                          onClick={() => clearFacet(facetKey, value)}
-                          key={`${facetKey}-${value}`}
-                        >
-                          {option.label}
-                          <X size={13} strokeWidth={2.4} />
-                        </button>
-                      ) : null;
-                    })
-                )}
-                <button className="clear-all" type="button" onClick={clearAllFacets}>
-                  Clear all
-                </button>
-              </div>
-            ) : (
-              <p>Use filters to narrow by product category, size, finish and brand.</p>
-            )}
           </div>
 
           {filteredProducts.length ? (

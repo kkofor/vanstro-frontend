@@ -87,7 +87,7 @@ type StorefrontContextValue = {
 
 const STORAGE_KEY = "vanstro-storefront-v1";
 const DEFAULT_DEALER_ID = "winnipeg";
-const DEFAULT_DEALER_NAME = "Yuan Construction";
+const DEFAULT_DEALER_NAME = "Yuan Construction Ltd.";
 const STORAGE_VERSION = 2;
 
 const StorefrontContext = createContext<StorefrontContextValue | null>(null);

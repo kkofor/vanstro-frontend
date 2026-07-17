@@ -16,14 +16,8 @@ import { ProductDealerSelector } from "@/components/product/ProductDealerSelecto
 import {
   canFulfillQuantity,
   getAvailableQuantity,
-  getInventoryLabel,
   getInventoryLocation,
-  getInventoryStatusClass
 } from "@/lib/commerce/product-inventory";
-import {
-  formatMoney,
-  getEffectivePrice
-} from "@/lib/commerce/product-commerce";
 import { resolveProductVariant } from "@/lib/product/product-variants";
 
 type ProductPurchaseActionsProps = {
@@ -61,11 +55,6 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
   const selectedInventory = getInventoryLocation(purchaseProduct, selectedDealer.id);
   const selectedStock = getAvailableQuantity(purchaseProduct, selectedDealer.id);
   const canBuy = canFulfillQuantity(purchaseProduct, selectedDealer.id, quantity);
-  const inventoryClass = getInventoryStatusClass(selectedInventory);
-  const inventoryLabel = canBuy
-    ? `${getInventoryLabel(selectedInventory)} at selected dealer`
-    : "Not available at selected dealer";
-  const effectivePrice = formatMoney(getEffectivePrice(purchaseProduct));
 
   function updateQuantity(nextQuantity: number) {
     const quantityKnown = selectedInventory?.quantityKnown !== false;
@@ -178,55 +167,6 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
         Checkout reserves stock under {selectedDealer.name}.
       </p>
 
-      <div className="pdp-mobile-buy-bar" role="region" aria-label="Mobile purchase bar">
-        <span>
-          <strong>{effectivePrice}</strong>
-          <small className={inventoryClass}>{inventoryLabel}</small>
-        </span>
-        <button
-          className={addFeedback ? "button button-accent add-cart-button added" : "button button-accent add-cart-button"}
-          type="button"
-          disabled={!canBuy}
-          onClick={handleAddToCart}
-        >
-          <ShoppingCart size={18} strokeWidth={2} />
-          Add to cart
-        </button>
-      </div>
-
-      <div className="pdp-desktop-buy-bar" role="region" aria-label="Sticky purchase bar">
-        <span>
-          <strong>{product.name}</strong>
-          <small className={inventoryClass}>{inventoryLabel}</small>
-        </span>
-        <em>{effectivePrice}</em>
-        <div className="quantity-stepper compact" aria-label={`Quantity for ${product.name}`}>
-          <button
-            type="button"
-            onClick={() => updateQuantity(quantity - 1)}
-            aria-label="Decrease quantity"
-          >
-            <Minus size={15} strokeWidth={2} />
-          </button>
-          <span>{quantity}</span>
-          <button
-            type="button"
-            onClick={() => updateQuantity(quantity + 1)}
-            aria-label="Increase quantity"
-          >
-            <Plus size={15} strokeWidth={2} />
-          </button>
-        </div>
-        <button
-          className={addFeedback ? "button button-accent add-cart-button added" : "button button-accent add-cart-button"}
-          type="button"
-          disabled={!canBuy}
-          onClick={handleAddToCart}
-        >
-          <ShoppingCart size={18} strokeWidth={2} />
-          Add to cart
-        </button>
-      </div>
     </div>
   );
 }

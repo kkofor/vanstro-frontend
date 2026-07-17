@@ -2857,7 +2857,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .page-hero {
-  padding: 28px 0 34px;
+  padding: 22px 0 34px;
   border-bottom: 1px solid var(--color-line);
   background: white;
 }
@@ -2980,7 +2980,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .about-profile-hero {
-  padding: 28px 0 46px;
+  padding: 22px 0 46px;
 }
 
 .about-profile-hero-grid {
@@ -3321,7 +3321,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .secondary-page-hero {
-  padding: 28px 0 40px;
+  padding: 22px 0 40px;
 }
 
 .secondary-page-hero-grid {
@@ -3947,7 +3947,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .contact-page-hero {
-  padding: 28px 0 34px;
+  padding: 22px 0 34px;
 }
 
 .contact-page-hero-grid {
@@ -4349,7 +4349,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .dealer-program-hero {
-  padding: 28px 0 46px;
+  padding: 22px 0 46px;
 }
 
 .dealer-program-hero-grid {
@@ -4782,7 +4782,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .dealer-program-b2b-hero {
-  padding: 28px 0 40px;
+  padding: 22px 0 40px;
 }
 
 .dealer-program-b2b-hero-grid {
@@ -5377,7 +5377,7 @@ body:has(.pdp-page) .site-footer {
 
 .catalog-page {
   background: white;
-  padding: 28px 0 48px;
+  padding: 22px 0 48px;
 }
 
 .catalog-shell {
@@ -6517,7 +6517,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .pdp-page {
-  padding-top: 28px;
+  padding-top: 22px;
 }
 
 .pdp-breadcrumb {
@@ -7576,7 +7576,7 @@ body:has(.pdp-page) .site-footer {
 
 @media (max-width: 760px) {
   .page-hero {
-    padding: 18px 0 22px;
+    padding: 14px 0 22px;
   }
 
   .legal-hero-grid {
@@ -7668,7 +7668,7 @@ body:has(.pdp-page) .site-footer {
   }
 
   .catalog-page {
-    padding: 18px 0 32px;
+    padding: 14px 0 32px;
   }
 
   .catalog-heading {
@@ -7750,7 +7750,7 @@ body:has(.pdp-page) .site-footer {
   }
 
   .pdp-page {
-    padding-top: 18px;
+    padding-top: 14px;
   }
 
   .pdp-title-block h1 {
@@ -11843,15 +11843,15 @@ body.review-modal-open {
 
 @media (max-width: 680px) {
   .contact-page-hero {
-    padding: 18px 0 34px;
+    padding: 14px 0 34px;
   }
 
   .dealer-program-hero {
-    padding: 18px 0 34px;
+    padding: 14px 0 34px;
   }
 
   .about-profile-hero {
-    padding: 18px 0 34px;
+    padding: 14px 0 34px;
   }
 
   .dealer-map-section-heading {

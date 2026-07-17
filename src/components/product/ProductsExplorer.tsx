@@ -383,11 +383,9 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   const paginationItems = getPaginationItems(activePage, totalPages);
   return (
     <div className="catalog-shell">
+      <h1 className="visually-hidden">Products</h1>
       <div className="catalog-heading">
-        <div>
-          <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
-          <h1>Products</h1>
-        </div>
+        <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
         <strong>{products.length} products</strong>
       </div>
 

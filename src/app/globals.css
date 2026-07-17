@@ -1005,6 +1005,16 @@ button {
   min-height: 100dvh;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
@@ -5386,16 +5396,9 @@ body:has(.pdp-page) .site-footer {
 
 .catalog-heading {
   display: flex;
-  align-items: end;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
-}
-
-.catalog-heading h1 {
-  margin: 18px 0 4px;
-  color: var(--color-ink);
-  font-size: 32px;
-  line-height: 1.1;
 }
 
 .catalog-heading p {
@@ -7674,10 +7677,6 @@ body:has(.pdp-page) .site-footer {
   .catalog-heading {
     display: grid;
     gap: 8px;
-  }
-
-  .catalog-heading h1 {
-    font-size: 27px;
   }
 
   .catalog-heading > strong {

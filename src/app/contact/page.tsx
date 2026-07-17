@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Clock3, Mail, MapPin, MessageSquareText, Phone, ShieldCheck, Store, UserRoundCheck } from "lucide-react";
 import { ContactChatButton } from "@/components/contact/ContactChatButton";
 import { PublicSubmissionForm } from "@/components/forms/PublicSubmissionForm";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -90,11 +91,7 @@ export default function ContactPage() {
       <section className="page-hero contact-page-hero">
         <div className="container contact-page-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span aria-hidden="true">/</span>
-              <span>Contact us</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Contact us" }]} />
             <h1>Contact VanStro</h1>
             <p className="contact-page-lede">
               Reach the right VanStro contact for product questions, order support,

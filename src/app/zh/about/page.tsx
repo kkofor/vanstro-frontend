@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -42,11 +43,7 @@ export default function AboutZhPage() {
       <section className="page-hero about-profile-hero">
         <div className="container about-profile-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/zh/dealer-program">首页</Link>
-              <span aria-hidden="true">/</span>
-              <span>关于我们</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "首页", href: "/" }, { label: "关于我们" }]} />
             <h1>不只是供应商。</h1>
             <p className="about-profile-lede">
               VanStro Global Supply Inc. 是一家总部位于加拿大曼尼托巴省温尼伯的公司。

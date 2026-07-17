@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  ChevronRight,
   ClipboardList,
   Clock3,
   FileText,
@@ -16,6 +15,7 @@ import {
   type LegalPageEntry
 } from "@/content/legalPages";
 import { assetPath } from "@/lib/assets";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 
 const heroVisuals: Record<string, { image: string; alt: string; caption: string }> = {
   "legal-disclaimer": {
@@ -131,13 +131,13 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
       <section className="page-hero">
         <div className="container legal-hero-grid">
           <div className="legal-hero-copy">
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <ChevronRight size={14} strokeWidth={1.8} />
-              <span>Legal</span>
-              <ChevronRight size={14} strokeWidth={1.8} />
-              <span>{entry.title}</span>
-            </nav>
+            <PageBreadcrumb
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Legal" },
+                { label: entry.title }
+              ]}
+            />
             <h1>{entry.title}</h1>
             <p>{entry.intro}</p>
             {entry.updated || entry.sourceSummary ? (

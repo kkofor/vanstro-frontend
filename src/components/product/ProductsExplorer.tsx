@@ -21,6 +21,7 @@ import {
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import {
   CATALOG_CATEGORY_OPTIONS,
   CATALOG_PAGE_SIZE,
@@ -384,7 +385,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     <div className="catalog-shell">
       <div className="catalog-heading">
         <div>
-          <span>Home / Products</span>
+          <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
           <h1>Products</h1>
         </div>
         <strong>{products.length} products</strong>

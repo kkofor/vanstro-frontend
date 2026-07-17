@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -41,11 +42,7 @@ export default function AboutPage() {
       <section className="page-hero about-profile-hero">
         <div className="container about-profile-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span aria-hidden="true">/</span>
-              <span>About us</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "About us" }]} />
             <h1>More than a supplier.</h1>
             <p className="about-profile-lede">
               VanStro Global Supply Inc. is a Canadian-based company headquartered

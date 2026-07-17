@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -77,11 +78,7 @@ export default function DealerProgramPage() {
       <section className="page-hero dealer-program-hero dealer-program-b2b-hero">
         <div className="container dealer-program-b2b-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">Home</Link>
-              <span aria-hidden="true">/</span>
-              <span>Dealer program</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Dealer program" }]} />
             <h1>Dealer program</h1>
             <p>
               For qualified local building-materials operators who can support

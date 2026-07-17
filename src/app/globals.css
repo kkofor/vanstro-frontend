@@ -2857,7 +2857,7 @@ body:has(.pdp-page) .site-footer {
 }
 
 .page-hero {
-  padding: 26px 0 34px;
+  padding: 28px 0 34px;
   border-bottom: 1px solid var(--color-line);
   background: white;
 }
@@ -2866,7 +2866,7 @@ body:has(.pdp-page) .site-footer {
   display: grid;
   grid-template-columns: minmax(0, 760px) minmax(280px, 420px);
   gap: clamp(28px, 5vw, 76px);
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
 }
 
@@ -2898,6 +2898,10 @@ body:has(.pdp-page) .site-footer {
   font-size: clamp(30px, 3vw, 48px);
   line-height: 1.06;
   letter-spacing: -0.03em;
+}
+
+.page-hero > .container > h1:first-child {
+  margin-top: 0;
 }
 
 .page-hero p {
@@ -2976,14 +2980,14 @@ body:has(.pdp-page) .site-footer {
 }
 
 .about-profile-hero {
-  padding: 34px 0 46px;
+  padding: 28px 0 46px;
 }
 
 .about-profile-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.04fr) minmax(300px, 0.76fr);
   gap: clamp(28px, 5vw, 72px);
-  align-items: center;
+  align-items: start;
 }
 
 .about-profile-lede {
@@ -3317,14 +3321,14 @@ body:has(.pdp-page) .site-footer {
 }
 
 .secondary-page-hero {
-  padding: 34px 0 40px;
+  padding: 28px 0 40px;
 }
 
 .secondary-page-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.68fr) minmax(320px, 0.32fr);
   gap: clamp(28px, 5vw, 72px);
-  align-items: center;
+  align-items: start;
 }
 
 .secondary-page-hero-copy {
@@ -3950,7 +3954,7 @@ body:has(.pdp-page) .site-footer {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.58fr);
   gap: clamp(28px, 5vw, 76px);
-  align-items: center;
+  align-items: start;
 }
 
 .contact-page-lede {
@@ -4345,14 +4349,14 @@ body:has(.pdp-page) .site-footer {
 }
 
 .dealer-program-hero {
-  padding: 34px 0 46px;
+  padding: 28px 0 46px;
 }
 
 .dealer-program-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(340px, 0.6fr);
   gap: clamp(28px, 5vw, 76px);
-  align-items: center;
+  align-items: start;
 }
 
 .dealer-program-eyebrow {
@@ -4778,14 +4782,14 @@ body:has(.pdp-page) .site-footer {
 }
 
 .dealer-program-b2b-hero {
-  padding: 34px 0 40px;
+  padding: 28px 0 40px;
 }
 
 .dealer-program-b2b-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(340px, 0.58fr);
   gap: clamp(28px, 5vw, 72px);
-  align-items: center;
+  align-items: start;
 }
 
 .dealer-program-b2b-visual img {
@@ -5387,15 +5391,8 @@ body:has(.pdp-page) .site-footer {
   gap: 24px;
 }
 
-.catalog-heading span {
-  display: block;
-  color: #5b7074;
-  font-size: 12px;
-  font-weight: 800;
-}
-
 .catalog-heading h1 {
-  margin: 8px 0 4px;
+  margin: 18px 0 4px;
   color: var(--color-ink);
   font-size: 32px;
   line-height: 1.1;
@@ -5706,7 +5703,7 @@ body:has(.pdp-page) .site-footer {
 .catalog-product-body {
   display: grid;
   align-content: start;
-  gap: 4px;
+  gap: 8px;
   padding: 13px;
 }
 
@@ -5767,7 +5764,7 @@ body:has(.pdp-page) .site-footer {
 
 .catalog-card-footer {
   display: grid;
-  gap: 6px;
+  gap: 10px;
   margin-top: 2px;
 }
 
@@ -6520,22 +6517,15 @@ body:has(.pdp-page) .site-footer {
 }
 
 .pdp-page {
-  padding-top: 24px;
+  padding-top: 28px;
 }
 
 .pdp-breadcrumb {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 7px;
   margin-bottom: 18px;
-  color: var(--color-muted);
-  font-size: 13px;
-  font-weight: 800;
 }
 
 .pdp-breadcrumb a {
-  color: var(--color-ink);
+  color: inherit;
 }
 
 .pdp-breadcrumb span {
@@ -11853,15 +11843,15 @@ body.review-modal-open {
 
 @media (max-width: 680px) {
   .contact-page-hero {
-    padding: 26px 0 34px;
+    padding: 18px 0 34px;
   }
 
   .dealer-program-hero {
-    padding: 26px 0 34px;
+    padding: 18px 0 34px;
   }
 
   .about-profile-hero {
-    padding: 26px 0 34px;
+    padding: 18px 0 34px;
   }
 
   .dealer-map-section-heading {

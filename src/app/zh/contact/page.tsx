@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Clock3, Mail, MapPin, MessageSquareText, Phone, ShieldCheck, Store, UserRoundCheck } from "lucide-react";
 import { ContactChatButton } from "@/components/contact/ContactChatButton";
 import { PublicSubmissionForm } from "@/components/forms/PublicSubmissionForm";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -91,11 +92,7 @@ export default function ContactZhPage() {
       <section className="page-hero contact-page-hero">
         <div className="container contact-page-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/zh/dealer-program">首页</Link>
-              <span aria-hidden="true">/</span>
-              <span>联系我们</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "首页", href: "/" }, { label: "联系我们" }]} />
             <h1>联系 VanStro</h1>
             <p className="contact-page-lede">
               无论是产品咨询、订单支持、经销商协助履约，还是商务合作问题，

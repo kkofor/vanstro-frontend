@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import { assetPath } from "@/lib/assets";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
@@ -78,11 +79,7 @@ export default function DealerProgramZhPage() {
       <section className="page-hero dealer-program-hero dealer-program-b2b-hero">
         <div className="container dealer-program-b2b-hero-grid">
           <div>
-            <nav className="legal-breadcrumb" aria-label="Breadcrumb">
-              <Link href="/">首页</Link>
-              <span aria-hidden="true">/</span>
-              <span>经销商计划</span>
-            </nav>
+            <PageBreadcrumb items={[{ label: "首页", href: "/" }, { label: "经销商计划" }]} />
             <h1>经销商计划</h1>
             <p>
               面向具备本地客户沟通、订单执行和服务能力的建筑材料运营商。

@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
 
 type ProductDetailBreadcrumbProps = {
@@ -10,14 +9,14 @@ export function ProductDetailBreadcrumb({ viewModel }: ProductDetailBreadcrumbPr
   const { product, categoryFilter } = viewModel;
 
   return (
-    <nav className="pdp-breadcrumb" aria-label="Breadcrumb">
-      <Link href="/">Home</Link>
-      <ChevronRight size={14} strokeWidth={2.4} />
-      <Link href="/products">Products</Link>
-      <ChevronRight size={14} strokeWidth={2.4} />
-      <Link href={`/products?category=${categoryFilter}`}>{product.category}</Link>
-      <ChevronRight size={14} strokeWidth={2.4} />
-      <span>{product.name}</span>
-    </nav>
+    <PageBreadcrumb
+      className="pdp-breadcrumb"
+      items={[
+        { label: "Home", href: "/" },
+        { label: "Products", href: "/products" },
+        { label: product.category, href: `/products?category=${categoryFilter}` },
+        { label: product.name }
+      ]}
+    />
   );
 }

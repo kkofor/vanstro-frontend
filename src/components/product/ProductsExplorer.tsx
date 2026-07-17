@@ -1,16 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import {
-  ChevronDown,
-  Grid2X2,
-  Heart,
-  List,
-  Search,
-  SlidersHorizontal,
-  X
-} from "lucide-react";
+import { useMemo, useState } from "react";
+import { ChevronDown, Heart } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductSummary } from "@/lib/api/api-contract";
 import {
@@ -45,8 +37,6 @@ type FacetOption = {
   count: number;
   matches: (product: ProductSummary) => boolean;
 };
-
-type CatalogView = "grid" | "list";
 
 const facetLabels: Record<FacetKey, string> = {
   subCategory: "Product categories",
@@ -262,9 +252,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     ? sortParam
     : "featured";
 
-  const [draftQuery, setDraftQuery] = useState(queryParam);
   const [currentPage, setCurrentPage] = useState(1);
-  const [catalogView, setCatalogView] = useState<CatalogView>("grid");
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     categories: true,
     subCategory: true,
@@ -278,10 +266,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     finish: [],
     brand: []
   });
-
-  useEffect(() => {
-    setDraftQuery(queryParam);
-  }, [queryParam]);
 
   const normalizedQuery = normalize(queryParam);
   const categoryProducts = useMemo(
@@ -338,11 +322,6 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
 
     const queryString = params.toString();
     router.push(queryString ? `${pathname}?${queryString}` : pathname);
-  }
-
-  function handleSearchSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    updateFilters({ q: draftQuery.trim() || null });
   }
 
   function toggleFacet(facetKey: FacetKey, optionId: string) {
@@ -432,6 +411,25 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
             </button>
           </div>
 
+          <div className="catalog-filter-sort">
+            <label htmlFor="catalog-sort">Sort by</label>
+            <div>
+              <select
+                id="catalog-sort"
+                value={activeSort}
+                aria-label="Sort products"
+                onChange={(event) => updateFilters({ sort: event.target.value })}
+              >
+                {CATALOG_SORT_OPTIONS.map((option) => (
+                  <option value={option.id} key={option.id}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={15} strokeWidth={2.3} aria-hidden="true" />
+            </div>
+          </div>
+
           <div className="catalog-filter-section">
             <button
               type="button"
@@ -494,80 +492,10 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           className="catalog-results"
           role="region"
           aria-label="Product results"
-          tabIndex={0}
         >
-          <div className="catalog-toolbar" aria-label="Product search and sort">
-            <form className="catalog-search" onSubmit={handleSearchSubmit}>
-              <Search size={18} strokeWidth={2.2} aria-hidden="true" />
-              <input
-                name="q"
-                value={draftQuery}
-                placeholder="Search within products, SKU or size"
-                aria-label="Search product catalog"
-                onChange={(event) => setDraftQuery(event.target.value)}
-              />
-              {queryParam ? (
-                <button
-                  className="catalog-clear"
-                  type="button"
-                  aria-label="Clear search"
-                  onClick={() => updateFilters({ q: null })}
-                >
-                  <X size={16} strokeWidth={2.4} />
-                </button>
-              ) : null}
-              <button className="small-button dark" type="submit">
-                Search
-              </button>
-            </form>
-
-            <label className="catalog-sort">
-              <SlidersHorizontal size={17} strokeWidth={2.2} aria-hidden="true" />
-              <span>Sort</span>
-              <select
-                value={activeSort}
-                aria-label="Sort products"
-                onChange={(event) => updateFilters({ sort: event.target.value })}
-              >
-                {CATALOG_SORT_OPTIONS.map((option) => (
-                  <option value={option.id} key={option.id}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                className="catalog-sort-chevron"
-                size={16}
-                strokeWidth={2.3}
-                aria-hidden="true"
-              />
-            </label>
-
-            <div className="catalog-view-toggle" aria-label="View options">
-              <button
-                className={catalogView === "grid" ? "active" : undefined}
-                type="button"
-                aria-label="Grid view"
-                aria-pressed={catalogView === "grid"}
-                onClick={() => setCatalogView("grid")}
-              >
-                <Grid2X2 size={17} strokeWidth={2.1} />
-              </button>
-              <button
-                className={catalogView === "list" ? "active" : undefined}
-                type="button"
-                aria-label="List view"
-                aria-pressed={catalogView === "list"}
-                onClick={() => setCatalogView("list")}
-              >
-                <List size={18} strokeWidth={2.1} />
-              </button>
-            </div>
-          </div>
-
           {filteredProducts.length ? (
             <>
-              <div className={`catalog-product-grid ${catalogView === "list" ? "list-view" : ""}`}>
+              <div className="catalog-product-grid">
                 {visibleProducts.map((product, index) => (
                   <CatalogProductCard
                     product={product}

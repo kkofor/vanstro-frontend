@@ -148,7 +148,7 @@ export function SiteFooter() {
               </span>
               <span>
                 <Mail size={16} strokeWidth={2.2} />
-                info@vanstro.ca
+                support@vanstro.ca
               </span>
               <span>
                 <Phone size={16} strokeWidth={2.2} />

@@ -26,7 +26,7 @@ function escapeHtml(value: string) {
 }
 
 function dealerLabel(dealer: DealerMapLocation) {
-  return `${dealer.code} - ${dealer.name}`;
+  return dealer.code === dealer.name ? dealer.code : `${dealer.code} - ${dealer.name}`;
 }
 
 function dealerAddress(dealer: DealerMapLocation) {

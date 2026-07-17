@@ -126,48 +126,48 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="container">
-        <div className="footer-top">
-          <div className="footer-brand">
-            <Link href="/" aria-label="VanStro home">
-              <img
-                src={assetPath("/assets/vanstro-logo.png")}
-                alt="VanStro Global Supply"
-                width={315}
-                height={63}
-                loading="lazy"
-                decoding="async"
-              />
-            </Link>
-            <p>
-              Canadian home materials supply platform for homeowners, contractors
-              and VanStro dealer partners.
-            </p>
-            <div className="footer-contact-list" aria-label="Contact information">
-              <span>
-                <MapPin size={16} strokeWidth={2.2} />
-                Nationwide delivery with local dealer service
-              </span>
-              <span>
-                <Mail size={16} strokeWidth={2.2} />
-                support@vanstro.ca
-              </span>
-              <span>
-                <Phone size={16} strokeWidth={2.2} />
-                Dealer-assisted fulfillment
-              </span>
-            </div>
-            <div className="footer-social" aria-label="Social media channels">
-              <div className="social-links">
-                {socialChannels.map((channel) => (
-                  <span role="img" aria-label={channel.label} key={channel.label}>
-                    <SocialIcon icon={channel.icon} />
-                  </span>
-                ))}
+        <HomepageOnly>
+          <div className="footer-top">
+            <div className="footer-brand">
+              <Link href="/" aria-label="VanStro home">
+                <img
+                  src={assetPath("/assets/vanstro-logo.png")}
+                  alt="VanStro Global Supply"
+                  width={315}
+                  height={63}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </Link>
+              <p>
+                Canadian home materials supply platform for homeowners, contractors
+                and VanStro dealer partners.
+              </p>
+              <div className="footer-contact-list" aria-label="Contact information">
+                <span>
+                  <MapPin size={16} strokeWidth={2.2} />
+                  Nationwide delivery with local dealer service
+                </span>
+                <span>
+                  <Mail size={16} strokeWidth={2.2} />
+                  support@vanstro.ca
+                </span>
+                <span>
+                  <Phone size={16} strokeWidth={2.2} />
+                  Dealer-assisted fulfillment
+                </span>
+              </div>
+              <div className="footer-social" aria-label="Social media channels">
+                <div className="social-links">
+                  {socialChannels.map((channel) => (
+                    <span role="img" aria-label={channel.label} key={channel.label}>
+                      <SocialIcon icon={channel.icon} />
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <HomepageOnly>
             <div className="footer-help">
               <span>Need help with an order?</span>
               <h2>Checkout online. Fulfillment stays local.</h2>
@@ -184,8 +184,8 @@ export function SiteFooter() {
                 </Link>
               </div>
             </div>
-          </HomepageOnly>
-        </div>
+          </div>
+        </HomepageOnly>
 
         <div className="footer-link-grid">
           {footerGroups.map((group) => (

@@ -205,7 +205,7 @@ export function SiteHeader() {
           <p>Shop online across Canada. A local VanStro dealer fulfills your order.</p>
           <div className="utility-links">
             <Link href="/orders/demo-order">Track order</Link>
-            <Link href="/articles">Support</Link>
+            <Link href="/contact">Support</Link>
           </div>
         </div>
       </div>

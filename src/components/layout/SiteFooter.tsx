@@ -22,7 +22,7 @@ const footerGroups = [
       { label: "Order tracking", href: "/orders/demo-order" },
       { label: "Store pickup", href: "/#stores" },
       { label: "Shipping & delivery", href: "/articles/pickup-and-delivery-options" },
-      { label: "Returns & exchanges", href: "/articles" }
+      { label: "Returns & exchanges", href: "/return-policy" }
     ]
   },
   {

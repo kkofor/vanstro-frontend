@@ -102,9 +102,9 @@ export default function ContactZhPage() {
               <a className="button button-primary" href="#contact-form">
                 发送信息
               </a>
-              <a className="button button-secondary" href="#dealer-contacts">
+              <Link className="button button-secondary" href="/dealers/map">
                 查看经销商联系人
-              </a>
+              </Link>
               <ContactChatButton variant="hero" />
             </div>
           </div>

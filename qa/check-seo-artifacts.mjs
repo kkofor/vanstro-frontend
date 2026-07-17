@@ -20,7 +20,7 @@ function jsonLd(html) {
 }
 
 const htmlFiles = findHtml(out);
-assert.equal(htmlFiles.length, 171, "Static export route count changed");
+assert.equal(htmlFiles.length, 172, "Static export route count changed");
 
 const robots = readFileSync(join(out, "robots.txt"), "utf8");
 const host = robots.match(/^Host: (https:\/\/[^\s]+)$/m)?.[1];
@@ -31,7 +31,7 @@ for (const route of ["account", "cart", "checkout", "cookie-settings", "dashboar
 
 const sitemap = readFileSync(join(out, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
-assert.equal(sitemapUrls.length, 157, "Sitemap must contain 17 public routes and 140 PDPs");
+assert.equal(sitemapUrls.length, 158, "Sitemap must contain 18 public routes and 140 PDPs");
 assert(!sitemapUrls.some((url) => /\/articles\/(?!$)/.test(new URL(url).pathname)), "Placeholder article details must not enter the sitemap");
 
 const productFiles = htmlFiles.filter((path) => /\/products\/[^/]+\/index\.html$/.test(path));
@@ -87,4 +87,4 @@ assert(/hreflang="en-CA"/i.test(chineseAbout), "Chinese route needs English href
 assert(/hreflang="zh-CN"/i.test(chineseAbout), "Chinese route needs Chinese hreflang");
 assert(chineseAbout.includes('name="content-language" content="zh-CN"'), "Chinese route needs a content-language signal");
 
-console.log("SEO artifact checks passed: 171 routes, 140 ProductGroups, 300 variants");
+console.log("SEO artifact checks passed: 172 routes, 140 ProductGroups, 300 variants");

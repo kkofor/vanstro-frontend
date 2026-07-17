@@ -13,6 +13,7 @@ const staticRoutes = [
   "/dealer-program",
   "/dealer-services-and-responsibility",
   "/dealers/apply",
+  "/dealers/map",
   "/legal-disclaimer",
   "/privacy",
   "/products",

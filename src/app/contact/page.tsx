@@ -104,9 +104,9 @@ export default function ContactPage() {
               <a className="button button-primary" href="#contact-form">
                 Send a message
               </a>
-              <a className="button button-secondary" href="#dealer-contacts">
+              <Link className="button button-secondary" href="/dealers/map">
                 Find dealer contact
-              </a>
+              </Link>
               <ContactChatButton variant="hero" />
             </div>
           </div>

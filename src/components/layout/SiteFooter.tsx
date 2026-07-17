@@ -39,6 +39,7 @@ const footerGroups = [
     title: "Company",
     links: [
       { label: "About us", href: "/about" },
+      { label: "Dealer map", href: "/dealers/map" },
       { label: "Resource Center", href: "/articles" },
       { label: "Design Studio", href: "https://tools.vanstro.ca/" },
       { label: "Privacy policy", href: "/privacy" }

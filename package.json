@@ -21,12 +21,14 @@
     "db:seed": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/db db:seed"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "lucide-react": "^1.23.0",
     "next": "^16.2.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.21",
     "@types/node": "^26.1.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

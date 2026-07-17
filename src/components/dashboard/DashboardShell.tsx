@@ -482,7 +482,7 @@ export function DashboardShell() {
 
   if (!user) {
     return (
-      <main className="dashboard-page">
+      <div className="dashboard-page">
         <section className="dashboard-login-shell">
           <div>
             <span className="eyebrow">VanStro Dashboard</span>
@@ -526,15 +526,15 @@ export function DashboardShell() {
             <button className="button button-primary" disabled={loading} type="submit">
               {loading ? "Signing in..." : "Sign in"}
             </button>
-            {message ? <p className="dashboard-message">{message}</p> : null}
+            {message ? <p className="dashboard-message" role="status" aria-live="polite">{message}</p> : null}
           </form>
         </section>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="dashboard-page">
+    <div className="dashboard-page">
       <section className="dashboard-hero">
         <div>
           <span className="eyebrow">P1 Dashboard Shell</span>
@@ -567,7 +567,7 @@ export function DashboardShell() {
         <StatCard label="Ops alerts" value={data.operationAlerts.length} />
       </section>
 
-      {message ? <p className="dashboard-message">{message}</p> : null}
+      {message ? <p className="dashboard-message" role="status" aria-live="polite">{message}</p> : null}
 
       <section className="dashboard-shell-grid">
         <aside className="dashboard-sidebar" aria-label="Dashboard sections">
@@ -719,7 +719,7 @@ export function DashboardShell() {
           {activeTab === "auditLogs" ? <AuditLogsPanel logs={data.auditLogs} /> : null}
         </section>
       </section>
-    </main>
+    </div>
   );
 }
 

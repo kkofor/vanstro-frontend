@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { LegalPageTemplate } from "@/components/legal/LegalPageTemplate";
 import { CookieSettingsClient } from "@/components/layout/CookieSettingsClient";
 import { buildLegalMetadata, requireLegalPage } from "@/content/legalPages";
+import { buildPrivateMetadata } from "@/lib/seo/metadata";
 
 const pageEntry = requireLegalPage("cookie-settings");
 
 export const metadata: Metadata = {
   ...buildLegalMetadata(pageEntry),
-  title: "Cookie Preferences"
+  ...buildPrivateMetadata("Cookie Preferences", pageEntry.description, "/cookie-settings")
 };
 
 export default function CookieSettingsPage() {

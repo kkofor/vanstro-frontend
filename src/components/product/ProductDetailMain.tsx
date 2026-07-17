@@ -95,7 +95,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
   const colorHex = selectedProduct.colorHex ?? "#f4f2ee";
 
   return (
-    <main className="pdp-detail-main">
+    <div className="pdp-detail-main">
       <section className="pdp-detail-section" id="overview" aria-labelledby="pdp-overview-title">
         <div className="pdp-section-heading">
           <h2 id="pdp-overview-title">Product overview</h2>
@@ -103,7 +103,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
         </div>
         <p>{selectedProduct.description}</p>
         <ul className="pdp-overview-list">
-          {productHighlights.slice(0, 3).map((highlight) => (
+          {productHighlights.map((highlight) => (
             <li key={highlight}>
               <CheckCircle2 size={17} strokeWidth={2.4} />
               <span>{highlight}</span>
@@ -224,6 +224,6 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
           ))}
         </div>
       </section>
-    </main>
+    </div>
   );
 }

@@ -3,12 +3,13 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState
 } from "react";
-import { Dealer, ProductSummary } from "@/lib/api/api-contract";
+import { CartItem, Dealer, ProductSummary } from "@/lib/api/api-contract";
 import {
   getEffectivePrice,
   withEffectiveProductPrice
@@ -37,6 +38,23 @@ export type CheckoutOrder = {
   }>;
 };
 
+export type StorefrontAsyncState = {
+  status: "idle" | "loading" | "success" | "error";
+  error?: string;
+};
+
+export type StorefrontAction =
+  | "add-cart"
+  | "update-cart"
+  | "remove-cart"
+  | "clear-cart"
+  | "add-favorite"
+  | "remove-favorite";
+
+export type StorefrontActionResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
 type StorefrontContextValue = {
   cartItems: CartLine[];
   favoriteItems: ProductSummary[];
@@ -47,14 +65,18 @@ type StorefrontContextValue = {
   cartCount: number;
   favoriteCount: number;
   cartSubtotal: number;
+  cartState: StorefrontAsyncState;
+  favoritesState: StorefrontAsyncState;
+  mutationState: StorefrontAsyncState & { action?: StorefrontAction };
+  persistenceReady: boolean;
   setSelectedDealer: (dealer: Dealer) => void;
   setPostalCode: (postalCode: string) => void;
-  addToCart: (product: ProductSummary, quantity?: number) => void;
-  updateCartQuantity: (productId: string, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
-  clearCart: () => void;
-  toggleFavorite: (product: ProductSummary) => void;
-  removeFavorite: (productId: string) => void;
+  addToCart: (product: ProductSummary, quantity?: number) => Promise<StorefrontActionResult>;
+  updateCartQuantity: (productId: string, quantity: number) => Promise<StorefrontActionResult>;
+  removeFromCart: (productId: string) => Promise<StorefrontActionResult>;
+  clearCart: () => Promise<StorefrontActionResult>;
+  toggleFavorite: (product: ProductSummary) => Promise<StorefrontActionResult>;
+  removeFavorite: (productId: string) => Promise<StorefrontActionResult>;
   isFavorite: (productId: string) => boolean;
   createOrder: (input: {
     fulfillment: "pickup" | "delivery";
@@ -66,6 +88,7 @@ type StorefrontContextValue = {
 const STORAGE_KEY = "vanstro-storefront-v1";
 const DEFAULT_DEALER_ID = "winnipeg";
 const DEFAULT_DEALER_NAME = "Yuan Construction";
+const STORAGE_VERSION = 2;
 
 const StorefrontContext = createContext<StorefrontContextValue | null>(null);
 
@@ -73,22 +96,53 @@ function makeOrderId() {
   return `VS-${Date.now().toString(36).toUpperCase()}`;
 }
 
-function formatCartItems(items: Array<{
-  product: ProductSummary;
-  quantity: number;
-  unitPrice: { amount: number };
-}>) {
+function formatCartItems(items: CartItem[]): CartLine[] {
   return items.map((item) => ({
     product: {
-      ...item.product,
+      id: item.product.id,
+      slug: item.product.slug,
+      sku: item.product.sku,
+      name: item.product.name,
       price: item.unitPrice,
-      images: item.product.images ?? [],
-      dimensions: item.product.dimensions ?? "",
-      unit: item.product.unit ?? "each",
-      inStock: item.product.inStock ?? true
-    } as ProductSummary,
+      category: item.product.category ?? "Catalog",
+      unit: item.product.unit,
+      dimensions: item.product.dimensions,
+      images: item.product.images,
+      inStock: item.product.inStock
+    },
     quantity: item.quantity
   }));
+}
+
+function actionError(error: unknown) {
+  return error instanceof Error && error.message
+    ? error.message
+    : "The request could not be completed. Please try again.";
+}
+
+function storedString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value : undefined;
+}
+
+function parseStoredState(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return undefined;
+  const state = value as Record<string, unknown>;
+  const aliases = state.productIdentityAliases;
+  const productIdentityAliases = aliases && typeof aliases === "object" && !Array.isArray(aliases)
+    ? Object.fromEntries(
+        Object.entries(aliases).filter(
+          (entry): entry is [string, string] => Boolean(entry[0]) && storedString(entry[1]) !== undefined
+        )
+      )
+    : {};
+
+  return {
+    orders: Array.isArray(state.orders) ? state.orders as CheckoutOrder[] : [],
+    selectedDealerId: storedString(state.selectedDealerId) ?? DEFAULT_DEALER_ID,
+    selectedDealerName: storedString(state.selectedDealerName) ?? DEFAULT_DEALER_NAME,
+    postalCode: typeof state.postalCode === "string" ? state.postalCode : "",
+    productIdentityAliases
+  };
 }
 
 export function StorefrontProvider({ children }: { children: ReactNode }) {
@@ -98,17 +152,25 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const [selectedDealerId, setSelectedDealerId] = useState(DEFAULT_DEALER_ID);
   const [selectedDealerName, setSelectedDealerName] = useState(DEFAULT_DEALER_NAME);
   const [postalCode, setPostalCodeState] = useState("");
+  const [productIdentityAliases, setProductIdentityAliases] = useState<Record<string, string>>({});
   const [hydrated, setHydrated] = useState(false);
+  const [cartState, setCartState] = useState<StorefrontAsyncState>({ status: "loading" });
+  const [favoritesState, setFavoritesState] = useState<StorefrontAsyncState>({ status: "loading" });
+  const [mutationState, setMutationState] = useState<StorefrontContextValue["mutationState"]>({
+    status: "idle"
+  });
 
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const parsed = JSON.parse(raw);
-        setOrders(parsed.orders ?? []);
-        setSelectedDealerId(DEFAULT_DEALER_ID);
-        setSelectedDealerName(DEFAULT_DEALER_NAME);
-        setPostalCodeState(parsed.postalCode ?? "");
+        const parsed = parseStoredState(JSON.parse(raw));
+        if (!parsed) throw new Error("Stored storefront state is invalid.");
+        setOrders(parsed.orders);
+        setSelectedDealerId(parsed.selectedDealerId);
+        setSelectedDealerName(parsed.selectedDealerName);
+        setPostalCodeState(parsed.postalCode.trim().toUpperCase());
+        setProductIdentityAliases(parsed.productIdentityAliases);
       }
     } catch {
       try {
@@ -117,11 +179,16 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     }
     void vanstroApi.getCart().then((response) => {
       setCartItems(formatCartItems(response.data.items));
-    }).catch(() => {});
+      setCartState({ status: "success" });
+    }).catch((error) => setCartState({ status: "error", error: actionError(error) }));
     const refreshFavorites = () => {
+      setFavoritesState({ status: "loading" });
       void vanstroApi.getFavorites()
-        .then((response) => setFavoriteItems(response.data.map((item) => item.product)))
-        .catch(() => setFavoriteItems([]));
+        .then((response) => {
+          setFavoriteItems(response.data.map((item) => item.product));
+          setFavoritesState({ status: "success" });
+        })
+        .catch((error) => setFavoritesState({ status: "error", error: actionError(error) }));
     };
     refreshFavorites();
     window.addEventListener("vanstro-authenticated", refreshFavorites);
@@ -136,21 +203,38 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
         STORAGE_KEY,
         JSON.stringify({
           orders,
+          storageVersion: STORAGE_VERSION,
           selectedDealerId,
           selectedDealerName,
-          postalCode
+          postalCode,
+          productIdentityAliases
         })
       );
     } catch {}
   }, [
-    cartItems,
-    favoriteItems,
     orders,
     selectedDealerId,
     selectedDealerName,
     postalCode,
+    productIdentityAliases,
     hydrated
   ]);
+
+  const runMutation = useCallback(async (
+    action: StorefrontAction,
+    operation: () => Promise<void>
+  ): Promise<StorefrontActionResult> => {
+    setMutationState({ action, status: "loading" });
+    try {
+      await operation();
+      setMutationState({ action, status: "success" });
+      return { ok: true };
+    } catch (error) {
+      const message = actionError(error);
+      setMutationState({ action, status: "error", error: message });
+      return { ok: false, error: message };
+    }
+  }, []);
 
   const cartSubtotal = useMemo(
     () =>
@@ -172,6 +256,10 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       cartCount: cartItems.reduce((total, item) => total + item.quantity, 0),
       favoriteCount: favoriteItems.length,
       cartSubtotal,
+      cartState,
+      favoritesState,
+      mutationState,
+      persistenceReady: hydrated,
       setSelectedDealer(dealer) {
         setSelectedDealerId(dealer.id);
         setSelectedDealerName(dealer.name);
@@ -179,53 +267,72 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       setPostalCode(nextPostalCode) {
         setPostalCodeState(nextPostalCode.trim().toUpperCase());
       },
-      addToCart(product, quantity = 1) {
+      async addToCart(product, quantity = 1) {
         const pricedProduct = withEffectiveProductPrice(product);
-        void vanstroApi.addCartItem({ productId: pricedProduct.id, quantity })
-          .then((response) => {
+        return runMutation("add-cart", async () => {
+          const response = await vanstroApi.addCartProduct(pricedProduct, quantity);
             setCartItems(formatCartItems(response.data.items));
+            setCartState({ status: "success" });
             window.dispatchEvent(
               new CustomEvent("vanstro-cart-added", {
                 detail: { product: pricedProduct, quantity }
               })
             );
-          })
-          .catch(() => {});
+        });
       },
       updateCartQuantity(productId, quantity) {
-        void vanstroApi.setCartProductQuantity(productId, Math.max(1, quantity))
-          .then((response) => setCartItems(formatCartItems(response.data.items)))
-          .catch(() => {});
+        return runMutation("update-cart", async () => {
+          const response = await vanstroApi.setCartProductQuantity(productId, Math.max(1, quantity));
+          setCartItems(formatCartItems(response.data.items));
+          setCartState({ status: "success" });
+        });
       },
       removeFromCart(productId) {
-        void vanstroApi.removeCartProduct(productId)
-          .then((response) => setCartItems(formatCartItems(response.data.items)))
-          .catch(() => {});
+        return runMutation("remove-cart", async () => {
+          const response = await vanstroApi.removeCartProduct(productId);
+          setCartItems(formatCartItems(response.data.items));
+          setCartState({ status: "success" });
+        });
       },
       clearCart() {
-        void vanstroApi.clearCart()
-          .then(() => setCartItems([]))
-          .catch(() => {});
+        return runMutation("clear-cart", async () => {
+          await vanstroApi.clearCart();
+          setCartItems([]);
+          setCartState({ status: "success" });
+        });
       },
-      toggleFavorite(product) {
+      async toggleFavorite(product) {
         const pricedProduct = withEffectiveProductPrice(product);
-        if (favoriteItems.some((item) => item.id === pricedProduct.id)) {
-          void vanstroApi.removeFavorite(pricedProduct.id)
-            .then(() => setFavoriteItems((current) => current.filter((item) => item.id !== pricedProduct.id)))
-            .catch(() => {});
-          return;
+        const canonicalId = productIdentityAliases[pricedProduct.id];
+        if (favoriteItems.some((item) => item.id === pricedProduct.id || item.id === canonicalId)) {
+          return runMutation("remove-favorite", async () => {
+            const result = await vanstroApi.removeFavoriteProduct(pricedProduct);
+            setFavoriteItems((current) => current.filter(
+              (item) => item.id !== pricedProduct.id && item.id !== result.productId
+            ));
+            setFavoritesState({ status: "success" });
+          });
         }
-        void vanstroApi.addFavorite(pricedProduct.id)
-          .then((response) => setFavoriteItems((current) => [response.data.product, ...current]))
-          .catch(() => {});
+        return runMutation("add-favorite", async () => {
+          const response = await vanstroApi.addFavoriteProduct(pricedProduct);
+          setProductIdentityAliases((current) => ({
+            ...current,
+            [pricedProduct.id]: response.canonicalProductId
+          }));
+          setFavoriteItems((current) => [pricedProduct, ...current]);
+          setFavoritesState({ status: "success" });
+        });
       },
       removeFavorite(productId) {
-        void vanstroApi.removeFavorite(productId)
-          .then(() => setFavoriteItems((current) => current.filter((item) => item.id !== productId)))
-          .catch(() => {});
+        return runMutation("remove-favorite", async () => {
+          await vanstroApi.removeFavorite(productId);
+          setFavoriteItems((current) => current.filter((item) => item.id !== productId));
+          setFavoritesState({ status: "success" });
+        });
       },
       isFavorite(productId) {
-        return favoriteItems.some((item) => item.id === productId);
+        const canonicalId = productIdentityAliases[productId];
+        return favoriteItems.some((item) => item.id === productId || item.id === canonicalId);
       },
       createOrder(input) {
         const order: CheckoutOrder = {
@@ -277,6 +384,12 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       selectedDealerName,
       postalCode,
       cartSubtotal
+      ,cartState
+      ,favoritesState
+      ,mutationState
+      ,hydrated
+      ,productIdentityAliases
+      ,runMutation
     ]
   );
 

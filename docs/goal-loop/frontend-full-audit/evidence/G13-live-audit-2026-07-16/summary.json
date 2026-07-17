@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-07-17T03:21:10.378Z",
+  "authority": "https://mb01.vanstro.ca",
+  "sourceCommit": "b8f59ea91547979627be4307a0523a7c6125d129",
+  "catalog": {
+    "categoryCount": 18,
+    "rawListingCount": 267,
+    "parentCount": 140,
+    "variantCount": 300,
+    "uniqueParentSkus": 140,
+    "uniqueVariantSkus": 300
+  },
+  "comparison": {
+    "productStatuses": {
+      "Matched": 4,
+      "Mismatch": 135,
+      "Missing Locally": 1
+    },
+    "variantStatuses": {
+      "Matched": 4,
+      "Mismatch": 269,
+      "Missing Locally": 27
+    }
+  },
+  "assets": {
+    "occurrenceCount": 1985,
+    "uniqueSourceUrlCount": 1727,
+    "fetchedOk": 1726,
+    "fetchedBlocked": 1,
+    "totalBytes": 113446996,
+    "uniqueContentHashes": 1216,
+    "exactDuplicateHashGroups": 192,
+    "duplicateSourceUrls": 702,
+    "localizationStatuses": {
+      "Blocked": 1,
+      "Missing Local Asset": 1468,
+      "Naming Failure": 258
+    },
+    "seoPlannedFilenameFailures": 0,
+    "changedSinceG7Observation": 0
+  },
+  "runtimeReferences": {
+    "files": 0,
+    "occurrences": 0,
+    "uniqueUrls": 0,
+    "zeroMb01RuntimeReferenceGate": true
+  }
+}

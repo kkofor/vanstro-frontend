@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { useState } from "react";
+import { Heart } from "lucide-react";
 import { ProductSummary } from "@/lib/api/api-contract";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import {
@@ -13,24 +14,14 @@ import {
 } from "@/lib/commerce/product-commerce";
 import { formatProductSize } from "@/lib/product/product-display";
 
-function getReviewCount(productId: string) {
-  const reviewCounts: Record<string, number> = {
-    "269": 4078,
-    "414": 2146,
-    "357": 1389,
-    "407": 4078
-  };
-  return reviewCounts[productId] ?? 128;
-}
-
 export function ProductCard({ product }: { product: ProductSummary }) {
   const {
     addToCart,
     isFavorite,
     toggleFavorite
   } = useStorefront();
+  const [actionState, setActionState] = useState<"idle" | "loading" | "error">("idle");
   const saved = isFavorite(product.id);
-  const reviewCount = getReviewCount(product.id);
   const colorName = product.colorName ?? product.finish ?? "White";
   const colorHex = product.colorHex ?? "#f8f7f3";
   const displaySize = formatProductSize(product.dimensions);
@@ -78,19 +69,8 @@ export function ProductCard({ product }: { product: ProductSummary }) {
         </div>
 
         <div className="product-card-commerce">
-          <div className="product-rating" aria-label={`4 out of 5 stars from ${reviewCount} reviews`}>
-            <span aria-hidden="true">
-              {[0, 1, 2, 3, 4].map((index) => (
-                <Star
-                  className={index < 4 ? "rating-star filled" : "rating-star"}
-                  size={13}
-                  strokeWidth={2}
-                  fill={index < 4 ? "currentColor" : "none"}
-                  key={index}
-                />
-              ))}
-            </span>
-            <small>({reviewCount})</small>
+          <div className="product-rating">
+            <small>No published reviews</small>
           </div>
 
           <div className="price-stack">
@@ -123,9 +103,19 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             <button
               className="small-button dark"
               type="button"
-              onClick={() => addToCart(product)}
+              disabled={actionState === "loading"}
+              onClick={() => {
+                setActionState("loading");
+                void addToCart(product).then((result) => {
+                  setActionState(result.ok ? "idle" : "error");
+                });
+              }}
             >
-              Add to cart
+              {actionState === "loading"
+                ? "Adding..."
+                : actionState === "error"
+                  ? "Try again"
+                  : "Add to cart"}
             </button>
           </div>
         </div>
@@ -135,7 +125,12 @@ export function ProductCard({ product }: { product: ProductSummary }) {
           type="button"
           aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name}`}
           aria-pressed={saved}
-          onClick={() => toggleFavorite(product)}
+              onClick={() => {
+                setActionState("loading");
+                void toggleFavorite(product).then((result) => {
+                  setActionState(result.ok ? "idle" : "error");
+                });
+              }}
         >
           <Heart size={19} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
         </button>

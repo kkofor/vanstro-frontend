@@ -15,8 +15,9 @@
 | G8 | done | G0, G1 | `evidence/G8-security-privacy.md` plus sanitized `evidence/G8/` manifests (parent verified 2026-07-15) |
 | G9 | done | G0, G1 | `evidence/G9-dedicated-seo-rework-2026-07-16.md` plus `evidence/G9-rework-2026-07-16/` matrices and machine checks (parent verified 2026-07-16) |
 | G10 | done | G0, G1 | CI, deployed artifact, 171-route live scan, asset parity, base-path, and browser gates parent verified 2026-07-16 |
-| G11 | pending | G2-G10 | Dependencies satisfied; ready for full frontend browser regression |
-| G12 | pending | G0-G11 | Re-consolidate findings and release recommendation after asset-scope rework |
+| G11 | done | G2-G10 | `evidence/G11-full-browser-regression-rework-2026-07-16.md` plus complete route, interaction, history, product-variant, visual, runtime SEO, blocked-check and self-audit evidence (parent verified 2026-07-16) |
+| G12 | done | G0-G11 | `evidence/G12-consolidated-findings-release-recommendation-2026-07-16.md` plus `evidence/G12-rework-2026-07-16/` matrices and self-audit (parent verified 2026-07-16; release recommendation remains `FAIL`) |
+| G13 | done | G3, G4, G10-G12 | `evidence/G13-product-content-correction-2026-07-16.md` plus live-source, localization, 300-SKU verification, build, SEO, and browser evidence (parent verified 2026-07-16; no deployment) |
 
 ## Loop Rules
 
@@ -221,7 +222,7 @@ Acceptance evidence:
 
 ## G11. Full Frontend Browser Regression
 
-State: pending. G2-G10 dependencies are satisfied; G11 is ready for execution.
+State: done. Parent verified on 2026-07-16 against `evidence/G11-full-browser-regression-rework-2026-07-16.md` and `evidence/G11-rework-2026-07-16/`. The audit coverage is complete; the recorded runtime release gate remains `FAIL` and flows into G12.
 
 Goal: consolidate G2-G10 into a full public-route and interaction regression across required viewports.
 
@@ -237,7 +238,7 @@ Acceptance evidence:
 
 ## G12. Consolidated Findings and Release Recommendation
 
-State: pending. The previous `FAIL` report remains historical evidence and must be regenerated after the expanded asset-localization audit is complete.
+State: done. Parent verified on 2026-07-16 against `evidence/G12-consolidated-findings-release-recommendation-2026-07-16.md` and `evidence/G12-rework-2026-07-16/`. Audit completion is `PASS`; runtime readiness and production release readiness remain `FAIL`, and external integration verification remains `BLOCKED`.
 
 Goal: consolidate all evidence, remove duplicates, check traceability, prioritize findings, and issue the final audit recommendation.
 
@@ -251,3 +252,22 @@ Acceptance evidence:
 - Final `PASS`, `CONDITIONAL PASS`, or `FAIL` recommendation with residual risks.
 - Dedicated release gate for complete asset localization, zero MB01 runtime dependency, local-asset integrity, and SEO-safe filename compliance.
 - Dedicated SEO release gate for Title, Meta Description, Canonical, Schema, Open Graph, and image Alt completeness, uniqueness, validity, and product-truth alignment.
+
+## G13. Product Content Correction and Full Catalog Revalidation
+
+State: done. Parent verified on 2026-07-16 against `evidence/G13-product-content-correction-2026-07-16.md`, `evidence/G13-live-audit-2026-07-16/`, and `evidence/G13-implementation-2026-07-16/` after the user explicitly approved source and catalog changes.
+
+Goal: verify the business issue workbook against the current public MB01 catalog, repair confirmed product-content and PDP behavior defects, then revalidate every published parent product, SKU variant, and controlled product asset without changing the approved page structure or visual design.
+
+Acceptance evidence:
+
+- Workbook issue-to-source verification for Bathroom Vanity Hardware, cabinet-only configurations, Handle series products, and Accessories material.
+- Timestamped current MB01 inventory and field-level comparison for every parent and SKU variant.
+- Exact local coverage of all current MB01 products and SKUs, with no stale local-only SKU.
+- Bathroom Vanity variant proof covering SKU, model, price, color, configuration, Hardware, images, description, and Product overview updates.
+- Handle CTC-96mm and Handle CTC-192mm represented as separate products under the Handle series filter.
+- Approved business correction proving Accessories content uses MDF and does not publish the known MB01 `MDF / Plywood` error.
+- Complete current asset-source-to-controlled-library mapping, including source hash, local hash, local path, and blocked-source handling.
+- Source, generated catalog, build, and browser checks proving no MB01 runtime asset dependency.
+- Typecheck, static build, SEO/security QA, generated SEO artifact counts, and browser interaction evidence.
+- Design Freeze confirmation and explicit record that no commit, push, deployment, external write, or production change occurred.

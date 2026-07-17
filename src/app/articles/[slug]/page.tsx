@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getArticleBySlug } from "@/lib/api/server";
 import { articles } from "@/lib/data/mock-data";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -18,13 +19,13 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
-  return {
+  return buildPageMetadata({
     title: article.title,
     description: article.excerpt,
-    alternates: {
-      canonical: `/articles/${article.slug}`
-    }
-  };
+    path: `/articles/${article.slug}`,
+    image: article.image.url,
+    noIndex: true
+  });
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {

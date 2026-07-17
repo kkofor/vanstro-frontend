@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Check, ShoppingCart, X } from "lucide-react";
 import type { ProductSummary } from "@/lib/api/api-contract";
 import { formatMoney, getEffectivePrice } from "@/lib/commerce/product-commerce";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
+import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 
 type CartAddedEventDetail = {
   product: ProductSummary;
@@ -16,6 +17,16 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
   const { cartCount, cartSubtotal, selectedDealerName } = useStorefront();
   const [open, setOpen] = useState(false);
   const [lastAdded, setLastAdded] = useState<CartAddedEventDetail | null>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const closeDrawer = useCallback(() => setOpen(false), []);
+
+  useModalFocus({
+    active: open,
+    containerRef: panelRef,
+    modalRootRef: drawerRef,
+    onEscape: closeDrawer
+  });
 
   useEffect(() => {
     function handleCartAdded(event: Event) {
@@ -34,16 +45,27 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
   const itemTotal = getEffectivePrice(lastAdded.product).amount * lastAdded.quantity;
 
   return (
-    <div className={open ? "cart-added-drawer open" : "cart-added-drawer"} aria-hidden={!open}>
+    <div
+      ref={drawerRef}
+      className={open ? "cart-added-drawer open" : "cart-added-drawer"}
+      aria-hidden={!open}
+    >
       <button
         className="cart-added-backdrop"
         type="button"
         aria-label="Close cart drawer"
-        onClick={() => setOpen(false)}
+        onClick={closeDrawer}
       />
-      <aside className="cart-added-panel" role="dialog" aria-modal="true" aria-labelledby="cart-added-title">
+      <aside
+        ref={panelRef}
+        className="cart-added-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-added-title"
+        tabIndex={-1}
+      >
         <header className="cart-added-header">
-          <button type="button" aria-label="Close cart drawer" onClick={() => setOpen(false)}>
+          <button type="button" aria-label="Close cart drawer" onClick={closeDrawer}>
             <X size={22} strokeWidth={2.4} />
           </button>
           <h2 id="cart-added-title">Added to cart</h2>
@@ -53,7 +75,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
           </span>
         </header>
 
-        <div className="cart-added-confirmation">
+        <div className="cart-added-confirmation" role="status" aria-live="polite" aria-atomic="true">
           <Check size={22} strokeWidth={2.5} />
           <span>{lastAdded.quantity} item has been added to your cart</span>
         </div>
@@ -88,10 +110,10 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
             <b>{formatMoney({ amount: cartSubtotal, currency: lastAdded.product.price.currency })}</b>
           </div>
           <p>Final taxes and shipping/delivery will be calculated during checkout.</p>
-          <Link className="button button-accent" href="/cart" onClick={() => setOpen(false)}>
+          <Link className="button button-accent" href="/cart" onClick={closeDrawer}>
             View cart
           </Link>
-          <button className="button button-outline" type="button" onClick={() => setOpen(false)}>
+          <button className="button button-outline" type="button" onClick={closeDrawer}>
             Continue shopping
           </button>
         </section>
@@ -103,7 +125,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
               .filter((product) => product.id !== lastAdded.product.id)
               .slice(0, 2)
               .map((product) => (
-              <Link className="cart-added-suggestion" href={`/products/${product.slug}`} prefetch={false} key={product.id} onClick={() => setOpen(false)}>
+              <Link className="cart-added-suggestion" href={`/products/${product.slug}`} prefetch={false} key={product.id} onClick={closeDrawer}>
                 <img
                   src={product.images[0].url}
                   alt={product.images[0].alt}

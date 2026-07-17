@@ -1,11 +1,16 @@
 .next/
 out/
+packages/cli/dist/
 node_modules/
+.DS_Store
 .impeccable/
 qa/*
 !qa/verify_product_pages.mjs
+!qa/check-seo-security.mjs
+!qa/check-seo-artifacts.mjs
 *.tsbuildinfo
 *.log
+.env
 .env*.local
 footer-redesign-*.png
 tmp/

@@ -20,8 +20,8 @@ const footerGroups = [
     links: [
       { label: "Contact us", href: "/contact" },
       { label: "Order tracking", href: "/orders/demo-order" },
-      { label: "Store pickup", href: "#stores" },
-      { label: "Shipping & delivery", href: "/articles" },
+      { label: "Store pickup", href: "/#stores" },
+      { label: "Shipping & delivery", href: "/articles/pickup-and-delivery-options" },
       { label: "Returns & exchanges", href: "/articles" }
     ]
   },
@@ -31,8 +31,8 @@ const footerGroups = [
       { label: "Dealer program", href: "/dealer-program" },
       { label: "Become a dealer", href: "/dealers/apply" },
       { label: "Partner login", href: "/account/login" },
-      { label: "Dealer benefits", href: "/dealer-program#benefits" },
-      { label: "Trade resources", href: "/dealer-program#resources" }
+      { label: "Dealer benefits", href: "/dealer-program#fit" },
+      { label: "Trade resources", href: "/dealer-program#policies" }
     ]
   },
   {
@@ -167,7 +167,7 @@ export function SiteFooter() {
 
           <div className="footer-help">
             <span>Need help with an order?</span>
-            <h3>Checkout online. Fulfillment stays local.</h3>
+            <h2>Checkout online. Fulfillment stays local.</h2>
             <p>
               Your selected VanStro dealer receives the paid order and coordinates
               pickup, delivery, project support or after-sales service.
@@ -186,7 +186,7 @@ export function SiteFooter() {
         <div className="footer-link-grid">
           {footerGroups.map((group) => (
             <nav className="footer-group" aria-label={group.title} key={group.title}>
-              <h3>{group.title}</h3>
+              <h2>{group.title}</h2>
               {group.links.map((link) => (
                 <Link href={link.href} key={link.label}>
                   {link.label}

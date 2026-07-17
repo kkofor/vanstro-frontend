@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { CheckCircle2, ChevronDown, MapPin, Navigation, PackageCheck, Truck, X } from "lucide-react";
 import type { Dealer, ProductSummary } from "@/lib/api/api-contract";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
@@ -10,6 +10,7 @@ import {
   getInventoryLocation,
   getInventoryStatusClass
 } from "@/lib/commerce/product-inventory";
+import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 
 type ProductDealerSelectorProps = {
   dealers: Dealer[];
@@ -50,6 +51,9 @@ export function ProductDealerSelector({
 }: ProductDealerSelectorProps) {
   const { setSelectedDealer } = useStorefront();
   const [open, setOpen] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLElement>(null);
+  const closeSelector = useCallback(() => setOpen(false), []);
   const dealerChoices = useMemo(
     () =>
       dealers.map((dealer) => {
@@ -75,9 +79,16 @@ export function ProductDealerSelector({
   const selectedInventoryClass = getInventoryStatusClass(selectedInventory);
   const selectedInventoryLabel = getInventoryLabel(selectedInventory);
 
+  useModalFocus({
+    active: open,
+    containerRef: sheetRef,
+    modalRootRef: modalRef,
+    onEscape: closeSelector
+  });
+
   function chooseDealer(dealer: Dealer) {
     setSelectedDealer(dealer);
-    setOpen(false);
+    closeSelector();
   }
 
   return (
@@ -94,7 +105,9 @@ export function ProductDealerSelector({
           <PackageCheck size={22} strokeWidth={2.2} />
           <span>
             <strong data-dealer-pickup-label>Pick-Up</strong>
-            <small data-dealer-fulfillment-title>{selectedDealer.name}</small>
+            <small data-dealer-fulfillment-title aria-live="polite" aria-atomic="true">
+              {selectedDealer.name}
+            </small>
             <small className={selectedInventoryClass} data-dealer-inventory-label>
               {selectedInventoryLabel} at selected dealer
             </small>
@@ -117,6 +130,7 @@ export function ProductDealerSelector({
       </button>
 
       <div
+        ref={modalRef}
         className="pdp-dealer-modal"
         role="dialog"
         aria-modal="true"
@@ -127,9 +141,9 @@ export function ProductDealerSelector({
             className="pdp-dealer-backdrop"
             type="button"
             aria-label="Close dealer selector"
-            onClick={() => setOpen(false)}
+            onClick={closeSelector}
           />
-          <section className="pdp-dealer-sheet">
+          <section ref={sheetRef} className="pdp-dealer-sheet" tabIndex={-1}>
             <header className="pdp-dealer-sheet-head">
               <span>
                 <small>Dealer fulfillment</small>
@@ -139,7 +153,7 @@ export function ProductDealerSelector({
                 type="button"
                 aria-label="Close dealer selector"
                 data-dealer-close
-                onClick={() => setOpen(false)}
+                onClick={closeSelector}
               >
                 <X size={18} strokeWidth={2.4} />
               </button>

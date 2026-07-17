@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { assetPath } from "@/lib/assets";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "About VanStro",
   description:
     "Learn about VanStro Global Supply Inc., a Canadian building materials supply and distribution platform headquartered in Winnipeg, Manitoba.",
-  alternates: {
-    canonical: "/about"
-  }
-};
+  path: "/about",
+  image: "/assets/generated/vanstro-hero-white-v1.webp",
+  languages: { "en-CA": "/about", "zh-CN": "/zh/about" }
+});
 
 const apartItems = [
   {

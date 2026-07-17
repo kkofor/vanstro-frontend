@@ -50,6 +50,8 @@ type FacetOption = {
   matches: (product: ProductSummary) => boolean;
 };
 
+type CatalogView = "grid" | "list";
+
 const facetLabels: Record<FacetKey, string> = {
   subCategory: "Product categories",
   width: "Width",
@@ -270,6 +272,14 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
 
   const [draftQuery, setDraftQuery] = useState(queryParam);
   const [currentPage, setCurrentPage] = useState(1);
+  const [catalogView, setCatalogView] = useState<CatalogView>("grid");
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    categories: true,
+    subCategory: true,
+    width: true,
+    finish: true,
+    brand: true
+  });
   const [selectedFacets, setSelectedFacets] = useState<Record<FacetKey, string[]>>({
     subCategory: [],
     width: [],
@@ -374,6 +384,10 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
       finish: [],
       brand: []
     });
+  }
+
+  function toggleSection(section: string) {
+    setOpenSections((current) => ({ ...current, [section]: !current[section] }));
   }
 
   const selectedFacetCount = getSelectedCount(selectedFacets);
@@ -483,11 +497,16 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           </div>
 
           <div className="catalog-filter-section">
-            <button type="button">
+            <button
+              type="button"
+              aria-expanded={openSections.categories}
+              aria-controls="catalog-filter-categories"
+              onClick={() => toggleSection("categories")}
+            >
               Categories
               <ChevronDown size={15} strokeWidth={2.3} />
             </button>
-            <div className="catalog-filter-options">
+            <div className="catalog-filter-options" id="catalog-filter-categories" hidden={!openSections.categories}>
               {CATALOG_CATEGORY_OPTIONS.filter((category) => !category.comingSoon).map((category) => (
                 <button
                   className={category.id === activeCategory.id ? "filter-link active" : "filter-link"}
@@ -505,11 +524,16 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
           {(Object.entries(facetOptions) as Array<[FacetKey, FacetOption[]]>).map(
             ([facetKey, options]) => (
               <div className="catalog-filter-section" key={facetKey}>
-                <button type="button">
+                <button
+                  type="button"
+                  aria-expanded={openSections[facetKey]}
+                  aria-controls={`catalog-filter-${facetKey}`}
+                  onClick={() => toggleSection(facetKey)}
+                >
                   {facetLabels[facetKey]}
                   <ChevronDown size={15} strokeWidth={2.3} />
                 </button>
-                <div className="catalog-filter-options">
+                <div className="catalog-filter-options" id={`catalog-filter-${facetKey}`} hidden={!openSections[facetKey]}>
                   {options
                     .filter((option) => option.count > 0)
                     .slice(0, facetKey === "subCategory" ? options.length : 6)
@@ -578,10 +602,22 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
             </label>
 
             <div className="catalog-view-toggle" aria-label="View options">
-              <button className="active" type="button" aria-label="Grid view">
+              <button
+                className={catalogView === "grid" ? "active" : undefined}
+                type="button"
+                aria-label="Grid view"
+                aria-pressed={catalogView === "grid"}
+                onClick={() => setCatalogView("grid")}
+              >
                 <Grid2X2 size={17} strokeWidth={2.1} />
               </button>
-              <button type="button" aria-label="List view">
+              <button
+                className={catalogView === "list" ? "active" : undefined}
+                type="button"
+                aria-label="List view"
+                aria-pressed={catalogView === "list"}
+                onClick={() => setCatalogView("list")}
+              >
                 <List size={18} strokeWidth={2.1} />
               </button>
             </div>
@@ -624,7 +660,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
 
           {filteredProducts.length ? (
             <>
-              <div className="catalog-product-grid">
+              <div className={`catalog-product-grid ${catalogView === "list" ? "list-view" : ""}`}>
                 {visibleProducts.map((product, index) => (
                   <CatalogProductCard
                     product={product}

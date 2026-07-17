@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { assetPath } from "@/lib/assets";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "关于 VanStro",
   description:
     "了解 VanStro Global Supply Inc.，一家总部位于加拿大曼尼托巴省温尼伯的建材供应与分销平台。",
-  alternates: {
-    canonical: "/zh/about"
-  }
-};
+  path: "/zh/about",
+  image: "/assets/generated/vanstro-hero-white-v1.webp",
+  locale: "zh_CN",
+  languages: { "en-CA": "/about", "zh-CN": "/zh/about" }
+});
 
 const apartItems = [
   {

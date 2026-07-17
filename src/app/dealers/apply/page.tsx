@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SecondaryPageHero } from "@/components/layout/SecondaryPageHero";
-import { FORM_ENDPOINTS } from "@/lib/api/form-endpoints";
+import { PublicSubmissionForm } from "@/components/forms/PublicSubmissionForm";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Dealer application",
   description:
     "Apply to become a VanStro dealer partner. Share company details, service area, operating capabilities and local support coverage for review.",
-  alternates: {
-    canonical: "/dealers/apply"
-  }
-};
+  path: "/dealers/apply",
+  image: "/assets/generated/dealer-program-handshake-v1.webp",
+  languages: { "en-CA": "/dealers/apply", "zh-CN": "/zh/dealers/apply" }
+});
 
 const applicationSummary = [
   ["Review type", "Case-by-case business review"],
@@ -78,11 +79,11 @@ export default function DealerApplicationPage() {
 
       <section className="page-panel dealer-application-panel">
         <div className="container dealer-application-layout">
-          <form
+          <PublicSubmissionForm
             className="form-panel dealer-application-form"
             id="application-form"
-            action={FORM_ENDPOINTS.dealerApplication}
-            method="post"
+            kind="dealer-application"
+            locale="en-CA"
           >
             <input type="hidden" name="source" value="dealer-application-page" />
 
@@ -237,7 +238,7 @@ export default function DealerApplicationPage() {
               </button>
               <p>Most qualified applications receive follow-up after internal review.</p>
             </div>
-          </form>
+          </PublicSubmissionForm>
 
           <aside className="dealer-application-aside" aria-label="Application preparation">
             <section className="dealer-application-summary">

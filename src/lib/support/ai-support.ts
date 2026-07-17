@@ -125,7 +125,7 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
         actions: [
           {
             label: "Delivery article",
-            href: "/articles/delivery-fulfillment",
+            href: "/articles/pickup-and-delivery-options",
             description: "Review how dealer handoff works after checkout.",
             tone: "primary"
           }

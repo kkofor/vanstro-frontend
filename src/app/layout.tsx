@@ -4,7 +4,11 @@ import { AppChrome } from "@/components/layout/AppChrome";
 import { CookieBar } from "@/components/layout/CookieBar";
 import { CookiePreferenceDrawer } from "@/components/layout/CookiePreferenceDrawer";
 import { StorefrontProvider } from "@/components/storefront/StorefrontProvider";
-import { organizationSchema } from "@/lib/seo/schema";
+import { DocumentLanguage } from "@/components/layout/DocumentLanguage";
+import { organizationSchema, serializeJsonLd } from "@/lib/seo/schema";
+import { getSiteBaseUrl } from "@/lib/seo/site";
+
+const siteBaseUrl = getSiteBaseUrl();
 
 export const metadata: Metadata = {
   title: {
@@ -13,29 +17,22 @@ export const metadata: Metadata = {
   },
   description:
     "Shop kitchen cabinets, bathroom vanities, baseboards and home materials with local Canadian stock and dealer support.",
-  metadataBase: new URL("https://vanstro.ca"),
-  alternates: {
-    canonical: "/"
-  },
-  openGraph: {
-    title: "VanStro Global Supply",
-    description:
-      "Ready-to-order cabinets, vanities and home materials across Canada.",
-    url: "https://vanstro.ca",
-    siteName: "VanStro Global Supply",
-    locale: "en_CA",
-    type: "website"
-  }
+  ...(siteBaseUrl ? { metadataBase: new URL(siteBaseUrl) } : {})
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const schema = organizationSchema();
+
   return (
     <html lang="en-CA">
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
-        />
+        <DocumentLanguage />
+        {schema ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
+          />
+        ) : null}
         <StorefrontProvider>
           <AppChrome>{children}</AppChrome>
           <CookieBar />

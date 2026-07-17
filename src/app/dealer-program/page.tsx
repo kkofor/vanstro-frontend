@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { assetPath } from "@/lib/assets";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Dealer program",
   description:
     "Review the VanStro dealer program for qualified local building-materials operators, including platform responsibilities, dealer responsibilities, application review and policy requirements.",
-  alternates: {
-    canonical: "/dealer-program"
-  }
-};
+  path: "/dealer-program",
+  image: "/assets/generated/dealer-program-handshake-v1.webp",
+  languages: { "en-CA": "/dealer-program", "zh-CN": "/zh/dealer-program" }
+});
 
 const atAGlance = [
   ["VanStro role", "Product supply platform, catalog, checkout, product information and dealer network support."],

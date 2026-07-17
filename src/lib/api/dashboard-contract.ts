@@ -137,13 +137,20 @@ export type LegalPageUpsertInput = {
 };
 
 export type ContactLeadInput = {
-  firstName: string;
-  lastName?: string;
+  name: string;
   email: string;
   phone?: string;
-  topic: "product" | "order" | "dealer" | "project" | "support";
+  topic:
+    | "products"
+    | "orders"
+    | "dealer-service"
+    | "dealer-program"
+    | "website-support";
   message: string;
-  dealerId?: string;
+  city?: string;
+  dealer?: string;
+  orderNumber?: string;
+  locale: Locale;
   sourcePath?: string;
 };
 

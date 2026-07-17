@@ -5,7 +5,8 @@ import { ProductDetailBreadcrumb } from "@/components/product/ProductDetailBread
 import { ProductDetailMain } from "@/components/product/ProductDetailMain";
 import { ProductImageGallery } from "@/components/product/ProductImageGallery";
 import { ProductVariantProvider } from "@/components/product/ProductVariantContext";
-import { productSchema } from "@/lib/seo/schema";
+import { buildPageMetadata } from "@/lib/seo/metadata";
+import { productSchema, serializeJsonLd } from "@/lib/seo/schema";
 import { dealers, products, productsWithCommerce } from "@/lib/data/mock-data";
 import { createProductDetailViewModel } from "@/lib/product/product-detail-view-model";
 
@@ -24,14 +25,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
+  const description = `${product.name}. SKU ${product.sku}. ${product.category}. ${product.dimensions}.`;
 
-  return {
+  return buildPageMetadata({
     title: product.name,
-    description: product.description,
-    alternates: {
-      canonical: `/products/${product.slug}`
-    }
-  };
+    description,
+    path: `/products/${product.slug}`,
+    image: product.images[0]?.url
+  });
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
@@ -43,7 +44,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema(product)) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productSchema(product)) }}
       />
       <section className="page-panel pdp-page">
         <div className="container">

@@ -11,15 +11,22 @@ import {
 } from "@/lib/data/mock-data";
 import { API_ENDPOINTS } from "@/lib/api/api-contract";
 import type {
-  ApiResult,
   CurrencyCode,
   Dealer,
   ImageAsset,
   ProductDetail,
   ProductRatingSummary,
   ProductReview,
-  ProductSummary
+  ProductSummary,
+  WebsiteApiProduct
 } from "@/lib/api/api-contract";
+import {
+  arrayOf,
+  objectValue,
+  RuntimeValidator,
+  validateApiResult,
+  validateWebsiteApiProduct
+} from "@/lib/api/runtime-validation";
 import { assetPath } from "@/lib/assets";
 import { HOME_PRODUCT_LIMIT } from "@/lib/product/catalog-config";
 import productImageDimensionsData from "@/lib/data/product-image-dimensions.json";
@@ -28,40 +35,6 @@ const productImageDimensions = productImageDimensionsData as unknown as Record<
   string,
   [number, number]
 >;
-
-type WebsiteApiProduct = {
-  id: string;
-  slug: string;
-  name: string;
-  shortDescription?: string | null;
-  description?: string | null;
-  category?: {
-    id: string;
-    slug: string;
-    name: string;
-  } | null;
-  primarySku?: {
-    id: string;
-    skuCode: string;
-    name: string;
-    attributes?: unknown;
-  } | null;
-  price?: {
-    amount: number;
-    amountCents: number;
-    currency: string;
-  } | null;
-  assets?: Array<{
-    id: string;
-    url: string;
-    altText?: string | null;
-    kind: string;
-    sortOrder: number;
-  }>;
-  specifications?: Array<{ key: string; value: string }>;
-  ratingSummary?: ProductRatingSummary;
-  reviews?: ProductReview[];
-};
 
 const serverApiBaseUrl =
   process.env.VANSTRO_WEBSITE_API_BASE_URL?.replace(/\/$/, "") ??
@@ -92,22 +65,19 @@ function asCurrencyCode(currency?: string): CurrencyCode {
   return currency === "USD" ? "USD" : "CAD";
 }
 
-async function fetchWebsiteApi<T>(path: string) {
+async function fetchWebsiteApi<T>(path: string, validateData: RuntimeValidator<T>) {
   if (!serverApiBaseUrl) return undefined;
 
-  try {
-    const response = await fetch(`${serverApiBaseUrl}${path}`, {
-      headers: { Accept: "application/json" }
-    });
+  const response = await fetch(`${serverApiBaseUrl}${path}`, {
+    headers: { Accept: "application/json" }
+  });
 
-    if (!response.ok) return undefined;
-
-    const payload = (await response.json()) as ApiResult<T>;
-
-    return payload.data;
-  } catch {
-    return undefined;
+  if (!response.ok) {
+    throw new Error(`Website API request ${path} failed with status ${response.status}.`);
   }
+
+  const payload: unknown = await response.json();
+  return validateApiResult(payload, validateData).data;
 }
 
 function findMockProduct(product: WebsiteApiProduct) {
@@ -307,7 +277,8 @@ function mapWebsiteProductToDetail(product: WebsiteApiProduct): ProductDetail {
 
 async function getApiProducts(limit = 100) {
   const data = await fetchWebsiteApi<WebsiteApiProduct[]>(
-    `${API_ENDPOINTS.products}?limit=${limit}`
+    `${API_ENDPOINTS.products}?limit=${limit}`,
+    arrayOf(validateWebsiteApiProduct)
   );
 
   return data?.map(mapWebsiteProductToSummary);
@@ -315,9 +286,13 @@ async function getApiProducts(limit = 100) {
 
 export async function getHomePageData() {
   const apiProducts = await fetchWebsiteApi<WebsiteApiProduct[]>(
-    `${API_ENDPOINTS.homeProducts}?limit=${HOME_PRODUCT_LIMIT}`
+    `${API_ENDPOINTS.homeProducts}?limit=${HOME_PRODUCT_LIMIT}`,
+    arrayOf(validateWebsiteApiProduct)
   );
-  const apiDealers = await fetchWebsiteApi<unknown[]>(API_ENDPOINTS.dealers);
+  const apiDealers = await fetchWebsiteApi<unknown[]>(
+    API_ENDPOINTS.dealers,
+    arrayOf((value, path) => objectValue(value, path))
+  );
 
   return {
     banner: banners[0],
@@ -342,7 +317,8 @@ export function getCartSuggestions() {
 
 export async function getProductBySlug(slug: string) {
   const apiProduct = await fetchWebsiteApi<WebsiteApiProduct>(
-    API_ENDPOINTS.productDetail(slug)
+    API_ENDPOINTS.productDetail(slug),
+    validateWebsiteApiProduct
   );
 
   if (apiProduct) return withProductImageDimensions(mapWebsiteProductToDetail(apiProduct));
@@ -369,7 +345,10 @@ export async function getFavoritesPreview() {
 }
 
 export async function getDealersPreview() {
-  const apiDealers = await fetchWebsiteApi<unknown[]>(API_ENDPOINTS.dealers);
+  const apiDealers = await fetchWebsiteApi<unknown[]>(
+    API_ENDPOINTS.dealers,
+    arrayOf((value, path) => objectValue(value, path))
+  );
 
   return apiDealers ? mapWebsiteDealers(apiDealers) : dealers;
 }

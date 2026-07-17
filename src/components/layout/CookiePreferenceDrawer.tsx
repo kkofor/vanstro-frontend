@@ -2,27 +2,39 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CookieSettingsClient } from "@/components/layout/CookieSettingsClient";
+import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 import { COOKIE_PREFERENCES_OPEN_EVENT } from "@/lib/privacy/cookie-preferences";
 
 export function CookiePreferenceDrawer() {
   const [open, setOpen] = useState(false);
+  const backdropRef = useRef<HTMLDivElement | null>(null);
   const drawerRef = useRef<HTMLElement | null>(null);
-  const previousFocusRef = useRef<HTMLElement | null>(null);
 
   const closeDrawer = useCallback(() => {
     setOpen(false);
+    if (window.location.hash === "#cookie-preferences") {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`
+      );
+    }
   }, []);
 
   useEffect(() => {
     const openDrawer = () => {
-      previousFocusRef.current =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       setOpen(true);
     };
-    window.addEventListener(COOKIE_PREFERENCES_OPEN_EVENT, openDrawer);
+    const openFromHash = () => {
+      if (window.location.hash === "#cookie-preferences") setOpen(true);
+    };
+    document.addEventListener(COOKIE_PREFERENCES_OPEN_EVENT, openDrawer);
+    window.addEventListener("hashchange", openFromHash);
+    openFromHash();
 
     return () => {
-      window.removeEventListener(COOKIE_PREFERENCES_OPEN_EVENT, openDrawer);
+      document.removeEventListener(COOKIE_PREFERENCES_OPEN_EVENT, openDrawer);
+      window.removeEventListener("hashchange", openFromHash);
     };
   }, []);
 
@@ -34,55 +46,18 @@ export function CookiePreferenceDrawer() {
     };
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const focusableSelector =
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
-
-    window.setTimeout(() => {
-      const firstFocusable = drawerRef.current?.querySelector<HTMLElement>(focusableSelector);
-      firstFocusable?.focus();
-    }, 0);
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeDrawer();
-        return;
-      }
-
-      if (event.key !== "Tab") return;
-
-      const focusable = Array.from(
-        drawerRef.current?.querySelectorAll<HTMLElement>(focusableSelector) ?? []
-      ).filter((element) => !element.hasAttribute("disabled"));
-
-      if (focusable.length === 0) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      previousFocusRef.current?.focus();
-    };
-  }, [closeDrawer, open]);
+  useModalFocus({
+    active: open,
+    containerRef: drawerRef,
+    modalRootRef: backdropRef,
+    onEscape: closeDrawer
+  });
 
   if (!open) return null;
 
   return (
     <div
+      ref={backdropRef}
       className="cookie-preference-backdrop"
       role="presentation"
       onMouseDown={(event) => {
@@ -95,6 +70,7 @@ export function CookiePreferenceDrawer() {
         role="dialog"
         aria-modal="true"
         aria-label="Cookie Preferences"
+        tabIndex={-1}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <CookieSettingsClient onClose={closeDrawer} onSaved={closeDrawer} />

@@ -36,7 +36,7 @@ const navItems = [
 
 function SearchBox() {
   return (
-    <form className="search-box" action="/products">
+    <form className="search-box" action={assetPath("/products")}>
       <input name="q" placeholder="Search by product, SKU, or category..." aria-label="Search products" />
       <button type="submit">Search</button>
     </form>
@@ -148,6 +148,51 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [catalogOpen, setCatalogOpen] = useState(false);
   const { cartCount, favoriteCount } = useStorefront();
+  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const catalogTriggerRef = useRef<HTMLAnchorElement>(null);
+  const catalogNavRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open && !catalogOpen) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (!(event.target instanceof Node)) return;
+      if (open && !mobileTriggerRef.current?.contains(event.target)) {
+        const interactiveTarget = event.target instanceof Element
+          ? event.target.closest("a, button, input, select, textarea")
+          : null;
+        if (!mobilePanelRef.current?.contains(event.target) || !interactiveTarget) {
+          setOpen(false);
+        }
+      }
+      if (catalogOpen && !catalogNavRef.current?.contains(event.target)) {
+        setCatalogOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      if (catalogOpen) {
+        setCatalogOpen(false);
+        catalogTriggerRef.current?.focus();
+        return;
+      }
+      if (open) {
+        setOpen(false);
+        mobileTriggerRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("click", handlePointerDown, true);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("click", handlePointerDown, true);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [catalogOpen, open]);
 
   return (
     <header className="site-header">
@@ -199,6 +244,7 @@ export function SiteHeader() {
           </div>
 
           <button
+            ref={mobileTriggerRef}
             className="mobile-menu-trigger"
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -215,6 +261,7 @@ export function SiteHeader() {
         <div className="container header-nav-inner">
           <nav className="desktop-nav" aria-label="Main navigation">
             <div
+              ref={catalogNavRef}
               className="desktop-nav-item catalog-nav-item"
               onMouseEnter={() => setCatalogOpen(true)}
               onMouseLeave={() => setCatalogOpen(false)}
@@ -225,7 +272,7 @@ export function SiteHeader() {
                 }
               }}
             >
-              <Link className="catalog-nav-trigger" href="/products" prefetch={false} aria-haspopup="menu" aria-expanded={catalogOpen}>
+              <Link ref={catalogTriggerRef} className="catalog-nav-trigger" href="/products" prefetch={false} aria-haspopup="menu" aria-expanded={catalogOpen}>
                 <span>Products</span>
                 <ChevronDown size={15} strokeWidth={2.35} />
               </Link>
@@ -262,7 +309,7 @@ export function SiteHeader() {
       </div>
 
       <div className="container mobile-panel-anchor">
-        <div className="mobile-panel" hidden={!open}>
+        <div className="mobile-panel" hidden={!open} ref={mobilePanelRef}>
           <SearchBox />
           <DealerNavSelector compact />
 

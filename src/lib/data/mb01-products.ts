@@ -63,26 +63,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-195.jpg",
             "alt": "Base Cabinet B12 SKU 011710230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B12 SKU 011710230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B12 SKU 011710230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B12 SKU 011710230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B12 SKU 011710230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B12 SKU 011710230 product view 11"
           }
         ],
         "price": {
@@ -141,26 +121,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-195.jpg",
             "alt": "Base Cabinet B12 SKU 011710130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B12 SKU 011710130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B12 SKU 011710130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B12 SKU 011710130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B12 SKU 011710130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B12 SKU 011710130 product view 11"
           }
         ],
         "price": {
@@ -233,26 +193,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-195.jpg",
         "alt": "Base Cabinet B12 SKU 011710130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B12 SKU 011710130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B12 SKU 011710130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B12 SKU 011710130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B12 SKU 011710130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B12 SKU 011710130 product view 11"
       }
     ],
     "inStock": true
@@ -308,26 +248,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-034.jpg",
             "alt": "Base Cabinet B15 SKU 011720130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B15 SKU 011720130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B15 SKU 011720130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B15 SKU 011720130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B15 SKU 011720130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B15 SKU 011720130 product view 11"
           }
         ],
         "price": {
@@ -386,26 +306,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-034.jpg",
             "alt": "Base Cabinet B15 SKU 011720230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B15 SKU 011720230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B15 SKU 011720230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B15 SKU 011720230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B15 SKU 011720230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B15 SKU 011720230 product view 11"
           }
         ],
         "price": {
@@ -478,26 +378,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-034.jpg",
         "alt": "Base Cabinet B15 SKU 011720130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B15 SKU 011720130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B15 SKU 011720130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B15 SKU 011720130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B15 SKU 011720130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B15 SKU 011720130 product view 11"
       }
     ],
     "inStock": true
@@ -553,26 +433,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-046.jpg",
             "alt": "Base Cabinet B18 SKU 011730130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B18 SKU 011730130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B18 SKU 011730130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B18 SKU 011730130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B18 SKU 011730130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B18 SKU 011730130 product view 11"
           }
         ],
         "price": {
@@ -631,26 +491,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-046.jpg",
             "alt": "Base Cabinet B18 SKU 011730230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B18 SKU 011730230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B18 SKU 011730230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B18 SKU 011730230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B18 SKU 011730230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B18 SKU 011730230 product view 11"
           }
         ],
         "price": {
@@ -723,26 +563,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-046.jpg",
         "alt": "Base Cabinet B18 SKU 011730130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B18 SKU 011730130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B18 SKU 011730130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B18 SKU 011730130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B18 SKU 011730130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B18 SKU 011730130 product view 11"
       }
     ],
     "inStock": true
@@ -798,26 +618,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-105.jpg",
             "alt": "Base Cabinet B21 SKU 011740130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B21 SKU 011740130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B21 SKU 011740130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B21 SKU 011740130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B21 SKU 011740130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B21 SKU 011740130 product view 11"
           }
         ],
         "price": {
@@ -876,26 +676,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-105.jpg",
             "alt": "Base Cabinet B21 SKU 011740230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B21 SKU 011740230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B21 SKU 011740230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B21 SKU 011740230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B21 SKU 011740230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B21 SKU 011740230 product view 11"
           }
         ],
         "price": {
@@ -968,26 +748,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-105.jpg",
         "alt": "Base Cabinet B21 SKU 011740130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B21 SKU 011740130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B21 SKU 011740130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B21 SKU 011740130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B21 SKU 011740130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B21 SKU 011740130 product view 11"
       }
     ],
     "inStock": true
@@ -1043,26 +803,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-015.jpg",
             "alt": "Base Cabinet B24 SKU 011750130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B24 SKU 011750130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B24 SKU 011750130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B24 SKU 011750130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B24 SKU 011750130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B24 SKU 011750130 product view 11"
           }
         ],
         "price": {
@@ -1121,26 +861,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-015.jpg",
             "alt": "Base Cabinet B24 SKU 011750230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B24 SKU 011750230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B24 SKU 011750230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B24 SKU 011750230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B24 SKU 011750230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B24 SKU 011750230 product view 11"
           }
         ],
         "price": {
@@ -1213,26 +933,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-015.jpg",
         "alt": "Base Cabinet B24 SKU 011750130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B24 SKU 011750130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B24 SKU 011750130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B24 SKU 011750130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B24 SKU 011750130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B24 SKU 011750130 product view 11"
       }
     ],
     "inStock": true
@@ -1288,26 +988,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-174.jpg",
             "alt": "Base Cabinet B27 SKU 011760130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B27 SKU 011760130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B27 SKU 011760130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B27 SKU 011760130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B27 SKU 011760130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B27 SKU 011760130 product view 11"
           }
         ],
         "price": {
@@ -1366,26 +1046,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-174.jpg",
             "alt": "Base Cabinet B27 SKU 011760230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B27 SKU 011760230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B27 SKU 011760230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B27 SKU 011760230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B27 SKU 011760230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B27 SKU 011760230 product view 11"
           }
         ],
         "price": {
@@ -1458,26 +1118,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-174.jpg",
         "alt": "Base Cabinet B27 SKU 011760130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B27 SKU 011760130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B27 SKU 011760130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B27 SKU 011760130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B27 SKU 011760130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B27 SKU 011760130 product view 11"
       }
     ],
     "inStock": true
@@ -1537,26 +1177,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-124.jpg",
             "alt": "Base Cabinet B30 SKU 011770130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B30 SKU 011770130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B30 SKU 011770130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B30 SKU 011770130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B30 SKU 011770130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B30 SKU 011770130 product view 12"
           }
         ],
         "price": {
@@ -1619,26 +1239,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-124.jpg",
             "alt": "Base Cabinet B30 SKU 011770230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B30 SKU 011770230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B30 SKU 011770230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B30 SKU 011770230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B30 SKU 011770230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B30 SKU 011770230 product view 12"
           }
         ],
         "price": {
@@ -1715,26 +1315,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-124.jpg",
         "alt": "Base Cabinet B30 SKU 011770130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B30 SKU 011770130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B30 SKU 011770130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B30 SKU 011770130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B30 SKU 011770130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B30 SKU 011770130 product view 12"
       }
     ],
     "inStock": true
@@ -1794,26 +1374,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-054.jpg",
             "alt": "Base Cabinet B33 SKU 011780130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B33 SKU 011780130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B33 SKU 011780130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B33 SKU 011780130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B33 SKU 011780130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B33 SKU 011780130 product view 12"
           }
         ],
         "price": {
@@ -1876,26 +1436,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-054.jpg",
             "alt": "Base Cabinet B33 SKU 011780230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B33 SKU 011780230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B33 SKU 011780230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B33 SKU 011780230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B33 SKU 011780230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B33 SKU 011780230 product view 12"
           }
         ],
         "price": {
@@ -1972,26 +1512,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-054.jpg",
         "alt": "Base Cabinet B33 SKU 011780130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B33 SKU 011780130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B33 SKU 011780130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B33 SKU 011780130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B33 SKU 011780130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B33 SKU 011780130 product view 12"
       }
     ],
     "inStock": true
@@ -2051,26 +1571,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-045.jpg",
             "alt": "Base Cabinet B36 SKU 011790130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B36 SKU 011790130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B36 SKU 011790130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B36 SKU 011790130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B36 SKU 011790130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B36 SKU 011790130 product view 12"
           }
         ],
         "price": {
@@ -2133,26 +1633,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-045.jpg",
             "alt": "Base Cabinet B36 SKU 011790230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B36 SKU 011790230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B36 SKU 011790230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B36 SKU 011790230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B36 SKU 011790230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B36 SKU 011790230 product view 12"
           }
         ],
         "price": {
@@ -2229,26 +1709,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-045.jpg",
         "alt": "Base Cabinet B36 SKU 011790130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B36 SKU 011790130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B36 SKU 011790130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B36 SKU 011790130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B36 SKU 011790130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B36 SKU 011790130 product view 12"
       }
     ],
     "inStock": true
@@ -2308,26 +1768,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-095.jpg",
             "alt": "Base Cabinet B42 SKU 011800130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B42 SKU 011800130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B42 SKU 011800130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B42 SKU 011800130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B42 SKU 011800130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B42 SKU 011800130 product view 12"
           }
         ],
         "price": {
@@ -2386,26 +1826,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-095.jpg",
             "alt": "Base Cabinet B42 SKU 011800230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Base Cabinet B42 SKU 011800230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Base Cabinet B42 SKU 011800230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Base Cabinet B42 SKU 011800230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Base Cabinet B42 SKU 011800230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Base Cabinet B42 SKU 011800230 product view 11"
           }
         ],
         "price": {
@@ -2482,26 +1902,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/vanstro-kitchen-cabinets-shared-product-detail-095.jpg",
         "alt": "Base Cabinet B42 SKU 011800130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Base Cabinet B42 SKU 011800130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Base Cabinet B42 SKU 011800130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Base Cabinet B42 SKU 011800130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Base Cabinet B42 SKU 011800130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Base Cabinet B42 SKU 011800130 product view 12"
       }
     ],
     "inStock": true
@@ -2555,24 +1955,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB30 SKU 011950130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB30 SKU 011950130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB30 SKU 011950130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB30 SKU 011950130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB30 SKU 011950130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB30 SKU 011950130 product view 10"
+            "alt": "Sink Base SB30 SKU 011950130 product view 6"
           }
         ],
         "price": {
@@ -2629,24 +2013,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB30 SKU 011950230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB30 SKU 011950230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB30 SKU 011950230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB30 SKU 011950230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB30 SKU 011950230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB30 SKU 011950230 product view 10"
+            "alt": "Sink Base SB30 SKU 011950230 product view 6"
           }
         ],
         "price": {
@@ -2717,24 +2085,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Sink Base SB30 SKU 011950130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Sink Base SB30 SKU 011950130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Sink Base SB30 SKU 011950130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Sink Base SB30 SKU 011950130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Sink Base SB30 SKU 011950130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Sink Base SB30 SKU 011950130 product view 10"
+        "alt": "Sink Base SB30 SKU 011950130 product view 6"
       }
     ],
     "inStock": true
@@ -2788,24 +2140,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB33 SKU 011960130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB33 SKU 011960130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB33 SKU 011960130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB33 SKU 011960130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB33 SKU 011960130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB33 SKU 011960130 product view 10"
+            "alt": "Sink Base SB33 SKU 011960130 product view 6"
           }
         ],
         "price": {
@@ -2862,24 +2198,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB33 SKU 011960230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB33 SKU 011960230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB33 SKU 011960230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB33 SKU 011960230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB33 SKU 011960230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB33 SKU 011960230 product view 10"
+            "alt": "Sink Base SB33 SKU 011960230 product view 6"
           }
         ],
         "price": {
@@ -2950,24 +2270,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Sink Base SB33 SKU 011960130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Sink Base SB33 SKU 011960130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Sink Base SB33 SKU 011960130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Sink Base SB33 SKU 011960130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Sink Base SB33 SKU 011960130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Sink Base SB33 SKU 011960130 product view 10"
+        "alt": "Sink Base SB33 SKU 011960130 product view 6"
       }
     ],
     "inStock": true
@@ -3025,24 +2329,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB36 SKU 011970130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB36 SKU 011970130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB36 SKU 011970130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB36 SKU 011970130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB36 SKU 011970130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB36 SKU 011970130 product view 11"
+            "alt": "Sink Base SB36 SKU 011970130 product view 7"
           }
         ],
         "price": {
@@ -3103,24 +2391,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Sink Base SB36 SKU 011970230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Sink Base SB36 SKU 011970230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Sink Base SB36 SKU 011970230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Sink Base SB36 SKU 011970230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Sink Base SB36 SKU 011970230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Sink Base SB36 SKU 011970230 product view 11"
+            "alt": "Sink Base SB36 SKU 011970230 product view 7"
           }
         ],
         "price": {
@@ -3195,24 +2467,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Sink Base SB36 SKU 011970130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Sink Base SB36 SKU 011970130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Sink Base SB36 SKU 011970130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Sink Base SB36 SKU 011970130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Sink Base SB36 SKU 011970130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Sink Base SB36 SKU 011970130 product view 11"
+        "alt": "Sink Base SB36 SKU 011970130 product view 7"
       }
     ],
     "inStock": true
@@ -3270,24 +2526,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 11"
+            "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 7"
           }
         ],
         "price": {
@@ -3348,24 +2588,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 11"
+            "alt": "3-Drawer Base 3DB12 SKU 012710230 product view 7"
           }
         ],
         "price": {
@@ -3440,24 +2664,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 11"
+        "alt": "3-Drawer Base 3DB12 SKU 012710130 product view 7"
       }
     ],
     "inStock": true
@@ -3515,24 +2723,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 11"
+            "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 7"
           }
         ],
         "price": {
@@ -3593,24 +2785,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 11"
+            "alt": "3-Drawer Base 3DB15 SKU 012720230 product view 7"
           }
         ],
         "price": {
@@ -3685,24 +2861,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 11"
+        "alt": "3-Drawer Base 3DB15 SKU 012720130 product view 7"
       }
     ],
     "inStock": true
@@ -3760,24 +2920,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 11"
+            "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 7"
           }
         ],
         "price": {
@@ -3838,24 +2982,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 11"
+            "alt": "3-Drawer Base 3DB18 SKU 012730230 product view 7"
           }
         ],
         "price": {
@@ -3930,24 +3058,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 11"
+        "alt": "3-Drawer Base 3DB18 SKU 012730130 product view 7"
       }
     ],
     "inStock": true
@@ -4005,24 +3117,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 11"
+            "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 7"
           }
         ],
         "price": {
@@ -4083,24 +3179,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 11"
+            "alt": "3-Drawer Base 3DB21 SKU 012740230 product view 7"
           }
         ],
         "price": {
@@ -4175,24 +3255,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 11"
+        "alt": "3-Drawer Base 3DB21 SKU 012740130 product view 7"
       }
     ],
     "inStock": true
@@ -4250,24 +3314,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 11"
+            "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 7"
           }
         ],
         "price": {
@@ -4328,24 +3376,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 11"
+            "alt": "3-Drawer Base 3DB24 SKU 012750230 product view 7"
           }
         ],
         "price": {
@@ -4420,24 +3452,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 11"
+        "alt": "3-Drawer Base 3DB24 SKU 012750130 product view 7"
       }
     ],
     "inStock": true
@@ -4495,24 +3511,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 11"
+            "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 7"
           }
         ],
         "price": {
@@ -4573,24 +3573,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 11"
+            "alt": "3-Drawer Base 3DB30 SKU 012770230 product view 7"
           }
         ],
         "price": {
@@ -4665,24 +3649,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 11"
+        "alt": "3-Drawer Base 3DB30 SKU 012770130 product view 7"
       }
     ],
     "inStock": true
@@ -4740,24 +3708,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 11"
+            "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 7"
           }
         ],
         "price": {
@@ -4818,24 +3770,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 11"
+            "alt": "3-Drawer Base 3DB33 SKU 012780230 product view 7"
           }
         ],
         "price": {
@@ -4910,24 +3846,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 11"
+        "alt": "3-Drawer Base 3DB33 SKU 012780130 product view 7"
       }
     ],
     "inStock": true
@@ -4985,24 +3905,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 11"
+            "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 7"
           }
         ],
         "price": {
@@ -5063,24 +3967,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 11"
+            "alt": "3-Drawer Base 3DB36 SKU 012790230 product view 7"
           }
         ],
         "price": {
@@ -5155,24 +4043,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 11"
+        "alt": "3-Drawer Base 3DB36 SKU 012790130 product view 7"
       }
     ],
     "inStock": true
@@ -5230,24 +4102,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 11"
+            "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 7"
           }
         ],
         "price": {
@@ -5308,24 +4164,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 11"
+            "alt": "Lazy Susan Base LSB33 SKU 013780230 product view 7"
           }
         ],
         "price": {
@@ -5400,24 +4240,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 11"
+        "alt": "Lazy Susan Base LSB33 SKU 013780130 product view 7"
       }
     ],
     "inStock": true
@@ -5475,24 +4299,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 11"
+            "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 7"
           }
         ],
         "price": {
@@ -5553,24 +4361,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 11"
+            "alt": "Lazy Susan Base LSB36 SKU 013790230 product view 7"
           }
         ],
         "price": {
@@ -5645,24 +4437,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 11"
+        "alt": "Lazy Susan Base LSB36 SKU 013790130 product view 7"
       }
     ],
     "inStock": true
@@ -5714,26 +4490,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/spb9-014700131-spb9-pwms-wh-gallery-05.webp",
             "alt": "SPB9 SKU 014700131 product view 5"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "SPB9 SKU 014700131 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "SPB9 SKU 014700131 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "SPB9 SKU 014700131 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "SPB9 SKU 014700131 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "SPB9 SKU 014700131 product view 10"
           }
         ],
         "price": {
@@ -5788,26 +4544,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/kitchen-cabinets/spb9-014700231-spb9-pwms-lg-gallery-05.webp",
             "alt": "SPB9 SKU 014700231 product view 5"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "SPB9 SKU 014700231 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "SPB9 SKU 014700231 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "SPB9 SKU 014700231 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "SPB9 SKU 014700231 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "SPB9 SKU 014700231 product view 10"
           }
         ],
         "price": {
@@ -5876,26 +4612,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/kitchen-cabinets/spb9-014700131-spb9-pwms-wh-gallery-05.webp",
         "alt": "SPB9 SKU 014700131 product view 5"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "SPB9 SKU 014700131 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "SPB9 SKU 014700131 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "SPB9 SKU 014700131 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "SPB9 SKU 014700131 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "SPB9 SKU 014700131 product view 10"
       }
     ],
     "inStock": true
@@ -5953,24 +4669,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0930 SKU 015010130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010130 product view 11"
+            "alt": "Wall Cabinet W0930 SKU 015010130 product view 7"
           }
         ],
         "price": {
@@ -6031,24 +4731,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0930 SKU 015010230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0930 SKU 015010230 product view 11"
+            "alt": "Wall Cabinet W0930 SKU 015010230 product view 7"
           }
         ],
         "price": {
@@ -6123,24 +4807,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W0930 SKU 015010130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W0930 SKU 015010130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W0930 SKU 015010130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W0930 SKU 015010130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W0930 SKU 015010130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W0930 SKU 015010130 product view 11"
+        "alt": "Wall Cabinet W0930 SKU 015010130 product view 7"
       }
     ],
     "inStock": true
@@ -6198,24 +4866,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0936 SKU 015020130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020130 product view 11"
+            "alt": "Wall Cabinet W0936 SKU 015020130 product view 7"
           }
         ],
         "price": {
@@ -6276,24 +4928,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0936 SKU 015020230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0936 SKU 015020230 product view 11"
+            "alt": "Wall Cabinet W0936 SKU 015020230 product view 7"
           }
         ],
         "price": {
@@ -6368,24 +5004,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W0936 SKU 015020130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W0936 SKU 015020130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W0936 SKU 015020130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W0936 SKU 015020130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W0936 SKU 015020130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W0936 SKU 015020130 product view 11"
+        "alt": "Wall Cabinet W0936 SKU 015020130 product view 7"
       }
     ],
     "inStock": true
@@ -6443,24 +5063,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0942 SKU 015030130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030130 product view 11"
+            "alt": "Wall Cabinet W0942 SKU 015030130 product view 7"
           }
         ],
         "price": {
@@ -6521,24 +5125,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W0942 SKU 015030230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W0942 SKU 015030230 product view 11"
+            "alt": "Wall Cabinet W0942 SKU 015030230 product view 7"
           }
         ],
         "price": {
@@ -6613,24 +5201,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W0942 SKU 015030130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W0942 SKU 015030130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W0942 SKU 015030130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W0942 SKU 015030130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W0942 SKU 015030130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W0942 SKU 015030130 product view 11"
+        "alt": "Wall Cabinet W0942 SKU 015030130 product view 7"
       }
     ],
     "inStock": true
@@ -6684,24 +5256,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1230 SKU 015040130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040130 product view 10"
+            "alt": "Wall Cabinet W1230 SKU 015040130 product view 6"
           }
         ],
         "price": {
@@ -6762,24 +5318,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1230 SKU 015040230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1230 SKU 015040230 product view 11"
+            "alt": "Wall Cabinet W1230 SKU 015040230 product view 7"
           }
         ],
         "price": {
@@ -6850,24 +5390,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1230 SKU 015040130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1230 SKU 015040130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1230 SKU 015040130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1230 SKU 015040130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1230 SKU 015040130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1230 SKU 015040130 product view 10"
+        "alt": "Wall Cabinet W1230 SKU 015040130 product view 6"
       }
     ],
     "inStock": true
@@ -6925,24 +5449,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1236 SKU 015050130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050130 product view 11"
+            "alt": "Wall Cabinet W1236 SKU 015050130 product view 7"
           }
         ],
         "price": {
@@ -6999,24 +5507,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1236 SKU 015050230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1236 SKU 015050230 product view 10"
+            "alt": "Wall Cabinet W1236 SKU 015050230 product view 6"
           }
         ],
         "price": {
@@ -7091,24 +5583,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1236 SKU 015050130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1236 SKU 015050130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1236 SKU 015050130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1236 SKU 015050130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1236 SKU 015050130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1236 SKU 015050130 product view 11"
+        "alt": "Wall Cabinet W1236 SKU 015050130 product view 7"
       }
     ],
     "inStock": true
@@ -7166,24 +5642,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1242 SKU 015060130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060130 product view 11"
+            "alt": "Wall Cabinet W1242 SKU 015060130 product view 7"
           }
         ],
         "price": {
@@ -7244,24 +5704,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1242 SKU 015060230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1242 SKU 015060230 product view 11"
+            "alt": "Wall Cabinet W1242 SKU 015060230 product view 7"
           }
         ],
         "price": {
@@ -7336,24 +5780,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1242 SKU 015060130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1242 SKU 015060130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1242 SKU 015060130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1242 SKU 015060130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1242 SKU 015060130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1242 SKU 015060130 product view 11"
+        "alt": "Wall Cabinet W1242 SKU 015060130 product view 7"
       }
     ],
     "inStock": true
@@ -7407,24 +5835,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1530 SKU 015070130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070130 product view 10"
+            "alt": "Wall Cabinet W1530 SKU 015070130 product view 6"
           }
         ],
         "price": {
@@ -7485,24 +5897,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1530 SKU 015070230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1530 SKU 015070230 product view 11"
+            "alt": "Wall Cabinet W1530 SKU 015070230 product view 7"
           }
         ],
         "price": {
@@ -7573,24 +5969,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1530 SKU 015070130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1530 SKU 015070130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1530 SKU 015070130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1530 SKU 015070130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1530 SKU 015070130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1530 SKU 015070130 product view 10"
+        "alt": "Wall Cabinet W1530 SKU 015070130 product view 6"
       }
     ],
     "inStock": true
@@ -7648,24 +6028,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 11"
+            "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 7"
           }
         ],
         "price": {
@@ -7726,24 +6090,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 11"
+            "alt": "Wall Cabinet (GD)W1530GD SKU 015070430 product view 7"
           }
         ],
         "price": {
@@ -7818,24 +6166,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 11"
+        "alt": "Wall Cabinet (GD)W1530GD SKU 015070330 product view 7"
       }
     ],
     "inStock": true
@@ -7889,24 +6221,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1536 SKU 015080130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080130 product view 10"
+            "alt": "Wall Cabinet W1536 SKU 015080130 product view 6"
           }
         ],
         "price": {
@@ -7963,24 +6279,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1536 SKU 015080230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1536 SKU 015080230 product view 10"
+            "alt": "Wall Cabinet W1536 SKU 015080230 product view 6"
           }
         ],
         "price": {
@@ -8051,24 +6351,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1536 SKU 015080130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1536 SKU 015080130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1536 SKU 015080130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1536 SKU 015080130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1536 SKU 015080130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1536 SKU 015080130 product view 10"
+        "alt": "Wall Cabinet W1536 SKU 015080130 product view 6"
       }
     ],
     "inStock": true
@@ -8126,24 +6410,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 11"
+            "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 7"
           }
         ],
         "price": {
@@ -8204,24 +6472,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 11"
+            "alt": "Wall Cabinet (GD)W1536GD SKU 015080430 product view 7"
           }
         ],
         "price": {
@@ -8296,24 +6548,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 11"
+        "alt": "Wall Cabinet (GD)W1536GD SKU 015080330 product view 7"
       }
     ],
     "inStock": true
@@ -8371,24 +6607,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1542 SKU 015090130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090130 product view 11"
+            "alt": "Wall Cabinet W1542 SKU 015090130 product view 7"
           }
         ],
         "price": {
@@ -8449,24 +6669,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1542 SKU 015090230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1542 SKU 015090230 product view 11"
+            "alt": "Wall Cabinet W1542 SKU 015090230 product view 7"
           }
         ],
         "price": {
@@ -8541,24 +6745,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1542 SKU 015090130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1542 SKU 015090130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1542 SKU 015090130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1542 SKU 015090130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1542 SKU 015090130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1542 SKU 015090130 product view 11"
+        "alt": "Wall Cabinet W1542 SKU 015090130 product view 7"
       }
     ],
     "inStock": true
@@ -8616,24 +6804,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 11"
+            "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 7"
           }
         ],
         "price": {
@@ -8694,24 +6866,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 11"
+            "alt": "Wall Cabinet (GD)W1542GD SKU 015090430 product view 7"
           }
         ],
         "price": {
@@ -8786,24 +6942,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 11"
+        "alt": "Wall Cabinet (GD)W1542GD SKU 015090330 product view 7"
       }
     ],
     "inStock": true
@@ -8861,24 +7001,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1830 SKU 015100130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100130 product view 11"
+            "alt": "Wall Cabinet W1830 SKU 015100130 product view 7"
           }
         ],
         "price": {
@@ -8935,24 +7059,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1830 SKU 015100230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1830 SKU 015100230 product view 10"
+            "alt": "Wall Cabinet W1830 SKU 015100230 product view 6"
           }
         ],
         "price": {
@@ -9027,24 +7135,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1830 SKU 015100130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1830 SKU 015100130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1830 SKU 015100130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1830 SKU 015100130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1830 SKU 015100130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1830 SKU 015100130 product view 11"
+        "alt": "Wall Cabinet W1830 SKU 015100130 product view 7"
       }
     ],
     "inStock": true
@@ -9102,24 +7194,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 11"
+            "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 7"
           }
         ],
         "price": {
@@ -9180,24 +7256,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 11"
+            "alt": "Wall Cabinet (GD)W1830GD SKU 015100430 product view 7"
           }
         ],
         "price": {
@@ -9272,24 +7332,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 11"
+        "alt": "Wall Cabinet (GD)W1830GD SKU 015100330 product view 7"
       }
     ],
     "inStock": true
@@ -9343,24 +7387,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1836 SKU 015110130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110130 product view 10"
+            "alt": "Wall Cabinet W1836 SKU 015110130 product view 6"
           }
         ],
         "price": {
@@ -9421,24 +7449,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1836 SKU 015110230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1836 SKU 015110230 product view 11"
+            "alt": "Wall Cabinet W1836 SKU 015110230 product view 7"
           }
         ],
         "price": {
@@ -9509,24 +7521,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1836 SKU 015110130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1836 SKU 015110130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1836 SKU 015110130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1836 SKU 015110130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1836 SKU 015110130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1836 SKU 015110130 product view 10"
+        "alt": "Wall Cabinet W1836 SKU 015110130 product view 6"
       }
     ],
     "inStock": true
@@ -9584,24 +7580,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 11"
+            "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 7"
           }
         ],
         "price": {
@@ -9662,24 +7642,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 11"
+            "alt": "Wall Cabinet (GD)W1836GD SKU 015110430 product view 7"
           }
         ],
         "price": {
@@ -9754,24 +7718,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 11"
+        "alt": "Wall Cabinet (GD)W1836GD SKU 015110330 product view 7"
       }
     ],
     "inStock": true
@@ -9829,24 +7777,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1842 SKU 015120130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120130 product view 11"
+            "alt": "Wall Cabinet W1842 SKU 015120130 product view 7"
           }
         ],
         "price": {
@@ -9907,24 +7839,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W1842 SKU 015120230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W1842 SKU 015120230 product view 11"
+            "alt": "Wall Cabinet W1842 SKU 015120230 product view 7"
           }
         ],
         "price": {
@@ -9999,24 +7915,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W1842 SKU 015120130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W1842 SKU 015120130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W1842 SKU 015120130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W1842 SKU 015120130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W1842 SKU 015120130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W1842 SKU 015120130 product view 11"
+        "alt": "Wall Cabinet W1842 SKU 015120130 product view 7"
       }
     ],
     "inStock": true
@@ -10074,24 +7974,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 11"
+            "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 7"
           }
         ],
         "price": {
@@ -10152,24 +8036,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 11"
+            "alt": "Wall Cabinet (GD)W1842GD SKU 015120430 product view 7"
           }
         ],
         "price": {
@@ -10244,24 +8112,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 11"
+        "alt": "Wall Cabinet (GD)W1842GD SKU 015120330 product view 7"
       }
     ],
     "inStock": true
@@ -10319,24 +8171,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2130 SKU 015130130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130130 product view 11"
+            "alt": "Wall Cabinet W2130 SKU 015130130 product view 7"
           }
         ],
         "price": {
@@ -10397,24 +8233,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2130 SKU 015130230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2130 SKU 015130230 product view 11"
+            "alt": "Wall Cabinet W2130 SKU 015130230 product view 7"
           }
         ],
         "price": {
@@ -10489,24 +8309,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2130 SKU 015130130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2130 SKU 015130130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2130 SKU 015130130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2130 SKU 015130130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2130 SKU 015130130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2130 SKU 015130130 product view 11"
+        "alt": "Wall Cabinet W2130 SKU 015130130 product view 7"
       }
     ],
     "inStock": true
@@ -10564,24 +8368,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2136 SKU 015140130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140130 product view 11"
+            "alt": "Wall Cabinet W2136 SKU 015140130 product view 7"
           }
         ],
         "price": {
@@ -10642,24 +8430,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2136 SKU 015140230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2136 SKU 015140230 product view 11"
+            "alt": "Wall Cabinet W2136 SKU 015140230 product view 7"
           }
         ],
         "price": {
@@ -10734,24 +8506,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2136 SKU 015140130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2136 SKU 015140130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2136 SKU 015140130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2136 SKU 015140130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2136 SKU 015140130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2136 SKU 015140130 product view 11"
+        "alt": "Wall Cabinet W2136 SKU 015140130 product view 7"
       }
     ],
     "inStock": true
@@ -10809,24 +8565,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2142 SKU 015150130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150130 product view 11"
+            "alt": "Wall Cabinet W2142 SKU 015150130 product view 7"
           }
         ],
         "price": {
@@ -10887,24 +8627,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2142 SKU 015150230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2142 SKU 015150230 product view 11"
+            "alt": "Wall Cabinet W2142 SKU 015150230 product view 7"
           }
         ],
         "price": {
@@ -10979,24 +8703,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2142 SKU 015150130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2142 SKU 015150130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2142 SKU 015150130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2142 SKU 015150130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2142 SKU 015150130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2142 SKU 015150130 product view 11"
+        "alt": "Wall Cabinet W2142 SKU 015150130 product view 7"
       }
     ],
     "inStock": true
@@ -11054,24 +8762,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2430 SKU 015160130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160130 product view 11"
+            "alt": "Wall Cabinet W2430 SKU 015160130 product view 7"
           }
         ],
         "price": {
@@ -11128,24 +8820,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2430 SKU 015160230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2430 SKU 015160230 product view 10"
+            "alt": "Wall Cabinet W2430 SKU 015160230 product view 6"
           }
         ],
         "price": {
@@ -11220,24 +8896,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2430 SKU 015160130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2430 SKU 015160130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2430 SKU 015160130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2430 SKU 015160130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2430 SKU 015160130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2430 SKU 015160130 product view 11"
+        "alt": "Wall Cabinet W2430 SKU 015160130 product view 7"
       }
     ],
     "inStock": true
@@ -11295,24 +8955,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 11"
+            "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 7"
           }
         ],
         "price": {
@@ -11369,24 +9013,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 10"
+            "alt": "Wall Cabinet (GD)W2430GD SKU 015160430 product view 6"
           }
         ],
         "price": {
@@ -11461,24 +9089,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 11"
+        "alt": "Wall Cabinet (GD)W2430GD SKU 015160330 product view 7"
       }
     ],
     "inStock": true
@@ -11536,24 +9148,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2436 SKU 015170130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170130 product view 11"
+            "alt": "Wall Cabinet W2436 SKU 015170130 product view 7"
           }
         ],
         "price": {
@@ -11610,24 +9206,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2436 SKU 015170230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2436 SKU 015170230 product view 10"
+            "alt": "Wall Cabinet W2436 SKU 015170230 product view 6"
           }
         ],
         "price": {
@@ -11702,24 +9282,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2436 SKU 015170130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2436 SKU 015170130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2436 SKU 015170130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2436 SKU 015170130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2436 SKU 015170130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2436 SKU 015170130 product view 11"
+        "alt": "Wall Cabinet W2436 SKU 015170130 product view 7"
       }
     ],
     "inStock": true
@@ -11777,24 +9341,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 11"
+            "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 7"
           }
         ],
         "price": {
@@ -11851,24 +9399,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 10"
+            "alt": "Wall Cabinet (GD)W2436GD SKU 015170430 product view 6"
           }
         ],
         "price": {
@@ -11943,24 +9475,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 11"
+        "alt": "Wall Cabinet (GD)W2436GD SKU 015170330 product view 7"
       }
     ],
     "inStock": true
@@ -12018,24 +9534,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2442 SKU 015180130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180130 product view 11"
+            "alt": "Wall Cabinet W2442 SKU 015180130 product view 7"
           }
         ],
         "price": {
@@ -12092,24 +9592,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2442 SKU 015180230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2442 SKU 015180230 product view 10"
+            "alt": "Wall Cabinet W2442 SKU 015180230 product view 6"
           }
         ],
         "price": {
@@ -12184,24 +9668,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2442 SKU 015180130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2442 SKU 015180130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2442 SKU 015180130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2442 SKU 015180130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2442 SKU 015180130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2442 SKU 015180130 product view 11"
+        "alt": "Wall Cabinet W2442 SKU 015180130 product view 7"
       }
     ],
     "inStock": true
@@ -12259,24 +9727,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 11"
+            "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 7"
           }
         ],
         "price": {
@@ -12337,24 +9789,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 11"
+            "alt": "Wall Cabinet (GD)W2442GD SKU 015180430 product view 7"
           }
         ],
         "price": {
@@ -12429,24 +9865,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 11"
+        "alt": "Wall Cabinet (GD)W2442GD SKU 015180330 product view 7"
       }
     ],
     "inStock": true
@@ -12504,24 +9924,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2730 SKU 015190130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190130 product view 11"
+            "alt": "Wall Cabinet W2730 SKU 015190130 product view 7"
           }
         ],
         "price": {
@@ -12578,24 +9982,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2730 SKU 015190230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2730 SKU 015190230 product view 10"
+            "alt": "Wall Cabinet W2730 SKU 015190230 product view 6"
           }
         ],
         "price": {
@@ -12670,24 +10058,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2730 SKU 015190130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2730 SKU 015190130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2730 SKU 015190130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2730 SKU 015190130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2730 SKU 015190130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2730 SKU 015190130 product view 11"
+        "alt": "Wall Cabinet W2730 SKU 015190130 product view 7"
       }
     ],
     "inStock": true
@@ -12745,24 +10117,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2736 SKU 015200130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200130 product view 11"
+            "alt": "Wall Cabinet W2736 SKU 015200130 product view 7"
           }
         ],
         "price": {
@@ -12819,24 +10175,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2736 SKU 015200230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2736 SKU 015200230 product view 10"
+            "alt": "Wall Cabinet W2736 SKU 015200230 product view 6"
           }
         ],
         "price": {
@@ -12911,24 +10251,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2736 SKU 015200130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2736 SKU 015200130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2736 SKU 015200130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2736 SKU 015200130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2736 SKU 015200130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2736 SKU 015200130 product view 11"
+        "alt": "Wall Cabinet W2736 SKU 015200130 product view 7"
       }
     ],
     "inStock": true
@@ -12986,24 +10310,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2742 SKU 015210130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210130 product view 11"
+            "alt": "Wall Cabinet W2742 SKU 015210130 product view 7"
           }
         ],
         "price": {
@@ -13064,24 +10372,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W2742 SKU 015210230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W2742 SKU 015210230 product view 11"
+            "alt": "Wall Cabinet W2742 SKU 015210230 product view 7"
           }
         ],
         "price": {
@@ -13156,24 +10448,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W2742 SKU 015210130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W2742 SKU 015210130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W2742 SKU 015210130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W2742 SKU 015210130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W2742 SKU 015210130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W2742 SKU 015210130 product view 11"
+        "alt": "Wall Cabinet W2742 SKU 015210130 product view 7"
       }
     ],
     "inStock": true
@@ -13227,24 +10503,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3012 SKU 015220130 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220130 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220130 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220130 product view 10"
+            "alt": "Wall Cabinet W3012 SKU 015220130 product view 6"
           }
         ],
         "price": {
@@ -13301,24 +10561,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3012 SKU 015220230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3012 SKU 015220230 product view 10"
+            "alt": "Wall Cabinet W3012 SKU 015220230 product view 6"
           }
         ],
         "price": {
@@ -13389,24 +10633,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3012 SKU 015220130 product view 5"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3012 SKU 015220130 product view 6"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3012 SKU 015220130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3012 SKU 015220130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3012 SKU 015220130 product view 9"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3012 SKU 015220130 product view 10"
+        "alt": "Wall Cabinet W3012 SKU 015220130 product view 6"
       }
     ],
     "inStock": true
@@ -13464,24 +10692,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301224 SKU 015230130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230130 product view 11"
+            "alt": "Wall Cabinet W301224 SKU 015230130 product view 7"
           }
         ],
         "price": {
@@ -13538,24 +10750,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301224 SKU 015230230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301224 SKU 015230230 product view 10"
+            "alt": "Wall Cabinet W301224 SKU 015230230 product view 6"
           }
         ],
         "price": {
@@ -13630,24 +10826,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W301224 SKU 015230130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W301224 SKU 015230130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W301224 SKU 015230130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W301224 SKU 015230130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W301224 SKU 015230130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W301224 SKU 015230130 product view 11"
+        "alt": "Wall Cabinet W301224 SKU 015230130 product view 7"
       }
     ],
     "inStock": true
@@ -13705,24 +10885,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301524 SKU 015240130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240130 product view 11"
+            "alt": "Wall Cabinet W301524 SKU 015240130 product view 7"
           }
         ],
         "price": {
@@ -13783,24 +10947,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301524 SKU 015240230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301524 SKU 015240230 product view 11"
+            "alt": "Wall Cabinet W301524 SKU 015240230 product view 7"
           }
         ],
         "price": {
@@ -13875,24 +11023,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W301524 SKU 015240130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W301524 SKU 015240130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W301524 SKU 015240130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W301524 SKU 015240130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W301524 SKU 015240130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W301524 SKU 015240130 product view 11"
+        "alt": "Wall Cabinet W301524 SKU 015240130 product view 7"
       }
     ],
     "inStock": true
@@ -13950,24 +11082,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3018 SKU 015250130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250130 product view 11"
+            "alt": "Wall Cabinet W3018 SKU 015250130 product view 7"
           }
         ],
         "price": {
@@ -14024,24 +11140,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3018 SKU 015250230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3018 SKU 015250230 product view 10"
+            "alt": "Wall Cabinet W3018 SKU 015250230 product view 6"
           }
         ],
         "price": {
@@ -14116,24 +11216,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3018 SKU 015250130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3018 SKU 015250130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3018 SKU 015250130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3018 SKU 015250130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3018 SKU 015250130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3018 SKU 015250130 product view 11"
+        "alt": "Wall Cabinet W3018 SKU 015250130 product view 7"
       }
     ],
     "inStock": true
@@ -14191,24 +11275,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301824 SKU 015260130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260130 product view 11"
+            "alt": "Wall Cabinet W301824 SKU 015260130 product view 7"
           }
         ],
         "price": {
@@ -14269,24 +11337,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W301824 SKU 015260230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W301824 SKU 015260230 product view 11"
+            "alt": "Wall Cabinet W301824 SKU 015260230 product view 7"
           }
         ],
         "price": {
@@ -14361,24 +11413,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W301824 SKU 015260130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W301824 SKU 015260130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W301824 SKU 015260130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W301824 SKU 015260130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W301824 SKU 015260130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W301824 SKU 015260130 product view 11"
+        "alt": "Wall Cabinet W301824 SKU 015260130 product view 7"
       }
     ],
     "inStock": true
@@ -14436,24 +11472,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3024 SKU 015270130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270130 product view 11"
+            "alt": "Wall Cabinet W3024 SKU 015270130 product view 7"
           }
         ],
         "price": {
@@ -14514,24 +11534,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3024 SKU 015270230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3024 SKU 015270230 product view 11"
+            "alt": "Wall Cabinet W3024 SKU 015270230 product view 7"
           }
         ],
         "price": {
@@ -14606,24 +11610,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3024 SKU 015270130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3024 SKU 015270130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3024 SKU 015270130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3024 SKU 015270130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3024 SKU 015270130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3024 SKU 015270130 product view 11"
+        "alt": "Wall Cabinet W3024 SKU 015270130 product view 7"
       }
     ],
     "inStock": true
@@ -14681,24 +11669,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W302424 SKU 015280130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280130 product view 11"
+            "alt": "Wall Cabinet W302424 SKU 015280130 product view 7"
           }
         ],
         "price": {
@@ -14759,24 +11731,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W302424 SKU 015280230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W302424 SKU 015280230 product view 11"
+            "alt": "Wall Cabinet W302424 SKU 015280230 product view 7"
           }
         ],
         "price": {
@@ -14851,24 +11807,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W302424 SKU 015280130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W302424 SKU 015280130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W302424 SKU 015280130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W302424 SKU 015280130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W302424 SKU 015280130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W302424 SKU 015280130 product view 11"
+        "alt": "Wall Cabinet W302424 SKU 015280130 product view 7"
       }
     ],
     "inStock": true
@@ -14926,24 +11866,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3030 SKU 015290130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290130 product view 11"
+            "alt": "Wall Cabinet W3030 SKU 015290130 product view 7"
           }
         ],
         "price": {
@@ -15004,24 +11928,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3030 SKU 015290230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3030 SKU 015290230 product view 11"
+            "alt": "Wall Cabinet W3030 SKU 015290230 product view 7"
           }
         ],
         "price": {
@@ -15096,24 +12004,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3030 SKU 015290130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3030 SKU 015290130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3030 SKU 015290130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3030 SKU 015290130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3030 SKU 015290130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3030 SKU 015290130 product view 11"
+        "alt": "Wall Cabinet W3030 SKU 015290130 product view 7"
       }
     ],
     "inStock": true
@@ -15171,24 +12063,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 11"
+            "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 7"
           }
         ],
         "price": {
@@ -15245,24 +12121,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 10"
+            "alt": "Wall Cabinet (GD)W3030GD SKU 015290430 product view 6"
           }
         ],
         "price": {
@@ -15337,24 +12197,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 11"
+        "alt": "Wall Cabinet (GD)W3030GD SKU 015290330 product view 7"
       }
     ],
     "inStock": true
@@ -15412,24 +12256,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3036 SKU 015300130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300130 product view 11"
+            "alt": "Wall Cabinet W3036 SKU 015300130 product view 7"
           }
         ],
         "price": {
@@ -15486,24 +12314,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3036 SKU 015300230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3036 SKU 015300230 product view 10"
+            "alt": "Wall Cabinet W3036 SKU 015300230 product view 6"
           }
         ],
         "price": {
@@ -15578,24 +12390,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3036 SKU 015300130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3036 SKU 015300130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3036 SKU 015300130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3036 SKU 015300130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3036 SKU 015300130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3036 SKU 015300130 product view 11"
+        "alt": "Wall Cabinet W3036 SKU 015300130 product view 7"
       }
     ],
     "inStock": true
@@ -15653,24 +12449,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 11"
+            "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 7"
           }
         ],
         "price": {
@@ -15727,24 +12507,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 10"
+            "alt": "Wall Cabinet (GD)W3036GD SKU 015300430 product view 6"
           }
         ],
         "price": {
@@ -15819,24 +12583,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 11"
+        "alt": "Wall Cabinet (GD)W3036GD SKU 015300330 product view 7"
       }
     ],
     "inStock": true
@@ -15894,24 +12642,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3042 SKU 015310130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310130 product view 11"
+            "alt": "Wall Cabinet W3042 SKU 015310130 product view 7"
           }
         ],
         "price": {
@@ -15972,24 +12704,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3042 SKU 015310230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3042 SKU 015310230 product view 11"
+            "alt": "Wall Cabinet W3042 SKU 015310230 product view 7"
           }
         ],
         "price": {
@@ -16064,24 +12780,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3042 SKU 015310130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3042 SKU 015310130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3042 SKU 015310130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3042 SKU 015310130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3042 SKU 015310130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3042 SKU 015310130 product view 11"
+        "alt": "Wall Cabinet W3042 SKU 015310130 product view 7"
       }
     ],
     "inStock": true
@@ -16139,24 +12839,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 11"
+            "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 7"
           }
         ],
         "price": {
@@ -16213,24 +12897,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 10"
+            "alt": "Wall Cabinet (GD)W3042GD SKU 015310430 product view 6"
           }
         ],
         "price": {
@@ -16305,24 +12973,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 11"
+        "alt": "Wall Cabinet (GD)W3042GD SKU 015310330 product view 7"
       }
     ],
     "inStock": true
@@ -16380,24 +13032,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331224 SKU 015320130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320130 product view 11"
+            "alt": "Wall Cabinet W331224 SKU 015320130 product view 7"
           }
         ],
         "price": {
@@ -16458,24 +13094,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331224 SKU 015320230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331224 SKU 015320230 product view 11"
+            "alt": "Wall Cabinet W331224 SKU 015320230 product view 7"
           }
         ],
         "price": {
@@ -16550,24 +13170,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W331224 SKU 015320130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W331224 SKU 015320130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W331224 SKU 015320130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W331224 SKU 015320130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W331224 SKU 015320130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W331224 SKU 015320130 product view 11"
+        "alt": "Wall Cabinet W331224 SKU 015320130 product view 7"
       }
     ],
     "inStock": true
@@ -16625,24 +13229,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331524 SKU 015330130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330130 product view 11"
+            "alt": "Wall Cabinet W331524 SKU 015330130 product view 7"
           }
         ],
         "price": {
@@ -16703,24 +13291,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331524 SKU 015330230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331524 SKU 015330230 product view 11"
+            "alt": "Wall Cabinet W331524 SKU 015330230 product view 7"
           }
         ],
         "price": {
@@ -16795,24 +13367,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W331524 SKU 015330130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W331524 SKU 015330130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W331524 SKU 015330130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W331524 SKU 015330130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W331524 SKU 015330130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W331524 SKU 015330130 product view 11"
+        "alt": "Wall Cabinet W331524 SKU 015330130 product view 7"
       }
     ],
     "inStock": true
@@ -16870,24 +13426,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331824 SKU 015340130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340130 product view 11"
+            "alt": "Wall Cabinet W331824 SKU 015340130 product view 7"
           }
         ],
         "price": {
@@ -16948,24 +13488,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W331824 SKU 015340230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W331824 SKU 015340230 product view 11"
+            "alt": "Wall Cabinet W331824 SKU 015340230 product view 7"
           }
         ],
         "price": {
@@ -17040,24 +13564,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W331824 SKU 015340130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W331824 SKU 015340130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W331824 SKU 015340130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W331824 SKU 015340130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W331824 SKU 015340130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W331824 SKU 015340130 product view 11"
+        "alt": "Wall Cabinet W331824 SKU 015340130 product view 7"
       }
     ],
     "inStock": true
@@ -17115,24 +13623,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3324 SKU 015350130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350130 product view 11"
+            "alt": "Wall Cabinet W3324 SKU 015350130 product view 7"
           }
         ],
         "price": {
@@ -17189,24 +13681,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3324 SKU 015350230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3324 SKU 015350230 product view 10"
+            "alt": "Wall Cabinet W3324 SKU 015350230 product view 6"
           }
         ],
         "price": {
@@ -17281,24 +13757,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3324 SKU 015350130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3324 SKU 015350130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3324 SKU 015350130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3324 SKU 015350130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3324 SKU 015350130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3324 SKU 015350130 product view 11"
+        "alt": "Wall Cabinet W3324 SKU 015350130 product view 7"
       }
     ],
     "inStock": true
@@ -17356,24 +13816,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W332424 SKU 015360130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360130 product view 11"
+            "alt": "Wall Cabinet W332424 SKU 015360130 product view 7"
           }
         ],
         "price": {
@@ -17434,24 +13878,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W332424 SKU 015360230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W332424 SKU 015360230 product view 11"
+            "alt": "Wall Cabinet W332424 SKU 015360230 product view 7"
           }
         ],
         "price": {
@@ -17526,24 +13954,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W332424 SKU 015360130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W332424 SKU 015360130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W332424 SKU 015360130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W332424 SKU 015360130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W332424 SKU 015360130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W332424 SKU 015360130 product view 11"
+        "alt": "Wall Cabinet W332424 SKU 015360130 product view 7"
       }
     ],
     "inStock": true
@@ -17601,24 +14013,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3330 SKU 015370130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370130 product view 11"
+            "alt": "Wall Cabinet W3330 SKU 015370130 product view 7"
           }
         ],
         "price": {
@@ -17675,24 +14071,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3330 SKU 015370230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3330 SKU 015370230 product view 10"
+            "alt": "Wall Cabinet W3330 SKU 015370230 product view 6"
           }
         ],
         "price": {
@@ -17767,24 +14147,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3330 SKU 015370130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3330 SKU 015370130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3330 SKU 015370130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3330 SKU 015370130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3330 SKU 015370130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3330 SKU 015370130 product view 11"
+        "alt": "Wall Cabinet W3330 SKU 015370130 product view 7"
       }
     ],
     "inStock": true
@@ -17842,24 +14206,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3336 SKU 015380130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380130 product view 11"
+            "alt": "Wall Cabinet W3336 SKU 015380130 product view 7"
           }
         ],
         "price": {
@@ -17916,24 +14264,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3336 SKU 015380230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3336 SKU 015380230 product view 10"
+            "alt": "Wall Cabinet W3336 SKU 015380230 product view 6"
           }
         ],
         "price": {
@@ -18008,24 +14340,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3336 SKU 015380130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3336 SKU 015380130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3336 SKU 015380130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3336 SKU 015380130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3336 SKU 015380130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3336 SKU 015380130 product view 11"
+        "alt": "Wall Cabinet W3336 SKU 015380130 product view 7"
       }
     ],
     "inStock": true
@@ -18083,24 +14399,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3342 SKU 015390130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390130 product view 11"
+            "alt": "Wall Cabinet W3342 SKU 015390130 product view 7"
           }
         ],
         "price": {
@@ -18157,24 +14457,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3342 SKU 015390230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3342 SKU 015390230 product view 10"
+            "alt": "Wall Cabinet W3342 SKU 015390230 product view 6"
           }
         ],
         "price": {
@@ -18249,24 +14533,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3342 SKU 015390130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3342 SKU 015390130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3342 SKU 015390130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3342 SKU 015390130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3342 SKU 015390130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3342 SKU 015390130 product view 11"
+        "alt": "Wall Cabinet W3342 SKU 015390130 product view 7"
       }
     ],
     "inStock": true
@@ -18324,24 +14592,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361224 SKU 015400130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400130 product view 11"
+            "alt": "Wall Cabinet W361224 SKU 015400130 product view 7"
           }
         ],
         "price": {
@@ -18402,24 +14654,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361224 SKU 015400230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361224 SKU 015400230 product view 11"
+            "alt": "Wall Cabinet W361224 SKU 015400230 product view 7"
           }
         ],
         "price": {
@@ -18494,24 +14730,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W361224 SKU 015400130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W361224 SKU 015400130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W361224 SKU 015400130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W361224 SKU 015400130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W361224 SKU 015400130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W361224 SKU 015400130 product view 11"
+        "alt": "Wall Cabinet W361224 SKU 015400130 product view 7"
       }
     ],
     "inStock": true
@@ -18569,24 +14789,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361524 SKU 015410130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410130 product view 11"
+            "alt": "Wall Cabinet W361524 SKU 015410130 product view 7"
           }
         ],
         "price": {
@@ -18647,24 +14851,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361524 SKU 015410230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361524 SKU 015410230 product view 11"
+            "alt": "Wall Cabinet W361524 SKU 015410230 product view 7"
           }
         ],
         "price": {
@@ -18739,24 +14927,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W361524 SKU 015410130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W361524 SKU 015410130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W361524 SKU 015410130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W361524 SKU 015410130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W361524 SKU 015410130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W361524 SKU 015410130 product view 11"
+        "alt": "Wall Cabinet W361524 SKU 015410130 product view 7"
       }
     ],
     "inStock": true
@@ -18814,24 +14986,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361824 SKU 015420130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420130 product view 11"
+            "alt": "Wall Cabinet W361824 SKU 015420130 product view 7"
           }
         ],
         "price": {
@@ -18892,24 +15048,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W361824 SKU 015420230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W361824 SKU 015420230 product view 11"
+            "alt": "Wall Cabinet W361824 SKU 015420230 product view 7"
           }
         ],
         "price": {
@@ -18984,24 +15124,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W361824 SKU 015420130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W361824 SKU 015420130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W361824 SKU 015420130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W361824 SKU 015420130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W361824 SKU 015420130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W361824 SKU 015420130 product view 11"
+        "alt": "Wall Cabinet W361824 SKU 015420130 product view 7"
       }
     ],
     "inStock": true
@@ -19059,24 +15183,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3624 SKU 015430130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430130 product view 11"
+            "alt": "Wall Cabinet W3624 SKU 015430130 product view 7"
           }
         ],
         "price": {
@@ -19133,24 +15241,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3624 SKU 015430230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3624 SKU 015430230 product view 10"
+            "alt": "Wall Cabinet W3624 SKU 015430230 product view 6"
           }
         ],
         "price": {
@@ -19225,24 +15317,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3624 SKU 015430130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3624 SKU 015430130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3624 SKU 015430130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3624 SKU 015430130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3624 SKU 015430130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3624 SKU 015430130 product view 11"
+        "alt": "Wall Cabinet W3624 SKU 015430130 product view 7"
       }
     ],
     "inStock": true
@@ -19300,24 +15376,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W362424 SKU 015440130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440130 product view 11"
+            "alt": "Wall Cabinet W362424 SKU 015440130 product view 7"
           }
         ],
         "price": {
@@ -19378,24 +15438,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W362424 SKU 015440230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W362424 SKU 015440230 product view 11"
+            "alt": "Wall Cabinet W362424 SKU 015440230 product view 7"
           }
         ],
         "price": {
@@ -19470,24 +15514,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W362424 SKU 015440130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W362424 SKU 015440130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W362424 SKU 015440130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W362424 SKU 015440130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W362424 SKU 015440130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W362424 SKU 015440130 product view 11"
+        "alt": "Wall Cabinet W362424 SKU 015440130 product view 7"
       }
     ],
     "inStock": true
@@ -19545,24 +15573,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3630 SKU 015450130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450130 product view 11"
+            "alt": "Wall Cabinet W3630 SKU 015450130 product view 7"
           }
         ],
         "price": {
@@ -19619,24 +15631,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3630 SKU 015450230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3630 SKU 015450230 product view 10"
+            "alt": "Wall Cabinet W3630 SKU 015450230 product view 6"
           }
         ],
         "price": {
@@ -19711,24 +15707,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3630 SKU 015450130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3630 SKU 015450130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3630 SKU 015450130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3630 SKU 015450130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3630 SKU 015450130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3630 SKU 015450130 product view 11"
+        "alt": "Wall Cabinet W3630 SKU 015450130 product view 7"
       }
     ],
     "inStock": true
@@ -19786,24 +15766,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3636 SKU 015460130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460130 product view 11"
+            "alt": "Wall Cabinet W3636 SKU 015460130 product view 7"
           }
         ],
         "price": {
@@ -19860,24 +15824,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3636 SKU 015460230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3636 SKU 015460230 product view 10"
+            "alt": "Wall Cabinet W3636 SKU 015460230 product view 6"
           }
         ],
         "price": {
@@ -19952,24 +15900,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3636 SKU 015460130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3636 SKU 015460130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3636 SKU 015460130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3636 SKU 015460130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3636 SKU 015460130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3636 SKU 015460130 product view 11"
+        "alt": "Wall Cabinet W3636 SKU 015460130 product view 7"
       }
     ],
     "inStock": true
@@ -20027,24 +15959,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3642 SKU 015470130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470130 product view 11"
+            "alt": "Wall Cabinet W3642 SKU 015470130 product view 7"
           }
         ],
         "price": {
@@ -20101,24 +16017,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3642 SKU 015470230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3642 SKU 015470230 product view 10"
+            "alt": "Wall Cabinet W3642 SKU 015470230 product view 6"
           }
         ],
         "price": {
@@ -20193,24 +16093,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3642 SKU 015470130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3642 SKU 015470130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3642 SKU 015470130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3642 SKU 015470130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3642 SKU 015470130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3642 SKU 015470130 product view 11"
+        "alt": "Wall Cabinet W3642 SKU 015470130 product view 7"
       }
     ],
     "inStock": true
@@ -20268,24 +16152,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3930 SKU 015480130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480130 product view 11"
+            "alt": "Wall Cabinet W3930 SKU 015480130 product view 7"
           }
         ],
         "price": {
@@ -20342,24 +16210,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Wall Cabinet W3930 SKU 015480230 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480230 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480230 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Wall Cabinet W3930 SKU 015480230 product view 10"
+            "alt": "Wall Cabinet W3930 SKU 015480230 product view 6"
           }
         ],
         "price": {
@@ -20434,24 +16286,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Wall Cabinet W3930 SKU 015480130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Wall Cabinet W3930 SKU 015480130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Wall Cabinet W3930 SKU 015480130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Wall Cabinet W3930 SKU 015480130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Wall Cabinet W3930 SKU 015480130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Wall Cabinet W3930 SKU 015480130 product view 11"
+        "alt": "Wall Cabinet W3930 SKU 015480130 product view 7"
       }
     ],
     "inStock": true
@@ -20509,24 +16345,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 11"
+            "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 7"
           }
         ],
         "price": {
@@ -20587,24 +16407,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 11"
+            "alt": "Diagonal Corner Wall DCW2430 SKU 015490230 product view 7"
           }
         ],
         "price": {
@@ -20679,24 +16483,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 11"
+        "alt": "Diagonal Corner Wall DCW2430 SKU 015490130 product view 7"
       }
     ],
     "inStock": true
@@ -20754,24 +16542,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 11"
+            "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 7"
           }
         ],
         "price": {
@@ -20832,24 +16604,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 11"
+            "alt": "Diagonal Corner Wall DCW2436 SKU 015500230 product view 7"
           }
         ],
         "price": {
@@ -20924,24 +16680,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 11"
+        "alt": "Diagonal Corner Wall DCW2436 SKU 015500130 product view 7"
       }
     ],
     "inStock": true
@@ -20999,24 +16739,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 11"
+            "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 7"
           }
         ],
         "price": {
@@ -21077,24 +16801,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 11"
+            "alt": "Diagonal Corner Wall DCW2442 SKU 015510230 product view 7"
           }
         ],
         "price": {
@@ -21169,24 +16877,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 11"
+        "alt": "Diagonal Corner Wall DCW2442 SKU 015510130 product view 7"
       }
     ],
     "inStock": true
@@ -21763,24 +17455,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 11"
+            "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 7"
           }
         ],
         "price": {
@@ -21841,24 +17517,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 11"
+            "alt": "Microwave Cabinet MO3030 SKU 016290230 product view 7"
           }
         ],
         "price": {
@@ -21933,24 +17593,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 11"
+        "alt": "Microwave Cabinet MO3030 SKU 016290130 product view 7"
       }
     ],
     "inStock": true
@@ -22008,24 +17652,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 11"
+            "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 7"
           }
         ],
         "price": {
@@ -22086,24 +17714,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 11"
+            "alt": "Microwave Cabinet MO3036 SKU 016300230 product view 7"
           }
         ],
         "price": {
@@ -22178,24 +17790,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 11"
+        "alt": "Microwave Cabinet MO3036 SKU 016300130 product view 7"
       }
     ],
     "inStock": true
@@ -22253,24 +17849,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 11"
+            "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 7"
           }
         ],
         "price": {
@@ -22331,24 +17911,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 11"
+            "alt": "Microwave Cabinet MO3042 SKU 016310230 product view 7"
           }
         ],
         "price": {
@@ -22423,24 +17987,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 11"
+        "alt": "Microwave Cabinet MO3042 SKU 016310130 product view 7"
       }
     ],
     "inStock": true
@@ -22498,24 +18046,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U188424 SKU 017550130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550130 product view 11"
+            "alt": "Tall Cabinet U188424 SKU 017550130 product view 7"
           }
         ],
         "price": {
@@ -22576,24 +18108,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U188424 SKU 017550230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U188424 SKU 017550230 product view 11"
+            "alt": "Tall Cabinet U188424 SKU 017550230 product view 7"
           }
         ],
         "price": {
@@ -22668,24 +18184,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U188424 SKU 017550130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U188424 SKU 017550130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U188424 SKU 017550130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U188424 SKU 017550130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U188424 SKU 017550130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U188424 SKU 017550130 product view 11"
+        "alt": "Tall Cabinet U188424 SKU 017550130 product view 7"
       }
     ],
     "inStock": true
@@ -22743,24 +18243,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U189024 SKU 017560130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560130 product view 11"
+            "alt": "Tall Cabinet U189024 SKU 017560130 product view 7"
           }
         ],
         "price": {
@@ -22821,24 +18305,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U189024 SKU 017560230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U189024 SKU 017560230 product view 11"
+            "alt": "Tall Cabinet U189024 SKU 017560230 product view 7"
           }
         ],
         "price": {
@@ -22913,24 +18381,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U189024 SKU 017560130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U189024 SKU 017560130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U189024 SKU 017560130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U189024 SKU 017560130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U189024 SKU 017560130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U189024 SKU 017560130 product view 11"
+        "alt": "Tall Cabinet U189024 SKU 017560130 product view 7"
       }
     ],
     "inStock": true
@@ -22988,24 +18440,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U189624 SKU 017570130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570130 product view 11"
+            "alt": "Tall Cabinet U189624 SKU 017570130 product view 7"
           }
         ],
         "price": {
@@ -23066,24 +18502,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U189624 SKU 017570230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U189624 SKU 017570230 product view 11"
+            "alt": "Tall Cabinet U189624 SKU 017570230 product view 7"
           }
         ],
         "price": {
@@ -23158,24 +18578,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U189624 SKU 017570130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U189624 SKU 017570130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U189624 SKU 017570130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U189624 SKU 017570130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U189624 SKU 017570130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U189624 SKU 017570130 product view 11"
+        "alt": "Tall Cabinet U189624 SKU 017570130 product view 7"
       }
     ],
     "inStock": true
@@ -23233,24 +18637,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U248424 SKU 017580130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580130 product view 11"
+            "alt": "Tall Cabinet U248424 SKU 017580130 product view 7"
           }
         ],
         "price": {
@@ -23311,24 +18699,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U248424 SKU 017580230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U248424 SKU 017580230 product view 11"
+            "alt": "Tall Cabinet U248424 SKU 017580230 product view 7"
           }
         ],
         "price": {
@@ -23403,24 +18775,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U248424 SKU 017580130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U248424 SKU 017580130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U248424 SKU 017580130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U248424 SKU 017580130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U248424 SKU 017580130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U248424 SKU 017580130 product view 11"
+        "alt": "Tall Cabinet U248424 SKU 017580130 product view 7"
       }
     ],
     "inStock": true
@@ -23478,24 +18834,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U249024 SKU 017590130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590130 product view 11"
+            "alt": "Tall Cabinet U249024 SKU 017590130 product view 7"
           }
         ],
         "price": {
@@ -23556,24 +18896,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U249024 SKU 017590230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U249024 SKU 017590230 product view 11"
+            "alt": "Tall Cabinet U249024 SKU 017590230 product view 7"
           }
         ],
         "price": {
@@ -23648,24 +18972,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U249024 SKU 017590130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U249024 SKU 017590130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U249024 SKU 017590130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U249024 SKU 017590130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U249024 SKU 017590130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U249024 SKU 017590130 product view 11"
+        "alt": "Tall Cabinet U249024 SKU 017590130 product view 7"
       }
     ],
     "inStock": true
@@ -23723,24 +19031,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U249624 SKU 017600130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600130 product view 11"
+            "alt": "Tall Cabinet U249624 SKU 017600130 product view 7"
           }
         ],
         "price": {
@@ -23801,24 +19093,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U249624 SKU 017600230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U249624 SKU 017600230 product view 11"
+            "alt": "Tall Cabinet U249624 SKU 017600230 product view 7"
           }
         ],
         "price": {
@@ -23893,24 +19169,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U249624 SKU 017600130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U249624 SKU 017600130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U249624 SKU 017600130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U249624 SKU 017600130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U249624 SKU 017600130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U249624 SKU 017600130 product view 11"
+        "alt": "Tall Cabinet U249624 SKU 017600130 product view 7"
       }
     ],
     "inStock": true
@@ -23968,24 +19228,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U308424 SKU 017610130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610130 product view 11"
+            "alt": "Tall Cabinet U308424 SKU 017610130 product view 7"
           }
         ],
         "price": {
@@ -24046,24 +19290,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U308424 SKU 017610230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U308424 SKU 017610230 product view 11"
+            "alt": "Tall Cabinet U308424 SKU 017610230 product view 7"
           }
         ],
         "price": {
@@ -24138,24 +19366,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U308424 SKU 017610130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U308424 SKU 017610130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U308424 SKU 017610130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U308424 SKU 017610130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U308424 SKU 017610130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U308424 SKU 017610130 product view 11"
+        "alt": "Tall Cabinet U308424 SKU 017610130 product view 7"
       }
     ],
     "inStock": true
@@ -24213,24 +19425,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U309024 SKU 017620130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620130 product view 11"
+            "alt": "Tall Cabinet U309024 SKU 017620130 product view 7"
           }
         ],
         "price": {
@@ -24291,24 +19487,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U309024 SKU 017620230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U309024 SKU 017620230 product view 11"
+            "alt": "Tall Cabinet U309024 SKU 017620230 product view 7"
           }
         ],
         "price": {
@@ -24383,24 +19563,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U309024 SKU 017620130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U309024 SKU 017620130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U309024 SKU 017620130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U309024 SKU 017620130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U309024 SKU 017620130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U309024 SKU 017620130 product view 11"
+        "alt": "Tall Cabinet U309024 SKU 017620130 product view 7"
       }
     ],
     "inStock": true
@@ -24458,24 +19622,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U309624 SKU 017630130 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630130 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630130 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630130 product view 11"
+            "alt": "Tall Cabinet U309624 SKU 017630130 product view 7"
           }
         ],
         "price": {
@@ -24536,24 +19684,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Tall Cabinet U309624 SKU 017630230 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630230 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630230 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Tall Cabinet U309624 SKU 017630230 product view 11"
+            "alt": "Tall Cabinet U309624 SKU 017630230 product view 7"
           }
         ],
         "price": {
@@ -24628,24 +19760,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Tall Cabinet U309624 SKU 017630130 product view 6"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Tall Cabinet U309624 SKU 017630130 product view 7"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Tall Cabinet U309624 SKU 017630130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Tall Cabinet U309624 SKU 017630130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Tall Cabinet U309624 SKU 017630130 product view 10"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Tall Cabinet U309624 SKU 017630130 product view 11"
+        "alt": "Tall Cabinet U309624 SKU 017630130 product view 7"
       }
     ],
     "inStock": true
@@ -24709,22 +19825,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 12"
           }
         ],
         "price": {
@@ -24791,22 +19891,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O308424 SKU 017640230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O308424 SKU 017640230 product view 12"
           }
         ],
         "price": {
@@ -24887,22 +19971,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O308424 SKU 017640130 product view 12"
       }
     ],
     "inStock": true
@@ -24966,22 +20034,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 12"
           }
         ],
         "price": {
@@ -25048,22 +20100,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O309024 SKU 017650230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O309024 SKU 017650230 product view 12"
           }
         ],
         "price": {
@@ -25144,22 +20180,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O309024 SKU 017650130 product view 12"
       }
     ],
     "inStock": true
@@ -25223,22 +20243,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 12"
           }
         ],
         "price": {
@@ -25305,22 +20309,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O309624 SKU 017660230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O309624 SKU 017660230 product view 12"
           }
         ],
         "price": {
@@ -25401,22 +20389,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O309624 SKU 017660130 product view 12"
       }
     ],
     "inStock": true
@@ -25480,22 +20452,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 12"
           }
         ],
         "price": {
@@ -25562,22 +20518,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O338424 SKU 017670230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O338424 SKU 017670230 product view 12"
           }
         ],
         "price": {
@@ -25658,22 +20598,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O338424 SKU 017670130 product view 12"
       }
     ],
     "inStock": true
@@ -25737,22 +20661,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 12"
           }
         ],
         "price": {
@@ -25819,22 +20727,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O339024 SKU 017680230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O339024 SKU 017680230 product view 12"
           }
         ],
         "price": {
@@ -25915,22 +20807,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O339024 SKU 017680130 product view 12"
       }
     ],
     "inStock": true
@@ -25994,22 +20870,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 12"
           }
         ],
         "price": {
@@ -26076,22 +20936,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Oven Tall Cabinet O339624 SKU 017690230 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690230 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690230 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690230 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Oven Tall Cabinet O339624 SKU 017690230 product view 12"
           }
         ],
         "price": {
@@ -26172,22 +21016,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Oven Tall Cabinet O339624 SKU 017690130 product view 12"
       }
     ],
     "inStock": true
@@ -26242,10 +21070,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "3\" W × 42\" H × ¾\"D",
-        "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 3\" W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26288,10 +21116,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "3\" W × 42\" H × ¾\"D",
-        "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 3\" W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26395,10 +21223,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "3\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 3\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26441,10 +21269,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "3\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 3\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26548,10 +21376,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "6\" W × 42\" H × ¾\"D",
-        "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 6\" W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26594,10 +21422,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "6\" W × 42\" H × ¾\"D",
-        "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 6\" W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26701,10 +21529,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "6\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 6\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26747,10 +21575,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "6\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 6\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26854,10 +21682,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "22\" W × 30\" H × ¾\"D",
-        "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 22\" W × 30\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -26900,10 +21728,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "22\" W × 30\" H × ¾\"D",
-        "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 22\" W × 30\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27007,10 +21835,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "25\" W × 35\" H × ¾\"D",
-        "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 25\" W × 35\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27053,10 +21881,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "25\" W × 35\" H × ¾\"D",
-        "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 25\" W × 35\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27160,10 +21988,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "25\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 25\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27206,10 +22034,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "25\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 25\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27313,10 +22141,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "35\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 35\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27359,10 +22187,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "35\" W × 96\" H × ¾\"D",
-        "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 35\" W × 96\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27462,10 +22290,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 30\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 30\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27504,10 +22332,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 30\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 30\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27599,10 +22427,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 36\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 36\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27637,10 +22465,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 36\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 36\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27732,10 +22560,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 42\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27774,10 +22602,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "12¾\"W × 42\" H × ¾\"D",
-        "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: 12¾\"W × 42\" H × ¾\"D",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27877,10 +22705,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "¾\" W × 4½\" H × 96\" L",
-        "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: ¾\" W × 4½\" H × 96\" L",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -27923,10 +22751,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "¾\" W × 4½\" H × 96\" L",
-        "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: ¾\" W × 4½\" H × 96\" L",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -28030,10 +22858,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "¾\" W × 4⅜\" H × 96\" L",
-        "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: ¾\" W × 4⅜\" H × 96\" L",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -28076,10 +22904,10 @@ const localizedProducts: ProductSummary[] = [
           "currency": "CAD"
         },
         "dimensions": "¾\" W × 4⅜\" H × 96\" L",
-        "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+        "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
         "productHighlights": [
           "Dimensions: ¾\" W × 4⅜\" H × 96\" L",
-          "MDF / Plywood Thermofoil Finish",
+          "MDF Thermofoil Finish",
           "MDF Matte Soft-Touch"
         ],
         "specifications": {
@@ -28190,24 +23018,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 12"
+            "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 8"
           }
         ],
         "price": {
@@ -28268,24 +23080,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 11"
+            "alt": "Vanity Cabinet-VS24 SKU 022421012 product view 7"
           }
         ],
         "price": {
@@ -28342,24 +23138,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 10"
+            "alt": "Vanity Cabinet-VS24 SKU 022421014 product view 6"
           }
         ],
         "price": {
@@ -28424,24 +23204,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 12"
+            "alt": "Vanity Cabinet-VS24 SKU 022421013 product view 8"
           }
         ],
         "price": {
@@ -28520,24 +23284,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 7"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 11"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 12"
+        "alt": "Vanity Cabinet-VS24 SKU 022421011 product view 8"
       }
     ],
     "inStock": true
@@ -28599,24 +23347,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 12"
+            "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 8"
           }
         ],
         "price": {
@@ -28677,24 +23409,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 11"
+            "alt": "Vanity Cabinet-VS27 SKU 022721012 product view 7"
           }
         ],
         "price": {
@@ -28759,24 +23475,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 12"
+            "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 8"
           }
         ],
         "price": {
@@ -28833,24 +23533,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 10"
+            "alt": "Vanity Cabinet-VS27 SKU 022721014 product view 6"
           }
         ],
         "price": {
@@ -28929,24 +23613,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 7"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 11"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 12"
+        "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 8"
       }
     ],
     "inStock": true
@@ -29008,24 +23676,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 12"
+            "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 8"
           }
         ],
         "price": {
@@ -29086,24 +23738,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 11"
+            "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 7"
           }
         ],
         "price": {
@@ -29160,24 +23796,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 10"
+            "alt": "Vanity Cabinet-VS30 SKU 023021014 product view 6"
           }
         ],
         "price": {
@@ -29238,24 +23858,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 11"
+            "alt": "Vanity Cabinet-VS30 SKU 023021012 product view 7"
           }
         ],
         "price": {
@@ -29334,24 +23938,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 7"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 11"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 12"
+        "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 8"
       }
     ],
     "inStock": true
@@ -29415,22 +24003,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 12"
           }
         ],
         "price": {
@@ -29493,22 +24065,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 11"
           }
         ],
         "price": {
@@ -29571,22 +24127,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 11"
           }
         ],
         "price": {
@@ -29653,22 +24193,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 12"
           }
         ],
         "price": {
@@ -29749,22 +24273,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 12"
       }
     ],
     "inStock": true
@@ -29828,22 +24336,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 12"
           }
         ],
         "price": {
@@ -29906,22 +24398,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 11"
           }
         ],
         "price": {
@@ -29984,22 +24460,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 11"
           }
         ],
         "price": {
@@ -30066,22 +24526,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 12"
           }
         ],
         "price": {
@@ -30162,22 +24606,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 12"
       }
     ],
     "inStock": true
@@ -30241,22 +24669,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 12"
           }
         ],
         "price": {
@@ -30315,22 +24727,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 10"
           }
         ],
         "price": {
@@ -30393,22 +24789,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 11"
           }
         ],
         "price": {
@@ -30475,22 +24855,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 12"
           }
         ],
         "price": {
@@ -30571,22 +24935,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 12"
       }
     ],
     "inStock": true
@@ -30650,22 +24998,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 12"
           }
         ],
         "price": {
@@ -30728,22 +25060,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 11"
           }
         ],
         "price": {
@@ -30810,22 +25126,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 12"
           }
         ],
         "price": {
@@ -30884,22 +25184,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 10"
           }
         ],
         "price": {
@@ -30980,22 +25264,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 12"
       }
     ],
     "inStock": true
@@ -31057,24 +25325,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 7"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 11"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 12"
+            "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 8"
           }
         ],
         "price": {
@@ -31131,24 +25383,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 5"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 9"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 10"
+            "alt": "Vanity Cabinet-VS36 SKU 023621014 product view 6"
           }
         ],
         "price": {
@@ -31209,24 +25445,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 11"
+            "alt": "Vanity Cabinet-VS36 SKU 023621012 product view 7"
           }
         ],
         "price": {
@@ -31287,24 +25507,8 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 6"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 10"
-          },
-          {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 11"
+            "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 7"
           }
         ],
         "price": {
@@ -31383,24 +25587,8 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 7"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 11"
-      },
-      {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 12"
+        "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 8"
       }
     ],
     "inStock": true
@@ -31464,22 +25652,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 12"
           }
         ],
         "price": {
@@ -31538,22 +25710,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621412 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621412 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621412 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621412 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621412 product view 10"
           }
         ],
         "price": {
@@ -31616,22 +25772,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621414 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621414 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621414 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621414 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621414 product view 11"
           }
         ],
         "price": {
@@ -31698,22 +25838,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 12"
           }
         ],
         "price": {
@@ -31794,22 +25918,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 12"
       }
     ],
     "inStock": true
@@ -31873,22 +25981,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 12"
           }
         ],
         "price": {
@@ -31947,22 +26039,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621512 product view 6"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621512 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621512 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621512 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621512 product view 10"
           }
         ],
         "price": {
@@ -32025,22 +26101,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621514 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621514 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621514 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621514 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621514 product view 11"
           }
         ],
         "price": {
@@ -32107,22 +26167,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 12"
           }
         ],
         "price": {
@@ -32203,22 +26247,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 12"
       }
     ],
     "inStock": true
@@ -32282,22 +26310,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 12"
           }
         ],
         "price": {
@@ -32360,22 +26372,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 11"
           }
         ],
         "price": {
@@ -32442,22 +26438,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 12"
           }
         ],
         "price": {
@@ -32524,22 +26504,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221613 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221613 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221613 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221613 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4221 SKU 024221613 product view 12"
           }
         ],
         "price": {
@@ -32620,22 +26584,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V4221 SKU 024221611 product view 12"
       }
     ],
     "inStock": true
@@ -32699,22 +26647,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 12"
           }
         ],
         "price": {
@@ -32777,22 +26709,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 11"
           }
         ],
         "price": {
@@ -32855,22 +26771,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 11"
           }
         ],
         "price": {
@@ -32937,22 +26837,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 12"
           }
         ],
         "price": {
@@ -33033,22 +26917,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 12"
       }
     ],
     "inStock": true
@@ -33112,22 +26980,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 12"
           }
         ],
         "price": {
@@ -33190,22 +27042,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V663522 SKU 026621712 product view 7"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621712 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621712 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621712 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621712 product view 11"
           }
         ],
         "price": {
@@ -33272,22 +27108,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V663522 SKU 026621713 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621713 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621713 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621713 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621713 product view 12"
           }
         ],
         "price": {
@@ -33354,22 +27174,6 @@ const localizedProducts: ProductSummary[] = [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
             "alt": "Vanity Cabinet-V663522 SKU 026621714 product view 8"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621714 product view 9"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621714 product view 10"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621714 product view 11"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Vanity Cabinet-V663522 SKU 026621714 product view 12"
           }
         ],
         "price": {
@@ -33450,22 +27254,6 @@ const localizedProducts: ProductSummary[] = [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
         "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 8"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-        "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 9"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 10"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 11"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-        "alt": "Vanity Cabinet-V663522 SKU 026621711 product view 12"
       }
     ],
     "inStock": true
@@ -33711,11 +27499,11 @@ const localizedProducts: ProductSummary[] = [
     "inStock": true
   },
   {
-    "id": "mb01-299",
-    "slug": "Aluminumalloyhandle",
+    "id": "mb01-301",
+    "slug": "CTC-96mm",
     "sku": "060101111",
     "manufacturerPartNumber": "CTC[96mm]",
-    "name": "Aluminum alloy handle",
+    "name": "Handle CTC-96mm",
     "category": "Kitchen Cabinets",
     "subCategory": "Handle series",
     "price": {
@@ -33727,101 +27515,11 @@ const localizedProducts: ProductSummary[] = [
     "finish": "Matte Black",
     "colorName": "Matte Black",
     "colorHex": "#222222",
-    "finishOptions": [
-      {
-        "name": "96 mm center-to-center",
-        "sku": "060101111",
-        "manufacturerPartNumber": "CTC[96mm]",
-        "colorHex": "#222222",
-        "image": {
-          "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg",
-          "alt": "Aluminum alloy handle SKU 060101111 primary product view"
-        },
-        "images": [
-          {
-            "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg",
-            "alt": "Aluminum alloy handle SKU 060101111 primary product view"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Aluminum alloy handle SKU 060101111 product view 2"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-            "alt": "Aluminum alloy handle SKU 060101111 product view 3"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-            "alt": "Aluminum alloy handle SKU 060101111 product view 4"
-          }
-        ],
-        "price": {
-          "amount": 5.99,
-          "currency": "CAD"
-        },
-        "dimensions": "96 mm",
-        "description": "Matte Black Center-to-Center: 96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
-        "productHighlights": [
-          "Matte Black Center-to-Center: 96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy"
-        ],
-        "specifications": {
-          "Matte Black Center-to-Center": "96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
-          "Source category": "Handle series",
-          "Source product ID": "Aluminumalloyhandle",
-          "Option name": "CTC[96mm]"
-        },
-        "active": true
-      },
-      {
-        "name": "192 mm center-to-center",
-        "sku": "060102411",
-        "manufacturerPartNumber": "CTC[192mm]",
-        "colorHex": "#222222",
-        "image": {
-          "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-primary.jpg",
-          "alt": "Aluminum alloy handle SKU 060102411 primary product view"
-        },
-        "images": [
-          {
-            "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-primary.jpg",
-            "alt": "Aluminum alloy handle SKU 060102411 primary product view"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Aluminum alloy handle SKU 060102411 product view 2"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
-            "alt": "Aluminum alloy handle SKU 060102411 product view 3"
-          },
-          {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
-            "alt": "Aluminum alloy handle SKU 060102411 product view 4"
-          }
-        ],
-        "price": {
-          "amount": 8.99,
-          "currency": "CAD"
-        },
-        "dimensions": "192 mm",
-        "description": "Matte Black Center-to-Center: 192 mm Overall Length: 210 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
-        "productHighlights": [
-          "Matte Black Center-to-Center: 192 mm Overall Length: 210 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy"
-        ],
-        "specifications": {
-          "Matte Black Center-to-Center": "192 mm Overall Length: 210 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
-          "Source category": "Handle series",
-          "Source product ID": "Aluminumalloyhandle",
-          "Option name": "CTC[192mm]"
-        },
-        "active": false
-      }
-    ],
     "dealerStock": {
       "winnipeg": 0
     },
     "availability": {
-      "productId": "mb01-299",
+      "productId": "mb01-301",
       "sku": "060101111",
       "locations": [
         {
@@ -33842,19 +27540,70 @@ const localizedProducts: ProductSummary[] = [
     "images": [
       {
         "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg",
-        "alt": "Aluminum alloy handle SKU 060101111 primary product view"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Aluminum alloy handle SKU 060101111 product view 2"
-      },
-      {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
-        "alt": "Aluminum alloy handle SKU 060101111 product view 3"
+        "alt": "Handle CTC-96mm SKU 060101111 primary product view"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-025.jpg",
-        "alt": "Aluminum alloy handle SKU 060101111 product view 4"
+        "alt": "Handle CTC-96mm SKU 060101111 product view 2"
+      },
+      {
+        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-172.jpg",
+        "alt": "Handle CTC-96mm SKU 060101111 product view 3"
+      }
+    ],
+    "inStock": true
+  },
+  {
+    "id": "mb01-300",
+    "slug": "CTC-192mm",
+    "sku": "060102411",
+    "manufacturerPartNumber": "CTC[192mm]",
+    "name": "Handle CTC-192mm",
+    "category": "Kitchen Cabinets",
+    "subCategory": "Handle series",
+    "price": {
+      "amount": 8.99,
+      "currency": "CAD"
+    },
+    "unit": "each",
+    "dimensions": "192 mm",
+    "finish": "Matte Black",
+    "colorName": "Matte Black",
+    "colorHex": "#222222",
+    "dealerStock": {
+      "winnipeg": 0
+    },
+    "availability": {
+      "productId": "mb01-300",
+      "sku": "060102411",
+      "locations": [
+        {
+          "dealerId": "winnipeg",
+          "quantity": 0,
+          "quantityKnown": false,
+          "status": "in_stock",
+          "pickupAvailable": true,
+          "deliveryAvailable": true,
+          "updatedAt": "source-catalog"
+        }
+      ],
+      "totalAvailable": 0,
+      "status": "in_stock",
+      "availabilityMessage": "Availability is confirmed at checkout; the source catalog does not publish a quantity.",
+      "updatedAt": "source-catalog"
+    },
+    "images": [
+      {
+        "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-primary.jpg",
+        "alt": "Handle CTC-192mm SKU 060102411 primary product view"
+      },
+      {
+        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-042.jpg",
+        "alt": "Handle CTC-192mm SKU 060102411 product view 2"
+      },
+      {
+        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-088.jpg",
+        "alt": "Handle CTC-192mm SKU 060102411 product view 3"
       }
     ],
     "inStock": true
@@ -36146,10 +29895,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "373",
     "sourceProductName": "Filler F342",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 3\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 3\" W × 42\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36163,10 +29912,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "375",
     "sourceProductName": "Tall Filler F396",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 3\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 3\" W × 96\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36180,10 +29929,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "374",
     "sourceProductName": "Filler F642",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 6\" W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 6\" W × 42\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36197,10 +29946,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "376",
     "sourceProductName": "Tall Filler F696",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 6\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 6\" W × 96\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36214,10 +29963,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "380",
     "sourceProductName": "Base End Panel VEP2230",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 22\" W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 22\" W × 30\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36231,10 +29980,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "381",
     "sourceProductName": "Base End Panel BEP2535",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 25\" W × 35\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 25\" W × 35\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36248,10 +29997,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "382",
     "sourceProductName": "Tall End Panel TEP2596",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 25\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 25\" W × 96\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36265,10 +30014,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "383",
     "sourceProductName": "Tall End Panel TEP3596",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 35\" W × 96\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 35\" W × 96\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36282,10 +30031,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "377",
     "sourceProductName": "Wall End Panel WEP1230",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 12¾\"W × 30\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 12¾\"W × 30\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36299,10 +30048,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "378",
     "sourceProductName": "Wall End Panel WEP1236",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 12¾\"W × 36\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 12¾\"W × 36\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36316,10 +30065,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "379",
     "sourceProductName": "Wall End Panel WEP1242",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: 12¾\"W × 42\" H × ¾\"D MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: 12¾\"W × 42\" H × ¾\"D",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36333,10 +30082,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "371",
     "sourceProductName": "Toe Kick TKC-MS",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: ¾\" W × 4½\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: ¾\" W × 4½\" H × 96\" L",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36350,10 +30099,10 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
     "sourceProductId": "372",
     "sourceProductName": "Decorative Moulding BCM8(DCM)",
     "sourceCategory": "Accessories",
-    "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF / Plywood Thermofoil Finish MDF Matte Soft-Touch",
+    "description": "Dimensions: ¾\" W × 4⅜\" H × 96\" L MDF Thermofoil Finish MDF Matte Soft-Touch",
     "productHighlights": [
       "Dimensions: ¾\" W × 4⅜\" H × 96\" L",
-      "MDF / Plywood Thermofoil Finish",
+      "MDF Thermofoil Finish",
       "MDF Matte Soft-Touch"
     ],
     "specifications": {
@@ -36708,19 +30457,56 @@ export const mb01ProductMetadataById: Record<string, Mb01ProductMetadata> = {
       "Option name": "VS49-7FT /ea"
     }
   },
-  "mb01-299": {
-    "sourceProductId": "Aluminumalloyhandle",
-    "sourceProductName": "Aluminum alloy handle",
+  "mb01-301": {
+    "sourceProductId": "CTC-96mm",
+    "sourceProductName": "Handle CTC-96mm",
     "sourceCategory": "Handle series",
     "description": "Matte Black Center-to-Center: 96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
     "productHighlights": [
-      "Matte Black Center-to-Center: 96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy"
+      "Matte Black",
+      "Center-to-Center: 96 mm",
+      "Overall Length: 105 mm",
+      "Projection: 23.2 mm",
+      "Bar Width: 11.7 mm",
+      "Bar Thickness: 5 mm",
+      "Material: Aluminum Alloy"
     ],
     "specifications": {
-      "Matte Black Center-to-Center": "96 mm Overall Length: 105 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
+      "Center-to-Center": "96 mm",
+      "Overall Length": "105 mm",
+      "Projection": "23.2 mm",
+      "Bar Width": "11.7 mm",
+      "Bar Thickness": "5 mm",
+      "Material": "Aluminum Alloy",
       "Source category": "Handle series",
-      "Source product ID": "Aluminumalloyhandle",
+      "Source product ID": "CTC-96mm",
       "Option name": "CTC[96mm]"
+    }
+  },
+  "mb01-300": {
+    "sourceProductId": "CTC-192mm",
+    "sourceProductName": "Handle CTC-192mm",
+    "sourceCategory": "Handle series",
+    "description": "Matte Black Center-to-Center: 192 mm Overall Length: 210 mm Projection: 23.2 mm Bar Width: 11.7 mm Bar Thickness: 5 mm Material: Aluminum Alloy",
+    "productHighlights": [
+      "Matte Black",
+      "Center-to-Center: 192 mm",
+      "Overall Length: 210 mm",
+      "Projection: 23.2 mm",
+      "Bar Width: 11.7 mm",
+      "Bar Thickness: 5 mm",
+      "Material: Aluminum Alloy"
+    ],
+    "specifications": {
+      "Center-to-Center": "192 mm",
+      "Overall Length": "210 mm",
+      "Projection": "23.2 mm",
+      "Bar Width": "11.7 mm",
+      "Bar Thickness": "5 mm",
+      "Material": "Aluminum Alloy",
+      "Source category": "Handle series",
+      "Source product ID": "CTC-192mm",
+      "Option name": "CTC[192mm]"
     }
   }
 };

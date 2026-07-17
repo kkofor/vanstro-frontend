@@ -3,15 +3,20 @@ import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const INVENTORY_PATH = resolve(
-  "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/mb01-current-inventory.json"
+  process.env.MB01_INVENTORY_PATH ??
+    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/mb01-current-inventory.json"
 );
 const MAPPING_PATH = resolve(
-  "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/asset-source-local-mapping.json"
+  process.env.MB01_MAPPING_PATH ??
+    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/asset-source-local-mapping.json"
 );
 const OUTPUT_PATH = resolve("src/lib/data/mb01-products.ts");
 const EVIDENCE_DIR = resolve(
-  "docs/goal-loop/frontend-full-audit/evidence/G3-implementation-2026-07-16"
+  process.env.MB01_LOCALIZATION_EVIDENCE_DIR ??
+    "docs/goal-loop/frontend-full-audit/evidence/G3-implementation-2026-07-16"
 );
+const EXPECTED_PARENT_COUNT = Number(process.env.MB01_EXPECTED_PARENT_COUNT ?? 139);
+const EXPECTED_VARIANT_COUNT = Number(process.env.MB01_EXPECTED_VARIANT_COUNT ?? 300);
 const COLOR_OPTIONS = {
   LG: { name: "Light Grey", colorHex: "#c9cbc7" },
   WH: { name: "White", colorHex: "#f7f6f2" }
@@ -64,7 +69,9 @@ async function fileHash(path) {
 async function fetchAsset(asset) {
   const destination = resolve(`public${asset.plannedLocalPath}`);
   const currentHash = await fileHash(destination);
-  if (currentHash === asset.sha256) return { status: "reused", destination };
+  const expectedLocalHash = asset.localSha256 ?? asset.sha256;
+  const expectedSourceHash = asset.sourceSha256 ?? asset.sha256;
+  if (currentHash === expectedLocalHash) return { status: "reused", destination };
   if (currentHash) {
     throw new Error(`Existing asset hash mismatch: ${destination}`);
   }
@@ -78,8 +85,8 @@ async function fetchAsset(asset) {
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
       const buffer = Buffer.from(await response.arrayBuffer());
       const actualHash = sha256(buffer);
-      if (actualHash !== asset.sha256) {
-        throw new Error(`SHA-256 mismatch: expected ${asset.sha256}, received ${actualHash}`);
+      if (actualHash !== expectedSourceHash) {
+        throw new Error(`SHA-256 mismatch: expected ${expectedSourceHash}, received ${actualHash}`);
       }
       await mkdir(dirname(destination), { recursive: true });
       await writeFile(destination, buffer);
@@ -113,7 +120,10 @@ const inventory = JSON.parse(await readFile(INVENTORY_PATH, "utf8"));
 const mappingDocument = JSON.parse(await readFile(MAPPING_PATH, "utf8"));
 const assets = mappingDocument.assets;
 
-if (inventory.parents.length !== 139 || inventory.variants.length !== 300) {
+if (
+  inventory.parents.length !== EXPECTED_PARENT_COUNT ||
+  inventory.variants.length !== EXPECTED_VARIANT_COUNT
+) {
   throw new Error(
     `Unexpected catalog coverage: ${inventory.parents.length} parents, ${inventory.variants.length} variants`
   );
@@ -129,13 +139,35 @@ for (const asset of assets) {
   canonicalAssetsByHash.set(asset.sha256, asset);
 }
 
-const canonicalAssets = [...canonicalAssetsByHash.values()];
+const canonicalAssets = [...canonicalAssetsByHash.values()].filter(
+  (asset) => asset.localizationStatus !== "Blocked" && asset.plannedLocalPath
+);
 const localizationResults = await mapWithConcurrency(canonicalAssets, 8, fetchAsset);
 const localPathForUrl = (url) => {
   const mapping = mappingByUrl.get(url);
   if (!mapping) throw new Error(`No controlled asset mapping for ${url}`);
+  if (mapping.localizationStatus === "Blocked") return null;
   return mapping.plannedLocalPath;
 };
+
+function applyApprovedBusinessCorrections(parent, variant) {
+  if (parent.subCategory !== "Accessories") return variant;
+
+  const correctMaterial = (value) =>
+    value.replaceAll("MDF / Plywood Thermofoil Finish", "MDF Thermofoil Finish");
+
+  return {
+    ...variant,
+    description: correctMaterial(variant.description),
+    highlights: variant.highlights.map(correctMaterial),
+    parametersSpecifications: Object.fromEntries(
+      Object.entries(variant.parametersSpecifications).map(([key, value]) => [
+        key,
+        correctMaterial(value)
+      ])
+    )
+  };
+}
 
 const variantsByParentSku = new Map();
 for (const variant of inventory.variants) {
@@ -152,24 +184,30 @@ const products = inventory.parents.map((parent) => {
   const orderedVariants = parent.variants.map(({ sku }) => {
     const variant = variantsBySku.get(sku);
     if (!variant) throw new Error(`Missing variant payload for ${sku}`);
-    return variant;
+    return applyApprovedBusinessCorrections(parent, variant);
   });
-  const activeVariant = variantsBySku.get(parent.sku);
+  const activeVariantSource = variantsBySku.get(parent.sku);
+  const activeVariant = activeVariantSource
+    ? applyApprovedBusinessCorrections(parent, activeVariantSource)
+    : undefined;
   if (!activeVariant) throw new Error(`Missing active variant ${parent.sku}`);
 
   const id = `mb01-${parent.listedOptionId}`;
-  const toImages = (variant) => variant.images.map((url, index) => ({
-    url: localPathForUrl(url),
-    alt: imageAlt(parent.name, variant.sku, index)
-  }));
+  const toImages = (variant) => variant.images.flatMap((url, index) => {
+    const localPath = localPathForUrl(url);
+    return localPath
+      ? [{ url: localPath, alt: imageAlt(parent.name, variant.sku, index) }]
+      : [];
+  });
   const finishOptions = orderedVariants.map((variant) => {
     const color = colorForModel(variant.modelMpn);
     const images = toImages(variant);
+    const isHandle = parent.subCategory === "Handle series";
     return {
       name: variantLabel(parent, variant),
       sku: variant.sku,
       manufacturerPartNumber: variant.modelMpn,
-      colorHex: color?.colorHex ?? (parent.name === "Aluminum alloy handle" ? "#222222" : undefined),
+      colorHex: color?.colorHex ?? (isHandle ? "#222222" : undefined),
       image: images[0],
       images,
       price: variant.priceCad,
@@ -181,6 +219,7 @@ const products = inventory.parents.map((parent) => {
     };
   });
   const activeColor = colorForModel(activeVariant.modelMpn);
+  const isHandle = parent.subCategory === "Handle series";
 
   metadataById[id] = {
     sourceProductId: parent.sourceProductId,
@@ -202,9 +241,9 @@ const products = inventory.parents.map((parent) => {
     price: activeVariant.priceCad,
     unit: "each",
     dimensions: dimensionsFor(activeVariant),
-    finish: activeColor?.name ?? (parent.name === "Aluminum alloy handle" ? "Matte Black" : "White finish"),
-    colorName: activeColor?.name ?? (parent.name === "Aluminum alloy handle" ? "Matte Black" : undefined),
-    colorHex: activeColor?.colorHex ?? (parent.name === "Aluminum alloy handle" ? "#222222" : undefined),
+    finish: activeColor?.name ?? (isHandle ? "Matte Black" : "White finish"),
+    colorName: activeColor?.name ?? (isHandle ? "Matte Black" : undefined),
+    colorHex: activeColor?.colorHex ?? (isHandle ? "#222222" : undefined),
     finishOptions: finishOptions.length > 1 ? finishOptions : undefined,
     dealerStock: { winnipeg: 0 },
     availability: {
@@ -254,7 +293,8 @@ await writeFile(
     generatedAt: new Date().toISOString(),
     sources: assets.map((asset) => ({
       sourceUrl: asset.sourceUrl,
-      sha256: asset.sha256,
+      sha256: asset.sourceSha256 ?? asset.sha256,
+      localSha256: asset.localSha256 ?? asset.sha256,
       bytes: asset.bytes,
       contentType: asset.contentType,
       width: asset.width,

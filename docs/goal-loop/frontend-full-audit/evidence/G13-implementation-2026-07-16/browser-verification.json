@@ -1,0 +1,37 @@
+{
+  "verifiedAt": "2026-07-17T03:31:30Z",
+  "environment": "local static export at http://127.0.0.1:3001",
+  "deploymentPerformed": false,
+  "checks": [
+    {
+      "surface": "Bathroom Vanity PDP",
+      "route": "/products/vanity-cabinet-v3021-door-tdl-400/",
+      "result": "pass",
+      "evidence": "Default SKU 023021311 displayed model V3021STDL-PWMS-WH-TOP, price $538.00, White, Vanity Cabinet + Top, all four overview highlights including Hardware, and Color / Finish White with top."
+    },
+    {
+      "surface": "Bathroom Vanity configuration switch",
+      "route": "/products/vanity-cabinet-v3021-door-tdl-400/?sku=023021312",
+      "result": "pass",
+      "evidence": "Selecting Vanity Cabinet changed URL, SKU to 023021312, model to V3021STDL-PWMS-WH, price to $368.00, image set, and Product overview Color / Finish to White cabinet only."
+    },
+    {
+      "surface": "Bathroom Vanity color and configuration switch",
+      "route": "/products/vanity-cabinet-v3021-door-tdl-400/?sku=023021314",
+      "result": "pass",
+      "evidence": "Selecting Light Grey while cabinet-only remained selected changed SKU to 023021314, model to V3021STDL-PWMS-LG, price to $368.00, selected color, image set, and Product overview Color / Finish to Light Grey cabinet only."
+    },
+    {
+      "surface": "Handle series PLP filter",
+      "route": "/products/?category=kitchen-cabinets",
+      "result": "pass",
+      "evidence": "Handle series filter reported 2 products and returned Handle CTC-96mm SKU 060101111 at $5.99 and Handle CTC-192mm SKU 060102411 at $8.99."
+    },
+    {
+      "surface": "Accessories PDP material",
+      "route": "/products/toe-kick-tkc-ms-371/",
+      "result": "pass",
+      "evidence": "Rendered product content contained MDF Thermofoil Finish and no Plywood text."
+    }
+  ]
+}

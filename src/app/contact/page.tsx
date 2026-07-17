@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Clock3, Mail, MapPin, MessageSquareText, Phone, ShieldCheck, Store, UserRoundCheck } from "lucide-react";
 import { ContactChatButton } from "@/components/contact/ContactChatButton";
+import { PublicSubmissionForm } from "@/components/forms/PublicSubmissionForm";
 import { assetPath } from "@/lib/assets";
-import { FORM_ENDPOINTS } from "@/lib/api/form-endpoints";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Contact us",
   description: "Contact VanStro for product, order, dealer and project support.",
-  alternates: {
-    canonical: "/contact"
-  }
-};
+  path: "/contact",
+  image: "/assets/generated/contact-support-hero-v1.webp",
+  languages: { "en-CA": "/contact", "zh-CN": "/zh/contact" }
+});
 
 const contactRoutes = [
   {
@@ -125,11 +126,11 @@ export default function ContactPage() {
 
       <section className="page-panel contact-page-panel">
         <div className="container contact-page-main-grid">
-          <form
+          <PublicSubmissionForm
             className="form-panel form-grid two contact-page-form"
             id="contact-form"
-            action={FORM_ENDPOINTS.contactLead}
-            method="post"
+            kind="contact"
+            locale="en-CA"
           >
             <div className="contact-page-form-heading form-wide">
               <span className="contact-page-kicker">General inquiry</span>
@@ -195,7 +196,7 @@ export default function ContactPage() {
             <button className="button button-primary" type="submit">
               Send message
             </button>
-          </form>
+          </PublicSubmissionForm>
 
           <aside className="contact-page-info-column" aria-label="Contact details">
             <div className="contact-page-note contact-page-quick-card">

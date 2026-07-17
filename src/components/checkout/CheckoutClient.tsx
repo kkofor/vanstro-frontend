@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { vanstroApi } from "@/lib/api/api-client";
 
@@ -13,27 +14,53 @@ function formatCad(amount: number) {
 }
 
 export function CheckoutClient() {
-  const { cartItems, cartSubtotal, selectedDealerName } = useStorefront();
+  const router = useRouter();
+  const {
+    cartItems,
+    cartSubtotal,
+    cartState,
+    selectedDealerId,
+    selectedDealerName
+  } = useStorefront();
   const [fulfillment, setFulfillment] = useState<"pickup" | "delivery">("pickup");
   const [paymentMethod, setPaymentMethod] = useState<"pos" | "cash">("pos");
   const [checkoutMessage, setCheckoutMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!cartItems.length) return;
     const form = new FormData(event.currentTarget);
     setCheckoutMessage("");
+    setSubmitting(true);
     try {
       const session = await vanstroApi.createCheckoutSession({
         email: String(form.get("email") ?? ""),
-        fulfillment
+        fulfillment,
+        ...(selectedDealerId === "winnipeg"
+          ? {}
+          : { dealerLocationId: selectedDealerId })
       });
-      setCheckoutMessage(
-        `Payment session ${session.data.id} is pending. Payment confirmation will create your order.`
-      );
-    } catch {
+      if (!session.data.guestOrderToken) {
+        throw new Error("Checkout did not return an order access token.");
+      }
+      const query = new URLSearchParams({
+        session: session.data.id,
+        token: session.data.guestOrderToken
+      });
+      router.push(`/orders/demo-order?${query.toString()}`);
+    } catch (error) {
       setCheckoutMessage("Checkout could not reserve inventory. Please review your cart and try again.");
+      setSubmitting(false);
     }
+  }
+
+  if (cartState.status === "loading") {
+    return <div className="empty-panel"><h2>Loading checkout</h2><p>Checking your current cart.</p></div>;
+  }
+
+  if (cartState.status === "error") {
+    return <div className="empty-panel"><h2>Checkout is unavailable</h2><p>{cartState.error}</p><Link className="button button-primary" href="/cart">Return to cart</Link></div>;
   }
 
   if (!cartItems.length) {
@@ -119,8 +146,8 @@ export function CheckoutClient() {
             <span>Reserved after payment registration</span>
           </div>
         </div>
-        <button className="button button-primary" type="submit">
-          Continue to payment
+        <button className="button button-primary" type="submit" disabled={submitting}>
+          {submitting ? "Creating payment session..." : "Continue to payment"}
         </button>
         {checkoutMessage ? <p className="quantity-limit-note" aria-live="polite">{checkoutMessage}</p> : null}
       </aside>

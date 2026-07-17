@@ -47,22 +47,28 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
         />
         <div
           className="pdp-rating-line"
-          aria-label={`${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`}
+          aria-label={reviewSummary.count > 0
+            ? `${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`
+            : "No published reviews"}
         >
-          <span aria-hidden="true">
-            {[0, 1, 2, 3, 4].map((index) => (
-              <Star
-                className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
-                size={15}
-                strokeWidth={2}
-                fill={index < Math.round(reviewSummary.average) ? "currentColor" : "none"}
-                key={index}
-              />
-            ))}
-          </span>
-          <small>
-            {reviewSummary.average.toFixed(1)} ({reviewSummary.count} reviews)
-          </small>
+          {reviewSummary.count > 0 ? (
+            <>
+              <span aria-hidden="true">
+                {[0, 1, 2, 3, 4].map((index) => (
+                  <Star
+                    className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
+                    size={15}
+                    strokeWidth={2}
+                    fill={index < Math.round(reviewSummary.average) ? "currentColor" : "none"}
+                    key={index}
+                  />
+                ))}
+              </span>
+              <small>{reviewSummary.average.toFixed(1)} ({reviewSummary.count} reviews)</small>
+            </>
+          ) : (
+            <small>No published reviews</small>
+          )}
           {reviewSummary.writeReviewEnabled ?? true ? (
             <ProductReviewOpenButton />
           ) : null}

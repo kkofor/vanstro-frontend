@@ -43,6 +43,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
   const [quantity, setQuantity] = useState(1);
   const [quantityNotice, setQuantityNotice] = useState("");
   const [addFeedback, setAddFeedback] = useState(false);
+  const [actionError, setActionError] = useState("");
   const purchaseProduct = useMemo(
     () => resolveProductVariant(product, productVariant?.selectedFinishName),
     [product, productVariant?.selectedFinishName]
@@ -57,9 +58,9 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
     [dealers, selectedDealerId, selectedDealerName]
   );
 
-  const selectedInventory = getInventoryLocation(product, selectedDealer.id);
-  const selectedStock = getAvailableQuantity(product, selectedDealer.id);
-  const canBuy = canFulfillQuantity(product, selectedDealer.id, quantity);
+  const selectedInventory = getInventoryLocation(purchaseProduct, selectedDealer.id);
+  const selectedStock = getAvailableQuantity(purchaseProduct, selectedDealer.id);
+  const canBuy = canFulfillQuantity(purchaseProduct, selectedDealer.id, quantity);
   const inventoryClass = getInventoryStatusClass(selectedInventory);
   const inventoryLabel = canBuy
     ? `${getInventoryLabel(selectedInventory)} at selected dealer`
@@ -85,9 +86,14 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
     setQuantityNotice("");
   }
 
-  function handleAddToCart() {
+  async function handleAddToCart() {
     if (!canBuy) return;
-    addToCart(purchaseProduct, quantity);
+    setActionError("");
+    const result = await addToCart(purchaseProduct, quantity);
+    if (!result.ok) {
+      setActionError(result.error);
+      return;
+    }
     setAddFeedback(true);
     window.setTimeout(() => setAddFeedback(false), 650);
   }
@@ -129,7 +135,12 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           className={saved ? "button button-soft pdp-save-button saved" : "button button-soft pdp-save-button"}
           type="button"
           aria-pressed={saved}
-          onClick={() => toggleFavorite(purchaseProduct)}
+          onClick={() => {
+            setActionError("");
+            void toggleFavorite(purchaseProduct).then((result) => {
+              if (!result.ok) setActionError(result.error);
+            });
+          }}
         >
           <Heart size={18} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
           {saved ? "Saved" : "Save"}
@@ -141,6 +152,11 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           {quantityNotice}
         </p>
       ) : null}
+      {actionError ? (
+        <p className="quantity-limit-note" role="alert">
+          {actionError}
+        </p>
+      ) : null}
 
       {product.certificationRequired ? (
         <p className="purchase-certification">
@@ -149,11 +165,11 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
         </p>
       ) : null}
 
-      <h3 className="pdp-how-get-title">How to get it:</h3>
+      <h2 className="pdp-how-get-title">How to get it:</h2>
 
       <ProductDealerSelector
         dealers={dealers}
-        product={product}
+        product={purchaseProduct}
         selectedDealer={selectedDealer}
       />
 

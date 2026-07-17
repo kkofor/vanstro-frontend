@@ -1,6 +1,7 @@
 "use client";
 
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import { type FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Star, X } from "lucide-react";
 import type {
   ProductDetail,
@@ -9,6 +10,7 @@ import type {
 } from "@/lib/api/api-contract";
 import { PRODUCT_REVIEW_OPEN_EVENT } from "@/components/product/ProductReviewOpenButton";
 import { vanstroApi } from "@/lib/api/api-client";
+import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 
 type ProductReviewSectionProps = {
   product: ProductDetail;
@@ -19,33 +21,49 @@ type ProductReviewSectionProps = {
 const reviewTopics = ["Cabinet fit", "Finish quality", "Pickup", "Delivery", "Packaging"];
 const ratingLabels = ["", "Poor", "Fair", "Average", "Good", "Excellent"];
 
-export function ProductReviewSection({
-  product,
-  reviews,
-  reviewSummary
-}: ProductReviewSectionProps) {
+export function ProductReviewSection({ product }: ProductReviewSectionProps) {
   const [open, setOpen] = useState(false);
   const [guidelinesOpen, setGuidelinesOpen] = useState(false);
-  const [rating, setRating] = useState(4);
+  const [rating, setRating] = useState(0);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [status, setStatus] = useState<{ tone: "success" | "error"; message: string } | null>(
     null
   );
   const [submitting, setSubmitting] = useState(false);
-  const lastActiveRef = useRef<HTMLElement | null>(null);
+  const modalRootRef = useRef<HTMLDivElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
+  const guidelinesRootRef = useRef<HTMLDivElement | null>(null);
+  const guidelinesRef = useRef<HTMLElement | null>(null);
+  const publishedReviews = product.reviews ?? [];
+  const publishedSummary = product.ratingSummary;
+  const hasPublishedReviewTruth = Boolean(
+    publishedSummary &&
+    publishedSummary.count > 0 &&
+    publishedSummary.count === publishedReviews.length
+  );
 
   function openReviewModal() {
-    lastActiveRef.current =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setOpen(true);
   }
 
-  function closeReviewModal() {
+  const closeReviewModal = useCallback(() => {
     setGuidelinesOpen(false);
     setOpen(false);
-    window.setTimeout(() => lastActiveRef.current?.focus(), 0);
-  }
+  }, []);
+  const closeGuidelines = useCallback(() => setGuidelinesOpen(false), []);
+
+  useModalFocus({
+    active: open,
+    containerRef: formRef,
+    modalRootRef,
+    onEscape: closeReviewModal
+  });
+  useModalFocus({
+    active: guidelinesOpen,
+    containerRef: guidelinesRef,
+    modalRootRef: guidelinesRootRef,
+    onEscape: closeGuidelines
+  });
 
   useEffect(() => {
     const openFromGlobalButton = () => openReviewModal();
@@ -57,34 +75,10 @@ export function ProductReviewSection({
   useEffect(() => {
     document.body.classList.toggle("review-modal-open", open);
 
-    if (open) {
-      window.setTimeout(() => {
-        formRef.current?.querySelector<HTMLInputElement>(
-          `input[name="review-rating"][value="${rating}"]`
-        )?.focus();
-      }, 0);
-    }
-
     return () => {
       document.body.classList.remove("review-modal-open");
     };
-  }, [open, rating]);
-
-  useEffect(() => {
-    if (!open) return;
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key !== "Escape") return;
-      if (guidelinesOpen) {
-        setGuidelinesOpen(false);
-        return;
-      }
-      closeReviewModal();
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [guidelinesOpen, open]);
+  }, [open]);
 
   function toggleTopic(topic: string) {
     setStatus(null);
@@ -161,40 +155,44 @@ export function ProductReviewSection({
     <section className="pdp-detail-section" id="reviews" aria-labelledby="pdp-reviews-title">
       <div className="pdp-section-heading">
         <h2 id="pdp-reviews-title">Customer Reviews</h2>
-        <span>{reviewSummary.count} reviews</span>
+        <span>{hasPublishedReviewTruth ? `${publishedSummary?.count} reviews` : "No published reviews"}</span>
       </div>
-      <div className="pdp-review-summary">
-        <strong>{reviewSummary.average.toFixed(1)}</strong>
-        <span aria-hidden="true">
-          {[0, 1, 2, 3, 4].map((index) => (
-            <Star
-              className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
-              size={15}
-              strokeWidth={2}
-              fill={index < Math.round(reviewSummary.average) ? "currentColor" : "none"}
-              key={index}
-            />
-          ))}
-        </span>
-        <small>{reviewSummary.sourceLabel ?? "Based on verified product feedback."}</small>
-      </div>
-      <div className="pdp-community-list">
-        {reviews.map((review) => (
-          <article className="pdp-community-card" key={review.id}>
-            <strong>{review.title}</strong>
-            <p>{review.body}</p>
-            <small>{review.name}</small>
-          </article>
-        ))}
-      </div>
-      {reviewSummary.writeReviewEnabled ?? true ? (
+      {hasPublishedReviewTruth && publishedSummary ? (
+        <>
+          <div className="pdp-review-summary">
+            <strong>{publishedSummary.average.toFixed(1)}</strong>
+            <span aria-hidden="true">
+              {[0, 1, 2, 3, 4].map((index) => (
+                <Star
+                  className={index < Math.round(publishedSummary.average) ? "rating-star filled" : "rating-star"}
+                  size={15}
+                  strokeWidth={2}
+                  fill={index < Math.round(publishedSummary.average) ? "currentColor" : "none"}
+                  key={index}
+                />
+              ))}
+            </span>
+            <small>{publishedSummary.sourceLabel ?? "Published customer reviews."}</small>
+          </div>
+          <div className="pdp-community-list">
+            {publishedReviews.map((review) => (
+              <article className="pdp-community-card" key={review.id}>
+                <strong>{review.title}</strong>
+                <p>{review.body}</p>
+                <small>{review.name}</small>
+              </article>
+            ))}
+          </div>
+        </>
+      ) : null}
+      {publishedSummary?.writeReviewEnabled ?? true ? (
         <button className="pdp-review-section-cta" type="button" onClick={openReviewModal}>
           Write a Review
         </button>
       ) : null}
 
       {open ? (
-        <div className="pdp-review-modal" role="presentation">
+        <div className="pdp-review-modal" role="presentation" ref={modalRootRef}>
           <button
             className="pdp-review-modal-backdrop"
             type="button"
@@ -205,6 +203,9 @@ export function ProductReviewSection({
             className="pdp-review-modal-sheet"
             id="write-review"
             aria-labelledby="write-review-title"
+            role="dialog"
+            aria-modal="true"
+            tabIndex={-1}
             onSubmit={handleSubmit}
             ref={formRef}
           >
@@ -306,7 +307,7 @@ export function ProductReviewSection({
             </label>
             <label className="pdp-review-terms">
               <input type="checkbox" name="review-terms" />
-              <span>I agree to the Terms of Use</span>
+              <span>I agree to the <Link href="/terms-and-conditions">Terms of Use</Link></span>
             </label>
             <p className="pdp-review-privacy">
               Reviews are submitted to VanStro for Dashboard moderation before publishing.
@@ -326,9 +327,9 @@ export function ProductReviewSection({
           </form>
 
           {guidelinesOpen ? (
-            <div className="pdp-review-guidelines" role="presentation">
-              <section className="pdp-review-guidelines-card" role="dialog" aria-modal="true" aria-labelledby="review-guidelines-title">
-                <button className="pdp-review-guidelines-x" type="button" aria-label="Close review guidelines" onClick={() => setGuidelinesOpen(false)}>
+            <div className="pdp-review-guidelines" role="presentation" ref={guidelinesRootRef}>
+              <section ref={guidelinesRef} className="pdp-review-guidelines-card" role="dialog" aria-modal="true" aria-labelledby="review-guidelines-title" tabIndex={-1}>
+                <button className="pdp-review-guidelines-x" type="button" aria-label="Close review guidelines" onClick={closeGuidelines}>
                   <X size={18} strokeWidth={2.4} aria-hidden="true" />
                 </button>
                 <h4 id="review-guidelines-title">Writing guidelines</h4>
@@ -339,7 +340,7 @@ export function ProductReviewSection({
                   <li>Do not mention competitors or the specific price you paid.</li>
                   <li>Do not include personally identifiable information, such as full names.</li>
                 </ul>
-                <button className="button button-primary" type="button" onClick={() => setGuidelinesOpen(false)}>
+                <button className="button button-primary" type="button" onClick={closeGuidelines}>
                   Close
                 </button>
               </section>

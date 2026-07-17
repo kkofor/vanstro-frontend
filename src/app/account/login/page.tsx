@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { CustomerAuthForm } from "@/components/account/CustomerAuthForm";
+import { buildPrivateMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Sign in",
-  description: "Sign in to your VanStro customer or dealer account."
-};
+export const metadata: Metadata = buildPrivateMetadata(
+  "Sign in",
+  "Sign in to your VanStro customer or dealer account.",
+  "/account/login"
+);
 
 export default function LoginPage() {
   return (

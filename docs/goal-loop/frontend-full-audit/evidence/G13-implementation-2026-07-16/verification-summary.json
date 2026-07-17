@@ -1,0 +1,1540 @@
+{
+  "summary": {
+    "verifiedAt": "2026-07-17T03:52:47.104Z",
+    "sourceObservedAt": "2026-07-17T03:21:10.378Z",
+    "parents": 140,
+    "variants": 300,
+    "matchedVariants": 300,
+    "mismatchedVariants": 0,
+    "extraLocalSkus": [],
+    "bathroomVanityVariants": 52,
+    "bathroomVanityHardwareComplete": true,
+    "bathroomVanityCabinetOnlyVariants": 26,
+    "handleParents": [
+      {
+        "sku": "060101111",
+        "name": "Handle CTC-96mm",
+        "subCategory": "Handle series"
+      },
+      {
+        "sku": "060102411",
+        "name": "Handle CTC-192mm",
+        "subCategory": "Handle series"
+      }
+    ],
+    "accessoriesContainPlywood": false,
+    "handleFilterPresent": true,
+    "overviewRendersAllHighlights": true,
+    "localizedSourceAssets": 1726,
+    "blockedAssets": [
+      {
+        "sourceUrl": "https://mb01.vanstro.ca/uploads/products/20260715080317_f640e3d7d853.jpg",
+        "error": "404 Not Found"
+      }
+    ],
+    "runtimeMb01ReferencesInCatalog": false,
+    "pass": true
+  },
+  "rows": [
+    {
+      "sku": "011710130",
+      "parentSku": "011710130",
+      "failedFields": []
+    },
+    {
+      "sku": "011710230",
+      "parentSku": "011710130",
+      "failedFields": []
+    },
+    {
+      "sku": "011720130",
+      "parentSku": "011720130",
+      "failedFields": []
+    },
+    {
+      "sku": "011720230",
+      "parentSku": "011720130",
+      "failedFields": []
+    },
+    {
+      "sku": "011730130",
+      "parentSku": "011730130",
+      "failedFields": []
+    },
+    {
+      "sku": "011730230",
+      "parentSku": "011730130",
+      "failedFields": []
+    },
+    {
+      "sku": "011740130",
+      "parentSku": "011740130",
+      "failedFields": []
+    },
+    {
+      "sku": "011740230",
+      "parentSku": "011740130",
+      "failedFields": []
+    },
+    {
+      "sku": "011750130",
+      "parentSku": "011750130",
+      "failedFields": []
+    },
+    {
+      "sku": "011750230",
+      "parentSku": "011750130",
+      "failedFields": []
+    },
+    {
+      "sku": "011760130",
+      "parentSku": "011760130",
+      "failedFields": []
+    },
+    {
+      "sku": "011760230",
+      "parentSku": "011760130",
+      "failedFields": []
+    },
+    {
+      "sku": "011770130",
+      "parentSku": "011770130",
+      "failedFields": []
+    },
+    {
+      "sku": "011770230",
+      "parentSku": "011770130",
+      "failedFields": []
+    },
+    {
+      "sku": "011780130",
+      "parentSku": "011780130",
+      "failedFields": []
+    },
+    {
+      "sku": "011780230",
+      "parentSku": "011780130",
+      "failedFields": []
+    },
+    {
+      "sku": "011790130",
+      "parentSku": "011790130",
+      "failedFields": []
+    },
+    {
+      "sku": "011790230",
+      "parentSku": "011790130",
+      "failedFields": []
+    },
+    {
+      "sku": "011800130",
+      "parentSku": "011800130",
+      "failedFields": []
+    },
+    {
+      "sku": "011800230",
+      "parentSku": "011800130",
+      "failedFields": []
+    },
+    {
+      "sku": "011950130",
+      "parentSku": "011950130",
+      "failedFields": []
+    },
+    {
+      "sku": "011950230",
+      "parentSku": "011950130",
+      "failedFields": []
+    },
+    {
+      "sku": "011960130",
+      "parentSku": "011960130",
+      "failedFields": []
+    },
+    {
+      "sku": "011960230",
+      "parentSku": "011960130",
+      "failedFields": []
+    },
+    {
+      "sku": "011970130",
+      "parentSku": "011970130",
+      "failedFields": []
+    },
+    {
+      "sku": "011970230",
+      "parentSku": "011970130",
+      "failedFields": []
+    },
+    {
+      "sku": "012710130",
+      "parentSku": "012710130",
+      "failedFields": []
+    },
+    {
+      "sku": "012710230",
+      "parentSku": "012710130",
+      "failedFields": []
+    },
+    {
+      "sku": "012720130",
+      "parentSku": "012720130",
+      "failedFields": []
+    },
+    {
+      "sku": "012720230",
+      "parentSku": "012720130",
+      "failedFields": []
+    },
+    {
+      "sku": "012730130",
+      "parentSku": "012730130",
+      "failedFields": []
+    },
+    {
+      "sku": "012730230",
+      "parentSku": "012730130",
+      "failedFields": []
+    },
+    {
+      "sku": "012740130",
+      "parentSku": "012740130",
+      "failedFields": []
+    },
+    {
+      "sku": "012740230",
+      "parentSku": "012740130",
+      "failedFields": []
+    },
+    {
+      "sku": "012750130",
+      "parentSku": "012750130",
+      "failedFields": []
+    },
+    {
+      "sku": "012750230",
+      "parentSku": "012750130",
+      "failedFields": []
+    },
+    {
+      "sku": "012770130",
+      "parentSku": "012770130",
+      "failedFields": []
+    },
+    {
+      "sku": "012770230",
+      "parentSku": "012770130",
+      "failedFields": []
+    },
+    {
+      "sku": "012780130",
+      "parentSku": "012780130",
+      "failedFields": []
+    },
+    {
+      "sku": "012780230",
+      "parentSku": "012780130",
+      "failedFields": []
+    },
+    {
+      "sku": "012790130",
+      "parentSku": "012790130",
+      "failedFields": []
+    },
+    {
+      "sku": "012790230",
+      "parentSku": "012790130",
+      "failedFields": []
+    },
+    {
+      "sku": "013780130",
+      "parentSku": "013780130",
+      "failedFields": []
+    },
+    {
+      "sku": "013780230",
+      "parentSku": "013780130",
+      "failedFields": []
+    },
+    {
+      "sku": "013790130",
+      "parentSku": "013790130",
+      "failedFields": []
+    },
+    {
+      "sku": "013790230",
+      "parentSku": "013790130",
+      "failedFields": []
+    },
+    {
+      "sku": "014700131",
+      "parentSku": "014700131",
+      "failedFields": []
+    },
+    {
+      "sku": "014700231",
+      "parentSku": "014700131",
+      "failedFields": []
+    },
+    {
+      "sku": "015010130",
+      "parentSku": "015010130",
+      "failedFields": []
+    },
+    {
+      "sku": "015010230",
+      "parentSku": "015010130",
+      "failedFields": []
+    },
+    {
+      "sku": "015020130",
+      "parentSku": "015020130",
+      "failedFields": []
+    },
+    {
+      "sku": "015020230",
+      "parentSku": "015020130",
+      "failedFields": []
+    },
+    {
+      "sku": "015030130",
+      "parentSku": "015030130",
+      "failedFields": []
+    },
+    {
+      "sku": "015030230",
+      "parentSku": "015030130",
+      "failedFields": []
+    },
+    {
+      "sku": "015040130",
+      "parentSku": "015040130",
+      "failedFields": []
+    },
+    {
+      "sku": "015040230",
+      "parentSku": "015040130",
+      "failedFields": []
+    },
+    {
+      "sku": "015050130",
+      "parentSku": "015050130",
+      "failedFields": []
+    },
+    {
+      "sku": "015050230",
+      "parentSku": "015050130",
+      "failedFields": []
+    },
+    {
+      "sku": "015060130",
+      "parentSku": "015060130",
+      "failedFields": []
+    },
+    {
+      "sku": "015060230",
+      "parentSku": "015060130",
+      "failedFields": []
+    },
+    {
+      "sku": "015070130",
+      "parentSku": "015070130",
+      "failedFields": []
+    },
+    {
+      "sku": "015070230",
+      "parentSku": "015070130",
+      "failedFields": []
+    },
+    {
+      "sku": "015070330",
+      "parentSku": "015070330",
+      "failedFields": []
+    },
+    {
+      "sku": "015070430",
+      "parentSku": "015070330",
+      "failedFields": []
+    },
+    {
+      "sku": "015080130",
+      "parentSku": "015080130",
+      "failedFields": []
+    },
+    {
+      "sku": "015080230",
+      "parentSku": "015080130",
+      "failedFields": []
+    },
+    {
+      "sku": "015080330",
+      "parentSku": "015080330",
+      "failedFields": []
+    },
+    {
+      "sku": "015080430",
+      "parentSku": "015080330",
+      "failedFields": []
+    },
+    {
+      "sku": "015090130",
+      "parentSku": "015090130",
+      "failedFields": []
+    },
+    {
+      "sku": "015090230",
+      "parentSku": "015090130",
+      "failedFields": []
+    },
+    {
+      "sku": "015090330",
+      "parentSku": "015090330",
+      "failedFields": []
+    },
+    {
+      "sku": "015090430",
+      "parentSku": "015090330",
+      "failedFields": []
+    },
+    {
+      "sku": "015100130",
+      "parentSku": "015100130",
+      "failedFields": []
+    },
+    {
+      "sku": "015100230",
+      "parentSku": "015100130",
+      "failedFields": []
+    },
+    {
+      "sku": "015100330",
+      "parentSku": "015100330",
+      "failedFields": []
+    },
+    {
+      "sku": "015100430",
+      "parentSku": "015100330",
+      "failedFields": []
+    },
+    {
+      "sku": "015110130",
+      "parentSku": "015110130",
+      "failedFields": []
+    },
+    {
+      "sku": "015110230",
+      "parentSku": "015110130",
+      "failedFields": []
+    },
+    {
+      "sku": "015110330",
+      "parentSku": "015110330",
+      "failedFields": []
+    },
+    {
+      "sku": "015110430",
+      "parentSku": "015110330",
+      "failedFields": []
+    },
+    {
+      "sku": "015120130",
+      "parentSku": "015120130",
+      "failedFields": []
+    },
+    {
+      "sku": "015120230",
+      "parentSku": "015120130",
+      "failedFields": []
+    },
+    {
+      "sku": "015120330",
+      "parentSku": "015120330",
+      "failedFields": []
+    },
+    {
+      "sku": "015120430",
+      "parentSku": "015120330",
+      "failedFields": []
+    },
+    {
+      "sku": "015130130",
+      "parentSku": "015130130",
+      "failedFields": []
+    },
+    {
+      "sku": "015130230",
+      "parentSku": "015130130",
+      "failedFields": []
+    },
+    {
+      "sku": "015140130",
+      "parentSku": "015140130",
+      "failedFields": []
+    },
+    {
+      "sku": "015140230",
+      "parentSku": "015140130",
+      "failedFields": []
+    },
+    {
+      "sku": "015150130",
+      "parentSku": "015150130",
+      "failedFields": []
+    },
+    {
+      "sku": "015150230",
+      "parentSku": "015150130",
+      "failedFields": []
+    },
+    {
+      "sku": "015160130",
+      "parentSku": "015160130",
+      "failedFields": []
+    },
+    {
+      "sku": "015160230",
+      "parentSku": "015160130",
+      "failedFields": []
+    },
+    {
+      "sku": "015160330",
+      "parentSku": "015160330",
+      "failedFields": []
+    },
+    {
+      "sku": "015160430",
+      "parentSku": "015160330",
+      "failedFields": []
+    },
+    {
+      "sku": "015170130",
+      "parentSku": "015170130",
+      "failedFields": []
+    },
+    {
+      "sku": "015170230",
+      "parentSku": "015170130",
+      "failedFields": []
+    },
+    {
+      "sku": "015170330",
+      "parentSku": "015170330",
+      "failedFields": []
+    },
+    {
+      "sku": "015170430",
+      "parentSku": "015170330",
+      "failedFields": []
+    },
+    {
+      "sku": "015180130",
+      "parentSku": "015180130",
+      "failedFields": []
+    },
+    {
+      "sku": "015180230",
+      "parentSku": "015180130",
+      "failedFields": []
+    },
+    {
+      "sku": "015180330",
+      "parentSku": "015180330",
+      "failedFields": []
+    },
+    {
+      "sku": "015180430",
+      "parentSku": "015180330",
+      "failedFields": []
+    },
+    {
+      "sku": "015190130",
+      "parentSku": "015190130",
+      "failedFields": []
+    },
+    {
+      "sku": "015190230",
+      "parentSku": "015190130",
+      "failedFields": []
+    },
+    {
+      "sku": "015200130",
+      "parentSku": "015200130",
+      "failedFields": []
+    },
+    {
+      "sku": "015200230",
+      "parentSku": "015200130",
+      "failedFields": []
+    },
+    {
+      "sku": "015210130",
+      "parentSku": "015210130",
+      "failedFields": []
+    },
+    {
+      "sku": "015210230",
+      "parentSku": "015210130",
+      "failedFields": []
+    },
+    {
+      "sku": "015220130",
+      "parentSku": "015220130",
+      "failedFields": []
+    },
+    {
+      "sku": "015220230",
+      "parentSku": "015220130",
+      "failedFields": []
+    },
+    {
+      "sku": "015230130",
+      "parentSku": "015230130",
+      "failedFields": []
+    },
+    {
+      "sku": "015230230",
+      "parentSku": "015230130",
+      "failedFields": []
+    },
+    {
+      "sku": "015240130",
+      "parentSku": "015240130",
+      "failedFields": []
+    },
+    {
+      "sku": "015240230",
+      "parentSku": "015240130",
+      "failedFields": []
+    },
+    {
+      "sku": "015250130",
+      "parentSku": "015250130",
+      "failedFields": []
+    },
+    {
+      "sku": "015250230",
+      "parentSku": "015250130",
+      "failedFields": []
+    },
+    {
+      "sku": "015260130",
+      "parentSku": "015260130",
+      "failedFields": []
+    },
+    {
+      "sku": "015260230",
+      "parentSku": "015260130",
+      "failedFields": []
+    },
+    {
+      "sku": "015270130",
+      "parentSku": "015270130",
+      "failedFields": []
+    },
+    {
+      "sku": "015270230",
+      "parentSku": "015270130",
+      "failedFields": []
+    },
+    {
+      "sku": "015280130",
+      "parentSku": "015280130",
+      "failedFields": []
+    },
+    {
+      "sku": "015280230",
+      "parentSku": "015280130",
+      "failedFields": []
+    },
+    {
+      "sku": "015290130",
+      "parentSku": "015290130",
+      "failedFields": []
+    },
+    {
+      "sku": "015290230",
+      "parentSku": "015290130",
+      "failedFields": []
+    },
+    {
+      "sku": "015290330",
+      "parentSku": "015290330",
+      "failedFields": []
+    },
+    {
+      "sku": "015290430",
+      "parentSku": "015290330",
+      "failedFields": []
+    },
+    {
+      "sku": "015300130",
+      "parentSku": "015300130",
+      "failedFields": []
+    },
+    {
+      "sku": "015300230",
+      "parentSku": "015300130",
+      "failedFields": []
+    },
+    {
+      "sku": "015300330",
+      "parentSku": "015300330",
+      "failedFields": []
+    },
+    {
+      "sku": "015300430",
+      "parentSku": "015300330",
+      "failedFields": []
+    },
+    {
+      "sku": "015310130",
+      "parentSku": "015310130",
+      "failedFields": []
+    },
+    {
+      "sku": "015310230",
+      "parentSku": "015310130",
+      "failedFields": []
+    },
+    {
+      "sku": "015310330",
+      "parentSku": "015310330",
+      "failedFields": []
+    },
+    {
+      "sku": "015310430",
+      "parentSku": "015310330",
+      "failedFields": []
+    },
+    {
+      "sku": "015320130",
+      "parentSku": "015320130",
+      "failedFields": []
+    },
+    {
+      "sku": "015320230",
+      "parentSku": "015320130",
+      "failedFields": []
+    },
+    {
+      "sku": "015330130",
+      "parentSku": "015330130",
+      "failedFields": []
+    },
+    {
+      "sku": "015330230",
+      "parentSku": "015330130",
+      "failedFields": []
+    },
+    {
+      "sku": "015340130",
+      "parentSku": "015340130",
+      "failedFields": []
+    },
+    {
+      "sku": "015340230",
+      "parentSku": "015340130",
+      "failedFields": []
+    },
+    {
+      "sku": "015350130",
+      "parentSku": "015350130",
+      "failedFields": []
+    },
+    {
+      "sku": "015350230",
+      "parentSku": "015350130",
+      "failedFields": []
+    },
+    {
+      "sku": "015360130",
+      "parentSku": "015360130",
+      "failedFields": []
+    },
+    {
+      "sku": "015360230",
+      "parentSku": "015360130",
+      "failedFields": []
+    },
+    {
+      "sku": "015370130",
+      "parentSku": "015370130",
+      "failedFields": []
+    },
+    {
+      "sku": "015370230",
+      "parentSku": "015370130",
+      "failedFields": []
+    },
+    {
+      "sku": "015380130",
+      "parentSku": "015380130",
+      "failedFields": []
+    },
+    {
+      "sku": "015380230",
+      "parentSku": "015380130",
+      "failedFields": []
+    },
+    {
+      "sku": "015390130",
+      "parentSku": "015390130",
+      "failedFields": []
+    },
+    {
+      "sku": "015390230",
+      "parentSku": "015390130",
+      "failedFields": []
+    },
+    {
+      "sku": "015400130",
+      "parentSku": "015400130",
+      "failedFields": []
+    },
+    {
+      "sku": "015400230",
+      "parentSku": "015400130",
+      "failedFields": []
+    },
+    {
+      "sku": "015410130",
+      "parentSku": "015410130",
+      "failedFields": []
+    },
+    {
+      "sku": "015410230",
+      "parentSku": "015410130",
+      "failedFields": []
+    },
+    {
+      "sku": "015420130",
+      "parentSku": "015420130",
+      "failedFields": []
+    },
+    {
+      "sku": "015420230",
+      "parentSku": "015420130",
+      "failedFields": []
+    },
+    {
+      "sku": "015430130",
+      "parentSku": "015430130",
+      "failedFields": []
+    },
+    {
+      "sku": "015430230",
+      "parentSku": "015430130",
+      "failedFields": []
+    },
+    {
+      "sku": "015440130",
+      "parentSku": "015440130",
+      "failedFields": []
+    },
+    {
+      "sku": "015440230",
+      "parentSku": "015440130",
+      "failedFields": []
+    },
+    {
+      "sku": "015450130",
+      "parentSku": "015450130",
+      "failedFields": []
+    },
+    {
+      "sku": "015450230",
+      "parentSku": "015450130",
+      "failedFields": []
+    },
+    {
+      "sku": "015460130",
+      "parentSku": "015460130",
+      "failedFields": []
+    },
+    {
+      "sku": "015460230",
+      "parentSku": "015460130",
+      "failedFields": []
+    },
+    {
+      "sku": "015470130",
+      "parentSku": "015470130",
+      "failedFields": []
+    },
+    {
+      "sku": "015470230",
+      "parentSku": "015470130",
+      "failedFields": []
+    },
+    {
+      "sku": "015480130",
+      "parentSku": "015480130",
+      "failedFields": []
+    },
+    {
+      "sku": "015480230",
+      "parentSku": "015480130",
+      "failedFields": []
+    },
+    {
+      "sku": "015490130",
+      "parentSku": "015490130",
+      "failedFields": []
+    },
+    {
+      "sku": "015490230",
+      "parentSku": "015490130",
+      "failedFields": []
+    },
+    {
+      "sku": "015500130",
+      "parentSku": "015500130",
+      "failedFields": []
+    },
+    {
+      "sku": "015500230",
+      "parentSku": "015500130",
+      "failedFields": []
+    },
+    {
+      "sku": "015510130",
+      "parentSku": "015510130",
+      "failedFields": []
+    },
+    {
+      "sku": "015510230",
+      "parentSku": "015510130",
+      "failedFields": []
+    },
+    {
+      "sku": "015520532",
+      "parentSku": "015520532",
+      "failedFields": []
+    },
+    {
+      "sku": "015520632",
+      "parentSku": "015520532",
+      "failedFields": []
+    },
+    {
+      "sku": "015530532",
+      "parentSku": "015530532",
+      "failedFields": []
+    },
+    {
+      "sku": "015530632",
+      "parentSku": "015530532",
+      "failedFields": []
+    },
+    {
+      "sku": "015540532",
+      "parentSku": "015540532",
+      "failedFields": []
+    },
+    {
+      "sku": "015540632",
+      "parentSku": "015540532",
+      "failedFields": []
+    },
+    {
+      "sku": "016290130",
+      "parentSku": "016290130",
+      "failedFields": []
+    },
+    {
+      "sku": "016290230",
+      "parentSku": "016290130",
+      "failedFields": []
+    },
+    {
+      "sku": "016300130",
+      "parentSku": "016300130",
+      "failedFields": []
+    },
+    {
+      "sku": "016300230",
+      "parentSku": "016300130",
+      "failedFields": []
+    },
+    {
+      "sku": "016310130",
+      "parentSku": "016310130",
+      "failedFields": []
+    },
+    {
+      "sku": "016310230",
+      "parentSku": "016310130",
+      "failedFields": []
+    },
+    {
+      "sku": "017550130",
+      "parentSku": "017550130",
+      "failedFields": []
+    },
+    {
+      "sku": "017550230",
+      "parentSku": "017550130",
+      "failedFields": []
+    },
+    {
+      "sku": "017560130",
+      "parentSku": "017560130",
+      "failedFields": []
+    },
+    {
+      "sku": "017560230",
+      "parentSku": "017560130",
+      "failedFields": []
+    },
+    {
+      "sku": "017570130",
+      "parentSku": "017570130",
+      "failedFields": []
+    },
+    {
+      "sku": "017570230",
+      "parentSku": "017570130",
+      "failedFields": []
+    },
+    {
+      "sku": "017580130",
+      "parentSku": "017580130",
+      "failedFields": []
+    },
+    {
+      "sku": "017580230",
+      "parentSku": "017580130",
+      "failedFields": []
+    },
+    {
+      "sku": "017590130",
+      "parentSku": "017590130",
+      "failedFields": []
+    },
+    {
+      "sku": "017590230",
+      "parentSku": "017590130",
+      "failedFields": []
+    },
+    {
+      "sku": "017600130",
+      "parentSku": "017600130",
+      "failedFields": []
+    },
+    {
+      "sku": "017600230",
+      "parentSku": "017600130",
+      "failedFields": []
+    },
+    {
+      "sku": "017610130",
+      "parentSku": "017610130",
+      "failedFields": []
+    },
+    {
+      "sku": "017610230",
+      "parentSku": "017610130",
+      "failedFields": []
+    },
+    {
+      "sku": "017620130",
+      "parentSku": "017620130",
+      "failedFields": []
+    },
+    {
+      "sku": "017620230",
+      "parentSku": "017620130",
+      "failedFields": []
+    },
+    {
+      "sku": "017630130",
+      "parentSku": "017630130",
+      "failedFields": []
+    },
+    {
+      "sku": "017630230",
+      "parentSku": "017630130",
+      "failedFields": []
+    },
+    {
+      "sku": "017640130",
+      "parentSku": "017640130",
+      "failedFields": []
+    },
+    {
+      "sku": "017640230",
+      "parentSku": "017640130",
+      "failedFields": []
+    },
+    {
+      "sku": "017650130",
+      "parentSku": "017650130",
+      "failedFields": []
+    },
+    {
+      "sku": "017650230",
+      "parentSku": "017650130",
+      "failedFields": []
+    },
+    {
+      "sku": "017660130",
+      "parentSku": "017660130",
+      "failedFields": []
+    },
+    {
+      "sku": "017660230",
+      "parentSku": "017660130",
+      "failedFields": []
+    },
+    {
+      "sku": "017670130",
+      "parentSku": "017670130",
+      "failedFields": []
+    },
+    {
+      "sku": "017670230",
+      "parentSku": "017670130",
+      "failedFields": []
+    },
+    {
+      "sku": "017680130",
+      "parentSku": "017680130",
+      "failedFields": []
+    },
+    {
+      "sku": "017680230",
+      "parentSku": "017680130",
+      "failedFields": []
+    },
+    {
+      "sku": "017690130",
+      "parentSku": "017690130",
+      "failedFields": []
+    },
+    {
+      "sku": "017690230",
+      "parentSku": "017690130",
+      "failedFields": []
+    },
+    {
+      "sku": "018810742",
+      "parentSku": "018810742",
+      "failedFields": []
+    },
+    {
+      "sku": "018810842",
+      "parentSku": "018810742",
+      "failedFields": []
+    },
+    {
+      "sku": "018820742",
+      "parentSku": "018820742",
+      "failedFields": []
+    },
+    {
+      "sku": "018820842",
+      "parentSku": "018820742",
+      "failedFields": []
+    },
+    {
+      "sku": "018830742",
+      "parentSku": "018830742",
+      "failedFields": []
+    },
+    {
+      "sku": "018830842",
+      "parentSku": "018830742",
+      "failedFields": []
+    },
+    {
+      "sku": "018840742",
+      "parentSku": "018840742",
+      "failedFields": []
+    },
+    {
+      "sku": "018840842",
+      "parentSku": "018840742",
+      "failedFields": []
+    },
+    {
+      "sku": "018850942",
+      "parentSku": "018850942",
+      "failedFields": []
+    },
+    {
+      "sku": "018851042",
+      "parentSku": "018850942",
+      "failedFields": []
+    },
+    {
+      "sku": "018860942",
+      "parentSku": "018860942",
+      "failedFields": []
+    },
+    {
+      "sku": "018861042",
+      "parentSku": "018860942",
+      "failedFields": []
+    },
+    {
+      "sku": "018870942",
+      "parentSku": "018870942",
+      "failedFields": []
+    },
+    {
+      "sku": "018871042",
+      "parentSku": "018870942",
+      "failedFields": []
+    },
+    {
+      "sku": "018880942",
+      "parentSku": "018880942",
+      "failedFields": []
+    },
+    {
+      "sku": "018881042",
+      "parentSku": "018880942",
+      "failedFields": []
+    },
+    {
+      "sku": "018910942",
+      "parentSku": "018910942",
+      "failedFields": []
+    },
+    {
+      "sku": "018911042",
+      "parentSku": "018910942",
+      "failedFields": []
+    },
+    {
+      "sku": "018920942",
+      "parentSku": "018920942",
+      "failedFields": []
+    },
+    {
+      "sku": "018921042",
+      "parentSku": "018920942",
+      "failedFields": []
+    },
+    {
+      "sku": "018930942",
+      "parentSku": "018930942",
+      "failedFields": []
+    },
+    {
+      "sku": "018931042",
+      "parentSku": "018930942",
+      "failedFields": []
+    },
+    {
+      "sku": "019890142",
+      "parentSku": "019890142",
+      "failedFields": []
+    },
+    {
+      "sku": "019890242",
+      "parentSku": "019890142",
+      "failedFields": []
+    },
+    {
+      "sku": "019900142",
+      "parentSku": "019900142",
+      "failedFields": []
+    },
+    {
+      "sku": "019900242",
+      "parentSku": "019900142",
+      "failedFields": []
+    },
+    {
+      "sku": "022421011",
+      "parentSku": "022421011",
+      "failedFields": []
+    },
+    {
+      "sku": "022421012",
+      "parentSku": "022421011",
+      "failedFields": []
+    },
+    {
+      "sku": "022421013",
+      "parentSku": "022421011",
+      "failedFields": []
+    },
+    {
+      "sku": "022421014",
+      "parentSku": "022421011",
+      "failedFields": []
+    },
+    {
+      "sku": "022721011",
+      "parentSku": "022721011",
+      "failedFields": []
+    },
+    {
+      "sku": "022721012",
+      "parentSku": "022721011",
+      "failedFields": []
+    },
+    {
+      "sku": "022721013",
+      "parentSku": "022721011",
+      "failedFields": []
+    },
+    {
+      "sku": "022721014",
+      "parentSku": "022721011",
+      "failedFields": []
+    },
+    {
+      "sku": "023021011",
+      "parentSku": "023021011",
+      "failedFields": []
+    },
+    {
+      "sku": "023021012",
+      "parentSku": "023021011",
+      "failedFields": []
+    },
+    {
+      "sku": "023021013",
+      "parentSku": "023021011",
+      "failedFields": []
+    },
+    {
+      "sku": "023021014",
+      "parentSku": "023021011",
+      "failedFields": []
+    },
+    {
+      "sku": "023021211",
+      "parentSku": "023021211",
+      "failedFields": []
+    },
+    {
+      "sku": "023021212",
+      "parentSku": "023021211",
+      "failedFields": []
+    },
+    {
+      "sku": "023021213",
+      "parentSku": "023021211",
+      "failedFields": []
+    },
+    {
+      "sku": "023021214",
+      "parentSku": "023021211",
+      "failedFields": []
+    },
+    {
+      "sku": "023021311",
+      "parentSku": "023021311",
+      "failedFields": []
+    },
+    {
+      "sku": "023021312",
+      "parentSku": "023021311",
+      "failedFields": []
+    },
+    {
+      "sku": "023021313",
+      "parentSku": "023021311",
+      "failedFields": []
+    },
+    {
+      "sku": "023021314",
+      "parentSku": "023021311",
+      "failedFields": []
+    },
+    {
+      "sku": "023021411",
+      "parentSku": "023021411",
+      "failedFields": []
+    },
+    {
+      "sku": "023021412",
+      "parentSku": "023021411",
+      "failedFields": []
+    },
+    {
+      "sku": "023021413",
+      "parentSku": "023021411",
+      "failedFields": []
+    },
+    {
+      "sku": "023021414",
+      "parentSku": "023021411",
+      "failedFields": []
+    },
+    {
+      "sku": "023021511",
+      "parentSku": "023021511",
+      "failedFields": []
+    },
+    {
+      "sku": "023021512",
+      "parentSku": "023021511",
+      "failedFields": []
+    },
+    {
+      "sku": "023021513",
+      "parentSku": "023021511",
+      "failedFields": []
+    },
+    {
+      "sku": "023021514",
+      "parentSku": "023021511",
+      "failedFields": []
+    },
+    {
+      "sku": "023621011",
+      "parentSku": "023621011",
+      "failedFields": []
+    },
+    {
+      "sku": "023621012",
+      "parentSku": "023621011",
+      "failedFields": []
+    },
+    {
+      "sku": "023621013",
+      "parentSku": "023621011",
+      "failedFields": []
+    },
+    {
+      "sku": "023621014",
+      "parentSku": "023621011",
+      "failedFields": []
+    },
+    {
+      "sku": "023621411",
+      "parentSku": "023621411",
+      "failedFields": []
+    },
+    {
+      "sku": "023621412",
+      "parentSku": "023621411",
+      "failedFields": []
+    },
+    {
+      "sku": "023621413",
+      "parentSku": "023621411",
+      "failedFields": []
+    },
+    {
+      "sku": "023621414",
+      "parentSku": "023621411",
+      "failedFields": []
+    },
+    {
+      "sku": "023621511",
+      "parentSku": "023621511",
+      "failedFields": []
+    },
+    {
+      "sku": "023621512",
+      "parentSku": "023621511",
+      "failedFields": []
+    },
+    {
+      "sku": "023621513",
+      "parentSku": "023621511",
+      "failedFields": []
+    },
+    {
+      "sku": "023621514",
+      "parentSku": "023621511",
+      "failedFields": []
+    },
+    {
+      "sku": "024221611",
+      "parentSku": "024221611",
+      "failedFields": []
+    },
+    {
+      "sku": "024221612",
+      "parentSku": "024221611",
+      "failedFields": []
+    },
+    {
+      "sku": "024221613",
+      "parentSku": "024221611",
+      "failedFields": []
+    },
+    {
+      "sku": "024221614",
+      "parentSku": "024221611",
+      "failedFields": []
+    },
+    {
+      "sku": "024821611",
+      "parentSku": "024821611",
+      "failedFields": []
+    },
+    {
+      "sku": "024821612",
+      "parentSku": "024821611",
+      "failedFields": []
+    },
+    {
+      "sku": "024821613",
+      "parentSku": "024821611",
+      "failedFields": []
+    },
+    {
+      "sku": "024821614",
+      "parentSku": "024821611",
+      "failedFields": []
+    },
+    {
+      "sku": "026621711",
+      "parentSku": "026621711",
+      "failedFields": []
+    },
+    {
+      "sku": "026621712",
+      "parentSku": "026621711",
+      "failedFields": []
+    },
+    {
+      "sku": "026621713",
+      "parentSku": "026621711",
+      "failedFields": []
+    },
+    {
+      "sku": "026621714",
+      "parentSku": "026621711",
+      "failedFields": []
+    },
+    {
+      "sku": "033516222",
+      "parentSku": "033516222",
+      "failedFields": []
+    },
+    {
+      "sku": "033918222",
+      "parentSku": "033918222",
+      "failedFields": []
+    },
+    {
+      "sku": "034114222",
+      "parentSku": "034114222",
+      "failedFields": []
+    },
+    {
+      "sku": "034910320",
+      "parentSku": "034910320",
+      "failedFields": []
+    },
+    {
+      "sku": "060101111",
+      "parentSku": "060101111",
+      "failedFields": []
+    },
+    {
+      "sku": "060102411",
+      "parentSku": "060102411",
+      "failedFields": []
+    }
+  ]
+}

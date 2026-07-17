@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { CustomerAuthForm } from "@/components/account/CustomerAuthForm";
+import { buildPrivateMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Create account",
-  description: "Create a VanStro account for cart, favorites and checkout workflows."
-};
+export const metadata: Metadata = buildPrivateMetadata(
+  "Create account",
+  "Create a VanStro account for cart, favorites and checkout workflows.",
+  "/account/register"
+);
 
 export default function RegisterPage() {
   return (

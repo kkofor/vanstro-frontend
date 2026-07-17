@@ -90,6 +90,7 @@ export const CATALOG_SUBCATEGORY_OPTIONS: CatalogSubcategoryOption[] = [
   { id: "open-end-shelf", label: "Open End Shelf", matches: ["Open End Shelf"] },
   { id: "microwave-cabinet", label: "Microwave Cabinet", matches: ["Microwave Cabinet"] },
   { id: "oven-tall-cabinet", label: "Oven Tall Cabinet", matches: ["Oven Tall Cabinet"] },
+  { id: "handle-series", label: "Handle series", matches: ["Handle series"] },
   { id: "accessories", label: "Accessories", matches: ["Accessories"] },
   { id: "bathroom-vanities", label: "Bathroom Vanities", matches: ["Bathroom Vanities"] }
 ];

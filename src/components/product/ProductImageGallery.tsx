@@ -111,6 +111,7 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
         } as React.CSSProperties}
       >
         <img
+          key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${activeIndex}:${activeImage.url}`}
           src={activeImage.url}
           alt={activeImage.alt}
           width={activeImage.width}
@@ -121,7 +122,11 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
         />
         <span className="pdp-zoom-hint" aria-hidden="true">Hover to zoom</span>
       </div>
-      <div className="pdp-thumb-row" aria-label="Product images">
+      <div
+        className="pdp-thumb-row"
+        aria-label="Product images"
+        key={selectedFinish?.sku ?? selectedFinish?.name ?? "default-gallery"}
+      >
         {visibleImages.map((image, index) => (
           <button
             aria-label={`Show ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "primary" : `view ${index + 1}`)} image`}
@@ -129,7 +134,7 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
             className={activeIndex === index ? "pdp-thumb active" : "pdp-thumb"}
             onClick={() => handleThumbClick(image, index)}
             type="button"
-            key={image.url}
+            key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${index}:${image.url}`}
           >
             <img
               src={image.url}

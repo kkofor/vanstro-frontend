@@ -2,12 +2,23 @@
   "name": "vanstro-frontend",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@11.13.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "build:pages": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "pnpm run typecheck:web && pnpm --filter @vanstro/db typecheck && pnpm --filter @vanstro/api typecheck && pnpm --filter @vanstro/worker typecheck && pnpm --filter @vanstro/cli typecheck",
+    "typecheck:web": "tsc --noEmit",
+    "qa:seo-security": "node qa/check-seo-security.mjs",
+    "qa:seo-artifacts": "node qa/check-seo-artifacts.mjs",
+    "api:dev": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/api dev",
+    "api:smoke": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/api smoke",
+    "worker:dev": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/worker dev",
+    "worker:once": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/worker once",
+    "db:generate": "pnpm --filter @vanstro/db prisma:generate",
+    "db:migrate": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/db prisma:migrate",
+    "db:seed": "set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/db db:seed"
   },
   "dependencies": {
     "lucide-react": "^1.23.0",

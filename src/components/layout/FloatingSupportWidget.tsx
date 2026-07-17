@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { assetPath } from "@/lib/assets";
+import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 import {
   AI_SUPPORT_PROMPTS,
   SupportChannel,
@@ -17,6 +18,7 @@ import {
 
 export function FloatingSupportWidget() {
   const widgetRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const latestAssistantRef = useRef<HTMLDivElement>(null);
   const messageEndRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -47,6 +49,13 @@ export function FloatingSupportWidget() {
     setOpen(false);
     setOpenedFromPage(false);
   }, []);
+
+  useModalFocus({
+    active: open,
+    containerRef: panelRef,
+    modalRootRef: widgetRef,
+    onEscape: closeSupport
+  });
 
   const openSupport = useCallback(
     (source: "widget" | "page" = "widget") => {
@@ -147,16 +156,10 @@ export function FloatingSupportWidget() {
       closeSupport();
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") closeSupport();
-    }
-
     document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [closeSupport, open]);
 
@@ -178,14 +181,21 @@ export function FloatingSupportWidget() {
       aria-label="VanStro AI customer support"
     >
       {open ? (
-        <div className="support-panel" role="dialog" aria-label="VanStro assistant">
+        <div
+          ref={panelRef}
+          className="support-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="VanStro assistant"
+          tabIndex={-1}
+        >
           <div className="support-panel-head">
             <span>
               <Bot size={18} strokeWidth={2.2} />
             </span>
             <div>
               <strong>VanStro assistant</strong>
-              <small>{status}</small>
+              <small aria-live="polite" aria-atomic="true">{status}</small>
             </div>
             <button type="button" aria-label="Close support panel" onClick={closeSupport}>
               <X size={18} strokeWidth={2.2} />
@@ -204,7 +214,12 @@ export function FloatingSupportWidget() {
           </div>
 
           <div className="support-chat">
-            <div className="support-messages" role="log" aria-live="polite">
+            <div
+              className="support-messages"
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions text"
+            >
               {messages.map((message) => (
                 <div
                   className={`support-message ${message.role}`}

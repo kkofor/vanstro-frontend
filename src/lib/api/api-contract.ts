@@ -1,4 +1,4 @@
-export type Locale = "en-CA" | "fr-CA";
+export type Locale = "en-CA" | "fr-CA" | "zh-CN";
 export type CurrencyCode = "CAD" | "USD";
 
 export type ApiResult<T> = {
@@ -211,6 +211,40 @@ export type ProductDetail = ProductSummary & {
   inventory: ProductInventoryLocation[];
 };
 
+export type WebsiteApiProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  shortDescription?: string | null;
+  description?: string | null;
+  category?: {
+    id: string;
+    slug: string;
+    name: string;
+  } | null;
+  primarySku?: {
+    id: string;
+    skuCode: string;
+    name: string;
+    attributes?: unknown;
+  } | null;
+  price?: {
+    amount: number;
+    amountCents: number;
+    currency: string;
+  } | null;
+  assets?: Array<{
+    id: string;
+    url: string;
+    altText?: string | null;
+    kind: string;
+    sortOrder: number;
+  }>;
+  specifications?: Array<{ key: string; value: string }>;
+  ratingSummary?: ProductRatingSummary;
+  reviews?: ProductReview[];
+};
+
 export type ProductUpsertInput = {
   id?: string;
   slug?: string;
@@ -282,7 +316,10 @@ export type ArticleDetail = ArticleSummary & {
 
 export type CartItem = {
   id: string;
-  product: ProductSummary;
+  product: Pick<
+    ProductSummary,
+    "id" | "slug" | "sku" | "name" | "unit" | "dimensions" | "images" | "inStock"
+  > & Partial<Pick<ProductSummary, "category">>;
   quantity: number;
   unitPrice: Money;
   lineTotal: Money;
@@ -363,7 +400,28 @@ export type DealerApplicationInput = {
   city: string;
   province: string;
   businessType?: string;
+  website?: string;
+  serviceArea?: string;
+  productFocus?: string;
+  capabilities?: string[];
   message?: string;
+  source?: string;
+  locale?: Locale;
+  applicationAcknowledgement?: boolean;
+};
+
+export type CheckoutSessionInput = {
+  email: string;
+  fulfillment: FulfillmentType;
+  dealerLocationId?: string;
+};
+
+export type CheckoutSession = {
+  id: string;
+  status: "pending" | "paid" | "expired" | "cancelled" | "failed";
+  expiresAt: string;
+  total: Money;
+  guestOrderToken?: string;
 };
 
 export type ProductCommerceQuery = {
@@ -420,6 +478,10 @@ export const API_ENDPOINTS = {
   dealers: "/dealers",
   directOrder: "/orders/direct",
   cartOrder: "/orders/cart",
+  checkoutSession: "/checkout/session",
+  paymentSession: (sessionId: string) => `/payments/sessions/${sessionId}`,
+  order: (orderId: string) => `/orders/${orderId}`,
+  orderStatus: (orderId: string) => `/orders/${orderId}/status`,
   paymentCallback: "/payments/callback",
   login: "/auth/login",
   register: "/auth/customer/register",

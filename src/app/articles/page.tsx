@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { articles } from "@/lib/data/mock-data";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Buying guide",
-  description: "VanStro buying guides for cabinets, vanities, baseboards and pickup planning."
-};
+  description: "VanStro buying guides for cabinets, vanities, baseboards and pickup planning.",
+  path: "/articles",
+  image: "/assets/resource-gallery.png"
+});
 
 export default function ArticlesPage() {
   return (

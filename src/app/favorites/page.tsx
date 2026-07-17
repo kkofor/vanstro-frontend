@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { FavoritesClient } from "@/components/product/FavoritesClient";
+import { buildPrivateMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Favorites",
-  description: "Saved VanStro products for future cart and checkout workflows."
-};
+export const metadata: Metadata = buildPrivateMetadata(
+  "Favorites",
+  "Saved VanStro products for future cart and checkout workflows.",
+  "/favorites"
+);
 
 export default function FavoritesPage() {
   return (

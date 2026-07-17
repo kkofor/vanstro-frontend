@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SecondaryPageHero } from "@/components/layout/SecondaryPageHero";
-import { FORM_ENDPOINTS } from "@/lib/api/form-endpoints";
+import { PublicSubmissionForm } from "@/components/forms/PublicSubmissionForm";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "经销商申请",
   description:
     "申请成为 VanStro 经销商伙伴，提交公司资料、服务区域、运营能力和本地支持覆盖信息供审核。",
-  alternates: {
-    canonical: "/zh/dealers/apply"
-  }
-};
+  path: "/zh/dealers/apply",
+  image: "/assets/generated/dealer-program-handshake-v1.webp",
+  locale: "zh_CN",
+  languages: { "en-CA": "/dealers/apply", "zh-CN": "/zh/dealers/apply" }
+});
 
 const applicationSummary = [
   ["审核方式", "逐案商业审核"],
@@ -77,11 +79,11 @@ export default function DealerApplicationZhPage() {
 
       <section className="page-panel dealer-application-panel">
         <div className="container dealer-application-layout">
-          <form
+          <PublicSubmissionForm
             className="form-panel dealer-application-form"
             id="application-form"
-            action={FORM_ENDPOINTS.dealerApplication}
-            method="post"
+            kind="dealer-application"
+            locale="zh-CN"
           >
             <input type="hidden" name="source" value="zh-dealer-application-page" />
 
@@ -232,7 +234,7 @@ export default function DealerApplicationZhPage() {
               </button>
               <p>符合条件的申请通常会在内部审核后收到跟进。</p>
             </div>
-          </form>
+          </PublicSubmissionForm>
 
           <aside className="dealer-application-aside" aria-label="申请准备">
             <section className="dealer-application-summary">

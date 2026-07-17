@@ -5,10 +5,10 @@ import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
-  COOKIE_PREFERENCES_OPEN_EVENT,
   COOKIE_PREFERENCES_SAVED_EVENT,
   hasCookiePreferenceRecord,
   makeCookiePreferences,
+  requestCookiePreferencesOpen,
   writeCookiePreferences
 } from "@/lib/privacy/cookie-preferences";
 
@@ -31,7 +31,7 @@ export function CookieBar() {
   }, []);
 
   const openPreferences = () => {
-    window.dispatchEvent(new Event(COOKIE_PREFERENCES_OPEN_EVENT));
+    requestCookiePreferencesOpen();
   };
 
   const acceptAll = () => {
@@ -65,7 +65,13 @@ export function CookieBar() {
   if (!visible || normalizedPathname === "/cookie-settings") return null;
 
   return (
-    <aside className="cookie-bar" role="dialog" aria-labelledby="cookie-notice-title">
+    <aside
+      className="cookie-bar"
+      role="dialog"
+      aria-labelledby="cookie-notice-title"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       <div className="cookie-inner">
         <button
           className="cookie-close"

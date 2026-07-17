@@ -116,3 +116,7 @@ Pause and ask the user before:
 - Issue specific rework requirements when evidence is incomplete or invalid.
 - Unlock and dispatch newly ready goals as dependencies complete.
 - Pause at every Approval Boundary and ask the user before continuing.
+
+## G13 Approved Remediation Amendment
+
+On 2026-07-16 the user explicitly approved a post-audit G13 to verify the supplied product-issue workbook, repair confirmed frontend product-content defects, and revalidate the complete current MB01 catalog. This approval covers the minimum required catalog generation, PDP presentation, product filters, verification scripts, and audit evidence changes. It does not authorize a redesign, dependency change, commit, push, deployment, production write, or external integration write.

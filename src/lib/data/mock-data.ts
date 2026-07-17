@@ -579,7 +579,7 @@ export const articles: ArticleSummary[] = [
     excerpt: "A practical guide for planning cabinet widths, heights, clearances and filler pieces.",
     publishedAt: "2026-06-10T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/original-site/img-b05.gif"),
+      url: assetPath("/assets/articles/cabinet-measuring-guide.gif"),
       alt: "Kitchen storage and cabinet planning"
     }
   },
@@ -590,7 +590,7 @@ export const articles: ArticleSummary[] = [
     excerpt: "Review white cabinet finishes, primed trim materials and care notes before starting your order.",
     publishedAt: "2026-06-11T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/original-site/img-b02.gif"),
+      url: assetPath("/assets/articles/cabinet-finishes-guide.gif"),
       alt: "Cabinet finish materials"
     }
   },
@@ -601,7 +601,7 @@ export const articles: ArticleSummary[] = [
     excerpt: "Understand delivery coverage, local dealer pickup and order handoff after checkout.",
     publishedAt: "2026-06-12T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/original-site/img-b03.gif"),
+      url: assetPath("/assets/articles/dealer-pickup-delivery-guide.gif"),
       alt: "Home materials prepared for pickup"
     }
   }

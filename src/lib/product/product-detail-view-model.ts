@@ -111,38 +111,6 @@ export function buildSpecRows(specifications: Record<string, string>): Specifica
   return [...orderedRows, ...remainingRows];
 }
 
-function defaultReviewCount(productId: string) {
-  const counts: Record<string, number> = {
-    "269": 4078,
-    "414": 2146,
-    "357": 1389,
-    "407": 4078
-  };
-
-  return counts[productId] ?? 128;
-}
-
-function createDefaultReviews(): ProductReview[] {
-  return [
-    {
-      id: "static-review-clear-dimensions",
-      name: "M. Chen",
-      title: "Clear dimensions and easy pickup",
-      body: "The cabinet details matched the order notes, and the pickup stock was confirmed before checkout.",
-      rating: 5,
-      verifiedBuyer: true
-    },
-    {
-      id: "static-review-project-order",
-      name: "Project buyer",
-      title: "Good fit for staged renovation orders",
-      body: "Useful when planning multiple rooms because SKU, finish, package quantity and fulfillment stay together.",
-      rating: 4,
-      verifiedBuyer: true
-    }
-  ];
-}
-
 function createDefaultQuestions(product: ProductDetail): ProductQuestion[] {
   return [
     {
@@ -232,12 +200,12 @@ export function createProductDetailViewModel(
     savingsLabel: getSavingsLabel(product),
     productHighlights: product.productHighlights ?? [],
     reviewSummary: product.ratingSummary ?? {
-      average: 4.4,
-      count: defaultReviewCount(product.id),
-      sourceLabel: "Based on verified product and fulfillment feedback.",
+      average: 0,
+      count: 0,
+      sourceLabel: "No published reviews.",
       writeReviewEnabled: true
     },
-    reviews: product.reviews ?? createDefaultReviews(),
+    reviews: product.reviews ?? [],
     questions: product.questions ?? createDefaultQuestions(product),
     completeProjectProducts: selectCompleteProjectProducts(product, allProducts)
   };

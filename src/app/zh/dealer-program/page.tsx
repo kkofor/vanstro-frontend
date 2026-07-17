@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { assetPath } from "@/lib/assets";
+import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "经销商计划",
   description:
     "了解 VanStro 经销商计划，包括平台责任、经销商责任、申请审核、运营边界和相关政策要求。",
-  alternates: {
-    canonical: "/zh/dealer-program"
-  }
-};
+  path: "/zh/dealer-program",
+  image: "/assets/generated/dealer-program-handshake-v1.webp",
+  locale: "zh_CN",
+  languages: { "en-CA": "/dealer-program", "zh-CN": "/zh/dealer-program" }
+});
 
 const atAGlance = [
   ["VanStro 角色", "产品供应平台、目录、结账、产品信息和经销商网络支持。"],

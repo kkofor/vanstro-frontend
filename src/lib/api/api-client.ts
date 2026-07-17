@@ -8,6 +8,8 @@ import {
   Cart,
   CategorySummary,
   CartOrderInput,
+  CheckoutSession,
+  CheckoutSessionInput,
   Dealer,
   DealerApplicationInput,
   DirectOrderInput,
@@ -25,7 +27,8 @@ import {
   ProductReviewSubmissionInput,
   ProductSummary,
   ProductUpsertInput,
-  RegisterInput
+  RegisterInput,
+  WebsiteApiProduct
 } from "./api-contract";
 import {
   ContactLeadInput,
@@ -44,6 +47,21 @@ import {
   ProductReviewModerationInput,
   SupportHandoffInput
 } from "./dashboard-contract";
+import {
+  arrayOf,
+  RuntimeValidator,
+  validateApiResult,
+  validateAuthSession,
+  validateCart,
+  validateCheckoutSession,
+  validateContactLeadResult,
+  validateDealer,
+  validateDealerApplicationResult,
+  validateFavoriteItem,
+  validateOk,
+  validateWebsiteApiProduct
+} from "./runtime-validation";
+import { canonicalProductIdFor, cartProductIdentityFor } from "./product-identity";
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
@@ -87,7 +105,8 @@ function withQuery(
 
 async function apiFetch<T>(
   path: string,
-  init: RequestInit = {}
+  init: RequestInit = {},
+  validateData?: RuntimeValidator<T>
 ): Promise<ApiResult<T>> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
@@ -108,25 +127,43 @@ async function apiFetch<T>(
   const payload = await response.json().catch(() => null);
 
   if (!response.ok) {
+    const errorPayload = payload && typeof payload === "object"
+      ? (payload as { error?: unknown })
+      : undefined;
+    const nestedError = errorPayload?.error && typeof errorPayload.error === "object"
+      ? (errorPayload.error as { code?: unknown; message?: unknown; fields?: unknown })
+      : undefined;
     throw new VanstroApiError({
       status: response.status,
-      code: payload?.error?.code ?? "API_ERROR",
-      message: payload?.error?.message ?? "Request failed",
-      fields: payload?.error?.fields
+      code: typeof nestedError?.code === "string" ? nestedError.code : "API_ERROR",
+      message:
+        typeof errorPayload?.error === "string"
+          ? errorPayload.error
+          : typeof nestedError?.message === "string"
+            ? nestedError.message
+            : `Request failed with status ${response.status}.`,
+      fields:
+        nestedError?.fields && typeof nestedError.fields === "object"
+          ? (nestedError.fields as Record<string, string>)
+          : undefined
     });
   }
 
-  const cartToken = payload?.meta?.cartToken;
+  const validated = validateApiResult(
+    payload,
+    validateData ?? ((value) => value as T)
+  );
+  const cartToken = (validated.meta as { cartToken?: unknown } | undefined)?.cartToken;
   if (typeof cartToken === "string") browserStorage()?.setItem(CART_TOKEN_KEY, cartToken);
 
-  return payload as ApiResult<T>;
+  return validated;
 }
 
-function postJson<T>(path: string, body: unknown) {
+function postJson<T>(path: string, body: unknown, validateData?: RuntimeValidator<T>) {
   return apiFetch<T>(path, {
     method: "POST",
     body: JSON.stringify(body)
-  });
+  }, validateData);
 }
 
 function putJson<T>(path: string, body: unknown) {
@@ -143,7 +180,43 @@ function patchJson<T>(path: string, body: unknown) {
   });
 }
 
+const canonicalProductIds = new Map<string, string>();
+
+function productIdentityKey(product: Pick<ProductSummary, "id" | "slug" | "sku">) {
+  return `${product.id}:${product.slug}:${product.sku}`;
+}
+
+async function resolveCanonicalProductId(
+  product: Pick<ProductSummary, "id" | "slug" | "sku">
+) {
+  const key = productIdentityKey(product);
+  const cached = canonicalProductIds.get(key);
+  if (cached) return cached;
+
+  const response = await apiFetch<WebsiteApiProduct>(
+    API_ENDPOINTS.productDetail(encodeURIComponent(product.slug)),
+    {},
+    validateWebsiteApiProduct
+  );
+  const canonical = response.data;
+
+  let canonicalId: string;
+  try {
+    canonicalId = canonicalProductIdFor(product, canonical);
+  } catch (error) {
+    throw new VanstroApiError({
+      status: 409,
+      code: "PRODUCT_IDENTITY_MISMATCH",
+      message: error instanceof Error ? error.message : "Product identity does not match."
+    });
+  }
+
+  canonicalProductIds.set(key, canonicalId);
+  return canonicalId;
+}
+
 export const vanstroApi = {
+  resolveCanonicalProductId,
   getHomeProducts(input?: { locale?: Locale; limit?: number }) {
     return apiFetch<ProductSummary[]>(
       withQuery(API_ENDPOINTS.homeProducts, input)
@@ -169,8 +242,10 @@ export const vanstroApi = {
     productId: string,
     input?: { locale?: Locale; postalCode?: string }
   ) {
-    return apiFetch<ProductDetail>(
-      withQuery(API_ENDPOINTS.productDetail(productId), input)
+    return apiFetch<WebsiteApiProduct>(
+      withQuery(API_ENDPOINTS.productDetail(productId), input),
+      {},
+      validateWebsiteApiProduct
     );
   },
   createProduct(input: ProductUpsertInput) {
@@ -225,16 +300,27 @@ export const vanstroApi = {
       input
     );
   },
+  async addCartProduct(product: ProductSummary, quantity: number) {
+    return postJson<Cart>(
+      API_ENDPOINTS.cartItems,
+      { ...cartProductIdentityFor(product), quantity },
+      validateCart
+    );
+  },
   addCartItem(input: { productId: string; quantity: number }) {
-    return postJson<Cart>(API_ENDPOINTS.cartItems, input);
+    return postJson<Cart>(API_ENDPOINTS.cartItems, input, validateCart);
   },
   getCart() {
-    return apiFetch<Cart>(API_ENDPOINTS.cart);
+    return apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
   },
-  createCheckoutSession(input: { email: string; fulfillment: "pickup" | "delivery" }) {
-    return postJson<{ id: string; status: "pending"; expiresAt: string; total: { amount: number; currency: string } }>(
-      "/checkout/session",
-      input
+  createCheckoutSession(input: CheckoutSessionInput) {
+    return postJson<CheckoutSession>(API_ENDPOINTS.checkoutSession, input, validateCheckoutSession);
+  },
+  getPaymentSession(sessionId: string, token: string) {
+    return apiFetch<CheckoutSession>(
+      withQuery(API_ENDPOINTS.paymentSession(encodeURIComponent(sessionId)), { token }),
+      {},
+      validateCheckoutSession
     );
   },
   removeCartItem(cartItemId: string) {
@@ -243,33 +329,51 @@ export const vanstroApi = {
     });
   },
   clearCart() {
-    return apiFetch<{ ok: true }>(API_ENDPOINTS.cart, { method: "DELETE" });
+    return apiFetch<{ ok: true }>(API_ENDPOINTS.cart, { method: "DELETE" }, validateOk);
   },
   async setCartProductQuantity(productId: string, quantity: number) {
-    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart);
+    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
     const item = cart.data.items.find((candidate) => candidate.product.id === productId);
     if (!item) throw new VanstroApiError({ status: 404, code: "CART_ITEM_NOT_FOUND", message: "Cart item not found." });
-    return patchJson<Cart>(API_ENDPOINTS.cartItem(item.id), { quantity });
+    return patchJson<Cart>(API_ENDPOINTS.cartItem(item.id), { quantity }).then((result) =>
+      validateApiResult(result, validateCart)
+    );
   },
   async removeCartProduct(productId: string) {
-    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart);
+    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
     const item = cart.data.items.find((candidate) => candidate.product.id === productId);
     if (!item) return cart;
-    return apiFetch<Cart>(API_ENDPOINTS.cartItem(item.id), { method: "DELETE" });
+    return apiFetch<Cart>(API_ENDPOINTS.cartItem(item.id), { method: "DELETE" }, validateCart);
+  },
+  async addFavoriteProduct(product: ProductSummary) {
+    const productId = await resolveCanonicalProductId(product);
+    const result = await postJson<FavoriteItem>(
+      API_ENDPOINTS.favorites,
+      { productId },
+      validateFavoriteItem
+    );
+    return { ...result, canonicalProductId: productId };
   },
   addFavorite(productId: string) {
-    return postJson<FavoriteItem>(API_ENDPOINTS.favorites, { productId });
+    return postJson<FavoriteItem>(API_ENDPOINTS.favorites, { productId }, validateFavoriteItem);
   },
   getFavorites() {
-    return apiFetch<FavoriteItem[]>(API_ENDPOINTS.favorites);
+    return apiFetch<FavoriteItem[]>(API_ENDPOINTS.favorites, {}, arrayOf(validateFavoriteItem));
   },
   removeFavorite(productId: string) {
     return apiFetch<{ ok: true }>(API_ENDPOINTS.favorite(productId), {
       method: "DELETE"
-    });
+    }, validateOk);
+  },
+  async removeFavoriteProduct(product: ProductSummary) {
+    const productId = await resolveCanonicalProductId(product);
+    await apiFetch<{ ok: true }>(API_ENDPOINTS.favorite(productId), {
+      method: "DELETE"
+    }, validateOk);
+    return { productId };
   },
   getDealers(input?: { province?: string; postalCode?: string }) {
-    return apiFetch<Dealer[]>(withQuery(API_ENDPOINTS.dealers, input));
+    return apiFetch<Dealer[]>(withQuery(API_ENDPOINTS.dealers, input), {}, arrayOf(validateDealer));
   },
   createDirectOrder(input: DirectOrderInput) {
     return postJson<Order>(API_ENDPOINTS.directOrder, input);
@@ -278,14 +382,14 @@ export const vanstroApi = {
     return postJson<Order>(API_ENDPOINTS.cartOrder, input);
   },
   login(input: LoginInput) {
-    return postJson<AuthSession>(API_ENDPOINTS.login, input).then((result) => {
+    return postJson<AuthSession>(API_ENDPOINTS.login, input, validateAuthSession).then((result) => {
       if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
       window.dispatchEvent(new Event("vanstro-authenticated"));
       return result;
     });
   },
   register(input: RegisterInput) {
-    return postJson<AuthSession>(API_ENDPOINTS.register, input).then((result) => {
+    return postJson<AuthSession>(API_ENDPOINTS.register, input, validateAuthSession).then((result) => {
       if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
       window.dispatchEvent(new Event("vanstro-authenticated"));
       return result;
@@ -294,7 +398,8 @@ export const vanstroApi = {
   submitDealerApplication(input: DealerApplicationInput) {
     return postJson<{ applicationId: string; status: "submitted" | "under_review" }>(
       API_ENDPOINTS.dealerApplications,
-      input
+      input,
+      validateDealerApplicationResult
     );
   },
   recordConsentEvent(input: {
@@ -337,7 +442,8 @@ export const vanstroApi = {
   submitContactLead(input: ContactLeadInput) {
     return postJson<{ leadId: string; status: "new" | "routed" }>(
       DASHBOARD_API_ENDPOINTS.contactLeads,
-      input
+      input,
+      validateContactLeadResult
     );
   },
   requestSupportHandoff(input: SupportHandoffInput) {

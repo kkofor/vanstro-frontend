@@ -19,6 +19,17 @@ type TiledeskWindow = Window & {
   tiledeskSettings?: Record<string, unknown>;
 };
 
+function teardownTiledesk(windowRef: TiledeskWindow) {
+  windowRef.Tiledesk?.("hide");
+  windowRef.Tiledesk?.("destroy");
+  document.getElementById("tiledesk-jssdk")?.remove();
+  document
+    .querySelectorAll('[id^="tiledesk"], iframe[src*="tiledesk.com"]')
+    .forEach((element) => element.remove());
+  delete windowRef.Tiledesk;
+  delete windowRef.tiledeskSettings;
+}
+
 const tiledeskProjectId = process.env.NEXT_PUBLIC_TILEDESK_PROJECT_ID?.trim();
 const tiledeskDepartmentId = process.env.NEXT_PUBLIC_TILEDESK_DEPARTMENT_ID?.trim();
 const tiledeskWidgetUrl =
@@ -45,18 +56,15 @@ function createQueuedTiledesk(windowRef: TiledeskWindow) {
 
 export function CustomerSupportWidget() {
   const pathname = usePathname();
-  const { cartCount, selectedDealerName, postalCode } = useStorefront();
+  const { selectedDealerName } = useStorefront();
   const [allowThirdPartySupport, setAllowThirdPartySupport] = useState(false);
 
   const customAttributes = useMemo(
     () => ({
-      source: "vanstro-web",
       currentPath: pathname,
-      selectedDealerName,
-      postalCode,
-      cartCount
+      selectedDealerName
     }),
-    [cartCount, pathname, postalCode, selectedDealerName]
+    [pathname, selectedDealerName]
   );
 
   useEffect(() => {
@@ -72,9 +80,13 @@ export function CustomerSupportWidget() {
   }, []);
 
   useEffect(() => {
-    if (!tiledeskProjectId || !allowThirdPartySupport) return;
-
     const windowRef = window as TiledeskWindow;
+    if (!allowThirdPartySupport) {
+      teardownTiledesk(windowRef);
+      return;
+    }
+    if (!tiledeskProjectId) return;
+
     windowRef.tiledeskSettings = {
       projectid: tiledeskProjectId,
       departmentID: tiledeskDepartmentId || undefined,
@@ -112,6 +124,10 @@ export function CustomerSupportWidget() {
     script.src = tiledeskWidgetUrl;
     document.head.appendChild(script);
   }, [allowThirdPartySupport, customAttributes]);
+
+  useEffect(() => {
+    return () => teardownTiledesk(window as TiledeskWindow);
+  }, []);
 
   useEffect(() => {
     if (!tiledeskProjectId || !allowThirdPartySupport) return;

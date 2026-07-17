@@ -1879,7 +1879,7 @@ button {
   padding: 32px 0;
 }
 
-.footer-group h3 {
+.footer-group h2 {
   margin: 0 0 12px;
   color: var(--color-ink);
   font-size: 14px;
@@ -1909,7 +1909,7 @@ button {
   text-transform: uppercase;
 }
 
-.footer-help h3 {
+.footer-help h2 {
   margin: 0;
   color: var(--color-ink);
   font-size: 24px;
@@ -2403,6 +2403,10 @@ body.cookie-drawer-open {
   .social-links span:hover {
     transform: none;
   }
+}
+
+body:has(.pdp-page) .site-footer {
+  margin-bottom: 100px;
 }
 
 .support-widget {
@@ -8528,6 +8532,45 @@ body.cookie-drawer-open {
   box-shadow: 0 0 0 2px var(--color-accent-dark);
 }
 
+.pdp-page .pdp-configuration-selector {
+  display: grid;
+  gap: 8px;
+}
+
+.pdp-page .pdp-configuration-selector > strong {
+  color: var(--color-ink);
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.pdp-page .pdp-configuration-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pdp-page .pdp-configuration-options button {
+  min-height: 38px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: white;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 7px 12px;
+}
+
+.pdp-page .pdp-configuration-options button:hover,
+.pdp-page .pdp-configuration-options button:focus-visible,
+.pdp-page .pdp-configuration-options button.active {
+  border-color: var(--color-accent-dark);
+}
+
+.pdp-page .pdp-configuration-options button.active {
+  box-shadow: inset 0 0 0 1px var(--color-accent-dark);
+}
+
 .pdp-page .pdp-finish-option input {
   position: absolute;
   width: 1px;
@@ -11910,5 +11953,141 @@ body.review-modal-open {
 
   .dealer-program-cta-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Package B list view and Package D accessibility/responsive support. */
+.cookie-bar {
+  z-index: 110;
+}
+
+.cookie-preference-backdrop {
+  z-index: 120;
+}
+
+.catalog-product-grid.list-view {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.catalog-product-grid.list-view .catalog-product-card {
+  grid-template-columns: minmax(160px, 210px) minmax(0, 1fr);
+  grid-template-rows: minmax(180px, auto);
+}
+
+.catalog-product-grid.list-view .catalog-product-image {
+  min-height: 180px;
+  aspect-ratio: auto;
+}
+
+.catalog-product-grid.list-view .catalog-product-body {
+  min-width: 0;
+  align-content: center;
+  padding: 16px;
+}
+
+.catalog-product-grid.list-view .catalog-product-card h3,
+.catalog-product-grid.list-view .catalog-key-spec {
+  min-height: 0;
+}
+
+.pdp-page .pdp-meta-line dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+
+@media (min-width: 761px) {
+  .catalog-layout {
+    height: clamp(420px, calc(100dvh - 112px), 920px);
+    min-height: 0;
+  }
+
+  .catalog-filter-panel,
+  .catalog-results {
+    min-width: 0;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 840px) {
+  .catalog-layout {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .catalog-results .catalog-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .catalog-results .catalog-search {
+    grid-column: 1 / -1;
+  }
+
+  .catalog-view-toggle {
+    justify-self: end;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 768px) {
+  .catalog-layout {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    max-height: none;
+  }
+
+  .catalog-filter-panel,
+  .catalog-results {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    overscroll-behavior: auto;
+    scrollbar-gutter: auto;
+  }
+
+  .catalog-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .catalog-product-grid.list-view .catalog-product-card {
+    grid-template-columns: minmax(96px, 32%) minmax(0, 1fr);
+    grid-template-rows: minmax(150px, auto);
+  }
+
+  .catalog-product-grid.list-view .catalog-product-image {
+    min-height: 150px;
+    padding: 4px;
+  }
+
+  .catalog-product-grid.list-view .catalog-product-body {
+    gap: 5px;
+    padding: 10px;
+  }
+
+  .catalog-product-grid.list-view .catalog-promo-badge {
+    top: 6px;
+    left: 6px;
+    max-width: calc(100% - 12px);
+    padding: 4px 6px;
+    line-height: 1.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-bar,
+  .cookie-preference-backdrop,
+  .cookie-preference-drawer {
+    animation: none;
+  }
+
+  .pdp-desktop-buy-bar {
+    animation: none;
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    visibility: visible;
   }
 }

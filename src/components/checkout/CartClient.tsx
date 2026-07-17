@@ -17,17 +17,30 @@ export function CartClient() {
   const {
     cartItems,
     cartSubtotal,
+    cartState,
+    mutationState,
     selectedDealerName,
     updateCartQuantity,
     removeFromCart
   } = useStorefront();
 
+  const cartMutationPending = mutationState.status === "loading" &&
+    mutationState.action?.includes("cart");
+
   function changeQuantity(productId: string, quantity: number) {
-    updateCartQuantity(productId, quantity);
+    void updateCartQuantity(productId, quantity);
   }
 
   function removeItem(productId: string) {
-    removeFromCart(productId);
+    void removeFromCart(productId);
+  }
+
+  if (cartState.status === "loading") {
+    return <div className="empty-panel"><h2>Loading your cart</h2><p>Checking saved items and current pricing.</p></div>;
+  }
+
+  if (cartState.status === "error" && !cartItems.length) {
+    return <div className="empty-panel"><h2>Your cart is unavailable</h2><p>{cartState.error}</p></div>;
   }
 
   if (!cartItems.length) {
@@ -67,6 +80,7 @@ export function CartClient() {
                     changeQuantity(item.product.id, item.quantity - 1)
                   }
                   aria-label="Decrease quantity"
+                  disabled={cartMutationPending}
                 >
                   <Minus size={15} strokeWidth={2} />
                 </button>
@@ -77,6 +91,7 @@ export function CartClient() {
                     changeQuantity(item.product.id, item.quantity + 1)
                   }
                   aria-label="Increase quantity"
+                  disabled={cartMutationPending}
                 >
                   <Plus size={15} strokeWidth={2} />
                 </button>
@@ -89,6 +104,7 @@ export function CartClient() {
                 type="button"
                 onClick={() => removeItem(item.product.id)}
                 aria-label={`Remove ${item.product.name}`}
+                disabled={cartMutationPending}
               >
                 <Trash2 size={18} strokeWidth={2} />
               </button>
@@ -115,6 +131,9 @@ export function CartClient() {
         <Link className="button button-primary" href="/checkout">
           Continue to checkout
         </Link>
+        {mutationState.status === "error" ? (
+          <p className="quantity-limit-note" aria-live="polite">{mutationState.error}</p>
+        ) : null}
       </aside>
     </div>
   );

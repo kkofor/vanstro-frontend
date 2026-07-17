@@ -6,44 +6,50 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 24
           cache: pnpm
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Configure base path
         shell: bash
         run: |
           if [[ "${{ github.event.repository.name }}" == "${{ github.repository_owner }}.github.io" ]]; then
             echo "NEXT_PUBLIC_BASE_PATH=" >> "$GITHUB_ENV"
+            echo "NEXT_PUBLIC_SITE_URL=https://${{ github.repository_owner }}.github.io" >> "$GITHUB_ENV"
           else
             echo "NEXT_PUBLIC_BASE_PATH=/${{ github.event.repository.name }}" >> "$GITHUB_ENV"
+            echo "NEXT_PUBLIC_SITE_URL=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" >> "$GITHUB_ENV"
           fi
+
+      - name: Restore Next.js build cache
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.mjs') }}-${{ hashFiles('src/**/*.[jt]s', 'src/**/*.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'next.config.mjs') }}-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -51,15 +57,24 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: SEO and security checks
+        run: pnpm run qa:seo-security
+
       - name: Build static site
         run: pnpm run build:pages
 
+      - name: Verify SEO artifacts
+        run: pnpm run qa:seo-artifacts
+
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: ./out
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -68,4 +83,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

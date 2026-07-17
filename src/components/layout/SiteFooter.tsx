@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
+import { HomepageOnly } from "@/components/layout/HomepageOnly";
 import { footerLegalLinks } from "@/content/legalPages";
 import { assetPath } from "@/lib/assets";
 
@@ -166,22 +167,24 @@ export function SiteFooter() {
             </div>
           </div>
 
-          <div className="footer-help">
-            <span>Need help with an order?</span>
-            <h2>Checkout online. Fulfillment stays local.</h2>
-            <p>
-              Your selected VanStro dealer receives the paid order and coordinates
-              pickup, delivery, project support or after-sales service.
-            </p>
-            <div className="footer-help-actions">
-              <Link className="button button-primary" href="/products">
-                Shop products
-              </Link>
-              <Link className="button button-secondary" href="/contact">
-                Contact support
-              </Link>
+          <HomepageOnly>
+            <div className="footer-help">
+              <span>Need help with an order?</span>
+              <h2>Checkout online. Fulfillment stays local.</h2>
+              <p>
+                Your selected VanStro dealer receives the paid order and coordinates
+                pickup, delivery, project support or after-sales service.
+              </p>
+              <div className="footer-help-actions">
+                <Link className="button button-primary" href="/products">
+                  Shop products
+                </Link>
+                <Link className="button button-secondary" href="/contact">
+                  Contact support
+                </Link>
+              </div>
             </div>
-          </div>
+          </HomepageOnly>
         </div>
 
         <div className="footer-link-grid">

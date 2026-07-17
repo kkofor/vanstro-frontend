@@ -1833,6 +1833,10 @@ button {
   padding: 42px 0 32px;
 }
 
+.footer-top:not(:has(.footer-help)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .footer-brand {
   display: grid;
   align-content: start;

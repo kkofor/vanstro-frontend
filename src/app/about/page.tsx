@@ -9,8 +9,7 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Learn about VanStro Global Supply Inc., a Canadian building materials supply and distribution platform headquartered in Winnipeg, Manitoba.",
   path: "/about",
-  image: "/assets/generated/vanstro-hero-white-v1.webp",
-  languages: { "en-CA": "/about", "zh-CN": "/zh/about" }
+  image: "/assets/generated/vanstro-hero-white-v1.webp"
 });
 
 const apartItems = [
@@ -27,7 +26,7 @@ const apartItems = [
   {
     title: "Local service, national support",
     text:
-      "Authorized local dealers combine local market knowledge with the resources of a national distribution platform."
+      "Participating independent dealers combine local market knowledge with access to a national product distribution platform."
   },
   {
     title: "Quality you can trust",
@@ -101,7 +100,7 @@ export default function AboutPage() {
             <span>Headquartered in Winnipeg, Manitoba</span>
             <span>Canadian building-materials supply platform</span>
             <span>Cabinets, vanities, wall panels, baseboards, and related products</span>
-            <span>Authorized local dealer distribution network</span>
+            <span>Independent local dealer distribution network</span>
           </aside>
         </div>
       </section>
@@ -127,9 +126,9 @@ export default function AboutPage() {
               throughout the distribution process.
             </p>
             <p>
-              Our products are distributed through a network of authorized local
-              dealers who provide delivery coordination, customer support,
-              installation assistance where offered, and after-sales service.
+              Our products are distributed through participating independent local
+              dealers. Each dealer decides which delivery coordination, customer
+              support, installation assistance and after-sales services it offers.
             </p>
             <p>
               This allows customers to benefit from the strength of a national
@@ -142,31 +141,29 @@ export default function AboutPage() {
       <section className="page-panel about-profile-panel">
         <div className="container">
           <div className="about-profile-section-heading narrow">
-            <h2>A different way to build a distribution network</h2>
+            <h2>A practical independent-dealer distribution model</h2>
             <p>
-              Traditional distribution models often require dealers to invest
-              heavily in inventory, marketing, customer acquisition, and operating
-              infrastructure before they can begin growing.
+              VanStro supplies building products and product information to
+              participating independent dealers serving local customers.
             </p>
           </div>
           <div className="about-profile-statement">
             <p>
-              VanStro takes a different approach. By centralizing branding,
-              marketing, customer development, supply chain management, and
-              operational support, VanStro supports many of the functions that
-              traditionally required significant time, capital, and resources from
-              independent dealers.
+              VanStro manages product sourcing, product information and supply
+              coordination. Each participating dealer remains an independent
+              business and controls its own operations, staffing and dealer-provided
+              services.
             </p>
             <p>
-              As a result, our partners can focus on customer communication,
-              order execution, and local service support, while inventory risk,
-              marketing, customer development, and supply chain management are
-              supported by the VanStro system.
+              Dealers independently decide how to market their businesses, develop
+              customer relationships and offer local services. Any dealer service
+              agreement, pricing, scheduling, payment and workmanship responsibility
+              is between the dealer and the customer.
             </p>
             <p>
-              We believe success should not be built on large investments and
-              high levels of risk. It should be built on continuous opportunities
-              and a reliable operating system.
+              Each dealer remains responsible for its own business decisions and
+              results. Customer referrals, orders, revenue and profit are not
+              guaranteed. Commercial terms must be confirmed in writing.
             </p>
           </div>
         </div>

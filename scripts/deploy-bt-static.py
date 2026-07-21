@@ -57,6 +57,11 @@ def parse_args() -> argparse.Namespace:
         description="从指定 Git 提交构建静态站点，通过宝塔 API 上传到全新版本目录并切换站点根目录。"
     )
     parser.add_argument("--commit", default="HEAD", help="要部署的 Git 提交，默认 HEAD")
+    parser.add_argument(
+        "--include-tracked-worktree",
+        action="store_true",
+        help="在指定提交之上包含当前 tracked 工作区差异；不会包含 untracked 文件",
+    )
     parser.add_argument("--domain", default="vanstro.ca", help="宝塔站点主域名")
     parser.add_argument("--www-domain", default="www.vanstro.ca", help="附加 www 域名；传空字符串可禁用")
     parser.add_argument("--server-ip", required=True, help="不依赖 DNS 的 HTTP 验证目标 IP")
@@ -167,9 +172,9 @@ class BtApi:
             print(f"上传 {name}: {offset}/{total} ({offset * 100 / total:.1f}%)", flush=True)
 
 
-def ensure_clean_tracked_worktree(repo: Path) -> None:
+def ensure_tracked_worktree(repo: Path, *, allow_changes: bool) -> None:
     status = run(["git", "-C", str(repo), "status", "--porcelain=v1", "--untracked-files=no"])
-    if status:
+    if status and not allow_changes:
         raise DeploymentError("tracked 工作区不干净；为避免部署未提交源码，已停止")
     run(["git", "-C", str(repo), "diff", "--check"])
 
@@ -183,6 +188,23 @@ def export_commit(repo: Path, commit_sha: str, destination: Path) -> None:
     run(["git", "-C", str(repo), "archive", "--format=tar", "-o", str(archive_path), commit_sha])
     with tarfile.open(archive_path, "r") as archive:
         archive.extractall(destination, filter="data")
+
+
+def export_tracked_worktree(repo: Path, commit_sha: str, destination: Path) -> None:
+    export_commit(repo, commit_sha, destination)
+    diff_path = destination.parent / "tracked-worktree.patch"
+    with diff_path.open("wb") as output:
+        result = subprocess.run(
+            ["git", "-C", str(repo), "diff", "--binary", "--full-index", commit_sha, "--"],
+            check=False,
+            stdout=output,
+            stderr=subprocess.PIPE,
+        )
+    if result.returncode != 0:
+        message = result.stderr.decode("utf-8", "replace")
+        raise DeploymentError(f"无法导出 tracked 工作区差异：{message}")
+    if diff_path.stat().st_size:
+        run(["git", "apply", "--binary", str(diff_path)], cwd=destination)
 
 
 def build_static_export(source: Path, domain: str) -> Path:
@@ -255,6 +277,7 @@ def build_manifest(output: Path) -> list[dict[str, Any]]:
 def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> None:
     def verify_file(row: dict[str, Any]) -> dict[str, Any] | None:
         path = "/" + urllib.parse.quote(row["path"], safe="/%:@!$&'()*+,;=-._~")
+        cache_busted_path = f"{path}?verify={row['sha256'][:16]}"
         last_error = ""
         for attempt in range(3):
             try:
@@ -262,15 +285,20 @@ def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> 
                     "Host": domain,
                     "User-Agent": "VanStro-Integrity/1.0",
                     "Accept-Encoding": "identity",
+                    "Cache-Control": "no-cache, no-store, max-age=0",
+                    "Pragma": "no-cache",
                 }
                 connection = http.client.HTTPConnection(server_ip, 80, timeout=30)
-                connection.request("GET", path, headers=headers)
+                connection.request("GET", cache_busted_path, headers=headers)
                 response = connection.getresponse()
                 body = response.read()
                 redirect = response.getheader("Location", "")
                 connection.close()
                 if response.status in {301, 302, 307, 308} and redirect.startswith(f"https://{domain}"):
-                    secure_path = urllib.parse.urlsplit(redirect).path or path
+                    secure_url = urllib.parse.urlsplit(redirect)
+                    secure_path = secure_url.path or path
+                    if secure_url.query:
+                        secure_path += f"?{secure_url.query}"
                     connection = http.client.HTTPSConnection(
                         server_ip,
                         443,
@@ -296,6 +324,20 @@ def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> 
                 last_error = f"{type(error).__name__}: {error}"
                 time.sleep(0.3 * (attempt + 1))
         return {"path": row["path"], "error": last_error}
+
+    readiness_row = next(
+        (row for row in manifest if row["path"].endswith("/_clientMiddlewareManifest.js")),
+        next(row for row in manifest if row["path"] == "index.html"),
+    )
+    deadline = time.monotonic() + 30
+    while True:
+        readiness_failure = verify_file(readiness_row)
+        if readiness_failure is None:
+            break
+        if time.monotonic() >= deadline:
+            raise DeploymentError(f"站点切换后新构建未就绪：{readiness_failure!r}")
+        print(f"等待新构建生效：{readiness_row['path']}", flush=True)
+        time.sleep(1)
 
     failures = []
     with ThreadPoolExecutor(max_workers=12) as pool:
@@ -325,7 +367,7 @@ def main() -> int:
     if args.release_suffix and not re.fullmatch(r"[a-zA-Z0-9-]+", args.release_suffix):
         raise DeploymentError("--release-suffix 仅允许字母、数字和连字符")
 
-    ensure_clean_tracked_worktree(repo)
+    ensure_tracked_worktree(repo, allow_changes=args.include_tracked_worktree)
     commit_sha = resolve_commit(repo, args.commit)
     version = commit_sha[:12]
     if args.release_suffix:
@@ -352,7 +394,10 @@ def main() -> int:
         temp = Path(temp_name)
         source = temp / "source"
         source.mkdir()
-        export_commit(repo, commit_sha, source)
+        if args.include_tracked_worktree:
+            export_tracked_worktree(repo, commit_sha, source)
+        else:
+            export_commit(repo, commit_sha, source)
         output = build_static_export(source, args.domain)
         manifest = build_manifest(output)
         archive_path = temp / package_name
@@ -363,6 +408,7 @@ def main() -> int:
             f"commit={commit_sha}\n"
             f"domain={args.domain}\n"
             "build=static-export\n"
+            f"tracked_worktree={'included' if args.include_tracked_worktree else 'excluded'}\n"
             f"archive_sha256={archive_sha256}\n"
         ).encode()
         chunk_size = args.chunk_mib * 1024 * 1024

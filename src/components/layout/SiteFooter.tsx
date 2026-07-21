@@ -172,8 +172,9 @@ export function SiteFooter() {
               <span>Need help with an order?</span>
               <h2>Checkout online. Fulfillment stays local.</h2>
               <p>
-                Your selected VanStro dealer receives the paid order and coordinates
-                pickup, delivery, project support or after-sales service.
+                Your selected participating independent dealer receives the order
+                request and confirms availability and fulfillment arrangements. Any
+                separately offered local services are agreed directly with that dealer.
               </p>
               <div className="footer-help-actions">
                 <Link className="button button-primary" href="/products">

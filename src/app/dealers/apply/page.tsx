@@ -7,22 +7,21 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = buildPageMetadata({
   title: "Dealer application",
   description:
-    "Apply to become a VanStro dealer partner. Share company details, service area, operating capabilities and local support coverage for review.",
+    "Apply to become a VanStro dealer partner. Share company details, proposed dealer service area, operating capabilities and local support coverage for review.",
   path: "/dealers/apply",
-  image: "/assets/generated/dealer-program-handshake-v1.webp",
-  languages: { "en-CA": "/dealers/apply", "zh-CN": "/zh/dealers/apply" }
+  image: "/assets/generated/dealer-program-handshake-v1.webp"
 });
 
 const applicationSummary = [
   ["Review type", "Case-by-case business review"],
   ["Best fit", "Local building-materials, showroom or contractor operators"],
-  ["Required", "Company profile, service area, customer support capability"],
+  ["Required", "Company profile, proposed dealer service area, customer support capability"],
   ["Outcome", "Follow-up only after VanStro review"]
 ];
 
 const requiredItems = [
   "Legal company name and primary contact",
-  "Service city, province and coverage area",
+  "Proposed dealer service city, province and coverage area",
   "Business type, showroom or trade operation details",
   "Dealer services you can coordinate locally",
   "Any current order, catalog or product category focus"
@@ -38,9 +37,9 @@ const capabilityOptions = [
 ];
 
 const reviewSteps = [
-  ["1", "Submit profile", "Send company, contact, service area and operating details."],
-  ["2", "Coverage review", "VanStro checks market fit, local coverage and network balance."],
-  ["3", "Policy alignment", "Qualified candidates review customer handoff, returns and service boundaries."],
+  ["1", "Submit profile", "Send company, contact, proposed dealer service area and operating details."],
+  ["2", "Participation review", "VanStro reviews the applicant's customer support capacity in its proposed dealer service area."],
+  ["3", "Transaction procedures", "Qualified candidates review procedures for VanStro orders, returns, privacy and independent-dealer disclosure."],
   ["4", "Written terms", "Final activation requires written approval or agreement."]
 ];
 
@@ -164,11 +163,11 @@ export default function DealerApplicationPage() {
                   </select>
                 </div>
                 <div className="field">
-                  <label htmlFor="serviceArea">Service area</label>
+                  <label htmlFor="serviceArea">Proposed dealer service area</label>
                   <input
                     id="serviceArea"
                     name="serviceArea"
-                    placeholder="City, region, or radius served"
+                    placeholder="City, region, or service radius"
                     required
                   />
                 </div>
@@ -211,9 +210,14 @@ export default function DealerApplicationPage() {
             <div className="dealer-application-guidance">
               <strong>Before you submit</strong>
               <p>
+                Each dealer remains independently owned and operated and manages its
+                own business operations.
+              </p>
+              <p>
                 VanStro reviews dealer applications case by case. Submitting this
-                form does not guarantee approval, assigned territory, pricing,
-                inventory access, lead volume, launch timing or a dealer relationship.
+                form does not guarantee approval, a dealer service area arrangement,
+                pricing, inventory access, customer referrals, orders, revenue,
+                profit, launch timing or a dealer relationship.
               </p>
               <p>
                 Application information may be used for cooperation review, dealer
@@ -236,7 +240,10 @@ export default function DealerApplicationPage() {
               <button className="button button-primary" type="submit">
                 Submit application
               </button>
-              <p>Most qualified applications receive follow-up after internal review.</p>
+              <p>
+                VanStro may contact applicants after review if more information or a
+                discussion is appropriate. A response or timing is not guaranteed.
+              </p>
             </div>
           </PublicSubmissionForm>
 

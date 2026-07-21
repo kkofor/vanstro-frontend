@@ -4,7 +4,6 @@ import { AppChrome } from "@/components/layout/AppChrome";
 import { CookieBar } from "@/components/layout/CookieBar";
 import { CookiePreferenceDrawer } from "@/components/layout/CookiePreferenceDrawer";
 import { StorefrontProvider } from "@/components/storefront/StorefrontProvider";
-import { DocumentLanguage } from "@/components/layout/DocumentLanguage";
 import { organizationSchema, serializeJsonLd } from "@/lib/seo/schema";
 import { getSiteBaseUrl } from "@/lib/seo/site";
 
@@ -26,7 +25,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-CA">
       <body>
-        <DocumentLanguage />
         {schema ? (
           <script
             type="application/ld+json"

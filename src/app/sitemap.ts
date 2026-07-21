@@ -18,11 +18,7 @@ const staticRoutes = [
   "/privacy",
   "/products",
   "/return-policy",
-  "/terms-and-conditions",
-  "/zh/about",
-  "/zh/contact",
-  "/zh/dealer-program",
-  "/zh/dealers/apply"
+  "/terms-and-conditions"
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

@@ -11906,6 +11906,65 @@ body.review-modal-open {
   }
 }
 
+/* Taste mobile pass: improve touch, scrolling, and product scanning without changing desktop. */
+@media (max-width: 760px) {
+  .catalog-category-showcase {
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .catalog-category-showcase::-webkit-scrollbar {
+    display: none;
+  }
+
+  .catalog-filter-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .catalog-save {
+    width: 44px;
+    height: 44px;
+  }
+
+  .pdp-page .pdp-gallery-frame img {
+    transform: scale(1);
+  }
+
+  .pdp-page .pdp-thumb-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pdp-page .pdp-thumb-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pdp-page .pdp-thumb {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .pdp-page .pdp-detail-main {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-quick-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mobile-panel .search-box input {
+    padding-right: 96px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cookie-bar,
   .cookie-preference-backdrop,

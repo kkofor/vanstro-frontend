@@ -11,8 +11,7 @@ export const metadata: Metadata = buildPageMetadata({
   title: "Contact us",
   description: "Contact VanStro for product, order, dealer and project support.",
   path: "/contact",
-  image: "/assets/generated/contact-support-hero-v1.webp",
-  languages: { "en-CA": "/contact", "zh-CN": "/zh/contact" }
+  image: "/assets/generated/contact-support-hero-v1.webp"
 });
 
 const contactRoutes = [
@@ -23,12 +22,12 @@ const contactRoutes = [
   },
   {
     title: "Dealer-assisted fulfillment",
-    text: "For routine delivery, installation, local service, and return questions, your assigned dealer is the first point of contact.",
+    text: "For dealer-provided services, contact the independent dealer you selected or contracted with.",
     icon: Store
   },
   {
     title: "Dealer program inquiries",
-    text: "Interested in joining the VanStro network? Send your company details and service area for review.",
+    text: "Interested in joining the VanStro network? Send your company details and proposed dealer service area for review.",
     icon: UserRoundCheck
   }
 ];
@@ -50,7 +49,7 @@ const quickContacts = [
   },
   {
     title: "Dealer routing",
-    text: "Local fulfillment, delivery coordination, returns, and after-sales service are handled by the assigned dealer.",
+    text: "Local fulfillment and any dealer-provided services are handled by the independent dealer selected for the order.",
     value: "Find local support below",
     href: "#dealer-contacts",
     icon: Store
@@ -65,7 +64,7 @@ const contactDetails = [
   },
   {
     title: "Service boundary",
-    text: "Dealer-provided services are handled by authorized local dealers unless VanStro states otherwise in writing.",
+    text: "Dealer-provided services are handled by participating independent local dealers unless VanStro states otherwise in writing.",
     icon: ShieldCheck
   },
   {
@@ -259,8 +258,8 @@ export default function ContactPage() {
             <span className="contact-page-kicker">Local dealer contacts</span>
             <h2>Find the nearest support contact</h2>
             <p>
-              VanStro products are fulfilled through authorized local dealers.
-              Contact the relevant dealer for pickup, delivery coordination,
+              VanStro products are fulfilled through participating independent local
+              dealers. Contact the relevant dealer for pickup, delivery coordination,
               installation where offered, returns, exchanges, and after-sales service.
             </p>
           </div>

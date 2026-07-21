@@ -69,7 +69,10 @@ function normalizeDealerStock<T extends ProductSummary>(product: T): T {
 export const products: ProductSummary[] = mb01Products
   .map((product) => ({
     ...product,
-    subCategory: mb01ProductMetadataById[product.id]?.sourceCategory
+    subCategory:
+      product.category === "Handle series"
+        ? undefined
+        : mb01ProductMetadataById[product.id]?.sourceCategory
   }))
   .map(normalizeCabinetColor)
   .map(normalizeDealerStock);

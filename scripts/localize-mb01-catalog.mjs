@@ -4,18 +4,18 @@ import { dirname, resolve } from "node:path";
 
 const INVENTORY_PATH = resolve(
   process.env.MB01_INVENTORY_PATH ??
-    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/mb01-current-inventory.json"
+    "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/mb01-current-inventory.json"
 );
 const MAPPING_PATH = resolve(
   process.env.MB01_MAPPING_PATH ??
-    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/asset-source-local-mapping.json"
+    "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const OUTPUT_PATH = resolve("src/lib/data/mb01-products.ts");
 const EVIDENCE_DIR = resolve(
   process.env.MB01_LOCALIZATION_EVIDENCE_DIR ??
     "docs/goal-loop/frontend-full-audit/evidence/G3-implementation-2026-07-16"
 );
-const EXPECTED_PARENT_COUNT = Number(process.env.MB01_EXPECTED_PARENT_COUNT ?? 139);
+const EXPECTED_PARENT_COUNT = Number(process.env.MB01_EXPECTED_PARENT_COUNT ?? 140);
 const EXPECTED_VARIANT_COUNT = Number(process.env.MB01_EXPECTED_VARIANT_COUNT ?? 300);
 const COLOR_OPTIONS = {
   LG: { name: "Light Grey", colorHex: "#c9cbc7" },
@@ -150,6 +150,17 @@ const localPathForUrl = (url) => {
   return mapping.plannedLocalPath;
 };
 
+const approvedStorefrontNamesBySku = {
+  "023021211": "Vanity Cabinet-V3021STDR",
+  "023021311": "Vanity Cabinet-V3021STDL",
+  "023021411": "Vanity Cabinet-V3021TDR",
+  "023021511": "Vanity Cabinet-V3021TDL"
+};
+
+function storefrontName(parent) {
+  return approvedStorefrontNamesBySku[parent.sku] ?? parent.name;
+}
+
 function applyApprovedBusinessCorrections(parent, variant) {
   if (parent.subCategory !== "Accessories") return variant;
 
@@ -193,10 +204,11 @@ const products = inventory.parents.map((parent) => {
   if (!activeVariant) throw new Error(`Missing active variant ${parent.sku}`);
 
   const id = `mb01-${parent.listedOptionId}`;
+  const name = storefrontName(parent);
   const toImages = (variant) => variant.images.flatMap((url, index) => {
     const localPath = localPathForUrl(url);
     return localPath
-      ? [{ url: localPath, alt: imageAlt(parent.name, variant.sku, index) }]
+      ? [{ url: localPath, alt: imageAlt(name, variant.sku, index) }]
       : [];
   });
   const finishOptions = orderedVariants.map((variant) => {
@@ -220,6 +232,7 @@ const products = inventory.parents.map((parent) => {
   });
   const activeColor = colorForModel(activeVariant.modelMpn);
   const isHandle = parent.subCategory === "Handle series";
+  const storefrontCategory = isHandle ? "Handle series" : parent.category;
 
   metadataById[id] = {
     sourceProductId: parent.sourceProductId,
@@ -235,9 +248,9 @@ const products = inventory.parents.map((parent) => {
     slug: parent.sourceSlug,
     sku: activeVariant.sku,
     manufacturerPartNumber: activeVariant.modelMpn,
-    name: parent.name,
-    category: parent.category,
-    subCategory: parent.subCategory,
+    name,
+    category: storefrontCategory,
+    subCategory: isHandle ? undefined : parent.subCategory,
     price: activeVariant.priceCad,
     unit: "each",
     dimensions: dimensionsFor(activeVariant),

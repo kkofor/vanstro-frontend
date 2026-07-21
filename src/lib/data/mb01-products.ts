@@ -23949,7 +23949,7 @@ const localizedProducts: ProductSummary[] = [
     "slug": "vanity-cabinet-v3021-door-tdr-398",
     "sku": "023021211",
     "manufacturerPartNumber": "V3021STDR-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Door-TDR",
+    "name": "Vanity Cabinet-V3021STDR",
     "category": "Bathroom Vanities",
     "subCategory": "Bathroom Vanities",
     "price": {
@@ -23969,40 +23969,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 primary product view"
+          "alt": "Vanity Cabinet-V3021STDR SKU 023021211 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 primary product view"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 2"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 3"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-04.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 4"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 5"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 6"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-192.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 7"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 8"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 8"
           }
         ],
         "price": {
@@ -24035,36 +24035,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021212-v3021stdr-pwms-wh-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 primary product view"
+          "alt": "Vanity Cabinet-V3021STDR SKU 023021212 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021212-v3021stdr-pwms-wh-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 primary product view"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021212-v3021stdr-pwms-wh-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 2"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021212-v3021stdr-pwms-wh-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 3"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 4"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 5"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-192.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 6"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021212 product view 7"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021212 product view 7"
           }
         ],
         "price": {
@@ -24097,36 +24097,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021214-v3021stdr-pwms-lg-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 primary product view"
+          "alt": "Vanity Cabinet-V3021STDR SKU 023021214 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021214-v3021stdr-pwms-lg-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 primary product view"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021214-v3021stdr-pwms-lg-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 2"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021214-v3021stdr-pwms-lg-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 3"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 4"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 5"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-192.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 6"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021214 product view 7"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021214 product view 7"
           }
         ],
         "price": {
@@ -24159,40 +24159,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021213-v3021stdr-pwms-lg-top-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 primary product view"
+          "alt": "Vanity Cabinet-V3021STDR SKU 023021213 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021213-v3021stdr-pwms-lg-top-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 primary product view"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021213-v3021stdr-pwms-lg-top-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 2"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021213-v3021stdr-pwms-lg-top-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 3"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021213-v3021stdr-pwms-lg-top-gallery-04.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 4"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 5"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 6"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-192.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 7"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021213 product view 8"
+            "alt": "Vanity Cabinet-V3021STDR SKU 023021213 product view 8"
           }
         ],
         "price": {
@@ -24244,35 +24244,35 @@ const localizedProducts: ProductSummary[] = [
     "images": [
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-primary.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 primary product view"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 primary product view"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-02.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 2"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 2"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-03.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 3"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 3"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdr-023021211-v3021stdr-pwms-wh-top-gallery-04.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 4"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 4"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 5"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 5"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 6"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 6"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-192.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 7"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 7"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDR SKU 023021211 product view 8"
+        "alt": "Vanity Cabinet-V3021STDR SKU 023021211 product view 8"
       }
     ],
     "inStock": true
@@ -24282,7 +24282,7 @@ const localizedProducts: ProductSummary[] = [
     "slug": "vanity-cabinet-v3021-door-tdl-400",
     "sku": "023021311",
     "manufacturerPartNumber": "V3021STDL-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Door-TDL",
+    "name": "Vanity Cabinet-V3021STDL",
     "category": "Bathroom Vanities",
     "subCategory": "Bathroom Vanities",
     "price": {
@@ -24302,40 +24302,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 primary product view"
+          "alt": "Vanity Cabinet-V3021STDL SKU 023021311 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 primary product view"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 2"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 3"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-04.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 4"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 5"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 6"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-049.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 7"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 8"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 8"
           }
         ],
         "price": {
@@ -24368,36 +24368,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 primary product view"
+          "alt": "Vanity Cabinet-V3021STDL SKU 023021312 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 primary product view"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 2"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021312-v3021stdl-pwms-wh-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 3"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 4"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 5"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-049.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 6"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021312 product view 7"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021312 product view 7"
           }
         ],
         "price": {
@@ -24430,36 +24430,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021314-v3021stdl-pwms-lg-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 primary product view"
+          "alt": "Vanity Cabinet-V3021STDL SKU 023021314 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021314-v3021stdl-pwms-lg-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 primary product view"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021314-v3021stdl-pwms-lg-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 2"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021314-v3021stdl-pwms-lg-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 3"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 4"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 5"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-049.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 6"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021314 product view 7"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021314 product view 7"
           }
         ],
         "price": {
@@ -24492,40 +24492,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 primary product view"
+          "alt": "Vanity Cabinet-V3021STDL SKU 023021313 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 primary product view"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 2"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-gallery-03.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 3"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-gallery-04.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 4"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021313-v3021stdl-pwms-lg-top-gallery-05.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 5"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-108.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 6"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-049.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 7"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021313 product view 8"
+            "alt": "Vanity Cabinet-V3021STDL SKU 023021313 product view 8"
           }
         ],
         "price": {
@@ -24577,35 +24577,35 @@ const localizedProducts: ProductSummary[] = [
     "images": [
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-primary.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 primary product view"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 primary product view"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-02.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 2"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 2"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-03.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 3"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 3"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-door-tdl-023021311-v3021stdl-pwms-wh-top-gallery-04.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 4"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 4"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 5"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 5"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 6"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 6"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-049.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 7"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 7"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-V3021-Door-TDL SKU 023021311 product view 8"
+        "alt": "Vanity Cabinet-V3021STDL SKU 023021311 product view 8"
       }
     ],
     "inStock": true
@@ -24615,7 +24615,7 @@ const localizedProducts: ProductSummary[] = [
     "slug": "vanity-cabinet-v3021-doors-tdr-414",
     "sku": "023021411",
     "manufacturerPartNumber": "V3021TDR-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Doors-TDR",
+    "name": "Vanity Cabinet-V3021TDR",
     "category": "Bathroom Vanities",
     "subCategory": "Bathroom Vanities",
     "price": {
@@ -24635,40 +24635,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 primary product view"
+          "alt": "Vanity Cabinet-V3021TDR SKU 023021411 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 primary product view"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-114.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 2"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-131.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 3"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdr-023021411-v3021tdr-pwms-wh-top-gallery-04.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 4"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 5"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 6"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-094.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 7"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 8"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 8"
           }
         ],
         "price": {
@@ -24701,32 +24701,32 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-030.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 primary product view"
+          "alt": "Vanity Cabinet-V3021TDR SKU 023021412 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-030.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 primary product view"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdr-023021412-v3021tdr-pwms-wh-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 2"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 3"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 4"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-094.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 5"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021412 product view 6"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021412 product view 6"
           }
         ],
         "price": {
@@ -24759,36 +24759,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-084.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 primary product view"
+          "alt": "Vanity Cabinet-V3021TDR SKU 023021414 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-084.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 primary product view"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-112.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 2"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-149.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 3"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 4"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-001.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 5"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-094.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 6"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021414 product view 7"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021414 product view 7"
           }
         ],
         "price": {
@@ -24821,40 +24821,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdr-023021413-v3021tdr-pwms-lg-top-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 primary product view"
+          "alt": "Vanity Cabinet-V3021TDR SKU 023021413 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdr-023021413-v3021tdr-pwms-lg-top-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 primary product view"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-160.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 2"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-148.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 3"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-086.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 4"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 5"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 6"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-094.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 7"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021413 product view 8"
+            "alt": "Vanity Cabinet-V3021TDR SKU 023021413 product view 8"
           }
         ],
         "price": {
@@ -24906,35 +24906,35 @@ const localizedProducts: ProductSummary[] = [
     "images": [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 primary product view"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 primary product view"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-114.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 2"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 2"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-131.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 3"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 3"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdr-023021411-v3021tdr-pwms-wh-top-gallery-04.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 4"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 4"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 5"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 5"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 6"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 6"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-094.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 7"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 7"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDR SKU 023021411 product view 8"
+        "alt": "Vanity Cabinet-V3021TDR SKU 023021411 product view 8"
       }
     ],
     "inStock": true
@@ -24944,7 +24944,7 @@ const localizedProducts: ProductSummary[] = [
     "slug": "vanity-cabinet-v3021-doors-tdl-415",
     "sku": "023021511",
     "manufacturerPartNumber": "V3021TDL-PWMS-WH-TOP",
-    "name": "Vanity Cabinet-V3021-Doors-TDL",
+    "name": "Vanity Cabinet-V3021TDL",
     "category": "Bathroom Vanities",
     "subCategory": "Bathroom Vanities",
     "price": {
@@ -24964,40 +24964,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 primary product view"
+          "alt": "Vanity Cabinet-V3021TDL SKU 023021511 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 primary product view"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-064.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 2"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-154.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 3"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-076.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 4"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 5"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 6"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-103.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 7"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 8"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 8"
           }
         ],
         "price": {
@@ -25030,36 +25030,36 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-180.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 primary product view"
+          "alt": "Vanity Cabinet-V3021TDL SKU 023021514 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-180.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 primary product view"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-061.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 2"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-089.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 3"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-023.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 4"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 5"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-103.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 6"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021514 product view 7"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021514 product view 7"
           }
         ],
         "price": {
@@ -25092,40 +25092,40 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#c9cbc7",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-132.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 primary product view"
+          "alt": "Vanity Cabinet-V3021TDL SKU 023021513 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-132.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 primary product view"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-155.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 2"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-147.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 3"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-161.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 4"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 5"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 6"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 6"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-103.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 7"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 7"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021513 product view 8"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021513 product view 8"
           }
         ],
         "price": {
@@ -25158,32 +25158,32 @@ const localizedProducts: ProductSummary[] = [
         "colorHex": "#f7f6f2",
         "image": {
           "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdl-023021512-v3021tdl-pwms-wh-primary.jpg",
-          "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 primary product view"
+          "alt": "Vanity Cabinet-V3021TDL SKU 023021512 primary product view"
         },
         "images": [
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdl-023021512-v3021tdl-pwms-wh-primary.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 primary product view"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 primary product view"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3021-doors-tdl-023021512-v3021tdl-pwms-wh-gallery-02.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 2"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 product view 2"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 3"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 product view 3"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 4"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 product view 4"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-103.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 5"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 product view 5"
           },
           {
             "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-            "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021512 product view 6"
+            "alt": "Vanity Cabinet-V3021TDL SKU 023021512 product view 6"
           }
         ],
         "price": {
@@ -25235,35 +25235,35 @@ const localizedProducts: ProductSummary[] = [
     "images": [
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 primary product view"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 primary product view"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-064.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 2"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 2"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-154.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 3"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 3"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-076.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 4"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 4"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-134.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 5"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 5"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 6"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 6"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-103.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 7"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 7"
       },
       {
         "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-024.jpg",
-        "alt": "Vanity Cabinet-V3021-Doors-TDL SKU 023021511 product view 8"
+        "alt": "Vanity Cabinet-V3021TDL SKU 023021511 product view 8"
       }
     ],
     "inStock": true
@@ -27504,8 +27504,7 @@ const localizedProducts: ProductSummary[] = [
     "sku": "060101111",
     "manufacturerPartNumber": "CTC[96mm]",
     "name": "Handle CTC-96mm",
-    "category": "Kitchen Cabinets",
-    "subCategory": "Handle series",
+    "category": "Handle series",
     "price": {
       "amount": 5.99,
       "currency": "CAD"
@@ -27559,8 +27558,7 @@ const localizedProducts: ProductSummary[] = [
     "sku": "060102411",
     "manufacturerPartNumber": "CTC[192mm]",
     "name": "Handle CTC-192mm",
-    "category": "Kitchen Cabinets",
-    "subCategory": "Handle series",
+    "category": "Handle series",
     "price": {
       "amount": 8.99,
       "currency": "CAD"

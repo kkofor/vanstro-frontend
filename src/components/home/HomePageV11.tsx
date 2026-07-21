@@ -43,13 +43,12 @@ const categoryCards = [
     height: 292
   },
   {
-    title: "Flooring",
-    text: "Laminate and vinyl",
-    href: "/products?category=flooring",
-    image: assetPath("/assets/original-site/img-b02.gif"),
+    title: "Handle series",
+    text: "Cabinet handles and hardware",
+    href: "/products?category=handle-series",
+    image: assetPath("/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg"),
     width: 602,
-    height: 292,
-    comingSoon: true
+    height: 292
   },
   {
     title: "Trim",
@@ -80,8 +79,8 @@ const fulfillmentSteps = [
     text: "Checkout captures customer details, fulfillment choice and online payment."
   },
   {
-    title: "Dealer handles fulfillment",
-    text: "The assigned VanStro dealer receives the order for pickup, delivery or project support."
+    title: "Selected dealer confirms fulfillment",
+    text: "The participating independent dealer selected for the order confirms pickup or delivery arrangements."
   }
 ];
 
@@ -126,10 +125,10 @@ const resources = [
 ];
 
 const dealerBenefits = [
-  "Access stocked VanStro product supply",
-  "Receive online orders from local customers",
-  "Use dealer pricing, CRM and POS support",
-  "Get marketing assets and settlement workflows"
+  "Purchase available VanStro products under written commercial terms",
+  "Choose whether to accept customer-selected fulfillment requests",
+  "Use optional product information and order-status tools",
+  "Access optional product images and approved brand materials"
 ];
 
 export function HomePageV11({ banner, products, articles, dealers }: HomePageV11Props) {
@@ -263,8 +262,9 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
             <span className="eyebrow light">Dealer program</span>
             <h2>For contractors and dealers</h2>
             <p>
-              Join the VanStro dealer network to access supply resources, ecommerce demand,
-              dealer pricing and operating tools across Canadian markets.
+              Apply to participate as an independently owned local dealer with access
+              to VanStro product supply and optional order-administration resources.
+              Customer demand, order volume, revenue and business results are not guaranteed.
             </p>
             <div className="dealer-benefit-list">
               {dealerBenefits.map((benefit) => (

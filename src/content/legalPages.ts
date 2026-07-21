@@ -93,7 +93,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "5. No Binding Offer",
-        "Nothing on this website constitutes a binding offer, contract, guarantee, or warranty. Final product specifications, pricing, and commercial terms are determined exclusively by written quotations, purchase agreements, invoices, and other formal contractual documents issued by VanStro Global Supply Inc.",
+        "Nothing on this website constitutes a binding offer, contract, guarantee, or warranty. Final product specifications, pricing, and commercial terms are determined by the applicable written quotations, purchase agreements, invoices, and other formal contractual documents issued by VanStro Global Supply Inc.",
         4,
         "Important: binding terms come only from formal VanStro quotations, purchase agreements, invoices or other contractual documents."
       ),
@@ -121,7 +121,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     ],
     summaryTitle: "Need a confirmed answer?",
     summaryBody:
-      "For binding product details, project support or order-specific guidance, contact VanStro support or your assigned dealer before placing an order.",
+      "For binding product details, project support or order-specific guidance, contact VanStro support or the independent dealer selected for the order before placing it.",
     supportNote: "Best for: product specifications, pricing references, website information, and quotation confirmation.",
     primaryCta: { label: "Contact support", href: "/contact" },
     secondaryCta: { label: "Shop products", href: "/products" }
@@ -189,7 +189,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "11. Governing Law and Jurisdiction",
-        "These Terms are governed by the laws of the Province of Manitoba and the federal laws of Canada applicable therein. The courts located in Winnipeg, Manitoba shall have exclusive jurisdiction over any dispute arising out of or relating to these Terms or the Website, except that consumers may bring proceedings in the courts of their province of residence as required by applicable law.",
+        "These Terms are governed by the laws of the Province of Manitoba and the federal laws of Canada applicable therein. Any dispute arising out of or relating to these Terms or the Website shall be brought before the courts located in Winnipeg, Manitoba, except that consumers may bring proceedings in the courts of their province of residence as required by applicable law.",
         10
       ),
       section(
@@ -248,7 +248,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "6. Disclosure to Third Parties",
-        "We disclose personal information only as necessary to fulfill the purposes set out above, to the following categories of recipients:\n- Service providers retained to perform functions on our behalf, such as payment processing, shipping and logistics, IT hosting, design software, and customer relationship management, under contractual obligations of confidentiality and data protection.\n- Authorized dealers and installers to fulfill orders and provide post-sale service.\n- Affiliated entities of VanStro Global Supply Inc., including the supply chain partner Qingdao Wanshituo Trading Co., Ltd., strictly for order fulfillment, product quality coordination, and online marketing operations, under written confidentiality and data protection terms.\n- Government authorities, regulators, or law enforcement, where required by law or to protect our legal rights.\n- Successors in connection with a corporate transaction, such as a merger, acquisition, or sale of assets, subject to confidentiality protections.",
+        "We disclose personal information only as necessary to fulfill the purposes set out above, to the following categories of recipients:\n- Service providers retained to perform functions on our behalf, such as payment processing, shipping and logistics, IT hosting, design software, and customer relationship management, under contractual obligations of confidentiality and data protection.\n- Participating independent dealers and installers to fulfill orders and provide post-sale service.\n- Affiliated entities of VanStro Global Supply Inc., including the supply chain partner Qingdao Wanshituo Trading Co., Ltd., strictly for order fulfillment, product quality coordination, and online marketing operations, under written confidentiality and data protection terms.\n- Government authorities, regulators, or law enforcement, where required by law or to protect our legal rights.\n- Successors in connection with a corporate transaction, such as a merger, acquisition, or sale of assets, subject to confidentiality protections.",
         5
       ),
       section(
@@ -279,7 +279,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "12. Automated Decision-Making",
-        "We do not currently use personal information to make decisions about you based exclusively on automated processing. If this changes, we will inform you in accordance with applicable law and provide the rights of access and explanation required under Quebec Law 25.",
+        "We do not currently use personal information to make decisions about you based solely on automated processing. If this changes, we will inform you in accordance with applicable law and provide the rights of access and explanation required under Quebec Law 25.",
         11
       ),
       section(
@@ -371,7 +371,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "1. Purpose",
-        'This policy sets out the conditions and procedures for product returns within the VanStro Global Supply Inc. ("VanStro") dealer network. It provides a single, consistent return process across the network.',
+        'This policy sets out the conditions and procedures for returns of products supplied by VanStro Global Supply Inc. ("VanStro"). It applies only to VanStro-supplied products and does not govern a dealer\'s independently provided services, other product lines or unrelated business operations.',
         1
       ),
       section(
@@ -381,7 +381,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "3. Sales Channel, Delivery and Scope of Responsibility",
-        'VanStro sells through its dealer network. Each sale to a customer is completed by a dealer, who holds the inventory and handles delivery and returns. This policy sets the return terms that apply across the network.\n\nIn this policy, "Delivery" means the handover of the goods to the customer by the dealer. All time periods run from the date of Delivery.\n\nOwnership and risk pass to the customer on Delivery. The customer should inspect the goods on Delivery; by accepting Delivery, the customer accepts their quantity and external condition.\n\nTransportation, installation, and other on-site or extended services are arranged between the customer and the relevant dealer.',
+        'VanStro sells through its dealer network. Each sale to a customer is completed by a dealer, who holds the inventory and handles delivery and returns. This policy sets the return terms for VanStro-supplied products.\n\nIn this policy, "Delivery" means the handover of the goods to the customer by the dealer. All time periods run from the date of Delivery.\n\nOwnership and risk pass to the customer on Delivery. The customer should inspect the goods on Delivery; by accepting Delivery, the customer accepts their quantity and external condition.\n\nTransportation, installation, and other on-site or extended services are arranged between the customer and the relevant dealer.',
         3,
         "Important: ownership and risk pass to the customer on Delivery, and return time periods run from the Delivery date."
       ),
@@ -393,7 +393,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "5. Complaints and Escalation to the Platform",
-        "Returns are handled by the dealer. If a dealer does not follow this policy, or the customer considers its handling of a return unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review the matter and intervene where appropriate. VanStro's direct involvement is limited to such escalations.",
+        "Returns are handled by the dealer. If a dealer does not follow this policy, or the customer considers its handling of a return unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review whether the VanStro product-return requirements were correctly applied and, where appropriate, address the product-supply issue within VanStro's responsibility. VanStro's direct involvement is limited to such escalations.",
         5
       ),
       section(
@@ -463,12 +463,12 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "3. VanStro Platform Responsibilities (Product Supply)",
-        "As the product supply platform, VanStro is responsible for:\n- Product sourcing and supply\n- Inventory and product-information management\n- The online product catalog and ordering system\n- Brand promotion and customer lead generation\n- Development of the dealer network\n\nVanStro does not directly provide, and does not hold itself out as providing: delivery, installation, site measurement, renovation, project management, disposal, or on-site support services. These are performed by dealers under Section 4, unless VanStro states otherwise in writing.",
+        "As the product supply platform, VanStro is responsible for:\n- Product sourcing and supply\n- Inventory and product-information management\n- The online product catalog and ordering system\n- Product and platform promotion\n- Development of the dealer network\n\nVanStro does not directly provide, and does not hold itself out as providing: delivery, installation, site measurement, renovation, project management, disposal, or on-site support services. These are performed by dealers under Section 4, unless VanStro states otherwise in writing.",
         2
       ),
       section(
         "4. Dealer Responsibilities (Extended Services)",
-        "Dealers operate as independent businesses. A dealer may, at its own discretion, provide extended services such as:\n- Product delivery and transport\n- Installation\n- Removal and installation\n- Site measurement\n- Design consultation\n- Renovation support\n- Disposal\n- Project coordination\n- Extended service packages\n- Additional after-sales services\n\nThe availability, scope, and price of these services vary by dealer and by Service Area.",
+        "Dealers are independently owned and operated businesses. No dealer may bind VanStro. Each dealer manages its own day-to-day operations, personnel, marketing, customer relationships, resale and service pricing, and services. A dealer may, at its own discretion, provide extended services such as:\n- Product delivery and transport\n- Installation\n- Removal and installation\n- Site measurement\n- Design consultation\n- Renovation support\n- Disposal\n- Project coordination\n- Extended service packages\n- Additional after-sales services\n\nThe availability, scope, and price of these services vary by dealer and by dealer service area. Dealer service areas record the locations where a dealer can support customers.",
         3
       ),
       section(
@@ -478,7 +478,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "6. Website Handling of Dealer Extended Services",
-        "The VanStro website presents dealer extended services in a way that keeps the platform layer and the dealer layer clearly separated.\n\nDealer pages and mini-sites may show dealer name, ID, contact information, service area, business hours, available services, indicative service pricing, appointment or enquiry forms, and a link to the dealer's own website. Every page or section that presents dealer services carries a clear notice that services are provided by the independent dealer and not by VanStro.\n\nService enquiries, quotations, and bookings submitted through a dealer page are routed to the dealer for handling. VanStro does not quote, schedule, or manage dealer services. Service requests and payments are kept separate from the product checkout flow.",
+        "The VanStro website presents dealer extended services in a way that keeps the platform layer and the dealer layer clearly separated.\n\nDealer pages and mini-sites may show dealer name, ID, contact information, dealer service area, business hours, available services, indicative service pricing, appointment or enquiry forms, and a link to the dealer's own website. Every page or section that presents dealer services carries a clear notice that services are provided by the independent dealer and not by VanStro.\n\nService enquiries, quotations, and bookings submitted through a dealer page are routed to the dealer for handling. VanStro does not quote, schedule, or manage dealer services. Service requests and payments are kept separate from the product checkout flow.",
         5
       ),
       section(
@@ -493,7 +493,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "9. Customer Information and Referrals",
-        "VanStro may match a customer to the nearest dealer based on postal code, location, or Service Area, in order to improve service efficiency and local support. Where customer information is shared with a dealer for this purpose, it is shared only to the extent needed for the referral and for service fulfilment, and is handled in accordance with the VanStro Privacy Policy and applicable privacy law, including PIPEDA and Quebec's Law 25.",
+        "At the customer's request, VanStro may provide contact information for one or more participating independent dealers that report serving the customer's location. A listing or referral does not guarantee any volume and does not require the customer or dealer to proceed. Where customer information is shared with a dealer for this purpose, it is shared only to the extent needed for the requested referral and is handled in accordance with the VanStro Privacy Policy and applicable privacy law, including PIPEDA and Quebec's Law 25.",
         8
       ),
       section(

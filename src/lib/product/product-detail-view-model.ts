@@ -49,6 +49,7 @@ export function categoryToProductFilter(category: string) {
   const normalizedCategory = category.toLowerCase();
 
   if (normalizedCategory.includes("bathroom")) return "bathroom-vanities";
+  if (normalizedCategory.includes("handle")) return "handle-series";
   if (normalizedCategory.includes("baseboard") || normalizedCategory.includes("moulding")) {
     return "baseboards";
   }

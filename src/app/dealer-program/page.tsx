@@ -9,14 +9,13 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Review the VanStro dealer program for qualified local building-materials operators, including platform responsibilities, dealer responsibilities, application review and policy requirements.",
   path: "/dealer-program",
-  image: "/assets/generated/dealer-program-handshake-v1.webp",
-  languages: { "en-CA": "/dealer-program", "zh-CN": "/zh/dealer-program" }
+  image: "/assets/generated/dealer-program-handshake-v1.webp"
 });
 
 const atAGlance = [
   ["VanStro role", "Product supply platform, catalog, checkout, product information and dealer network support."],
   ["Dealer role", "Independent local customer contact, order execution, delivery coordination and services where offered."],
-  ["Application status", "Reviewed case by case. Submission does not guarantee approval, territory, pricing or lead volume."],
+  ["Application status", "Reviewed case by case. Submission does not guarantee approval, a dealer service area assignment, pricing or customer referrals."],
   ["Final terms", "Commercial terms, launch timing and obligations require written approval or agreement."]
 ];
 
@@ -25,7 +24,7 @@ const operatingRows = [
     area: "Product order",
     vanstro: "Catalog, product supply, product information, platform checkout and product policy review.",
     dealer: "Local order execution, customer communication and product handoff.",
-    customer: "Discovers products online and works with the assigned local dealer for routine matters."
+    customer: "Browses products online and may select a participating independent local dealer for the applicable order."
   },
   {
     area: "Dealer services",
@@ -43,22 +42,22 @@ const operatingRows = [
 
 const goodFit = [
   "Showroom, contractor or local building-materials business",
-  "Defined service area and customer-facing team",
+  "Defined dealer service area and customer-facing team",
   "Ability to coordinate pickup, delivery or after-sales support",
-  "Willingness to operate under VanStro policies and disclosure rules"
+  "Willingness to follow applicable VanStro product and disclosure policies while operating independently"
 ];
 
 const notFit = [
   "No local service or customer support capacity",
   "Unclear responsibility ownership for dealer-provided services",
   "Expectation that VanStro will absorb dealer service liability",
-  "Requirement for guaranteed leads, revenue or exclusive territory"
+  "Requirement for guaranteed referrals, customers, orders, revenue or profit"
 ];
 
 const reviewSteps = [
-  ["1", "Company profile", "Business details, service area, product focus and operating capabilities."],
-  ["2", "Coverage review", "VanStro reviews market fit, local coverage and dealer network balance."],
-  ["3", "Workflow alignment", "Approved candidates align on order flow, customer handoff, returns and disclosure language."],
+  ["1", "Company profile", "Business details, proposed dealer service area, product focus and operating capabilities."],
+  ["2", "Participation review", "VanStro reviews the applicant's customer support capacity in its proposed dealer service area."],
+  ["3", "Transaction procedures", "Candidates review procedures that apply to VanStro orders, returns, privacy and independent-dealer disclosure, not to unrelated operations."],
   ["4", "Activation", "Launch timing and commercial terms are confirmed only through written approval or agreement."]
 ];
 
@@ -255,10 +254,15 @@ export default function DealerProgramPage() {
         <div className="container dealer-program-b2b-legal">
           <h2>Important application notes</h2>
           <p>
-            Submitting an application does not guarantee approval, territory
-            exclusivity, pricing terms, lead volume, revenue, launch timing or a
-            dealer relationship. Final terms require written approval or
-            agreement.
+            Each dealer independently manages its business operations, marketing,
+            customers, personnel, resale and service pricing, and any services it
+            offers.
+          </p>
+          <p>
+            Submitting an application does not guarantee approval, a dealer service
+            area arrangement, pricing terms, customer referrals, orders, revenue,
+            profit, launch timing or a dealer relationship. Final terms require
+            written approval or agreement.
           </p>
           <p>
             Application information may be used for cooperation review, dealer
@@ -272,11 +276,11 @@ export default function DealerProgramPage() {
       <section className="dealer-program-cta dealer-program-b2b-cta">
         <div className="container dealer-program-cta-grid">
           <div>
-            <h2>Discuss your market and coverage.</h2>
+            <h2>Discuss your market and local coverage.</h2>
             <p>
-              Share your company profile, service area and local support
-              capabilities. VanStro will review fit and follow up with the right
-              team.
+              Share your company profile, proposed dealer service area and local
+              support capabilities. VanStro will review fit and follow up with the
+              right team.
             </p>
           </div>
           <div className="dealer-program-actions">

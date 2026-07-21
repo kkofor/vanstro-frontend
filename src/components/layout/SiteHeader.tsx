@@ -22,7 +22,7 @@ const productCategories = [
   { href: "/products?category=bathroom-vanities", label: "Bathroom Vanities" },
   { href: "/products?category=baseboards", label: "Baseboards & Mouldings" },
   { href: "/products?category=doors-windows", label: "Doors & Windows" },
-  { href: "/products?category=flooring", label: "Flooring" },
+  { href: "/products?category=handle-series", label: "Handle Series" },
   { href: "/products", label: "Additional Categories" }
 ] as const;
 

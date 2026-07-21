@@ -42,13 +42,12 @@ const categoryCards = [
     height: 292
   },
   {
-    title: "Flooring",
-    text: "Laminate, vinyl and future surfaces",
-    href: "/products?category=flooring",
-    image: assetPath("/assets/original-site/img-b02.gif"),
+    title: "Handle series",
+    text: "Cabinet handles and hardware",
+    href: "/products?category=handle-series",
+    image: assetPath("/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg"),
     width: 602,
-    height: 292,
-    comingSoon: true
+    height: 292
   },
   {
     title: "Trim",
@@ -215,9 +214,9 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
           <div className="dealer-copy">
             <h2>For trade buyers and dealer partners</h2>
             <p>
-              Contractors can order stocked products for projects, while qualified
-              businesses can apply to join the VanStro dealer network with onboarding,
-              operations and marketing support across Canada.
+              Contractors can order stocked products for projects, while independently
+              owned businesses can apply to participate as local dealers. Each dealer
+              manages its own operations, marketing, customers, personnel and services.
             </p>
             <div className="button-row">
               <Link className="button button-accent" href="/dealers/apply">

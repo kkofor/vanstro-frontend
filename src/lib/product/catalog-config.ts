@@ -53,19 +53,18 @@ export const CATALOG_CATEGORY_OPTIONS: CatalogCategoryOption[] = [
     matches: ["Bathroom Vanities"]
   },
   {
+    id: "handle-series",
+    label: "Handle series",
+    shortLabel: "Handles",
+    description: "Cabinet handles and hardware",
+    matches: ["Handle series"]
+  },
+  {
     id: "baseboards",
     label: "Trim and baseboards",
     shortLabel: "Trim",
     description: "Primed mouldings and profiles",
     matches: ["Baseboards & Mouldings"]
-  },
-  {
-    id: "flooring",
-    label: "Flooring",
-    shortLabel: "Flooring",
-    description: "Laminate and vinyl catalog",
-    matches: [],
-    comingSoon: true
   },
   {
     id: "doors-windows",
@@ -90,7 +89,6 @@ export const CATALOG_SUBCATEGORY_OPTIONS: CatalogSubcategoryOption[] = [
   { id: "open-end-shelf", label: "Open End Shelf", matches: ["Open End Shelf"] },
   { id: "microwave-cabinet", label: "Microwave Cabinet", matches: ["Microwave Cabinet"] },
   { id: "oven-tall-cabinet", label: "Oven Tall Cabinet", matches: ["Oven Tall Cabinet"] },
-  { id: "handle-series", label: "Handle series", matches: ["Handle series"] },
   { id: "accessories", label: "Accessories", matches: ["Accessories"] },
   { id: "bathroom-vanities", label: "Bathroom Vanities", matches: ["Bathroom Vanities"] }
 ];

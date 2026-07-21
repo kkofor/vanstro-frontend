@@ -36,17 +36,31 @@ const stable = (value) => {
 const equal = (left, right) => JSON.stringify(stable(left)) === JSON.stringify(stable(right));
 const correctMaterial = (value) =>
   value.replaceAll("MDF / Plywood Thermofoil Finish", "MDF Thermofoil Finish");
-const expectedVariant = (variant) => variant.subCategory === "Accessories"
-  ? {
+const approvedStorefrontNamesByParentSku = {
+  "023021211": "Vanity Cabinet-V3021STDR",
+  "023021311": "Vanity Cabinet-V3021STDL",
+  "023021411": "Vanity Cabinet-V3021TDR",
+  "023021511": "Vanity Cabinet-V3021TDL"
+};
+const expectedVariant = (variant) => {
+  if (variant.subCategory === "Accessories") {
+    return {
       ...variant,
       description: correctMaterial(variant.description),
       highlights: variant.highlights.map(correctMaterial),
       parametersSpecifications: Object.fromEntries(
         Object.entries(variant.parametersSpecifications).map(([key, value]) => [key, correctMaterial(value)])
       )
-    }
-  : variant;
+    };
+  }
+  if (variant.subCategory === "Handle series") {
+    return { ...variant, category: "Handle series", subCategory: undefined };
+  }
+  const name = approvedStorefrontNamesByParentSku[variant.parentSku];
+  return name ? { ...variant, name } : variant;
+};
 
+const inventoryParentBySku = new Map(inventory.parents.map((parent) => [parent.sku, parent]));
 const mappingByUrl = new Map(mapping.assets.map((asset) => [asset.sourceUrl, asset]));
 const localBySku = new Map();
 for (const product of products) {
@@ -77,6 +91,8 @@ for (const sourceVariant of inventory.variants) {
   const fields = local
     ? {
         name: local.product.name === expected.name,
+        sourceProductName: metadata[local.product.id]?.sourceProductName === inventoryParentBySku.get(expected.parentSku)?.name,
+        slug: local.product.slug === inventoryParentBySku.get(expected.parentSku)?.sourceSlug,
         category: local.product.category === expected.category,
         subCategory: local.product.subCategory === expected.subCategory,
         model: (local.option?.manufacturerPartNumber ?? local.product.manufacturerPartNumber) === expected.modelMpn,
@@ -95,12 +111,28 @@ const liveSkus = new Set(inventory.variants.map((variant) => variant.sku));
 const extraLocalSkus = [...localBySku.keys()].filter((sku) => !liveSkus.has(sku));
 const vanityVariants = inventory.variants.filter((variant) => variant.category === "Bathroom Vanities");
 const cabinetOnlyVariants = vanityVariants.filter((variant) => !/-TOP$/i.test(variant.modelMpn));
-const handleProducts = products.filter((product) => product.subCategory === "Handle series");
+const handleProducts = products.filter((product) => product.category === "Handle series");
 const accessoryProducts = products.filter((product) => product.subCategory === "Accessories");
 const accessoryText = JSON.stringify(accessoryProducts);
 const blockedAssets = mapping.assets.filter((asset) => asset.localizationStatus === "Blocked");
 const catalogConfig = await readFile(resolve("src/lib/product/catalog-config.ts"), "utf8");
 const detailMain = await readFile(resolve("src/components/product/ProductDetailMain.tsx"), "utf8");
+const categoryConfigSource = catalogConfig.match(
+  /CATALOG_CATEGORY_OPTIONS: CatalogCategoryOption\[\] = \[([\s\S]*?)\n\];/
+)?.[1] ?? "";
+const topLevelCategoryIds = [...categoryConfigSource.matchAll(/\bid: "([^"]+)"/g)].map((match) => match[1]);
+const expectedTopLevelCategoryIds = [
+  "all",
+  "kitchen-cabinets",
+  "bathroom-vanities",
+  "handle-series",
+  "baseboards",
+  "doors-windows"
+];
+const topLevelCategoriesMatch = equal(topLevelCategoryIds, expectedTopLevelCategoryIds);
+const handleSubcategoryAbsent = !catalogConfig.match(
+  /CATALOG_SUBCATEGORY_OPTIONS: CatalogSubcategoryOption\[\] = \[([\s\S]*?)\n\];/
+)?.[1].includes('id: "handle-series"');
 
 const summary = {
   verifiedAt: new Date().toISOString(),
@@ -118,10 +150,13 @@ const summary = {
   handleParents: handleProducts.map((product) => ({
     sku: product.sku,
     name: product.name,
+    category: product.category,
     subCategory: product.subCategory
   })),
   accessoriesContainPlywood: /Plywood/i.test(accessoryText),
-  handleFilterPresent: catalogConfig.includes('label: "Handle series"'),
+  topLevelCategoryIds,
+  topLevelCategoriesMatch,
+  handleSubcategoryAbsent,
   overviewRendersAllHighlights: detailMain.includes("{productHighlights.map((highlight)"),
   localizedSourceAssets: mapping.summary.localized,
   blockedAssets: blockedAssets.map((asset) => ({ sourceUrl: asset.sourceUrl, error: asset.error })),
@@ -138,7 +173,8 @@ const summary = {
     ) &&
     handleProducts.length === 2 &&
     !/Plywood/i.test(accessoryText) &&
-    catalogConfig.includes('label: "Handle series"') &&
+    topLevelCategoriesMatch &&
+    handleSubcategoryAbsent &&
     detailMain.includes("{productHighlights.map((highlight)") &&
     mapping.summary.missing === 0 &&
     blockedAssets.length === 1 &&

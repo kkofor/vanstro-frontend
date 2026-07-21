@@ -23,7 +23,7 @@ export default function DealerMapPage() {
         title="Dealer map"
         image={{
           src: "/assets/generated/dealer-map-storefront-v1.webp",
-          alt: "Customer arriving at a VanStro authorized dealer location"
+          alt: "Customer arriving at a participating independent VanStro dealer location"
         }}
         actions={
           <>
@@ -37,8 +37,8 @@ export default function DealerMapPage() {
         }
       >
         <p>
-          Find an authorized VanStro dealer for local product support, pickup,
-          and order fulfillment.
+          Find a participating independent VanStro dealer for local product
+          support, pickup and order fulfillment.
         </p>
       </SecondaryPageHero>
 

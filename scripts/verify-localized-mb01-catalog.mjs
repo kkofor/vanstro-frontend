@@ -3,10 +3,10 @@ import { mkdir, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import { dirname, extname, resolve } from "node:path";
 
 const INVENTORY_PATH = resolve(
-  "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/mb01-current-inventory.json"
+  "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/mb01-current-inventory.json"
 );
 const MAPPING_PATH = resolve(
-  "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/asset-source-local-mapping.json"
+  "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const GENERATED_PATH = resolve("src/lib/data/mb01-products.ts");
 const DERIVED_PROVENANCE_PATH = resolve(
@@ -81,8 +81,28 @@ const effectiveAssets = mapping.map((asset) => {
     : asset;
 });
 const localPathByUrl = new Map(
-  effectiveAssets.map((asset) => [asset.sourceUrl, asset.plannedLocalPath])
+  effectiveAssets
+    .filter((asset) => asset.localizationStatus === "Localized" && asset.plannedLocalPath)
+    .map((asset) => [asset.sourceUrl, asset.plannedLocalPath])
 );
+const correctMaterial = (value) =>
+  value.replaceAll("MDF / Plywood Thermofoil Finish", "MDF Thermofoil Finish");
+const expectedAuthority = (authority) => authority.subCategory === "Accessories"
+  ? {
+      ...authority,
+      description: correctMaterial(authority.description),
+      highlights: authority.highlights.map(correctMaterial),
+      parametersSpecifications: Object.fromEntries(
+        Object.entries(authority.parametersSpecifications).map(([key, value]) => [key, correctMaterial(value)])
+      )
+    }
+  : authority;
+const approvedStorefrontNamesByParentSku = {
+  "023021211": "Vanity Cabinet-V3021STDR",
+  "023021311": "Vanity Cabinet-V3021STDL",
+  "023021411": "Vanity Cabinet-V3021TDR",
+  "023021511": "Vanity Cabinet-V3021TDL"
+};
 const productByParentSku = new Map(products.map((product) => [product.sku, product]));
 const variantsByParentSku = new Map();
 for (const variant of inventory.variants) {
@@ -92,7 +112,8 @@ for (const variant of inventory.variants) {
 }
 
 const rows = [];
-for (const authority of inventory.variants) {
+for (const sourceAuthority of inventory.variants) {
+  const authority = expectedAuthority(sourceAuthority);
   const product = productByParentSku.get(authority.parentSku);
   const option = product?.finishOptions?.find((candidate) => candidate.sku === authority.sku);
   const singleVariant = product && !product.finishOptions && product.sku === authority.sku;
@@ -100,13 +121,20 @@ for (const authority of inventory.variants) {
   const actualDescription = option?.description ?? (singleVariant ? metadata[product.id]?.description : undefined);
   const actualHighlights = option?.productHighlights ?? (singleVariant ? metadata[product.id]?.productHighlights : undefined);
   const actualSpecifications = option?.specifications ?? (singleVariant ? metadata[product.id]?.specifications : undefined);
-  const expectedImages = authority.images.map((url) => localPathByUrl.get(url));
+  const expectedImages = authority.images.flatMap((url) => {
+    const localPath = localPathByUrl.get(url);
+    return localPath ? [localPath] : [];
+  });
+  const isHandle = authority.subCategory === "Handle series";
+  const expectedCategory = isHandle ? "Handle series" : authority.category;
+  const expectedSubCategory = isHandle ? undefined : authority.subCategory;
+  const expectedName = approvedStorefrontNamesByParentSku[authority.parentSku] ?? authority.name;
   const checks = {
     parent: Boolean(product),
     variant: Boolean(option || singleVariant),
-    name: product?.name === authority.name,
-    category: product?.category === authority.category,
-    subCategory: product?.subCategory === authority.subCategory,
+    name: product?.name === expectedName,
+    category: product?.category === expectedCategory,
+    subCategory: product?.subCategory === expectedSubCategory,
     model: (option?.manufacturerPartNumber ?? product?.manufacturerPartNumber) === authority.modelMpn,
     price: (option?.price ?? product?.price)?.amount === authority.priceCad.amount,
     description: actualDescription === authority.description,

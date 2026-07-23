@@ -20,6 +20,7 @@ import {
 import { formatProductSize } from "@/lib/product/product-display";
 import {
   buildSpecRows,
+  createDefaultQuestions,
   type ProductDetailViewModel
 } from "@/lib/product/product-detail-view-model";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
@@ -78,7 +79,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
     documents,
     packageRows,
     product,
-    questions,
+    questions: configuredQuestions,
     reviews,
     reviewSummary,
   } = viewModel;
@@ -93,6 +94,9 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
   const productHighlights = selectedProduct.productHighlights ?? [];
   const colorName = selectedProduct.colorName ?? selectedProduct.finish ?? "Standard finish";
   const colorHex = selectedProduct.colorHex ?? "#f4f2ee";
+  const questions = product.questions?.length
+    ? configuredQuestions
+    : createDefaultQuestions(selectedProduct);
 
   return (
     <div className="pdp-detail-main">
@@ -129,7 +133,10 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
             <PackageCheck size={18} strokeWidth={2.3} />
             <span>
               <strong>Package Quantity</strong>
-              <small>{packageRows.map(([label, value]) => `${label} ${value}`).join(" / ")}</small>
+              <small>
+                {selectedProduct.packageQuantity?.displayLabel ??
+                  packageRows.map(([label, value]) => `${label} ${value}`).join(" / ")}
+              </small>
             </span>
           </div>
         </div>

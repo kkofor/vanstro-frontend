@@ -112,26 +112,127 @@ export function buildSpecRows(specifications: Record<string, string>): Specifica
   return [...orderedRows, ...remainingRows];
 }
 
-function createDefaultQuestions(product: ProductDetail): ProductQuestion[] {
+function getModelNumber(product: ProductDetail) {
+  return product.manufacturerPartNumber ?? product.specifications["Manufacturer Part #"] ?? product.sku;
+}
+
+function getSpecifiedValue(product: ProductDetail, labels: string[]) {
+  const entry = Object.entries(product.specifications).find(([label]) =>
+    labels.some((candidate) => label.toLowerCase() === candidate.toLowerCase())
+  );
+
+  return entry?.[1];
+}
+
+function formatHardwareDescription(hardware: string) {
+  return hardware
+    .replace(/6-Way\s+Adj\.Soft-Close\s+Hinges&\s+Drawer Slides/gi, "six-way adjustable soft-close hinges and drawer slides")
+    .replace(/\s*&\s*/g, " and ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function createDeliveryQuestion(productName: string, modelNumber: string): ProductQuestion {
+  return {
+    id: "dealer-delivery-timing",
+    question: `How are pickup and delivery arranged for ${productName}?`,
+    answer: `Your selected local dealer confirms availability and coordinates pickup or delivery for ${productName}, Model #${modelNumber}. Timing and any delivery charges are confirmed for your location after the order is placed.`
+  };
+}
+
+function createVanityQuestions(product: ProductDetail, productName: string, modelNumber: string) {
+  const includesTop = /(?:^|-)TOP(?:$|-)/i.test(modelNumber);
+  const assembly = getSpecifiedValue(product, ["Assembly", "Assembly Required"]);
+  const configuration = includesTop
+    ? "the vanity cabinet and countertop"
+    : "the vanity cabinet only; a countertop is not included";
+
   return [
     {
-      id: "confirm-before-checkout",
-      question: "What should I confirm before checkout?",
-      answer: "Confirm the selected dealer, pickup or delivery method, finish, dimensions and any project pieces that are not included with this item."
+      id: "vanity-countertop-included",
+      question: `Does ${productName}, Model #${modelNumber}, include a countertop?`,
+      answer: includesTop
+        ? `Yes. The TOP suffix in Model #${modelNumber} identifies this configuration of ${productName} as including the vanity cabinet and countertop.`
+        : `No. ${productName}, Model #${modelNumber}, is the vanity cabinet-only configuration and does not include a countertop. Choose a Model # with the TOP suffix when a countertop is required.`
     },
     {
-      id: "included-project-pieces",
-      question: "Is the sink, top or hardware included?",
-      answer: product.category.toLowerCase().includes("vanit")
-        ? "Sink, top and faucet selections are not included in this cabinet listing. Confirm those project pieces with your dealer."
-        : "Project add-ons such as countertops, fillers, trim and hardware should be confirmed separately before checkout."
+      id: "vanity-included-components",
+      question: `What is included with ${productName}, Model #${modelNumber}?`,
+      answer: `${productName}, Model #${modelNumber}, includes ${configuration}. A sink, faucet, backsplash, handles, mounting hardware and installation are included only when they are specifically listed in the product specifications. Confirm any unlisted components with your local dealer before ordering.`
     },
     {
-      id: "dealer-delivery-timing",
-      question: "Can my dealer confirm delivery timing?",
-      answer: "Yes. The selected VanStro dealer confirms pickup or local delivery timing after the order is placed."
-    }
+      id: "vanity-size-installation",
+      question: `What should I verify before installing ${productName}?`,
+      answer: `${productName}, Model #${modelNumber}, measures ${formatProductSize(product.dimensions)}. Confirm the available wall space, plumbing locations, countertop and sink openings, door and drawer clearances${assembly ? `, and the listed assembly requirement (${assembly})` : " and whether assembly is required"} before ordering.`
+    },
+    createDeliveryQuestion(productName, modelNumber)
   ];
+}
+
+function createHandleQuestions(product: ProductDetail, productName: string, modelNumber: string) {
+  const centerToCenter = getSpecifiedValue(product, ["Center-to-Center", "Center to Center", "Hole Spacing"]);
+  const material = getSpecifiedValue(product, ["Material"]);
+  const finish = getSpecifiedValue(product, ["Finish", "Color"]);
+
+  return [
+    {
+      id: "handle-size-fit",
+      question: `What size is ${productName}, Model #${modelNumber}?`,
+      answer: `${productName}, Model #${modelNumber}, has ${centerToCenter ? `a ${centerToCenter} centre-to-centre hole spacing` : `the listed size of ${formatProductSize(product.dimensions)}`}. Confirm the existing hole spacing and door or drawer thickness before ordering.`
+    },
+    {
+      id: "handle-material-finish",
+      question: `What material and finish does ${productName} use?`,
+      answer: `${productName}, Model #${modelNumber}, is listed${material ? ` in ${material}` : " with the material shown in its specifications"}${finish ? ` and a ${finish} finish` : ""}. Review the product images and specifications to confirm the finish for your project.`
+    },
+    {
+      id: "handle-installation-parts",
+      question: `Are installation screws included with ${productName}?`,
+      answer: `Screws and other installation parts are included with ${productName}, Model #${modelNumber}, only when they are specifically listed in the product specifications. Confirm the required screw length and compatible panel thickness with your local dealer before installation.`
+    },
+    createDeliveryQuestion(productName, modelNumber)
+  ];
+}
+
+function createGeneralProductQuestions(product: ProductDetail, productName: string, modelNumber: string) {
+  const hardware = getSpecifiedValue(product, ["Hardware"]);
+  const hardwareDescription = hardware ? formatHardwareDescription(hardware) : undefined;
+  const assembly = getSpecifiedValue(product, ["Assembly", "Assembly Required"]);
+
+  return [
+    {
+      id: "product-dimensions",
+      question: `What are the dimensions of ${productName}, Model #${modelNumber}?`,
+      answer: `${productName}, Model #${modelNumber}, measures ${formatProductSize(product.dimensions)}. Confirm the opening, clearances and orientation required for your project before ordering.`
+    },
+    {
+      id: "product-included-components",
+      question: `What is included with ${productName}, Model #${modelNumber}?`,
+      answer: `${productName}, Model #${modelNumber}, includes the product described in this listing${hardwareDescription ? ` with the listed hardware: ${hardwareDescription}` : ""}. Countertops, appliances, decorative hardware, fillers, trim and installation materials are included only when specifically listed in the product specifications.`
+    },
+    {
+      id: "product-installation",
+      question: `What should I confirm before installing ${productName}?`,
+      answer: `Before installing ${productName}, Model #${modelNumber}, confirm the dimensions, mounting surface, required clearances, compatible project pieces${assembly ? ` and the listed assembly requirement (${assembly})` : ", whether assembly is required"}. Ask your local dealer about any requirement not stated in the specifications.`
+    },
+    createDeliveryQuestion(productName, modelNumber)
+  ];
+}
+
+export function createDefaultQuestions(product: ProductDetail): ProductQuestion[] {
+  const productName = product.name;
+  const modelNumber = getModelNumber(product);
+  const normalizedCategory = `${product.category} ${product.subCategory ?? ""}`.toLowerCase();
+
+  if (normalizedCategory.includes("vanit")) {
+    return createVanityQuestions(product, productName, modelNumber);
+  }
+
+  if (normalizedCategory.includes("handle")) {
+    return createHandleQuestions(product, productName, modelNumber);
+  }
+
+  return createGeneralProductQuestions(product, productName, modelNumber);
 }
 
 function selectConfiguredProducts(productIds: string[] | undefined, allProducts: ProductSummary[]) {

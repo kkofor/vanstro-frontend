@@ -11,6 +11,8 @@ const MAPPING_PATH = resolve(
     "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const OUTPUT_PATH = resolve("src/lib/data/mb01-products.ts");
+const IMAGE_OVERRIDES_PATH = resolve("scripts/approved-product-image-overrides.json");
+const APPROVED_IMAGE_ASSETS_PATH = resolve("scripts/approved-product-image-assets.json");
 const EVIDENCE_DIR = resolve(
   process.env.MB01_LOCALIZATION_EVIDENCE_DIR ??
     "docs/goal-loop/frontend-full-audit/evidence/G3-implementation-2026-07-16"
@@ -118,7 +120,28 @@ async function mapWithConcurrency(items, concurrency, callback) {
 
 const inventory = JSON.parse(await readFile(INVENTORY_PATH, "utf8"));
 const mappingDocument = JSON.parse(await readFile(MAPPING_PATH, "utf8"));
+const approvedImagePathsBySku = JSON.parse(await readFile(IMAGE_OVERRIDES_PATH, "utf8"));
+const approvedImageAssets = JSON.parse(await readFile(APPROVED_IMAGE_ASSETS_PATH, "utf8")).assets;
 const assets = mappingDocument.assets;
+const approvedAssetPaths = approvedImageAssets.map((asset) => asset.path);
+const overrideBusinessPaths = [...new Set(
+  Object.values(approvedImagePathsBySku).flat().filter((path) => approvedAssetPaths.includes(path))
+)];
+const approvedPathPattern = /^\/assets\/products\/(?:bathroom-vanities|kitchen-cabinets)\/[a-z0-9]+(?:-[a-z0-9]+)*\.jpg$/;
+if (
+  approvedImageAssets.length !== 48 ||
+  new Set(approvedAssetPaths).size !== approvedImageAssets.length ||
+  overrideBusinessPaths.length !== approvedImageAssets.length ||
+  approvedAssetPaths.some((path) => !approvedPathPattern.test(path)) ||
+  approvedAssetPaths.some((path) => !overrideBusinessPaths.includes(path))
+) {
+  throw new Error("Approved product image manifest is incomplete, duplicated, or contains an invalid path");
+}
+for (const paths of Object.values(approvedImagePathsBySku)) {
+  if (paths.some((path) => !/^\/assets\/products\/[a-z0-9/-]+\.(?:gif|jpe?g|png|webp)$/.test(path) || path.includes(".."))) {
+    throw new Error("Approved product image override contains an invalid path");
+  }
+}
 
 if (
   inventory.parents.length !== EXPECTED_PARENT_COUNT ||
@@ -205,12 +228,14 @@ const products = inventory.parents.map((parent) => {
 
   const id = `mb01-${parent.listedOptionId}`;
   const name = storefrontName(parent);
-  const toImages = (variant) => variant.images.flatMap((url, index) => {
-    const localPath = localPathForUrl(url);
-    return localPath
-      ? [{ url: localPath, alt: imageAlt(name, variant.sku, index) }]
-      : [];
-  });
+  const toImages = (variant) => {
+    const approvedPaths = approvedImagePathsBySku[variant.sku];
+    const paths = approvedPaths ?? variant.images.flatMap((url) => {
+      const localPath = localPathForUrl(url);
+      return localPath ? [localPath] : [];
+    });
+    return paths.map((url, index) => ({ url, alt: imageAlt(name, variant.sku, index) }));
+  };
   const finishOptions = orderedVariants.map((variant) => {
     const color = colorForModel(variant.modelMpn);
     const images = toImages(variant);
@@ -232,6 +257,7 @@ const products = inventory.parents.map((parent) => {
   });
   const activeColor = colorForModel(activeVariant.modelMpn);
   const isHandle = parent.subCategory === "Handle series";
+  const isBaseboard = parent.subCategory === "Baseboard";
   const storefrontCategory = isHandle ? "Handle series" : parent.category;
 
   metadataById[id] = {
@@ -254,9 +280,12 @@ const products = inventory.parents.map((parent) => {
     price: activeVariant.priceCad,
     unit: "each",
     dimensions: dimensionsFor(activeVariant),
-    finish: activeColor?.name ?? (isHandle ? "Matte Black" : "White finish"),
-    colorName: activeColor?.name ?? (isHandle ? "Matte Black" : undefined),
+    finish: activeColor?.name ?? (isHandle ? "Matte Black" : isBaseboard ? "Putty White" : "White finish"),
+    colorName: activeColor?.name ?? (isHandle ? "Matte Black" : isBaseboard ? "Putty White" : undefined),
     colorHex: activeColor?.colorHex ?? (isHandle ? "#222222" : undefined),
+    packageQuantity: isBaseboard
+      ? { each: 1, innerPack: 10, displayLabel: "10 lengths per package" }
+      : undefined,
     finishOptions: finishOptions.length > 1 ? finishOptions : undefined,
     dealerStock: { winnipeg: 0 },
     availability: {
@@ -320,7 +349,8 @@ await writeFile(
         role,
         order
       }))
-    }))
+    })),
+    approvedBusinessAssets: approvedImageAssets
   }, null, 2),
   "utf8"
 );

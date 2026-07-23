@@ -21,8 +21,8 @@ const contactRoutes = [
     icon: MessageSquareText
   },
   {
-    title: "Dealer-assisted fulfillment",
-    text: "For dealer-provided services, contact the independent dealer you selected or contracted with.",
+    title: "Local dealer fulfillment",
+    text: "For separately offered local services, contact the local dealer you selected or contracted with.",
     icon: Store
   },
   {
@@ -36,8 +36,8 @@ const quickContacts = [
   {
     title: "Email support",
     text: "Our support team replies to email inquiries within 24 business hours.",
-    value: "info@vanstro.ca",
-    href: "mailto:info@vanstro.ca",
+    value: "support@vanstro.ca",
+    href: "mailto:support@vanstro.ca",
     icon: Mail
   },
   {
@@ -49,7 +49,7 @@ const quickContacts = [
   },
   {
     title: "Dealer routing",
-    text: "Local fulfillment and any dealer-provided services are handled by the independent dealer selected for the order.",
+    text: "Availability, pickup, delivery coordination and separately offered local services are handled by the local dealer selected for the order.",
     value: "Find local support below",
     href: "#dealer-contacts",
     icon: Store
@@ -64,7 +64,7 @@ const contactDetails = [
   },
   {
     title: "Service boundary",
-    text: "Dealer-provided services are handled by participating independent local dealers unless VanStro states otherwise in writing.",
+    text: "Separately quoted local services are provided by the local dealer unless VanStro expressly states otherwise in writing.",
     icon: ShieldCheck
   },
   {
@@ -258,9 +258,9 @@ export default function ContactPage() {
             <span className="contact-page-kicker">Local dealer contacts</span>
             <h2>Find the nearest support contact</h2>
             <p>
-              VanStro products are fulfilled through participating independent local
-              dealers. Contact the relevant dealer for pickup, delivery coordination,
-              installation where offered, returns, exchanges, and after-sales service.
+              The local dealer selected for an order confirms availability and coordinates
+              pickup, delivery options, return requests and after-sales assistance. Contact
+              that dealer for installation or other separately offered local services.
             </p>
           </div>
 

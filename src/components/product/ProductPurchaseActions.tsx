@@ -150,7 +150,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
       {product.certificationRequired ? (
         <p className="purchase-certification">
           <AlertCircle size={15} strokeWidth={2.4} />
-          Dealer confirmation is required before cabinet fulfillment is released.
+          Local dealer confirmation is required before cabinet fulfillment is released.
         </p>
       ) : null}
 
@@ -164,7 +164,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
 
       <p className="purchase-note">
         <CheckCircle2 size={15} strokeWidth={2.4} />
-        Checkout reserves stock under {selectedDealer.name}.
+        Checkout requests stock reservation with your local dealer: {selectedDealer.name}
       </p>
 
     </div>

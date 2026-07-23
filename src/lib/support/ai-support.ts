@@ -119,8 +119,8 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
   if (/\b(dealer|pickup|delivery|deliver|fulfill|fulfillment|store|postal|location)\b/.test(text)) {
     return makeSupportMessage(
       "assistant",
-      `You currently selected ${context.selectedDealerName} as the proposed fulfillment dealer. After checkout, that independently operated dealer confirms whether it can accept and fulfill the request. Dealer-provided services are subject to a separate agreement with the dealer.`,
-      "Dealer fulfillment",
+      `You selected ${context.selectedDealerName} as your local dealer. After checkout, the local dealer confirms availability and the pickup or delivery options for your location. Separately offered local services are subject to a separate agreement with the local dealer.`,
+      "Local dealer fulfillment",
       {
         actions: [
           {
@@ -168,7 +168,7 @@ export function resolveAiSupportReply(input: string, context: AiSupportContext) 
   if (/\b(dealer program|partner|join|contractor|trade|business|b2b)\b/.test(text)) {
     return makeSupportMessage(
       "assistant",
-      "VanStro works with trade buyers and independent dealer partners across Canada. For onboarding, prepare your company name, proposed dealer service area, contact details and business type.",
+      "VanStro works with trade buyers and local dealer partners in participating service areas across Canada. For onboarding, prepare your company name, proposed dealer service area, contact details and business type.",
       "Dealer program",
       {
         actions: [

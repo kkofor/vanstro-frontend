@@ -211,9 +211,9 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
             </div>
 
             <div className="legal-support-list" aria-label="Support contact details">
-              <a href="mailto:info@vanstro.ca">
+              <a href="mailto:support@vanstro.ca">
                 <Mail size={16} strokeWidth={2.1} />
-                <span>info@vanstro.ca</span>
+                <span>support@vanstro.ca</span>
               </a>
               <a href="tel:+12042212288">
                 <Phone size={16} strokeWidth={2.1} />

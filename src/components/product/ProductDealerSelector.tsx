@@ -109,7 +109,7 @@ export function ProductDealerSelector({
               {selectedDealer.name}
             </small>
             <small className={selectedInventoryClass} data-dealer-inventory-label>
-              {selectedInventoryLabel} at selected dealer
+              {selectedInventoryLabel} at selected local dealer
             </small>
             <small data-dealer-address-label>{selectedDealer.address}</small>
           </span>
@@ -121,7 +121,7 @@ export function ProductDealerSelector({
           <Truck size={22} strokeWidth={2.2} />
           <span>
             <strong>Delivery</strong>
-            <small>Dealer confirms timing after checkout.</small>
+            <small>Your local dealer confirms timing after checkout.</small>
             <small data-dealer-city-label>
               From {selectedDealer.city}, {selectedDealer.province} {selectedDealer.postalCode}
             </small>
@@ -146,8 +146,8 @@ export function ProductDealerSelector({
           <section ref={sheetRef} className="pdp-dealer-sheet" tabIndex={-1}>
             <header className="pdp-dealer-sheet-head">
               <span>
-                <small>Dealer fulfillment</small>
-                <h3 id="pdp-dealer-modal-title">Choose pickup dealer</h3>
+                <small>Local fulfillment</small>
+                <h3 id="pdp-dealer-modal-title">Choose a local dealer</h3>
               </span>
               <button
                 type="button"
@@ -159,7 +159,7 @@ export function ProductDealerSelector({
               </button>
             </header>
             <p className="pdp-dealer-distance-note">
-              Distances are estimated from your current browsing region. Choose a dealer manually if location looks off.
+              Distances are estimated from your current browsing region. Choose a local dealer manually if the location looks incorrect.
             </p>
             <div className="pdp-dealer-list">
               {dealerChoices.map(({ dealer, distanceKm, inventory, inventoryClass, inventoryLabel, quantity }) => {

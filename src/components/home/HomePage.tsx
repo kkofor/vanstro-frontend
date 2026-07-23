@@ -130,7 +130,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
             <h1>
               <span>Kitchen cabinets and home materials</span>
               {" "}
-              <span>delivered across Canada</span>
+              <span>available in participating service areas across Canada</span>
             </h1>
             <p>{banner.subtitle}</p>
             <div className="hero-actions">
@@ -278,7 +278,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
           <MapPin size={42} strokeWidth={1.8} />
           <div>
             <h2>Find a dealer or showroom</h2>
-            <p>Choose a local VanStro dealer for pickup, delivery coordination and project support.</p>
+            <p>Choose a local dealer for pickup, delivery coordination and project support.</p>
           </div>
           <div className="store-list">
             {dealers.slice(0, 4).map((dealer) => (

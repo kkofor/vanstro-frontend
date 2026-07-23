@@ -103,6 +103,7 @@ export type PackageQuantity = {
   innerPack?: number;
   case?: number;
   pallet?: number;
+  displayLabel?: string;
 };
 
 export type ProductFinishOption = {

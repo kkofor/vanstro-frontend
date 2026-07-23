@@ -2,6 +2,22 @@ export const HOME_PRODUCT_LIMIT = 8;
 
 export const CATALOG_PAGE_SIZE = 24;
 
+export const BATHROOM_VANITY_FEATURED_SKUS = [
+  "022421011",
+  "022721011",
+  "023021011",
+  "023621011",
+  "023021511",
+  "023021411",
+  "023621511",
+  "023621411",
+  "023021311",
+  "023021211",
+  "024221611",
+  "024821611",
+  "026621711"
+] as const;
+
 export type CatalogCategoryOption = {
   id: string;
   label: string;

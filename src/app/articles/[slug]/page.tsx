@@ -30,6 +30,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
+  // Keep article retrieval behind this boundary for the future CMS detail API at
+  // /articles/{articleId}; the public route and page layout should not need to change.
   const article = await getArticleBySlug(slug);
 
   return (
@@ -43,11 +45,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <section className="page-panel">
         <div className="container guide-grid">
           <article>
-            <p>{article.content}</p>
-            <p>
-              The article detail API is reserved at `/articles/{"{articleId}"}`. This page can be wired to CMS content
-              without changing the route or layout.
-            </p>
+            {article.content.split("\n\n").map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </article>
           <div className="guide-image">
             <img

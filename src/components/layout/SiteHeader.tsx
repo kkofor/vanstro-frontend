@@ -108,12 +108,12 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
         <MapPin size={18} strokeWidth={2.2} />
         <span>
           <strong>{selectedDealer.city}</strong>
-          <em>Open - closes 9 p.m.</em>
+          <em>Open — closes at 9 p.m.</em>
         </span>
       </button>
 
       <div className="dealer-menu" hidden={!open}>
-        <span>Choose fulfillment dealer</span>
+        <span>Choose a local dealer</span>
         <form className="dealer-postal" onSubmit={handlePostalSubmit}>
           <input
             aria-label="Postal code"
@@ -202,7 +202,7 @@ export function SiteHeader() {
             <span>CA - EN</span>
             <Link href="/">FR</Link>
           </div>
-          <p>Shop online across Canada. A local VanStro dealer fulfills your order.</p>
+          <p>Online ordering is available in participating service areas. Your local dealer coordinates fulfillment.</p>
           <div className="utility-links">
             <Link href="/orders/demo-order">Track order</Link>
             <Link href="/contact">Support</Link>

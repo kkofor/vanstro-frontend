@@ -22985,12 +22985,12 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS24-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs24-022421011-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-VS24 SKU 022421011 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs24-022421011-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-VS24 SKU 022421011 primary product view"
           },
           {
@@ -23256,7 +23256,7 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs24-022421011-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-VS24 SKU 022421011 primary product view"
       },
       {
@@ -23314,20 +23314,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS27-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-VS27 SKU 022721011 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721011 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-storage-open.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-156.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-countertop-detail.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 3"
           },
           {
@@ -23335,7 +23335,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-127.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 5"
           },
           {
@@ -23442,20 +23442,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS27-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-VS27 SKU 022721013 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721013 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-104.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-storage-open.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-002.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 3"
           },
           {
@@ -23463,7 +23463,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-053.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS27 SKU 022721013 product view 5"
           },
           {
@@ -23585,15 +23585,15 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-VS27 SKU 022721011 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-storage-open.jpg",
         "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 2"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-156.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-countertop-detail.jpg",
         "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 3"
       },
       {
@@ -23601,7 +23601,7 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 4"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-127.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-product-white-background.jpg",
         "alt": "Vanity Cabinet-VS27 SKU 022721011 product view 5"
       },
       {
@@ -23643,20 +23643,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS30-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-VS30 SKU 023021011 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021011 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-storage-open.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-051.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-countertop-detail.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 3"
           },
           {
@@ -23664,7 +23664,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-162.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 5"
           },
           {
@@ -23709,20 +23709,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS30-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-VS30 SKU 023021013 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021013 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-104.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-storage-open.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-100.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 3"
           },
           {
@@ -23730,7 +23730,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS30 SKU 023021013 product view 5"
           },
           {
@@ -23910,15 +23910,15 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-VS30 SKU 023021011 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-storage-open.jpg",
         "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 2"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-051.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-countertop-detail.jpg",
         "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 3"
       },
       {
@@ -23926,7 +23926,7 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 4"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-162.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-product-white-background.jpg",
         "alt": "Vanity Cabinet-VS30 SKU 023021011 product view 5"
       },
       {
@@ -25292,20 +25292,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS36-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-VS36 SKU 023621011 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621011 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-storage-open.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-051.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-countertop-detail.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 3"
           },
           {
@@ -25313,7 +25313,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-156.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 5"
           },
           {
@@ -25478,20 +25478,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "VS36-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-VS36 SKU 023621013 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-118.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621013 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-104.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-storage-open.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-053.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 3"
           },
           {
@@ -25499,7 +25499,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-product-white-background.jpg",
             "alt": "Vanity Cabinet-VS36 SKU 023621013 product view 5"
           },
           {
@@ -25559,15 +25559,15 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-140.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-VS36 SKU 023621011 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-062.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-storage-open.jpg",
         "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 2"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-051.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-countertop-detail.jpg",
         "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 3"
       },
       {
@@ -25575,7 +25575,7 @@ const localizedProducts: ProductSummary[] = [
         "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 4"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-156.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-product-white-background.jpg",
         "alt": "Vanity Cabinet-VS36 SKU 023621011 product view 5"
       },
       {
@@ -25617,16 +25617,16 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V3621TDR-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-V3621TDR SKU 023621411 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621411 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-114.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-storage-open.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 2"
           },
           {
@@ -25803,12 +25803,12 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V3621TDR-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-v3621tdr-pwms-lg-top-primary.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-light-grey-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-V3621TDR SKU 023621413 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-v3621tdr-pwms-lg-top-primary.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-light-grey-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 primary product view"
           },
           {
@@ -25816,15 +25816,15 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-160.jpg",
+            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-148.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 3"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-148.jpg",
+            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-light-grey-product-white-background.jpg",
             "alt": "Vanity Cabinet-V3621TDR SKU 023621413 product view 5"
           },
           {
@@ -25888,11 +25888,11 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-048.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-lifestyle-front.jpg",
         "alt": "Vanity Cabinet-V3621TDR SKU 023621411 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-114.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-storage-open.jpg",
         "alt": "Vanity Cabinet-V3621TDR SKU 023621411 product view 2"
       },
       {
@@ -25946,16 +25946,16 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V3621TDL-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-V3621TDL SKU 023621511 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621511 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-064.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-storage-open.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 2"
           },
           {
@@ -26132,12 +26132,12 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V3621TDL-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-132.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621513-light-grey-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-V3621TDL SKU 023621513 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-132.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621513-light-grey-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 primary product view"
           },
           {
@@ -26145,15 +26145,15 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-155.jpg",
+            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-161.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 3"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-161.jpg",
+            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621513-light-grey-product-white-background.jpg",
             "alt": "Vanity Cabinet-V3621TDL SKU 023621513 product view 5"
           },
           {
@@ -26217,11 +26217,11 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-065.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-lifestyle-front.jpg",
         "alt": "Vanity Cabinet-V3621TDL SKU 023621511 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-064.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-storage-open.jpg",
         "alt": "Vanity Cabinet-V3621TDL SKU 023621511 product view 2"
       },
       {
@@ -26275,12 +26275,12 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V4221-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221611-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-V4221 SKU 024221611 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221611-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221611 primary product view"
           },
           {
@@ -26362,7 +26362,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221612-white-cabinet-product-white-background.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221612 product view 5"
           },
           {
@@ -26424,7 +26424,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221614-light-grey-cabinet-product-white-background.jpg",
             "alt": "Vanity Cabinet-V4221 SKU 024221614 product view 5"
           },
           {
@@ -26554,7 +26554,7 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221611-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-V4221 SKU 024221611 primary product view"
       },
       {
@@ -26612,16 +26612,16 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V4821-PWMS-WH-TOP",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-front-primary.jpg",
           "alt": "Vanity Cabinet-V4821 SKU 024821611 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-front-primary.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821611 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-120.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-storage-open-angle.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 2"
           },
           {
@@ -26691,7 +26691,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-110.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821614-light-grey-cabinet-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 3"
           },
           {
@@ -26699,7 +26699,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-145.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821614-light-grey-cabinet-product-white-background.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821614 product view 5"
           },
           {
@@ -26740,20 +26740,20 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V4821-PWMS-WH",
         "colorHex": "#f7f6f2",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-168.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-lifestyle-front.jpg",
           "alt": "Vanity Cabinet-V4821 SKU 024821612 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-168.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-lifestyle-front.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821612 primary product view"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-141.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-lifestyle-storage-open.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-072.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 3"
           },
           {
@@ -26761,7 +26761,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-092.jpg",
+            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-141.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821612 product view 5"
           },
           {
@@ -26802,12 +26802,12 @@ const localizedProducts: ProductSummary[] = [
         "manufacturerPartNumber": "V4821-PWMS-LG-TOP",
         "colorHex": "#c9cbc7",
         "image": {
-          "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-179.jpg",
+          "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-lifestyle-storage-open.jpg",
           "alt": "Vanity Cabinet-V4821 SKU 024821613 primary product view"
         },
         "images": [
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-179.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-lifestyle-storage-open.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821613 primary product view"
           },
           {
@@ -26815,7 +26815,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 2"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-170.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-storage-open-white-background.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 3"
           },
           {
@@ -26823,7 +26823,7 @@ const localizedProducts: ProductSummary[] = [
             "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 4"
           },
           {
-            "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-188.jpg",
+            "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-product-white-background.jpg",
             "alt": "Vanity Cabinet-V4821 SKU 024821613 product view 5"
           },
           {
@@ -26887,11 +26887,11 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-190.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-front-primary.jpg",
         "alt": "Vanity Cabinet-V4821 SKU 024821611 primary product view"
       },
       {
-        "url": "/assets/products/bathroom-vanities/vanstro-bathroom-vanities-shared-product-detail-120.jpg",
+        "url": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-storage-open-angle.jpg",
         "alt": "Vanity Cabinet-V4821 SKU 024821611 product view 2"
       },
       {
@@ -27272,7 +27272,13 @@ const localizedProducts: ProductSummary[] = [
     },
     "unit": "each",
     "dimensions": "See product specifications",
-    "finish": "White finish",
+    "finish": "Putty White",
+    "colorName": "Putty White",
+    "packageQuantity": {
+      "each": 1,
+      "innerPack": 10,
+      "displayLabel": "10 lengths per package"
+    },
     "dealerStock": {
       "winnipeg": 0
     },
@@ -27333,7 +27339,13 @@ const localizedProducts: ProductSummary[] = [
     },
     "unit": "each",
     "dimensions": "See product specifications",
-    "finish": "White finish",
+    "finish": "Putty White",
+    "colorName": "Putty White",
+    "packageQuantity": {
+      "each": 1,
+      "innerPack": 10,
+      "displayLabel": "10 lengths per package"
+    },
     "dealerStock": {
       "winnipeg": 0
     },
@@ -27394,7 +27406,13 @@ const localizedProducts: ProductSummary[] = [
     },
     "unit": "each",
     "dimensions": "See product specifications",
-    "finish": "White finish",
+    "finish": "Putty White",
+    "colorName": "Putty White",
+    "packageQuantity": {
+      "each": 1,
+      "innerPack": 10,
+      "displayLabel": "10 lengths per package"
+    },
     "dealerStock": {
       "winnipeg": 0
     },
@@ -27538,7 +27556,7 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg",
+        "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-specification-primary.jpg",
         "alt": "Handle CTC-96mm SKU 060101111 primary product view"
       },
       {
@@ -27592,7 +27610,7 @@ const localizedProducts: ProductSummary[] = [
     },
     "images": [
       {
-        "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-primary.jpg",
+        "url": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-specification-primary.jpg",
         "alt": "Handle CTC-192mm SKU 060102411 primary product view"
       },
       {

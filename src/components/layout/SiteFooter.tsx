@@ -146,7 +146,7 @@ export function SiteFooter() {
               <div className="footer-contact-list" aria-label="Contact information">
                 <span>
                   <MapPin size={16} strokeWidth={2.2} />
-                  Nationwide delivery with local dealer service
+                  Service availability varies by postal code
                 </span>
                 <span>
                   <Mail size={16} strokeWidth={2.2} />
@@ -154,7 +154,7 @@ export function SiteFooter() {
                 </span>
                 <span>
                   <Phone size={16} strokeWidth={2.2} />
-                  Dealer-assisted fulfillment
+                  Local dealer fulfillment
                 </span>
               </div>
               <div className="footer-social" aria-label="Social media channels">
@@ -170,10 +170,10 @@ export function SiteFooter() {
 
             <div className="footer-help">
               <span>Need help with an order?</span>
-              <h2>Checkout online. Fulfillment stays local.</h2>
+              <h2>Order online. Fulfillment stays local.</h2>
               <p>
-                Your selected participating independent dealer receives the order
-                request and confirms availability and fulfillment arrangements. Any
+                Your selected local dealer receives the order request and confirms
+                availability, pickup and delivery options for your postal code. Any
                 separately offered local services are agreed directly with that dealer.
               </p>
               <div className="footer-help-actions">

@@ -9,6 +9,9 @@ const MAPPING_PATH = resolve(
   "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const GENERATED_PATH = resolve("src/lib/data/mb01-products.ts");
+const IMAGE_OVERRIDES_PATH = resolve("scripts/approved-product-image-overrides.json");
+const APPROVED_IMAGE_ASSETS_PATH = resolve("scripts/approved-product-image-assets.json");
+const IMAGE_DIMENSIONS_PATH = resolve("src/lib/data/product-image-dimensions.json");
 const DERIVED_PROVENANCE_PATH = resolve(
   "docs/goal-loop/frontend-full-audit/evidence/G7-rework-2026-07-16/asset-provenance-derived.json"
 );
@@ -51,6 +54,19 @@ async function scanHost(root) {
 
 const inventory = JSON.parse(await readFile(INVENTORY_PATH, "utf8"));
 const mapping = JSON.parse(await readFile(MAPPING_PATH, "utf8")).assets;
+const approvedImagePathsBySku = JSON.parse(await readFile(IMAGE_OVERRIDES_PATH, "utf8"));
+const approvedImageAssets = JSON.parse(await readFile(APPROVED_IMAGE_ASSETS_PATH, "utf8")).assets;
+const imageDimensions = JSON.parse(await readFile(IMAGE_DIMENSIONS_PATH, "utf8"));
+const approvedAssetPaths = approvedImageAssets.map((asset) => asset.path);
+const overrideBusinessPaths = [...new Set(
+  Object.values(approvedImagePathsBySku).flat().filter((path) => approvedAssetPaths.includes(path))
+)];
+const approvedPathPattern = /^\/assets\/products\/(?:bathroom-vanities|kitchen-cabinets)\/[a-z0-9]+(?:-[a-z0-9]+)*\.jpg$/;
+const approvedImageManifestValid =
+  approvedImageAssets.length === 48 &&
+  new Set(approvedAssetPaths).size === approvedImageAssets.length &&
+  overrideBusinessPaths.length === approvedImageAssets.length &&
+  approvedAssetPaths.every((path) => approvedPathPattern.test(path) && overrideBusinessPaths.includes(path));
 const derivedProvenance = await readFile(DERIVED_PROVENANCE_PATH, "utf8")
   .then((source) => JSON.parse(source))
   .catch((error) => {
@@ -121,7 +137,7 @@ for (const sourceAuthority of inventory.variants) {
   const actualDescription = option?.description ?? (singleVariant ? metadata[product.id]?.description : undefined);
   const actualHighlights = option?.productHighlights ?? (singleVariant ? metadata[product.id]?.productHighlights : undefined);
   const actualSpecifications = option?.specifications ?? (singleVariant ? metadata[product.id]?.specifications : undefined);
-  const expectedImages = authority.images.flatMap((url) => {
+  const expectedImages = approvedImagePathsBySku[authority.sku] ?? authority.images.flatMap((url) => {
     const localPath = localPathByUrl.get(url);
     return localPath ? [localPath] : [];
   });
@@ -183,6 +199,47 @@ for (const asset of uniqueAssets) {
   }
 }
 
+let approvedImageMissingLocalAssets = 0;
+let approvedImageHashMismatches = 0;
+let approvedImageMissingExportAssets = 0;
+let approvedImageNamingFailures = 0;
+let approvedImageDimensionFailures = 0;
+let approvedImagePathFailures = approvedImageManifestValid ? 0 : 1;
+const publicRoot = resolve("public");
+const exportRoot = resolve("out");
+for (const asset of approvedImageAssets) {
+  const localPath = resolve(publicRoot, `.${asset.path}`);
+  const exportedPath = resolve(exportRoot, `.${asset.path}`);
+  if (!localPath.startsWith(`${publicRoot}/`) || !exportedPath.startsWith(`${exportRoot}/`)) {
+    approvedImagePathFailures += 1;
+    continue;
+  }
+  const filename = asset.path.split("/").at(-1);
+  const extension = extname(filename).slice(1);
+  try {
+    const buffer = await readFile(localPath);
+    const hash = createHash("sha256").update(buffer).digest("hex");
+    if (hash !== asset.sha256 || buffer.length !== asset.bytes) approvedImageHashMismatches += 1;
+  } catch (error) {
+    if (error?.code === "ENOENT") approvedImageMissingLocalAssets += 1;
+    else throw error;
+  }
+  try {
+    const buffer = await readFile(exportedPath);
+    const hash = createHash("sha256").update(buffer).digest("hex");
+    if (hash !== asset.sha256 || buffer.length !== asset.bytes) approvedImageHashMismatches += 1;
+  } catch (error) {
+    if (error?.code === "ENOENT") approvedImageMissingExportAssets += 1;
+    else throw error;
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*\.(?:gif|jpe?g|png|webp)$/.test(filename) || extension !== extension.toLowerCase()) {
+    approvedImageNamingFailures += 1;
+  }
+  if (stable(imageDimensions[asset.path]) !== stable([asset.width, asset.height])) {
+    approvedImageDimensionFailures += 1;
+  }
+}
+
 const sourceHostMatches = await scanHost(resolve("src"));
 const outputHostMatches = [
   ...await scanHost(resolve("out")),
@@ -202,6 +259,13 @@ const summary = {
   hashMismatches,
   namingFailures,
   missingExportAssets,
+  approvedBusinessAssets: approvedImageAssets.length,
+  approvedImageMissingLocalAssets,
+  approvedImageHashMismatches,
+  approvedImageMissingExportAssets,
+  approvedImageNamingFailures,
+  approvedImageDimensionFailures,
+  approvedImagePathFailures,
   sourceHostMatches,
   outputHostMatches,
   pass:
@@ -211,6 +275,12 @@ const summary = {
     hashMismatches === 0 &&
     namingFailures === 0 &&
     missingExportAssets === 0 &&
+    approvedImageMissingLocalAssets === 0 &&
+    approvedImageHashMismatches === 0 &&
+    approvedImageMissingExportAssets === 0 &&
+    approvedImageNamingFailures === 0 &&
+    approvedImageDimensionFailures === 0 &&
+    approvedImagePathFailures === 0 &&
     sourceHostMatches.length === 0 &&
     outputHostMatches.length === 0
 };

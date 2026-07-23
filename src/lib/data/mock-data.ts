@@ -22,9 +22,9 @@ import { dealers } from "@/lib/data/dealers";
 export const banners: Banner[] = [
   {
     id: "home-kitchen-cabinets",
-    title: "Kitchen cabinets, vanities and home materials delivered across Canada",
+    title: "Kitchen cabinets, vanities and home materials available in participating service areas",
     subtitle:
-      "Shop ready-to-order cabinets, vanities, trim and home improvement supplies online. VanStro coordinates nationwide delivery and local dealer service for pickup, delivery and project support.",
+      "Shop ready-to-order cabinets, vanities, trim and home improvement supplies online. Product availability, local dealer coverage, pickup and delivery options vary by postal code.",
     href: "/products",
     image: {
       url: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
@@ -404,7 +404,7 @@ const detailCopyById: Record<
       "Full-height cabinet for pantry, utility or appliance-adjacent storage.",
       "24 inch width and 96 inch height support tall kitchen layouts.",
       "MDF + PVC white finish aligns with the stocked cabinet program.",
-      "Dealer fulfillment helps protect large-format product handling."
+      "Local dealer fulfillment helps protect large-format product handling."
     ],
     documents: [
       {
@@ -512,7 +512,7 @@ export const productDetails: ProductDetail[] = products.map((product) => {
     brand: "VanStro",
     manufacturerPartNumber:
       product.manufacturerPartNumber ?? detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
-    packageQuantity: detailCopy?.packageQuantity ?? {
+    packageQuantity: product.packageQuantity ?? detailCopy?.packageQuantity ?? {
       each: 1,
       innerPack: 1
     },
@@ -600,8 +600,8 @@ export const articles: ArticleSummary[] = [
   {
     id: "pickup-delivery",
     slug: "pickup-and-delivery-options",
-    title: "Nationwide delivery and dealer pickup",
-    excerpt: "Understand delivery coverage, local dealer pickup and order handoff after checkout.",
+    title: "Delivery and local dealer pickup options",
+    excerpt: "Learn how availability, pickup and delivery options are confirmed for your postal code.",
     publishedAt: "2026-06-12T12:00:00.000Z",
     image: {
       url: assetPath("/assets/articles/dealer-pickup-delivery-guide.gif"),
@@ -610,10 +610,21 @@ export const articles: ArticleSummary[] = [
   }
 ];
 
+// Static article copy is the storefront fallback until the CMS-backed detail API is
+// connected. Keep these slugs aligned with /articles/{articleId} so that integration
+// can replace the content source without changing public URLs or the article layout.
+const articleContentBySlug: Record<string, string> = {
+  "how-to-measure-for-cabinets":
+    "Measure each wall from corner to corner and record the ceiling height at several points. Mark doors, windows, appliances, plumbing, electrical outlets and any obstruction that affects cabinet placement.\n\nUse the published dimensions for each cabinet Model # when planning the layout. Allow space for fillers, door and drawer clearances, appliance ventilation and uneven walls. Confirm the final measurements and installation requirements with your local dealer before ordering.",
+  "what-finishes-are-available":
+    "Review the colour, material and finish listed for the exact Model # before ordering. Product images can appear different because of lighting, screen settings and normal manufacturing variation.\n\nOrder or inspect a physical sample when an exact colour match matters. Ask your local dealer about care instructions, paint preparation and compatibility with nearby cabinets, trim and hardware.",
+  "pickup-and-delivery-options":
+    "Online ordering is available in participating service areas across Canada. Product availability, local dealer coverage, pickup and delivery options vary by postal code. Your selected local dealer confirms inventory and the available fulfillment method for your order.\n\nPickup timing, delivery timing, delivery charges and any site requirements are confirmed after the order is placed. Home delivery, inside delivery, unloading, installation and other on-site services are included only when they are expressly listed in the order documents or separately agreed with the local dealer.\n\nInspect the shipment for quantity, incorrect items and visible damage when it is handed over. Note visible issues on the delivery record where possible and contact your local dealer promptly. Signing for receipt does not prevent you from reporting concealed damage that could not reasonably be found during the initial inspection."
+};
+
 export const articleDetails: ArticleDetail[] = articles.map((article) => ({
   ...article,
-  content:
-    "This guide is a placeholder for the rebuilt content system. It keeps the page structure ready for the backend article detail API while preserving SEO-friendly rendering."
+  content: articleContentBySlug[article.slug]
 }));
 
 export const mockCart: Cart = {

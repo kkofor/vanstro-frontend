@@ -54,9 +54,8 @@ function section(
 function contactSection(index: number): LegalPageSection {
   return section(
     "Contact Us",
-    "Questions about this page or any of our legal terms may be directed to:\nVanStro Global Supply Inc.\n856 Century Street, Winnipeg, Manitoba R3H 0M5, Canada\nEmail: info@vanstro.ca\nPhone: 204-221-2288\nWebsite: vanstro.ca",
-    index,
-    "Official contact block required by the VanStro legal footer implementation brief."
+    "Questions about this page or any of our legal terms may be directed to:\nVanStro Global Supply Inc.\n856 Century Street, Winnipeg, Manitoba R3H 0M5, Canada\nEmail: support@vanstro.ca\nPhone: 204-221-2288\nWebsite: vanstro.ca",
+    index
   );
 }
 
@@ -67,7 +66,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     description: "Legal disclaimer content from the VanStro legacy site.",
     intro:
       "Important notes about website information, product references, pricing, images, liability and governing law.",
-    updated: "Last updated: 2026-05-16",
+    updated: "Last updated: May 16, 2026",
     sourceSummary: "Effective Date: May 12, 2026",
     sections: [
       section(
@@ -87,15 +86,15 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "4. Pricing and Charges",
-        "All prices displayed on this website are suggested retail prices for reference only and do not include shipping, delivery, installation, taxes, duties, or other applicable charges unless expressly stated otherwise. Shipping costs vary depending on delivery location and order quantity and will be quoted separately. Applicable federal Goods and Services Tax (GST) and any provincial sales tax (PST, RST, QST, or HST as applicable) will be added at the time of invoicing.",
+        "Unless expressly stated otherwise, displayed prices exclude applicable GST/HST and provincial sales taxes, including PST, RST or QST where applicable. Shipping, delivery, installation and other agreed charges may be added separately. Customs duties or import charges apply only where relevant to the transaction.",
         3,
-        "Important: displayed prices are reference prices only; taxes, shipping, delivery, installation, duties and other charges may be added separately."
+        "Displayed prices are estimates unless expressly identified as final. Applicable taxes and separately agreed charges are confirmed in the order documents."
       ),
       section(
         "5. No Binding Offer",
-        "Nothing on this website constitutes a binding offer, contract, guarantee, or warranty. Final product specifications, pricing, and commercial terms are determined by the applicable written quotations, purchase agreements, invoices, and other formal contractual documents issued by VanStro Global Supply Inc.",
+        "General website content does not create a binding offer, contract, guarantee or warranty. Any applicable product warranty will be identified in the written documents provided for the product or order. Final product specifications, pricing and commercial terms are determined by the applicable order confirmation, invoice or other written sales document. Nothing in this disclaimer limits any right or remedy that cannot be excluded under applicable law.",
         4,
-        "Important: binding terms come only from formal VanStro quotations, purchase agreements, invoices or other contractual documents."
+        "Binding terms are identified in the applicable order confirmation, invoice or other written sales document."
       ),
       section(
         "6. Accuracy and Limitation of Liability",
@@ -121,7 +120,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     ],
     summaryTitle: "Need a confirmed answer?",
     summaryBody:
-      "For binding product details, project support or order-specific guidance, contact VanStro support or the independent dealer selected for the order before placing it.",
+      "For binding product details, project support or order-specific guidance, contact VanStro support or the local dealer selected for the order before placing it.",
     supportNote: "Best for: product specifications, pricing references, website information, and quotation confirmation.",
     primaryCta: { label: "Contact support", href: "/contact" },
     secondaryCta: { label: "Shop products", href: "/products" }
@@ -132,14 +131,13 @@ export const legalPageEntries: LegalPageEntry[] = [
     description: "Terms and Conditions content from the VanStro legacy site.",
     intro:
       "Terms governing access to the VanStro website, permitted use, pricing references, intellectual property and legal responsibilities.",
-    updated: "Last updated: 2026-05-16",
+    updated: "Last updated: May 16, 2026",
     sourceSummary: "Effective Date: May 12, 2026",
     sections: [
       section(
         "1. Acceptance of Terms",
         'By accessing or using vanstro.ca (the "Website"), you agree to be bound by these Terms and Conditions and by our Privacy Policy and Cookie Policy. If you do not agree, you must not use the Website.',
-        0,
-        "Important: the formal implementation brief identifies vanstro.ca as the public website domain for these legal terms."
+        0
       ),
       section(
         "2. Eligibility",
@@ -158,14 +156,13 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "5. Quotations, Orders, and Pricing",
-        "Information presented on the Website does not constitute a binding offer. Binding terms are established only by a written quotation, purchase agreement, or invoice issued by VanStro Global Supply Inc. Prices shown on the Website are suggested retail prices for reference; final pricing is set out in the applicable contractual documents and may vary based on order volume, customization, freight, taxes, and other factors.",
+        'Product information and displayed prices on the Website do not constitute a binding offer. A product order becomes binding only when it is accepted in an order confirmation, invoice or other written sales document.\n\nThe "Seller" for each order is the entity identified as the seller on the applicable order confirmation or invoice. The same document identifies the applicable price, taxes, payment terms, fulfillment arrangements and any additional charges.\n\nPrices displayed before checkout are estimates unless expressly identified as final. The final product price, applicable GST/HST and provincial sales taxes, including PST, RST or QST where applicable, and any separately agreed charges are shown in the applicable order confirmation or invoice.\n\nThe local dealer selected for the order may provide local fulfillment, pickup, delivery coordination, returns handling and post-sale assistance. The local dealer is the Seller only where the applicable order confirmation or invoice identifies it as the Seller.',
         4
       ),
       section(
         "6. Warranties and Disclaimers",
-        'Product warranties, where offered, are governed by the separate VanStro Limited Warranty documentation accompanying the product. Except as expressly set out in such written warranty, the Website and its content are provided on an "as is" and "as available" basis without representations, warranties, or conditions of any kind, whether express, implied, statutory, or otherwise, including merchantability, fitness for a particular purpose, and non-infringement, to the maximum extent permitted by applicable law.',
-        5,
-        "Important: product warranty rights are controlled by separate written VanStro Limited Warranty documentation, not by general website content."
+        'A product is covered by an express warranty only if a written warranty is identified in the applicable product or order documents and is made available to the purchaser. Warranty coverage, duration, exclusions and claim procedures are governed by that written warranty.\n\nExcept as expressly set out in an applicable written warranty, the Website and its content are provided on an "as is" and "as available" basis to the maximum extent permitted by applicable law. Nothing in these Terms excludes or limits any statutory warranty, condition, right or remedy that cannot lawfully be excluded or limited.',
+        5
       ),
       section(
         "7. Limitation of Liability",
@@ -206,7 +203,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     ],
     summaryTitle: "Questions about ordering terms?",
     summaryBody:
-      "Our support team can explain the current storefront flow and route policy questions to the right dealer or platform contact.",
+      "Our support team can explain the current ordering process and direct policy questions to the appropriate VanStro team or local dealer.",
     supportNote: "Best for: quote terms, order documents, product warranty routing, and website terms questions.",
     primaryCta: { label: "Contact support", href: "/contact" },
     secondaryCta: { label: "View return policy", href: "/return-policy" }
@@ -217,19 +214,19 @@ export const legalPageEntries: LegalPageEntry[] = [
     description: "Privacy Policy content from the VanStro legacy site.",
     intro:
       "How VanStro collects, uses, shares, protects and retains personal information under Canadian privacy law.",
-    updated: "Last updated: 2026-05-16",
+    updated: "Last updated: May 16, 2026",
     sourceSummary: "Effective Date: May 12, 2026",
     sections: [
       section(
         "1. Our Commitment",
-        'VanStro Global Supply Inc. ("VanStro", "we", "our") is committed to protecting your personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA), Quebec\'s Act respecting the protection of personal information in the private sector (Law 25), and other applicable Canadian privacy laws. This Policy explains what information we collect, how we use it, with whom we share it, and the rights you have.',
+        'VanStro Global Supply Inc. ("VanStro", "we", "our") is committed to protecting your personal information in accordance with the Personal Information Protection and Electronic Documents Act (PIPEDA), Quebec\'s Act respecting the protection of personal information in the private sector (Law 25), and other applicable Canadian privacy laws. This Policy explains what information we collect, how we use it, with whom we share it, and the rights you have.\n\nAn "independent local dealer" is an independently owned and operated dealer participating in the VanStro network. After this definition, we use "local dealer."',
         0
       ),
       section(
         "2. Privacy Officer",
-        "Our Privacy Officer is responsible for compliance with this Policy. You may contact the Privacy Officer at info@vanstro.ca or by mail at 856 Century Street, Winnipeg, Manitoba R3H 0M5.",
+        "Our Privacy Officer is responsible for compliance with this Policy. You may contact the Privacy Officer at support@vanstro.ca or by mail at 856 Century Street, Winnipeg, Manitoba R3H 0M5.",
         1,
-        "Important: privacy rights requests and consent withdrawal should be directed to the Privacy Officer at info@vanstro.ca."
+        "Important: privacy rights requests and consent withdrawal should be directed to the Privacy Officer at support@vanstro.ca."
       ),
       section(
         "3. Information We Collect",
@@ -248,12 +245,12 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "6. Disclosure to Third Parties",
-        "We disclose personal information only as necessary to fulfill the purposes set out above, to the following categories of recipients:\n- Service providers retained to perform functions on our behalf, such as payment processing, shipping and logistics, IT hosting, design software, and customer relationship management, under contractual obligations of confidentiality and data protection.\n- Participating independent dealers and installers to fulfill orders and provide post-sale service.\n- Affiliated entities of VanStro Global Supply Inc., including the supply chain partner Qingdao Wanshituo Trading Co., Ltd., strictly for order fulfillment, product quality coordination, and online marketing operations, under written confidentiality and data protection terms.\n- Government authorities, regulators, or law enforcement, where required by law or to protect our legal rights.\n- Successors in connection with a corporate transaction, such as a merger, acquisition, or sale of assets, subject to confidentiality protections.",
+        "We disclose personal information only as necessary to fulfill the purposes set out above, to the following categories of recipients:\n- Service providers retained to perform functions on our behalf, such as payment processing, shipping and logistics, IT hosting, design software, and customer relationship management, under contractual obligations of confidentiality and data protection.\n- With your consent or where otherwise permitted by law, the local dealer selected for your order, to the extent reasonably necessary to arrange fulfillment, pickup, delivery, returns or post-sale assistance.\n- If you separately request installation or another dealer service, an installer or other service provider when the disclosure is necessary for the service you requested or is otherwise permitted by law.\n- Affiliated entities of VanStro Global Supply Inc., including the supply chain partner Qingdao Wanshituo Trading Co., Ltd., strictly for order fulfillment, product quality coordination, and online marketing operations, under written confidentiality and data protection terms.\n- Government authorities, regulators, or law enforcement, where required by law or to protect our legal rights.\n- Successors in connection with a corporate transaction, such as a merger, acquisition, or sale of assets, subject to confidentiality protections.\n\nForms identify whether information is submitted to VanStro, to a local dealer or to both before you submit it.",
         5
       ),
       section(
         "7. Cross-Border Transfers",
-        "Some of our service providers and affiliates are located outside Canada, including in the United States, Singapore, the Republic of Korea, and the People's Republic of China. When personal information is transferred outside Canada, it may be accessed by foreign courts, law enforcement, and national security authorities under the laws of the receiving country. We use contractual safeguards and security measures designed to provide a comparable level of protection. By using the Website or providing your information, you acknowledge such cross-border transfers may occur.",
+        "Some of our service providers and affiliates are located outside Canada, including in the United States, Singapore, the Republic of Korea, and the People's Republic of China. When personal information is transferred outside Canada, it may be accessed by foreign courts, law enforcement, and national security authorities under the laws of the receiving country. We use contractual safeguards and security measures designed to provide a comparable level of protection. By using the Website or providing your information, you acknowledge that such cross-border transfers may occur.",
         6
       ),
       section(
@@ -268,7 +265,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "10. Your Rights",
-        "Subject to applicable law, you have the following rights with respect to your personal information:\n- Access: request confirmation that we hold information about you and obtain a copy.\n- Correction: request that we correct inaccurate or incomplete information.\n- Withdrawal of consent: withdraw consent to the collection, use, or disclosure of your information, subject to legal or contractual restrictions.\n- Deletion: request deletion of your information where no longer required and not otherwise retained under law.\n- Portability: request transfer of your information in a structured, commonly used format, where applicable under Quebec Law 25.\n- Complaint: file a complaint with our Privacy Officer or with the Office of the Privacy Commissioner of Canada or your provincial regulator.\n\nTo exercise these rights, contact our Privacy Officer. We will respond within 30 days of receiving a valid request. We may need to verify your identity before providing information.",
+        "Subject to applicable law, you have the following rights with respect to your personal information:\n- Access: request confirmation that we hold information about you and obtain a copy.\n- Correction: request that we correct inaccurate or incomplete information.\n- Withdrawal of consent: withdraw consent to the collection, use, or disclosure of your information, subject to legal or contractual restrictions.\n- Deletion: request deletion when your information is no longer required and is not required to be retained by law.\n- Portability: request transfer of your information in a structured, commonly used format, where applicable under Quebec Law 25.\n- Complaint: file a complaint with our Privacy Officer or with the Office of the Privacy Commissioner of Canada or your provincial regulator.\n\nTo exercise these rights, contact our Privacy Officer. We will respond within 30 days of receiving a valid request. We may need to verify your identity before providing information.",
         9,
         "Important: VanStro will respond within 30 days after receiving a valid request, subject to identity verification."
       ),
@@ -292,7 +289,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     summaryTitle: "Cookie controls",
     summaryBody:
       "Visitors can adjust optional cookie preferences without leaving the site.",
-    supportNote: "Privacy requests should go to the Privacy Officer at info@vanstro.ca. We may need to verify your identity.",
+    supportNote: "Privacy requests should go to the Privacy Officer at support@vanstro.ca. We may need to verify your identity.",
     primaryCta: { label: "Open cookie settings", href: "/cookie-settings" },
     secondaryCta: { label: "Contact support", href: "/contact" }
   },
@@ -302,7 +299,7 @@ export const legalPageEntries: LegalPageEntry[] = [
     description: "Cookie Policy content and preference controls from the VanStro legacy site.",
     intro:
       "How VanStro uses cookies and similar technologies, and how visitors can manage optional cookie categories.",
-    updated: "Last updated: 2026-05-16",
+    updated: "Last updated: May 16, 2026",
     sourceSummary: "Effective Date: May 12, 2026",
     sections: [
       section(
@@ -329,7 +326,7 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "5. Third-Party Cookies",
-        "Some cookies are placed by third parties acting on our behalf - for example, analytics or marketing providers. These third parties process data under contractual obligations consistent with this Policy and our Privacy Policy. A current list of categories and providers is available on request from info@vanstro.ca.",
+        "Some cookies are placed by third parties acting on our behalf - for example, analytics or marketing providers. These third parties process data under contractual obligations consistent with this Policy and our Privacy Policy. A current list of categories and providers is available on request from support@vanstro.ca.",
         4
       ),
       section(
@@ -381,19 +378,19 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "3. Sales Channel, Delivery and Scope of Responsibility",
-        'VanStro sells through its dealer network. Each sale to a customer is completed by a dealer, who holds the inventory and handles delivery and returns. This policy sets the return terms for VanStro-supplied products.\n\nIn this policy, "Delivery" means the handover of the goods to the customer by the dealer. All time periods run from the date of Delivery.\n\nOwnership and risk pass to the customer on Delivery. The customer should inspect the goods on Delivery; by accepting Delivery, the customer accepts their quantity and external condition.\n\nTransportation, installation, and other on-site or extended services are arranged between the customer and the relevant dealer.',
+        'The "Seller" for an order is the entity identified as the seller on the applicable order confirmation or invoice.\n\nThe local dealer selected for the order is the customer\'s first point of contact for pickup, delivery coordination, return requests and product-support routing. The local dealer may perform these functions on behalf of the Seller and is not necessarily the Seller.\n\nIn this Policy, "Delivery" means the handover of the products to the customer or the customer\'s authorized recipient by the local dealer or carrier. Return time periods run from the date of Delivery.\n\nThe customer should inspect the shipment at Delivery for quantity, incorrect items and visible damage. Visible shortages or damage should be noted on the delivery record and reported to the local dealer as soon as reasonably possible.\n\nDamage that could not reasonably be discovered during the initial inspection is "concealed damage." Concealed damage should be reported promptly after discovery, together with photographs of the product, packaging and shipping labels where available.\n\nSigning a delivery record confirms receipt only. It does not waive a claim for concealed damage, a product defect or any statutory right that cannot be waived.\n\nTitle and risk of loss pass at the time stated in the applicable sales document, subject to applicable law. Risk does not pass before the products are delivered to the customer or the customer\'s authorized recipient.\n\nHome delivery, installation and other on-site services are arranged separately with the relevant local dealer unless expressly included in the order documents.',
         3,
-        "Important: ownership and risk pass to the customer on Delivery, and return time periods run from the Delivery date."
+        "Inspect visible condition at Delivery and report concealed damage promptly after discovery. Signing confirms receipt only."
       ),
       section(
         "4. Return Authorization",
-        "For returns and related enquiries, the customer should contact the customer service of the local dealer from whom the product was purchased.\n\nAll returns must be authorized in advance. The dealer reviews the request against this policy and, if eligible, obtains a Return Merchandise Authorization (RMA) number from VanStro; the product is then returned to the dealer.\n\nPlease obtain an RMA number before returning any product; returns received without one cannot be processed.",
+        'Before sending or bringing back a product, contact the local dealer selected for the order to request return authorization. If the return is eligible, the local dealer will provide a Return Merchandise Authorization ("RMA") number and return instructions.\n\nThe local dealer is responsible for obtaining any internal approval required from VanStro. Do not return a product before receiving the RMA number and instructions. Nothing in this process limits a statutory right or remedy that cannot be waived.',
         4,
-        "Important: returns received without a valid RMA number cannot be processed."
+        "Contact your local dealer for an RMA number and return instructions before returning a product."
       ),
       section(
-        "5. Complaints and Escalation to the Platform",
-        "Returns are handled by the dealer. If a dealer does not follow this policy, or the customer considers its handling of a return unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review whether the VanStro product-return requirements were correctly applied and, where appropriate, address the product-supply issue within VanStro's responsibility. VanStro's direct involvement is limited to such escalations.",
+        "5. Complaints and Escalation to VanStro",
+        "Return requests are routed through the local dealer. If the local dealer does not follow this Policy, or the customer considers its handling unreasonable, the customer may complain to VanStro at complaints@vanstro.ca.\n\nVanStro will review whether the product-return requirements were correctly applied and, where appropriate, address the product-supply issue within VanStro's responsibility.",
         5
       ),
       section(
@@ -409,13 +406,13 @@ export const legalPageEntries: LegalPageEntry[] = [
       ),
       section(
         "8. Return Charges",
-        "1. Our error - no charge. Where a return results from an incorrect product supplied, a shipping error, or damage occurring before Delivery, no charge of any kind applies. The dealer arranges replacement or a full refund, including return transportation.\n\nClaims relating to product defects are handled under the VanStro Cabinetry Warranty Policy and are not treated as returns under this policy.\n\n2. Retail Customers - unopened packaging - no restocking fee. Where a Retail Customer returns a standard stock product in its original packaging, unopened and with seals intact, within seven (7) days after Delivery, no restocking fee applies. The customer arranges and bears return transportation.\n\n3. Retail Customers - opened packaging - 20%. Where the packaging has been opened but the product has not been installed or used and remains in resalable condition, a restocking fee of twenty percent (20%) of the product price applies, covering inspection, repackaging, relabeling, and inventory processing.\n\n4. Professional / Wholesale Clients - 20%. Paragraph 2 does not apply to Professional / Wholesale Clients. Approved returns by Professional / Wholesale Clients are subject to a restocking fee of twenty percent (20%) of the product price.",
+        "1. Our error - no charge. Where a return results from an incorrect product supplied, a shipping error, or damage occurring before Delivery, no charge applies. The local dealer coordinates the replacement or refund process, including return transportation.\n\nA return request concerns a change of mind or another return permitted by this Policy. A claim that a product was defective, misdescribed or not of acceptable quality will be assessed under the applicable sales documents and applicable law. If an express written product warranty applies, its coverage and claim procedure will be identified in the documents provided for the product or order. Nothing in this Policy limits any statutory right or remedy.\n\n2. Retail Customers - unopened packaging - no restocking fee. Where a Retail Customer returns a standard stock product in its original packaging, unopened and with seals intact, within seven (7) days after Delivery, no restocking fee applies. The customer arranges and bears return transportation.\n\n3. Retail Customers - opened packaging - 20%. Where the packaging has been opened but the product has not been installed or used and remains in resalable condition, a restocking fee of twenty percent (20%) of the product price applies, covering inspection, repackaging, relabeling, and inventory processing.\n\n4. Professional / Wholesale Clients - 20%. Paragraph 2 does not apply to Professional / Wholesale Clients. Approved returns by Professional / Wholesale Clients are subject to a restocking fee of twenty percent (20%) of the product price.\n\nRestocking charges apply only to eligible change-of-mind returns. They do not apply to an incorrect product, pre-delivery damage, a product defect or any circumstance in which applicable law requires another remedy.",
         8,
-        "Retail customers returning unopened standard stock products within seven (7) days pay no restocking fee. Opened retail returns and approved professional or wholesale returns are subject to a twenty percent (20%) restocking fee."
+        "Eligible change-of-mind returns may be subject to restocking charges; incorrect, damaged or defective products are assessed separately."
       ),
       section(
         "9. Refunds",
-        "Approved refunds are issued to the original payment method, less any applicable restocking fee, within five (5) business days after the dealer has received and inspected the returned product. Depending on your bank or card issuer, funds may take additional time to appear in your account.",
+        "Where a refund is approved, the Seller or its authorized payment processor will issue the refund to the original payment method, less any lawful restocking fee, within five (5) business days after the returned product has been received and inspected. If the original payment method is unavailable, the Seller will provide another lawful refund method. Processing times imposed by a bank or payment provider are outside the Seller's control.",
         9
       ),
       section(
@@ -443,81 +440,75 @@ export const legalPageEntries: LegalPageEntry[] = [
   },
   {
     slug: "dealer-services-and-responsibility",
-    title: "Dealer Services & Platform Responsibility Boundary Policy",
-    description: "Dealer Services and Responsibility content from the VanStro legacy site.",
+    title: "VanStro and Local Dealer Responsibilities",
+    description: "How product orders and separately offered local dealer services are handled.",
     intro:
-      "Responsibility boundaries between VanStro as the product supply platform and independent dealers providing extended services.",
-    updated: "Last updated: 2026-05-16",
-    sourceSummary:
-      "Boundary of responsibility between VanStro (the Platform) and its independent dealers for product supply and dealer-provided extended services. V2026-1.3",
+      "Which parts of a product order are handled through VanStro and which services may be provided separately by a local dealer.",
+    updated: "Last updated: May 16, 2026",
+    sourceSummary: "Product-order and local dealer service responsibilities. Version 2026-1.3",
     sections: [
       section(
-        "1. Purpose",
-        'This Policy defines the boundary of responsibility between VanStro Global Supply Inc. ("VanStro" or the "Platform") and its dealers in relation to product supply and dealer-provided extended services, including delivery, installation, measurement, renovation support, disposal, project coordination, and after-sales support.\n\nIt exists to keep responsibilities transparent to customers while protecting the independent operation of VanStro\'s dealer network.',
+        "1. Purpose and Definitions",
+        'This page explains which parts of a product order are handled through VanStro and which services may be provided separately by an independent local dealer.\n\nAn "independent local dealer" is an independently owned and operated business participating in the VanStro network. After this definition, we use "local dealer."\n\nThe "Seller" is the entity identified as the seller on the applicable order confirmation or invoice. "Dealer Services" are delivery, installation, measurement, renovation, disposal or other services separately quoted and provided by a local dealer.',
         0
       ),
       section(
-        "2. Two Layers of Business",
-        "Customer interactions fall into two distinct layers, each governed by a different responsible party:\n\n(a) Product Supply (Platform layer). VanStro supplies the products and is the responsible party for the products it supplies. Product orders and product payments are processed through the VanStro platform.\n\n(b) Dealer Extended Services (Dealer layer). Delivery, installation, measurement, renovation support, disposal, project coordination, and similar services are the dealer's own services. The dealer contracts directly with the customer for these services. VanStro is not a party to them.\n\nThese two layers are separate transactions, even where they relate to the same project. Unless expressly stated in writing, a product order does not include any dealer service.",
+        "2. Product Orders and Seller Identification",
+        "The Seller for each product order is identified on the applicable order confirmation or invoice. Product payments may be processed through the VanStro website or an authorized payment provider for the Seller identified in that document.\n\nThe local dealer selected for the order may handle local inventory, pickup, delivery coordination, returns and post-sale assistance. These fulfillment activities do not by themselves determine whether the local dealer or VanStro is the Seller.\n\nOrder fulfillment means preparing the product for pickup or another delivery method stated in the order documents. Home delivery, site delivery, installation and other on-site services are separate Dealer Services unless the order documents expressly include them.",
         1
       ),
       section(
-        "3. VanStro Platform Responsibilities (Product Supply)",
-        "As the product supply platform, VanStro is responsible for:\n- Product sourcing and supply\n- Inventory and product-information management\n- The online product catalog and ordering system\n- Product and platform promotion\n- Development of the dealer network\n\nVanStro does not directly provide, and does not hold itself out as providing: delivery, installation, site measurement, renovation, project management, disposal, or on-site support services. These are performed by dealers under Section 4, unless VanStro states otherwise in writing.",
+        "3. VanStro Responsibilities",
+        "VanStro manages:\n- Product sourcing and supply coordination\n- Product and inventory information\n- The online catalog and ordering system\n- Product information and network support\n\nThe applicable order documents identify the Seller, product price, taxes, payment terms and included fulfillment arrangements. VanStro does not provide installation, site measurement, renovation, disposal or other on-site services unless expressly stated in writing.",
         2
       ),
       section(
-        "4. Dealer Responsibilities (Extended Services)",
-        "Dealers are independently owned and operated businesses. No dealer may bind VanStro. Each dealer manages its own day-to-day operations, personnel, marketing, customer relationships, resale and service pricing, and services. A dealer may, at its own discretion, provide extended services such as:\n- Product delivery and transport\n- Installation\n- Removal and installation\n- Site measurement\n- Design consultation\n- Renovation support\n- Disposal\n- Project coordination\n- Extended service packages\n- Additional after-sales services\n\nThe availability, scope, and price of these services vary by dealer and by dealer service area. Dealer service areas record the locations where a dealer can support customers.",
+        "4. Local Dealer Responsibilities",
+        "Local dealers are independently owned and operated businesses. A local dealer manages its own personnel, marketing, customer relationships, service pricing and Dealer Services. A local dealer may offer:\n- Home or site delivery\n- Installation\n- Site measurement\n- Design consultation\n- Renovation support\n- Removal or disposal\n- Project coordination\n- Additional after-sales services\n\nThe availability, scope and price of Dealer Services vary by local dealer and service area.",
         3
       ),
       section(
-        "5. Customer Frontline and Escalation",
-        "The local dealer is the customer's single point of contact for all enquiries, orders, delivery, returns and exchanges, services, and after-sales support. VanStro does not operate a direct-to-customer service channel for routine matters.\n\nVanStro acts as a backstop for escalation only. Where a product or policy matter is not resolved by the dealer, the customer may escalate that matter to VanStro, which will then review it.\n\nFor dealer extended services, the dealer is the responsible party. A customer may report dealer conduct to VanStro, and VanStro may take such reports into account in managing its dealer relationships, but VanStro does not thereby assume responsibility for the service itself.",
+        "5. Customer Contact and Escalation",
+        "For routine order matters, the selected local dealer is the customer's primary contact for availability, pickup, delivery coordination, return requests and post-sale assistance.\n\nA customer may escalate an unresolved product or policy matter to VanStro for review. For separately quoted Dealer Services, the local dealer is the responsible service provider. Reporting dealer conduct to VanStro does not make VanStro a party to the service agreement.",
         4
       ),
       section(
-        "6. Website Handling of Dealer Extended Services",
-        "The VanStro website presents dealer extended services in a way that keeps the platform layer and the dealer layer clearly separated.\n\nDealer pages and mini-sites may show dealer name, ID, contact information, dealer service area, business hours, available services, indicative service pricing, appointment or enquiry forms, and a link to the dealer's own website. Every page or section that presents dealer services carries a clear notice that services are provided by the independent dealer and not by VanStro.\n\nService enquiries, quotations, and bookings submitted through a dealer page are routed to the dealer for handling. VanStro does not quote, schedule, or manage dealer services. Service requests and payments are kept separate from the product checkout flow.",
+        "6. Dealer Services on the Website",
+        "A dealer page may display the local dealer's contact information, service area, business hours, available services and enquiry options. Dealer Services shown on such a page are provided by the local dealer, not by VanStro.\n\nService enquiries, quotations and bookings are routed to the local dealer. Dealer Service requests and payments are separate from the product checkout flow unless the applicable order documents expressly state otherwise.",
         5
       ),
       section(
-        "7. Service Pricing and Payments",
-        "Dealer services are separate from VanStro product sales. Service fees - which may include delivery, installation, measurement, renovation, disposal, project management, and other service charges - are set by the dealer alone. Unless stated in writing, service fees are not included in VanStro product pricing.\n\nPayment for dealer services is collected by the dealer directly; VanStro does not collect, process, or manage dealer service fees. The dealer is solely responsible for service quotations, invoicing, collection, performance, warranty, and the handling of any service dispute.",
+        "7. Service Pricing, Payment and Warranty",
+        "The local dealer sets the scope, price and schedule for its separately offered Dealer Services and collects payment for those services directly. Unless expressly included in the applicable order documents, Dealer Service fees are not included in the product price.\n\nThe local dealer is solely responsible for its separate service quotation, invoice, payment collection, scheduling, personnel, workmanship and any service warranty it offers. A dealer service warranty does not replace or modify any product warranty or statutory product right.",
         6
       ),
       section(
-        "8. Service Liability",
-        "Dealer extended services are performed by the dealer as an independent business. The dealer is solely responsible for service quality, scheduling, installation workmanship, service personnel, project execution, and service warranty.\n\nVanStro is not responsible for dealer service pricing, scheduling, workmanship, delays, or any service-related dispute. Nothing on the platform, including the display of a dealer's services, makes VanStro a party to, or guarantor of, a dealer's services.",
+        "8. Service Responsibility",
+        "Dealer Services are performed by the local dealer as an independent business. The local dealer is responsible for service quality, scheduling, personnel, workmanship and project execution.\n\nVanStro is not a party to, or guarantor of, a separate Dealer Service agreement unless VanStro expressly agrees otherwise in writing.",
         7
       ),
       section(
         "9. Customer Information and Referrals",
-        "At the customer's request, VanStro may provide contact information for one or more participating independent dealers that report serving the customer's location. A listing or referral does not guarantee any volume and does not require the customer or dealer to proceed. Where customer information is shared with a dealer for this purpose, it is shared only to the extent needed for the requested referral and is handled in accordance with the VanStro Privacy Policy and applicable privacy law, including PIPEDA and Quebec's Law 25.",
+        "At the customer's request, VanStro may provide contact information for local dealers that indicate they serve the customer's location. A listing or referral does not require the customer or local dealer to proceed. Customer information is shared only as described in the VanStro Privacy Policy and as permitted by applicable law.",
         8
       ),
       section(
         "10. Taxes",
-        "VanStro and the dealer are each responsible for charging and remitting the applicable GST/HST and provincial sales tax on their own supplies - VanStro on the products it supplies, and the dealer on the services it provides.",
+        "The party making a taxable supply is responsible for charging, collecting and remitting the taxes it is legally required to collect for that supply.\n\nDepending on the province or territory and the nature of the transaction, applicable taxes may include GST/HST and provincial sales taxes, including PST, RST or QST. The applicable invoice identifies the supplier, taxable amounts and taxes charged.",
         9
       ),
       section(
-        "11. Final Interpretation",
-        "VanStro may update this Policy as the platform and dealer network continue to develop.",
+        "11. Policy Updates",
+        "VanStro may update this page as its ordering process and local dealer network develop. The updated version applies from the date shown on this page, subject to applicable law.",
         10
-      ),
-      section(
-        "Appendix - Recommended On-Page Disclosure Text",
-        "A. On dealer service pages:\n\"The services on this page are provided by [Dealer Name], an independent dealer, not by VanStro. When you request a service, you enter into an agreement directly with the dealer. The dealer sets its own pricing and is responsible for performing the service. VanStro supplies the products only.\"\n\nB. At handoff to a dealer's own website:\n\"You are leaving VanStro and going to [Dealer Name]'s own website. The dealer's terms, pricing, and policies will apply.\"\n\nC. On a platform-hosted dealer mini-page:\n\"This page is hosted on VanStro for [Dealer Name], an independent dealer, but it presents the dealer's own business. The services here are provided, priced, and paid for through the dealer, not VanStro. VanStro is not a party to these services and supplies the products only.\"",
-        11
       )
     ],
-    summaryTitle: "Interested in joining the program?",
+    summaryTitle: "Need help understanding responsibilities?",
     summaryBody:
-      "Dealer applicants can review the program and submit their company details for a follow-up conversation.",
-    supportNote: "Best for: dealer service boundaries, platform responsibility, service pricing handoff, and escalation routing.",
-    primaryCta: { label: "Become a dealer", href: "/dealers/apply" },
-    secondaryCta: { label: "Contact support", href: "/contact" }
+      "Contact VanStro for product-policy questions or your selected local dealer for availability, pickup, delivery coordination and separately offered local services.",
+    supportNote: "Product orders and Dealer Services are separate unless the order documents expressly include both.",
+    primaryCta: { label: "Contact support", href: "/contact" },
+    secondaryCta: { label: "Become a dealer", href: "/dealers/apply" }
   },
   {
     slug: "careers",
@@ -568,7 +559,7 @@ export const legalNavLinks: LegalPageLink[] = [
   { label: "Cookie Preferences", shortLabel: "Cookies", href: "/cookie-settings" },
   { label: "Return Policy", shortLabel: "Returns", href: "/return-policy" },
   {
-    label: "Dealer Services & Responsibility",
+    label: "VanStro & Local Dealer Responsibilities",
     shortLabel: "Dealer Services",
     href: "/dealer-services-and-responsibility"
   },

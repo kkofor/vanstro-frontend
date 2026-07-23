@@ -15,6 +15,7 @@ import {
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
 import {
+  BATHROOM_VANITY_FEATURED_SKUS,
   CATALOG_CATEGORY_OPTIONS,
   CATALOG_PAGE_SIZE,
   CATALOG_SORT_OPTIONS,
@@ -292,6 +293,17 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     if (activeSort === "price-desc") {
       return [...nextProducts].sort(
         (a, b) => getEffectivePrice(b).amount - getEffectivePrice(a).amount
+      );
+    }
+
+    if (activeCategory.id === "bathroom-vanities" && !normalizedQuery) {
+      const featuredRank = new Map<string, number>(
+        BATHROOM_VANITY_FEATURED_SKUS.map((sku, index) => [sku, index])
+      );
+      return [...nextProducts].sort(
+        (a, b) =>
+          (featuredRank.get(a.sku) ?? Number.POSITIVE_INFINITY) -
+          (featuredRank.get(b.sku) ?? Number.POSITIVE_INFINITY)
       );
     }
 

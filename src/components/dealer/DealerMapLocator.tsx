@@ -29,8 +29,14 @@ function dealerLabel(dealer: DealerMapLocation) {
   return dealer.code === dealer.name ? dealer.code : `${dealer.code} - ${dealer.name}`;
 }
 
+function dealerStreetAddress(dealer: DealerMapLocation) {
+  if (dealer.code === "MB01") return dealer.address;
+
+  return dealer.address.replace(/^\s*\d+\s+/, "");
+}
+
 function dealerAddress(dealer: DealerMapLocation) {
-  return `${dealer.address}, ${dealer.city}, ${dealer.province} ${dealer.postalCode}`;
+  return `${dealerStreetAddress(dealer)}, ${dealer.city}, ${dealer.province} ${dealer.postalCode}`;
 }
 
 function popupContent(dealer: DealerMapLocation) {
@@ -224,7 +230,7 @@ export function DealerMapLocator() {
             </div>
           ) : null}
           <div
-            aria-label="Interactive map showing VanStro dealer locations across Canada"
+            aria-label="Interactive map showing participating VanStro dealer locations"
             className="dealer-map-canvas"
             ref={mapElementRef}
           />

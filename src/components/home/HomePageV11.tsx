@@ -79,8 +79,8 @@ const fulfillmentSteps = [
     text: "Checkout captures customer details, fulfillment choice and online payment."
   },
   {
-    title: "Selected dealer confirms fulfillment",
-    text: "The participating independent dealer selected for the order confirms pickup or delivery arrangements."
+    title: "Local dealer confirms fulfillment",
+    text: "The local dealer selected for the order confirms availability and pickup or delivery arrangements."
   }
 ];
 
@@ -151,11 +151,11 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
             <h1>
               <span>Kitchen cabinets and</span>
               {" "}
-              <span>home materials across Canada</span>
+              <span>home materials in participating Canadian service areas</span>
             </h1>
             <p>
               Shop ready-to-order cabinets, vanities and baseboards online. After checkout,
-              a local VanStro dealer handles pickup, delivery or project support.
+              your local dealer confirms pickup, delivery or project-support options.
             </p>
             <div className="hero-actions">
               <Link className="button button-primary" href="/products" prefetch={false}>

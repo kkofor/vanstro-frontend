@@ -141,27 +141,26 @@ export default function AboutPage() {
       <section className="page-panel about-profile-panel">
         <div className="container">
           <div className="about-profile-section-heading narrow">
-            <h2>A practical independent-dealer distribution model</h2>
+            <h2>A practical local dealer distribution model</h2>
             <p>
-              VanStro supplies building products and product information to
-              participating independent dealers serving local customers.
+              VanStro coordinates building products and product information with local
+              dealers serving their communities.
             </p>
           </div>
           <div className="about-profile-statement">
             <p>
               VanStro manages product sourcing, product information and supply
-              coordination. Each participating dealer remains an independent
-              business and controls its own operations, staffing and dealer-provided
-              services.
+              coordination. Each local dealer remains an independent business and
+              controls its own operations, staffing and separately offered services.
             </p>
             <p>
-              Dealers independently decide how to market their businesses, develop
-              customer relationships and offer local services. Any dealer service
-              agreement, pricing, scheduling, payment and workmanship responsibility
-              is between the dealer and the customer.
+              Local dealers independently decide how to market their businesses, develop
+              customer relationships and offer local services. Any agreement for those
+              services—including pricing, scheduling, payment and workmanship—is between
+              the local dealer and the customer.
             </p>
             <p>
-              Each dealer remains responsible for its own business decisions and
+              Each local dealer remains responsible for its own business decisions and
               results. Customer referrals, orders, revenue and profit are not
               guaranteed. Commercial terms must be confirmed in writing.
             </p>

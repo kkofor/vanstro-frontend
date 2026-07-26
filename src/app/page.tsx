@@ -8,7 +8,12 @@ export const metadata: Metadata = buildPageMetadata({
   description:
     "Shop kitchen cabinets, bathroom vanities, baseboards and home materials with local Canadian stock and dealer support.",
   path: "/",
-  image: "/assets/home-hero-kitchen.png"
+  image: "/assets/generated/vanstro-hero-white-v1.webp",
+  languages: {
+    "en-CA": "/",
+    "fr-CA": "/fr",
+    "x-default": "/"
+  }
 });
 
 export default async function Page() {

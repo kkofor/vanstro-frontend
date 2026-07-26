@@ -10,6 +10,7 @@ const MAPPING_PATH = resolve(
     "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const GENERATED_PATH = resolve("src/lib/data/mb01-products.ts");
+const IMAGE_OVERRIDES_PATH = resolve("scripts/approved-product-image-overrides.json");
 const OUTPUT_PATH = resolve(
   process.env.G13_VERIFICATION_OUTPUT ??
     "docs/goal-loop/frontend-full-audit/evidence/G13-implementation-2026-07-16/verification-summary.json"
@@ -17,6 +18,7 @@ const OUTPUT_PATH = resolve(
 
 const inventory = JSON.parse(await readFile(INVENTORY_PATH, "utf8"));
 const mapping = JSON.parse(await readFile(MAPPING_PATH, "utf8"));
+const approvedImagePathsBySku = JSON.parse(await readFile(IMAGE_OVERRIDES_PATH, "utf8"));
 const generatedSource = await readFile(GENERATED_PATH, "utf8");
 const products = JSON.parse(
   generatedSource.match(/const localizedProducts: ProductSummary\[\] = (\[[\s\S]*?\]);\n\nconst localizeImage/)?.[1] ?? "null"
@@ -82,7 +84,7 @@ const rows = [];
 for (const sourceVariant of inventory.variants) {
   const expected = expectedVariant(sourceVariant);
   const local = localBySku.get(expected.sku);
-  const expectedImages = expected.images.flatMap((url) => {
+  const expectedImages = approvedImagePathsBySku[expected.sku] ?? expected.images.flatMap((url) => {
     const asset = mappingByUrl.get(url);
     return asset?.localizationStatus === "Localized" && asset.plannedLocalPath
       ? [asset.plannedLocalPath]
@@ -126,8 +128,7 @@ const expectedTopLevelCategoryIds = [
   "kitchen-cabinets",
   "bathroom-vanities",
   "handle-series",
-  "baseboards",
-  "doors-windows"
+  "baseboards"
 ];
 const topLevelCategoriesMatch = equal(topLevelCategoryIds, expectedTopLevelCategoryIds);
 const handleSubcategoryAbsent = !catalogConfig.match(

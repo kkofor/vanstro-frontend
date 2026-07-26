@@ -8,6 +8,12 @@ qa/*
 !qa/verify_product_pages.mjs
 !qa/check-seo-security.mjs
 !qa/check-seo-artifacts.mjs
+!qa/check-fr-html-language.mjs
+!qa/check-404-artifacts.mjs
+!qa/check-static-404-fallback.mjs
+!qa/static_server.mjs
+!qa/current-tree-browser-qa.mjs
+!qa/package-a-contracts.test.ts
 *.tsbuildinfo
 *.log
 .env

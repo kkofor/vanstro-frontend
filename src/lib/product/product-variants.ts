@@ -1,4 +1,4 @@
-import type { ProductSummary } from "@/lib/api/api-contract";
+import type { ProductSummary } from "../api/api-contract.ts";
 
 export function resolveProductVariant<T extends ProductSummary>(
   product: T,
@@ -22,8 +22,7 @@ export function resolveProductVariant<T extends ProductSummary>(
     ...product,
     id: sku === product.sku ? product.id : `${product.id}-${sku}`,
     sku,
-    manufacturerPartNumber:
-      selectedFinish.manufacturerPartNumber ?? product.manufacturerPartNumber,
+    manufacturerPartNumber: product.manufacturerPartNumber,
     finish: selectedFinish.name,
     colorName: selectedFinish.name,
     colorHex: selectedFinish.colorHex ?? product.colorHex,

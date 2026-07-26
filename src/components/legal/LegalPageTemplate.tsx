@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { LegalNavigationRail } from "@/components/legal/LegalNavigationRail";
 import {
   ClipboardList,
   Clock3,
@@ -11,11 +14,15 @@ import {
   Briefcase
 } from "lucide-react";
 import {
-  legalNavLinks,
+  getLegalNavLinks,
+  requireLegalPage,
   type LegalPageEntry
 } from "@/content/legalPages";
 import { assetPath } from "@/lib/assets";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
 
 const heroVisuals: Record<string, { image: string; alt: string; caption: string }> = {
   "legal-disclaimer": {
@@ -123,8 +130,20 @@ function LegalSectionIcon({
   return <FileText {...commonProps} />;
 }
 
-export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
+export function LegalPageTemplate({
+  entry: englishEntry,
+  locale: localeOverride
+}: {
+  entry: LegalPageEntry;
+  locale?: SiteLocale;
+}) {
+  const { locale: contextLocale } = useLocale();
+  const locale = localeOverride ?? contextLocale;
+  const entry = requireLegalPage(englishEntry.slug, locale);
+  const legalNavLinks = getLegalNavLinks(locale);
+  const isFrench = locale === "fr-CA";
   const heroVisual = heroVisuals[entry.slug] ?? heroVisuals["legal-disclaimer"];
+  const localizeHref = (href: string) => localeHref(href, locale);
 
   return (
     <>
@@ -133,17 +152,18 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
           <div className="legal-hero-copy">
             <PageBreadcrumb
               items={[
-                { label: "Home", href: "/" },
-                { label: "Legal" },
+                { label: isFrench ? "Accueil" : "Home", href: localizeHref("/") },
+                { label: isFrench ? "Renseignements juridiques" : "Legal" },
                 { label: entry.title }
               ]}
             />
             <h1>{entry.title}</h1>
             <p>{entry.intro}</p>
-            {entry.updated || entry.sourceSummary ? (
+            {entry.updated || entry.sourceSummary || entry.translationNotice ? (
               <div className="legal-meta">
                 {entry.updated ? <span>{entry.updated}</span> : null}
                 {entry.sourceSummary ? <span>{entry.sourceSummary}</span> : null}
+                {entry.translationNotice ? <strong>{entry.translationNotice}</strong> : null}
               </div>
             ) : null}
           </div>
@@ -151,14 +171,14 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
           <figure className="legal-hero-visual">
             <img
               src={heroVisual.image}
-              alt={heroVisual.alt}
+              alt={isFrench ? "Aperçu visuel de VanStro associé à cette page" : heroVisual.alt}
               width={1672}
               height={941}
               loading="eager"
               fetchPriority="high"
               decoding="async"
             />
-            <figcaption>{heroVisual.caption}</figcaption>
+            <figcaption>{isFrench ? "Renseignements de référence" : heroVisual.caption}</figcaption>
           </figure>
         </div>
       </section>
@@ -166,28 +186,16 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
       <section className="page-panel">
         <div className="container legal-page">
           <div className="legal-content">
-            <nav className="legal-link-row" aria-label="Legal pages">
-              {legalNavLinks.map((link) => {
-                const isActive = link.href === `/${entry.slug}`;
-
-                return (
-                  <Link
-                    className={`legal-link-chip${isActive ? " is-active" : ""}`}
-                    href={link.href}
-                    key={link.href}
-                    aria-label={link.label}
-                    aria-current={isActive ? "page" : undefined}
-                  >
-                    <span className="legal-link-chip-desktop" aria-hidden="true">
-                      {link.label}
-                    </span>
-                    <span className="legal-link-chip-mobile" aria-hidden="true">
-                      {link.shortLabel ?? link.label}
-                    </span>
-                  </Link>
-                );
-              })}
-            </nav>
+            <LegalNavigationRail
+              activeSlug={entry.slug}
+              links={legalNavLinks.map((link) => ({ ...link, href: localizeHref(link.href) }))}
+              label={isFrench ? "Pages juridiques" : "Legal pages"}
+              hint={isFrench
+                ? "Balayez ou utilisez les boutons fléchés pour afficher d’autres pages juridiques."
+                : "Swipe or use the arrow buttons to view more legal pages."}
+              previousLabel={isFrench ? "Pages juridiques précédentes" : "Previous legal pages"}
+              nextLabel={isFrench ? "Pages juridiques suivantes" : "Next legal pages"}
+            />
 
             {entry.sections.map((section) => (
               <section className="legal-section" key={section.title}>
@@ -205,12 +213,15 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
 
           <aside className="summary-panel legal-summary">
             <div className="legal-summary-copy">
-              <span className="legal-summary-kicker">Support</span>
+              <span className="legal-summary-kicker">{isFrench ? "Soutien" : "Support"}</span>
               <h2>{entry.summaryTitle}</h2>
               <p>{entry.summaryBody}</p>
             </div>
 
-            <div className="legal-support-list" aria-label="Support contact details">
+            <div
+              className="legal-support-list"
+              aria-label={isFrench ? "Coordonnées du soutien" : "Support contact details"}
+            >
               <a href="mailto:support@vanstro.ca">
                 <Mail size={16} strokeWidth={2.1} />
                 <span>support@vanstro.ca</span>
@@ -221,15 +232,18 @@ export function LegalPageTemplate({ entry }: { entry: LegalPageEntry }) {
               </a>
               <span>
                 <Clock3 size={16} strokeWidth={2.1} />
-                <span>Business-day follow-up</span>
+                <span>{isFrench ? "Suivi les jours ouvrables" : "Business-day follow-up"}</span>
               </span>
             </div>
 
             {entry.supportNote ? <p className="legal-summary-note">{entry.supportNote}</p> : null}
 
             <div className="legal-summary-actions">
-              <Link className="button button-primary" href={entry.primaryCta.href}>
+              <Link className="button button-primary" href={localizeHref(entry.primaryCta.href)}>
                 {entry.primaryCta.label}
+              </Link>
+              <Link className="button button-secondary" href={localizeHref(entry.secondaryCta.href)}>
+                {entry.secondaryCta.label}
               </Link>
             </div>
           </aside>

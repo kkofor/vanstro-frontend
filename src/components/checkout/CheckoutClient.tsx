@@ -5,16 +5,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { vanstroApi } from "@/lib/api/api-client";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { localizeApiError } from "@/lib/i18n/api-error-localization";
+import { formatMoney } from "@/lib/commerce/product-commerce";
 
-function formatCad(amount: number) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD"
-  }).format(amount);
-}
-
-export function CheckoutClient() {
+export function CheckoutClient({ locale: explicitLocale }: { locale?: SiteLocale }) {
   const router = useRouter();
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getCommerceCopy(locale);
   const {
     cartItems,
     cartSubtotal,
@@ -35,41 +37,48 @@ export function CheckoutClient() {
     setSubmitting(true);
     try {
       const session = await vanstroApi.createCheckoutSession({
-        email: String(form.get("email") ?? ""),
+        firstName: String(form.get("firstName") ?? "").trim(),
+        lastName: String(form.get("lastName") ?? "").trim(),
+        email: String(form.get("email") ?? "").trim(),
+        phone: String(form.get("phone") ?? "").trim(),
         fulfillment,
+        paymentMethod,
+        notes: String(form.get("notes") ?? "").trim() || undefined,
         ...(selectedDealerId === "winnipeg"
           ? {}
           : { dealerLocationId: selectedDealerId })
       });
       if (!session.data.guestOrderToken) {
-        throw new Error("Checkout did not return an order access token.");
+        throw new Error(copy.checkout.tokenError);
       }
       const query = new URLSearchParams({
         session: session.data.id,
         token: session.data.guestOrderToken
       });
-      router.push(`/orders/demo-order?${query.toString()}`);
+      router.push(`${localeHref("/orders/demo-order", locale)}?${query.toString()}`);
     } catch (error) {
-      setCheckoutMessage("Checkout could not reserve inventory. Please review your cart and try again.");
+      setCheckoutMessage(locale === "fr-CA"
+        ? localizeApiError(error, locale)
+        : copy.checkout.reserveError);
       setSubmitting(false);
     }
   }
 
   if (cartState.status === "loading") {
-    return <div className="empty-panel"><h2>Loading checkout</h2><p>Checking your current cart.</p></div>;
+    return <div className="empty-panel"><h2>{copy.checkout.loadingTitle}</h2><p>{copy.checkout.loadingBody}</p></div>;
   }
 
   if (cartState.status === "error") {
-    return <div className="empty-panel"><h2>Checkout is unavailable</h2><p>{cartState.error}</p><Link className="button button-primary" href="/cart">Return to cart</Link></div>;
+    return <div className="empty-panel"><h2>{copy.checkout.unavailableTitle}</h2><p role="alert">{locale === "fr-CA" ? copy.storefront.requestError : cartState.error}</p><Link className="button button-primary" href={localeHref("/cart", locale)}>{copy.checkout.returnToCart}</Link></div>;
   }
 
   if (!cartItems.length) {
     return (
       <div className="empty-panel">
-        <h2>No items ready for checkout</h2>
-        <p>Add products first, then return to checkout.</p>
-        <Link className="button button-primary" href="/products">
-          Shop Products
+        <h2>{copy.checkout.emptyTitle}</h2>
+        <p>{copy.checkout.emptyBody}</p>
+        <Link className="button button-primary" href={localeHref("/products", locale)}>
+          {copy.common.shopProducts}
         </Link>
       </div>
     );
@@ -79,23 +88,23 @@ export function CheckoutClient() {
     <form className="two-column-page" onSubmit={handleSubmit}>
       <div className="form-panel form-grid two">
         <div className="field">
-          <label htmlFor="firstName">First name</label>
+          <label htmlFor="firstName">{copy.common.firstName}</label>
           <input id="firstName" name="firstName" autoComplete="given-name" required />
         </div>
         <div className="field">
-          <label htmlFor="lastName">Last name</label>
+          <label htmlFor="lastName">{copy.common.lastName}</label>
           <input id="lastName" name="lastName" autoComplete="family-name" required />
         </div>
         <div className="field">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">{copy.common.email}</label>
           <input id="email" name="email" type="email" autoComplete="email" required />
         </div>
         <div className="field">
-          <label htmlFor="phone">Phone</label>
+          <label htmlFor="phone">{copy.checkout.phone}</label>
           <input id="phone" name="phone" type="tel" autoComplete="tel" required />
         </div>
         <div className="field">
-          <label htmlFor="fulfillment">Fulfillment</label>
+          <label htmlFor="fulfillment">{copy.checkout.fulfillment}</label>
           <select
             id="fulfillment"
             value={fulfillment}
@@ -103,12 +112,12 @@ export function CheckoutClient() {
               setFulfillment(event.target.value as "pickup" | "delivery")
             }
           >
-            <option value="pickup">Store pickup</option>
-            <option value="delivery">Local delivery</option>
+            <option value="pickup">{copy.checkout.pickup}</option>
+            <option value="delivery">{copy.checkout.delivery}</option>
           </select>
         </div>
         <div className="field">
-          <label htmlFor="paymentMethod">Payment registration</label>
+          <label htmlFor="paymentMethod">{copy.checkout.paymentRegistration}</label>
           <select
             id="paymentMethod"
             value={paymentMethod}
@@ -116,40 +125,40 @@ export function CheckoutClient() {
               setPaymentMethod(event.target.value as "pos" | "cash")
             }
           >
-            <option value="pos">POS at store</option>
-            <option value="cash">Cash at store</option>
+            <option value="pos">{copy.checkout.pos}</option>
+            <option value="cash">{copy.checkout.cash}</option>
           </select>
         </div>
         <div className="field form-wide">
-          <label htmlFor="notes">Order notes</label>
-          <textarea id="notes" name="notes" placeholder="Pickup timing, delivery notes or project details" />
+          <label htmlFor="notes">{copy.checkout.notes}</label>
+          <textarea id="notes" name="notes" placeholder={copy.checkout.notesPlaceholder} />
         </div>
       </div>
 
       <aside className="summary-panel">
-        <h2>Checkout summary</h2>
+        <h2>{copy.checkout.summary}</h2>
         <div className="spec-list">
           <div className="spec-row">
-            <strong>Store</strong>
+            <strong>{copy.checkout.store}</strong>
             <span>{selectedDealerName}</span>
           </div>
           <div className="spec-row">
-            <strong>Items</strong>
+            <strong>{copy.common.items}</strong>
             <span>{cartItems.length}</span>
           </div>
           <div className="spec-row">
-            <strong>Subtotal</strong>
-            <span>{formatCad(cartSubtotal)}</span>
+            <strong>{copy.common.subtotal}</strong>
+            <span>{formatMoney({ amount: cartSubtotal, currency: "CAD" }, locale)}</span>
           </div>
           <div className="spec-row">
-            <strong>Inventory</strong>
-            <span>Reserved after payment registration</span>
+            <strong>{copy.checkout.inventory}</strong>
+            <span>{copy.checkout.inventoryValue}</span>
           </div>
         </div>
         <button className="button button-primary" type="submit" disabled={submitting}>
-          {submitting ? "Creating payment session..." : "Continue to payment"}
+          {submitting ? copy.checkout.creating : copy.checkout.continuePayment}
         </button>
-        {checkoutMessage ? <p className="quantity-limit-note" aria-live="polite">{checkoutMessage}</p> : null}
+        {checkoutMessage ? <p className="quantity-limit-note" role="alert">{checkoutMessage}</p> : null}
       </aside>
     </form>
   );

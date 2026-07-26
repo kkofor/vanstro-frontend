@@ -13,8 +13,16 @@ import {
   getSavingsLabel
 } from "@/lib/commerce/product-commerce";
 import { formatProductSize } from "@/lib/product/product-display";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { formatUnitPrice } from "@/lib/i18n/display-format";
 
-export function ProductCard({ product }: { product: ProductSummary }) {
+export function ProductCard({ product, locale: explicitLocale }: { product: ProductSummary; locale?: SiteLocale }) {
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const french = locale === "fr-CA";
+  const productHref = localeHref(`/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`, locale);
   const {
     addToCart,
     isFavorite,
@@ -22,21 +30,34 @@ export function ProductCard({ product }: { product: ProductSummary }) {
   } = useStorefront();
   const [actionState, setActionState] = useState<"idle" | "loading" | "error">("idle");
   const saved = isFavorite(product.id);
-  const colorName = product.colorName ?? product.finish ?? "White";
+  const colorName = product.colorName ?? product.finish ?? (french ? "Blanc" : "White");
   const colorHex = product.colorHex ?? "#f8f7f3";
-  const displaySize = formatProductSize(product.dimensions);
+  const displaySize = formatProductSize(product.dimensions, locale);
   const effectivePrice = getEffectivePrice(product);
   const compareAtPrice = getCompareAtPrice(product);
   const primaryPromotion = getPrimaryPromotion(product);
-  const savingsLabel = getSavingsLabel(product);
+  const savingsLabel = getSavingsLabel(product, locale);
+  const localizedSavingsLabel = savingsLabel;
+  const localizedPromotionLabel = french && primaryPromotion
+    ? primaryPromotion.label
+        .replace(/Special offer/gi, "Offre spéciale")
+        .replace(/Limited time/gi, "Durée limitée")
+        .replace(/Clearance/gi, "Liquidation")
+    : primaryPromotion?.label;
   const hasPromotion = Boolean(primaryPromotion || savingsLabel);
 
   return (
     <article className="product-card">
-      <Link className="product-image" href={`/products/${product.slug}`} prefetch={false}>
+      <Link
+        className="product-image"
+        href={productHref}
+        prefetch={false}
+        aria-hidden="true"
+        tabIndex={-1}
+      >
         <img
           src={product.images[0].url}
-          alt={product.images[0].alt}
+          alt=""
           width={product.images[0].width}
           height={product.images[0].height}
           loading="lazy"
@@ -46,22 +67,22 @@ export function ProductCard({ product }: { product: ProductSummary }) {
       <div className="product-body">
         <div className="product-card-main">
           <h3 className="product-name">
-            <Link href={`/products/${product.slug}`} prefetch={false}>{product.name}</Link>
+            <Link href={productHref} prefetch={false}>{product.name}</Link>
           </h3>
 
           <dl className="product-specs">
             <div>
-              <dt>SKU:</dt>
+              <dt>{french ? "UGS :" : "SKU:"}</dt>
               <dd>{product.sku}</dd>
             </div>
             <div>
-              <dt>Size</dt>
+              <dt>{french ? "Dimensions" : "Size"}</dt>
               <dd>{displaySize}</dd>
             </div>
             <div>
-              <dt>Color</dt>
+              <dt>{french ? "Couleur" : "Color"}</dt>
               <dd className="product-color-value">
-                <span className="color-swatch" style={{ backgroundColor: colorHex }} />
+                <span className="color-swatch" style={{ backgroundColor: colorHex }} aria-hidden="true" />
                 {colorName}
               </dd>
             </div>
@@ -70,17 +91,16 @@ export function ProductCard({ product }: { product: ProductSummary }) {
 
         <div className="product-card-commerce">
           <div className="product-rating">
-            <small>No published reviews</small>
+            <small>{french ? "Aucun avis publié" : "No published reviews"}</small>
           </div>
 
           <div className="price-stack">
             <div className="commerce-price-row">
               <div className="price-line">
-                {formatMoney(effectivePrice)}
-                <span>/ {product.unit}</span>
+                {formatUnitPrice(effectivePrice, product.unit, locale)}
               </div>
               {compareAtPrice ? (
-                <span className="compare-price">{formatMoney(compareAtPrice)}</span>
+                <span className="compare-price">{formatMoney(compareAtPrice, locale)}</span>
               ) : (
                 <span className="compare-price is-empty" aria-hidden="true" />
               )}
@@ -90,11 +110,10 @@ export function ProductCard({ product }: { product: ProductSummary }) {
                     ? "commerce-badge-row price-badge-row"
                     : "commerce-badge-row price-badge-row is-empty"
                 }
-                aria-label={hasPromotion ? "Product promotion" : undefined}
                 aria-hidden={hasPromotion ? undefined : true}
               >
-                {savingsLabel ? <span className="commerce-badge strong">{savingsLabel}</span> : null}
-                {primaryPromotion ? <span className="commerce-badge">{primaryPromotion.label}</span> : null}
+                {localizedSavingsLabel ? <span className="commerce-badge strong">{localizedSavingsLabel}</span> : null}
+                {localizedPromotionLabel ? <span className="commerce-badge">{localizedPromotionLabel}</span> : null}
               </div>
             </div>
           </div>
@@ -112,10 +131,10 @@ export function ProductCard({ product }: { product: ProductSummary }) {
               }}
             >
               {actionState === "loading"
-                ? "Adding..."
+                ? french ? "Ajout…" : "Adding..."
                 : actionState === "error"
-                  ? "Try again"
-                  : "Add to cart"}
+                  ? french ? "Réessayer" : "Try again"
+                  : french ? "Ajouter au panier" : "Add to cart"}
             </button>
           </div>
         </div>
@@ -123,7 +142,9 @@ export function ProductCard({ product }: { product: ProductSummary }) {
         <button
           className={saved ? "icon-action saved" : "icon-action"}
           type="button"
-          aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name}`}
+          aria-label={saved
+            ? french ? `Retirer ${product.name} des favoris` : `Remove ${product.name} from favorites`
+            : french ? `Ajouter ${product.name} aux favoris` : `Save ${product.name}`}
           aria-pressed={saved}
               onClick={() => {
                 setActionState("loading");
@@ -132,7 +153,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
                 });
               }}
         >
-          <Heart size={19} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
+          <Heart size={19} strokeWidth={2} fill={saved ? "currentColor" : "none"} aria-hidden="true" />
         </button>
       </div>
     </article>

@@ -19,13 +19,16 @@ import {
   getInventoryLocation,
 } from "@/lib/commerce/product-inventory";
 import { resolveProductVariant } from "@/lib/product/product-variants";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 type ProductPurchaseActionsProps = {
   product: ProductSummary;
   dealers: Dealer[];
+  locale?: SiteLocale;
 };
 
-export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActionsProps) {
+export function ProductPurchaseActions({ product, dealers, locale = "en-CA" }: ProductPurchaseActionsProps) {
+  const french = locale === "fr-CA";
   const {
     addToCart,
     isFavorite,
@@ -63,12 +66,14 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
     setQuantity(clampedQuantity);
 
     if (quantityKnown && nextQuantity > stockCap && selectedStock > 0) {
-      setQuantityNotice(`Only ${selectedStock} available at ${selectedDealer.city}.`);
+      setQuantityNotice(french
+        ? `Seulement ${selectedStock} unités sont disponibles à ${selectedDealer.city}.`
+        : `Only ${selectedStock} available at ${selectedDealer.city}.`);
       return;
     }
 
     if (nextQuantity < 1) {
-      setQuantityNotice("Minimum quantity is 1.");
+      setQuantityNotice(french ? "La quantité minimale est de 1." : "Minimum quantity is 1.");
       return;
     }
 
@@ -90,11 +95,11 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
   return (
     <div className="pdp-purchase-actions">
       <div className="pdp-cart-control-row">
-        <div className="quantity-stepper detail" aria-label={`Quantity for ${product.name}`}>
+        <div className="quantity-stepper detail" aria-label={french ? `Quantité de ${product.name}` : `Quantity for ${product.name}`}>
           <button
             type="button"
             onClick={() => updateQuantity(quantity - 1)}
-            aria-label="Decrease quantity"
+            aria-label={french ? "Réduire la quantité" : "Decrease quantity"}
           >
             <Minus size={15} strokeWidth={2} />
           </button>
@@ -102,7 +107,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           <button
             type="button"
             onClick={() => updateQuantity(quantity + 1)}
-            aria-label="Increase quantity"
+            aria-label={french ? "Augmenter la quantité" : "Increase quantity"}
           >
             <Plus size={15} strokeWidth={2} />
           </button>
@@ -115,7 +120,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           onClick={handleAddToCart}
         >
           <ShoppingCart size={18} strokeWidth={2} />
-          Add to cart
+          {french ? "Ajouter au panier" : "Add to cart"}
         </button>
       </div>
 
@@ -132,7 +137,7 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
           }}
         >
           <Heart size={18} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
-          {saved ? "Saved" : "Save"}
+          {saved ? (french ? "Enregistré" : "Saved") : (french ? "Enregistrer" : "Save")}
         </button>
       </div>
 
@@ -150,21 +155,26 @@ export function ProductPurchaseActions({ product, dealers }: ProductPurchaseActi
       {product.certificationRequired ? (
         <p className="purchase-certification">
           <AlertCircle size={15} strokeWidth={2.4} />
-          Local dealer confirmation is required before cabinet fulfillment is released.
+          {french
+            ? "La confirmation du détaillant local est requise avant la préparation de l’armoire."
+            : "Local dealer confirmation is required before cabinet fulfillment is released."}
         </p>
       ) : null}
 
-      <h2 className="pdp-how-get-title">How to get it:</h2>
+      <h2 className="pdp-how-get-title">{french ? "Comment le recevoir :" : "How to get it:"}</h2>
 
       <ProductDealerSelector
         dealers={dealers}
         product={purchaseProduct}
         selectedDealer={selectedDealer}
+        locale={locale}
       />
 
       <p className="purchase-note">
         <CheckCircle2 size={15} strokeWidth={2.4} />
-        Checkout requests stock reservation with your local dealer: {selectedDealer.name}
+        {french
+          ? `Le passage à la caisse demande la réservation du stock auprès de votre détaillant local : ${selectedDealer.name}`
+          : `Checkout requests stock reservation with your local dealer: ${selectedDealer.name}`}
       </p>
 
     </div>

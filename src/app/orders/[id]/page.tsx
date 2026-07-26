@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { OrderDetailClient } from "@/components/checkout/OrderDetailClient";
+import type { SiteLocale } from "@/lib/i18n/locale";
 import { buildPrivateMetadata } from "@/lib/seo/metadata";
 
 type OrderPageProps = {
@@ -18,22 +19,27 @@ export const metadata: Metadata = buildPrivateMetadata(
   "/orders/demo-order"
 );
 
-export default async function OrderPage({ params }: OrderPageProps) {
-  const { id } = await params;
+export async function OrderPageContent({ id, locale = "en-CA" }: { id: string; locale?: SiteLocale }) {
+  const french = locale === "fr-CA";
 
   return (
     <>
       <section className="page-hero">
         <div className="container">
-          <h1>Order status</h1>
-          <p>Follow payment registration, inventory reservation and dealer fulfillment.</p>
+          <h1>{french ? "État de la commande" : "Order status"}</h1>
+          <p>{french ? "Suivez la confirmation du paiement, la réservation du stock et le traitement de la commande par le détaillant." : "Follow payment registration, inventory reservation and dealer fulfillment."}</p>
         </div>
       </section>
       <section className="page-panel">
         <div className="container">
-          <OrderDetailClient orderId={id} />
+          <OrderDetailClient orderId={id} locale={locale} />
         </div>
       </section>
     </>
   );
+}
+
+export default async function OrderPage({ params }: OrderPageProps) {
+  const { id } = await params;
+  return <OrderPageContent id={id} />;
 }

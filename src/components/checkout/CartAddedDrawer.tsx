@@ -7,14 +7,20 @@ import type { ProductSummary } from "@/lib/api/api-contract";
 import { formatMoney, getEffectivePrice } from "@/lib/commerce/product-commerce";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { useModalFocus } from "@/lib/accessibility/useModalFocus";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import { localeHref } from "@/lib/i18n/routes";
+import { formatUnitPrice } from "@/lib/i18n/display-format";
 
 type CartAddedEventDetail = {
   product: ProductSummary;
   quantity: number;
 };
 
-export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: ProductSummary[] }) {
-  const { cartCount, cartSubtotal, selectedDealerName } = useStorefront();
+export function CartAddedDrawer() {
+  const { cartCount, cartItems, cartSubtotal, selectedDealerName } = useStorefront();
+  const { locale } = useLocale();
+  const copy = getCommerceCopy(locale);
   const [open, setOpen] = useState(false);
   const [lastAdded, setLastAdded] = useState<CartAddedEventDetail | null>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +59,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
       <button
         className="cart-added-backdrop"
         type="button"
-        aria-label="Close cart drawer"
+        aria-label={copy.drawer.close}
         onClick={closeDrawer}
       />
       <aside
@@ -65,11 +71,11 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
         tabIndex={-1}
       >
         <header className="cart-added-header">
-          <button type="button" aria-label="Close cart drawer" onClick={closeDrawer}>
+          <button type="button" aria-label={copy.drawer.close} onClick={closeDrawer}>
             <X size={22} strokeWidth={2.4} />
           </button>
-          <h2 id="cart-added-title">Added to cart</h2>
-          <span aria-label={`${cartCount} items in cart`}>
+          <h2 id="cart-added-title">{copy.drawer.title}</h2>
+          <span aria-label={copy.drawer.count(cartCount)}>
             <ShoppingCart size={22} strokeWidth={2.3} />
             <em>{cartCount}</em>
           </span>
@@ -77,7 +83,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
 
         <div className="cart-added-confirmation" role="status" aria-live="polite" aria-atomic="true">
           <Check size={22} strokeWidth={2.5} />
-          <span>{lastAdded.quantity} item has been added to your cart</span>
+          <span>{copy.drawer.added(lastAdded.quantity)}</span>
         </div>
 
         <article className="cart-added-item">
@@ -92,40 +98,41 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
           <div>
             <h3>{lastAdded.product.name}</h3>
             <p>
-              {formatMoney(getEffectivePrice(lastAdded.product))} / {lastAdded.product.unit} | Qty: {lastAdded.quantity}
+              {formatUnitPrice(getEffectivePrice(lastAdded.product), lastAdded.product.unit, locale)} | {copy.drawer.quantity}: {lastAdded.quantity}
             </p>
             <p>
-              SKU: {lastAdded.product.sku}
+              {copy.order.sku}: {lastAdded.product.sku}
               {lastAdded.product.colorName ? ` / ${lastAdded.product.colorName}` : ""}
             </p>
-            <small>{selectedDealerName} pickup or coordinated local delivery</small>
+            <small>{copy.drawer.pickupDelivery(selectedDealerName)}</small>
           </div>
-          <strong>{formatMoney({ amount: itemTotal, currency: lastAdded.product.price.currency })}</strong>
+          <strong>{formatMoney({ amount: itemTotal, currency: lastAdded.product.price.currency }, locale)}</strong>
         </article>
 
-        <section className="cart-added-summary" aria-label="Cart subtotal">
-          <strong>{cartCount} item(s) in cart</strong>
+        <section className="cart-added-summary" aria-label={copy.drawer.subtotalLabel}>
+          <strong>{copy.drawer.count(cartCount)}</strong>
           <div>
-            <span>Order subtotal</span>
-            <b>{formatMoney({ amount: cartSubtotal, currency: lastAdded.product.price.currency })}</b>
+            <span>{copy.drawer.orderSubtotal}</span>
+            <b>{formatMoney({ amount: cartSubtotal, currency: lastAdded.product.price.currency }, locale)}</b>
           </div>
-          <p>Final taxes and shipping/delivery will be calculated during checkout.</p>
-          <Link className="button button-accent" href="/cart" onClick={closeDrawer}>
-            View cart
+          <p>{copy.drawer.taxes}</p>
+          <Link className="button button-accent" href={localeHref("/cart", locale)} onClick={closeDrawer}>
+            {copy.drawer.viewCart}
           </Link>
           <button className="button button-outline" type="button" onClick={closeDrawer}>
-            Continue shopping
+            {copy.drawer.continueShopping}
           </button>
         </section>
 
         <section className="cart-added-suggestions" aria-labelledby="cart-added-suggestions-title">
-          <h3 id="cart-added-suggestions-title">Suggested items with your purchase</h3>
+          <h3 id="cart-added-suggestions-title">{copy.drawer.suggestions}</h3>
           <div>
-            {suggestedProducts
+            {cartItems
+              .map(({ product }) => product)
               .filter((product) => product.id !== lastAdded.product.id)
               .slice(0, 2)
               .map((product) => (
-              <Link className="cart-added-suggestion" href={`/products/${product.slug}`} prefetch={false} key={product.id} onClick={closeDrawer}>
+              <Link className="cart-added-suggestion" href={localeHref(`/products/${product.slug}`, locale)} prefetch={false} key={product.id} onClick={closeDrawer}>
                 <img
                   src={product.images[0].url}
                   alt={product.images[0].alt}
@@ -135,7 +142,7 @@ export function CartAddedDrawer({ suggestedProducts }: { suggestedProducts: Prod
                   decoding="async"
                 />
                 <strong>{product.name}</strong>
-                <span>{formatMoney(getEffectivePrice(product))} / {product.unit}</span>
+                <span>{formatUnitPrice(getEffectivePrice(product), product.unit, locale)}</span>
               </Link>
               ))}
           </div>

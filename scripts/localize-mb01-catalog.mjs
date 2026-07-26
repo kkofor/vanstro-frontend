@@ -49,6 +49,9 @@ function dimensionsFor(variant) {
   return variant.parametersSpecifications.Dimensions ??
     variant.description.match(/Dimensions:\s*([^C]+?)(?=\s+Carcass:|$)/i)?.[1]?.trim() ??
     variant.description.match(/Center-to-Center:\s*([^O]+?)(?=\s+Overall Length:|$)/i)?.[1]?.trim() ??
+    variant.description.match(/[（(]H\s*[*×x]\s*W[）)]\s*(H[^\s]+\s*[*×x]\s*W\s*[^\s]+\s*[*×x]\s*\d+(?:\.\d+)?\s*ft)/i)?.[1]
+      ?.replace(/\s*[*x]\s*/gi, " × ")
+      .trim() ??
     "See product specifications";
 }
 
@@ -244,6 +247,10 @@ const products = inventory.parents.map((parent) => {
       name: variantLabel(parent, variant),
       sku: variant.sku,
       manufacturerPartNumber: variant.modelMpn,
+      colorName: color?.name,
+      configuration: color && parent.variants.length > 2
+        ? (/-TOP$/i.test(variant.modelMpn) ? "with-top" : "cabinet-only")
+        : undefined,
       colorHex: color?.colorHex ?? (isHandle ? "#222222" : undefined),
       image: images[0],
       images,

@@ -15,6 +15,7 @@ import {
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
 import { resolveProductVariant } from "@/lib/product/product-variants";
+import { formatUnitPrice } from "@/lib/i18n/display-format";
 
 type ProductBuyPanelProps = {
   viewModel: ProductDetailViewModel;
@@ -28,8 +29,10 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
     colorName,
     manufacturerPartNumber,
     product,
-    reviewSummary
+    reviewSummary,
+    locale
   } = viewModel;
+  const french = locale === "fr-CA";
   const productVariant = useProductVariant();
   const selectedProduct = resolveProductVariant(product, productVariant?.selectedFinishName);
   const pricing = getProductPricing(selectedProduct);
@@ -44,12 +47,15 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
         <ProductVariantIdentifiers
           manufacturerPartNumber={manufacturerPartNumber}
           product={product}
+          locale={locale}
         />
         <div
           className="pdp-rating-line"
           aria-label={reviewSummary.count > 0
-            ? `${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`
-            : "No published reviews"}
+            ? french
+              ? `${reviewSummary.average} étoiles sur 5 selon ${reviewSummary.count} avis`
+              : `${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`
+            : french ? "Aucun avis publié" : "No published reviews"}
         >
           {reviewSummary.count > 0 ? (
             <>
@@ -64,31 +70,31 @@ export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
                   />
                 ))}
               </span>
-              <small>{reviewSummary.average.toFixed(1)} ({reviewSummary.count} reviews)</small>
+              <small>{reviewSummary.average.toFixed(1)} ({reviewSummary.count} {french ? "avis" : "reviews"})</small>
             </>
           ) : (
-            <small>No published reviews</small>
+            <small>{french ? "Aucun avis publié" : "No published reviews"}</small>
           )}
           {reviewSummary.writeReviewEnabled ?? true ? (
-            <ProductReviewOpenButton />
+            <ProductReviewOpenButton label={french ? "Rédiger un avis" : "Write a Review"} />
           ) : null}
         </div>
 
         <div className="pdp-price-stack">
-          {compareAtPrice ? <span className="compare-price">{formatMoney(compareAtPrice)}</span> : null}
+          {compareAtPrice ? <span className="compare-price">{formatMoney(compareAtPrice, locale)}</span> : null}
           <div className="price-line pdp-price">
-            {formatMoney(effectivePrice)}
-            <span>/ {selectedProduct.unit}</span>
+            {formatUnitPrice(effectivePrice, selectedProduct.unit, locale)}
           </div>
-          <small>{pricing.priceLabel ?? "Current price"}</small>
+          <small>{french ? "Prix actuel" : pricing.priceLabel ?? "Current price"}</small>
         </div>
         <ProductFinishSelector
           options={product.finishOptions}
           fallbackColorHex={colorHex}
           fallbackName={colorName}
+          locale={locale}
         />
 
-        <ProductPurchaseActions product={product} dealers={dealers} />
+        <ProductPurchaseActions product={product} dealers={dealers} locale={locale} />
       </article>
     </aside>
   );

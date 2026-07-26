@@ -3,18 +3,26 @@
 import { useState } from "react";
 import type { ProductFinishOption } from "@/lib/api/api-contract";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import {
+  findProductFinishOption,
+  presentProductFinishOptions
+} from "@/lib/product/product-finish-options";
 
 type ProductFinishSelectorProps = {
   options?: ProductFinishOption[];
   fallbackColorHex?: string;
   fallbackName: string;
+  locale?: SiteLocale;
 };
 
 export function ProductFinishSelector({
   options,
   fallbackColorHex,
-  fallbackName
+  fallbackName,
+  locale = "en-CA"
 }: ProductFinishSelectorProps) {
+  const french = locale === "fr-CA";
   const normalizedOptions = options?.length
     ? options
     : [
@@ -34,20 +42,7 @@ export function ProductFinishSelector({
   const [localFinishName, setLocalFinishName] = useState(initialFinish.name);
   const selectedFinishName = productVariant?.selectedFinishName ?? localFinishName;
   const setSelectedFinishName = productVariant?.setSelectedFinishName ?? setLocalFinishName;
-  const presentedOptions = finishOptions.map((option) => {
-    const configurationMatch = option.name.match(/^(.*?)\s+(with top|cabinet only)$/i);
-    const configuration = configurationMatch?.[2]?.toLowerCase() === "with top"
-      ? "Vanity Cabinet + Top"
-      : configurationMatch
-        ? "Vanity Cabinet"
-        : null;
-
-    return {
-      option,
-      colorName: configurationMatch?.[1] ?? option.name,
-      configuration
-    };
-  });
+  const presentedOptions = presentProductFinishOptions(finishOptions, locale);
   const selectedPresentation =
     presentedOptions.find(({ option }) => option.name === selectedFinishName) ??
     presentedOptions[0];
@@ -60,19 +55,19 @@ export function ProductFinishSelector({
   );
 
   function selectColor(colorName: string) {
-    const next = presentedOptions.find(
-      (candidate) =>
-        candidate.colorName === colorName &&
-        candidate.configuration === selectedPresentation.configuration
-    ) ?? presentedOptions.find((candidate) => candidate.colorName === colorName);
+    const next = findProductFinishOption(
+      presentedOptions,
+      colorName,
+      selectedPresentation.configuration
+    );
     if (next) setSelectedFinishName(next.option.name);
   }
 
-  function selectConfiguration(configuration: string) {
-    const next = presentedOptions.find(
-      (candidate) =>
-        candidate.colorName === selectedPresentation.colorName &&
-        candidate.configuration === configuration
+  function selectConfiguration(configuration: ProductFinishOption["configuration"]) {
+    const next = findProductFinishOption(
+      presentedOptions,
+      selectedPresentation.colorName,
+      configuration
     );
     if (next) setSelectedFinishName(next.option.name);
   }
@@ -81,12 +76,12 @@ export function ProductFinishSelector({
     <fieldset className="pdp-finish-selector" aria-labelledby="pdp-finish-selector-title">
       <div className="pdp-finish-selector-head">
         <span className="pdp-finish-inline-title">
-          <small>Color / finish:</small>
+          <small>{french ? "Couleur / fini :" : "Color / finish:"}</small>
           <strong id="pdp-finish-selector-title">{selectedPresentation.colorName}</strong>
         </span>
       </div>
 
-      <div className="pdp-finish-options" role="radiogroup" aria-label="Choose color or finish">
+      <div className="pdp-finish-options" role="radiogroup" aria-label={french ? "Choisir la couleur ou le fini" : "Choose color or finish"}>
         {colorOptions.map(({ colorName, option }) => (
           <label
             className="pdp-finish-option"
@@ -114,18 +109,19 @@ export function ProductFinishSelector({
       {configurationOptions.length > 1 ? (
         <div className="pdp-configuration-selector">
           <strong>Configuration</strong>
-          <div className="pdp-configuration-options" role="radiogroup" aria-label="Choose configuration">
-            {configurationOptions.map(({ configuration, option }) => (
+          <div className="pdp-configuration-options" role="radiogroup" aria-label={french ? "Choisir la configuration" : "Choose configuration"}>
+            {configurationOptions.map(({ configuration, configurationLabel, option }) => (
               <button
                 className={configuration === selectedPresentation.configuration ? "active" : undefined}
                 type="button"
                 role="radio"
                 aria-checked={configuration === selectedPresentation.configuration}
+                data-configuration={configuration}
                 data-sku={option.sku}
-                onClick={() => selectConfiguration(configuration ?? "")}
+                onClick={() => selectConfiguration(configuration)}
                 key={configuration}
               >
-                {configuration}
+                {configurationLabel}
               </button>
             ))}
           </div>

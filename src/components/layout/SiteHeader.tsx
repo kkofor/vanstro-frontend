@@ -12,33 +12,21 @@ import {
   X
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { dealers } from "@/lib/data/dealers";
 import { assetPath } from "@/lib/assets";
-
-const productCategories = [
-  { href: "/products", label: "All Products" },
-  { href: "/products?category=kitchen-cabinets", label: "Kitchen Cabinets" },
-  { href: "/products?category=bathroom-vanities", label: "Bathroom Vanities" },
-  { href: "/products?category=baseboards", label: "Baseboards & Mouldings" },
-  { href: "/products?category=doors-windows", label: "Doors & Windows" },
-  { href: "/products?category=handle-series", label: "Handle Series" },
-  { href: "/products", label: "Additional Categories" }
-] as const;
-
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/articles", label: "Resource Center" },
-  { href: "https://tools.vanstro.ca/", label: "Design Studio" },
-  { href: "/about", label: "About us" },
-  { href: "/contact", label: "Contact us" }
-];
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { alternateLocaleHref, localeHref } from "@/lib/i18n/routes";
+import { useCustomerSession } from "@/components/account/CustomerSessionProvider";
 
 function SearchBox() {
+  const { copy, locale } = useLocale();
+
   return (
-    <form className="search-box" action={assetPath("/products")}>
-      <input name="q" placeholder="Search by product, SKU, or category..." aria-label="Search products" />
-      <button type="submit">Search</button>
+    <form className="search-box" action={assetPath(localeHref("/products", locale))}>
+      <input name="q" placeholder={copy.searchPlaceholder} aria-label={copy.searchLabel} />
+      <button type="submit">{copy.searchAction}</button>
     </form>
   );
 }
@@ -48,6 +36,7 @@ function pickDealerFromPostalCode() {
 }
 
 function DealerNavSelector({ compact = false }: { compact?: boolean }) {
+  const { copy } = useLocale();
   const {
     postalCode,
     selectedDealerId,
@@ -108,20 +97,20 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
         <MapPin size={18} strokeWidth={2.2} />
         <span>
           <strong>{selectedDealer.city}</strong>
-          <em>Open — closes at 9 p.m.</em>
+          <em>{copy.dealer.openHours}</em>
         </span>
       </button>
 
       <div className="dealer-menu" hidden={!open}>
-        <span>Choose a local dealer</span>
+        <span>{copy.dealer.choose}</span>
         <form className="dealer-postal" onSubmit={handlePostalSubmit}>
           <input
-            aria-label="Postal code"
+            aria-label={copy.dealer.postalCode}
             value={postalDraft}
             placeholder={selectedDealer.postalCode}
             onChange={(event) => setPostalDraft(event.target.value)}
           />
-          <button type="submit">Apply</button>
+          <button type="submit">{copy.dealer.apply}</button>
         </form>
         <div>
           {dealers.map((dealer) => (
@@ -145,9 +134,16 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
 }
 
 export function SiteHeader() {
+  const { copy, locale } = useLocale();
+  const pathname = usePathname();
+  const currentHref = pathname;
+  const localizeHref = (href: string) => localeHref(href, locale);
+  const productCategories = copy.productCategories;
+  const navItems = copy.navItems;
   const [open, setOpen] = useState(false);
   const [catalogOpen, setCatalogOpen] = useState(false);
   const { cartCount, favoriteCount } = useStorefront();
+  const customerSession = useCustomerSession();
   const mobileTriggerRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
   const catalogTriggerRef = useRef<HTMLAnchorElement>(null);
@@ -198,21 +194,26 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="header-utility">
         <div className="container header-utility-inner">
-          <div className="utility-locale" aria-label="Locale">
-            <span>CA - EN</span>
-            <Link href="/">FR</Link>
+          <div className="utility-locale" aria-label={copy.localeLabel}>
+            <span>{copy.currentLocale}</span>
+            <Link
+              href={alternateLocaleHref(currentHref)}
+              hrefLang={locale === "fr-CA" ? "en-CA" : "fr-CA"}
+            >
+              {copy.alternateLocale}
+            </Link>
           </div>
-          <p>Online ordering is available in participating service areas. Your local dealer coordinates fulfillment.</p>
+          <p>{copy.utilityMessage}</p>
           <div className="utility-links">
-            <Link href="/orders/demo-order">Track order</Link>
-            <Link href="/contact">Support</Link>
+            <Link href={localizeHref("/orders/demo-order")}>{copy.trackOrder}</Link>
+            <Link href={localizeHref("/contact")}>{copy.support}</Link>
           </div>
         </div>
       </div>
 
       <div className="header-main">
         <div className="container header-inner">
-          <Link href="/" className="brand-link" aria-label="VanStro home">
+          <Link href={localizeHref("/")} className="brand-link" aria-label={locale === "fr-CA" ? "Accueil VanStro" : "VanStro home"}>
             <img
               className="brand-logo"
               src={assetPath("/assets/vanstro-logo.png")}
@@ -229,17 +230,24 @@ export function SiteHeader() {
           <DealerNavSelector />
 
           <div className="header-actions">
-            <Link className="icon-action" href="/account/login">
-              <UserCircle size={24} strokeWidth={2} />
-              <span>Sign in</span>
-            </Link>
-            <Link className="icon-action" href="/favorites">
+            {customerSession.status === "authenticated" ? (
+              <button className="icon-action" type="button" onClick={() => void customerSession.logout()}>
+                <UserCircle size={24} strokeWidth={2} />
+                <span>{copy.account.signOut}</span>
+              </button>
+            ) : (
+              <Link className="icon-action" href={localizeHref("/account/login")}>
+                <UserCircle size={24} strokeWidth={2} />
+                <span>{copy.account.signIn}</span>
+              </Link>
+            )}
+            <Link className="icon-action" href={localizeHref("/favorites")}>
               <Heart size={24} strokeWidth={2} />
-              <span>{favoriteCount ? `Saved ${favoriteCount}` : "Saved"}</span>
+              <span>{favoriteCount ? copy.account.savedCount(favoriteCount) : copy.account.saved}</span>
             </Link>
-            <Link className="icon-action" href="/cart">
+            <Link className="icon-action" href={localizeHref("/cart")}>
               <ShoppingCart size={24} strokeWidth={2} />
-              <span>{cartCount ? `Cart ${cartCount}` : "Cart"}</span>
+              <span>{cartCount ? copy.account.cartCount(cartCount) : copy.account.cart}</span>
             </Link>
           </div>
 
@@ -247,7 +255,7 @@ export function SiteHeader() {
             ref={mobileTriggerRef}
             className="mobile-menu-trigger"
             type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? copy.menu.close : copy.menu.open}
             aria-expanded={open}
             data-open={open}
             onClick={() => setOpen((value) => !value)}
@@ -259,7 +267,7 @@ export function SiteHeader() {
 
       <div className="header-nav-bar">
         <div className="container header-nav-inner">
-          <nav className="desktop-nav" aria-label="Main navigation">
+          <nav className="desktop-nav" aria-label={copy.menu.mainLabel}>
             <div
               ref={catalogNavRef}
               className="desktop-nav-item catalog-nav-item"
@@ -272,16 +280,16 @@ export function SiteHeader() {
                 }
               }}
             >
-              <Link ref={catalogTriggerRef} className="catalog-nav-trigger" href="/products" prefetch={false} aria-haspopup="menu" aria-expanded={catalogOpen}>
-                <span>Products</span>
+              <Link ref={catalogTriggerRef} className="catalog-nav-trigger" href={localizeHref("/products")} prefetch={false} aria-haspopup="menu" aria-expanded={catalogOpen}>
+                <span>{copy.productsLabel}</span>
                 <ChevronDown size={15} strokeWidth={2.35} />
               </Link>
 
               <div className="catalog-dropdown" hidden={!catalogOpen}>
-                <span className="catalog-dropdown-heading">All Products</span>
-                <div className="catalog-dropdown-list" role="menu" aria-label="Product categories">
+                <span className="catalog-dropdown-heading">{copy.allProductsLabel}</span>
+                <div className="catalog-dropdown-list" role="menu" aria-label={copy.categoryMenuLabel}>
                   {productCategories.map((category) => (
-                    <Link key={category.label} href={category.href} prefetch={false} role="menuitem" onClick={() => setCatalogOpen(false)}>
+                    <Link key={category.label} href={localizeHref(category.href)} prefetch={false} role="menuitem" onClick={() => setCatalogOpen(false)}>
                       {category.label}
                     </Link>
                   ))}
@@ -291,17 +299,17 @@ export function SiteHeader() {
 
             {navItems.map((item) => (
               <div className="desktop-nav-item" key={item.label}>
-                <Link href={item.href}>{item.label}</Link>
+                <Link href={localizeHref(item.href)}>{item.label}</Link>
               </div>
             ))}
           </nav>
 
           <div className="nav-cta-row">
-            <Link className="nav-cta accent" href="/dealers/apply">
-              Become a dealer
+            <Link className="nav-cta accent" href={localizeHref("/dealers/apply")}>
+              {copy.becomeDealer}
             </Link>
-            <Link className="nav-cta" href="/account/login">
-              Partner login
+            <Link className="nav-cta" href={localizeHref("/account/login")}>
+              {copy.partnerLogin}
               <ChevronDown size={14} strokeWidth={2.4} />
             </Link>
           </div>
@@ -313,24 +321,31 @@ export function SiteHeader() {
           <SearchBox />
           <DealerNavSelector compact />
 
-          <div className="mobile-quick-actions" aria-label="Account and cart shortcuts">
-            <Link href="/account/login" onClick={() => setOpen(false)}>
-              <UserCircle size={21} strokeWidth={2} />
-              <span>Sign in</span>
-            </Link>
-            <Link href="/favorites" onClick={() => setOpen(false)}>
+          <div className="mobile-quick-actions" aria-label={copy.menu.shortcutsLabel}>
+            {customerSession.status === "authenticated" ? (
+              <button type="button" onClick={() => { setOpen(false); void customerSession.logout(); }}>
+                <UserCircle size={21} strokeWidth={2} />
+                <span>{copy.account.signOut}</span>
+              </button>
+            ) : (
+              <Link href={localizeHref("/account/login")} onClick={() => setOpen(false)}>
+                <UserCircle size={21} strokeWidth={2} />
+                <span>{copy.account.signIn}</span>
+              </Link>
+            )}
+            <Link href={localizeHref("/favorites")} onClick={() => setOpen(false)}>
               <Heart size={21} strokeWidth={2} />
-              <span>{favoriteCount ? `Saved ${favoriteCount}` : "Saved"}</span>
+              <span>{favoriteCount ? copy.account.savedCount(favoriteCount) : copy.account.saved}</span>
             </Link>
-            <Link href="/cart" onClick={() => setOpen(false)}>
+            <Link href={localizeHref("/cart")} onClick={() => setOpen(false)}>
               <ShoppingCart size={21} strokeWidth={2} />
-              <span>{cartCount ? `Cart ${cartCount}` : "Cart"}</span>
+              <span>{cartCount ? copy.account.cartCount(cartCount) : copy.account.cart}</span>
             </Link>
           </div>
 
-          <nav className="mobile-nav-list" aria-label="Mobile navigation">
+          <nav className="mobile-nav-list" aria-label={copy.menu.mobileLabel}>
             {navItems.map((item) => (
-              <Link key={item.label} href={item.href} onClick={() => setOpen(false)}>
+              <Link key={item.label} href={localizeHref(item.href)} onClick={() => setOpen(false)}>
                 <span>{item.label}</span>
                 <ChevronRight size={18} strokeWidth={2} />
               </Link>

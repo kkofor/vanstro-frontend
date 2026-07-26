@@ -4,16 +4,20 @@ import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { ImageAsset, ProductFinishOption } from "@/lib/api/api-contract";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
+import { HorizontalScrollRail } from "@/components/ui/HorizontalScrollRail";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 type ProductImageGalleryProps = {
   images: ImageAsset[];
   finishOptions?: ProductFinishOption[];
+  locale?: SiteLocale;
 };
 
 const MAX_COLLAPSED_THUMBNAILS = 7;
 const COLLAPSED_IMAGE_COUNT = MAX_COLLAPSED_THUMBNAILS - 1;
 
-export function ProductImageGallery({ images, finishOptions = [] }: ProductImageGalleryProps) {
+export function ProductImageGallery({ images, finishOptions = [], locale = "en-CA" }: ProductImageGalleryProps) {
+  const french = locale === "fr-CA";
   const productVariant = useProductVariant();
   const selectedFinish = finishOptions.find(
     (option) => option.name === productVariant?.selectedFinishName
@@ -113,23 +117,28 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
         <img
           key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${activeIndex}:${activeImage.url}`}
           src={activeImage.url}
-          alt={activeImage.alt}
+          alt={activeImage.alt?.trim() || (french ? "Image du produit" : "Product image")}
           width={activeImage.width}
           height={activeImage.height}
           loading="eager"
           fetchPriority="high"
           decoding="async"
         />
-        <span className="pdp-zoom-hint" aria-hidden="true">Hover to zoom</span>
+        <span className="pdp-zoom-hint" aria-hidden="true">{french ? "Survolez pour agrandir" : "Hover to zoom"}</span>
       </div>
-      <div
+      <HorizontalScrollRail
         className="pdp-thumb-row"
-        aria-label="Product images"
-        key={selectedFinish?.sku ?? selectedFinish?.name ?? "default-gallery"}
+        label={french ? "Images du produit" : "Product images"}
+        hint={french ? "Balayez ou utilisez les boutons fléchés pour voir plus d’images du produit." : "Swipe or use the arrow buttons to view more product images."}
+        previousLabel={french ? "Images précédentes du produit" : "Previous product images"}
+        nextLabel={french ? "Images suivantes du produit" : "Next product images"}
+        activeKey={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${activeIndex}:${galleryExpanded}`}
       >
         {visibleImages.map((image, index) => (
           <button
-            aria-label={`Show ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "primary" : `view ${index + 1}`)} image`}
+            aria-label={french
+              ? `Afficher l’image ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "principale" : `vue ${index + 1}`)}`
+              : `Show ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "primary" : `view ${index + 1}`)} image`}
             aria-pressed={activeIndex === index}
             className={activeIndex === index ? "pdp-thumb active" : "pdp-thumb"}
             onClick={() => handleThumbClick(image, index)}
@@ -138,18 +147,18 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
           >
             <img
               src={image.url}
-              alt={image.alt || `${finishNameByImageUrl.get(image.url) ?? `View ${index + 1}`} thumbnail`}
+              alt=""
               width={image.width}
               height={image.height}
               loading="lazy"
               decoding="async"
             />
-            <span>{finishNameByImageUrl.get(image.url) ?? (index === 0 ? "Primary" : `View ${index + 1}`)}</span>
+            <span>{finishNameByImageUrl.get(image.url) ?? (index === 0 ? (french ? "Principale" : "Primary") : `${french ? "Vue" : "View"} ${index + 1}`)}</span>
           </button>
         ))}
         {hasOverflowImages && !galleryExpanded ? (
           <button
-            aria-label={`Show ${hiddenImageCount} more product images`}
+            aria-label={french ? `Afficher ${hiddenImageCount} autres images du produit` : `Show ${hiddenImageCount} more product images`}
             aria-pressed={activeIndex >= COLLAPSED_IMAGE_COUNT}
             className={activeIndex >= COLLAPSED_IMAGE_COUNT ? "pdp-thumb pdp-thumb-more active" : "pdp-thumb pdp-thumb-more"}
             onClick={() => setGalleryExpanded(true)}
@@ -166,21 +175,21 @@ export function ProductImageGallery({ images, finishOptions = [] }: ProductImage
               />
               <strong>+{hiddenImageCount}</strong>
             </span>
-            <span>View all</span>
+            <span>{french ? "Tout afficher" : "View all"}</span>
           </button>
         ) : null}
         {hasOverflowImages && galleryExpanded ? (
           <button
-            aria-label="Collapse product images"
+            aria-label={french ? "Réduire les images du produit" : "Collapse product images"}
             className="pdp-thumb pdp-thumb-collapse"
             onClick={() => setGalleryExpanded(false)}
             type="button"
           >
             <strong aria-hidden="true">−</strong>
-            <span>Show less</span>
+            <span>{french ? "Afficher moins" : "Show less"}</span>
           </button>
         ) : null}
-      </div>
+      </HorizontalScrollRail>
     </div>
   );
 }

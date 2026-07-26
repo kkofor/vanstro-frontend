@@ -7,121 +7,92 @@ import {
   ClipboardList,
   Laptop,
   MapPin,
-  PackageCheck,
-  Plus
+  PackageCheck
 } from "lucide-react";
-import { ArticleSummary, Banner, Dealer, ProductSummary } from "@/lib/api/api-contract";
+import { Banner, ProductSummary } from "@/lib/api/api-contract";
 import { ProductCard } from "@/components/product/ProductCard";
-import { useMemo } from "react";
-import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { assetPath } from "@/lib/assets";
 
 type HomePageProps = {
   banner: Banner;
   products: ProductSummary[];
-  articles: ArticleSummary[];
-  dealers: Dealer[];
 };
 
 const categoryCards = [
   {
-    title: "Kitchen",
-    text: "Ready-to-order cabinets and hardware",
+    title: "Kitchen cabinets",
+    text: "Ready-to-order cabinet collections",
     href: "/products?category=kitchen-cabinets",
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
-    width: 1672,
-    height: 941,
+    image: assetPath("/assets/generated/category-kitchen-cabinets-v2.webp"),
+    width: 5504,
+    height: 3072,
     large: true
   },
   {
-    title: "Bathroom",
-    text: "Vanities and fixtures",
+    title: "Bathroom vanities",
+    text: "Vanity cabinets and bath storage",
     href: "/products?category=bathroom-vanities",
     image: assetPath("/assets/original-site/img-b03.gif"),
     width: 602,
     height: 292
   },
   {
+    title: "Cabinet accessories",
+    text: "Fillers, panels, toe kicks and mouldings",
+    href: "/products?category=kitchen-cabinets&q=Accessories",
+    image: assetPath("/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg"),
+    width: 936,
+    height: 894
+  },
+  {
     title: "Handle series",
     text: "Cabinet handles and hardware",
     href: "/products?category=handle-series",
-    image: assetPath("/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg"),
-    width: 602,
-    height: 292
+    image: assetPath("/assets/generated/category-handle-series-v2.webp"),
+    width: 5504,
+    height: 3072
   },
   {
-    title: "Trim",
+    title: "Trim & mouldings",
     text: "Baseboards, casings and profiles",
     href: "/products?category=baseboards",
     image: assetPath("/assets/original-site/img-b04.gif"),
     width: 1220,
     height: 292
-  },
-  {
-    title: "Doors and windows",
-    text: "Interior and exterior",
-    href: "/products?category=doors-windows",
-    image: assetPath("/assets/generated/category-doors-windows.webp"),
-    width: 1774,
-    height: 887,
-    comingSoon: true
   }
 ];
 
-const resources = [
+const audiencePaths = [
   {
-    title: "Planning ideas",
-    text: "Compare room layouts and stocked product combinations.",
-    action: "View planning ideas",
+    title: "For homeowners",
+    text: "Plan your space, compare materials and confirm measurements before ordering.",
+    action: "Plan your project",
     href: "/articles",
-    icon: BookOpen,
-    image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
-    width: 1672,
-    height: 941
+    secondaryAction: "Open 3D Design Tool",
+    secondaryHref: "https://tools.vanstro.ca/",
+    icon: BookOpen
   },
   {
-    title: "3D Design Tool",
-    text: "Visualize layouts before you build a product list.",
-    action: "Start designing",
-    href: "https://tools.vanstro.ca/",
-    icon: Laptop,
-    image: assetPath("/assets/generated/vanstro-guide-white-v1.webp"),
-    width: 1672,
-    height: 941
+    title: "For contractors",
+    text: "Source stocked cabinets, vanities, trim and hardware for active projects.",
+    action: "Shop project materials",
+    href: "/products",
+    secondaryAction: "Review delivery options",
+    secondaryHref: "/articles/pickup-and-delivery-options",
+    icon: ClipboardList
   },
   {
-    title: "Product specs",
-    text: "Download specs, warranty notes and installation guides.",
-    action: "Read specs guide",
-    href: "/articles/how-to-measure-for-cabinets",
-    icon: ClipboardList,
-    image: assetPath("/assets/generated/vanstro-dealer-white-v1.webp"),
-    width: 1672,
-    height: 941
-  },
-  {
-    title: "Materials and finishes",
-    text: "Review white cabinet finishes and primed trim materials.",
-    action: "View finishes",
-    href: "/articles/what-finishes-are-available",
-    icon: PackageCheck,
-    image: assetPath("/assets/original-site/img-b02.gif"),
-    width: 602,
-    height: 292
+    title: "For local dealers",
+    text: "Manage local customers, product orders and separately offered services.",
+    action: "Dealer Login",
+    href: "/account/login",
+    secondaryAction: "Become a Dealer",
+    secondaryHref: "/dealers/apply",
+    icon: PackageCheck
   }
 ];
 
-export function HomePage({ banner, products, articles, dealers }: HomePageProps) {
-  const {
-    selectedDealerId,
-    setSelectedDealer
-  } = useStorefront();
-
-  const selectedDealer = useMemo(
-    () => dealers.find((dealer) => dealer.id === selectedDealerId) ?? dealers[0],
-    [dealers, selectedDealerId]
-  );
-
+export function HomePage({ banner, products }: HomePageProps) {
   return (
     <>
       <section className="hero">
@@ -137,7 +108,7 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
               <Link className="button button-primary" href="/products" prefetch={false}>
                 Shop Products
               </Link>
-              <Link className="button button-secondary" href="#stores">
+              <Link className="button button-secondary" href="/dealers/map">
                 Find a Dealer
               </Link>
             </div>
@@ -181,7 +152,6 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
                   loading="lazy"
                   decoding="async"
                 />
-                {category.comingSoon ? <span className="category-badge">Coming soon</span> : null}
                 <div className="category-copy">
                   <h3>{category.title}</h3>
                   <p>{category.text}</p>
@@ -209,29 +179,36 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         </div>
       </section>
 
-      <section className="section dealer-section">
-        <div className="container dealer-band">
-          <div className="dealer-copy">
-            <h2>For trade buyers and dealer partners</h2>
-            <p>
-              Contractors can order stocked products for projects, while independently
-              owned businesses can apply to participate as local dealers. Each dealer
-              manages its own operations, marketing, customers, personnel and services.
-            </p>
-            <div className="button-row">
-              <Link className="button button-accent" href="/dealers/apply">
-                Become a Dealer
-              </Link>
-              <Link className="button button-secondary" href="/account/login">
-                Dealer Login
-                <ArrowRight size={18} strokeWidth={2} />
-              </Link>
+      <section className="section audience-section" aria-labelledby="audience-paths-title">
+        <div className="container dealer-band audience-band">
+          <div className="dealer-copy audience-copy">
+            <span className="audience-eyebrow">Start your project</span>
+            <h2 id="audience-paths-title">Choose the path that fits your work</h2>
+            <div className="audience-path-grid">
+              {audiencePaths.map((path) => {
+                const Icon = path.icon;
+
+                return (
+                  <article className="audience-path" key={path.title}>
+                    <Icon aria-hidden="true" size={22} strokeWidth={2.1} />
+                    <h3>{path.title}</h3>
+                    <p>{path.text}</p>
+                    <Link className="audience-primary-link" href={path.href} prefetch={false}>
+                      {path.action}
+                      <ArrowRight aria-hidden="true" size={16} strokeWidth={2.2} />
+                    </Link>
+                    <Link className="audience-secondary-link" href={path.secondaryHref} prefetch={false}>
+                      {path.secondaryAction}
+                    </Link>
+                  </article>
+                );
+              })}
             </div>
           </div>
-          <div className="dealer-image">
+          <div className="dealer-image audience-image">
             <img
               src={assetPath("/assets/generated/vanstro-dealer-white-v1.webp")}
-              alt="White VanStro cabinet products stocked in dealer warehouse inventory"
+              alt="White VanStro cabinet products stocked for local fulfillment"
               width={1672}
               height={941}
               loading="lazy"
@@ -241,94 +218,16 @@ export function HomePage({ banner, products, articles, dealers }: HomePageProps)
         </div>
       </section>
 
-      <section className="section resource-section">
-        <div className="container">
-          <div className="section-heading">
-            <h2 className="section-title">Project planning resources</h2>
-          </div>
-          <div className="resource-row">
-            {resources.map((resource) => {
-              return (
-                <Link href={resource.href} className="resource-item" prefetch={false} key={resource.title}>
-                  <img
-                    src={resource.image}
-                    alt={resource.title}
-                    width={resource.width}
-                    height={resource.height}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span>
-                    <h3>{resource.title}</h3>
-                    <p>{resource.text}</p>
-                    <span className="inline-link">
-                      {resource.action}
-                      <ArrowRight size={16} strokeWidth={2} />
-                    </span>
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section store-section" id="stores">
-        <div className="container store-band">
-          <MapPin size={42} strokeWidth={1.8} />
+      <section className="section store-section">
+        <div className="container store-band store-band-compact">
+          <MapPin aria-hidden="true" size={42} strokeWidth={1.8} />
           <div>
             <h2>Find a dealer or showroom</h2>
-            <p>Choose a local dealer for pickup, delivery coordination and project support.</p>
+            <p>Check participating locations for pickup, delivery coordination and project support.</p>
           </div>
-          <div className="store-list">
-            {dealers.slice(0, 4).map((dealer) => (
-              <button
-                className={dealer.id === selectedDealer.id ? "city-chip active" : "city-chip"}
-                type="button"
-                onClick={() => setSelectedDealer(dealer)}
-                key={dealer.id}
-              >
-                {dealer.city}
-              </button>
-            ))}
-          </div>
-          <Link className="button button-primary" href="/contact">
-            Contact a Dealer
+          <Link className="button button-primary" href="/dealers/map">
+            Find a Dealer
           </Link>
-        </div>
-      </section>
-
-      <section className="section guide-section">
-        <div className="container guide-grid">
-          <div>
-            <div className="section-heading">
-              <h2 className="section-title">Buying guide</h2>
-            </div>
-            <div className="faq-list">
-              {articles.map((article) => (
-                <Link className="faq-row" href={`/articles/${article.slug}`} key={article.id}>
-                  {article.title}
-                  <Plus size={18} strokeWidth={2} />
-                </Link>
-              ))}
-            </div>
-            <div className="button-row">
-              <Link className="section-link" href="/articles/how-to-measure-for-cabinets">
-                View all FAQs
-                <ArrowRight size={18} strokeWidth={2} />
-              </Link>
-            </div>
-          </div>
-          <div className="guide-image">
-            <img
-              src={assetPath("/assets/generated/vanstro-guide-white-v1.webp")}
-              alt="White kitchen drawer detail with cabinet hardware and measuring tools"
-              width={1672}
-              height={941}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
         </div>
       </section>
     </>

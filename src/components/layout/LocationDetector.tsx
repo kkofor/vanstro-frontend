@@ -1,19 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import {
-  COOKIE_PREFERENCES_SAVED_EVENT,
-  clearFunctionalStorage
-} from "@/lib/privacy/cookie-preferences";
-
+/**
+ * Location access is user-initiated elsewhere in the storefront. Functional-storage
+ * cleanup is owned by StorefrontProvider so consent transitions have one authority.
+ */
 export function LocationDetector() {
-  useEffect(() => {
-    clearFunctionalStorage();
-    const handlePreferencesSaved = () => clearFunctionalStorage();
-
-    window.addEventListener(COOKIE_PREFERENCES_SAVED_EVENT, handlePreferencesSaved);
-    return () => window.removeEventListener(COOKIE_PREFERENCES_SAVED_EVENT, handlePreferencesSaved);
-  }, []);
-
   return null;
 }

@@ -28,6 +28,12 @@ The current implementation is a static demo with typed mock data. It is prepared
 so a backend, dashboard, dealer portal, payment system, and inventory service can
 replace mock data later without rewriting page components.
 
+## Backend
+
+The monorepo includes a production-oriented API (`apps/api`), worker (`apps/worker`),
+and shared database package (`packages/db`). See [docs/DEVELOPING.md](docs/DEVELOPING.md)
+for the full-stack local setup and `pnpm qa:backend` verification.
+
 ## Tech Stack
 
 | Area | Current implementation |

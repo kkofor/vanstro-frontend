@@ -5,45 +5,16 @@ import { useEffect, useState } from "react";
 import {
   COOKIE_PREFERENCES_SAVED_EVENT,
   DEFAULT_COOKIE_PREFERENCES,
+  isCurrentCookiePreferences,
   makeCookiePreferences,
-  getConsentAnonymousId,
   readCookiePreferences,
+  recordCookiePreferences,
   writeCookiePreferences
 } from "@/lib/privacy/cookie-preferences";
 import { vanstroApi } from "@/lib/api/api-client";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 type OptionalPreference = "functional" | "analytics" | "targeting";
-
-const preferenceRows: Array<{
-  key: "strictlyNecessary" | OptionalPreference;
-  title: string;
-  description: string;
-}> = [
-  {
-    key: "strictlyNecessary",
-    title: "Strictly Necessary Cookies",
-    description:
-      "Required for cart, checkout, account security and core site operation."
-  },
-  {
-    key: "functional",
-    title: "Functional Cookies",
-    description:
-      "Remember store selection, language choices and support preferences."
-  },
-  {
-    key: "analytics",
-    title: "Analytics and Performance Cookies",
-    description:
-      "Help us understand page usage and improve product discovery flows."
-  },
-  {
-    key: "targeting",
-    title: "Targeting Cookies",
-    description:
-      "Support more relevant product offers, dealer updates and campaign measurement."
-  }
-];
 
 type CookieSettingsClientProps = {
   onClose?: () => void;
@@ -51,12 +22,15 @@ type CookieSettingsClientProps = {
 };
 
 export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientProps) {
+  const { copy } = useLocale();
+  const cookieCopy = copy.cookies;
+  const preferenceRows = cookieCopy.rows;
   const [preferences, setPreferences] = useState({
     functional: DEFAULT_COOKIE_PREFERENCES.functional,
     analytics: DEFAULT_COOKIE_PREFERENCES.analytics,
     targeting: DEFAULT_COOKIE_PREFERENCES.targeting
   });
-  const [saved, setSaved] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
 
   useEffect(() => {
     const existing = readCookiePreferences();
@@ -70,24 +44,27 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
   }, []);
 
   const togglePreference = (key: OptionalPreference) => {
-    setSaved(false);
+    setSaveStatus("idle");
     setPreferences((current) => ({
       ...current,
       [key]: !current[key]
     }));
   };
 
-  const savePreferences = () => {
+  const savePreferences = async () => {
     const savedPreferences = makeCookiePreferences({ ...preferences, source: "custom" });
     writeCookiePreferences(savedPreferences);
-    void vanstroApi.recordConsentEvent({
-      anonymousId: getConsentAnonymousId(),
-      source: savedPreferences.source,
-      preferences: savedPreferences
-    }).catch(() => {});
-    setSaved(true);
     window.dispatchEvent(new Event(COOKIE_PREFERENCES_SAVED_EVENT));
-    onSaved?.();
+    setSaveStatus("saving");
+
+    try {
+      await recordCookiePreferences(savedPreferences, vanstroApi.recordConsentEvent);
+      if (!isCurrentCookiePreferences(savedPreferences)) return;
+      setSaveStatus("saved");
+      onSaved?.();
+    } catch {
+      if (isCurrentCookiePreferences(savedPreferences)) setSaveStatus("error");
+    }
   };
 
   return (
@@ -96,22 +73,18 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
         <button
           className="cookie-drawer-close"
           type="button"
-          aria-label="Close cookie preferences"
+          aria-label={cookieCopy.closePreferences}
           onClick={onClose}
         >
           <X size={22} strokeWidth={2.2} />
         </button>
         <div className="cookie-settings-copy">
-          <h2>Cookie Preferences</h2>
-          <p>
-            We use cookies and similar technologies that are required for VanStro to
-            function. Optional cookies help improve product browsing, local dealer
-            selection, support workflows and marketing relevance.
-          </p>
+          <h2>{cookieCopy.preferencesTitle}</h2>
+          <p>{cookieCopy.intro}</p>
         </div>
 
-        <div className="cookie-preference-panel" aria-label="Cookie preference controls">
-          <h3>Manage Cookie Preferences</h3>
+        <div className="cookie-preference-panel" aria-label={cookieCopy.controlsLabel}>
+          <h3>{cookieCopy.manageTitle}</h3>
           <div className="cookie-preference-list">
             {preferenceRows.map((row) => {
               const isNecessary = row.key === "strictlyNecessary";
@@ -125,12 +98,12 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
                     <span>{row.description}</span>
                   </div>
                   {isNecessary ? (
-                    <em className="preference-always">Always Active</em>
+                    <em className="preference-always">{cookieCopy.alwaysActive}</em>
                   ) : (
                     <button
                       className={`preference-toggle ${enabled ? "is-on" : ""}`}
                       type="button"
-                      aria-label={`${enabled ? "Disable" : "Enable"} ${row.title}`}
+                      aria-label={`${enabled ? cookieCopy.disable : cookieCopy.enable} ${row.title}`}
                       aria-pressed={enabled}
                       onClick={() => togglePreference(row.key as OptionalPreference)}
                     >
@@ -148,9 +121,20 @@ export function CookieSettingsClient({ onClose, onSaved }: CookieSettingsClientP
       </div>
 
       <div className="cookie-settings-save">
-        {saved ? <span>Preferences saved.</span> : <span />}
-        <button className="button button-accent" type="button" onClick={savePreferences}>
-          Save My Preferences
+        <span role="status" aria-live="polite" aria-atomic="true">
+          {saveStatus === "saved"
+            ? cookieCopy.saved
+            : saveStatus === "error"
+              ? cookieCopy.saveError
+              : ""}
+        </span>
+        <button
+          className="button button-accent"
+          type="button"
+          disabled={saveStatus === "saving"}
+          onClick={() => void savePreferences()}
+        >
+          {saveStatus === "error" ? cookieCopy.retry : cookieCopy.save}
         </button>
       </div>
     </>

@@ -1,8 +1,10 @@
 "use client";
 
 import { requestCookiePreferencesOpen } from "@/lib/privacy/cookie-preferences";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function CookiePreferencesButton() {
+  const { copy } = useLocale();
   const openPreferences = () => {
     requestCookiePreferencesOpen();
   };
@@ -13,7 +15,7 @@ export function CookiePreferencesButton() {
       href="#cookie-preferences"
       onClick={openPreferences}
     >
-      Cookie Preferences
+      {copy.footer.cookiePreferences}
     </a>
   );
 }

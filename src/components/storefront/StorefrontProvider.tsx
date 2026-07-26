@@ -7,6 +7,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react";
 import { CartItem, Dealer, ProductSummary } from "@/lib/api/api-contract";
@@ -15,6 +16,15 @@ import {
   withEffectiveProductPrice
 } from "@/lib/commerce/product-commerce";
 import { vanstroApi } from "@/lib/api/api-client";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import { localizeApiError, normalizeApiErrorCode } from "@/lib/i18n/api-error-localization";
+import {
+  COOKIE_PREFERENCES_SAVED_EVENT,
+  clearFunctionalStorage,
+  isCookiePreferencesStorageEvent,
+  readCookiePreferences
+} from "@/lib/privacy/cookie-preferences";
 
 export type CartLine = {
   product: ProductSummary;
@@ -41,6 +51,7 @@ export type CheckoutOrder = {
 export type StorefrontAsyncState = {
   status: "idle" | "loading" | "success" | "error";
   error?: string;
+  errorCode?: ReturnType<typeof normalizeApiErrorCode>;
 };
 
 export type StorefrontAction =
@@ -77,6 +88,7 @@ type StorefrontContextValue = {
   clearCart: () => Promise<StorefrontActionResult>;
   toggleFavorite: (product: ProductSummary) => Promise<StorefrontActionResult>;
   removeFavorite: (productId: string) => Promise<StorefrontActionResult>;
+  refreshFavorites: () => void;
   isFavorite: (productId: string) => boolean;
   createOrder: (input: {
     fulfillment: "pickup" | "delivery";
@@ -114,10 +126,8 @@ function formatCartItems(items: CartItem[]): CartLine[] {
   }));
 }
 
-function actionError(error: unknown) {
-  return error instanceof Error && error.message
-    ? error.message
-    : "The request could not be completed. Please try again.";
+function actionError(error: unknown, locale: "en-CA" | "fr-CA", fallback: string) {
+  return localizeApiError(error, locale, fallback);
 }
 
 function storedString(value: unknown) {
@@ -146,6 +156,10 @@ function parseStoredState(value: unknown) {
 }
 
 export function StorefrontProvider({ children }: { children: ReactNode }) {
+  const { locale } = useLocale();
+  const copy = getCommerceCopy(locale);
+  const localizationRef = useRef({ locale, requestError: copy.storefront.requestError });
+  localizationRef.current = { locale, requestError: copy.storefront.requestError };
   const [cartItems, setCartItems] = useState<CartLine[]>([]);
   const [favoriteItems, setFavoriteItems] = useState<ProductSummary[]>([]);
   const [orders, setOrders] = useState<CheckoutOrder[]>([]);
@@ -153,6 +167,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   const [selectedDealerName, setSelectedDealerName] = useState(DEFAULT_DEALER_NAME);
   const [postalCode, setPostalCodeState] = useState("");
   const [productIdentityAliases, setProductIdentityAliases] = useState<Record<string, string>>({});
+  const [functionalConsent, setFunctionalConsent] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [cartState, setCartState] = useState<StorefrontAsyncState>({ status: "loading" });
   const [favoritesState, setFavoritesState] = useState<StorefrontAsyncState>({ status: "loading" });
@@ -160,44 +175,81 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     status: "idle"
   });
 
+  const refreshFavorites = useCallback(() => {
+    setFavoritesState({ status: "loading" });
+    void vanstroApi.getFavorites()
+      .then((response) => {
+        setFavoriteItems(response.data.map((item) => item.product));
+        setFavoritesState({ status: "success" });
+      })
+      .catch((error) => setFavoritesState({
+        status: "error",
+        error: actionError(error, localizationRef.current.locale, localizationRef.current.requestError),
+        errorCode: normalizeApiErrorCode(error)
+      }));
+  }, []);
+
   useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = parseStoredState(JSON.parse(raw));
-        if (!parsed) throw new Error("Stored storefront state is invalid.");
-        setOrders(parsed.orders);
-        setSelectedDealerId(parsed.selectedDealerId);
-        setSelectedDealerName(parsed.selectedDealerName);
-        setPostalCodeState(parsed.postalCode.trim().toUpperCase());
-        setProductIdentityAliases(parsed.productIdentityAliases);
-      }
-    } catch {
+    const allowsFunctionalStorage = Boolean(readCookiePreferences()?.functional);
+    setFunctionalConsent(allowsFunctionalStorage);
+
+    if (allowsFunctionalStorage) {
       try {
-        window.localStorage.removeItem(STORAGE_KEY);
-      } catch {}
+        const raw = window.localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = parseStoredState(JSON.parse(raw));
+          if (!parsed) throw new Error("Stored storefront state is invalid.");
+          setOrders(parsed.orders);
+          setSelectedDealerId(parsed.selectedDealerId);
+          setSelectedDealerName(parsed.selectedDealerName);
+          setPostalCodeState(parsed.postalCode.trim().toUpperCase());
+          setProductIdentityAliases(parsed.productIdentityAliases);
+        }
+      } catch {
+        try {
+          window.localStorage.removeItem(STORAGE_KEY);
+        } catch {}
+      }
+    } else {
+      clearFunctionalStorage();
     }
     void vanstroApi.getCart().then((response) => {
       setCartItems(formatCartItems(response.data.items));
       setCartState({ status: "success" });
-    }).catch((error) => setCartState({ status: "error", error: actionError(error) }));
-    const refreshFavorites = () => {
-      setFavoritesState({ status: "loading" });
-      void vanstroApi.getFavorites()
-        .then((response) => {
-          setFavoriteItems(response.data.map((item) => item.product));
-          setFavoritesState({ status: "success" });
-        })
-        .catch((error) => setFavoritesState({ status: "error", error: actionError(error) }));
+    }).catch((error) => setCartState({ status: "error", error: actionError(error, localizationRef.current.locale, localizationRef.current.requestError) }));
+    const syncFunctionalConsent = () => {
+      const nextFunctionalConsent = Boolean(readCookiePreferences()?.functional);
+      setFunctionalConsent(nextFunctionalConsent);
+
+      if (!nextFunctionalConsent) {
+        clearFunctionalStorage();
+        setOrders([]);
+        setSelectedDealerId(DEFAULT_DEALER_ID);
+        setSelectedDealerName(DEFAULT_DEALER_NAME);
+        setPostalCodeState("");
+        setProductIdentityAliases({});
+      }
     };
+
     refreshFavorites();
     window.addEventListener("vanstro-authenticated", refreshFavorites);
+    const syncCrossTabConsent = (event: StorageEvent) => {
+      // Storage events do not cross origin boundaries; provider-owned storage is the only
+      // state this tab may clear. Embedded third-party provider storage is not guessed at.
+      if (isCookiePreferencesStorageEvent(event)) syncFunctionalConsent();
+    };
+    window.addEventListener(COOKIE_PREFERENCES_SAVED_EVENT, syncFunctionalConsent);
+    window.addEventListener("storage", syncCrossTabConsent);
     setHydrated(true);
-    return () => window.removeEventListener("vanstro-authenticated", refreshFavorites);
-  }, []);
+    return () => {
+      window.removeEventListener("vanstro-authenticated", refreshFavorites);
+      window.removeEventListener(COOKIE_PREFERENCES_SAVED_EVENT, syncFunctionalConsent);
+      window.removeEventListener("storage", syncCrossTabConsent);
+    };
+  }, [refreshFavorites]);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || !functionalConsent) return;
     try {
       window.localStorage.setItem(
         STORAGE_KEY,
@@ -217,7 +269,8 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     selectedDealerName,
     postalCode,
     productIdentityAliases,
-    hydrated
+    hydrated,
+    functionalConsent
   ]);
 
   const runMutation = useCallback(async (
@@ -230,7 +283,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       setMutationState({ action, status: "success" });
       return { ok: true };
     } catch (error) {
-      const message = actionError(error);
+      const message = actionError(error, localizationRef.current.locale, localizationRef.current.requestError);
       setMutationState({ action, status: "error", error: message });
       return { ok: false, error: message };
     }
@@ -330,6 +383,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
           setFavoritesState({ status: "success" });
         });
       },
+      refreshFavorites,
       isFavorite(productId) {
         const canonicalId = productIdentityAliases[productId];
         return favoriteItems.some((item) => item.id === productId || item.id === canonicalId);
@@ -347,23 +401,23 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
           subtotal: cartSubtotal,
           timeline: [
             {
-              label: "Paid",
-              detail: "Payment recorded to the platform.",
+              label: copy.storefront.timeline.paid,
+              detail: copy.storefront.timeline.paidDetail,
               complete: true
             },
             {
-              label: "Inventory reserved",
-              detail: `${selectedDealerName} stock is frozen for this order.`,
+              label: copy.storefront.timeline.reserved,
+              detail: copy.storefront.timeline.reservedDetail(selectedDealerName),
               complete: true
             },
             {
-              label: "Dealer accepted",
-              detail: "Dealer fulfillment will be handled in Admin ERP.",
+              label: copy.storefront.timeline.accepted,
+              detail: copy.storefront.timeline.acceptedDetail,
               complete: false
             },
             {
-              label: "Delivered",
-              detail: "Delivery triggers invoice and settlement events.",
+              label: copy.storefront.timeline.delivered,
+              detail: copy.storefront.timeline.deliveredDetail,
               complete: false
             }
           ]
@@ -383,13 +437,15 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       selectedDealerId,
       selectedDealerName,
       postalCode,
-      cartSubtotal
-      ,cartState
-      ,favoritesState
-      ,mutationState
-      ,hydrated
-      ,productIdentityAliases
-      ,runMutation
+      cartSubtotal,
+      cartState,
+      favoritesState,
+      mutationState,
+      hydrated,
+      productIdentityAliases,
+      runMutation,
+      refreshFavorites,
+      copy
     ]
   );
 

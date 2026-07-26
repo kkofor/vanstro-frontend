@@ -30,6 +30,12 @@ import {
 import { assetPath } from "@/lib/assets";
 import { HOME_PRODUCT_LIMIT } from "@/lib/product/catalog-config";
 import productImageDimensionsData from "@/lib/data/product-image-dimensions.json";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import {
+  localizeProduct,
+  localizeProducts,
+  localizeProductTaxonomyLabel
+} from "@/lib/product/product-localization";
 
 const productImageDimensions = productImageDimensionsData as unknown as Record<
   string,
@@ -194,7 +200,7 @@ function mapWebsiteProductToSummary(product: WebsiteApiProduct): ProductSummary 
   };
 }
 
-function projectProductCard(product: ProductSummary): ProductSummary {
+function projectProductCard(product: ProductSummary, locale: SiteLocale = "en-CA"): ProductSummary {
   const image = product.images[0];
 
   return {
@@ -204,8 +210,10 @@ function projectProductCard(product: ProductSummary): ProductSummary {
     brand: product.brand,
     manufacturerPartNumber: product.manufacturerPartNumber,
     name: product.name,
-    category: product.category,
-    subCategory: product.subCategory,
+    category: localizeProductTaxonomyLabel(product.category, locale),
+    subCategory: product.subCategory
+      ? localizeProductTaxonomyLabel(product.subCategory, locale)
+      : undefined,
     price: product.price,
     commerce: product.commerce,
     unit: product.unit,
@@ -284,7 +292,7 @@ async function getApiProducts(limit = 100) {
   return data?.map(mapWebsiteProductToSummary);
 }
 
-export async function getHomePageData() {
+export async function getHomePageData(locale: SiteLocale = "en-CA") {
   const apiProducts = await fetchWebsiteApi<WebsiteApiProduct[]>(
     `${API_ENDPOINTS.homeProducts}?limit=${HOME_PRODUCT_LIMIT}`,
     arrayOf(validateWebsiteApiProduct)
@@ -294,38 +302,59 @@ export async function getHomePageData() {
     arrayOf((value, path) => objectValue(value, path))
   );
 
+  const sourceProducts = apiProducts
+    ?.map(mapWebsiteProductToSummary)
+    .slice(0, HOME_PRODUCT_LIMIT) ?? getStaticHomeProducts();
+
+  const banner = locale === "fr-CA"
+    ? {
+        ...banners[0],
+        title: "Armoires de cuisine, meubles-lavabos et matériaux résidentiels offerts dans les zones de service participantes",
+        subtitle: "Magasinez en ligne des armoires, des meubles-lavabos, des moulures et des fournitures de rénovation prêtes à commander.",
+        href: "/fr/products",
+        image: {
+          ...banners[0].image,
+          alt: "Armoires de cuisine VanStro blanches et portes-échantillons en salle d’exposition"
+        }
+      }
+    : banners[0];
+
   return {
-    banner: banners[0],
-    products:
-      apiProducts
-        ?.map(mapWebsiteProductToSummary)
-        .slice(0, HOME_PRODUCT_LIMIT)
-        .map(projectProductCard) ??
-      getStaticHomeProducts().map(projectProductCard),
+    banner,
+    products: localizeProducts(sourceProducts, locale).map((product) =>
+      projectProductCard(product, locale)
+    ),
     articles,
     dealers: apiDealers ? mapWebsiteDealers(apiDealers) : dealers
   };
 }
 
-export async function getProductsForCatalog() {
-  return ((await getApiProducts()) ?? productsWithCommerce).map(projectCatalogProduct);
+export async function getProductsForCatalog(locale?: SiteLocale) {
+  const sourceProducts = (await getApiProducts()) ?? productsWithCommerce;
+  return localizeProducts(sourceProducts, locale).map(projectCatalogProduct);
 }
 
-export function getCartSuggestions() {
-  return productsWithCommerce.slice(0, 2).map(projectProductCard);
+export function getCartSuggestions(locale: SiteLocale = "en-CA") {
+  return localizeProducts(productsWithCommerce.slice(0, 2), locale).map((product) =>
+    projectProductCard(product, locale)
+  );
 }
 
-export async function getProductBySlug(slug: string) {
+export async function getProductBySlug(slug: string, locale?: SiteLocale) {
   const apiProduct = await fetchWebsiteApi<WebsiteApiProduct>(
     API_ENDPOINTS.productDetail(slug),
     validateWebsiteApiProduct
   );
 
-  if (apiProduct) return withProductImageDimensions(mapWebsiteProductToDetail(apiProduct));
+  if (apiProduct) {
+    return withProductImageDimensions(localizeProduct(mapWebsiteProductToDetail(apiProduct), locale));
+  }
 
   return withProductImageDimensions(
-    productDetails.find((product) => product.slug === slug || product.id === slug) ??
-    productDetails[0]
+    localizeProduct(
+      productDetails.find((product) => product.slug === slug || product.id === slug) ?? productDetails[0],
+      locale
+    )
   );
 }
 

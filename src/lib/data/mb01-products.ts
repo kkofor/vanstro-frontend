@@ -23043,7 +23043,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "384",
           "Option name": "VS24-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -23105,7 +23107,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "384",
           "Option name": "VS24-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -23163,7 +23167,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "384",
           "Option name": "VS24-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -23229,7 +23235,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "384",
           "Option name": "VS24-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -23372,7 +23380,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "404",
           "Option name": "VS27-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -23434,7 +23444,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "404",
           "Option name": "VS27-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -23500,7 +23512,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "404",
           "Option name": "VS27-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -23558,7 +23572,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "404",
           "Option name": "VS27-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       }
     ],
     "dealerStock": {
@@ -23701,7 +23717,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "405",
           "Option name": "VS30-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey with top",
@@ -23763,7 +23781,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "405",
           "Option name": "VS30-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -23821,7 +23841,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "405",
           "Option name": "VS30-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "White cabinet only",
@@ -23883,7 +23905,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "405",
           "Option name": "VS30-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       }
     ],
     "dealerStock": {
@@ -24026,7 +24050,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "398",
           "Option name": "V3021STDR-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -24088,7 +24114,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "398",
           "Option name": "V3021STDR-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -24150,7 +24178,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "398",
           "Option name": "V3021STDR-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -24216,7 +24246,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "398",
           "Option name": "V3021STDR-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -24359,7 +24391,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "400",
           "Option name": "V3021STDL-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -24421,7 +24455,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "400",
           "Option name": "V3021STDL-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -24483,7 +24519,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "400",
           "Option name": "V3021STDL-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -24549,7 +24587,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "400",
           "Option name": "V3021STDL-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -24692,7 +24732,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "414",
           "Option name": "V3021TDR-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -24750,7 +24792,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "414",
           "Option name": "V3021TDR-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -24812,7 +24856,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "414",
           "Option name": "V3021TDR-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -24878,7 +24924,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "414",
           "Option name": "V3021TDR-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -25021,7 +25069,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "415",
           "Option name": "V3021TDL-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -25083,7 +25133,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "415",
           "Option name": "V3021TDL-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -25149,7 +25201,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "415",
           "Option name": "V3021TDL-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -25207,7 +25261,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "415",
           "Option name": "V3021TDL-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       }
     ],
     "dealerStock": {
@@ -25350,7 +25406,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "406",
           "Option name": "VS36-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -25408,7 +25466,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "406",
           "Option name": "VS36-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "White cabinet only",
@@ -25470,7 +25530,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "406",
           "Option name": "VS36-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -25532,7 +25594,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "406",
           "Option name": "VS36-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -25675,7 +25739,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "413",
           "Option name": "V3621TDR-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -25733,7 +25799,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "413",
           "Option name": "V3621TDR-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -25795,7 +25863,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "413",
           "Option name": "V3621TDR-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -25861,7 +25931,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "413",
           "Option name": "V3621TDR-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -26004,7 +26076,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "412",
           "Option name": "V3621TDL-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -26062,7 +26136,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "412",
           "Option name": "V3621TDL-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -26124,7 +26200,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "412",
           "Option name": "V3621TDL-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -26190,7 +26268,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "412",
           "Option name": "V3621TDL-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -26333,7 +26413,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "401",
           "Option name": "V4221-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -26395,7 +26477,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "401",
           "Option name": "V4221-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey cabinet only",
@@ -26461,7 +26545,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "401",
           "Option name": "V4221-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -26527,7 +26613,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "401",
           "Option name": "V4221-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -26670,7 +26758,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "402",
           "Option name": "V4821-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -26732,7 +26822,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "402",
           "Option name": "V4821-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       },
       {
         "name": "White cabinet only",
@@ -26794,7 +26886,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "402",
           "Option name": "V4821-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -26860,7 +26954,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "402",
           "Option name": "V4821-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       }
     ],
     "dealerStock": {
@@ -27003,7 +27099,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "403",
           "Option name": "V663522-PWMS-WH-TOP"
         },
-        "active": true
+        "active": true,
+        "colorName": "White",
+        "configuration": "with-top"
       },
       {
         "name": "White cabinet only",
@@ -27065,7 +27163,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "403",
           "Option name": "V663522-PWMS-WH"
         },
-        "active": false
+        "active": false,
+        "colorName": "White",
+        "configuration": "cabinet-only"
       },
       {
         "name": "Light Grey with top",
@@ -27131,7 +27231,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "403",
           "Option name": "V663522-PWMS-LG-TOP"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "with-top"
       },
       {
         "name": "Light Grey cabinet only",
@@ -27197,7 +27299,9 @@ const localizedProducts: ProductSummary[] = [
           "Source product ID": "403",
           "Option name": "V663522-PWMS-LG"
         },
-        "active": false
+        "active": false,
+        "colorName": "Light Grey",
+        "configuration": "cabinet-only"
       }
     ],
     "dealerStock": {
@@ -27271,7 +27375,7 @@ const localizedProducts: ProductSummary[] = [
       "currency": "CAD"
     },
     "unit": "each",
-    "dimensions": "See product specifications",
+    "dimensions": "H3-½\" × W ½\" × 10ft",
     "finish": "Putty White",
     "colorName": "Putty White",
     "packageQuantity": {
@@ -27338,7 +27442,7 @@ const localizedProducts: ProductSummary[] = [
       "currency": "CAD"
     },
     "unit": "each",
-    "dimensions": "See product specifications",
+    "dimensions": "H4-½\" × W ½\" × 10ft",
     "finish": "Putty White",
     "colorName": "Putty White",
     "packageQuantity": {
@@ -27405,7 +27509,7 @@ const localizedProducts: ProductSummary[] = [
       "currency": "CAD"
     },
     "unit": "each",
-    "dimensions": "See product specifications",
+    "dimensions": "H2-½\" × W ½\" × 10ft",
     "finish": "Putty White",
     "colorName": "Putty White",
     "packageQuantity": {
@@ -27468,7 +27572,7 @@ const localizedProducts: ProductSummary[] = [
       "currency": "CAD"
     },
     "unit": "each",
-    "dimensions": "See product specifications",
+    "dimensions": "H4-9⁄16\" × W 11⁄16\" × 7ft",
     "finish": "White finish",
     "dealerStock": {
       "winnipeg": 0

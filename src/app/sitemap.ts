@@ -1,36 +1,44 @@
 import type { MetadataRoute } from "next";
 import { products } from "@/lib/data/mock-data";
+import { STATIC_LOCALE_ROUTE_PAIRS } from "@/lib/i18n/routes";
 import { getSiteBaseUrl, publicUrl } from "@/lib/seo/site";
 
 export const dynamic = "force-static";
 
-const staticRoutes = [
-  "/",
-  "/about",
-  "/articles",
-  "/careers",
-  "/contact",
-  "/dealer-program",
-  "/dealer-services-and-responsibility",
-  "/dealers/apply",
-  "/dealers/map",
-  "/legal-disclaimer",
-  "/privacy",
-  "/products",
-  "/return-policy",
-  "/terms-and-conditions"
-];
+type IndexableLocalePair = Readonly<{ en: string; fr: string }>;
+
+function sitemapEntry(path: string, pair: IndexableLocalePair): MetadataRoute.Sitemap[number] | null {
+  const url = publicUrl(path);
+  const en = publicUrl(pair.en);
+  const fr = publicUrl(pair.fr);
+  if (!url || !en || !fr) return null;
+
+  return {
+    url,
+    changeFrequency: "weekly",
+    alternates: {
+      languages: {
+        "en-CA": en,
+        "fr-CA": fr,
+        "x-default": en
+      }
+    }
+  };
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   if (!getSiteBaseUrl()) return [];
 
-  const routes = [
-    ...staticRoutes,
-    ...products.map((product) => `/products/${product.slug}`)
-  ];
+  const staticPairs = STATIC_LOCALE_ROUTE_PAIRS.filter((pair) => pair.indexable);
+  const productPairs = products.map(({ slug }) => ({
+    en: `/products/${slug}`,
+    fr: `/fr/products/${slug}`
+  }));
 
-  return routes.flatMap((route) => {
-    const url = publicUrl(route);
-    return url ? [{ url, changeFrequency: "weekly" as const }] : [];
-  });
+  return [...staticPairs, ...productPairs].flatMap((pair) =>
+    [pair.en, pair.fr].flatMap((path) => {
+      const entry = sitemapEntry(path, pair);
+      return entry ? [entry] : [];
+    })
+  );
 }

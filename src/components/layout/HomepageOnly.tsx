@@ -9,5 +9,7 @@ export function HomepageOnly({ children }: { children: React.ReactNode }) {
     ? pathname.slice(basePath.length) || "/"
     : pathname;
 
-  return routePath === "/" ? children : null;
+  const normalizedRoutePath = routePath.replace(/\/$/, "") || "/";
+
+  return normalizedRoutePath === "/" || normalizedRoutePath === "/fr" ? children : null;
 }

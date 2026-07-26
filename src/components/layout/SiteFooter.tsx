@@ -1,52 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { CookiePreferencesButton } from "@/components/layout/CookiePreferencesButton";
 import { HomepageOnly } from "@/components/layout/HomepageOnly";
-import { footerLegalLinks } from "@/content/legalPages";
+import { getLegalNavLinks } from "@/content/legalPages";
 import { assetPath } from "@/lib/assets";
-
-const footerGroups = [
-  {
-    title: "Shop",
-    links: [
-      { label: "All products", href: "/products" },
-      { label: "Kitchen cabinets", href: "/products?category=kitchen-cabinets" },
-      { label: "Bathroom vanities", href: "/products?category=bathroom-vanities" },
-      { label: "Baseboards & mouldings", href: "/products?category=baseboards" },
-      { label: "Doors & windows", href: "/products?category=doors-windows" }
-    ]
-  },
-  {
-    title: "Customer support",
-    links: [
-      { label: "Contact us", href: "/contact" },
-      { label: "Order tracking", href: "/orders/demo-order" },
-      { label: "Store pickup", href: "/#stores" },
-      { label: "Shipping & delivery", href: "/articles/pickup-and-delivery-options" },
-      { label: "Returns & exchanges", href: "/return-policy" }
-    ]
-  },
-  {
-    title: "Dealer program",
-    links: [
-      { label: "Dealer program", href: "/dealer-program" },
-      { label: "Become a dealer", href: "/dealers/apply" },
-      { label: "Partner login", href: "/account/login" },
-      { label: "Dealer benefits", href: "/dealer-program#fit" },
-      { label: "Trade resources", href: "/dealer-program#policies" }
-    ]
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About us", href: "/about" },
-      { label: "Dealer map", href: "/dealers/map" },
-      { label: "Resource Center", href: "/articles" },
-      { label: "Design Studio", href: "https://tools.vanstro.ca/" },
-      { label: "Privacy policy", href: "/privacy" }
-    ]
-  }
-];
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { localeHref } from "@/lib/i18n/routes";
 
 type SocialChannel = {
   label: string;
@@ -123,13 +84,17 @@ function SocialIcon({ icon }: { icon: SocialChannel["icon"] }) {
 }
 
 export function SiteFooter() {
+  const { copy, locale } = useLocale();
+  const footerCopy = copy.footer;
+  const footerGroups = footerCopy.groups;
+
   return (
     <footer className="site-footer">
       <div className="container">
         <HomepageOnly>
           <div className="footer-top">
             <div className="footer-brand">
-              <Link href="/" aria-label="VanStro home">
+              <Link href={localeHref("/", locale)} aria-label={locale === "fr-CA" ? "Accueil VanStro" : "VanStro home"}>
                 <img
                   src={assetPath("/assets/vanstro-logo.png")}
                   alt="VanStro Global Supply"
@@ -139,14 +104,11 @@ export function SiteFooter() {
                   decoding="async"
                 />
               </Link>
-              <p>
-                Canadian home materials supply platform for homeowners, contractors
-                and VanStro dealer partners.
-              </p>
-              <div className="footer-contact-list" aria-label="Contact information">
+              <p>{footerCopy.description}</p>
+              <div className="footer-contact-list" aria-label={footerCopy.contactLabel}>
                 <span>
                   <MapPin size={16} strokeWidth={2.2} />
-                  Service availability varies by postal code
+                  {footerCopy.serviceArea}
                 </span>
                 <span>
                   <Mail size={16} strokeWidth={2.2} />
@@ -154,10 +116,10 @@ export function SiteFooter() {
                 </span>
                 <span>
                   <Phone size={16} strokeWidth={2.2} />
-                  Local dealer fulfillment
+                  {footerCopy.localFulfillment}
                 </span>
               </div>
-              <div className="footer-social" aria-label="Social media channels">
+              <div className="footer-social" aria-label={footerCopy.socialLabel}>
                 <div className="social-links">
                   {socialChannels.map((channel) => (
                     <span role="img" aria-label={channel.label} key={channel.label}>
@@ -169,19 +131,15 @@ export function SiteFooter() {
             </div>
 
             <div className="footer-help">
-              <span>Need help with an order?</span>
-              <h2>Order online. Fulfillment stays local.</h2>
-              <p>
-                Your selected local dealer receives the order request and confirms
-                availability, pickup and delivery options for your postal code. Any
-                separately offered local services are agreed directly with that dealer.
-              </p>
+              <span>{footerCopy.helpKicker}</span>
+              <h2>{footerCopy.helpTitle}</h2>
+              <p>{footerCopy.helpBody}</p>
               <div className="footer-help-actions">
-                <Link className="button button-primary" href="/products">
-                  Shop products
+                <Link className="button button-primary" href={localeHref("/products", locale)}>
+                  {footerCopy.shopProducts}
                 </Link>
-                <Link className="button button-secondary" href="/contact">
-                  Contact support
+                <Link className="button button-secondary" href={localeHref("/contact", locale)}>
+                  {footerCopy.contactSupport}
                 </Link>
               </div>
             </div>
@@ -193,7 +151,7 @@ export function SiteFooter() {
             <nav className="footer-group" aria-label={group.title} key={group.title}>
               <h2>{group.title}</h2>
               {group.links.map((link) => (
-                <Link href={link.href} key={link.label}>
+                <Link href={localeHref(link.href, locale)} key={link.label}>
                   {link.label}
                 </Link>
               ))}
@@ -202,16 +160,16 @@ export function SiteFooter() {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2026 VanStro Global Supply Inc. All rights reserved. | Tous droits r&eacute;serv&eacute;s.</p>
+          <p>{footerCopy.copyright}</p>
           <div className="footer-legal">
-            {footerLegalLinks.slice(0, 3).map((link) => (
-              <Link className="footer-legal-link" href={link.href} key={link.href}>
+            {getLegalNavLinks(locale).filter((link) => link.href !== "/cookie-settings").slice(0, 3).map((link) => (
+              <Link className="footer-legal-link" href={localeHref(link.href, locale)} key={link.href}>
                 {link.label}
               </Link>
             ))}
             <CookiePreferencesButton />
-            {footerLegalLinks.slice(3).map((link) => (
-              <Link className="footer-legal-link" href={link.href} key={link.href}>
+            {getLegalNavLinks(locale).filter((link) => link.href !== "/cookie-settings").slice(3).map((link) => (
+              <Link className="footer-legal-link" href={localeHref(link.href, locale)} key={link.href}>
                 {link.label}
               </Link>
             ))}

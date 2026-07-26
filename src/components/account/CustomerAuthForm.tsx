@@ -4,9 +4,17 @@ import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { vanstroApi } from "@/lib/api/api-client";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { localizeApiError } from "@/lib/i18n/api-error-localization";
 
-export function CustomerAuthForm({ mode }: { mode: "login" | "register" }) {
+export function CustomerAuthForm({ mode, locale: explicitLocale }: { mode: "login" | "register"; locale?: SiteLocale }) {
   const router = useRouter();
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getCommerceCopy(locale);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const isRegister = mode === "register";
@@ -30,10 +38,12 @@ export function CustomerAuthForm({ mode }: { mode: "login" | "register" }) {
           password: String(form.get("password") ?? "")
         });
       }
-      router.push("/products");
+      router.push(localeHref("/favorites", locale));
       router.refresh();
-    } catch {
-      setError("We could not sign you in. Please check your details and try again.");
+    } catch (error) {
+      setError(locale === "fr-CA"
+        ? localizeApiError(error, locale)
+        : isRegister ? copy.auth.registrationError : copy.auth.error);
       setSubmitting(false);
     }
   }
@@ -41,14 +51,26 @@ export function CustomerAuthForm({ mode }: { mode: "login" | "register" }) {
   return (
     <form className="form-panel form-grid two" onSubmit={submit}>
       {isRegister ? <>
-        <div className="field"><label htmlFor="firstName">First name</label><input id="firstName" name="firstName" autoComplete="given-name" required /></div>
-        <div className="field"><label htmlFor="lastName">Last name</label><input id="lastName" name="lastName" autoComplete="family-name" required /></div>
+        <div className="field"><label htmlFor="firstName">{copy.common.firstName}</label><input id="firstName" name="firstName" autoComplete="given-name" required /></div>
+        <div className="field"><label htmlFor="lastName">{copy.common.lastName}</label><input id="lastName" name="lastName" autoComplete="family-name" required /></div>
       </> : null}
-      <div className="field"><label htmlFor="email">Email</label><input id="email" name="email" type="email" autoComplete="email" required /></div>
-      <div className="field"><label htmlFor="password">Password</label><input id="password" name="password" type="password" autoComplete={isRegister ? "new-password" : "current-password"} required /></div>
-      <button className="button button-primary" type="submit" disabled={submitting}>{submitting ? "Please wait..." : isRegister ? "Create account" : "Sign in"}</button>
-      <Link className="section-link" href={isRegister ? "/account/login" : "/account/register"}>{isRegister ? "Already have an account? Sign in" : "Create an account"}</Link>
-      {error ? <p className="quantity-limit-note" aria-live="polite">{error}</p> : null}
+      <div className="field"><label htmlFor="email">{copy.common.email}</label><input id="email" name="email" type="email" autoComplete="email" required /></div>
+      <div className="field">
+        <label htmlFor="password">{copy.common.password}</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete={isRegister ? "new-password" : "current-password"}
+          minLength={isRegister ? 12 : undefined}
+          aria-describedby={isRegister ? "password-requirement" : undefined}
+          required
+        />
+        {isRegister ? <p id="password-requirement" className="field-help">{copy.auth.passwordRequirement}</p> : null}
+      </div>
+      <button className="button button-primary" type="submit" disabled={submitting}>{submitting ? copy.auth.wait : isRegister ? copy.auth.createAccount : copy.auth.signIn}</button>
+      <Link className="section-link" href={localeHref(isRegister ? "/account/login" : "/account/register", locale)}>{isRegister ? copy.auth.existingAccount : copy.auth.newAccount}</Link>
+      {error ? <p className="quantity-limit-note" role="alert">{error}</p> : null}
     </form>
   );
 }

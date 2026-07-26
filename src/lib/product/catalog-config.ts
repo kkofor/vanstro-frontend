@@ -24,8 +24,6 @@ export type CatalogCategoryOption = {
   shortLabel: string;
   description: string;
   matches: string[];
-  image?: string;
-  comingSoon?: boolean;
 };
 
 export type CatalogSortOption = {
@@ -81,14 +79,6 @@ export const CATALOG_CATEGORY_OPTIONS: CatalogCategoryOption[] = [
     shortLabel: "Trim",
     description: "Primed mouldings and profiles",
     matches: ["Baseboards & Mouldings"]
-  },
-  {
-    id: "doors-windows",
-    label: "Doors and windows",
-    shortLabel: "Doors",
-    description: "Interior and exterior openings",
-    matches: [],
-    comingSoon: true
   }
 ];
 
@@ -120,3 +110,66 @@ export const CATALOG_WIDTH_OPTIONS: CatalogWidthOption[] = [
   { id: "standard", label: "24 to 35 in", min: 24, max: 35.99 },
   { id: "wide", label: "36 in and wider", min: 36, max: Number.POSITIVE_INFINITY }
 ];
+
+export type CatalogLocale = "en-CA" | "fr-CA";
+
+const FR_CATEGORY_LABELS: Readonly<Record<string, Pick<CatalogCategoryOption, "label" | "shortLabel" | "description">>> = {
+  all: { label: "Tous les produits", shortLabel: "Tous", description: "Catalogue VanStro complet" },
+  "kitchen-cabinets": { label: "Armoires de cuisine", shortLabel: "Cuisine", description: "Armoires de base, murales et hautes" },
+  "bathroom-vanities": { label: "Meubles-lavabos", shortLabel: "Meubles-lavabos", description: "Meubles-lavabos et rangement de salle de bain" },
+  "handle-series": { label: "Collection de poignées", shortLabel: "Poignées", description: "Poignées et quincaillerie d’armoire" },
+  baseboards: { label: "Moulures et plinthes", shortLabel: "Moulures", description: "Moulures et profilés apprêtés" }
+};
+
+const FR_SUBCATEGORY_LABELS: Readonly<Record<string, string>> = {
+  "baseboard-casing": "Plinthes et cadrages",
+  "base-cabinet": "Armoire de base",
+  "three-drawer-base": "Armoire de base à 3 tiroirs",
+  "wall-cabinet": "Armoire murale",
+  "tall-cabinet": "Armoire haute",
+  "sink-base": "Armoire de base pour évier",
+  "lazy-susan-base": "Armoire de base avec plateau tournant",
+  "wall-cabinet-gd": "Armoire murale avec porte vitrée",
+  "diagonal-corner-wall": "Armoire murale d’angle diagonale",
+  "open-end-shelf": "Étagère d’extrémité ouverte",
+  "microwave-cabinet": "Armoire pour four à micro-ondes",
+  "oven-tall-cabinet": "Armoire haute pour four",
+  accessories: "Accessoires",
+  "bathroom-vanities": "Meubles-lavabos de salle de bain"
+};
+
+const FR_SORT_LABELS: Readonly<Record<CatalogSortOption["id"], string>> = {
+  featured: "Meilleure correspondance",
+  "price-asc": "Prix : croissant",
+  "price-desc": "Prix : décroissant"
+};
+
+const FR_WIDTH_LABELS: Readonly<Record<string, string>> = {
+  narrow: "Moins de 24 po",
+  standard: "De 24 à 35 po",
+  wide: "36 po et plus"
+};
+
+export function getCatalogCategoryOptions(locale: CatalogLocale = "en-CA"): CatalogCategoryOption[] {
+  return locale === "fr-CA"
+    ? CATALOG_CATEGORY_OPTIONS.map((option) => ({ ...option, ...FR_CATEGORY_LABELS[option.id] }))
+    : CATALOG_CATEGORY_OPTIONS;
+}
+
+export function getCatalogSubcategoryOptions(locale: CatalogLocale = "en-CA"): CatalogSubcategoryOption[] {
+  return locale === "fr-CA"
+    ? CATALOG_SUBCATEGORY_OPTIONS.map((option) => ({ ...option, label: FR_SUBCATEGORY_LABELS[option.id] ?? option.label }))
+    : CATALOG_SUBCATEGORY_OPTIONS;
+}
+
+export function getCatalogSortOptions(locale: CatalogLocale = "en-CA"): CatalogSortOption[] {
+  return locale === "fr-CA"
+    ? CATALOG_SORT_OPTIONS.map((option) => ({ ...option, label: FR_SORT_LABELS[option.id] }))
+    : CATALOG_SORT_OPTIONS;
+}
+
+export function getCatalogWidthOptions(locale: CatalogLocale = "en-CA"): CatalogWidthOption[] {
+  return locale === "fr-CA"
+    ? CATALOG_WIDTH_OPTIONS.map((option) => ({ ...option, label: FR_WIDTH_LABELS[option.id] ?? option.label }))
+    : CATALOG_WIDTH_OPTIONS;
+}

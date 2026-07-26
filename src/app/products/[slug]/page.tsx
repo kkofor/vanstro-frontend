@@ -9,6 +9,8 @@ import { buildPageMetadata } from "@/lib/seo/metadata";
 import { productSchema, serializeJsonLd } from "@/lib/seo/schema";
 import { dealers, products, productsWithCommerce } from "@/lib/data/mock-data";
 import { createProductDetailViewModel } from "@/lib/product/product-detail-view-model";
+import { localizeProduct, localizeProducts } from "@/lib/product/product-localization";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 type ProductPageProps = {
   params: Promise<{ slug: string }>;
@@ -35,16 +37,24 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   });
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-  const product = await getProductBySlug(slug);
-  const viewModel = createProductDetailViewModel(product, productsWithCommerce);
+export async function ProductPageContent({
+  slug,
+  locale = "en-CA"
+}: {
+  slug: string;
+  locale?: SiteLocale;
+}) {
+  const product = localizeProduct(await getProductBySlug(slug), locale);
+  const localizedCatalog = localizeProducts(productsWithCommerce, locale);
+  const viewModel = createProductDetailViewModel(product, localizedCatalog, locale);
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productSchema(product)) }}
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(productSchema(product, locale === "fr-CA" ? `/fr/products/${product.slug}` : undefined))
+        }}
       />
       <section className="page-panel pdp-page">
         <div className="container">
@@ -60,6 +70,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ProductImageGallery
                     images={product.images}
                     finishOptions={product.finishOptions}
+                    locale={locale}
                   />
                 </div>
               </div>
@@ -73,4 +84,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </section>
     </>
   );
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  return <ProductPageContent slug={slug} />;
 }

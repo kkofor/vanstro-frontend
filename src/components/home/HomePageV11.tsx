@@ -57,15 +57,6 @@ const categoryCards = [
     image: assetPath("/assets/original-site/img-b04.gif"),
     width: 1220,
     height: 292
-  },
-  {
-    title: "Doors and windows",
-    text: "Interior and exterior",
-    href: "/products?category=doors-windows",
-    image: assetPath("/assets/generated/category-doors-windows.webp"),
-    width: 1774,
-    height: 887,
-    comingSoon: true
   }
 ];
 
@@ -222,7 +213,6 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
                   loading="lazy"
                   decoding="async"
                 />
-                {category.comingSoon ? <span className="category-badge">Coming soon</span> : null}
                 <div className="category-copy">
                   <h3>{category.title}</h3>
                   <p>{category.text}</p>

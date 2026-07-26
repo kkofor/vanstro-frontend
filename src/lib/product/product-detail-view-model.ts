@@ -7,20 +7,28 @@ import type {
   ProductRatingSummary,
   ProductReview,
   ProductSummary
-} from "@/lib/api/api-contract";
+} from "../api/api-contract.ts";
 import {
   getCompareAtPrice,
   getEffectivePrice,
   getProductPricing,
   getPromotionBadges,
   getSavingsLabel
-} from "@/lib/commerce/product-commerce";
-import { formatProductSize } from "@/lib/product/product-display";
+} from "../commerce/product-commerce.ts";
+import { formatProductSize } from "./product-display.ts";
+import type { SiteLocale } from "../i18n/locale.ts";
+import { DEFAULT_LOCALE, FRENCH_LOCALE } from "../i18n/locale.ts";
+import {
+  createFrCaDefaultQuestions,
+  localizeProducts,
+  localizeSpecificationRows
+} from "./product-localization.ts";
 
 export type SpecificationRow = [label: string, value: string];
 export type PackageQuantityRow = [label: string, value: number];
 
 export type ProductDetailViewModel = {
+  locale: SiteLocale;
   product: ProductDetail;
   categoryFilter: string;
   brandName: string;
@@ -68,11 +76,48 @@ export function formatPackageQuantity(packageQuantity?: PackageQuantity): Packag
   ].filter(([, value]) => typeof value === "number") as PackageQuantityRow[];
 }
 
-export function buildSpecRows(specifications: Record<string, string>): SpecificationRow[] {
+const INTERNAL_SPECIFICATION_LABELS = new Set(["option name"]);
+
+const HIDDEN_SPECIFICATIONS_BY_SUBCATEGORY: Record<string, Set<string>> = {
+  "Open End Shelf": new Set(["door", "hardware"]),
+  "3-Drawer Base": new Set(["door", "hardware"]),
+  "Wall Cabinet": new Set(["hardware"]),
+  "Wall Cabinet (GD)": new Set(["hardware"]),
+  "Diagonal Corner Wall": new Set(["hardware"]),
+  "Microwave Cabinet": new Set(["hardware"])
+};
+
+export function getPublicSpecifications(product: Pick<ProductDetail, "specifications" | "subCategory">) {
+  const hiddenLabels = HIDDEN_SPECIFICATIONS_BY_SUBCATEGORY[product.subCategory ?? ""] ?? new Set<string>();
+
+  return Object.fromEntries(
+    Object.entries(product.specifications).filter(([label]) => {
+      const normalizedLabel = label.toLowerCase();
+      return !INTERNAL_SPECIFICATION_LABELS.has(normalizedLabel) && !hiddenLabels.has(normalizedLabel);
+    })
+  );
+}
+
+export function getPublicProductHighlights(product: Pick<ProductDetail, "productHighlights" | "subCategory">) {
+  const hiddenLabels = HIDDEN_SPECIFICATIONS_BY_SUBCATEGORY[product.subCategory ?? ""] ?? new Set<string>();
+
+  return (product.productHighlights ?? []).filter((highlight) => {
+    const label = highlight.split(":", 1)[0]?.trim().toLowerCase();
+    return label !== "dimensions" && !INTERNAL_SPECIFICATION_LABELS.has(label) && !hiddenLabels.has(label);
+  });
+}
+
+export function buildSpecRows(
+  specifications: Record<string, string>,
+  subCategory?: string
+): SpecificationRow[] {
+  const publicSpecifications = getPublicSpecifications({ specifications, subCategory });
   const preferredOrder = [
     "Brand",
     "Category",
+    "Source category",
     "SKU",
+    "Source product ID",
     "Item #",
     "Manufacturer Part #",
     "Dimensions",
@@ -81,6 +126,13 @@ export function buildSpecRows(specifications: Record<string, string>): Specifica
     "Depth",
     "Depth / Thickness",
     "Length",
+    "Center to Center",
+    "Center-to-Center",
+    "Hole Spacing",
+    "Overall Length",
+    "Projection",
+    "Bar Width",
+    "Bar Thickness",
     "Cabinet Type",
     "Product Type",
     "Material",
@@ -102,12 +154,12 @@ export function buildSpecRows(specifications: Record<string, string>): Specifica
   ];
   const consumedLabels = new Set<string>();
   const orderedRows = preferredOrder.flatMap((label) => {
-    const value = specifications[label];
+    const value = publicSpecifications[label];
     if (!value) return [];
     consumedLabels.add(label);
     return [[label, value] as SpecificationRow];
   });
-  const remainingRows = Object.entries(specifications).filter(([label]) => !consumedLabels.has(label)) as SpecificationRow[];
+  const remainingRows = Object.entries(publicSpecifications).filter(([label]) => !consumedLabels.has(label)) as SpecificationRow[];
 
   return [...orderedRows, ...remainingRows];
 }
@@ -195,7 +247,8 @@ function createHandleQuestions(product: ProductDetail, productName: string, mode
 }
 
 function createGeneralProductQuestions(product: ProductDetail, productName: string, modelNumber: string) {
-  const hardware = getSpecifiedValue(product, ["Hardware"]);
+  const publicSpecifications = getPublicSpecifications(product);
+  const hardware = publicSpecifications.Hardware;
   const hardwareDescription = hardware ? formatHardwareDescription(hardware) : undefined;
   const assembly = getSpecifiedValue(product, ["Assembly", "Assembly Required"]);
 
@@ -266,7 +319,8 @@ function selectCompleteProjectProducts(product: ProductDetail, allProducts: Prod
 
 export function createProductDetailViewModel(
   product: ProductDetail,
-  allProducts: ProductSummary[]
+  allProducts: ProductSummary[],
+  locale: SiteLocale = DEFAULT_LOCALE
 ): ProductDetailViewModel {
   const brandName = product.brand ?? "VanStro";
   const manufacturerPartNumber =
@@ -275,14 +329,23 @@ export function createProductDetailViewModel(
   const colorHex = product.colorHex ?? product.finishOptions?.find((option) => option.active)?.colorHex ?? "#f4f2ee";
   const documents = product.documents ?? [];
   const packageRows = formatPackageQuantity(product.packageQuantity);
-  const displayDimensions = formatProductSize(product.specifications.Dimensions ?? product.dimensions);
-  const specRows = buildSpecRows({
-    ...product.specifications,
-    Dimensions: displayDimensions
-  });
+  const displayDimensions = formatProductSize(product.specifications.Dimensions ?? product.dimensions, locale);
+  const specRows = buildSpecRows(
+    {
+      ...product.specifications,
+      Dimensions: displayDimensions
+    },
+    product.subCategory
+  );
+  const localizedSpecRows = localizeSpecificationRows(
+    specRows,
+    locale,
+    `${product.category} ${product.subCategory ?? ""}`
+  );
   const pricing = getProductPricing(product);
 
   return {
+    locale,
     product,
     categoryFilter: categoryToProductFilter(product.category),
     brandName,
@@ -292,14 +355,14 @@ export function createProductDetailViewModel(
     activeFinishName: product.finishOptions?.find((option) => option.active)?.name ?? colorName,
     documents,
     packageRows,
-    specRows,
-    featuredSpecRows: specRows.slice(0, 6),
-    technicalSpecRows: specRows.slice(6, 14),
+    specRows: localizedSpecRows,
+    featuredSpecRows: localizedSpecRows.slice(0, 6),
+    technicalSpecRows: localizedSpecRows.slice(6, 14),
     pricing,
     effectivePrice: getEffectivePrice(product),
     compareAtPrice: getCompareAtPrice(product),
     promotionBadges: getPromotionBadges(product),
-    savingsLabel: getSavingsLabel(product),
+    savingsLabel: getSavingsLabel(product, locale),
     productHighlights: product.productHighlights ?? [],
     reviewSummary: product.ratingSummary ?? {
       average: 0,
@@ -308,7 +371,7 @@ export function createProductDetailViewModel(
       writeReviewEnabled: true
     },
     reviews: product.reviews ?? [],
-    questions: product.questions ?? createDefaultQuestions(product),
-    completeProjectProducts: selectCompleteProjectProducts(product, allProducts)
+    questions: product.questions ?? (locale === FRENCH_LOCALE ? createFrCaDefaultQuestions(product) : createDefaultQuestions(product)),
+    completeProjectProducts: localizeProducts(selectCompleteProjectProducts(product, allProducts), locale)
   };
 }

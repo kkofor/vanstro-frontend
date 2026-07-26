@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { ChevronDown, Heart } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ChevronDown, Heart, SlidersHorizontal, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductSummary } from "@/lib/api/api-contract";
 import {
@@ -14,20 +14,26 @@ import {
 } from "@/lib/commerce/product-commerce";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { PageBreadcrumb } from "@/components/layout/PageBreadcrumb";
+import { HorizontalScrollRail } from "@/components/ui/HorizontalScrollRail";
 import {
   BATHROOM_VANITY_FEATURED_SKUS,
-  CATALOG_CATEGORY_OPTIONS,
   CATALOG_PAGE_SIZE,
-  CATALOG_SORT_OPTIONS,
-  CATALOG_SUBCATEGORY_OPTIONS,
-  CATALOG_WIDTH_OPTIONS,
-  CatalogCategoryOption
+  CatalogCategoryOption,
+  getCatalogCategoryOptions,
+  getCatalogSortOptions,
+  getCatalogSubcategoryOptions,
+  getCatalogWidthOptions
 } from "@/lib/product/catalog-config";
 import { formatProductSize } from "@/lib/product/product-display";
+import { formatUnitPrice } from "@/lib/i18n/display-format";
 import { resolveProductVariant } from "@/lib/product/product-variants";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { localizeProductTaxonomyLabel } from "@/lib/product/product-localization";
 
 type ProductsExplorerProps = {
   products: ProductSummary[];
+  locale: SiteLocale;
 };
 
 type FacetKey = "subCategory" | "width" | "finish" | "brand";
@@ -39,12 +45,28 @@ type FacetOption = {
   matches: (product: ProductSummary) => boolean;
 };
 
-const facetLabels: Record<FacetKey, string> = {
-  subCategory: "Product categories",
-  width: "Width",
-  finish: "Finish",
-  brand: "Brand"
-};
+const CATALOG_COPY = {
+  "en-CA": {
+    title: "Products", home: "Home", products: "products", items: "items",
+    categoryLabel: "Product categories", categoryHint: "Swipe or use the arrow buttons to view more categories.",
+    filters: "Filters", sort: "Sort", sortBy: "Sort by", sortProducts: "Sort products",
+    skip: "Skip to products", closeFilters: "Close product filters", clear: "Clear", clearFilters: "Clear filters",
+    view: "View", results: "product results", pages: "Product pages", next: "Next", sku: "SKU",
+    noResults: "No products found", noResultsHelp: "Try a different category, SKU, size, finish or fulfillment filter.",
+    viewAll: "View all products", clearSearch: "Clear search", favoriteAdd: "Save", favoriteRemove: "Remove",
+    facetLabels: { subCategory: "Product categories", width: "Width", finish: "Finish", brand: "Brand" }
+  },
+  "fr-CA": {
+    title: "Produits", home: "Accueil", products: "produits", items: "articles",
+    categoryLabel: "Catégories de produits", categoryHint: "Balayez ou utilisez les flèches pour voir plus de catégories.",
+    filters: "Filtres", sort: "Trier", sortBy: "Trier par", sortProducts: "Trier les produits",
+    skip: "Passer aux produits", closeFilters: "Fermer les filtres de produits", clear: "Effacer", clearFilters: "Effacer les filtres",
+    view: "Voir", results: "résultats de produits", pages: "Pages de produits", next: "Suivant", sku: "UGS",
+    noResults: "Aucun produit trouvé", noResultsHelp: "Essayez une autre catégorie, UGS, dimension, finition ou option de réception.",
+    viewAll: "Voir tous les produits", clearSearch: "Effacer la recherche", favoriteAdd: "Ajouter", favoriteRemove: "Retirer",
+    facetLabels: { subCategory: "Catégories de produits", width: "Largeur", finish: "Fini", brand: "Marque" }
+  }
+} as const;
 
 function normalize(value: string) {
   return value.trim().toLowerCase();
@@ -106,8 +128,8 @@ function getPrimaryWidth(product: ProductSummary) {
   return match ? Number(match[1]) : null;
 }
 
-function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOption[]> {
-  const subCategories = CATALOG_SUBCATEGORY_OPTIONS.map((option) => ({
+function makeFacetOptions(products: ProductSummary[], locale: SiteLocale): Record<FacetKey, FacetOption[]> {
+  const subCategories = getCatalogSubcategoryOptions(locale).map((option) => ({
     id: option.id,
     label: option.label,
     count: products.filter((product) =>
@@ -134,7 +156,7 @@ function makeFacetOptions(products: ProductSummary[]): Record<FacetKey, FacetOpt
 
   return {
     subCategory: subCategories,
-    width: CATALOG_WIDTH_OPTIONS.map((option) => ({
+    width: getCatalogWidthOptions(locale).map((option) => ({
       id: option.id,
       label: option.label,
       count: products.filter((product) => {
@@ -175,9 +197,11 @@ function getPaginationItems(currentPage: number, totalPages: number) {
 
 function CatalogProductCard({
   product,
+  locale,
   imagePriority = false
 }: {
   product: ProductSummary;
+  locale: SiteLocale;
   imagePriority?: boolean;
 }) {
   const { isFavorite, toggleFavorite } = useStorefront();
@@ -185,20 +209,35 @@ function CatalogProductCard({
   const effectivePrice = getEffectivePrice(product);
   const compareAtPrice = getCompareAtPrice(product);
   const primaryPromotion = getPrimaryPromotion(product);
-  const savingsLabel = getSavingsLabel(product);
-  const productHref = `/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`;
+  const savingsLabel = getSavingsLabel(product, locale);
+  const french = locale === "fr-CA";
+  const localizedSavingsLabel = savingsLabel;
+  const localizedPromotionLabel = french && primaryPromotion
+    ? primaryPromotion.label
+        .replace(/Special offer/gi, "Offre spéciale")
+        .replace(/Limited time/gi, "Durée limitée")
+        .replace(/Clearance/gi, "Liquidation")
+    : primaryPromotion?.label;
+  const copy = CATALOG_COPY[locale];
+  const productHref = localeHref(`/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`, locale);
 
   return (
     <article className="catalog-product-card">
-      <Link className="catalog-product-image" href={productHref} prefetch={false}>
-        {savingsLabel || primaryPromotion ? (
+      <Link
+        className="catalog-product-image"
+        href={productHref}
+        prefetch={false}
+        aria-hidden="true"
+        tabIndex={-1}
+      >
+        {localizedSavingsLabel || localizedPromotionLabel ? (
           <span className="catalog-promo-badge">
-            {savingsLabel ?? primaryPromotion?.label}
+            {localizedSavingsLabel || localizedPromotionLabel}
           </span>
         ) : null}
         <img
           src={product.images[0].url}
-          alt={product.images[0].alt}
+          alt=""
           width={product.images[0].width}
           height={product.images[0].height}
           loading={imagePriority ? "eager" : "lazy"}
@@ -208,27 +247,28 @@ function CatalogProductCard({
       </Link>
       <div className="catalog-product-body">
         <div className="catalog-card-topline">
-          <span>{product.category}</span>
+          <span>{localizeProductTaxonomyLabel(product.category, locale)}</span>
           <button
             className={saved ? "catalog-save saved" : "catalog-save"}
             type="button"
-            aria-label={saved ? `Remove ${product.name} from favorites` : `Save ${product.name}`}
+            aria-label={saved
+              ? `${copy.favoriteRemove} ${product.name} ${locale === "fr-CA" ? "des favoris" : "from favorites"}`
+              : `${copy.favoriteAdd} ${product.name}${locale === "fr-CA" ? " aux favoris" : ""}`}
             aria-pressed={saved}
             onClick={() => toggleFavorite(product)}
           >
             <Heart size={17} strokeWidth={2} fill={saved ? "currentColor" : "none"} />
           </button>
         </div>
-        <h3>
+        <h2>
           <Link href={productHref} prefetch={false}>{product.name}</Link>
-        </h3>
-        <p>SKU: {product.sku}</p>
-        <p className="catalog-key-spec">{formatProductSize(product.dimensions)}</p>
+        </h2>
+        <p>{copy.sku} : {product.sku}</p>
+        <p className="catalog-key-spec">{formatProductSize(product.dimensions, locale)}</p>
         <div className="catalog-card-footer">
           <div className="catalog-price">
-            {compareAtPrice ? <del>{formatMoney(compareAtPrice)}</del> : null}
-            <strong>{formatMoney(effectivePrice)}</strong>
-            <span>/ {product.unit}</span>
+            {compareAtPrice ? <del>{formatMoney(compareAtPrice, locale)}</del> : null}
+            <strong>{formatUnitPrice(effectivePrice, product.unit, locale)}</strong>
           </div>
         </div>
       </div>
@@ -236,7 +276,10 @@ function CatalogProductCard({
   );
 }
 
-export function ProductsExplorer({ products }: ProductsExplorerProps) {
+export function ProductsExplorer({ products, locale }: ProductsExplorerProps) {
+  const copy = CATALOG_COPY[locale];
+  const categoryOptions = getCatalogCategoryOptions(locale);
+  const sortOptions = getCatalogSortOptions(locale);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -244,14 +287,21 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
   const categoryParam = searchParams.get("category") ?? "all";
   const queryParam = searchParams.get("q") ?? "";
   const sortParam = searchParams.get("sort") ?? "featured";
+  const availableCategories = categoryOptions.filter(
+    (category) => productCount(products, category) > 0
+  );
   const activeCategory =
-    CATALOG_CATEGORY_OPTIONS.find((category) => category.id === categoryParam) ??
-    CATALOG_CATEGORY_OPTIONS[0];
-  const activeSort = CATALOG_SORT_OPTIONS.some((option) => option.id === sortParam)
+    availableCategories.find((category) => category.id === categoryParam) ??
+    availableCategories[0] ??
+    categoryOptions[0];
+  const activeSort = sortOptions.some((option) => option.id === sortParam)
     ? sortParam
     : "featured";
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const mobileFilterDialogRef = useRef<HTMLDivElement>(null);
+  const mobileFilterTriggerRef = useRef<HTMLButtonElement>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     categories: true,
     subCategory: true,
@@ -266,12 +316,54 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     brand: []
   });
 
+  useEffect(() => {
+    if (!mobileFiltersOpen) return;
+
+    const dialog = mobileFilterDialogRef.current;
+    const previouslyFocused = document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+    const focusableSelector =
+      'button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])';
+
+    dialog?.focus();
+    document.body.classList.add("catalog-filter-drawer-open");
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileFiltersOpen(false);
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.classList.remove("catalog-filter-drawer-open");
+      (previouslyFocused ?? mobileFilterTriggerRef.current)?.focus();
+    };
+  }, [mobileFiltersOpen]);
+
   const normalizedQuery = normalize(queryParam);
   const categoryProducts = useMemo(
     () => products.filter((product) => matchesCategory(product, activeCategory)),
     [activeCategory, products]
   );
-  const facetOptions = useMemo(() => makeFacetOptions(categoryProducts), [categoryProducts]);
+  const facetOptions = useMemo(() => makeFacetOptions(categoryProducts, locale), [categoryProducts, locale]);
 
   const filteredProducts = useMemo(() => {
     const nextProducts = categoryProducts
@@ -370,16 +462,91 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
     .slice(pageStart, pageStart + CATALOG_PAGE_SIZE)
     .map((product) => resolveExactQueryVariant(product, normalizedQuery));
   const paginationItems = getPaginationItems(activePage, totalPages);
+  const selectedFacetCount = Object.values(selectedFacets).reduce(
+    (total, values) => total + values.length,
+    0
+  );
+
+  function renderFilterControls(idPrefix: string) {
+    return (
+      <>
+        <div className="catalog-filter-section">
+          <button
+            type="button"
+            aria-expanded={openSections.categories}
+            aria-controls={`${idPrefix}-categories`}
+            onClick={() => toggleSection("categories")}
+          >
+            {copy.filters === "Filtres" ? "Catégories" : "Categories"}
+            <ChevronDown size={15} strokeWidth={2.3} />
+          </button>
+            <div className="catalog-filter-options" id={`${idPrefix}-categories`} hidden={!openSections.categories}>
+            {availableCategories.map((category) => (
+              <button
+                className={category.id === activeCategory.id ? "filter-link active" : "filter-link"}
+                type="button"
+                onClick={() => updateFilters({ category: category.id })}
+                key={category.id}
+              >
+                <span>{category.shortLabel}</span>
+                <em>{productCount(products, category)}</em>
+              </button>
+            ))}
+          </div>
+        </div>
+
+      {(Object.entries(facetOptions) as Array<[FacetKey, FacetOption[]]>).map(
+        ([facetKey, options]) => (
+          <div className="catalog-filter-section" key={facetKey}>
+            <button
+              type="button"
+              aria-expanded={openSections[facetKey]}
+              aria-controls={`${idPrefix}-${facetKey}`}
+              onClick={() => toggleSection(facetKey)}
+            >
+              {copy.facetLabels[facetKey]}
+              <ChevronDown size={15} strokeWidth={2.3} />
+            </button>
+            <div className="catalog-filter-options" id={`${idPrefix}-${facetKey}`} hidden={!openSections[facetKey]}>
+              {options
+                .filter((option) => option.count > 0)
+                .slice(0, facetKey === "subCategory" ? options.length : 6)
+                .map((option) => (
+                  <label className="catalog-checkbox" key={option.id}>
+                    <input
+                      type="checkbox"
+                      checked={selectedFacets[facetKey].includes(option.id)}
+                      onChange={() => toggleFacet(facetKey, option.id)}
+                    />
+                    <span>{option.label}</span>
+                    <em>{option.count}</em>
+                  </label>
+                ))}
+            </div>
+          </div>
+        )
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="catalog-shell">
-      <h1 className="visually-hidden">Products</h1>
+      <h1 className="visually-hidden">{copy.title}</h1>
       <div className="catalog-heading">
-        <PageBreadcrumb items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
-        <strong>{products.length} products</strong>
+        <PageBreadcrumb items={[{ label: copy.home, href: "/" }, { label: copy.title }]} />
+        <strong>{products.length} {copy.products}</strong>
       </div>
 
-      <div className="catalog-category-showcase" aria-label="Product categories">
-        {CATALOG_CATEGORY_OPTIONS.map((category) => {
+      <HorizontalScrollRail
+        className="catalog-category-showcase"
+        label={copy.categoryLabel}
+        hint={copy.categoryHint}
+        previousLabel={locale === "fr-CA" ? "Catégories de produits précédentes" : "Previous product categories"}
+        nextLabel={locale === "fr-CA" ? "Catégories de produits suivantes" : "Next product categories"}
+        activeKey={activeCategory.id}
+      >
+        {availableCategories.map((category) => {
           const count = productCount(products, category);
           const active = category.id === activeCategory.id;
           const image = getRepresentativeImage(products, category);
@@ -405,32 +572,103 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
               ) : null}
               <span>
                 <strong>{category.label}</strong>
-                <small>{category.comingSoon ? "Staging" : `${count} items`}</small>
+                <small>{count} {copy.items}</small>
               </span>
             </button>
           );
         })}
+      </HorizontalScrollRail>
+
+      <div className="catalog-mobile-controls">
+        <button
+          ref={mobileFilterTriggerRef}
+          className="catalog-mobile-filter-trigger"
+          type="button"
+          aria-haspopup="dialog"
+          aria-expanded={mobileFiltersOpen}
+          onClick={() => setMobileFiltersOpen(true)}
+        >
+          <SlidersHorizontal aria-hidden="true" size={18} strokeWidth={2.2} />
+          {copy.filters}{selectedFacetCount ? ` (${selectedFacetCount})` : ""}
+        </button>
+        <label className="catalog-mobile-sort" htmlFor="catalog-mobile-sort">
+          <span>{copy.sort}</span>
+          <select
+            id="catalog-mobile-sort"
+            value={activeSort}
+            aria-label={copy.sortProducts}
+            onChange={(event) => updateFilters({ sort: event.target.value })}
+          >
+            {sortOptions.map((option) => (
+              <option value={option.id} key={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown aria-hidden="true" size={15} strokeWidth={2.3} />
+        </label>
+        <a className="catalog-skip-results" href="#catalog-product-results">
+          {copy.skip}
+        </a>
       </div>
 
+      {mobileFiltersOpen ? (
+        <div className="catalog-filter-drawer" role="presentation">
+          <button
+            className="catalog-filter-backdrop"
+            type="button"
+            aria-label={copy.closeFilters}
+            onClick={() => setMobileFiltersOpen(false)}
+          />
+          <div
+            ref={mobileFilterDialogRef}
+            className="catalog-filter-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="catalog-mobile-filter-title"
+            tabIndex={-1}
+          >
+            <header className="catalog-filter-dialog-head">
+              <span>
+                <strong id="catalog-mobile-filter-title">{copy.filters}</strong>
+                <small>{filteredProducts.length} {copy.products}</small>
+              </span>
+              <button type="button" aria-label={copy.closeFilters} onClick={() => setMobileFiltersOpen(false)}>
+                <X aria-hidden="true" size={20} strokeWidth={2.2} />
+              </button>
+            </header>
+            <div className="catalog-filter-dialog-body">{renderFilterControls("catalog-mobile-filter")}</div>
+            <footer className="catalog-filter-dialog-actions">
+              <button className="button button-secondary" type="button" onClick={clearAllFacets}>
+                {copy.clearFilters}
+              </button>
+              <button className="button button-primary" type="button" onClick={() => setMobileFiltersOpen(false)}>
+                {copy.view} {filteredProducts.length} {copy.products}
+              </button>
+            </footer>
+          </div>
+        </div>
+      ) : null}
+
       <div className="catalog-layout">
-        <aside className="catalog-filter-panel" aria-label="Product filters" tabIndex={0}>
+        <aside className="catalog-filter-panel" aria-label={copy.filters}>
           <div className="catalog-filter-head">
-            <strong>Filters</strong>
+            <strong>{copy.filters}{selectedFacetCount ? ` (${selectedFacetCount})` : ""}</strong>
             <button type="button" onClick={clearAllFacets}>
-              Clear
+              {copy.clear}
             </button>
           </div>
 
           <div className="catalog-filter-sort">
-            <label htmlFor="catalog-sort">Sort by</label>
+            <label htmlFor="catalog-sort">{copy.sortBy}</label>
             <div>
               <select
                 id="catalog-sort"
                 value={activeSort}
-                aria-label="Sort products"
+                aria-label={copy.sortProducts}
                 onChange={(event) => updateFilters({ sort: event.target.value })}
               >
-                {CATALOG_SORT_OPTIONS.map((option) => (
+                {sortOptions.map((option) => (
                   <option value={option.id} key={option.id}>
                     {option.label}
                   </option>
@@ -440,82 +678,33 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
             </div>
           </div>
 
-          <div className="catalog-filter-section">
-            <button
-              type="button"
-              aria-expanded={openSections.categories}
-              aria-controls="catalog-filter-categories"
-              onClick={() => toggleSection("categories")}
-            >
-              Categories
-              <ChevronDown size={15} strokeWidth={2.3} />
-            </button>
-            <div className="catalog-filter-options" id="catalog-filter-categories" hidden={!openSections.categories}>
-              {CATALOG_CATEGORY_OPTIONS.filter((category) => !category.comingSoon).map((category) => (
-                <button
-                  className={category.id === activeCategory.id ? "filter-link active" : "filter-link"}
-                  type="button"
-                  onClick={() => updateFilters({ category: category.id })}
-                  key={category.id}
-                >
-                  <span>{category.shortLabel}</span>
-                  <em>{productCount(products, category)}</em>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {(Object.entries(facetOptions) as Array<[FacetKey, FacetOption[]]>).map(
-            ([facetKey, options]) => (
-              <div className="catalog-filter-section" key={facetKey}>
-                <button
-                  type="button"
-                  aria-expanded={openSections[facetKey]}
-                  aria-controls={`catalog-filter-${facetKey}`}
-                  onClick={() => toggleSection(facetKey)}
-                >
-                  {facetLabels[facetKey]}
-                  <ChevronDown size={15} strokeWidth={2.3} />
-                </button>
-                <div className="catalog-filter-options" id={`catalog-filter-${facetKey}`} hidden={!openSections[facetKey]}>
-                  {options
-                    .filter((option) => option.count > 0)
-                    .slice(0, facetKey === "subCategory" ? options.length : 6)
-                    .map((option) => (
-                      <label className="catalog-checkbox" key={option.id}>
-                        <input
-                          type="checkbox"
-                          checked={selectedFacets[facetKey].includes(option.id)}
-                          onChange={() => toggleFacet(facetKey, option.id)}
-                        />
-                        <span>{option.label}</span>
-                        <em>{option.count}</em>
-                      </label>
-                    ))}
-                </div>
-              </div>
-            )
-          )}
+          {renderFilterControls("catalog-filter")}
         </aside>
 
         <div
           className="catalog-results"
+          id="catalog-product-results"
           role="region"
-          aria-label="Product results"
+          aria-labelledby="catalog-product-results-title"
+          tabIndex={-1}
         >
+          <h2 className="visually-hidden" id="catalog-product-results-title">
+            {filteredProducts.length} {copy.results}
+          </h2>
           {filteredProducts.length ? (
             <>
               <div className="catalog-product-grid">
                 {visibleProducts.map((product, index) => (
                   <CatalogProductCard
                     product={product}
+                    locale={locale}
                     imagePriority={activePage === 1 && index < 4}
                     key={product.id}
                   />
                 ))}
               </div>
               {totalPages > 1 ? (
-                <nav className="catalog-pagination" aria-label="Product pages">
+                <nav className="catalog-pagination" aria-label={copy.pages}>
                   {paginationItems.map((item) =>
                     typeof item === "number" ? (
                       <button
@@ -528,7 +717,7 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                         {item}
                       </button>
                     ) : (
-                      <span key={item}>...</span>
+                      <span key={item}>{locale === "fr-CA" ? "…" : "..."}</span>
                     )
                   )}
                   <button
@@ -536,23 +725,15 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                     disabled={activePage === totalPages}
                     onClick={() => setCurrentPage((page) => Math.min(page + 1, totalPages))}
                   >
-                    Next
+                    {copy.next}
                   </button>
                 </nav>
               ) : null}
             </>
           ) : (
             <div className="empty-panel catalog-empty">
-              <h2>
-                {activeCategory.comingSoon
-                  ? `${activeCategory.label} is being staged`
-                  : "No products found"}
-              </h2>
-              <p>
-                {activeCategory.comingSoon
-                  ? "This category is already wired from the homepage and ready for backend catalog expansion."
-                  : "Try a different category, SKU, size, finish or fulfillment filter."}
-              </p>
+              <h2>{copy.noResults}</h2>
+              <p>{copy.noResultsHelp}</p>
               <div className="button-row">
                 <button
                   className="button button-primary"
@@ -562,14 +743,14 @@ export function ProductsExplorer({ products }: ProductsExplorerProps) {
                     updateFilters({ category: null, q: null, sort: null });
                   }}
                 >
-                  View all products
+                  {copy.viewAll}
                 </button>
                 <button
                   className="button button-secondary"
                   type="button"
                   onClick={() => updateFilters({ q: null })}
                 >
-                  Clear search
+                  {copy.clearSearch}
                 </button>
               </div>
             </div>

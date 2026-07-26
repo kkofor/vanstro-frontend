@@ -30,8 +30,8 @@ export function organizationSchema() {
   };
 }
 
-export function productSchema(product: ProductDetail) {
-  const productUrl = publicUrl(`/products/${product.slug}`);
+export function productSchema(product: ProductDetail, path = `/products/${product.slug}`) {
+  const productUrl = publicUrl(path);
   const availability = availabilityUrl(product);
   const options = product.finishOptions?.length ? product.finishOptions : [];
   const variesBy = ["https://schema.org/color"];

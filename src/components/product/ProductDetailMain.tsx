@@ -21,28 +21,43 @@ import { formatProductSize } from "@/lib/product/product-display";
 import {
   buildSpecRows,
   createDefaultQuestions,
+  getPublicProductHighlights,
   type ProductDetailViewModel
 } from "@/lib/product/product-detail-view-model";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
 import { resolveProductVariant } from "@/lib/product/product-variants";
+import {
+  createFrCaDefaultQuestions,
+  localizeDocumentType,
+  localizePackageQuantityLabel,
+  localizeSpecificationRows
+} from "@/lib/product/product-localization";
+import { localeHref } from "@/lib/i18n/routes";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { formatUnitPrice } from "@/lib/i18n/display-format";
 
 type ProductDetailMainProps = {
   viewModel: ProductDetailViewModel;
 };
 
-function formatDocumentType(type: string) {
-  return type.charAt(0).toUpperCase() + type.slice(1);
-}
-
-function ProductProjectCard({ product }: { product: ProductSummary }) {
+function ProductProjectCard({ product, locale }: { product: ProductSummary; locale: SiteLocale }) {
+  const french = locale === "fr-CA";
+  const productHref = localeHref(`/products/${product.slug}?sku=${encodeURIComponent(product.sku)}`, locale);
   const compareAtPrice = getCompareAtPrice(product);
   const effectivePrice = getEffectivePrice(product);
-  const savingsLabel = getSavingsLabel(product);
+  const savingsLabel = getSavingsLabel(product, locale);
   const primaryPromotion = getPromotionBadges(product)[0];
+  const localizedSavingsLabel = savingsLabel;
+  const localizedPromotionLabel = french && primaryPromotion
+    ? primaryPromotion.label
+        .replace(/Special offer/gi, "Offre spéciale")
+        .replace(/Limited time/gi, "Durée limitée")
+        .replace(/Clearance/gi, "Liquidation")
+    : primaryPromotion?.label;
 
   return (
     <article className="pdp-project-card">
-      <Link className="pdp-project-image" href={`/products/${product.slug}`} prefetch={false}>
+      <Link className="pdp-project-image" href={productHref} prefetch={false}>
         <img
           src={product.images[0].url}
           alt={product.images[0].alt}
@@ -53,18 +68,17 @@ function ProductProjectCard({ product }: { product: ProductSummary }) {
         />
       </Link>
       <div className="pdp-project-copy">
-        <Link href={`/products/${product.slug}`} prefetch={false}>{product.name}</Link>
-        <small>{formatProductSize(product.dimensions)}</small>
-        {savingsLabel || primaryPromotion ? (
+        <Link href={productHref} prefetch={false}>{product.name}</Link>
+        <small>{formatProductSize(product.dimensions, locale)}</small>
+        {localizedSavingsLabel || localizedPromotionLabel ? (
           <span className="commerce-badge-row">
-            {savingsLabel ? <em className="commerce-badge strong">{savingsLabel}</em> : null}
-            {primaryPromotion ? <em className="commerce-badge">{primaryPromotion.label}</em> : null}
+            {localizedSavingsLabel ? <em className="commerce-badge strong">{localizedSavingsLabel}</em> : null}
+            {localizedPromotionLabel ? <em className="commerce-badge">{localizedPromotionLabel}</em> : null}
           </span>
         ) : null}
         <strong>
-          {compareAtPrice ? <span>{formatMoney(compareAtPrice)}</span> : null}
-          {formatMoney(effectivePrice)}
-          <small>/ {product.unit}</small>
+          {compareAtPrice ? <span>{formatMoney(compareAtPrice, locale)}</span> : null}
+          {formatUnitPrice(effectivePrice, product.unit, locale)}
         </strong>
       </div>
     </article>
@@ -82,30 +96,34 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
     questions: configuredQuestions,
     reviews,
     reviewSummary,
+    locale
   } = viewModel;
+  const french = locale === "fr-CA";
   const productVariant = useProductVariant();
   const selectedProduct = resolveProductVariant(product, productVariant?.selectedFinishName);
-  const specRows = buildSpecRows({
-    ...selectedProduct.specifications,
-    Dimensions: formatProductSize(selectedProduct.specifications.Dimensions ?? selectedProduct.dimensions)
-  });
+  const specRows = localizeSpecificationRows(buildSpecRows(
+    {
+      ...selectedProduct.specifications,
+      Dimensions: formatProductSize(selectedProduct.specifications.Dimensions ?? selectedProduct.dimensions, locale)
+    },
+    selectedProduct.subCategory
+  ), locale, `${selectedProduct.category} ${selectedProduct.subCategory ?? ""}`);
   const featuredSpecRows = specRows.slice(0, 6);
   const technicalSpecRows = specRows.slice(6, 14);
-  const productHighlights = selectedProduct.productHighlights ?? [];
+  const productHighlights = getPublicProductHighlights(selectedProduct);
   const colorName = selectedProduct.colorName ?? selectedProduct.finish ?? "Standard finish";
   const colorHex = selectedProduct.colorHex ?? "#f4f2ee";
   const questions = product.questions?.length
     ? configuredQuestions
-    : createDefaultQuestions(selectedProduct);
+    : french ? createFrCaDefaultQuestions(selectedProduct) : createDefaultQuestions(selectedProduct);
 
   return (
     <div className="pdp-detail-main">
       <section className="pdp-detail-section" id="overview" aria-labelledby="pdp-overview-title">
         <div className="pdp-section-heading">
-          <h2 id="pdp-overview-title">Product overview</h2>
-          <span>{brandName} product details</span>
+          <h2 id="pdp-overview-title">{french ? "Aperçu du produit" : "Product overview"}</h2>
+          <span>{french ? `Détails du produit ${brandName}` : `${brandName} product details`}</span>
         </div>
-        <p>{selectedProduct.description}</p>
         <ul className="pdp-overview-list">
           {productHighlights.map((highlight) => (
             <li key={highlight}>
@@ -119,23 +137,23 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
             <Ruler size={18} strokeWidth={2.3} />
             <span>
               <strong>Dimensions</strong>
-              <small>{formatProductSize(selectedProduct.dimensions)}</small>
+              <small>{formatProductSize(selectedProduct.dimensions, locale)}</small>
             </span>
           </div>
           <div>
             <span className="pdp-color-dot" style={{ backgroundColor: colorHex }} />
             <span>
-              <strong>Color / Finish</strong>
+              <strong>{french ? "Couleur / fini" : "Color / Finish"}</strong>
               <small>{colorName}</small>
             </span>
           </div>
           <div>
             <PackageCheck size={18} strokeWidth={2.3} />
             <span>
-              <strong>Package Quantity</strong>
+              <strong>{french ? "Quantité par emballage" : "Package Quantity"}</strong>
               <small>
                 {selectedProduct.packageQuantity?.displayLabel ??
-                  packageRows.map(([label, value]) => `${label} ${value}`).join(" / ")}
+                  packageRows.map(([label, value]) => `${localizePackageQuantityLabel(label, locale)} ${value}`).join(" / ")}
               </small>
             </span>
           </div>
@@ -144,10 +162,10 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
 
       <section className="pdp-detail-section" id="specifications" aria-labelledby="pdp-specifications-title">
         <div className="pdp-section-heading">
-          <h2 id="pdp-specifications-title">Specifications</h2>
-          <span>{specRows.length} fields</span>
+          <h2 id="pdp-specifications-title">{french ? "Spécifications" : "Specifications"}</h2>
+          <span>{specRows.length} {french ? "champs" : "fields"}</span>
         </div>
-        <dl className="pdp-spec-summary-grid" aria-label="Key specifications">
+        <dl className="pdp-spec-summary-grid" aria-label={french ? "Spécifications principales" : "Key specifications"}>
           {featuredSpecRows.map(([label, value]) => (
             <div key={label}>
               <dt>{label}</dt>
@@ -155,7 +173,7 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
             </div>
           ))}
         </dl>
-        <dl className="pdp-spec-table pdp-spec-table-compact" aria-label="Technical specifications">
+        <dl className="pdp-spec-table pdp-spec-table-compact" aria-label={french ? "Spécifications techniques" : "Technical specifications"}>
           {technicalSpecRows.map(([label, value]) => (
             <div key={label}>
               <dt>{label}</dt>
@@ -165,38 +183,44 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
         </dl>
         {specRows.length > featuredSpecRows.length + technicalSpecRows.length ? (
           <p className="pdp-section-note">
-            Additional technical fields are available in the specification sheet.
+            {french
+              ? "D’autres champs techniques sont disponibles dans la fiche de spécifications."
+              : "Additional technical fields are available in the specification sheet."}
           </p>
         ) : null}
       </section>
 
       <section className="pdp-detail-section pdp-documents" id="documents" aria-labelledby="pdp-documents-title">
         <div className="pdp-section-heading">
-          <h2 id="pdp-documents-title">Manuals and Documents</h2>
-          <span>{documents.length || "No"} files</span>
+          <h2 id="pdp-documents-title">{french ? "Manuels et documents" : "Manuals and Documents"}</h2>
+          <span>{documents.length || (french ? "Aucun" : "No")} {french ? "fichiers" : "files"}</span>
         </div>
         {documents.length ? (
           <div className="pdp-document-list">
             {documents.map((document) => (
-              <Link className="pdp-document-card" href={document.href} key={document.label}>
+              <Link className="pdp-document-card" href={localeHref(document.href, locale)} key={document.label}>
                 <FileText size={18} strokeWidth={2.2} />
                 <span>
                   <strong>{document.label}</strong>
-                  <small>{formatDocumentType(document.type)}</small>
+                  <small>{localizeDocumentType(document.type, locale)}</small>
                 </span>
                 <ArrowUpRight size={17} strokeWidth={2.2} />
               </Link>
             ))}
           </div>
         ) : (
-          <p className="pdp-empty-copy">No product documents have been uploaded for this item yet.</p>
+          <p className="pdp-empty-copy">
+            {french
+              ? "Aucun document de produit n’a encore été téléversé pour cet article."
+              : "No product documents have been uploaded for this item yet."}
+          </p>
         )}
       </section>
 
       <section className="pdp-detail-section" id="qa" aria-labelledby="pdp-qa-title">
         <div className="pdp-section-heading">
-          <h2 id="pdp-qa-title">Questions and Answers</h2>
-          <span>{questions.length} answered</span>
+          <h2 id="pdp-qa-title">{french ? "Questions et réponses" : "Questions and Answers"}</h2>
+          <span>{questions.length} {french ? "réponses" : "answered"}</span>
         </div>
         <div className="pdp-accordion-list">
           {questions.map((item) => (
@@ -212,22 +236,25 @@ export function ProductDetailMain({ viewModel }: ProductDetailMainProps) {
         product={product}
         reviews={reviews}
         reviewSummary={reviewSummary}
+        locale={locale}
       />
 
       <section className="pdp-detail-section" id="complete-project" aria-labelledby="pdp-project-title">
         <div className="pdp-section-heading">
-          <h2 id="pdp-project-title">Complete the project</h2>
-          <Link className="section-link" href={`/products?category=${categoryFilter}`}>
-            View related
+          <h2 id="pdp-project-title">{french ? "Complétez votre projet" : "Complete the project"}</h2>
+          <Link className="section-link" href={localeHref(`/products?category=${categoryFilter}`, locale)}>
+            {french ? "Voir les produits connexes" : "View related"}
             <ArrowUpRight size={16} strokeWidth={2.2} />
           </Link>
         </div>
         <p className="pdp-section-note">
-          Frequently paired items and nearby project pieces for the same order.
+          {french
+            ? "Articles souvent jumelés et éléments complémentaires pour une même commande."
+            : "Frequently paired items and nearby project pieces for the same order."}
         </p>
         <div className="pdp-project-grid">
           {completeProjectProducts.map((projectProduct) => (
-            <ProductProjectCard product={projectProduct} key={projectProduct.id} />
+            <ProductProjectCard product={projectProduct} locale={locale} key={projectProduct.id} />
           ))}
         </div>
       </section>

@@ -3,17 +3,18 @@
 import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-import { getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { formatMoney, getEffectivePrice } from "@/lib/commerce/product-commerce";
 import { formatProductSize } from "@/lib/product/product-display";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
 
-function formatCad(amount: number) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD"
-  }).format(amount);
-}
 
-export function CartClient() {
+export function CartClient({ locale: explicitLocale }: { locale?: SiteLocale }) {
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getCommerceCopy(locale);
   const {
     cartItems,
     cartSubtotal,
@@ -36,20 +37,20 @@ export function CartClient() {
   }
 
   if (cartState.status === "loading") {
-    return <div className="empty-panel"><h2>Loading your cart</h2><p>Checking saved items and current pricing.</p></div>;
+    return <div className="empty-panel"><h2>{copy.cart.loadingTitle}</h2><p>{copy.cart.loadingBody}</p></div>;
   }
 
   if (cartState.status === "error" && !cartItems.length) {
-    return <div className="empty-panel"><h2>Your cart is unavailable</h2><p>{cartState.error}</p></div>;
+    return <div className="empty-panel"><h2>{copy.cart.unavailableTitle}</h2><p role="alert">{locale === "fr-CA" ? copy.storefront.requestError : cartState.error}</p></div>;
   }
 
   if (!cartItems.length) {
     return (
       <div className="empty-panel">
-        <h2>Your cart is empty</h2>
-        <p>Add stocked products to start a pickup or delivery order.</p>
-        <Link className="button button-primary" href="/products">
-          Shop Products
+        <h2>{copy.cart.emptyTitle}</h2>
+        <p>{copy.cart.emptyBody}</p>
+        <Link className="button button-primary" href={localeHref("/products", locale)}>
+          {copy.common.shopProducts}
         </Link>
       </div>
     );
@@ -71,15 +72,15 @@ export function CartClient() {
             <div>
               <h2 className="product-name">{item.product.name}</h2>
               <p className="product-meta">
-                {formatProductSize(item.product.dimensions)} - {selectedDealerName}
+                {formatProductSize(item.product.dimensions, locale)} - {selectedDealerName}
               </p>
-              <div className="quantity-stepper" aria-label={`Quantity for ${item.product.name}`}>
+              <div className="quantity-stepper" aria-label={copy.cart.quantityFor(item.product.name)}>
                 <button
                   type="button"
                   onClick={() =>
                     changeQuantity(item.product.id, item.quantity - 1)
                   }
-                  aria-label="Decrease quantity"
+                  aria-label={copy.cart.decrease}
                   disabled={cartMutationPending}
                 >
                   <Minus size={15} strokeWidth={2} />
@@ -90,7 +91,7 @@ export function CartClient() {
                   onClick={() =>
                     changeQuantity(item.product.id, item.quantity + 1)
                   }
-                  aria-label="Increase quantity"
+                  aria-label={copy.cart.increase}
                   disabled={cartMutationPending}
                 >
                   <Plus size={15} strokeWidth={2} />
@@ -98,12 +99,12 @@ export function CartClient() {
               </div>
             </div>
             <div className="cart-line-actions">
-              <strong>{formatCad(getEffectivePrice(item.product).amount * item.quantity)}</strong>
+              <strong>{formatMoney({ amount: getEffectivePrice(item.product).amount * item.quantity, currency: item.product.price.currency }, locale)}</strong>
               <button
                 className="icon-only"
                 type="button"
                 onClick={() => removeItem(item.product.id)}
-                aria-label={`Remove ${item.product.name}`}
+                aria-label={copy.cart.remove(item.product.name)}
                 disabled={cartMutationPending}
               >
                 <Trash2 size={18} strokeWidth={2} />
@@ -113,26 +114,26 @@ export function CartClient() {
         ))}
       </div>
       <aside className="summary-panel">
-        <h2>Order summary</h2>
+        <h2>{copy.cart.summary}</h2>
         <div className="spec-list">
           <div className="spec-row">
-            <strong>Serving store</strong>
+            <strong>{copy.cart.servingStore}</strong>
             <span>{selectedDealerName}</span>
           </div>
           <div className="spec-row">
-            <strong>Subtotal</strong>
-            <span>{formatCad(cartSubtotal)}</span>
+            <strong>{copy.common.subtotal}</strong>
+            <span>{formatMoney({ amount: cartSubtotal, currency: "CAD" }, locale)}</span>
           </div>
           <div className="spec-row">
-            <strong>Payment</strong>
-            <span>POS or cash</span>
+            <strong>{copy.cart.payment}</strong>
+            <span>{copy.cart.paymentValue}</span>
           </div>
         </div>
-        <Link className="button button-primary" href="/checkout">
-          Continue to checkout
+        <Link className="button button-primary" href={localeHref("/checkout", locale)}>
+          {copy.cart.checkout}
         </Link>
         {mutationState.status === "error" ? (
-          <p className="quantity-limit-note" aria-live="polite">{mutationState.error}</p>
+          <p className="quantity-limit-note" role="alert">{locale === "fr-CA" ? copy.storefront.requestError : mutationState.error}</p>
         ) : null}
       </aside>
     </div>

@@ -4,8 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { CookieSettingsClient } from "@/components/layout/CookieSettingsClient";
 import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 import { COOKIE_PREFERENCES_OPEN_EVENT } from "@/lib/privacy/cookie-preferences";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 
 export function CookiePreferenceDrawer() {
+  const { copy } = useLocale();
   const [open, setOpen] = useState(false);
   const backdropRef = useRef<HTMLDivElement | null>(null);
   const drawerRef = useRef<HTMLElement | null>(null);
@@ -69,7 +71,7 @@ export function CookiePreferenceDrawer() {
         className="cookie-preference-drawer"
         role="dialog"
         aria-modal="true"
-        aria-label="Cookie Preferences"
+        aria-label={copy.cookies.preferencesTitle}
         tabIndex={-1}
         onMouseDown={(event) => event.stopPropagation()}
       >

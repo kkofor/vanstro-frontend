@@ -6,17 +6,19 @@ import { useEffect, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import type { CheckoutSession } from "@/lib/api/api-contract";
 import { vanstroApi } from "@/lib/api/api-client";
-import { getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { formatMoney, getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { localizeApiError } from "@/lib/i18n/api-error-localization";
 
-function formatCad(amount: number) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD"
-  }).format(amount);
-}
 
-export function OrderDetailClient({ orderId }: { orderId: string }) {
+export function OrderDetailClient({ orderId, locale: explicitLocale }: { orderId: string; locale?: SiteLocale }) {
   const { getOrder, persistenceReady } = useStorefront();
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getCommerceCopy(locale);
   const [session, setSession] = useState<CheckoutSession>();
   const [sessionState, setSessionState] = useState<{
     status: "checking" | "success" | "error" | "local";
@@ -44,7 +46,7 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
         if (!active) return;
         setSessionState({
           status: "error",
-          error: error instanceof Error ? error.message : "Order status could not be loaded."
+          error: localizeApiError(error, locale, copy.order.unavailableTitle)
         });
       });
     return () => {
@@ -53,34 +55,36 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
   }, []);
 
   if (sessionState.status === "checking" || (sessionState.status === "local" && !persistenceReady)) {
-    return <div className="empty-panel"><h2>Loading order status</h2><p>Checking the latest payment session.</p></div>;
+    return <div className="empty-panel"><h2>{copy.order.loadingTitle}</h2><p>{copy.order.loadingBody}</p></div>;
   }
 
   if (sessionState.status === "error") {
-    return <div className="empty-panel"><h2>Order status is unavailable</h2><p>{sessionState.error}</p><Link className="button button-primary" href="/checkout">Return to checkout</Link></div>;
+    return <div className="empty-panel"><h2>{copy.order.unavailableTitle}</h2><p role="alert">{sessionState.error}</p><Link className="button button-primary" href={localeHref("/checkout", locale)}>{copy.order.returnToCheckout}</Link></div>;
   }
 
   if (sessionState.status === "success" && session) {
     return (
       <div className="two-column-page">
         <section className="summary-panel">
-          <h2>Payment session {session.id}</h2>
-          <p className="product-meta">Status: {session.status}</p>
+          <h2>{copy.order.session} {session.id}</h2>
+          <p className="product-meta">
+            {copy.order.status}: {copy.order.statusLabels[session.status as keyof typeof copy.order.statusLabels] ?? session.status}
+          </p>
           <div className="timeline">
             <div className="timeline-row">
               <CheckCircle2 size={22} strokeWidth={2.2} />
-              <span><strong>Inventory reserved</strong><small>Reservation expires {new Date(session.expiresAt).toLocaleString("en-CA")}.</small></span>
+              <span><strong>{copy.order.inventoryReserved}</strong><small>{copy.order.reservationExpires(new Date(session.expiresAt).toLocaleString(locale))}</small></span>
             </div>
             <div className="timeline-row">
               {session.status === "paid" ? <CheckCircle2 size={22} strokeWidth={2.2} /> : <Circle size={22} strokeWidth={2.2} />}
-              <span><strong>Payment confirmation</strong><small>{session.status === "paid" ? "Payment has been confirmed." : "Payment confirmation has not been received yet."}</small></span>
+              <span><strong>{copy.order.paymentConfirmation}</strong><small>{session.status === "paid" ? copy.order.paymentConfirmed : copy.order.paymentPending}</small></span>
             </div>
           </div>
         </section>
         <aside className="summary-panel">
-          <h2>Session total</h2>
-          <div className="spec-list"><div className="spec-row"><strong>Total</strong><span>{formatCad(session.total.amount)}</span></div></div>
-          <Link className="button button-secondary" href="/products">Continue shopping</Link>
+          <h2>{copy.order.sessionTotal}</h2>
+          <div className="spec-list"><div className="spec-row"><strong>{copy.common.total}</strong><span>{formatMoney(session.total, locale)}</span></div></div>
+          <Link className="button button-secondary" href={localeHref("/products", locale)}>{copy.common.continueShopping}</Link>
         </aside>
       </div>
     );
@@ -89,10 +93,10 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
   if (!order) {
     return (
       <div className="empty-panel">
-        <h2>Order not found</h2>
-        <p>No order or payment-session query was found for this static route.</p>
-        <Link className="button button-primary" href="/products">
-          Shop Products
+        <h2>{copy.order.notFoundTitle}</h2>
+        <p>{copy.order.notFoundBody}</p>
+        <Link className="button button-primary" href={localeHref("/products", locale)}>
+          {copy.common.shopProducts}
         </Link>
       </div>
     );
@@ -101,9 +105,9 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
   return (
     <div className="two-column-page">
       <section className="summary-panel">
-        <h2>Order {order.id}</h2>
+        <h2>{copy.order.order} {order.id}</h2>
         <p className="product-meta">
-          {order.dealerName} - {order.fulfillment} - {order.paymentMethod.toUpperCase()}
+          {order.dealerName} - {copy.order.fulfillment[order.fulfillment]} - {copy.order.paymentMethod[order.paymentMethod]}
         </p>
         <div className="timeline">
           {order.timeline.map((item) => (
@@ -123,25 +127,25 @@ export function OrderDetailClient({ orderId }: { orderId: string }) {
       </section>
 
       <aside className="summary-panel">
-        <h2>Items</h2>
+        <h2>{copy.order.items}</h2>
         <div className="mini-lines">
           {order.items.map((item) => (
             <div className="mini-line" key={item.product.id}>
               <span>{item.product.name}</span>
               <strong>
-                {item.quantity} x {formatCad(getEffectivePrice(item.product).amount)}
+                {item.quantity} {copy.order.unitSeparator} {formatMoney(getEffectivePrice(item.product), locale)}
               </strong>
             </div>
           ))}
         </div>
         <div className="spec-list">
           <div className="spec-row">
-            <strong>Total</strong>
-            <span>{formatCad(order.subtotal)}</span>
+            <strong>{copy.common.total}</strong>
+            <span>{formatMoney({ amount: order.subtotal, currency: "CAD" }, locale)}</span>
           </div>
         </div>
-        <Link className="button button-secondary" href="/products">
-          Continue shopping
+        <Link className="button button-secondary" href={localeHref("/products", locale)}>
+          {copy.common.continueShopping}
         </Link>
       </aside>
     </div>

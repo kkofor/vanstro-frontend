@@ -11,11 +11,13 @@ import {
   getInventoryStatusClass
 } from "@/lib/commerce/product-inventory";
 import { useModalFocus } from "@/lib/accessibility/useModalFocus";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 type ProductDealerSelectorProps = {
   dealers: Dealer[];
   product: ProductSummary;
   selectedDealer: Dealer;
+  locale?: SiteLocale;
 };
 
 type DealerGeo = {
@@ -47,8 +49,10 @@ function estimateDistanceKm(from: DealerGeo, to?: DealerGeo) {
 export function ProductDealerSelector({
   dealers,
   product,
-  selectedDealer
+  selectedDealer,
+  locale = "en-CA"
 }: ProductDealerSelectorProps) {
+  const french = locale === "fr-CA";
   const { setSelectedDealer } = useStorefront();
   const [open, setOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -69,7 +73,7 @@ export function ProductDealerSelector({
           distanceKm,
           inventory,
           inventoryClass: getInventoryStatusClass(inventory),
-          inventoryLabel: getInventoryLabel(inventory),
+          inventoryLabel: getInventoryLabel(inventory, locale),
           quantity
         };
       }),
@@ -77,7 +81,7 @@ export function ProductDealerSelector({
   );
   const selectedInventory = getInventoryLocation(product, selectedDealer.id);
   const selectedInventoryClass = getInventoryStatusClass(selectedInventory);
-  const selectedInventoryLabel = getInventoryLabel(selectedInventory);
+  const selectedInventoryLabel = getInventoryLabel(selectedInventory, locale);
 
   useModalFocus({
     active: open,
@@ -104,26 +108,26 @@ export function ProductDealerSelector({
         <span className="pdp-fulfillment-row pdp-fulfillment-card primary">
           <PackageCheck size={22} strokeWidth={2.2} />
           <span>
-            <strong data-dealer-pickup-label>Pick-Up</strong>
+            <strong data-dealer-pickup-label>{french ? "Ramassage" : "Pick-Up"}</strong>
             <small data-dealer-fulfillment-title aria-live="polite" aria-atomic="true">
               {selectedDealer.name}
             </small>
             <small className={selectedInventoryClass} data-dealer-inventory-label>
-              {selectedInventoryLabel} at selected local dealer
+              {french ? `${selectedInventoryLabel} chez le détaillant local sélectionné` : `${selectedInventoryLabel} at selected local dealer`}
             </small>
             <small data-dealer-address-label>{selectedDealer.address}</small>
           </span>
-          <em className="pdp-fulfillment-change" aria-label="Change dealer">
+          <em className="pdp-fulfillment-change" aria-label={french ? "Changer de détaillant" : "Change dealer"}>
             <ChevronDown size={14} strokeWidth={2.4} />
           </em>
         </span>
         <span className="pdp-fulfillment-row pdp-fulfillment-card">
           <Truck size={22} strokeWidth={2.2} />
           <span>
-            <strong>Delivery</strong>
-            <small>Your local dealer confirms timing after checkout.</small>
+            <strong>{french ? "Livraison" : "Delivery"}</strong>
+            <small>{french ? "Votre détaillant local confirme le délai après le passage à la caisse." : "Your local dealer confirms timing after checkout."}</small>
             <small data-dealer-city-label>
-              From {selectedDealer.city}, {selectedDealer.province} {selectedDealer.postalCode}
+              {french ? "Depuis" : "From"} {selectedDealer.city}, {selectedDealer.province} {selectedDealer.postalCode}
             </small>
           </span>
         </span>
@@ -140,18 +144,18 @@ export function ProductDealerSelector({
           <button
             className="pdp-dealer-backdrop"
             type="button"
-            aria-label="Close dealer selector"
+            aria-label={french ? "Fermer le sélecteur de détaillant" : "Close dealer selector"}
             onClick={closeSelector}
           />
           <section ref={sheetRef} className="pdp-dealer-sheet" tabIndex={-1}>
             <header className="pdp-dealer-sheet-head">
               <span>
-                <small>Local fulfillment</small>
-                <h3 id="pdp-dealer-modal-title">Choose a local dealer</h3>
+                <small>{french ? "Service local" : "Local fulfillment"}</small>
+                <h3 id="pdp-dealer-modal-title">{french ? "Choisir un détaillant local" : "Choose a local dealer"}</h3>
               </span>
               <button
                 type="button"
-                aria-label="Close dealer selector"
+                aria-label={french ? "Fermer le sélecteur de détaillant" : "Close dealer selector"}
                 data-dealer-close
                 onClick={closeSelector}
               >
@@ -159,7 +163,9 @@ export function ProductDealerSelector({
               </button>
             </header>
             <p className="pdp-dealer-distance-note">
-              Distances are estimated from your current browsing region. Choose a local dealer manually if the location looks incorrect.
+              {french
+                ? "Les distances sont estimées à partir de votre région de navigation. Choisissez manuellement un détaillant local si l’emplacement semble incorrect."
+                : "Distances are estimated from your current browsing region. Choose a local dealer manually if the location looks incorrect."}
             </p>
             <div className="pdp-dealer-list">
               {dealerChoices.map(({ dealer, distanceKm, inventory, inventoryClass, inventoryLabel, quantity }) => {
@@ -190,21 +196,23 @@ export function ProductDealerSelector({
                       <em className={inventoryClass}>{inventoryLabel}</em>
                       <small>
                         <Navigation size={13} strokeWidth={2.3} />
-                        {typeof distanceKm === "number" ? `~${distanceKm} km away` : "Distance pending"}
+                        {typeof distanceKm === "number"
+                          ? french ? `à environ ${distanceKm} km` : `~${distanceKm} km away`
+                          : french ? "Distance à confirmer" : "Distance pending"}
                       </small>
                     </span>
                     <span className="pdp-dealer-option-stock">
                       {inventory?.quantityKnown === false ? (
-                        <small>Confirmed at checkout</small>
+                        <small>{french ? "Confirmé au passage à la caisse" : "Confirmed at checkout"}</small>
                       ) : (
                         <>
                           <strong>{quantity}</strong>
-                          <small>stock</small>
+                          <small>{french ? "en stock" : "stock"}</small>
                         </>
                       )}
                     </span>
                     {selected ? (
-                      <span className="pdp-dealer-option-check" aria-label="Selected dealer">
+                      <span className="pdp-dealer-option-check" aria-label={french ? "Détaillant sélectionné" : "Selected dealer"}>
                         <CheckCircle2 size={18} strokeWidth={2.4} />
                       </span>
                     ) : null}

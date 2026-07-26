@@ -3,6 +3,8 @@ import Link from "next/link";
 import { DealerMapLocator } from "@/components/dealer/DealerMapLocator";
 import { SecondaryPageHero } from "@/components/layout/SecondaryPageHero";
 import { buildPageMetadata } from "@/lib/seo/metadata";
+import { localeHref } from "@/lib/i18n/routes";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Dealer map",
@@ -11,42 +13,51 @@ export const metadata: Metadata = buildPageMetadata({
   image: "/assets/generated/dealer-map-storefront-v1.webp"
 });
 
-export default function DealerMapPage() {
+export function DealerMapPageContent({ locale = "en-CA" }: { locale?: SiteLocale }) {
+  const french = locale === "fr-CA";
+
   return (
     <>
       <SecondaryPageHero
         breadcrumbs={[
-          { label: "Home", href: "/" },
-          { label: "Dealer program", href: "/dealer-program" },
-          { label: "Dealer map" }
+          { label: french ? "Accueil" : "Home", href: localeHref("/", locale) },
+          { label: french ? "Programme pour les détaillants" : "Dealer program", href: localeHref("/dealer-program", locale) },
+          { label: french ? "Carte des détaillants" : "Dealer map" }
         ]}
-        title="Dealer map"
+        title={french ? "Carte des détaillants" : "Dealer map"}
         image={{
           src: "/assets/generated/dealer-map-storefront-v1.webp",
-          alt: "Customer arriving at a participating independent VanStro dealer location"
+          alt: french
+            ? "Client arrivant chez un détaillant VanStro indépendant participant"
+            : "Customer arriving at a participating independent VanStro dealer location"
         }}
         actions={
           <>
             <a className="button button-primary" href="#dealer-map">
-              View map
+              {french ? "Voir la carte" : "View map"}
             </a>
-            <Link className="button button-secondary" href="/contact#dealer-contacts">
-              Contact local support
+            <Link className="button button-secondary" href={localeHref("/contact#dealer-contacts", locale)}>
+              {french ? "Joindre le soutien local" : "Contact local support"}
             </Link>
           </>
         }
       >
         <p>
-          Find a participating independent VanStro dealer for local product
-          support, pickup and order fulfillment.
+          {french
+            ? "Trouvez un détaillant VanStro indépendant participant pour obtenir du soutien sur les produits et organiser le ramassage ou la livraison de votre commande."
+            : "Find a participating independent VanStro dealer for local product support, pickup and order fulfillment."}
         </p>
       </SecondaryPageHero>
 
       <section className="page-panel dealer-map-panel" id="dealer-map">
         <div className="container">
-          <DealerMapLocator />
+          <DealerMapLocator locale={locale} />
         </div>
       </section>
     </>
   );
+}
+
+export default function DealerMapPage() {
+  return <DealerMapPageContent />;
 }

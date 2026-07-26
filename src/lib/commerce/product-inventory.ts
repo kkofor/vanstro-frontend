@@ -65,14 +65,15 @@ export function getTotalAvailable(product: ProductSummary) {
   return getProductInventory(product).totalAvailable;
 }
 
-export function getInventoryLabel(location?: ProductInventoryLocation) {
-  if (!location) return "Not available at selected dealer";
-  if (location.status === "backorder") return "Backorder available";
-  if (location.status === "unavailable") return "Unavailable";
-  if (location.quantityKnown === false) return "Available";
-  if (location.quantity <= 0) return "Out of stock";
-  if (location.quantity <= 3) return `${location.quantity} left`;
-  return `${location.quantity} available`;
+export function getInventoryLabel(location?: ProductInventoryLocation, locale: "en-CA" | "fr-CA" = "en-CA") {
+  const french = locale === "fr-CA";
+  if (!location) return french ? "Non disponible chez le détaillant sélectionné" : "Not available at selected dealer";
+  if (location.status === "backorder") return french ? "Disponible en commande différée" : "Backorder available";
+  if (location.status === "unavailable") return french ? "Non disponible" : "Unavailable";
+  if (location.quantityKnown === false) return french ? "Disponible" : "Available";
+  if (location.quantity <= 0) return french ? "Rupture de stock" : "Out of stock";
+  if (location.quantity <= 3) return french ? `${location.quantity} restant${location.quantity === 1 ? "" : "s"}` : `${location.quantity} left`;
+  return french ? `${location.quantity} disponibles` : `${location.quantity} available`;
 }
 
 export function getInventoryStatusClass(location?: ProductInventoryLocation) {

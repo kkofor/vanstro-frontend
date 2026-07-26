@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { MapPin, Search } from "lucide-react";
 import type { Map as LeafletMap, Marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { getSiteCopy, type SiteCopy } from "@/lib/i18n/site-copy";
 import {
   dealerMapLocations,
   type DealerMapLocation
@@ -39,23 +42,27 @@ function dealerAddress(dealer: DealerMapLocation) {
   return `${dealerStreetAddress(dealer)}, ${dealer.city}, ${dealer.province} ${dealer.postalCode}`;
 }
 
-function popupContent(dealer: DealerMapLocation) {
+function popupContent(dealer: DealerMapLocation, copy: SiteCopy["dealerMap"]) {
   const phoneHref = dealer.phone.replace(/[^\d+]/g, "");
 
   return `
     <div class="dealer-map-popup">
       <strong>${escapeHtml(dealerLabel(dealer))}</strong>
       <dl>
-        <div><dt>Contact:</dt><dd>${escapeHtml(dealer.contactName)}</dd></div>
-        <div><dt>Phone:</dt><dd><a href="tel:${phoneHref}">${escapeHtml(dealer.phone)}</a></dd></div>
-        <div><dt>Email:</dt><dd><a href="mailto:${escapeHtml(dealer.email)}">${escapeHtml(dealer.email)}</a></dd></div>
-        <div><dt>Address:</dt><dd>${escapeHtml(dealerAddress(dealer))}</dd></div>
+        <div><dt>${escapeHtml(copy.popup.contact)}:</dt><dd>${escapeHtml(dealer.contactName)}</dd></div>
+        <div><dt>${escapeHtml(copy.popup.phone)}:</dt><dd><a href="tel:${phoneHref}">${escapeHtml(dealer.phone)}</a></dd></div>
+        <div><dt>${escapeHtml(copy.popup.email)}:</dt><dd><a href="mailto:${escapeHtml(dealer.email)}">${escapeHtml(dealer.email)}</a></dd></div>
+        <div><dt>${escapeHtml(copy.popup.address)}:</dt><dd>${escapeHtml(dealerAddress(dealer))}</dd></div>
       </dl>
     </div>
   `;
 }
 
-export function DealerMapLocator() {
+export function DealerMapLocator({ locale: localeOverride }: { locale?: SiteLocale }) {
+  const { locale: contextLocale, copy: contextCopy } = useLocale();
+  const locale = localeOverride ?? contextLocale;
+  const copy = localeOverride ? getSiteCopy(locale) : contextCopy;
+  const mapCopy = copy.dealerMap;
   const mapElementRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
@@ -80,12 +87,16 @@ export function DealerMapLocator() {
           zoom: 4,
           minZoom: 3,
           scrollWheelZoom: false,
-          zoomControl: true
+          zoomControl: false
         });
+        L.control.zoom({
+          zoomInTitle: mapCopy.zoomIn,
+          zoomOutTitle: mapCopy.zoomOut
+        }).addTo(map);
         leafletRef.current = L;
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          attribution: mapCopy.attribution,
           maxZoom: 18
         }).addTo(map);
 
@@ -103,7 +114,7 @@ export function DealerMapLocator() {
               popupAnchor: [0, -38]
             })
           })
-            .bindPopup(popupContent(dealer), {
+            .bindPopup(popupContent(dealer, mapCopy), {
               className: "dealer-map-leaflet-popup",
               maxWidth: 300
             })
@@ -133,7 +144,7 @@ export function DealerMapLocator() {
       leafletRef.current = null;
       markersRef.current.clear();
     };
-  }, []);
+  }, [mapCopy]);
 
   useEffect(() => {
     const L = leafletRef.current;
@@ -191,20 +202,20 @@ export function DealerMapLocator() {
     <div className="dealer-map-locator">
       <div className="dealer-map-section-heading">
         <div>
-          <h2>Dealer locations</h2>
-          <p>Select a marker to view dealer contact details.</p>
+          <h2>{mapCopy.title}</h2>
+          <p>{mapCopy.description}</p>
         </div>
-        <span>{dealerMapLocations.length} dealer locations</span>
+        <span>{mapCopy.locationCount(dealerMapLocations.length)}</span>
       </div>
 
-      <div className="dealer-map-mobile-switch" aria-label="Dealer map view">
+      <div className="dealer-map-mobile-switch" aria-label={mapCopy.viewLabel}>
         <button
           aria-pressed={mobileView === "map"}
           className={mobileView === "map" ? "is-active" : undefined}
           onClick={() => setMobileView("map")}
           type="button"
         >
-          Map
+          {mapCopy.map}
         </button>
         <button
           aria-pressed={mobileView === "list"}
@@ -212,7 +223,7 @@ export function DealerMapLocator() {
           onClick={() => setMobileView("list")}
           type="button"
         >
-          List
+          {mapCopy.list}
         </button>
       </div>
 
@@ -225,19 +236,19 @@ export function DealerMapLocator() {
           {mapError ? (
             <div className="dealer-map-error" role="status">
               <MapPin aria-hidden="true" size={28} />
-              <strong>Map temporarily unavailable</strong>
-              <p>Use the dealer list to view locations and contact information.</p>
+              <strong>{mapCopy.unavailableTitle}</strong>
+              <p>{mapCopy.unavailableBody}</p>
             </div>
           ) : null}
           <div
-            aria-label="Interactive map showing participating VanStro dealer locations"
+            aria-label={mapCopy.mapLabel}
             className="dealer-map-canvas"
             ref={mapElementRef}
           />
         </div>
 
         <aside
-          aria-label="Dealer location list"
+          aria-label={mapCopy.listLabel}
           className={["dealer-map-list", mobileView === "map" ? "is-mobile-hidden" : ""]
             .filter(Boolean)
             .join(" ")}
@@ -245,10 +256,10 @@ export function DealerMapLocator() {
           <label className="dealer-map-search" htmlFor="dealer-map-search">
             <Search aria-hidden="true" size={19} />
             <input
-              aria-label="Search dealer locations"
+              aria-label={mapCopy.searchLabel}
               id="dealer-map-search"
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search by city, province, or postal code"
+              placeholder={mapCopy.searchPlaceholder}
               type="search"
               value={query}
             />
@@ -275,13 +286,13 @@ export function DealerMapLocator() {
                       <small>
                         {dealer.city}, {dealer.province}
                       </small>
-                      {selected ? <em>Show on map</em> : null}
+                      {selected ? <em>{mapCopy.showOnMap}</em> : null}
                     </span>
                   </button>
                 );
               })
             ) : (
-              <p className="dealer-map-empty">No dealer locations match your search.</p>
+              <p className="dealer-map-empty">{mapCopy.noResults}</p>
             )}
           </div>
         </aside>

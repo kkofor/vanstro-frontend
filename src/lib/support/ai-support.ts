@@ -1,3 +1,7 @@
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { localeHref } from "@/lib/i18n/routes";
+import { getSiteCopy } from "@/lib/i18n/site-copy";
+
 export type SupportChannel = "live" | "ai";
 
 export type AiSupportIntent =
@@ -28,32 +32,9 @@ export type AiSupportContext = {
   cartCount: number;
 };
 
-export const AI_SUPPORT_PROMPTS: Array<{
-  id: AiSupportIntent;
-  label: string;
-  prompt: string;
-}> = [
-  {
-    id: "product-fit",
-    label: "Find product",
-    prompt: "Help me find the right cabinet, vanity, trim or door product."
-  },
-  {
-    id: "dealer-fulfillment",
-    label: "Pickup / delivery",
-    prompt: "How does dealer pickup or delivery support work?"
-  },
-  {
-    id: "order-help",
-    label: "Order help",
-    prompt: "I need help with checkout, payment or tracking an order."
-  },
-  {
-    id: "dealer-program",
-    label: "Dealer program",
-    prompt: "I am a business buyer interested in joining the dealer program."
-  }
-];
+export function getAiSupportPrompts(locale: SiteLocale) {
+  return getSiteCopy(locale).supportWidget.prompts;
+}
 
 export function makeSupportMessage(
   role: SupportMessage["role"],
@@ -77,143 +58,109 @@ export function makeSupportMessage(
   };
 }
 
-export function createOpeningMessage(context: AiSupportContext) {
-  const pageHint = context.pathname.startsWith("/products/")
-    ? "I can help with this product, SKU, pickup, delivery and checkout questions."
-    : "I can help with product selection, dealer fulfillment, checkout and dealer program questions.";
+export function createOpeningMessage(context: AiSupportContext, locale: SiteLocale) {
+  const copy = getSiteCopy(locale).supportWidget;
+  const pathname = context.pathname.replace(/^\/fr(?=\/|$)/, "") || "/";
+  const pageHint = pathname.startsWith("/products/")
+    ? copy.openingProduct
+    : copy.openingGeneral;
 
   return makeSupportMessage(
     "assistant",
-    `Hi, I am VanStro's AI assistant. ${pageHint}`,
-    `${context.selectedDealerName} selected`
+    copy.greeting(pageHint),
+    copy.dealerSelected(context.selectedDealerName)
   );
 }
 
-export function resolveAiSupportReply(input: string, context: AiSupportContext) {
-  const text = input.toLowerCase();
+export function resolveAiSupportReply(
+  input: string,
+  context: AiSupportContext,
+  locale: SiteLocale
+) {
+  const copy = getSiteCopy(locale).supportWidget.replies;
+  const text = input.toLocaleLowerCase(locale);
   const asksForHuman =
     /\b(human|person|agent|representative|live|teammate|staff|support)\b/.test(text) ||
-    text.includes("\u4eba\u5de5") ||
-    text.includes("\u771f\u4eba") ||
-    text.includes("\u5ba2\u670d") ||
-    text.includes("\u8f6c\u4eba\u5de5");
+    /\b(humain|personne|agent|représentant|conseiller|équipe|soutien|aide)\b/.test(text) ||
+    text.includes("人工") ||
+    text.includes("真人") ||
+    text.includes("客服") ||
+    text.includes("转人工");
 
   if (asksForHuman) {
-    return makeSupportMessage(
-      "assistant",
-      "I can collect the key details first, then route this to a VanStro support teammate with the context included. Please share your order number, email, dealer location or product/SKU.",
-      "Human support available",
-      {
-        handoff: true,
-        actions: [
-          {
-            label: "Contact page",
-            href: "/contact",
-            description: "Use the full support form if you prefer email follow-up."
-          }
-        ]
-      }
-    );
-  }
-
-  if (/\b(dealer|pickup|delivery|deliver|fulfill|fulfillment|store|postal|location)\b/.test(text)) {
-    return makeSupportMessage(
-      "assistant",
-      `You selected ${context.selectedDealerName} as your local dealer. After checkout, the local dealer confirms availability and the pickup or delivery options for your location. Separately offered local services are subject to a separate agreement with the local dealer.`,
-      "Local dealer fulfillment",
-      {
-        actions: [
-          {
-            label: "Delivery article",
-            href: "/articles/pickup-and-delivery-options",
-            description: "Review how dealer handoff works after checkout.",
-            tone: "primary"
-          }
-        ]
-      }
-    );
-  }
-
-  if (/\b(order|track|tracking|payment|checkout|paid|cart|invoice)\b/.test(text)) {
-    const cartNote =
-      context.cartCount > 0
-        ? `I see ${context.cartCount} item${context.cartCount === 1 ? "" : "s"} in the cart.`
-        : "Your cart is currently empty.";
-    const orderAction =
-      context.cartCount > 0
-        ? {
-            label: "Open cart",
-            href: "/cart",
-            description: "Review quantity and selected products.",
-            tone: "primary" as const
-          }
-        : {
-            label: "Track demo order",
-            href: "/orders/demo-order",
-            description: "See the current order status pattern.",
-            tone: "primary" as const
-          };
-
-    return makeSupportMessage(
-      "assistant",
-      `${cartNote} For checkout, confirm quantity, selected dealer and payment details. For an existing order, use Track order or share your order number for handoff.`,
-      "Checkout support",
-      {
-        handoff: true,
-        actions: [orderAction]
-      }
-    );
-  }
-
-  if (/\b(dealer program|partner|join|contractor|trade|business|b2b)\b/.test(text)) {
-    return makeSupportMessage(
-      "assistant",
-      "VanStro works with trade buyers and local dealer partners in participating service areas across Canada. For onboarding, prepare your company name, proposed dealer service area, contact details and business type.",
-      "Dealer program",
-      {
-        actions: [
-          {
-            label: "Apply as dealer",
-            href: "/dealers/apply",
-            description: "Start the partner application flow.",
-            tone: "primary"
-          }
-        ]
-      }
-    );
-  }
-
-  if (/\b(product|sku|cabinet|vanity|baseboard|trim|door|window|size|finish|white)\b/.test(text)) {
-    return makeSupportMessage(
-      "assistant",
-      "For product selection, compare category, SKU, dimensions, finish and price. Cabinet and vanity finishes are white-focused, and detail pages show SKU, size, dealer quantity and add-to-cart.",
-      "Product guidance",
-      {
-        actions: [
-          {
-            label: "All products",
-            href: "/products",
-            description: "Search by product, SKU, category or size.",
-            tone: "primary"
-          }
-        ]
-      }
-    );
-  }
-
-  return makeSupportMessage(
-    "assistant",
-    "I can help route this. Tell me whether this is about product selection, dealer pickup or delivery, checkout, an existing order, or joining the dealer program. If this needs a person, I can prepare a handoff.",
-    "Need one detail",
-    {
+    return makeSupportMessage("assistant", copy.human, copy.humanMeta, {
       handoff: true,
-      actions: [
-        {
-          label: "Support options",
-          href: "/contact",
-          description: "Share more detail with the VanStro team."
+      actions: [{
+        label: copy.contactPage,
+        href: localeHref("/contact", locale),
+        description: copy.contactDescription
+      }]
+    });
+  }
+
+  if (/\b(dealer|pickup|delivery|deliver|fulfill|fulfillment|store|postal|location|détaillant|ramassage|livraison|livrer|exécution|magasin|postal|emplacement)\b/.test(text)) {
+    return makeSupportMessage("assistant", copy.fulfillment(context.selectedDealerName), copy.fulfillmentMeta, {
+      actions: [{
+        label: copy.deliveryArticle,
+        href: localeHref("/articles/pickup-and-delivery-options", locale),
+        description: copy.deliveryDescription,
+        tone: "primary"
+      }]
+    });
+  }
+
+  if (/\b(order|track|tracking|payment|checkout|paid|cart|invoice|commande|suivi|paiement|caisse|panier|facture)\b/.test(text)) {
+    const cartNote = context.cartCount > 0
+      ? copy.cartCount(context.cartCount)
+      : copy.emptyCart;
+    const orderAction = context.cartCount > 0
+      ? {
+          label: copy.openCart,
+          href: localeHref("/cart", locale),
+          description: copy.cartDescription,
+          tone: "primary" as const
         }
-      ]
-    }
-  );
+      : {
+          label: copy.trackOrder,
+          href: localeHref("/orders/demo-order", locale),
+          description: copy.trackDescription,
+          tone: "primary" as const
+        };
+
+    return makeSupportMessage("assistant", copy.order(cartNote), copy.checkoutMeta, {
+      handoff: true,
+      actions: [orderAction]
+    });
+  }
+
+  if (/\b(dealer program|partner|join|contractor|trade|business|b2b|programme de détaillants|partenaire|adhérer|entrepreneur|commerce|entreprise)\b/.test(text)) {
+    return makeSupportMessage("assistant", copy.dealerProgram, copy.dealerProgramMeta, {
+      actions: [{
+        label: copy.applyDealer,
+        href: localeHref("/dealers/apply", locale),
+        description: copy.applyDescription,
+        tone: "primary"
+      }]
+    });
+  }
+
+  if (/\b(product|sku|cabinet|vanity|baseboard|trim|door|window|size|finish|white|produit|ugs|armoire|meuble-lavabo|plinthe|moulure|porte|fenêtre|dimension|fini|blanc)\b/.test(text)) {
+    return makeSupportMessage("assistant", copy.product, copy.productMeta, {
+      actions: [{
+        label: copy.allProducts,
+        href: localeHref("/products", locale),
+        description: copy.productsDescription,
+        tone: "primary"
+      }]
+    });
+  }
+
+  return makeSupportMessage("assistant", copy.fallback, copy.fallbackMeta, {
+    handoff: true,
+    actions: [{
+      label: copy.supportOptions,
+      href: localeHref("/contact", locale),
+      description: copy.supportDescription
+    }]
+  });
 }

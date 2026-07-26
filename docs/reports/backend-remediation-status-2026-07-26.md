@@ -99,7 +99,7 @@ status: code-remediated — external production verification pending
 | --- | --- |
 | 全仓 TypeScript | 通过 |
 | DB tests | 3/3 通过 |
-| API tests | 86/86 通过 |
+| API tests | 86/86 通过（含 ERP inventory/customer webhook 与 checkout promotion） |
 | Worker tests | 3/3 通过 |
 | Package contract tests | 5/5 通过 |
 | Backend build | DB/API/Worker/CLI 全部通过 |
@@ -109,7 +109,9 @@ status: code-remediated — external production verification pending
 | 编译 API readiness | `/health/ready` 通过 |
 | 编译 Worker `--once` | 正常退出；本地 SMTP 未运行，邮件按预期进入 retry |
 | Empty DB migrations | 34/34 应用成功；最终临时库 full smoke 通过 |
-| Temporary DB seed + full API smoke | 通过；临时数据库随后删除 |
+| Temporary DB seed + full API smoke | 通过；34 migrations；临时数据库随后删除 |
+| Local multi-process staging E2E | 编译 API + Worker + ERP mock + Mailpit + 隔离 PostgreSQL：cart→checkout→payment→order→ERP webhook→email 全链路通过 |
+| Failure drills | 重复支付/ERP 重放幂等、API 重启恢复、SMTP retry_wait→sent 全部通过 |
 | GitHub backend-ci | 通过：`30222347105`（Node 22、fresh PostgreSQL、34 migrations、seed/build/QA） |
 | `git diff --check` | 通过 |
 

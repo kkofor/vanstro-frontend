@@ -366,6 +366,8 @@ model PaymentSession {
   dealerLocationId      String?
   items                 Json
   subtotalCents         Int
+  discountCents         Int                    @default(0)
+  promotionKey          String?
   taxCents              Int                    @default(0)
   shippingCents         Int                    @default(0)
   totalCents            Int
@@ -425,6 +427,8 @@ model Order {
   shippingCountry      String?         @default("CA")
   dealerLocationId String?
   subtotalCents    Int
+  discountCents    Int             @default(0)
+  promotionKey     String?
   taxCents         Int             @default(0)
   shippingCents    Int             @default(0)
   totalCents       Int
@@ -527,6 +531,8 @@ model Promotion {
   name          String
   description   String?
   discountLabel String?
+  discountPercent Int?
+  minimumSubtotalCents Int?
   status        PromotionStatus @default(draft)
   startsAt      DateTime?
   endsAt        DateTime?

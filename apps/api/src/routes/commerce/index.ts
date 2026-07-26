@@ -160,7 +160,7 @@ type ErpOrderStatusPayload = {
   erpSystem: string;
 };
 
-type CommerceDatabase = Pick<typeof prisma, "erpWebhookEvent" | "order" | "$transaction">;
+type CommerceDatabase = Pick<typeof prisma, "erpWebhookEvent" | "order" | "productSkuErpMapping" | "$transaction">;
 
 type DealerFulfillmentAvailability = {
   pickupAvailable: boolean;
@@ -638,7 +638,7 @@ export function createCommerceRoutes(
       firstName?: unknown; lastName?: unknown; email?: unknown; phone?: unknown; fulfillment?: unknown;
       paymentMethod?: unknown; notes?: unknown; dealerLocationId?: unknown;
       shippingAddressLine1?: unknown; shippingAddressLine2?: unknown; shippingCity?: unknown;
-      shippingProvince?: unknown; shippingPostalCode?: unknown; shippingCountry?: unknown;
+      shippingProvince?: unknown; shippingPostalCode?: unknown; shippingCountry?: unknown; couponCode?: unknown;
     } | null;
     const firstName = optionalString(body?.firstName);
     const lastName = optionalString(body?.lastName);
@@ -736,8 +736,29 @@ export function createCommerceRoutes(
     const taxProvince = fulfillment === "delivery" ? shipping?.shippingProvince : fulfillingLocation.province;
     const combinedTaxRate = await resolveCombinedTaxRate(taxProvince);
     const subtotalCents = items.reduce((total, item) => total + item.lineTotalCents, 0);
+    const couponCode = optionalString(body?.couponCode)?.toLowerCase();
+    const now = new Date();
+    const promotion = couponCode
+      ? await prisma.promotion.findFirst({
+          where: {
+            key: couponCode,
+            status: "active",
+            discountPercent: { not: null },
+            AND: [
+              { OR: [{ startsAt: null }, { startsAt: { lte: now } }] },
+              { OR: [{ endsAt: null }, { endsAt: { gt: now } }] },
+              { OR: [{ minimumSubtotalCents: null }, { minimumSubtotalCents: { lte: subtotalCents } }] }
+            ]
+          }
+        })
+      : null;
+    if (couponCode && !promotion) return publicError(context, 400, "CHECKOUT_INVALID", "Coupon is invalid or not applicable.");
+    const discountCents = promotion?.discountPercent
+      ? Math.min(subtotalCents, Math.round(subtotalCents * promotion.discountPercent / 100))
+      : 0;
+    const taxableSubtotalCents = subtotalCents - discountCents;
     const { taxCents, shippingCents } = computeCheckoutTotals(
-      subtotalCents,
+      taxableSubtotalCents,
       combinedTaxRate,
       fulfillment,
       config.deliveryFlatFeeCents
@@ -770,9 +791,11 @@ export function createCommerceRoutes(
             dealerLocationId,
             items,
             subtotalCents,
+            discountCents,
+            promotionKey: promotion?.key,
             taxCents,
             shippingCents,
-            totalCents: subtotalCents + taxCents + shippingCents,
+            totalCents: taxableSubtotalCents + taxCents + shippingCents,
             currency: "CAD",
             expiresAt: new Date(Date.now() + 30 * 60 * 1000)
           }
@@ -975,6 +998,8 @@ export function createCommerceRoutes(
           shippingCountry: session.shippingCountry,
           dealerLocationId: session.dealerLocationId,
           subtotalCents: session.subtotalCents,
+          discountCents: session.discountCents,
+          promotionKey: session.promotionKey,
           taxCents: session.taxCents,
           shippingCents: session.shippingCents,
           totalCents: session.totalCents,
@@ -1416,6 +1441,73 @@ export function createCommerceRoutes(
     });
     if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
     return context.json({ data: formatOrder(order) });
+  });
+
+  routes.post("/integrations/erp/webhooks/inventory", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      erpSystem?: unknown; externalId?: unknown; erpSkuKey?: unknown; dealerLocationId?: unknown; quantityOnHand?: unknown;
+    } | null;
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const externalId = optionalString(body?.externalId);
+    const erpSkuKey = optionalString(body?.erpSkuKey);
+    const dealerLocationId = optionalString(body?.dealerLocationId);
+    const quantityOnHand = Number(body?.quantityOnHand);
+    const secret = config.erpWebhookSecret;
+    const expected = externalId && erpSkuKey && dealerLocationId && Number.isInteger(quantityOnHand)
+      ? createHmac("sha256", secret ?? "").update(`${erpSystem}:${externalId}:${erpSkuKey}:${dealerLocationId}:${quantityOnHand}`).digest("hex")
+      : undefined;
+    if (!secret || !signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    if (!externalId || !erpSkuKey || !dealerLocationId || !Number.isInteger(quantityOnHand) || quantityOnHand < 0) return publicError(context, 400, "COMMERCE_INVALID", "Valid inventory fields are required.");
+    const mapping = await database.productSkuErpMapping.findUnique({ where: { erpSystem_erpSkuKey: { erpSystem, erpSkuKey } } });
+    if (!mapping) return publicError(context, 404, "ERP_MAPPING_INCOMPLETE", "ERP SKU mapping was not found.");
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "inventory", externalId, payload: { erpSkuKey, dealerLocationId, quantityOnHand }, processedAt: new Date() } });
+        const existing = await transaction.inventorySnapshot.findFirst({ where: { skuId: mapping.skuId, dealerLocationId } });
+        if (existing && existing.quantityReserved > quantityOnHand) throw new Error("ERP inventory is below currently reserved quantity.");
+        await transaction.inventorySnapshot.upsert({
+          where: { skuId_dealerLocationId: { skuId: mapping.skuId, dealerLocationId } },
+          update: { quantityOnHand, updatedAt: new Date() },
+          create: { skuId: mapping.skuId, dealerLocationId, quantityOnHand, quantityReserved: 0 }
+        });
+      });
+    } catch (error) {
+      if (isDuplicateErpWebhookEventConflict(error)) return context.json({ data: { ok: true, duplicate: true } });
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.post("/integrations/erp/webhooks/customer-update", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      erpSystem?: unknown; externalId?: unknown; email?: unknown; firstName?: unknown; lastName?: unknown; phone?: unknown;
+    } | null;
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const externalId = optionalString(body?.externalId);
+    const email = optionalString(body?.email)?.toLowerCase();
+    const firstName = optionalString(body?.firstName);
+    const lastName = optionalString(body?.lastName);
+    const phone = optionalString(body?.phone);
+    const secret = config.erpWebhookSecret;
+    const expected = externalId && email
+      ? createHmac("sha256", secret ?? "").update(`${erpSystem}:${externalId}:${email}:${firstName ?? ""}:${lastName ?? ""}:${phone ?? ""}`).digest("hex")
+      : undefined;
+    if (!secret || !signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    if (!externalId || !email) return publicError(context, 400, "COMMERCE_INVALID", "externalId and email are required.");
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "customer-update", externalId, payload: { email, firstName, lastName, phone }, processedAt: new Date() } });
+        await transaction.crmContact.upsert({
+          where: { email },
+          update: { firstName, lastName, phone, erpSyncStatus: "synced", lastActivityAt: new Date() },
+          create: { email, firstName, lastName, phone, source: "registration", stage: "registered", erpSyncStatus: "synced" }
+        });
+      });
+    } catch (error) {
+      if (isDuplicateErpWebhookEventConflict(error)) return context.json({ data: { ok: true, duplicate: true } });
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
   });
 
   routes.post("/integrations/erp/webhooks/order-status", async (context) => {

@@ -231,6 +231,42 @@ test("checkout idempotency replay is scoped to the same cart and restores paymen
   }
 });
 
+test("checkout applies active percentage promotion after minimum subtotal", async () => {
+  const suffix = randomBytes(6).toString("hex");
+  const cartToken = `promo-cart-${suffix}`;
+  const location = await prisma.dealerLocation.findFirst({ where: { dealer: { status: "active" }, pickupAvailable: true } });
+  const sku = await prisma.platformSku.findFirst({ where: { status: "active", product: { status: "active" }, prices: { some: { status: "active" } } }, include: { prices: { where: { status: "active" }, take: 1 } } });
+  assert.ok(location && sku?.prices[0]);
+  const snapshot = await prisma.inventorySnapshot.findFirstOrThrow({ where: { skuId: sku!.id, dealerLocationId: location!.id } });
+  await prisma.inventorySnapshot.update({ where: { id: snapshot.id }, data: { quantityOnHand: Math.max(snapshot.quantityOnHand, snapshot.quantityReserved + 5), updatedAt: new Date() } });
+  const cart = await prisma.cart.create({ data: { guestToken: cartToken } });
+  await prisma.cartItem.create({ data: { cartId: cart.id, skuId: sku!.id, quantity: 1 } });
+  const promotion = await prisma.promotion.create({ data: { key: `save10-${suffix}`, name: "Save 10", status: "active", discountPercent: 10, minimumSubtotalCents: 1 } });
+  try {
+    const response = await app.request("/api/v1/checkout/session", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-cart-token": cartToken, "idempotency-key": `promo-${suffix}` },
+      body: JSON.stringify({ firstName: "Promo", lastName: "Buyer", email: `promo-${suffix}@vanstro.test`, phone: "204-555-0100", fulfillment: "pickup", paymentMethod: "cash", dealerLocationId: location!.id, couponCode: promotion.key.toUpperCase() })
+    });
+    assert.equal(response.status, 201, await response.clone().text());
+    const session = await prisma.paymentSession.findFirstOrThrow({ where: { cartId: cart.id } });
+    assert.equal(session.promotionKey, promotion.key);
+    assert.equal(session.discountCents, Math.round(session.subtotalCents * 0.1));
+    assert.equal(session.totalCents, session.subtotalCents - session.discountCents + session.taxCents + session.shippingCents);
+  } finally {
+    const session = await prisma.paymentSession.findFirst({ where: { cartId: cart.id } });
+    if (session) {
+      const reservations = await prisma.inventoryReservation.findMany({ where: { paymentSessionId: session.id } });
+      for (const reservation of reservations) await prisma.inventorySnapshot.updateMany({ where: { skuId: reservation.skuId, dealerLocationId: reservation.dealerLocationId }, data: { quantityReserved: { decrement: reservation.quantity } } });
+      await prisma.inventoryReservation.deleteMany({ where: { paymentSessionId: session.id } });
+      await prisma.paymentSession.delete({ where: { id: session.id } });
+    }
+    await prisma.promotion.delete({ where: { id: promotion.id } });
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+    await prisma.cart.delete({ where: { id: cart.id } });
+  }
+});
+
 test("inventory reservation requires dealerLocationId", async () => {
   const sku = await prisma.platformSku.findFirst({
     where: { status: "active", product: { status: "active" } },

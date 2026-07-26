@@ -417,6 +417,8 @@ export function createDashboardCatalogRoutes() {
         name,
         description: optionalString(body, "description"),
         discountLabel: optionalString(body, "discountLabel"),
+        discountPercent: optionalNumber(body, "discountPercent"),
+        minimumSubtotalCents: optionalNumber(body, "minimumSubtotalCents"),
         status: (optionalString(body, "status") as PromotionStatusValue) ?? "draft",
         startsAt: optionalDate(body, "startsAt"),
         endsAt: optionalDate(body, "endsAt")
@@ -436,6 +438,8 @@ export function createDashboardCatalogRoutes() {
         name: optionalString(body, "name"),
         description: optionalString(body, "description"),
         discountLabel: optionalString(body, "discountLabel"),
+        discountPercent: optionalNumber(body, "discountPercent"),
+        minimumSubtotalCents: optionalNumber(body, "minimumSubtotalCents"),
         status: optionalString(body, "status") as PromotionStatusValue | undefined,
         startsAt: optionalDate(body, "startsAt"),
         endsAt: optionalDate(body, "endsAt")

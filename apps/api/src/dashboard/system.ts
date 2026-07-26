@@ -10,18 +10,19 @@ import {
   assertAssignableRoles,
   PermissionCeilingError
 } from "./permission-ceiling.js";
-import { badRequest, optionalString, optionalStringArray, readBody } from "./request.js";
+import { badRequest, optionalString, optionalStringArray, optionalBoolean, pageMeta, parsePagination, readBody } from "./request.js";
 
 export function createDashboardSystemRoutes() {
   const routes = new Hono<DashboardEnv>();
 
   routes.get("/dashboard/email/outbox", async (context) => {
-    const items = await prisma.emailOutbox.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const [items, total] = await Promise.all([
+      prisma.emailOutbox.findMany({ orderBy: { createdAt: "desc" }, skip: pagination.skip, take: pagination.take }),
+      prisma.emailOutbox.count()
+    ]);
 
-    return context.json({ data: items });
+    return context.json({ data: items, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/mcp/service-accounts", async (context) => {
@@ -198,12 +199,17 @@ export function createDashboardSystemRoutes() {
   });
 
   routes.get("/dashboard/mcp/invocations", async (context) => {
-    const invocations = await prisma.mcpToolInvocation.findMany({
-      include: { serviceAccount: { select: { id: true, key: true, name: true } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
-    return context.json({ data: invocations });
+    const pagination = parsePagination(context);
+    const [invocations, total] = await Promise.all([
+      prisma.mcpToolInvocation.findMany({
+        include: { serviceAccount: { select: { id: true, key: true, name: true } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.mcpToolInvocation.count()
+    ]);
+    return context.json({ data: invocations, meta: pageMeta(pagination, total) });
   });
 
   routes.post("/dashboard/email/outbox/:id/retry", async (context) => {
@@ -222,24 +228,37 @@ export function createDashboardSystemRoutes() {
   });
 
   routes.get("/dashboard/audit-logs", async (context) => {
-    const logs = await prisma.auditLog.findMany({ orderBy: { createdAt: "desc" }, take: 100 });
-    return context.json({ data: logs });
+    const pagination = parsePagination(context);
+    const [logs, total] = await Promise.all([
+      prisma.auditLog.findMany({ orderBy: { createdAt: "desc" }, skip: pagination.skip, take: pagination.take }),
+      prisma.auditLog.count()
+    ]);
+    return context.json({ data: logs, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/operations/alerts", async (context) => context.json({ data: await getOperationalAlerts() }));
 
   routes.get("/dashboard/payment-sessions", async (context) => {
-    const sessions = await prisma.paymentSession.findMany({ orderBy: { createdAt: "desc" }, take: 100 });
-    return context.json({ data: sessions });
+    const pagination = parsePagination(context);
+    const [sessions, total] = await Promise.all([
+      prisma.paymentSession.findMany({ orderBy: { createdAt: "desc" }, skip: pagination.skip, take: pagination.take }),
+      prisma.paymentSession.count()
+    ]);
+    return context.json({ data: sessions, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/orders", async (context) => {
-    const orders = await prisma.order.findMany({
-      include: { items: true, statusEvents: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
-    return context.json({ data: orders });
+    const pagination = parsePagination(context);
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        include: { items: true, statusEvents: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.order.count()
+    ]);
+    return context.json({ data: orders, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/orders/:id", async (context) => {
@@ -252,12 +271,17 @@ export function createDashboardSystemRoutes() {
   });
 
   routes.get("/dashboard/erp-sync-jobs", async (context) => {
-    const jobs = await prisma.erpSyncJob.findMany({
-      include: { attempts: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
-    return context.json({ data: jobs });
+    const pagination = parsePagination(context);
+    const [jobs, total] = await Promise.all([
+      prisma.erpSyncJob.findMany({
+        include: { attempts: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.erpSyncJob.count()
+    ]);
+    return context.json({ data: jobs, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/erp-sync-jobs/:id", async (context) => {
@@ -282,6 +306,178 @@ export function createDashboardSystemRoutes() {
     });
     await writeAudit(context, "dashboard.erp_sync_jobs.retry", "erp_sync_job", job.id);
     return context.json({ data: updatedJob });
+  });
+
+  routes.get("/dashboard/inventory/snapshots", async (context) => {
+    const pagination = parsePagination(context);
+    const skuId = context.req.query("skuId");
+    const dealerLocationId = context.req.query("dealerLocationId");
+    const where = {
+      ...(skuId ? { skuId } : {}),
+      ...(dealerLocationId ? { dealerLocationId } : {})
+    };
+    const [snapshots, total] = await Promise.all([
+      prisma.inventorySnapshot.findMany({
+        where,
+        include: {
+          sku: { select: { id: true, skuCode: true, name: true, product: { select: { id: true, slug: true, name: true } } } },
+          dealerLocation: { select: { id: true, code: true, name: true, province: true } }
+        },
+        orderBy: { updatedAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.inventorySnapshot.count({ where })
+    ]);
+    return context.json({
+      data: snapshots.map((snapshot) => ({
+        ...snapshot,
+        quantityAvailable: Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved)
+      })),
+      meta: pageMeta(pagination, total)
+    });
+  });
+
+  const ORDER_TRANSITIONS: Record<string, Set<string>> = {
+    paid: new Set(["processing", "cancelled"]),
+    processing: new Set(["fulfilled", "cancelled"]),
+    fulfilled: new Set(),
+    cancelled: new Set()
+  };
+
+  routes.patch("/dashboard/orders/:id/status", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const status = optionalString(body, "status");
+    if (!status || !["paid", "processing", "fulfilled", "cancelled"].includes(status)) {
+      return badRequest(context, "status must be paid, processing, fulfilled or cancelled.");
+    }
+    const order = await prisma.order.findUnique({ where: { id: context.req.param("id") } });
+    if (!order) return context.json({ error: "Order not found." }, 404);
+    const allowed = ORDER_TRANSITIONS[order.status];
+    if (!allowed?.has(status)) {
+      return context.json({ error: `Cannot transition order from ${order.status} to ${status}.` }, 409);
+    }
+    const updated = await prisma.$transaction(async (transaction) => {
+      const next = await transaction.order.update({
+        where: { id: order.id },
+        data: { status: status as "paid" | "processing" | "fulfilled" | "cancelled" }
+      });
+      await transaction.orderStatusEvent.create({
+        data: { orderId: order.id, status: status as "paid" | "processing" | "fulfilled" | "cancelled", source: "dashboard", payload: { actorUserId: context.get("actorUserId") } }
+      });
+      return next;
+    });
+    await writeAudit(context, "dashboard.orders.status.update", "order", order.id, { status });
+    return context.json({ data: updated });
+  });
+
+  routes.post("/dashboard/orders/:id/assign-dealer", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const dealerLocationId = optionalString(body, "dealerLocationId");
+    if (!dealerLocationId) return badRequest(context, "dealerLocationId is required.");
+    const location = await prisma.dealerLocation.findUnique({
+      where: { id: dealerLocationId },
+      include: { dealer: true }
+    });
+    if (!location) return context.json({ error: "Dealer location not found." }, 404);
+    const order = await prisma.order.update({
+      where: { id: context.req.param("id") },
+      data: { dealerLocationId: location.id }
+    });
+    await writeAudit(context, "dashboard.orders.assign_dealer", "order", order.id, {
+      dealerLocationId: location.id,
+      dealerId: location.dealerId
+    });
+    return context.json({ data: order });
+  });
+
+  routes.get("/dashboard/email/templates", async (context) => {
+    const templates = await prisma.emailTemplate.findMany({
+      include: { versions: { orderBy: { version: "desc" }, take: 1 } },
+      orderBy: { key: "asc" }
+    });
+    return context.json({ data: templates });
+  });
+
+  routes.get("/dashboard/email/templates/:id", async (context) => {
+    const template = await prisma.emailTemplate.findUnique({
+      where: { id: context.req.param("id") },
+      include: { versions: { orderBy: { version: "desc" } } }
+    });
+    if (!template) return context.json({ error: "Email template not found." }, 404);
+    return context.json({ data: template });
+  });
+
+  routes.post("/dashboard/email/templates", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const key = optionalString(body, "key");
+    const name = optionalString(body, "name");
+    const subject = optionalString(body, "subject");
+    if (!key || !name || !subject) return badRequest(context, "key, name and subject are required.");
+    const template = await prisma.emailTemplate.create({
+      data: {
+        key,
+        name,
+        versions: {
+          create: {
+            version: 1,
+            subject,
+            bodyText: optionalString(body, "bodyText"),
+            bodyHtml: optionalString(body, "bodyHtml"),
+            isPublished: true
+          }
+        }
+      },
+      include: { versions: true }
+    });
+    await writeAudit(context, "dashboard.email_templates.create", "email_template", template.id);
+    return context.json({ data: template }, 201);
+  });
+
+  routes.patch("/dashboard/email/templates/:id", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const template = await prisma.emailTemplate.update({
+      where: { id: context.req.param("id") },
+      data: { key: optionalString(body, "key"), name: optionalString(body, "name") }
+    });
+    await writeAudit(context, "dashboard.email_templates.update", "email_template", template.id);
+    return context.json({ data: template });
+  });
+
+  routes.post("/dashboard/email/templates/:id/versions", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const subject = optionalString(body, "subject");
+    if (!subject) return badRequest(context, "subject is required.");
+    const latest = await prisma.emailTemplateVersion.findFirst({
+      where: { templateId: context.req.param("id") },
+      orderBy: { version: "desc" }
+    });
+    const publish = optionalBoolean(body, "publish") ?? false;
+    const version = await prisma.$transaction(async (transaction) => {
+      if (publish) {
+        await transaction.emailTemplateVersion.updateMany({
+          where: { templateId: context.req.param("id"), isPublished: true },
+          data: { isPublished: false }
+        });
+      }
+      return transaction.emailTemplateVersion.create({
+        data: {
+          templateId: context.req.param("id"),
+          version: (latest?.version ?? 0) + 1,
+          subject,
+          bodyText: optionalString(body, "bodyText"),
+          bodyHtml: optionalString(body, "bodyHtml"),
+          isPublished: publish
+        }
+      });
+    });
+    await writeAudit(context, "dashboard.email_templates.versions.create", "email_template", context.req.param("id"), { version: version.version });
+    return context.json({ data: version }, 201);
   });
 
   return routes;

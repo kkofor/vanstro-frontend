@@ -6,6 +6,11 @@ import {
   writeAudit
 } from "../dashboard/access.js";
 import { createDashboardSystemRoutes } from "../dashboard/system.js";
+import { createDashboardCmsRoutes } from "../dashboard/cms.js";
+import { createDashboardCatalogRoutes } from "../dashboard/catalog.js";
+import { createDashboardModuleRoutes } from "../dashboard/modules.js";
+import { createDashboardDealerRoutes } from "../dashboard/dealers.js";
+import { createDashboardSupportRoutes } from "../dashboard/support.js";
 import { revokeUserSessions } from "../auth/session.js";
 import {
   assertAssignableRoles,
@@ -28,13 +33,32 @@ type DealerApplicationStatusValue =
   | "rejected"
   | "archived";
 type ProductReviewStatusValue = "pending" | "published" | "rejected" | "archived";
+
+const CONTACT_LEAD_STATUSES = new Set<ContactLeadStatusValue>(["new", "routed", "closed", "spam"]);
+const DEALER_APPLICATION_STATUSES = new Set<DealerApplicationStatusValue>([
+  "submitted",
+  "under_review",
+  "approved",
+  "rejected",
+  "archived"
+]);
+const PRODUCT_REVIEW_STATUSES = new Set<ProductReviewStatusValue>([
+  "pending",
+  "published",
+  "rejected",
+  "archived"
+]);
 import {
   badRequest,
+  conflict,
+  notFound,
   optionalBoolean,
   optionalNumber,
   optionalRecord,
   optionalString,
   optionalStringArray,
+  pageMeta,
+  parsePagination,
   readBody
 } from "../dashboard/request.js";
 
@@ -129,6 +153,23 @@ export function createDashboardRoutes() {
     await writeAudit(context, "dashboard.roles.update", "role", role.id);
 
     return context.json({ data: role });
+  });
+
+  routes.delete("/dashboard/roles/:id", async (context) => {
+    const role = await prisma.role.findUnique({
+      where: { id: context.req.param("id") },
+      include: { _count: { select: { userRoles: true, serviceAccountRoles: true } } }
+    });
+    if (!role) return notFound(context, "Role not found.");
+    if (role.isSystem) return conflict(context, "System roles cannot be deleted.");
+    if (role._count.userRoles > 0 || role._count.serviceAccountRoles > 0) {
+      return conflict(context, "Role is still assigned to users or service accounts.");
+    }
+
+    await prisma.role.delete({ where: { id: role.id } });
+    await writeAudit(context, "dashboard.roles.delete", "role", role.id);
+
+    return context.json({ data: { id: role.id, deleted: true } });
   });
 
   routes.put("/dashboard/roles/:id/permissions", async (context) => {
@@ -457,468 +498,23 @@ export function createDashboardRoutes() {
     return context.json({ data: { ok: true } });
   });
 
-  routes.get("/dashboard/categories", async (context) => {
-    const categories = await prisma.category.findMany({
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
-    });
-
-    return context.json({ data: categories });
-  });
-
-  routes.post("/dashboard/categories", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const slug = optionalString(body, "slug") ?? (name ? slugify(name) : "");
-
-    if (!name || !slug) {
-      return badRequest(context, "name is required.");
-    }
-
-    const category = await prisma.category.create({
-      data: {
-        slug,
-        name,
-        description: optionalString(body, "description"),
-        parentId: optionalString(body, "parentId"),
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0,
-        isActive: optionalBoolean(body, "isActive") ?? true
-      }
-    });
-
-    await writeAudit(context, "dashboard.categories.create", "category", category.id);
-
-    return context.json({ data: category }, 201);
-  });
-
-  routes.patch("/dashboard/categories/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const category = await prisma.category.update({
-      where: { id: context.req.param("id") },
-      data: {
-        slug: optionalString(body, "slug"),
-        name: optionalString(body, "name"),
-        description: optionalString(body, "description"),
-        parentId: optionalString(body, "parentId"),
-        sortOrder: optionalNumber(body, "sortOrder"),
-        isActive: optionalBoolean(body, "isActive")
-      }
-    });
-
-    await writeAudit(context, "dashboard.categories.update", "category", category.id);
-
-    return context.json({ data: category });
-  });
-
-  routes.get("/dashboard/products", async (context) => {
-    const products = await prisma.product.findMany({
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        status: true,
-        createdAt: true,
-        category: { select: { id: true, name: true, slug: true } },
-        skus: {
-          select: { id: true, skuCode: true, name: true, status: true },
-          orderBy: { sortOrder: "asc" }
-        }
-      },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: products });
-  });
-
-  routes.post("/dashboard/products", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const slug = optionalString(body, "slug") ?? (name ? slugify(name) : "");
-
-    if (!name || !slug) {
-      return badRequest(context, "name is required.");
-    }
-
-    const categoryId = await resolveCategoryId(body);
-    const product = await prisma.product.create({
-      data: {
-        slug,
-        name,
-        shortDescription: optionalString(body, "shortDescription"),
-        description: optionalString(body, "description"),
-        status: (optionalString(body, "status") as CatalogStatus) ?? "draft",
-        categoryId
-      }
-    });
-
-    await writeAudit(context, "dashboard.products.create", "product", product.id);
-
-    return context.json({ data: product }, 201);
-  });
-
-  routes.patch("/dashboard/products/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const categoryId = await resolveCategoryId(body);
-    const product = await prisma.product.update({
-      where: { id: context.req.param("id") },
-      data: {
-        slug: optionalString(body, "slug"),
-        name: optionalString(body, "name"),
-        shortDescription: optionalString(body, "shortDescription"),
-        description: optionalString(body, "description"),
-        status: optionalString(body, "status") as CatalogStatus | undefined,
-        categoryId
-      }
-    });
-
-    await writeAudit(context, "dashboard.products.update", "product", product.id);
-
-    return context.json({ data: product });
-  });
-
-  routes.post("/dashboard/products/:id/skus", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuCode = optionalString(body, "skuCode");
-
-    if (!skuCode) {
-      return badRequest(context, "skuCode is required.");
-    }
-
-    const sku = await prisma.platformSku.create({
-      data: {
-        productId: context.req.param("id"),
-        skuCode,
-        name: optionalString(body, "name") ?? skuCode,
-        status: (optionalString(body, "status") as CatalogStatus) ?? "active",
-        attributes: optionalRecord(body, "attributes"),
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0
-      }
-    });
-
-    await writeAudit(context, "dashboard.skus.create", "platform_sku", sku.id);
-
-    return context.json({ data: sku }, 201);
-  });
-
-  routes.patch("/dashboard/skus/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const sku = await prisma.platformSku.update({
-      where: { id: context.req.param("id") },
-      data: {
-        skuCode: optionalString(body, "skuCode"),
-        name: optionalString(body, "name"),
-        status: optionalString(body, "status") as CatalogStatus | undefined,
-        attributes: optionalRecord(body, "attributes"),
-        sortOrder: optionalNumber(body, "sortOrder")
-      }
-    });
-
-    await writeAudit(context, "dashboard.skus.update", "platform_sku", sku.id);
-
-    return context.json({ data: sku });
-  });
-
-  routes.post("/dashboard/products/:id/assets", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const url = optionalString(body, "url");
-
-    if (!url) {
-      return badRequest(context, "url is required.");
-    }
-
-    const asset = await prisma.productAsset.create({
-      data: {
-        productId: context.req.param("id"),
-        skuId: optionalString(body, "skuId"),
-        url,
-        altText: optionalString(body, "altText"),
-        kind: optionalString(body, "kind") ?? "image",
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0
-      }
-    });
-
-    await writeAudit(context, "dashboard.product_assets.create", "product_asset", asset.id);
-
-    return context.json({ data: asset }, 201);
-  });
-
-  routes.get("/dashboard/pricing", async (context) => {
-    const prices = await prisma.price.findMany({
-      include: { sku: { include: { product: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: prices });
-  });
-
-  routes.post("/dashboard/pricing", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuId = optionalString(body, "skuId");
-    const amountCents = optionalNumber(body, "amountCents");
-
-    if (!skuId || amountCents === undefined) {
-      return badRequest(context, "skuId and amountCents are required.");
-    }
-
-    const price = await prisma.price.create({
-      data: {
-        key: optionalString(body, "key") ?? `retail:${skuId}`,
-        skuId,
-        currency: optionalString(body, "currency") ?? "CAD",
-        amountCents,
-        compareAtCents: optionalNumber(body, "compareAtCents"),
-        status: (optionalString(body, "status") as PriceStatusValue) ?? "active"
-      }
-    });
-
-    await writeAudit(context, "dashboard.pricing.create", "price", price.id);
-
-    return context.json({ data: price }, 201);
-  });
-
-  routes.patch("/dashboard/pricing/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const price = await prisma.price.update({
-      where: { id: context.req.param("id") },
-      data: {
-        currency: optionalString(body, "currency"),
-        amountCents: optionalNumber(body, "amountCents"),
-        compareAtCents: optionalNumber(body, "compareAtCents"),
-        status: optionalString(body, "status") as PriceStatusValue | undefined
-      }
-    });
-
-    await writeAudit(context, "dashboard.pricing.update", "price", price.id);
-
-    return context.json({ data: price });
-  });
-
-  routes.get("/dashboard/promotions", async (context) => {
-    const promotions = await prisma.promotion.findMany({
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: promotions });
-  });
-
-  routes.post("/dashboard/promotions", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const key = optionalString(body, "key") ?? (name ? slugify(name) : "");
-
-    if (!name || !key) {
-      return badRequest(context, "name is required.");
-    }
-
-    const promotion = await prisma.promotion.create({
-      data: {
-        key,
-        name,
-        description: optionalString(body, "description"),
-        discountLabel: optionalString(body, "discountLabel"),
-        status: (optionalString(body, "status") as PromotionStatusValue) ?? "draft"
-      }
-    });
-
-    await writeAudit(context, "dashboard.promotions.create", "promotion", promotion.id);
-
-    return context.json({ data: promotion }, 201);
-  });
-
-  routes.patch("/dashboard/promotions/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const promotion = await prisma.promotion.update({
-      where: { id: context.req.param("id") },
-      data: {
-        key: optionalString(body, "key"),
-        name: optionalString(body, "name"),
-        description: optionalString(body, "description"),
-        discountLabel: optionalString(body, "discountLabel"),
-        status: optionalString(body, "status") as PromotionStatusValue | undefined
-      }
-    });
-
-    await writeAudit(context, "dashboard.promotions.update", "promotion", promotion.id);
-
-    return context.json({ data: promotion });
-  });
-
-  routes.get("/dashboard/sku-mappings", async (context) => {
-    const mappings = await prisma.productSkuErpMapping.findMany({
-      include: { sku: { include: { product: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: mappings });
-  });
-
-  routes.post("/dashboard/sku-mappings", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuId = optionalString(body, "skuId");
-    const erpSystem = optionalString(body, "erpSystem");
-    const erpSkuKey = optionalString(body, "erpSkuKey");
-
-    if (!skuId || !erpSystem || !erpSkuKey) {
-      return badRequest(context, "skuId, erpSystem and erpSkuKey are required.");
-    }
-
-    const mapping = await prisma.productSkuErpMapping.create({
-      data: { skuId, erpSystem, erpSkuKey }
-    });
-
-    await writeAudit(context, "dashboard.sku_mappings.create", "sku_mapping", mapping.id);
-
-    return context.json({ data: mapping }, 201);
-  });
-
-  routes.patch("/dashboard/sku-mappings/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const mapping = await prisma.productSkuErpMapping.update({
-      where: { id: context.req.param("id") },
-      data: {
-        erpSystem: optionalString(body, "erpSystem"),
-        erpSkuKey: optionalString(body, "erpSkuKey")
-      }
-    });
-
-    await writeAudit(context, "dashboard.sku_mappings.update", "sku_mapping", mapping.id);
-
-    return context.json({ data: mapping });
-  });
-
-  routes.get("/dashboard/dealers", async (context) => {
-    const dealers = await prisma.dealer.findMany({
-      include: {
-        erpLinks: true,
-        locations: { include: { serviceAreas: true } }
-      },
-      orderBy: { name: "asc" }
-    });
-
-    return context.json({ data: dealers });
-  });
-
-  routes.patch("/dashboard/dealers/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const dealer = await prisma.dealer.update({
-      where: { id: context.req.param("id") },
-      data: {
-        code: optionalString(body, "code"),
-        name: optionalString(body, "name"),
-        status: optionalString(body, "status") as "active" | "inactive" | undefined,
-        phone: optionalString(body, "phone"),
-        email: optionalString(body, "email"),
-        website: optionalString(body, "website")
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealers.update", "dealer", dealer.id);
-
-    return context.json({ data: dealer });
-  });
-
-  routes.post("/dashboard/dealer-locations/:id/service-areas", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const areaType = optionalString(body, "areaType");
-    const areaCode = optionalString(body, "areaCode");
-
-    if (!areaType || !areaCode) {
-      return badRequest(context, "areaType and areaCode are required.");
-    }
-
-    const area = await prisma.dealerServiceArea.create({
-      data: {
-        dealerLocationId: context.req.param("id"),
-        areaType,
-        areaCode
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealer_service_areas.create", "dealer_service_area", area.id);
-
-    return context.json({ data: area }, 201);
-  });
-
-  routes.post("/dashboard/dealers/:id/erp-links", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const erpSystem = optionalString(body, "erpSystem");
-    const erpLocationId = optionalString(body, "erpLocationId");
-
-    if (!erpSystem || !erpLocationId) {
-      return badRequest(context, "erpSystem and erpLocationId are required.");
-    }
-
-    const link = await prisma.dealerErpLink.create({
-      data: {
-        dealerId: context.req.param("id"),
-        dealerLocationId: optionalString(body, "dealerLocationId"),
-        erpSystem,
-        erpLocationId
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealer_erp_links.create", "dealer_erp_link", link.id);
-
-    return context.json({ data: link }, 201);
-  });
 
   routes.get("/dashboard/dealer-applications", async (context) => {
     const status = context.req.query("status") as DealerApplicationStatusValue | undefined;
-    const applications = await prisma.dealerApplication.findMany({
-      where: status ? { status } : undefined,
-      include: { notes: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [applications, total] = await Promise.all([
+      prisma.dealerApplication.findMany({
+        where,
+        include: { notes: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.dealerApplication.count({ where })
+    ]);
 
-    return context.json({ data: applications });
+    return context.json({ data: applications, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/dealer-applications/:id", async (context) => {
@@ -943,7 +539,9 @@ export function createDashboardRoutes() {
       | DealerApplicationStatusValue
       | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !DEALER_APPLICATION_STATUSES.has(status)) {
+      return badRequest(context, "status must be submitted, under_review, approved, rejected or archived.");
+    }
 
     const application = await prisma.dealerApplication.update({
       where: { id: context.req.param("id") },
@@ -990,14 +588,20 @@ export function createDashboardRoutes() {
 
   routes.get("/dashboard/contact-leads", async (context) => {
     const status = context.req.query("status") as ContactLeadStatusValue | undefined;
-    const leads = await prisma.contactLead.findMany({
-      where: status ? { status } : undefined,
-      include: { notes: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [leads, total] = await Promise.all([
+      prisma.contactLead.findMany({
+        where,
+        include: { notes: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.contactLead.count({ where })
+    ]);
 
-    return context.json({ data: leads });
+    return context.json({ data: leads, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/contact-leads/:id", async (context) => {
@@ -1020,7 +624,9 @@ export function createDashboardRoutes() {
 
     const status = optionalString(body, "status") as ContactLeadStatusValue | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !CONTACT_LEAD_STATUSES.has(status)) {
+      return badRequest(context, "status must be new, routed, closed or spam.");
+    }
 
     const lead = await prisma.contactLead.update({
       where: { id: context.req.param("id") },
@@ -1092,17 +698,23 @@ export function createDashboardRoutes() {
 
   routes.get("/dashboard/product-reviews", async (context) => {
     const status = context.req.query("status") as ProductReviewStatusValue | undefined;
-    const reviews = await prisma.productReview.findMany({
-      where: status ? { status } : undefined,
-      include: {
-        product: { select: { id: true, slug: true, name: true } },
-        notes: { orderBy: { createdAt: "desc" } }
-      },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [reviews, total] = await Promise.all([
+      prisma.productReview.findMany({
+        where,
+        include: {
+          product: { select: { id: true, slug: true, name: true } },
+          notes: { orderBy: { createdAt: "desc" } }
+        },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.productReview.count({ where })
+    ]);
 
-    return context.json({ data: reviews });
+    return context.json({ data: reviews, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/product-reviews/:id", async (context) => {
@@ -1128,7 +740,9 @@ export function createDashboardRoutes() {
 
     const status = optionalString(body, "status") as ProductReviewStatusValue | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !PRODUCT_REVIEW_STATUSES.has(status)) {
+      return badRequest(context, "status must be pending, published, rejected or archived.");
+    }
 
     const review = await prisma.productReview.update({
       where: { id: context.req.param("id") },
@@ -1173,6 +787,11 @@ export function createDashboardRoutes() {
   });
 
   routes.route("/", createDashboardSystemRoutes());
+  routes.route("/", createDashboardCmsRoutes());
+  routes.route("/", createDashboardCatalogRoutes());
+  routes.route("/", createDashboardModuleRoutes());
+  routes.route("/", createDashboardDealerRoutes());
+  routes.route("/", createDashboardSupportRoutes());
 
   return routes;
 }

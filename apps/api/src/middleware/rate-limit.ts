@@ -1,5 +1,6 @@
 import type { Context, Next } from "hono";
 import { getRequestIp } from "../auth/session.js";
+import { publicError } from "../public-errors.js";
 
 type RateLimitPolicy = { key: string; limit: number; windowMs: number };
 
@@ -12,8 +13,17 @@ function policyFor(context: Context): RateLimitPolicy | undefined {
     return { key: "auth", limit: 10, windowMs: 15 * 60 * 1000 };
   }
   if (
+    path === "/checkout/session" ||
+    path === "/payments/callback" ||
+    path === "/cart" ||
+    path.startsWith("/cart/")
+  ) {
+    return { key: "commerce", limit: 60, windowMs: 15 * 60 * 1000 };
+  }
+  if (
     path === "/contact/leads" ||
     path === "/dealer-applications" ||
+    path === "/support/handoffs" ||
     path.startsWith("/products/") && path.endsWith("/reviews") ||
     path === "/privacy/consent-events"
   ) {
@@ -37,9 +47,13 @@ export async function rateLimitPublicWrites(context: Context, next: Next) {
 
   if (bucket.count >= policy.limit) {
     context.header("Retry-After", String(Math.ceil((bucket.resetAt - now) / 1000)));
-    return context.json({ error: "Too many requests. Please try again later." }, 429);
+    context.header("X-RateLimit-Limit", String(policy.limit));
+    context.header("X-RateLimit-Remaining", "0");
+    return publicError(context, 429, "RATE_LIMITED", "Too many requests. Please try again later.");
   }
 
   bucket.count += 1;
+  context.header("X-RateLimit-Limit", String(policy.limit));
+  context.header("X-RateLimit-Remaining", String(Math.max(0, policy.limit - bucket.count)));
   return next();
 }

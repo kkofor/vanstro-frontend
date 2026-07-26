@@ -5,6 +5,7 @@ export type ApiConfig = {
   inventorySnapshotTtlMs: number;
   paymentCallbackSecret: string;
   erpWebhookSecret?: string;
+  deliveryFlatFeeCents: number;
 };
 
 type RuntimeMode = "development" | "deployment";
@@ -56,6 +57,7 @@ export function loadApiConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
     paymentCallbackSecret: deploymentSecret("PAYMENT_CALLBACK_SECRET", env.PAYMENT_CALLBACK_SECRET, mode),
     erpWebhookSecret: mode === "deployment"
       ? deploymentSecret("ERP_WEBHOOK_SECRET", env.ERP_WEBHOOK_SECRET, mode)
-      : env.ERP_WEBHOOK_SECRET?.trim() || undefined
+      : env.ERP_WEBHOOK_SECRET?.trim() || undefined,
+    deliveryFlatFeeCents: integer("DELIVERY_FLAT_FEE_CENTS", env.DELIVERY_FLAT_FEE_CENTS, 1500, 0, 100000000)
   };
 }

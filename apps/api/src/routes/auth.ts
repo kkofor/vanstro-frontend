@@ -1,5 +1,6 @@
 import { hashPassword, prisma } from "@vanstro/db";
 import { Hono, type Context } from "hono";
+import { publicError } from "../public-errors.js";
 import {
   createSession,
   authenticateAndCreateSession,
@@ -67,17 +68,17 @@ export function createAuthRoutes() {
     const normalizedEmail = email?.trim().toLowerCase();
 
     if (!normalizedEmail || !password || !firstName?.trim() || !lastName?.trim()) {
-      return context.json({ error: "email, password, firstName and lastName are required." }, 400);
+      return publicError(context, 400, "AUTH_INVALID_INPUT", "email, password, firstName and lastName are required.");
     }
 
     if (password.length < 12) {
-      return context.json({ error: "password must be at least 12 characters." }, 400);
+      return publicError(context, 400, "AUTH_PASSWORD_TOO_SHORT", "password must be at least 12 characters.");
     }
 
     const existingUser = await prisma.user.findUnique({ where: { email: normalizedEmail } });
 
     if (existingUser) {
-      return context.json({ error: "An account already exists for this email." }, 409);
+      return publicError(context, 409, "AUTH_ACCOUNT_EXISTS", "An account already exists for this email.");
     }
 
     const user = await prisma.user.create({
@@ -107,7 +108,7 @@ export function createAuthRoutes() {
     const normalizedEmail = email?.trim().toLowerCase();
 
     if (!normalizedEmail || !password) {
-      return context.json({ error: "email and password are required." }, 400);
+      return publicError(context, 400, "AUTH_INVALID_INPUT", "email and password are required.");
     }
 
     const result = await authenticateAndCreateSession(normalizedEmail, password, {
@@ -123,7 +124,7 @@ export function createAuthRoutes() {
         reason: "invalid_credentials"
       });
 
-      return context.json({ error: "Invalid email or password." }, 401);
+      return publicError(context, 401, "AUTH_INVALID_CREDENTIALS", "Invalid email or password.");
     }
 
     await writeLoginEvent(context, {
@@ -144,7 +145,7 @@ export function createAuthRoutes() {
     const session = await getSessionFromRequest(context);
 
     if (!session) {
-      return context.json({ error: "Authentication is required." }, 401);
+      return publicError(context, 401, "AUTH_REQUIRED", "Authentication is required.");
     }
 
     return context.json({ data: { user: session.user } });
@@ -154,7 +155,7 @@ export function createAuthRoutes() {
     const token = extractBearerToken(context);
 
     if (!token) {
-      return context.json({ error: "Authentication is required." }, 401);
+      return publicError(context, 401, "AUTH_REQUIRED", "Authentication is required.");
     }
 
     const nextSession = await rotateSession(token, {
@@ -163,7 +164,7 @@ export function createAuthRoutes() {
     });
 
     if (!nextSession) {
-      return context.json({ error: "Authentication is required." }, 401);
+      return publicError(context, 401, "AUTH_REQUIRED", "Authentication is required.");
     }
 
     return context.json({
@@ -187,7 +188,7 @@ export function createAuthRoutes() {
     const session = await getSessionFromRequest(context);
 
     if (!session) {
-      return context.json({ error: "Authentication is required." }, 401);
+      return publicError(context, 401, "AUTH_REQUIRED", "Authentication is required.");
     }
 
     await prisma.$transaction((transaction) =>

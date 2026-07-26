@@ -1,4 +1,4 @@
-import { prisma } from "@vanstro/db";
+import { deleteExpiredConsentEvents, prisma } from "@vanstro/db";
 import nodemailer from "nodemailer";
 import { loadWorkerConfig } from "./config.js";
 
@@ -69,7 +69,8 @@ function getEmailTransport() {
       host: config.smtp.host,
       port: config.smtp.port,
       secure: config.smtp.port === 465,
-      requireTLS: config.smtp.port !== 465,
+      requireTLS: config.smtp.requireTls && config.smtp.port !== 465,
+      ignoreTLS: !config.smtp.requireTls,
       connectionTimeout: 10_000,
       greetingTimeout: 10_000,
       socketTimeout: 30_000,
@@ -80,7 +81,19 @@ function getEmailTransport() {
 
 async function sendPendingEmails() {
   const configured = getEmailTransport();
-  if (!configured) return;
+  if (!configured) {
+    if (process.env.VANSTRO_RUNTIME_MODE !== "development") {
+      console.error(
+        JSON.stringify({
+          service: "vanstro-worker",
+          level: "error",
+          message: "SMTP is not configured; email outbox items will not be delivered.",
+          timestamp: new Date().toISOString()
+        })
+      );
+    }
+    return;
+  }
 
   await prisma.emailOutbox.updateMany({
     where: { status: "running", lockedAt: { lte: new Date(Date.now() - config.emailLockTtlMs) } },
@@ -157,11 +170,25 @@ async function sendPendingEmails() {
       ]);
     } catch (error) {
       const message = error instanceof Error ? error.message : "SMTP delivery failed.";
-      const exhausted = item.attemptCount + 1 >= config.maxEmailAttempts;
+      const nextAttempt = item.attemptCount + 1;
+      const exhausted = nextAttempt >= config.maxEmailAttempts;
+      const retryDelayMs = 5 * 60 * 1000 * 2 ** Math.max(0, nextAttempt - 1);
+      console.error(
+        JSON.stringify({
+          service: "vanstro-worker",
+          level: "error",
+          message: "Email delivery failed.",
+          emailOutboxId: item.id,
+          templateKey: item.templateKey,
+          attempt: nextAttempt,
+          error: message,
+          timestamp: new Date().toISOString()
+        })
+      );
       await prisma.$transaction([
         prisma.emailDeliveryAttempt.create({ data: { emailOutboxId: item.id, provider: "smtp", success: false, error: message } }),
         prisma.emailEvent.create({ data: { emailOutboxId: item.id, eventType: "failed", payload: { error: message } } }),
-        prisma.emailOutbox.update({ where: { id: item.id }, data: { status: exhausted ? "failed" : "retry_wait", lastError: message, nextRunAt: exhausted ? null : new Date(Date.now() + 5 * 60 * 1000), lockedBy: null, lockedAt: null } })
+        prisma.emailOutbox.update({ where: { id: item.id }, data: { status: exhausted ? "failed" : "retry_wait", lastError: message, nextRunAt: exhausted ? null : new Date(Date.now() + retryDelayMs), lockedBy: null, lockedAt: null } })
       ]);
     }
   }
@@ -269,11 +296,117 @@ async function pushPendingErpOrders() {
   }
 }
 
+// Shared retry/backoff bookkeeping for a failed ERP job attempt.
+async function recordErpFailure(jobId: string, attemptCount: number, maxAttempts: number, error: unknown) {
+  const message = error instanceof Error ? error.message : "ERP sync failed.";
+  const exhausted = attemptCount + 1 >= maxAttempts;
+  await prisma.$transaction([
+    prisma.erpSyncAttempt.create({ data: { erpSyncJobId: jobId, success: false, error: message } }),
+    prisma.erpSyncJob.update({
+      where: { id: jobId },
+      data: {
+        status: exhausted ? "failed" : "retry_wait",
+        lastError: message,
+        nextRunAt: exhausted ? null : new Date(Date.now() + 5 * 60 * 1000),
+        lockedBy: null,
+        lockedAt: null
+      }
+    })
+  ]);
+}
+
+async function pushPendingErpCustomerSync() {
+  if (!config.erp) return;
+  const erp = config.erp;
+
+  const jobs = await prisma.erpSyncJob.findMany({
+    where: { type: "customer_sync", OR: [{ status: "pending" }, { status: "retry_wait", nextRunAt: { lte: new Date() } }] },
+    orderBy: { createdAt: "asc" },
+    take: 10
+  });
+
+  for (const job of jobs) {
+    const payload = typeof job.payload === "object" && job.payload ? (job.payload as { userId?: unknown }) : {};
+    const userId = typeof payload.userId === "string" ? payload.userId : undefined;
+    const claimed = await prisma.erpSyncJob.updateMany({
+      where: { id: job.id, status: job.status },
+      data: { status: "running", lockedBy: "worker", lockedAt: new Date(), attemptCount: { increment: 1 } }
+    });
+    if (claimed.count === 0) continue;
+    try {
+      const user = userId ? await prisma.user.findUnique({ where: { id: userId }, select: { id: true, email: true } }) : null;
+      if (!user) {
+        await prisma.erpSyncJob.update({ where: { id: job.id }, data: { status: "cancelled", lastError: "Customer no longer exists." } });
+        continue;
+      }
+      const response = await fetch(`${erp.baseUrl}/customers`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${erp.serviceToken}`, "Content-Type": "application/json", "Idempotency-Key": user.id },
+        body: JSON.stringify({ externalUserId: user.id, email: user.email }),
+        signal: AbortSignal.timeout(10_000)
+      });
+      const body = (await response.json().catch(() => null)) as { erpCustomerId?: unknown } | null;
+      if (!response.ok || typeof body?.erpCustomerId !== "string") throw new Error(`ERP customer sync failed with ${response.status}.`);
+      const erpCustomerId = body.erpCustomerId;
+      await prisma.$transaction([
+        prisma.erpCustomerLink.upsert({
+          where: { erpSystem_erpCustomerId: { erpSystem: "configured-erp", erpCustomerId } },
+          update: { customerUserId: user.id, websiteEmail: user.email },
+          create: { customerUserId: user.id, websiteEmail: user.email, erpCustomerId, erpSystem: "configured-erp" }
+        }),
+        prisma.erpSyncAttempt.create({ data: { erpSyncJobId: job.id, success: true, response: { erpCustomerId } } }),
+        prisma.erpSyncJob.update({ where: { id: job.id }, data: { status: "succeeded", externalId: erpCustomerId, lockedBy: null, lockedAt: null } })
+      ]);
+    } catch (error) {
+      await recordErpFailure(job.id, job.attemptCount, erp.maxAttempts, error);
+    }
+  }
+}
+
+async function pushPendingErpInventoryRelease() {
+  if (!config.erp) return;
+  const erp = config.erp;
+
+  const jobs = await prisma.erpSyncJob.findMany({
+    where: { type: "inventory_release", OR: [{ status: "pending" }, { status: "retry_wait", nextRunAt: { lte: new Date() } }] },
+    orderBy: { createdAt: "asc" },
+    take: 10
+  });
+
+  for (const job of jobs) {
+    const claimed = await prisma.erpSyncJob.updateMany({
+      where: { id: job.id, status: job.status },
+      data: { status: "running", lockedBy: "worker", lockedAt: new Date(), attemptCount: { increment: 1 } }
+    });
+    if (claimed.count === 0) continue;
+    try {
+      const requestBody = { jobId: job.id, ...(typeof job.payload === "object" && job.payload ? (job.payload as Record<string, unknown>) : {}) };
+      const response = await fetch(`${erp.baseUrl}/inventory/release`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${erp.serviceToken}`, "Content-Type": "application/json", "Idempotency-Key": job.id },
+        body: JSON.stringify(requestBody),
+        signal: AbortSignal.timeout(10_000)
+      });
+      const body = (await response.json().catch(() => null)) as { ok?: unknown } | null;
+      if (!response.ok || body?.ok !== true) throw new Error(`ERP inventory release failed with ${response.status}.`);
+      await prisma.$transaction([
+        prisma.erpSyncAttempt.create({ data: { erpSyncJobId: job.id, success: true, request: requestBody } }),
+        prisma.erpSyncJob.update({ where: { id: job.id }, data: { status: "succeeded", lockedBy: null, lockedAt: null } })
+      ]);
+    } catch (error) {
+      await recordErpFailure(job.id, job.attemptCount, erp.maxAttempts, error);
+    }
+  }
+}
+
 async function tick() {
   try {
     await releaseExpiredReservations();
+    await deleteExpiredConsentEvents(prisma);
     await sendPendingEmails();
     await pushPendingErpOrders();
+    await pushPendingErpCustomerSync();
+    await pushPendingErpInventoryRelease();
     await readJobBacklog();
     return true;
   } catch (error) {

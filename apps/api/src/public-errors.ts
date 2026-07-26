@@ -1,0 +1,48 @@
+import type { Context } from "hono";
+
+export const PUBLIC_API_ERROR_CODES = [
+  "AUTH_INVALID_CREDENTIALS",
+  "AUTH_ACCOUNT_EXISTS",
+  "AUTH_PASSWORD_TOO_SHORT",
+  "AUTH_INVALID_INPUT",
+  "AUTH_REQUIRED",
+  "CATALOG_INVALID",
+  "INVENTORY_REFRESHING",
+  "INVENTORY_INSUFFICIENT",
+  "INVENTORY_NO_DEALER",
+  "CART_EMPTY",
+  "CART_ITEM_NOT_FOUND",
+  "CHECKOUT_INVALID",
+  "CHECKOUT_FULFILLMENT_UNAVAILABLE",
+  "PAYMENT_SESSION_NOT_FOUND",
+  "PAYMENT_SESSION_DENIED",
+  "COMMERCE_INVALID",
+  "COMMERCE_NOT_FOUND",
+  "COMMERCE_ACCESS_DENIED",
+  "RATE_LIMITED",
+  "CONTACT_INVALID",
+  "DEALER_APPLICATION_INVALID",
+  "SUBMISSION_INVALID",
+  "PRIVACY_CONSENT_INVALID",
+  "PRIVACY_CONSENT_FAILED",
+  "PRODUCT_IDENTITY_MISMATCH",
+  "ERP_UNAVAILABLE",
+  "ERP_MAPPING_INCOMPLETE",
+  "DASHBOARD_INVALID",
+  "DASHBOARD_NOT_FOUND",
+  "DASHBOARD_FORBIDDEN",
+  "DASHBOARD_CONFLICT",
+  "INTERNAL_ERROR"
+] as const;
+
+export type PublicApiErrorCode = (typeof PUBLIC_API_ERROR_CODES)[number];
+
+/** Keep `error` as the legacy string while adding a stable machine-readable code. */
+export function publicError(
+  context: Context,
+  status: 400 | 401 | 403 | 404 | 409 | 429 | 500 | 502,
+  code: PublicApiErrorCode,
+  message: string
+) {
+  return context.json({ error: message, code }, status);
+}

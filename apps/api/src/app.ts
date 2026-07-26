@@ -1,14 +1,19 @@
-import { prisma } from "@vanstro/db";
+import { prisma, Prisma } from "@vanstro/db";
 import { Hono } from "hono";
 import { createAuthRoutes } from "./routes/auth.js";
 import { createCatalogRoutes } from "./routes/catalog.js";
 import { createCliRoutes } from "./routes/cli.js";
+import { createCmsRoutes } from "./routes/cms.js";
 import { createCommerceRoutes } from "./routes/commerce.js";
+import { createErpIntegrationRoutes } from "./routes/erp-integration.js";
 import { createDashboardRoutes } from "./routes/dashboard.js";
 import { createMcpRoutes } from "./routes/mcp.js";
 import { createPrivacyRoutes } from "./routes/privacy.js";
+import { createPublicSupportRoutes } from "./dashboard/support.js";
 import { createSubmissionRoutes } from "./routes/submissions.js";
 import { rateLimitPublicWrites } from "./middleware/rate-limit.js";
+import { requestIdMiddleware } from "./middleware/request-id.js";
+import { publicError } from "./public-errors.js";
 
 type HealthPayload = {
   status: "ok";
@@ -86,7 +91,7 @@ export function createApp() {
     if (origin && allowedOrigins.has(origin)) {
       context.header("Access-Control-Allow-Origin", origin);
       context.header("Access-Control-Allow-Credentials", "true");
-      context.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+      context.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Cart-Token");
       context.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
       context.header("Vary", "Origin");
     }
@@ -97,16 +102,20 @@ export function createApp() {
 
     await next();
   });
+  app.use("*", requestIdMiddleware);
   app.use("*", rateLimitPublicWrites);
 
   apiRoutes.route("/", createAuthRoutes());
   apiRoutes.route("/", createSubmissionRoutes());
   apiRoutes.route("/", createCommerceRoutes());
   apiRoutes.route("/", createCatalogRoutes());
+  apiRoutes.route("/", createErpIntegrationRoutes());
+  apiRoutes.route("/", createCmsRoutes());
   apiRoutes.route("/", createCliRoutes());
   apiRoutes.route("/", createDashboardRoutes());
   apiRoutes.route("/", createMcpRoutes());
   apiRoutes.route("/", createPrivacyRoutes());
+  apiRoutes.route("/", createPublicSupportRoutes());
 
   app.get("/health/live", (context) => context.json(liveResponse()));
   app.get("/health/ready", async (context) => {
@@ -126,6 +135,29 @@ export function createApp() {
   });
   app.route("/", apiRoutes);
   app.route("/api/v1", apiRoutes);
+
+  app.notFound((context) => publicError(context, 404, "COMMERCE_NOT_FOUND", "The requested resource was not found."));
+
+  app.onError((error, context) => {
+    // Map well-known Prisma errors to stable codes so dashboard mutations on
+    // missing/duplicate records return 404/409 instead of an opaque 500.
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") return publicError(context, 404, "DASHBOARD_NOT_FOUND", "The requested resource was not found.");
+      if (error.code === "P2002") return publicError(context, 409, "DASHBOARD_CONFLICT", "A record with the same unique value already exists.");
+    }
+    console.error(
+      JSON.stringify({
+        ts: new Date().toISOString(),
+        service: "vanstro-api",
+        level: "error",
+        message: "Unhandled request error.",
+        path: context.req.path,
+        method: context.req.method,
+        error: error instanceof Error ? error.message : String(error)
+      })
+    );
+    return publicError(context, 500, "INTERNAL_ERROR", "An unexpected error occurred. Please try again.");
+  });
 
   return app;
 }

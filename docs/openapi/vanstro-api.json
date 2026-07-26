@@ -1,0 +1,425 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VanStro API",
+    "version": "1.0.0",
+    "description": "Generated from api-contract.ts endpoint constants."
+  },
+  "servers": [
+    {
+      "url": "https://api.vanstro.ca/api/v1"
+    }
+  ],
+  "paths": {
+    "catalog": {
+      "get": {
+        "summary": "source",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "warranty": {
+      "get": {
+        "summary": "type",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "image": {
+      "get": {
+        "summary": "assetType",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "draft": {
+      "get": {
+        "summary": "status",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "pos": {
+      "get": {
+        "summary": "paymentMethod",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "pending": {
+      "get": {
+        "summary": "status",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/home/products": {
+      "get": {
+        "summary": "homeProducts",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/home/banners": {
+      "get": {
+        "summary": "homeBanners",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/home/articles": {
+      "get": {
+        "summary": "homeArticles",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "categories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "products",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/products": {
+      "get": {
+        "summary": "dashboardProducts",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/catalog": {
+      "get": {
+        "summary": "dashboardCatalog",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/storefront/config": {
+      "get": {
+        "summary": "dashboardStorefrontConfig",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/dealer-portal/settings": {
+      "get": {
+        "summary": "dashboardDealerPortalSettings",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/modules/readiness": {
+      "get": {
+        "summary": "dashboardModulesReadiness",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/inventory/snapshots": {
+      "get": {
+        "summary": "dashboardInventorySnapshots",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/email/templates": {
+      "get": {
+        "summary": "dashboardEmailTemplates",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dashboard/support/handoffs": {
+      "get": {
+        "summary": "dashboardSupportHandoffs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/support/handoffs": {
+      "get": {
+        "summary": "supportHandoffs",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dealers/lookup": {
+      "get": {
+        "summary": "dealersLookup",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/integrations/erp/catalog/skus": {
+      "get": {
+        "summary": "erpCatalogSkus",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/integrations/erp/upstream/products": {
+      "get": {
+        "summary": "erpUpstreamProducts",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/integrations/erp/upstream/skus": {
+      "get": {
+        "summary": "erpUpstreamSkus",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/integrations/erp/upstream/colors": {
+      "get": {
+        "summary": "erpUpstreamColors",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/integrations/erp/upstream/categories": {
+      "get": {
+        "summary": "erpUpstreamCategories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/products/commerce": {
+      "get": {
+        "summary": "productCommerce",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/products/inventory": {
+      "get": {
+        "summary": "productInventory",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/inventory/reservations": {
+      "get": {
+        "summary": "inventoryReservations",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/promotions/active": {
+      "get": {
+        "summary": "activePromotions",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "summary": "cart",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/cart/items": {
+      "get": {
+        "summary": "cartItems",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/account/favorites": {
+      "get": {
+        "summary": "favorites",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dealers": {
+      "get": {
+        "summary": "dealers",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/checkout/session": {
+      "get": {
+        "summary": "checkoutSession",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/payments/callback": {
+      "get": {
+        "summary": "paymentCallback",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "get": {
+        "summary": "login",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/customer/register": {
+      "get": {
+        "summary": "register",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "currentSession",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/dealer-applications": {
+      "get": {
+        "summary": "dealerApplications",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

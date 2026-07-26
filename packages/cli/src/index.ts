@@ -53,7 +53,16 @@ async function request(config: CliConfig, path: string, method = "GET") {
   return body;
 }
 
-function parseCommand(args: string[]): { command: Command; id?: string } {
+function parseCommand(args: string[]) {
+  if (args.includes("--help") || args.includes("-h")) {
+    console.log(usage());
+    return { command: undefined as Command | undefined, id: undefined };
+  }
+  if (args.includes("--version") || args.includes("-v")) {
+    console.log("0.1.0");
+    return { command: undefined as Command | undefined, id: undefined };
+  }
+
   const [command, id] = args;
 
   if (
@@ -74,6 +83,7 @@ function parseCommand(args: string[]): { command: Command; id?: string } {
 
 export async function runCli(args = process.argv.slice(2), env = process.env) {
   const { command, id } = parseCommand(args);
+  if (!command) return;
   const config = getConfig(env);
 
   switch (command) {

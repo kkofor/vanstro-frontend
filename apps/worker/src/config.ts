@@ -9,6 +9,7 @@ export type WorkerConfig = {
     user: string;
     password: string;
     from: string;
+    requireTls: boolean;
   };
   erp?: {
     baseUrl: string;
@@ -79,7 +80,9 @@ export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerCo
       port: integer("SMTP_PORT", env.SMTP_PORT, 587, 1, 65535),
       user: required("SMTP_USER", env.SMTP_USER),
       password: required("SMTP_PASSWORD", env.SMTP_PASSWORD),
-      from: required("SMTP_FROM", env.SMTP_FROM)
+      from: required("SMTP_FROM", env.SMTP_FROM),
+      // STARTTLS is required by default; local dev SMTP (e.g. Mailpit) can opt out.
+      requireTls: env.SMTP_REQUIRE_TLS?.trim().toLowerCase() !== "false"
     };
   }
 

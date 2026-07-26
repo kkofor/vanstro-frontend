@@ -7,16 +7,12 @@ type OrderPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return [{ id: "demo-order" }];
-}
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = buildPrivateMetadata(
   "Order status",
   "Review VanStro order status, reservation and fulfillment progress.",
-  "/orders/demo-order"
+  "/orders"
 );
 
 export async function OrderPageContent({ id, locale = "en-CA" }: { id: string; locale?: SiteLocale }) {
@@ -27,7 +23,7 @@ export async function OrderPageContent({ id, locale = "en-CA" }: { id: string; l
       <section className="page-hero">
         <div className="container">
           <h1>{french ? "État de la commande" : "Order status"}</h1>
-          <p>{french ? "Suivez la confirmation du paiement, la réservation du stock et le traitement de la commande par le détaillant." : "Follow payment registration, inventory reservation and dealer fulfillment."}</p>
+          <p>{french ? "Suivez la confirmation du paiement, la réservation du stock et le traitement de la commande par le détaillant." : "Follow payment confirmation, inventory reservation and dealer fulfillment."}</p>
         </div>
       </section>
       <section className="page-panel">

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import { AppChrome } from "@/components/layout/AppChrome";
 import { CookieBar } from "@/components/layout/CookieBar";
 import { CookiePreferenceDrawer } from "@/components/layout/CookiePreferenceDrawer";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { StorefrontProvider } from "@/components/storefront/StorefrontProvider";
 import { LocaleBoundary } from "@/components/i18n/LocaleBoundary";
 import { CustomerSessionProvider } from "@/components/account/CustomerSessionProvider";
@@ -39,6 +41,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <AppChrome>{children}</AppChrome>
               <CookieBar />
               <CookiePreferenceDrawer />
+              <Suspense fallback={null}>
+                <PageViewTracker />
+              </Suspense>
             </StorefrontProvider>
           </CustomerSessionProvider>
         </LocaleBoundary>

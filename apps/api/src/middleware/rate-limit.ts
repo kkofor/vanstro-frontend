@@ -15,6 +15,7 @@ function policyFor(context: Context): RateLimitPolicy | undefined {
   if (
     path === "/checkout/session" ||
     path === "/payments/callback" ||
+    path === "/address/autocomplete" ||
     path === "/cart" ||
     path.startsWith("/cart/")
   ) {
@@ -28,6 +29,9 @@ function policyFor(context: Context): RateLimitPolicy | undefined {
     path === "/privacy/consent-events"
   ) {
     return { key: "public-write", limit: 30, windowMs: 60 * 60 * 1000 };
+  }
+  if (path === "/analytics/pageviews") {
+    return { key: "analytics", limit: 120, windowMs: 15 * 60 * 1000 };
   }
 }
 

@@ -52,6 +52,9 @@ const DASHBOARD_PERMISSION_RULES: DashboardPermissionRule[] = [
   { method: "POST", path: "/dashboard/sku-mappings", permission: "products.write" },
   { method: "PATCH", path: "/dashboard/sku-mappings/:id", permission: "products.write" },
   { method: "DELETE", path: "/dashboard/sku-mappings/:id", permission: "products.write" },
+  { method: "POST", path: "/dashboard/catalog/sync-from-erp", permission: "products.write" },
+  { method: "GET", path: "/dashboard/catalog/sync-runs/latest", permission: "products.read" },
+  { method: "POST", path: "/dashboard/products/:id/refresh-erp-colors", permission: "products.write" },
   { method: "GET", path: "/dashboard/pricing", permission: "products.read" },
   { method: "POST", path: "/dashboard/pricing", permission: "pricing.write" },
   { method: "PATCH", path: "/dashboard/pricing/:id", permission: "pricing.write" },
@@ -94,11 +97,19 @@ const DASHBOARD_PERMISSION_RULES: DashboardPermissionRule[] = [
   { method: "GET", path: "/dashboard/audit-logs", permission: "audit_logs.read" },
   { method: "GET", path: "/dashboard/operations/alerts", permission: "audit_logs.read" },
   { method: "GET", path: "/dashboard/payment-sessions", permission: "orders.read" },
+  { method: "POST", path: "/dashboard/payment-sessions/:id/mark-paid", permission: "orders.update" },
+  { method: "GET", path: "/dashboard/erp-webhook-events", permission: "erp.webhooks.read" },
+  { method: "GET", path: "/dashboard/email/provider", permission: "email.provider.read" },
+  { method: "PUT", path: "/dashboard/email/provider", permission: "email.provider.write" },
+  { method: "POST", path: "/dashboard/email/provider/test", permission: "email.provider.write" },
+  { method: "GET", path: "/dashboard/analytics/summary", permission: "analytics.read" },
   { method: "GET", path: "/dashboard/orders", permission: "orders.read" },
   { method: "GET", path: "/dashboard/orders/:id", permission: "orders.read" },
   { method: "PATCH", path: "/dashboard/orders/:id/status", permission: "orders.update" },
   { method: "POST", path: "/dashboard/orders/:id/assign-dealer", permission: "orders.assign" },
   { method: "GET", path: "/dashboard/inventory/snapshots", permission: "inventory.read" },
+  { method: "POST", path: "/dashboard/inventory/snapshots", permission: "inventory.write" },
+  { method: "PATCH", path: "/dashboard/inventory/snapshots/:id", permission: "inventory.write" },
   { method: "GET", path: "/dashboard/email/templates", permission: "email.templates.read" },
   { method: "GET", path: "/dashboard/email/templates/:id", permission: "email.templates.read" },
   { method: "POST", path: "/dashboard/email/templates", permission: "email.templates.write" },
@@ -131,7 +142,12 @@ const DASHBOARD_PERMISSION_RULES: DashboardPermissionRule[] = [
   { method: "PUT", path: "/dashboard/dealer-portal/settings", permission: "content.write" },
   { method: "GET", path: "/dashboard/modules/readiness", permission: "content.read" },
   { method: "GET", path: "/dashboard/modules/:moduleKey", permission: "content.read" },
-  { method: "PUT", path: "/dashboard/modules/:moduleKey", permission: "content.write" }
+  { method: "PUT", path: "/dashboard/modules/:moduleKey", permission: "content.write" },
+  { method: "GET", path: "/dashboard/crm/contacts", permission: "crm.read" },
+  { method: "GET", path: "/dashboard/crm/contacts/:id", permission: "crm.read" },
+  { method: "PATCH", path: "/dashboard/crm/contacts/:id", permission: "crm.update" },
+  { method: "POST", path: "/dashboard/crm/contacts/:id/notes", permission: "crm.update" },
+  { method: "POST", path: "/dashboard/crm/contacts/:id/promote-to-erp", permission: "crm.promote" }
 ];
 
 function matchesRoutePath(path: string, routePath: string) {

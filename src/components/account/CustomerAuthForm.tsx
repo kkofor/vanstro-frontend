@@ -38,7 +38,7 @@ export function CustomerAuthForm({ mode, locale: explicitLocale }: { mode: "logi
           password: String(form.get("password") ?? "")
         });
       }
-      router.push(localeHref("/favorites", locale));
+      router.push(localeHref("/account", locale));
       router.refresh();
     } catch (error) {
       setError(locale === "fr-CA"

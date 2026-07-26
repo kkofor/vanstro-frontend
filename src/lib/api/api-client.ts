@@ -4,11 +4,16 @@ import {
   ArticleDetail,
   ArticleSummary,
   AuthSession,
+  AccountOrder,
   Banner,
   Cart,
   CategorySummary,
   CheckoutSession,
   CheckoutSessionInput,
+  CommerceOrder,
+  CustomerAccount,
+  CustomerAddress,
+  PaymentCallbackInput,
   Dealer,
   DealerApplicationInput,
   FavoriteItem,
@@ -28,6 +33,7 @@ import {
   PUBLIC_API_ERROR_CODES,
   PublicApiErrorCode,
   RegisterInput,
+  ShippingAddress,
   WebsiteApiProduct
 } from "./api-contract";
 import {
@@ -330,6 +336,45 @@ export const vanstroApi = {
       validateCheckoutSession
     );
   },
+  addressAutocomplete(query: string) {
+    return apiFetch<{ suggestions: Array<{ id: string; label: string }> }>(
+      withQuery(API_ENDPOINTS.addressAutocomplete, { query })
+    );
+  },
+  addressRetrieve(id: string) {
+    return apiFetch<{ address: ShippingAddress }>(
+      withQuery(API_ENDPOINTS.addressAutocomplete, { id })
+    );
+  },
+  simulatePayment(sessionId: string) {
+    return postJson<{ sessionId: string; providerPaymentId: string; signature: string }>(
+      API_ENDPOINTS.paymentSimulate,
+      { sessionId }
+    );
+  },
+  confirmPayment(input: PaymentCallbackInput, options?: { signature?: string }) {
+    return apiFetch<CommerceOrder>(
+      API_ENDPOINTS.paymentCallback,
+      {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: options?.signature ? { "X-Payment-Signature": options.signature } : undefined
+      },
+      (value) => value as CommerceOrder
+    );
+  },
+  getOrder(orderId: string, token?: string) {
+    return apiFetch<CommerceOrder>(
+      withQuery(API_ENDPOINTS.order(encodeURIComponent(orderId)), token ? { token } : undefined),
+      {},
+      (value) => value as CommerceOrder
+    );
+  },
+  getOrderStatus(orderId: string, token?: string) {
+    return apiFetch<{ id: string; status: string; createdAt: string }>(
+      withQuery(API_ENDPOINTS.orderStatus(encodeURIComponent(orderId)), token ? { token } : undefined)
+    );
+  },
   removeCartItem(cartItemId: string) {
     return apiFetch<Cart>(API_ENDPOINTS.cartItem(cartItemId), {
       method: "DELETE"
@@ -399,6 +444,33 @@ export const vanstroApi = {
   getCurrentSession() {
     return apiFetch<AuthSession>(API_ENDPOINTS.currentSession, {}, validateAuthSession);
   },
+  getAccountMe() {
+    return apiFetch<CustomerAccount>(API_ENDPOINTS.accountMe);
+  },
+  updateAccountMe(input: { firstName?: string; lastName?: string; phone?: string }) {
+    return apiFetch<CustomerAccount>(API_ENDPOINTS.accountMe, { method: "PATCH", body: JSON.stringify(input) });
+  },
+  getAccountAddresses() {
+    return apiFetch<CustomerAddress[]>(API_ENDPOINTS.accountAddresses, {}, arrayOf((value) => value as CustomerAddress));
+  },
+  createAccountAddress(input: Omit<CustomerAddress, "id">) {
+    return postJson<CustomerAddress>(API_ENDPOINTS.accountAddresses, input, (value) => value as CustomerAddress);
+  },
+  updateAccountAddress(addressId: string, input: Partial<Omit<CustomerAddress, "id">>) {
+    return apiFetch<CustomerAddress>(API_ENDPOINTS.accountAddress(addressId), {
+      method: "PATCH",
+      body: JSON.stringify(input)
+    }, (value) => value as CustomerAddress);
+  },
+  deleteAccountAddress(addressId: string) {
+    return apiFetch<{ ok: true }>(API_ENDPOINTS.accountAddress(addressId), { method: "DELETE" }, validateOk);
+  },
+  getAccountOrders() {
+    return apiFetch<AccountOrder[]>(API_ENDPOINTS.accountOrders, {}, arrayOf((value) => value as AccountOrder));
+  },
+  getAccountOrder(orderId: string) {
+    return apiFetch<AccountOrder>(API_ENDPOINTS.accountOrder(orderId), {}, (value) => value as AccountOrder);
+  },
   async logout() {
     try {
       return await postJson<{ ok: true }>(API_ENDPOINTS.logout, {});
@@ -420,6 +492,18 @@ export const vanstroApi = {
     preferences: { strictlyNecessary: true; functional: boolean; analytics: boolean; targeting: boolean };
   }) {
     return postJson<{ id: string; createdAt: string }>("/privacy/consent-events", input);
+  },
+  trackPageView(input: {
+    path: string;
+    sessionId: string;
+    consentAnalytics: true;
+    referrer?: string;
+    locale?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
+  }) {
+    return postJson<{ id: string; createdAt: string }>(API_ENDPOINTS.analyticsPageviews, input);
   },
   getDashboardModuleReadiness() {
     return apiFetch<DashboardModuleReadiness[]>(DASHBOARD_API_ENDPOINTS.moduleReadiness);

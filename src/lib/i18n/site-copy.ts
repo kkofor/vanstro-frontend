@@ -26,6 +26,7 @@ export type SiteCopy = {
   account: {
     signIn: string;
     signedIn: string;
+    myAccount: string;
     signOut: string;
     saved: string;
     savedCount: (count: number) => string;
@@ -210,6 +211,7 @@ const englishCopy: SiteCopy = {
   account: {
     signIn: "Sign in",
     signedIn: "Signed in",
+    myAccount: "My account",
     signOut: "Sign out",
     saved: "Saved",
     savedCount: (count) => `Saved ${count}`,
@@ -365,7 +367,7 @@ const englishCopy: SiteCopy = {
         title: "Customer support",
         links: [
           { label: "Contact us", href: "/contact" },
-          { label: "Order tracking", href: "/orders/demo-order" },
+          { label: "Order tracking", href: "/orders/lookup" },
           { label: "Store pickup", href: "/#stores" },
           { label: "Shipping & delivery", href: "/articles/pickup-and-delivery-options" },
           { label: "Returns & exchanges", href: "/return-policy" }
@@ -448,6 +450,7 @@ const frenchCopy: SiteCopy = {
   account: {
     signIn: "Se connecter",
     signedIn: "Connecté",
+    myAccount: "Mon compte",
     signOut: "Se déconnecter",
     saved: "Favoris",
     savedCount: (count) => `Favoris ${count}`,
@@ -603,7 +606,7 @@ const frenchCopy: SiteCopy = {
         title: "Service à la clientèle",
         links: [
           { label: "Nous joindre", href: "/contact" },
-          { label: "Suivi de commande", href: "/orders/demo-order" },
+          { label: "Suivi de commande", href: "/fr/orders/lookup" },
           { label: "Ramassage en magasin", href: "/fr#stores" },
           { label: "Expédition et livraison", href: "/articles/pickup-and-delivery-options" },
           { label: "Retours et échanges", href: "/return-policy" }

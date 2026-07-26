@@ -6,6 +6,7 @@ export type ApiConfig = {
   paymentCallbackSecret: string;
   erpWebhookSecret?: string;
   deliveryFlatFeeCents: number;
+  enablePaymentSimulation: boolean;
 };
 
 type RuntimeMode = "development" | "deployment";
@@ -58,6 +59,7 @@ export function loadApiConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
     erpWebhookSecret: mode === "deployment"
       ? deploymentSecret("ERP_WEBHOOK_SECRET", env.ERP_WEBHOOK_SECRET, mode)
       : env.ERP_WEBHOOK_SECRET?.trim() || undefined,
-    deliveryFlatFeeCents: integer("DELIVERY_FLAT_FEE_CENTS", env.DELIVERY_FLAT_FEE_CENTS, 1500, 0, 100000000)
+    deliveryFlatFeeCents: integer("DELIVERY_FLAT_FEE_CENTS", env.DELIVERY_FLAT_FEE_CENTS, 1500, 0, 100000000),
+    enablePaymentSimulation: env.ENABLE_PAYMENT_SIMULATION?.trim().toLowerCase() === "true"
   };
 }

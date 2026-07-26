@@ -26,19 +26,42 @@ See `docs/reports/erp-product-api-integration-2026-07-26.md`.
 - `GET /products/:identifier/erp-colors` — public color enrichment from ERP `colorList`
 - `ProductSkuErpMapping.erpProductId` / `erpSkuId` + dashboard sku-mapping CRUD
 
+## Catalog + inventory loop (implemented 2026-07-28)
+
+| Area | What exists | Paths / models |
+| --- | --- | --- |
+| ERP → Dashboard catalog pull | Merge upstream `productList`/`skuList` into local products/SKU mappings without overwriting marketing fields | `POST /dashboard/catalog/sync-from-erp`, `apps/api/src/integrations/erp-catalog-sync/service.ts` |
+| Dashboard inventory ops | Manual on-hand adjust; payment decrements `quantityOnHand` | `POST/PATCH /dashboard/inventory/snapshots`, `inventory.write` |
+| Storefront catalog | `status=active` products served via `GET /products` | No separate cache layer |
+| Order → ERP outbound | Worker `order_create` sends dealer ERP location, SKU mapping ids, inventory lines | `apps/worker/src/index.ts` |
+| Inventory release queue | Expired reservations + cancelled orders enqueue `inventory_release` | `ErpSyncJob(type: inventory_release)` |
+
+**Still deferred:** inbound ERP quantity webhooks (upstream product API has no `quantityOnHand`); promotion discount engine at checkout.
+
 ## ERP agent — still not implemented here
 
-- `POST /integrations/erp/webhooks/shipment`
 - `POST /integrations/erp/webhooks/customer-update`
-- Inbound inventory sync → `InventorySnapshot`
+- Inbound ERP inventory quantity sync → `InventorySnapshot` (await ERP inventory API)
 - Webhook timestamp/replay hardening per `docs/erp-adapter-contract.md`
 
-## CRM agent — not implemented here
+## CRM agent — Website CRM implemented (2026-07-28)
 
-- `GET /dashboard/customers` (website `kind=customer` users)
-- `GET /dashboard/customers/:id` (profile, orders, consent)
-- `POST /dashboard/customers/:id/promote-to-erp` → enqueue `customer_sync`
-- Permissions already seeded: `crm.read`, `crm.update`, `crm.promote`
+Website CRM is managed in Dashboard under `/dashboard?tab=crmContacts`:
+
+- `GET /dashboard/crm/contacts` — list contacts with stage/search/pagination (`crm.read`)
+- `GET /dashboard/crm/contacts/:id` — profile, events timeline, notes, order summary, read-only ERP links/sync jobs
+- `PATCH /dashboard/crm/contacts/:id` — stage and profile fields (`crm.update`)
+- `POST /dashboard/crm/contacts/:id/notes` — operator notes (`crm.update`)
+- `POST /dashboard/crm/contacts/:id/promote-to-erp` — enqueue `customer_sync` (`crm.promote`)
+
+Registration, cart, checkout, favorites, and paid orders dual-write into `crm_contacts` / `crm_contact_events` via `apps/api/src/crm/service.ts`.
+
+**External ERP CRM is not managed in Dashboard.** Operators can only view sync status and manually promote contacts to the `customer_sync` queue. Worker pushes to ERP `POST /customers`.
+
+## CRM agent — still not implemented here
+
+- `POST /integrations/erp/webhooks/customer-update` inbound sync
+- Deep ERP CRM field editing or configuration UI
 
 ## Dashboard completed in this workstream
 

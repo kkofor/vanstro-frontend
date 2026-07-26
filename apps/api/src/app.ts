@@ -9,6 +9,7 @@ import { createErpIntegrationRoutes } from "./routes/erp-integration.js";
 import { createDashboardRoutes } from "./routes/dashboard.js";
 import { createMcpRoutes } from "./routes/mcp.js";
 import { createPrivacyRoutes } from "./routes/privacy.js";
+import { createAnalyticsRoutes } from "./routes/analytics.js";
 import { createPublicSupportRoutes } from "./dashboard/support.js";
 import { createSubmissionRoutes } from "./routes/submissions.js";
 import { rateLimitPublicWrites } from "./middleware/rate-limit.js";
@@ -115,6 +116,7 @@ export function createApp() {
   apiRoutes.route("/", createDashboardRoutes());
   apiRoutes.route("/", createMcpRoutes());
   apiRoutes.route("/", createPrivacyRoutes());
+  apiRoutes.route("/", createAnalyticsRoutes());
   apiRoutes.route("/", createPublicSupportRoutes());
 
   app.get("/health/live", (context) => context.json(liveResponse()));

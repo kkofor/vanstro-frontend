@@ -751,6 +751,24 @@ const EMAIL_TEMPLATES: Array<{ key: string; name: string; subject: string; bodyT
     bodyText: "Hi {{firstName}},\n\nThank you for your order.\n\nOrder: {{orderId}}\nTotal: {{totalDisplay}}\nFulfillment: {{fulfillment}}\n\nWe will notify you when your dealer prepares your order."
   },
   {
+    key: "welcome",
+    name: "Welcome email",
+    subject: "Welcome to VanStro, {{firstName}}",
+    bodyText: "Hi {{firstName}},\n\nYour VanStro account is ready. You can save addresses, track orders, and shop with your local dealer.\n\nSigned in as {{email}}."
+  },
+  {
+    key: "shipment_notification",
+    name: "Shipment notification",
+    subject: "Your VanStro order {{orderId}} has shipped",
+    bodyText: "Hi {{firstName}},\n\nYour order {{orderId}} has shipped.\n\nTracking: {{trackingNumber}}\nStatus: {{shipmentStatus}}\n\nYou can check progress anytime with your order number and access token."
+  },
+  {
+    key: "order_delivered",
+    name: "Order delivered",
+    subject: "Your VanStro order {{orderId}} was delivered",
+    bodyText: "Hi {{firstName}},\n\nYour order {{orderId}} was marked as delivered. Thank you for shopping with VanStro."
+  },
+  {
     key: "support_handoff_received",
     name: "Support handoff received",
     subject: "New VanStro support handoff from {{channel}}",

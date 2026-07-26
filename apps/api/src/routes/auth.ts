@@ -1,5 +1,7 @@
 import { hashPassword, prisma } from "@vanstro/db";
 import { Hono, type Context } from "hono";
+import { upsertContactFromRegistration, linkContactToUser, recordLoginEvent } from "../crm/service.js";
+import { queueCustomerEmail } from "../email/queue.js";
 import { publicError } from "../public-errors.js";
 import {
   createSession,
@@ -81,16 +83,35 @@ export function createAuthRoutes() {
       return publicError(context, 409, "AUTH_ACCOUNT_EXISTS", "An account already exists for this email.");
     }
 
-    const user = await prisma.user.create({
-      data: {
+    const user = await prisma.$transaction(async (transaction) => {
+      const created = await transaction.user.create({
+        data: {
+          email: normalizedEmail,
+          kind: "customer",
+          status: "active",
+          customerProfile: {
+            create: { firstName: firstName.trim(), lastName: lastName.trim() }
+          },
+          passwordCredential: { create: hashPassword(password) }
+        }
+      });
+      await linkContactToUser(transaction, normalizedEmail, created.id);
+      await upsertContactFromRegistration(transaction, {
+        userId: created.id,
         email: normalizedEmail,
-        kind: "customer",
-        status: "active",
-        customerProfile: {
-          create: { firstName: firstName.trim(), lastName: lastName.trim() }
-        },
-        passwordCredential: { create: hashPassword(password) }
-      }
+        firstName: firstName.trim(),
+        lastName: lastName.trim()
+      });
+      await queueCustomerEmail(transaction, {
+        templateKey: "welcome",
+        toEmail: normalizedEmail,
+        payload: {
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          email: normalizedEmail
+        }
+      });
+      return created;
     });
     const session = await createSession(user.id, {
       ipAddress: getRequestIp(context),
@@ -132,6 +153,10 @@ export function createAuthRoutes() {
       email: normalizedEmail,
       success: true
     });
+    await prisma.$transaction(async (transaction) => {
+      await linkContactToUser(transaction, normalizedEmail, result.user.id);
+      await recordLoginEvent(transaction, result.user.id);
+    }).catch(() => undefined);
 
     return context.json({
       data: {

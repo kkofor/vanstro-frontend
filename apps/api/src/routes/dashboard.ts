@@ -10,6 +10,7 @@ import { createDashboardCmsRoutes } from "../dashboard/cms.js";
 import { createDashboardCatalogRoutes } from "../dashboard/catalog.js";
 import { createDashboardModuleRoutes } from "../dashboard/modules.js";
 import { createDashboardDealerRoutes } from "../dashboard/dealers.js";
+import { createDashboardCrmRoutes } from "../dashboard/crm.js";
 import { createDashboardSupportRoutes } from "../dashboard/support.js";
 import { revokeUserSessions } from "../auth/session.js";
 import {
@@ -791,6 +792,7 @@ export function createDashboardRoutes() {
   routes.route("/", createDashboardCatalogRoutes());
   routes.route("/", createDashboardModuleRoutes());
   routes.route("/", createDashboardDealerRoutes());
+  routes.route("/", createDashboardCrmRoutes());
   routes.route("/", createDashboardSupportRoutes());
 
   return routes;

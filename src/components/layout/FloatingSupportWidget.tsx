@@ -7,6 +7,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { vanstroApi } from "@/lib/api/api-client";
 import { localeHref } from "@/lib/i18n/routes";
+import { assetPath } from "@/lib/assets";
 import { useModalFocus } from "@/lib/accessibility/useModalFocus";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import {

@@ -1,4 +1,5 @@
 import { prisma } from "@vanstro/db";
+import type { Prisma } from "@vanstro/db";
 import { Hono } from "hono";
 import { queueInternalAlert } from "../email/queue.js";
 import { publicError } from "../public-errors.js";
@@ -92,7 +93,7 @@ export function createPublicSupportRoutes() {
           sourcePath,
           dealerId: optionalString(body, "dealerId"),
           cartId: optionalString(body, "cartId"),
-          transcript
+          transcript: transcript as Prisma.InputJsonValue
         }
       });
 

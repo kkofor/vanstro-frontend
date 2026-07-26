@@ -1,16 +1,30 @@
 import { prisma, type Prisma } from "@vanstro/db";
+import { createHmac, randomBytes } from "node:crypto";
 import { Hono } from "hono";
 import {
   createServiceAccountToken,
   lockServiceAccountLifecycle
 } from "../auth/service-account.js";
+import { loadApiConfig } from "../config.js";
 import { getOperationalAlerts } from "../operations/alerts.js";
+import { restockCancelledOrderItems } from "../integrations/erp-sync/inventory.js";
 import { type DashboardEnv, writeAudit } from "./access.js";
 import {
   assertAssignableRoles,
   PermissionCeilingError
 } from "./permission-ceiling.js";
-import { badRequest, optionalString, optionalStringArray, optionalBoolean, pageMeta, parsePagination, readBody } from "./request.js";
+import { badRequest, optionalString, optionalStringArray, optionalBoolean, optionalNumber, pageMeta, parsePagination, readBody } from "./request.js";
+
+const EMAIL_PROVIDER_KEY = "default_smtp";
+
+function maskSmtpSettings(settings: Record<string, unknown> | null | undefined) {
+  if (!settings) return {};
+  const next = { ...settings };
+  if (typeof next.password === "string" && next.password.length > 0) {
+    next.password = "********";
+  }
+  return next;
+}
 
 export function createDashboardSystemRoutes() {
   const routes = new Hono<DashboardEnv>();
@@ -247,6 +261,187 @@ export function createDashboardSystemRoutes() {
     return context.json({ data: sessions, meta: pageMeta(pagination, total) });
   });
 
+  routes.post("/dashboard/payment-sessions/:id/mark-paid", async (context) => {
+    const session = await prisma.paymentSession.findUnique({ where: { id: context.req.param("id") } });
+    if (!session) return context.json({ error: "Payment session not found." }, 404);
+    if (session.status !== "pending") {
+      return context.json({ error: "Only pending payment sessions can be marked paid." }, 409);
+    }
+    if (session.paymentMethod === "card") {
+      return context.json({ error: "Card payments must be confirmed by the payment provider." }, 400);
+    }
+    const config = loadApiConfig();
+    const providerPaymentId = `dashboard-${randomBytes(8).toString("hex")}`;
+    const signature = createHmac("sha256", config.paymentCallbackSecret)
+      .update(`${session.id}:${providerPaymentId}`)
+      .digest("hex");
+    const app = (await import("../app.js")).createApp();
+    const response = await app.request("/api/v1/payments/callback", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-payment-signature": signature
+      },
+      body: JSON.stringify({
+        sessionId: session.id,
+        providerPaymentId,
+        status: "paid"
+      })
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      return context.json(
+        { error: (payload as { error?: string } | null)?.error ?? "Unable to mark payment session as paid." },
+        response.status as 400 | 401 | 409 | 500
+      );
+    }
+    await writeAudit(context, "dashboard.payment_sessions.mark_paid", "payment_session", session.id, {
+      providerPaymentId
+    });
+    return context.json({ data: (payload as { data: unknown }).data });
+  });
+
+  routes.get("/dashboard/erp-webhook-events", async (context) => {
+    const pagination = parsePagination(context);
+    const [events, total] = await Promise.all([
+      prisma.erpWebhookEvent.findMany({
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.erpWebhookEvent.count()
+    ]);
+    return context.json({ data: events, meta: pageMeta(pagination, total) });
+  });
+
+  routes.get("/dashboard/email/provider", async (context) => {
+    const account = await prisma.emailProviderAccount.findUnique({ where: { key: EMAIL_PROVIDER_KEY } });
+    if (!account) {
+      return context.json({
+        data: {
+          key: EMAIL_PROVIDER_KEY,
+          provider: "smtp",
+          status: "disabled",
+          settings: {}
+        }
+      });
+    }
+    return context.json({
+      data: {
+        id: account.id,
+        key: account.key,
+        provider: account.provider,
+        status: account.status,
+        settings: maskSmtpSettings(account.settings as Record<string, unknown> | null)
+      }
+    });
+  });
+
+  routes.put("/dashboard/email/provider", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const host = optionalString(body, "host");
+    const from = optionalString(body, "from");
+    const user = optionalString(body, "user");
+    const passwordInput = optionalString(body, "password");
+    const port = optionalNumber(body, "port") ?? 587;
+    const requireTls = optionalBoolean(body, "requireTls") ?? true;
+    const status = optionalString(body, "status") === "enabled" ? "enabled" : "disabled";
+    if (!host || !from || !user) return badRequest(context, "host, from and user are required.");
+
+    const existing = await prisma.emailProviderAccount.findUnique({ where: { key: EMAIL_PROVIDER_KEY } });
+    const existingSettings = (existing?.settings as Record<string, unknown> | null) ?? {};
+    const password =
+      passwordInput && passwordInput !== "********"
+        ? passwordInput
+        : typeof existingSettings.password === "string"
+          ? existingSettings.password
+          : undefined;
+    if (!password) return badRequest(context, "password is required.");
+
+    const settings = { host, port, user, password, from, requireTls };
+    const account = await prisma.emailProviderAccount.upsert({
+      where: { key: EMAIL_PROVIDER_KEY },
+      update: { provider: "smtp", status, settings },
+      create: { key: EMAIL_PROVIDER_KEY, provider: "smtp", status, settings }
+    });
+    await writeAudit(context, "dashboard.email_provider.update", "email_provider_account", account.id, {
+      status,
+      host,
+      port,
+      from
+    });
+    return context.json({
+      data: {
+        id: account.id,
+        key: account.key,
+        provider: account.provider,
+        status: account.status,
+        settings: maskSmtpSettings(settings)
+      }
+    });
+  });
+
+  routes.post("/dashboard/email/provider/test", async (context) => {
+    const body = await readBody(context);
+    const account = await prisma.emailProviderAccount.findUnique({ where: { key: EMAIL_PROVIDER_KEY } });
+    if (!account || account.status !== "enabled") {
+      return context.json({ error: "Enable and save SMTP settings before sending a test email." }, 409);
+    }
+    const settings = account.settings as Record<string, unknown>;
+    const target =
+      optionalString(body ?? {}, "toEmail") ??
+      (typeof settings.from === "string" ? settings.from : undefined);
+    if (!target) return badRequest(context, "toEmail is required.");
+    await prisma.emailOutbox.create({
+      data: {
+        templateKey: "welcome",
+        toEmail: target.toLowerCase(),
+        subject: "VanStro SMTP test",
+        payload: { firstName: "Team", email: target, lastName: "", test: true }
+      }
+    });
+    await writeAudit(context, "dashboard.email_provider.test", "email_provider_account", account.id, {
+      toEmail: target
+    });
+    return context.json({ data: { ok: true, queuedTo: target.toLowerCase() } });
+  });
+
+  routes.get("/dashboard/analytics/summary", async (context) => {
+    const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const [pageViews, uniqueSessions, topPaths, checkoutSessions, paidOrders, alerts] = await Promise.all([
+      prisma.pageViewEvent.count({ where: { createdAt: { gte: since } } }),
+      prisma.pageViewEvent.findMany({
+        where: { createdAt: { gte: since } },
+        distinct: ["sessionId"],
+        select: { sessionId: true }
+      }),
+      prisma.pageViewEvent.groupBy({
+        by: ["path"],
+        where: { createdAt: { gte: since } },
+        _count: { path: true },
+        orderBy: { _count: { path: "desc" } },
+        take: 10
+      }),
+      prisma.paymentSession.count({ where: { createdAt: { gte: since } } }),
+      prisma.order.count({ where: { createdAt: { gte: since }, status: "paid" } }),
+      getOperationalAlerts()
+    ]);
+    return context.json({
+      data: {
+        since: since.toISOString(),
+        pageViews,
+        uniqueSessions: uniqueSessions.length,
+        topPaths: topPaths.map((row) => ({ path: row.path, count: row._count.path })),
+        funnel: {
+          checkoutSessions,
+          paidOrders
+        },
+        alerts
+      }
+    });
+  });
+
   routes.get("/dashboard/orders", async (context) => {
     const pagination = parsePagination(context);
     const [orders, total] = await Promise.all([
@@ -338,6 +533,53 @@ export function createDashboardSystemRoutes() {
     });
   });
 
+  routes.post("/dashboard/inventory/snapshots", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const skuId = optionalString(body, "skuId");
+    const dealerLocationId = optionalString(body, "dealerLocationId");
+    const quantityOnHand = optionalNumber(body, "quantityOnHand");
+    if (!skuId || !dealerLocationId || quantityOnHand === undefined || quantityOnHand < 0) {
+      return badRequest(context, "skuId, dealerLocationId and non-negative quantityOnHand are required.");
+    }
+    const snapshot = await prisma.inventorySnapshot.upsert({
+      where: { skuId_dealerLocationId: { skuId, dealerLocationId } },
+      update: { quantityOnHand },
+      create: { skuId, dealerLocationId, quantityOnHand }
+    });
+    await writeAudit(context, "dashboard.inventory.snapshots.upsert", "inventory_snapshot", snapshot.id, {
+      quantityOnHand
+    });
+    return context.json({ data: snapshot }, 201);
+  });
+
+  routes.patch("/dashboard/inventory/snapshots/:id", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const quantityOnHand = optionalNumber(body, "quantityOnHand");
+    if (quantityOnHand === undefined || quantityOnHand < 0) {
+      return badRequest(context, "non-negative quantityOnHand is required.");
+    }
+    const existing = await prisma.inventorySnapshot.findUnique({ where: { id: context.req.param("id") } });
+    if (!existing) return context.json({ error: "Inventory snapshot not found." }, 404);
+    if (quantityOnHand < existing.quantityReserved) {
+      return badRequest(context, "quantityOnHand cannot be lower than quantityReserved.");
+    }
+    const snapshot = await prisma.inventorySnapshot.update({
+      where: { id: existing.id },
+      data: { quantityOnHand }
+    });
+    await writeAudit(context, "dashboard.inventory.snapshots.update", "inventory_snapshot", snapshot.id, {
+      quantityOnHand
+    });
+    return context.json({
+      data: {
+        ...snapshot,
+        quantityAvailable: Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved)
+      }
+    });
+  });
+
   const ORDER_TRANSITIONS: Record<string, Set<string>> = {
     paid: new Set(["processing", "cancelled"]),
     processing: new Set(["fulfilled", "cancelled"]),
@@ -366,6 +608,13 @@ export function createDashboardSystemRoutes() {
       await transaction.orderStatusEvent.create({
         data: { orderId: order.id, status: status as "paid" | "processing" | "fulfilled" | "cancelled", source: "dashboard", payload: { actorUserId: context.get("actorUserId") } }
       });
+      if (status === "cancelled" && order.status !== "cancelled") {
+        const orderWithItems = await transaction.order.findUniqueOrThrow({
+          where: { id: order.id },
+          include: { items: true }
+        });
+        await restockCancelledOrderItems(transaction, orderWithItems);
+      }
       return next;
     });
     await writeAudit(context, "dashboard.orders.status.update", "order", order.id, { status });

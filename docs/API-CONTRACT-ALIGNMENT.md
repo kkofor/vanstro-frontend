@@ -72,17 +72,17 @@ Implement Layer 1 first. Layer 2 is recommended for static storefront performanc
 
 | Method | Canonical path | Phase | Frontend today | Action |
 | --- | --- | --- | --- | --- |
-| GET | `/account/me` | P2 | — | Implement |
-| PATCH | `/account/me` | P2 | — | Implement |
-| GET | `/account/addresses` | P2 | — | Implement |
-| POST | `/account/addresses` | P2 | — | Implement |
-| PATCH | `/account/addresses/:id` | P2 | — | Implement |
-| DELETE | `/account/addresses/:id` | P2 | — | Implement |
-| GET | `/account/orders` | P2 | — | Implement |
-| GET | `/account/orders/:id` | P2 | — | Implement |
-| GET | `/account/favorites` | P2 | `/favorites` (GET) | **Migrate** to `/account/favorites` |
-| POST | `/account/favorites` | P2 | `/favorites` (POST) | **Migrate** |
-| DELETE | `/account/favorites/:productId` | P2 | `/favorites/:favoriteId` | **Migrate** — key by `productId` |
+| GET | `/account/me` | P2 | `/account`, `/account/profile` | **Implemented** |
+| PATCH | `/account/me` | P2 | `/account/profile` | **Implemented** |
+| GET | `/account/addresses` | P2 | `/account/addresses` | **Implemented** |
+| POST | `/account/addresses` | P2 | `/account/addresses` | **Implemented** |
+| PATCH | `/account/addresses/:id` | P2 | `/account/addresses` | **Implemented** |
+| DELETE | `/account/addresses/:id` | P2 | `/account/addresses` | **Implemented** |
+| GET | `/account/orders` | P2 | `/account/orders` | **Implemented** |
+| GET | `/account/orders/:id` | P2 | `/orders/[id]` (authenticated) | **Implemented** |
+| GET | `/account/favorites` | P2 | `/favorites` | **Implemented** |
+| POST | `/account/favorites` | P2 | `/favorites` | **Implemented** |
+| DELETE | `/account/favorites/:productId` | P2 | `/favorites` | **Implemented** |
 | GET | `/account/email-preferences` | P3 | — | Implement |
 | PATCH | `/account/email-preferences` | P3 | — | Implement |
 
@@ -141,13 +141,16 @@ Implement Layer 1 first. Layer 2 is recommended for static storefront performanc
 | PATCH | `/cart/items/:itemId` | P2 | `/cart/items/:itemId` | Keep |
 | DELETE | `/cart/items/:itemId` | P2 | `/cart/items/:itemId` | Keep |
 | DELETE | `/cart` | P2 | — | Implement |
-| POST | `/checkout/session` | P2 | — (was `/payments/sessions`) | **Create session here** |
+| POST | `/checkout/session` | P2 | — (was `/payments/sessions`) | **Create session here**; supports `paymentMethod: card|pos|cash` and delivery shipping fields |
+| GET | `/address/autocomplete` | P2 | — | Canada Post AddressComplete proxy (`query` or `id`) |
 | GET | `/payments/sessions/:id` | P2 | `/payments/sessions` (ambiguous) | **Query status here** |
+| POST | `/payments/simulate` | P2 | — | Dev-only signed manual callback helper when `ENABLE_PAYMENT_SIMULATION=true` |
 | POST | `/payments/callback` | P2 | `/payments/callback` | Keep — provider webhook |
 | POST | `/orders/cart` | P2 | `/orders/cart` | Keep — optional shortcut to checkout |
 | POST | `/orders/direct` | P2 | `/orders/direct` | Keep — optional shortcut to checkout |
-| GET | `/orders/:id` | P2 | — | Implement |
-| GET | `/orders/:id/status` | P2 | — | Guest order lookup |
+| GET | `/orders/:id` | P2 | `/orders/[id]` | **Implemented** — includes `statusEvents` + `shipment` |
+| GET | `/orders/:id/status` | P2 | order lookup | **Implemented** |
+| POST | `/analytics/pageviews` | P3 | first-party beacon | **Implemented** — requires `consentAnalytics: true` |
 | POST | `/inventory/reservations` | P2 | `/inventory/reservations` | Keep |
 | DELETE | `/inventory/reservations/:id` | P2 | — | Implement |
 
@@ -205,6 +208,9 @@ Payment failed/expired
 | GET | `/dashboard/sku-mappings` | P1a | — | Implement |
 | POST | `/dashboard/sku-mappings` | P1a | — | Implement |
 | PATCH | `/dashboard/sku-mappings/:id` | P1a | — | Implement |
+| POST | `/dashboard/catalog/sync-from-erp` | P2 | Products panel | **Implemented** |
+| GET | `/dashboard/catalog/sync-runs/latest` | P2 | Products panel | **Implemented** |
+| POST | `/dashboard/products/:id/refresh-erp-colors` | P2 | Product drawer | **Implemented** |
 
 ---
 
@@ -257,21 +263,38 @@ PUT  /dashboard/modules/:moduleKey
 | PATCH | `/dashboard/contact-leads/:id/status` | P1b | — | Implemented |
 | POST | `/dashboard/contact-leads/:id/assign` | P1b | — | Implemented |
 | POST | `/dashboard/contact-leads/:id/notes` | P1b | — | Implemented |
+| GET | `/dashboard/crm/contacts` | P2 | `/dashboard?tab=crmContacts` | **Implemented** |
+| GET | `/dashboard/crm/contacts/:id` | P2 | CRM detail drawer | **Implemented** |
+| PATCH | `/dashboard/crm/contacts/:id` | P2 | CRM stage/profile update | **Implemented** |
+| POST | `/dashboard/crm/contacts/:id/notes` | P2 | CRM note | **Implemented** |
+| POST | `/dashboard/crm/contacts/:id/promote-to-erp` | P2 | Promote to ERP queue | **Implemented** |
 | GET | `/dashboard/product-reviews` | P1b | — | Implemented |
 | GET | `/dashboard/product-reviews/:id` | P1b | — | Implemented |
 | PATCH | `/dashboard/product-reviews/:id/status` | P1b | — | Implemented |
 | POST | `/dashboard/product-reviews/:id/notes` | P1b | — | Implemented |
-| GET | `/dashboard/orders` | P2 | — | Implement |
-| GET | `/dashboard/orders/:id` | P2 | — | Implement |
-| PATCH | `/dashboard/orders/:id/status` | P2 | — | Implement |
-| POST | `/dashboard/orders/:id/assign-dealer` | P2 | `/orders/:id/dealer-assignment` | **Migrate frontend** |
-| GET | `/dashboard/erp-sync-jobs` | P2 | — | Implement |
-| GET | `/dashboard/erp-sync-jobs/:id` | P2 | — | Implement |
-| POST | `/dashboard/erp-sync-jobs/:id/retry` | P2 | — | Implement |
+| GET | `/dashboard/orders` | P2 | `/dashboard?tab=orders` | **Implemented** |
+| GET | `/dashboard/orders/:id` | P2 | order detail drawer | **Implemented** |
+| PATCH | `/dashboard/orders/:id/status` | P2 | `/dashboard?tab=orders` row action | **Implemented** |
+| POST | `/dashboard/orders/:id/assign-dealer` | P2 | `/dashboard?tab=orders` assign drawer | **Implemented** |
+| GET | `/dashboard/payment-sessions` | P2 | `/dashboard?tab=paymentSessions` | **Implemented** |
+| POST | `/dashboard/payment-sessions/:id/mark-paid` | P2 | PaymentSessionsPanel | **Implemented** — POS/cash only |
+| GET | `/dashboard/email/provider` | P3 | Email outbox tab | **Implemented** |
+| PUT | `/dashboard/email/provider` | P3 | Email outbox tab | **Implemented** |
+| POST | `/dashboard/email/provider/test` | P3 | Email outbox tab | **Implemented** |
+| GET | `/dashboard/analytics/summary` | P3 | Operations tab | **Implemented** |
+| GET | `/dashboard/erp-webhook-events` | P3 | — | **Implemented** |
+| GET | `/dashboard/inventory/snapshots` | P2 | `/dashboard?tab=inventorySnapshots` | **Implemented** |
+| POST | `/dashboard/inventory/snapshots` | P2 | Inventory panel | **Implemented** |
+| PATCH | `/dashboard/inventory/snapshots/:id` | P2 | Inventory panel | **Implemented** |
+| GET | `/dashboard/erp-sync-jobs` | P2 | `/dashboard?tab=erpSyncJobs` | **Implemented** |
+| GET | `/dashboard/erp-sync-jobs/:id` | P2 | ERP detail drawer | **Implemented** |
+| POST | `/dashboard/erp-sync-jobs/:id/retry` | P2 | `/dashboard?tab=erpSyncJobs` retry | **Implemented** |
+| GET | `/dashboard/support/handoffs` | P1b | `/dashboard?tab=supportHandoffs` | **Implemented** |
+| PATCH | `/dashboard/support/handoffs/:id/status` | P1b | handoff row action | **Implemented** |
 | GET | `/dashboard/email/templates` | P3 | — | Implement |
 | POST | `/dashboard/email/templates` | P3 | — | Implement |
 | GET | `/dashboard/email/outbox` | P1b read / P3 send | — | Implemented read in P1b |
-| POST | `/dashboard/email/outbox/:id/retry` | P3 | — | Implement |
+| POST | `/dashboard/email/outbox/:id/retry` | P3 | `/dashboard?tab=emailOutbox` | **Implemented** |
 | GET | `/dashboard/operations/alerts` | P3 | — | Implemented; failed and retry-wait ERP/email queue summary |
 | GET | `/dashboard/mcp/service-accounts` | P3 | — | Implemented |
 | POST | `/dashboard/mcp/service-accounts` | P3 | — | Implemented |

@@ -37,6 +37,7 @@ export type DashboardModuleKey =
   | "dealerProgram"
   | "dealerApplications"
   | "contactLeads"
+  | "crmContacts"
   | "articles"
   | "legalPages"
   | "footer"
@@ -216,8 +217,36 @@ export const DASHBOARD_API_ENDPOINTS = {
   footer: "/dashboard/footer",
   legalPages: "/dashboard/legal-pages",
   legalPage: (slug: string) => `/dashboard/legal-pages/${slug}`,
+  storefrontConfig: "/dashboard/storefront/config",
+  articles: "/dashboard/articles",
   contactLeads: "/contact/leads",
+  contactLeadsAdmin: "/dashboard/contact-leads",
+  crmContactsAdmin: "/dashboard/crm/contacts",
+  crmContact: (contactId: string) => `/dashboard/crm/contacts/${contactId}`,
+  crmContactPromote: (contactId: string) => `/dashboard/crm/contacts/${contactId}/promote-to-erp`,
+  dealerApplicationsAdmin: "/dashboard/dealer-applications",
+  productReviewsAdmin: "/dashboard/product-reviews",
   supportHandoffs: "/support/handoffs",
+  supportHandoffsAdmin: "/dashboard/support/handoffs",
+  orders: "/dashboard/orders",
+  order: (orderId: string) => `/dashboard/orders/${orderId}`,
+  paymentSessions: "/dashboard/payment-sessions",
+  erpSyncJobs: "/dashboard/erp-sync-jobs",
+  erpSyncJob: (jobId: string) => `/dashboard/erp-sync-jobs/${jobId}`,
+  catalogSyncFromErp: "/dashboard/catalog/sync-from-erp",
+  catalogSyncLatest: "/dashboard/catalog/sync-runs/latest",
+  refreshErpColors: (productId: string) => `/dashboard/products/${productId}/refresh-erp-colors`,
+  inventorySnapshots: "/dashboard/inventory/snapshots",
+  inventorySnapshot: (snapshotId: string) => `/dashboard/inventory/snapshots/${snapshotId}`,
+  operationAlerts: "/dashboard/operations/alerts",
+  analyticsSummary: "/dashboard/analytics/summary",
+  emailOutbox: "/dashboard/email/outbox",
+  emailTemplates: "/dashboard/email/templates",
+  emailProvider: "/dashboard/email/provider",
+  emailProviderTest: "/dashboard/email/provider/test",
+  paymentSessionMarkPaid: (sessionId: string) => `/dashboard/payment-sessions/${sessionId}/mark-paid`,
+  erpWebhookEvents: "/dashboard/erp-webhook-events",
+  auditLogs: "/dashboard/audit-logs",
   checkoutSession: "/checkout/session",
   dealerAssignment: (orderId: string) => `/dashboard/orders/${orderId}/assign-dealer`,
   reviewModeration: (reviewId: string) => `/dashboard/product-reviews/${reviewId}/status`,
@@ -357,6 +386,16 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     notes: "Validated public intake persists source path, locale and selected dealer context with status tracking."
   },
   {
+    key: "crmContacts",
+    label: "Website CRM contacts and funnel",
+    routeSurface: "/dashboard?tab=crmContacts",
+    currentSource: "src/components/dashboard/DashboardPanels.tsx",
+    reservedEndpoint: DASHBOARD_API_ENDPOINTS.crmContactsAdmin,
+    dashboardOwner: "commerce",
+    status: "client-ready",
+    notes: "Registered customers, commerce events, notes, and read-only ERP sync status. External ERP CRM is not edited here."
+  },
+  {
     key: "legalPages",
     label: "Legal and policy pages",
     routeSurface: "/privacy, /terms-and-conditions, /return-policy, etc.",
@@ -390,7 +429,7 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     key: "supportWidget",
     label: "AI support and human handoff",
     routeSurface: "global floating support",
-    currentSource: "src/components/layout/CustomerSupportWidget.tsx",
+    currentSource: "src/components/layout/FloatingSupportWidget.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.supportHandoffs,
     dashboardOwner: "support",
     status: "client-ready",

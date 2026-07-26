@@ -76,6 +76,48 @@ test("duplicate checkout for the same cart returns 409", async () => {
   }
 });
 
+test("delivery checkout requires a complete shipping address", async () => {
+  const suffix = randomBytes(6).toString("hex");
+  const cartToken = `delivery-cart-${suffix}`;
+  const location = await prisma.dealerLocation.findFirst({
+    where: { dealer: { status: "active" }, deliveryAvailable: true }
+  });
+  assert.ok(location, "seeded delivery dealer location is required");
+
+  const sku = await prisma.platformSku.findFirst({
+    where: { status: "active", product: { status: "active" }, prices: { some: { status: "active" } } },
+    include: { product: true }
+  });
+  assert.ok(sku, "seeded priced SKU is required");
+
+  const cart = await prisma.cart.create({ data: { guestToken: cartToken } });
+  await prisma.cartItem.create({ data: { cartId: cart.id, skuId: sku.id, quantity: 1 } });
+
+  const body = JSON.stringify({
+    firstName: "Ship",
+    lastName: "Test",
+    email: `delivery-${suffix}@vanstro.test`,
+    phone: "204-555-0100",
+    fulfillment: "delivery",
+    paymentMethod: "cash",
+    dealerLocationId: location.id
+  });
+  const headers = {
+    "content-type": "application/json",
+    "x-cart-token": cartToken
+  };
+
+  try {
+    const response = await app.request("/api/v1/checkout/session", { method: "POST", headers, body });
+    assert.equal(response.status, 400);
+    const json = (await response.json()) as { code?: string };
+    assert.equal(json.code, "CHECKOUT_INVALID");
+  } finally {
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+    await prisma.cart.delete({ where: { id: cart.id } });
+  }
+});
+
 test("inventory reservation requires dealerLocationId", async () => {
   const sku = await prisma.platformSku.findFirst({
     where: { status: "active", product: { status: "active" } },

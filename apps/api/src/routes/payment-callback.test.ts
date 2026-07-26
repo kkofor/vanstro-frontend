@@ -33,7 +33,7 @@ async function createCheckoutFixture(suffix: string) {
       cartId: cart.id,
       status: "pending",
       fulfillment: "pickup",
-      paymentMethod: "card",
+      paymentMethod: "cash",
       guestEmail: email,
       guestFirstName: "Pay",
       guestLastName: "Test",
@@ -131,10 +131,11 @@ test("payment callback is idempotent for order and ERP job creation", async () =
   }
 });
 
-test("payment callback decrements quantityReserved after consuming reservations", async () => {
+test("payment callback decrements quantityReserved and quantityOnHand after consuming reservations", async () => {
   const suffix = randomBytes(6).toString("hex");
   const { session, snapshot, unitPriceCents } = await createCheckoutFixture(`consume-${suffix}`);
   const baselineReserved = snapshot.quantityReserved + 1;
+  const baselineOnHand = snapshot.quantityOnHand;
 
   const providerPaymentId = `pay-consume-${suffix}`;
   const signature = createHmac("sha256", paymentCallbackSecret)
@@ -148,6 +149,7 @@ test("payment callback decrements quantityReserved after consuming reservations"
     assert.equal(response.status, 200);
     const updatedSnapshot = await prisma.inventorySnapshot.findUniqueOrThrow({ where: { id: snapshot.id } });
     assert.equal(updatedSnapshot.quantityReserved, baselineReserved - 1);
+    assert.equal(updatedSnapshot.quantityOnHand, baselineOnHand - 1);
   } finally {
     const order = await prisma.order.findUnique({ where: { paymentSessionId: session.id } });
     if (order) {
@@ -160,7 +162,7 @@ test("payment callback decrements quantityReserved after consuming reservations"
     await prisma.paymentSession.delete({ where: { id: session.id } });
     await prisma.inventorySnapshot.update({
       where: { id: snapshot.id },
-      data: { quantityReserved: baselineReserved - 1 }
+      data: { quantityReserved: baselineReserved - 1, quantityOnHand: baselineOnHand }
     });
     const cart = await prisma.cart.findUnique({ where: { id: session.cartId ?? "" } });
     if (cart) await prisma.cart.delete({ where: { id: cart.id } });

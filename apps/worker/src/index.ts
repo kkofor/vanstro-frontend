@@ -51,6 +51,18 @@ async function releaseExpiredReservations() {
           data: { quantityReserved: { decrement: reservation.quantity } }
         });
       }
+      await transaction.erpSyncJob.create({
+        data: {
+          type: "inventory_release",
+          payload: {
+            reservationId: reservation.id,
+            skuId: reservation.skuId,
+            dealerLocationId: reservation.dealerLocationId,
+            quantity: reservation.quantity,
+            reason: "reservation_expired"
+          }
+        }
+      });
     });
   }
 
@@ -60,27 +72,54 @@ async function releaseExpiredReservations() {
   });
 }
 
-function getEmailTransport() {
-  if (!config.smtp) return undefined;
+async function resolveSmtpConfig() {
+  const account = await prisma.emailProviderAccount.findFirst({
+    where: { key: "default_smtp", status: "enabled" }
+  });
+  const settings = account?.settings;
+  if (settings && typeof settings === "object" && !Array.isArray(settings)) {
+    const record = settings as Record<string, unknown>;
+    const host = typeof record.host === "string" ? record.host : undefined;
+    const user = typeof record.user === "string" ? record.user : undefined;
+    const password = typeof record.password === "string" ? record.password : undefined;
+    const from = typeof record.from === "string" ? record.from : undefined;
+    const port = typeof record.port === "number" ? record.port : Number(record.port ?? 587);
+    if (host && user && password && from && Number.isInteger(port)) {
+      return {
+        host,
+        port,
+        user,
+        password,
+        from,
+        requireTls: record.requireTls !== false
+      };
+    }
+  }
+  return config.smtp;
+}
+
+async function getEmailTransport() {
+  const smtp = await resolveSmtpConfig();
+  if (!smtp) return undefined;
 
   return {
-    from: config.smtp.from,
+    from: smtp.from,
     transport: nodemailer.createTransport({
-      host: config.smtp.host,
-      port: config.smtp.port,
-      secure: config.smtp.port === 465,
-      requireTLS: config.smtp.requireTls && config.smtp.port !== 465,
-      ignoreTLS: !config.smtp.requireTls,
+      host: smtp.host,
+      port: smtp.port,
+      secure: smtp.port === 465,
+      requireTLS: smtp.requireTls && smtp.port !== 465,
+      ignoreTLS: !smtp.requireTls,
       connectionTimeout: 10_000,
       greetingTimeout: 10_000,
       socketTimeout: 30_000,
-      auth: { user: config.smtp.user, pass: config.smtp.password }
+      auth: { user: smtp.user, pass: smtp.password }
     })
   };
 }
 
 async function sendPendingEmails() {
-  const configured = getEmailTransport();
+  const configured = await getEmailTransport();
   if (!configured) {
     if (process.env.VANSTRO_RUNTIME_MODE !== "development") {
       console.error(
@@ -236,6 +275,23 @@ async function pushPendingErpOrders() {
         include: { items: true }
       });
   const orderById = new Map(orders.map((order) => [order.id, order]));
+  const dealerLocationIds = [...new Set(orders.map((order) => order.dealerLocationId).filter((id): id is string => Boolean(id)))];
+  const dealerLocations = dealerLocationIds.length
+    ? await prisma.dealerLocation.findMany({
+        where: { id: { in: dealerLocationIds } },
+        include: { erpLinks: true, dealer: { include: { erpLinks: true } } }
+      })
+    : [];
+  const dealerLocationById = new Map(dealerLocations.map((location) => [location.id, location]));
+  const skuIds = [
+    ...new Set(
+      orders.flatMap((order) => order.items.map((item) => item.skuId).filter((id): id is string => Boolean(id)))
+    )
+  ];
+  const mappings = skuIds.length
+    ? await prisma.productSkuErpMapping.findMany({ where: { skuId: { in: skuIds } } })
+    : [];
+  const mappingBySkuId = new Map(mappings.map((mapping) => [mapping.skuId, mapping]));
 
   for (const job of jobs) {
     const orderId = typeof job.payload === "object" && job.payload && "orderId" in job.payload
@@ -258,6 +314,11 @@ async function pushPendingErpOrders() {
     });
     if (claimed.count === 0) continue;
     try {
+      const dealerLocation = order.dealerLocationId ? dealerLocationById.get(order.dealerLocationId) : undefined;
+      const erpLocationId =
+        dealerLocation?.erpLinks[0]?.erpLocationId ??
+        dealerLocation?.dealer.erpLinks[0]?.erpLocationId ??
+        null;
       const response = await fetch(`${config.erp.baseUrl}/orders`, {
         method: "POST",
         headers: {
@@ -265,7 +326,37 @@ async function pushPendingErpOrders() {
           "Content-Type": "application/json",
           "Idempotency-Key": order.id
         },
-        body: JSON.stringify({ externalOrderId: order.id, email: order.email, fulfillment: order.fulfillment, totalCents: order.totalCents, currency: order.currency, items: order.items.map((item) => ({ skuCode: item.skuCode, quantity: item.quantity, unitPriceCents: item.unitPriceCents })) }),
+        body: JSON.stringify({
+          externalOrderId: order.id,
+          email: order.email,
+          firstName: order.firstName,
+          lastName: order.lastName,
+          phone: order.phone,
+          fulfillment: order.fulfillment,
+          paymentMethod: order.paymentMethod,
+          dealerLocationId: order.dealerLocationId,
+          erpLocationId,
+          subtotalCents: order.subtotalCents,
+          taxCents: order.taxCents,
+          shippingCents: order.shippingCents,
+          totalCents: order.totalCents,
+          currency: order.currency,
+          items: order.items.map((item) => {
+            const mapping = item.skuId ? mappingBySkuId.get(item.skuId) : undefined;
+            return {
+              skuCode: item.skuCode,
+              quantity: item.quantity,
+              unitPriceCents: item.unitPriceCents,
+              erpSkuKey: mapping?.erpSkuKey ?? null,
+              erpSkuId: mapping?.erpSkuId ?? null
+            };
+          }),
+          inventoryLines: order.items.map((item) => ({
+            skuId: item.skuId,
+            dealerLocationId: order.dealerLocationId,
+            quantity: item.quantity
+          }))
+        }),
         signal: AbortSignal.timeout(10_000)
       });
       const body = (await response.json().catch(() => null)) as { erpOrderId?: unknown } | null;
@@ -399,6 +490,55 @@ async function pushPendingErpInventoryRelease() {
   }
 }
 
+async function maybeSyncCatalogFromErp() {
+  const apiBase = process.env.VANSTRO_API_BASE_URL?.replace(/\/$/, "");
+  const token = process.env.VANSTRO_SERVICE_ACCOUNT_TOKEN?.trim();
+  if (!apiBase || !token) return;
+
+  const latest = await prisma.catalogSyncRun.findFirst({ orderBy: { startedAt: "desc" } });
+  if (latest && Date.now() - latest.startedAt.getTime() < config.catalogSyncIntervalMs) return;
+
+  const run = await prisma.catalogSyncRun.create({
+    data: { status: "running", source: "scheduled" }
+  });
+
+  try {
+    const response = await fetch(`${apiBase}/dashboard/catalog/sync-from-erp`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
+      },
+      signal: AbortSignal.timeout(120_000)
+    });
+    const payload = (await response.json().catch(() => null)) as {
+      data?: { imported?: number; updated?: number };
+      error?: string;
+    } | null;
+    if (!response.ok) {
+      throw new Error(payload?.error ?? `Catalog sync failed with HTTP ${response.status}.`);
+    }
+    const upserted = Number(payload?.data?.imported ?? 0) + Number(payload?.data?.updated ?? 0);
+    await prisma.catalogSyncRun.update({
+      where: { id: run.id },
+      data: {
+        status: "succeeded",
+        productsUpserted: upserted,
+        finishedAt: new Date()
+      }
+    });
+  } catch (error) {
+    await prisma.catalogSyncRun.update({
+      where: { id: run.id },
+      data: {
+        status: "failed",
+        error: error instanceof Error ? error.message : String(error),
+        finishedAt: new Date()
+      }
+    });
+  }
+}
+
 async function tick() {
   try {
     await releaseExpiredReservations();
@@ -407,6 +547,7 @@ async function tick() {
     await pushPendingErpOrders();
     await pushPendingErpCustomerSync();
     await pushPendingErpInventoryRelease();
+    await maybeSyncCatalogFromErp();
     await readJobBacklog();
     return true;
   } catch (error) {

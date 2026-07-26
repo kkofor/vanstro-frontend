@@ -205,7 +205,7 @@ export function SiteHeader() {
           </div>
           <p>{copy.utilityMessage}</p>
           <div className="utility-links">
-            <Link href={localizeHref("/orders/demo-order")}>{copy.trackOrder}</Link>
+            <Link href={localizeHref("/orders/lookup")}>{copy.trackOrder}</Link>
             <Link href={localizeHref("/contact")}>{copy.support}</Link>
           </div>
         </div>
@@ -231,10 +231,15 @@ export function SiteHeader() {
 
           <div className="header-actions">
             {customerSession.status === "authenticated" ? (
-              <button className="icon-action" type="button" onClick={() => void customerSession.logout()}>
-                <UserCircle size={24} strokeWidth={2} />
-                <span>{copy.account.signOut}</span>
-              </button>
+              <>
+                <Link className="icon-action" href={localizeHref("/account")}>
+                  <UserCircle size={24} strokeWidth={2} />
+                  <span>{copy.account.myAccount}</span>
+                </Link>
+                <button className="icon-action" type="button" onClick={() => void customerSession.logout()}>
+                  <span>{copy.account.signOut}</span>
+                </button>
+              </>
             ) : (
               <Link className="icon-action" href={localizeHref("/account/login")}>
                 <UserCircle size={24} strokeWidth={2} />
@@ -323,10 +328,15 @@ export function SiteHeader() {
 
           <div className="mobile-quick-actions" aria-label={copy.menu.shortcutsLabel}>
             {customerSession.status === "authenticated" ? (
-              <button type="button" onClick={() => { setOpen(false); void customerSession.logout(); }}>
-                <UserCircle size={21} strokeWidth={2} />
-                <span>{copy.account.signOut}</span>
-              </button>
+              <>
+                <Link href={localizeHref("/account")} onClick={() => setOpen(false)}>
+                  <UserCircle size={21} strokeWidth={2} />
+                  <span>{copy.account.myAccount}</span>
+                </Link>
+                <button type="button" onClick={() => { setOpen(false); void customerSession.logout(); }}>
+                  <span>{copy.account.signOut}</span>
+                </button>
+              </>
             ) : (
               <Link href={localizeHref("/account/login")} onClick={() => setOpen(false)}>
                 <UserCircle size={21} strokeWidth={2} />

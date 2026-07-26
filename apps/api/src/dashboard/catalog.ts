@@ -5,6 +5,12 @@ import {
   dashboardProductInclude,
   formatStorefrontProduct
 } from "../catalog/product-payload.js";
+import { ErpProductClient } from "../integrations/erp-product/client.js";
+import {
+  refreshFinishOptionsFromErp,
+  syncProductsFromUpstream,
+  type ErpCatalogSyncResult
+} from "../integrations/erp-catalog-sync/service.js";
 import { type DashboardEnv, writeAudit } from "./access.js";
 import {
   badRequest,
@@ -502,6 +508,67 @@ export function createDashboardCatalogRoutes() {
     await prisma.productSkuErpMapping.delete({ where: { id: context.req.param("id") } });
     await writeAudit(context, "dashboard.sku_mappings.delete", "sku_mapping", context.req.param("id"));
     return context.json({ data: { id: context.req.param("id"), deleted: true } });
+  });
+
+  routes.post("/dashboard/catalog/sync-from-erp", async (context) => {
+    const body = await readBody(context);
+    const syncCategories = optionalBoolean(body ?? {}, "syncCategories") ?? false;
+    const erpSystem = optionalString(body ?? {}, "erpSystem");
+    const run = await prisma.catalogSyncRun.create({
+      data: { status: "running", source: "manual" }
+    });
+    try {
+      const client = new ErpProductClient();
+      const result: ErpCatalogSyncResult = await syncProductsFromUpstream(client, {
+        syncCategories,
+        ...(erpSystem ? { erpSystem } : {})
+      });
+      await prisma.catalogSyncRun.update({
+        where: { id: run.id },
+        data: {
+          status: "succeeded",
+          productsUpserted: result.imported + result.updated,
+          finishedAt: new Date()
+        }
+      });
+      await writeAudit(context, "dashboard.catalog.sync_from_erp", "catalog_sync", run.id, result as never);
+      return context.json({ data: { ...result, syncRunId: run.id } });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "ERP catalog sync failed.";
+      await prisma.catalogSyncRun.update({
+        where: { id: run.id },
+        data: { status: "failed", error: message, finishedAt: new Date() }
+      });
+      return badRequest(context, message);
+    }
+  });
+
+  routes.get("/dashboard/catalog/sync-runs/latest", async (context) => {
+    const latest = await prisma.catalogSyncRun.findFirst({ orderBy: { startedAt: "desc" } });
+    if (!latest) return context.json({ data: null });
+    return context.json({
+      data: {
+        id: latest.id,
+        status: latest.status,
+        source: latest.source,
+        productsUpserted: latest.productsUpserted,
+        error: latest.error,
+        startedAt: latest.startedAt.toISOString(),
+        finishedAt: latest.finishedAt?.toISOString() ?? null
+      }
+    });
+  });
+
+  routes.post("/dashboard/products/:id/refresh-erp-colors", async (context) => {
+    const body = await readBody(context);
+    const dealerLocationId = optionalString(body ?? {}, "dealerLocationId");
+    const product = await refreshFinishOptionsFromErp({
+      productId: context.req.param("id"),
+      dealerLocationId
+    });
+    if (!product) return badRequest(context, "Product ERP mapping is incomplete.");
+    await writeAudit(context, "dashboard.products.refresh_erp_colors", "product", product.id);
+    return context.json({ data: product });
   });
 
   return routes;

@@ -132,7 +132,16 @@ test("contact records the submitted careers topic and locale", async () => {
           return { id: `email-${queuedEmails.length}` };
         }
       },
-      emailSuppressionList: { findUnique: async () => null }
+      emailSuppressionList: { findUnique: async () => null },
+      crmContact: {
+        findUnique: async () => null,
+        create: async ({ data }: { data: Record<string, unknown> }) => ({ id: "crm-1", ...data }),
+        update: async ({ data }: { data: Record<string, unknown> }) => ({ id: "crm-1", ...data })
+      },
+      crmContactEvent: {
+        findFirst: async () => null,
+        create: async ({ data }: { data: Record<string, unknown> }) => ({ id: "crm-event-1", ...data })
+      }
     })
   } as never;
 

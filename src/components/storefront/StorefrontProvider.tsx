@@ -232,7 +232,14 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     };
 
     refreshFavorites();
+    const refreshCart = () => {
+      void vanstroApi.getCart().then((response) => {
+        setCartItems(formatCartItems(response.data.items));
+        setCartState({ status: "success" });
+      }).catch((error) => setCartState({ status: "error", error: actionError(error, localizationRef.current.locale, localizationRef.current.requestError) }));
+    };
     window.addEventListener("vanstro-authenticated", refreshFavorites);
+    window.addEventListener("vanstro-authenticated", refreshCart);
     const syncCrossTabConsent = (event: StorageEvent) => {
       // Storage events do not cross origin boundaries; provider-owned storage is the only
       // state this tab may clear. Embedded third-party provider storage is not guessed at.
@@ -243,6 +250,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
     setHydrated(true);
     return () => {
       window.removeEventListener("vanstro-authenticated", refreshFavorites);
+      window.removeEventListener("vanstro-authenticated", refreshCart);
       window.removeEventListener(COOKIE_PREFERENCES_SAVED_EVENT, syncFunctionalConsent);
       window.removeEventListener("storage", syncCrossTabConsent);
     };

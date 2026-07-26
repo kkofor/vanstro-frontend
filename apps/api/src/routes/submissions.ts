@@ -1,5 +1,6 @@
 import { prisma, type Prisma } from "@vanstro/db";
 import { Hono, type Context } from "hono";
+import { upsertContactFromLead } from "../crm/service.js";
 import { queueCustomerEmail, queueInternalAlert } from "../email/queue.js";
 import { publicError, type PublicApiErrorCode } from "../public-errors.js";
 import {
@@ -192,6 +193,13 @@ export function createSubmissionRoutes(database: typeof prisma = prisma) {
           topic: validatedTopic
         }
       });
+      await upsertContactFromLead(transaction, {
+        email: validatedEmail,
+        name: validatedName,
+        phone,
+        kind: "contact_lead",
+        referenceId: record.id
+      });
 
       return record;
     });
@@ -285,6 +293,13 @@ export function createSubmissionRoutes(database: typeof prisma = prisma) {
           companyName: validatedCompanyName,
           contactName: validatedContactName
         }
+      });
+      await upsertContactFromLead(transaction, {
+        email: validatedEmail,
+        name: validatedContactName,
+        phone: validatedPhone,
+        kind: "dealer_application",
+        referenceId: record.id
       });
 
       return record;

@@ -52,7 +52,30 @@ export type ApiResult<T> = {
     page?: number;
     pageSize?: number;
     total?: number;
+    cartToken?: string;
+    payment?: PaymentInitiateMeta;
   };
+};
+
+export type PaymentInitiateMeta = {
+  provider: "manual" | "moneris";
+  paymentUrl?: string;
+  ticket?: string;
+  providerRef?: string;
+};
+
+export type ShippingAddress = {
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+};
+
+export type AddressSuggestion = {
+  id: string;
+  label: string;
 };
 
 export type Money = {
@@ -418,6 +441,63 @@ export type Order = {
   paymentUrl?: string;
 };
 
+export type CustomerAccount = {
+  id: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+};
+
+export type CustomerAddress = {
+  id: string;
+  label?: string | null;
+  firstName: string;
+  lastName: string;
+  phone?: string | null;
+  addressLine1: string;
+  addressLine2?: string | null;
+  city: string;
+  province: string;
+  postalCode: string;
+  country: string;
+  isDefault: boolean;
+};
+
+export type AccountOrder = {
+  id: string;
+  status: string;
+  fulfillment: string;
+  paymentMethod?: string;
+  total: Money;
+  subtotal?: Money;
+  tax?: Money;
+  shipping?: Money;
+  createdAt: string;
+  shippingAddress?: ShippingAddress;
+  shipment?: {
+    shipmentId?: string;
+    trackingNumber?: string;
+    status: string;
+    updatedAt: string;
+  };
+  statusEvents?: Array<{
+    id: string;
+    status: string;
+    source: string;
+    payload?: unknown;
+    createdAt: string;
+  }>;
+  items: Array<{ skuCode: string; productName: string; quantity: number; unitPrice?: Money; lineTotal?: Money }>;
+};
+
+export type CommerceOrder = AccountOrder & {
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  notes?: string;
+};
+
 export type AuthUser = {
   id: string;
   email: string;
@@ -465,17 +545,36 @@ export type CheckoutSessionInput = {
   email: string;
   phone: string;
   fulfillment: FulfillmentType;
-  paymentMethod: "pos" | "cash";
+  paymentMethod: "card" | "pos" | "cash";
   notes?: string;
   dealerLocationId?: string;
+  shippingAddressLine1?: string;
+  shippingAddressLine2?: string;
+  shippingCity?: string;
+  shippingProvince?: string;
+  shippingPostalCode?: string;
+  shippingCountry?: string;
 };
 
 export type CheckoutSession = {
   id: string;
   status: "pending" | "paid" | "expired" | "cancelled" | "failed";
+  fulfillment: FulfillmentType;
+  paymentMethod: "card" | "pos" | "cash";
   expiresAt: string;
+  subtotal: Money;
+  tax: Money;
+  shipping: Money;
   total: Money;
   guestOrderToken?: string;
+  shippingAddress?: ShippingAddress;
+};
+
+export type PaymentCallbackInput = {
+  sessionId: string;
+  status: "paid";
+  providerPaymentId?: string;
+  ticket?: string;
 };
 
 export type ProductCommerceQuery = {
@@ -548,12 +647,20 @@ export const API_ENDPOINTS = {
   cartItem: (cartItemId: string) => `/cart/items/${cartItemId}`,
   favorites: "/account/favorites",
   favorite: (productId: string) => `/account/favorites/${productId}`,
+  accountMe: "/account/me",
+  accountAddresses: "/account/addresses",
+  accountAddress: (addressId: string) => `/account/addresses/${addressId}`,
+  accountOrders: "/account/orders",
+  accountOrder: (orderId: string) => `/account/orders/${orderId}`,
   dealers: "/dealers",
   checkoutSession: "/checkout/session",
+  addressAutocomplete: "/address/autocomplete",
   paymentSession: (sessionId: string) => `/payments/sessions/${sessionId}`,
   order: (orderId: string) => `/orders/${orderId}`,
   orderStatus: (orderId: string) => `/orders/${orderId}/status`,
   paymentCallback: "/payments/callback",
+  paymentSimulate: "/payments/simulate",
+  analyticsPageviews: "/analytics/pageviews",
   login: "/auth/login",
   register: "/auth/customer/register",
   currentSession: "/auth/me",

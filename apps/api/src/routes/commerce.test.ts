@@ -12,7 +12,8 @@ const config: ApiConfig = {
   inventorySnapshotTtlMs: 300_000,
   paymentCallbackSecret: "payment-test-secret",
   erpWebhookSecret: secret,
-  deliveryFlatFeeCents: 1500
+  deliveryFlatFeeCents: 1500,
+  enablePaymentSimulation: false
 };
 
 test("selected dealer fulfillment must match its advertised capabilities", () => {

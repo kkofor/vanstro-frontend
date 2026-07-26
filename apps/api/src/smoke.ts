@@ -98,6 +98,14 @@ async function main() {
   await prisma.paymentSession.deleteMany({
     where: { guestEmail: { startsWith: "smoke-customer-" } }
   });
+  await prisma.crmContact.deleteMany({
+    where: {
+      OR: [
+        { email: { startsWith: "smoke-customer-" } },
+        { email: { startsWith: "smoke-delivery-" } }
+      ]
+    }
+  });
   await prisma.user.deleteMany({
     where: { email: { startsWith: "smoke-customer-" } }
   });
@@ -1203,6 +1211,14 @@ async function main() {
   await requestJson<{ data: { email: string } }>("read customer account", "/api/v1/account/me", {
     token: customer.data.accessToken
   });
+  const crmAfterRegister = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterRegister || crmAfterRegister.stage !== "registered") {
+    throw new Error("customer registration did not create a CRM contact in registered stage.");
+  }
+  const registeredEvent = await prisma.crmContactEvent.findFirst({
+    where: { contactId: crmAfterRegister.id, type: "registered" }
+  });
+  if (!registeredEvent) throw new Error("customer registration did not write a CRM registered event.");
 
   const seededSku = await prisma.platformSku.findFirstOrThrow({
     where: { skuCode: "011090130" },
@@ -1236,6 +1252,9 @@ async function main() {
     where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } },
     update: { quantityOnHand: 100, quantityReserved: 0, updatedAt: new Date() },
     create: { skuId: seededSku.id, dealerLocationId: location.id, quantityOnHand: 100 }
+  });
+  const inventoryBeforeCheckout = await prisma.inventorySnapshot.findUniqueOrThrow({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } }
   });
 
   const guestCart = await requestJson<{ data: { id: string }; meta?: { cartToken?: string } }>(
@@ -1279,7 +1298,25 @@ async function main() {
       body: { productIds: Array.from({ length: 101 }, () => seededSku.product.id) }
     }
   );
-  const checkout = await requestJson<{ data: { id: string; guestOrderToken: string } }>(
+  await requestJson(
+    "reject delivery checkout without shipping address",
+    "/api/v1/checkout/session",
+    {
+      method: "POST",
+      status: 400,
+      headers: { "x-cart-token": cartToken },
+      body: {
+        firstName: "Smoke",
+        lastName: "Customer",
+        email: customerEmail,
+        phone: "204-555-0199",
+        fulfillment: "delivery",
+        paymentMethod: "cash",
+        dealerLocationId: location.id
+      }
+    }
+  );
+  const checkout = await requestJson<{ data: { id: string; guestOrderToken: string; paymentMethod: string; fulfillment: string } }>(
     "create checkout session",
     "/api/v1/checkout/session",
     { method: "POST", status: 201, headers: { "x-cart-token": cartToken }, body: { firstName: "Smoke", lastName: "Customer", email: customerEmail, phone: "204-555-0199", fulfillment: "pickup", paymentMethod: "cash", notes: "Call on arrival", dealerLocationId: location.id } }
@@ -1287,6 +1324,13 @@ async function main() {
   const checkoutSnapshot = await prisma.paymentSession.findUniqueOrThrow({ where: { id: checkout.data.id } });
   if (checkoutSnapshot.guestFirstName !== "Smoke" || checkoutSnapshot.guestLastName !== "Customer" || checkoutSnapshot.guestPhone !== "204-555-0199" || checkoutSnapshot.paymentMethod !== "cash" || checkoutSnapshot.notes !== "Call on arrival") {
     throw new Error("checkout session did not persist customer, payment, and notes fields.");
+  }
+  if (checkout.data.paymentMethod !== "cash" || checkout.data.fulfillment !== "pickup") {
+    throw new Error("checkout session response did not include payment and fulfillment metadata.");
+  }
+  const crmAfterCheckout = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterCheckout || crmAfterCheckout.stage !== "checkout_started") {
+    throw new Error("checkout session did not advance CRM contact to checkout_started.");
   }
   const ordersBeforePayment = await prisma.order.count({ where: { email: customerEmail } });
   if (ordersBeforePayment !== 0) throw new Error("pending payment session created an order.");
@@ -1325,6 +1369,24 @@ async function main() {
     prisma.erpSyncJob.count({ where: { payload: { path: ["orderId"], equals: paidOrder.data.id } } })
   ]);
   if (paidOrderCount !== 1 || erpJobCount !== 1) throw new Error("payment callback was not idempotent for order or ERP sync job creation.");
+  const inventoryAfterPaid = await prisma.inventorySnapshot.findUniqueOrThrow({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } }
+  });
+  if (inventoryAfterPaid.quantityOnHand !== inventoryBeforeCheckout.quantityOnHand - 2) {
+    throw new Error("paid order did not decrement inventory on hand.");
+  }
+  const erpOrderJob = await prisma.erpSyncJob.findFirst({
+    where: { type: "order_create", payload: { path: ["orderId"], equals: paidOrder.data.id } }
+  });
+  if (!erpOrderJob) throw new Error("paid order did not enqueue order_create ERP job.");
+  const crmAfterPaid = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterPaid || crmAfterPaid.stage !== "customer") {
+    throw new Error("paid order did not mark CRM contact as customer.");
+  }
+  const orderPaidEvent = await prisma.crmContactEvent.findFirst({
+    where: { contactId: crmAfterPaid.id, type: "order_paid" }
+  });
+  if (!orderPaidEvent) throw new Error("paid order did not write a CRM order_paid event.");
   const orderConfirmationCount = await prisma.emailOutbox.count({
     where: {
       createdAt: { gte: smokeStartedAt },
@@ -1431,7 +1493,12 @@ async function main() {
         phone: "204-555-0198",
         fulfillment: "delivery",
         paymentMethod: "pos",
-        dealerLocationId: location.id
+        dealerLocationId: location.id,
+        shippingAddressLine1: "100 Main Street",
+        shippingCity: "Winnipeg",
+        shippingProvince: "MB",
+        shippingPostalCode: "R3C 1A1",
+        shippingCountry: "CA"
       }
     }
   );

@@ -3,6 +3,7 @@ export type WorkerConfig = {
   pollIntervalMs: number;
   emailLockTtlMs: number;
   maxEmailAttempts: number;
+  catalogSyncIntervalMs: number;
   smtp?: {
     host: string;
     port: number;
@@ -65,13 +66,20 @@ export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerCo
   const databaseUrl = required("DATABASE_URL", env.DATABASE_URL);
   const smtpNames = ["SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD", "SMTP_FROM"];
   const erpNames = ["ERP_API_BASE_URL", "ERP_SERVICE_TOKEN"];
-  const smtpEnabled = configuredGroup(env, smtpNames, mode === "deployment", mode);
+  const smtpEnabled = configuredGroup(env, smtpNames, false, mode);
   const erpEnabled = configuredGroup(env, erpNames, mode === "deployment", mode);
   const config: WorkerConfig = {
     databaseUrl,
     pollIntervalMs: integer("WORKER_POLL_INTERVAL_MS", env.WORKER_POLL_INTERVAL_MS, 30000, 1000, 60 * 60 * 1000),
     emailLockTtlMs: integer("EMAIL_LOCK_TTL_MS", env.EMAIL_LOCK_TTL_MS, 15 * 60 * 1000, 1000, 24 * 60 * 60 * 1000),
-    maxEmailAttempts: integer("EMAIL_MAX_ATTEMPTS", env.EMAIL_MAX_ATTEMPTS, 5, 1, 100)
+    maxEmailAttempts: integer("EMAIL_MAX_ATTEMPTS", env.EMAIL_MAX_ATTEMPTS, 5, 1, 100),
+    catalogSyncIntervalMs: integer(
+      "CATALOG_SYNC_INTERVAL_MS",
+      env.CATALOG_SYNC_INTERVAL_MS,
+      6 * 60 * 60 * 1000,
+      60_000,
+      7 * 24 * 60 * 60 * 1000
+    )
   };
 
   if (smtpEnabled) {

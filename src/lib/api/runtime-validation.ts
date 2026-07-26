@@ -191,13 +191,29 @@ export const validateCheckoutSession: RuntimeValidator<CheckoutSession> = (
   if (!["pending", "paid", "expired", "cancelled", "failed"].includes(status)) {
     return fail(`${path}.status`, "a supported checkout status");
   }
+  const paymentMethod = stringValue(session.paymentMethod, `${path}.paymentMethod`);
+  if (!["card", "pos", "cash"].includes(paymentMethod)) {
+    return fail(`${path}.paymentMethod`, "a supported payment method");
+  }
+  const fulfillment = stringValue(session.fulfillment, `${path}.fulfillment`);
+  if (fulfillment !== "pickup" && fulfillment !== "delivery") {
+    return fail(`${path}.fulfillment`, "pickup or delivery");
+  }
   return {
     id: stringValue(session.id, `${path}.id`),
     status: status as CheckoutSession["status"],
+    fulfillment: fulfillment as CheckoutSession["fulfillment"],
+    paymentMethod: paymentMethod as CheckoutSession["paymentMethod"],
     expiresAt: stringValue(session.expiresAt, `${path}.expiresAt`),
+    subtotal: validateMoney(session.subtotal, `${path}.subtotal`),
+    tax: validateMoney(session.tax, `${path}.tax`),
+    shipping: validateMoney(session.shipping, `${path}.shipping`),
     total: validateMoney(session.total, `${path}.total`),
     ...(typeof session.guestOrderToken === "string"
       ? { guestOrderToken: session.guestOrderToken }
+      : {}),
+    ...(session.shippingAddress && typeof session.shippingAddress === "object"
+      ? { shippingAddress: session.shippingAddress as CheckoutSession["shippingAddress"] }
       : {})
   };
 };

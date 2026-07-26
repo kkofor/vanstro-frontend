@@ -92,7 +92,10 @@ export function createApp() {
     if (origin && allowedOrigins.has(origin)) {
       context.header("Access-Control-Allow-Origin", origin);
       context.header("Access-Control-Allow-Credentials", "true");
-      context.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, X-Cart-Token");
+      context.header(
+        "Access-Control-Allow-Headers",
+        "Authorization, Content-Type, Accept, X-Cart-Token, X-Payment-Signature, X-Reservation-Token, Idempotency-Key, X-Request-Id"
+      );
       context.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
       context.header("Vary", "Origin");
     }
@@ -135,7 +138,6 @@ export function createApp() {
 
     return context.json(response, statusCode);
   });
-  app.route("/", apiRoutes);
   app.route("/api/v1", apiRoutes);
 
   app.notFound((context) => publicError(context, 404, "COMMERCE_NOT_FOUND", "The requested resource was not found."));

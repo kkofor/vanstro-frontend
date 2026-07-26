@@ -1,5 +1,8 @@
 .next/
 out/
+apps/api/dist/
+apps/worker/dist/
+packages/db/dist/
 packages/cli/dist/
 node_modules/
 .DS_Store

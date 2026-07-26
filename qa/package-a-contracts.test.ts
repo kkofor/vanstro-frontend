@@ -34,7 +34,12 @@ test("runtime validation accepts the checkout session wire contract", () => {
   const result = validateApiResult({ data: {
     id: "session-1",
     status: "pending",
+    fulfillment: "pickup",
+    paymentMethod: "cash",
     expiresAt: "2026-07-16T12:00:00.000Z",
+    subtotal: { amount: 100, currency: "CAD" },
+    tax: { amount: 12, currency: "CAD" },
+    shipping: { amount: 13, currency: "CAD" },
     total: { amount: 125, currency: "CAD" },
     guestOrderToken: "guest-token"
   } }, validateCheckoutSession);

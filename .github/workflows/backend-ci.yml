@@ -7,6 +7,12 @@ on:
       - "apps/worker/**"
       - "packages/db/**"
       - "packages/cli/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "tsconfig.json"
+      - ".node-version"
+      - ".env.example"
       - ".github/workflows/backend-ci.yml"
   pull_request:
     paths:
@@ -14,6 +20,12 @@ on:
       - "apps/worker/**"
       - "packages/db/**"
       - "packages/cli/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "tsconfig.json"
+      - ".node-version"
+      - ".env.example"
       - ".github/workflows/backend-ci.yml"
 
 jobs:
@@ -37,7 +49,12 @@ jobs:
       DATABASE_URL: postgresql://vanstro:vanstro@localhost:5432/vanstro_test
       PAYMENT_CALLBACK_SECRET: ci-payment-secret
       ERP_WEBHOOK_SECRET: ci-erp-webhook-secret
-      VANSTRO_RUNTIME_MODE: local
+      VANSTRO_RUNTIME_MODE: test
+      SUPER_ADMIN_EMAIL: admin@vanstro.test
+      SUPER_ADMIN_PASSWORD: ci-only-super-admin-password
+      ALLOW_DEMO_SEED: "true"
+      ALLOW_DESTRUCTIVE_SMOKE: "true"
+      EMAIL_SETTINGS_ENCRYPTION_KEY: "Y2ktb25seS0zMi1ieXRlLWVuY3J5cHRpb24ta2V5ISE="
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -51,4 +68,5 @@ jobs:
       - run: pnpm db:generate
       - run: pnpm --filter @vanstro/db exec prisma migrate deploy --schema prisma/schema.prisma
       - run: pnpm db:seed
+      - run: pnpm build:backend
       - run: pnpm qa:backend

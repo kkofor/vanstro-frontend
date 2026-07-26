@@ -4,11 +4,22 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./password": "./src/password.ts",
-    "./permissions": "./src/permissions.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./password": {
+      "types": "./src/password.ts",
+      "default": "./dist/password.js"
+    },
+    "./permissions": {
+      "types": "./src/permissions.ts",
+      "default": "./dist/permissions.js"
+    }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "tsx --test src/**/*.test.ts",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate --schema prisma/schema.prisma",
     "prisma:migrate": "prisma migrate dev --schema prisma/schema.prisma",

@@ -1,5 +1,5 @@
 import { prisma, type Prisma } from "@vanstro/db";
-import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { Hono, type Context } from "hono";
 import { getSessionFromRequest } from "../../auth/session.js";
 import {
@@ -132,6 +132,13 @@ function optionalString(value: unknown) {
 }
 
 type ErpOrderStatus = "processing" | "fulfilled" | "cancelled";
+
+const ERP_ORDER_TRANSITIONS: Record<string, ReadonlySet<ErpOrderStatus>> = {
+  paid: new Set(["processing", "fulfilled", "cancelled"]),
+  processing: new Set(["fulfilled", "cancelled"]),
+  fulfilled: new Set(),
+  cancelled: new Set()
+};
 type ErpOrderStatusPayload = {
   orderId: string;
   status: ErpOrderStatus;
@@ -173,6 +180,40 @@ function erpOrderStatusPayload(input: {
     externalId: input.externalId,
     erpSystem: input.erpSystem
   };
+}
+
+async function markPaymentForReconciliation(input: {
+  paymentSession: { id: string; totalCents: number; currency: string };
+  providerPaymentId: string;
+  payload: Prisma.InputJsonObject;
+}) {
+  await prisma.$transaction([
+    prisma.paymentSession.updateMany({
+      where: { id: input.paymentSession.id, status: { in: ["pending", "expired"] } },
+      data: {
+        status: "reconciliation_required",
+        providerPaymentId: input.providerPaymentId
+      }
+    }),
+    prisma.paymentEvent.upsert({
+      where: {
+        paymentSessionId_type_providerEventId: {
+          paymentSessionId: input.paymentSession.id,
+          type: "reconciliation_required",
+          providerEventId: input.providerPaymentId
+        }
+      },
+      update: { payload: input.payload },
+      create: {
+        paymentSessionId: input.paymentSession.id,
+        type: "reconciliation_required",
+        providerEventId: input.providerPaymentId,
+        amountCents: input.paymentSession.totalCents,
+        currency: input.paymentSession.currency,
+        payload: input.payload
+      }
+    })
+  ]);
 }
 
 function isDuplicateErpWebhookEventConflict(error: unknown) {
@@ -368,6 +409,10 @@ function parseCheckoutPaymentMethod(value: unknown): "card" | "pos" | "cash" | u
   return undefined;
 }
 
+const CANADIAN_PROVINCES = new Set([
+  "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT"
+]);
+
 function parseShippingInput(
   body: Record<string, unknown> | null,
   fulfillment: "pickup" | "delivery"
@@ -377,15 +422,23 @@ function parseShippingInput(
   const city = optionalString(body?.shippingCity);
   const province = optionalString(body?.shippingProvince)?.toUpperCase();
   const postalCode = optionalString(body?.shippingPostalCode);
+  const country = optionalString(body?.shippingCountry)?.toUpperCase() ?? "CA";
   const normalizedPostal = postalCode ? normalizeCanadianPostalCode(postalCode) : undefined;
-  if (!addressLine1 || !city || !province || !normalizedPostal) return undefined;
+  if (
+    !addressLine1 ||
+    !city ||
+    !province ||
+    !CANADIAN_PROVINCES.has(province) ||
+    country !== "CA" ||
+    !normalizedPostal
+  ) return undefined;
   return {
     shippingAddressLine1: addressLine1,
     shippingAddressLine2: optionalString(body?.shippingAddressLine2),
     shippingCity: city,
     shippingProvince: province,
     shippingPostalCode: normalizedPostal,
-    shippingCountry: optionalString(body?.shippingCountry)?.toUpperCase() ?? "CA"
+    shippingCountry: country
   };
 }
 
@@ -426,19 +479,34 @@ function formatPaymentSession(session: {
 function formatStatusEvents(
   events?: Array<{ id: string; status: string; source: string; payload: unknown; createdAt: Date }>
 ) {
-  return (events ?? []).map((event) => ({
-    id: event.id,
-    status: event.status,
-    source: event.source,
-    payload: event.payload,
-    createdAt: event.createdAt.toISOString()
-  }));
+  return (events ?? []).map((event) => {
+    const payload = event.payload && typeof event.payload === "object"
+      ? event.payload as Record<string, unknown>
+      : undefined;
+    const publicPayload = payload && event.source.includes("shipment")
+      ? {
+          ...(typeof payload.shipmentId === "string" ? { shipmentId: payload.shipmentId } : {}),
+          ...(typeof payload.trackingNumber === "string" ? { trackingNumber: payload.trackingNumber } : {}),
+          ...(typeof payload.status === "string" ? { status: payload.status } : {})
+        }
+      : undefined;
+    return {
+      id: event.id,
+      status: event.status,
+      source: event.source.startsWith("erp:") ? "erp" : event.source,
+      ...(publicPayload && Object.keys(publicPayload).length ? { payload: publicPayload } : {}),
+      createdAt: event.createdAt.toISOString()
+    };
+  });
 }
 
 function extractShipment(
   events?: Array<{ status: string; source: string; payload: unknown; createdAt: Date }>
 ) {
-  for (const event of events ?? []) {
+  const orderedEvents = [...(events ?? [])].sort(
+    (left, right) => right.createdAt.getTime() - left.createdAt.getTime()
+  );
+  for (const event of orderedEvents) {
     if (!event.source.includes("shipment")) continue;
     const payload = event.payload && typeof event.payload === "object" ? (event.payload as Record<string, unknown>) : {};
     const trackingNumber = typeof payload.trackingNumber === "string" ? payload.trackingNumber : undefined;
@@ -565,6 +633,11 @@ export function createCommerceRoutes(
     const fulfillment = body?.fulfillment === "delivery" ? "delivery" : body?.fulfillment === "pickup" ? "pickup" : undefined;
     const paymentMethod = parseCheckoutPaymentMethod(body?.paymentMethod);
     const notes = optionalString(body?.notes);
+    const idempotencyKey = context.req.header("idempotency-key")?.trim();
+    if (!idempotencyKey || idempotencyKey.length > 128) {
+      return publicError(context, 400, "CHECKOUT_INVALID", "A valid Idempotency-Key header is required.");
+    }
+    const requestHash = createHash("sha256").update(JSON.stringify(body ?? {})).digest("hex");
     if (!firstName || !lastName || !email || !phone || !fulfillment || !paymentMethod) {
       return publicError(context, 400, "CHECKOUT_INVALID", "firstName, lastName, email, phone, fulfillment and paymentMethod are required.");
     }
@@ -576,6 +649,24 @@ export function createCommerceRoutes(
       return publicError(context, 400, "CHECKOUT_INVALID", "A complete Canadian shipping address is required for delivery.");
     }
     const resolved = await resolveCartIdentity(context);
+    const replaySession = await prisma.paymentSession.findUnique({ where: { idempotencyKey } });
+    if (replaySession) {
+      if (replaySession.requestHash !== requestHash || replaySession.cartId !== resolved.cart.id) {
+        return publicError(context, 409, "CHECKOUT_INVALID", "Idempotency-Key was already used for a different checkout.");
+      }
+      if (replaySession.paymentMethod === "card" && !replaySession.paymentInit) {
+        return publicError(context, 409, "CHECKOUT_INVALID", "Payment initialization is still in progress. Retry with the same Idempotency-Key.");
+      }
+      return context.json({
+        data: formatPaymentSession(replaySession),
+        meta: {
+          replayed: true,
+          ...(replaySession.paymentInit && typeof replaySession.paymentInit === "object"
+            ? { payment: replaySession.paymentInit }
+            : {})
+        }
+      });
+    }
     const cart = await loadCart(resolved.cart.id);
     const items = cartCheckoutItems(cart);
     if (items.length === 0) return publicError(context, 400, "CART_EMPTY", "Cart has no purchasable items.");
@@ -608,8 +699,28 @@ export function createCommerceRoutes(
       const snapshot = snapshots.find((candidate) => candidate.skuId === item.skuId);
       if (!snapshot || snapshot.quantityOnHand - snapshot.quantityReserved < item.quantity) return publicError(context, 409, "INVENTORY_INSUFFICIENT", `Insufficient inventory for ${item.skuCode}.`);
     }
-    const fulfillingLocation = await prisma.dealerLocation.findUnique({ where: { id: dealerLocationId }, select: { province: true } });
-    const combinedTaxRate = await resolveCombinedTaxRate(fulfillingLocation?.province);
+    const fulfillingLocation = await prisma.dealerLocation.findUnique({
+      where: { id: dealerLocationId },
+      select: {
+        province: true,
+        pickupAvailable: true,
+        deliveryAvailable: true,
+        dealer: { select: { status: true } }
+      }
+    });
+    if (
+      !fulfillingLocation ||
+      fulfillingLocation.dealer.status !== "active" ||
+      !dealerSupportsFulfillment(fulfillingLocation, fulfillment)
+    ) {
+      return publicError(context, 409, "CHECKOUT_FULFILLMENT_UNAVAILABLE", "The selected dealer location does not support the requested fulfillment method.");
+    }
+    const currencies = new Set(items.map((item) => item.currency));
+    if (currencies.size !== 1 || !currencies.has("CAD")) {
+      return publicError(context, 409, "COMMERCE_INVALID", "Checkout requires all items to use CAD.");
+    }
+    const taxProvince = fulfillment === "delivery" ? shipping?.shippingProvince : fulfillingLocation.province;
+    const combinedTaxRate = await resolveCombinedTaxRate(taxProvince);
     const subtotalCents = items.reduce((total, item) => total + item.lineTotalCents, 0);
     const { taxCents, shippingCents } = computeCheckoutTotals(
       subtotalCents,
@@ -620,6 +731,13 @@ export function createCommerceRoutes(
     let session;
     try {
       session = await prisma.$transaction(async (transaction) => {
+        await upsertContactFromGuestCheckout(transaction, {
+          email,
+          firstName,
+          lastName,
+          phone,
+          userId: resolved.userId
+        });
         const paymentSession = await transaction.paymentSession.create({
           data: {
             userId: resolved.userId,
@@ -629,6 +747,8 @@ export function createCommerceRoutes(
             guestLastName: lastName,
             guestPhone: phone,
             guestOrderToken: randomBytes(24).toString("base64url"),
+            idempotencyKey,
+            requestHash,
             fulfillment,
             paymentMethod,
             notes,
@@ -639,6 +759,7 @@ export function createCommerceRoutes(
             taxCents,
             shippingCents,
             totalCents: subtotalCents + taxCents + shippingCents,
+            currency: "CAD",
             expiresAt: new Date(Date.now() + 30 * 60 * 1000)
           }
         });
@@ -655,15 +776,6 @@ export function createCommerceRoutes(
           await transaction.inventoryReservation.create({ data: { skuId: item.skuId, dealerLocationId, paymentSessionId: paymentSession.id, quantity: item.quantity, expiresAt: paymentSession.expiresAt } });
         }
         return paymentSession;
-      });
-      await prisma.$transaction(async (transaction) => {
-        await upsertContactFromGuestCheckout(transaction, {
-          email,
-          firstName,
-          lastName,
-          phone,
-          userId: resolved.userId
-        });
       });
     } catch (error) {
       if (error instanceof InventoryConflictError) {
@@ -701,6 +813,10 @@ export function createCommerceRoutes(
       const message = error instanceof Error ? error.message : "Payment provider is unavailable.";
       return publicError(context, 502, "COMMERCE_INVALID", message);
     }
+    await prisma.paymentSession.update({
+      where: { id: session.id },
+      data: { paymentInit: payment as Prisma.InputJsonValue }
+    });
     return context.json(
       {
         data: formatPaymentSession(session),
@@ -740,7 +856,7 @@ export function createCommerceRoutes(
   });
 
   routes.post("/payments/simulate", async (context) => {
-    if (!config.enablePaymentSimulation) {
+    if (config.runtimeMode === "deployment" || !config.enablePaymentSimulation) {
       return publicError(context, 404, "COMMERCE_NOT_FOUND", "Not found.");
     }
     const body = (await context.req.json().catch(() => null)) as { sessionId?: unknown } | null;
@@ -788,7 +904,29 @@ export function createCommerceRoutes(
     });
     if (!verification.ok) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "Payment signature is invalid.");
     const confirmedProviderPaymentId = verification.providerPaymentId;
-    const result = await prisma.$transaction(async (transaction) => {
+    if (!confirmedProviderPaymentId) {
+      return publicError(context, 502, "COMMERCE_INVALID", "Payment provider confirmation is missing a transaction identifier.");
+    }
+    await prisma.paymentEvent.upsert({
+      where: {
+        paymentSessionId_type_providerEventId: {
+          paymentSessionId: paymentSession.id,
+          type: "provider_confirmed",
+          providerEventId: confirmedProviderPaymentId
+        }
+      },
+      update: {},
+      create: {
+        paymentSessionId: paymentSession.id,
+        type: "provider_confirmed",
+        providerEventId: confirmedProviderPaymentId,
+        amountCents: paymentSession.totalCents,
+        currency: paymentSession.currency
+      }
+    });
+    let result;
+    try {
+      result = await prisma.$transaction(async (transaction) => {
       const session = await transaction.paymentSession.findUnique({ where: { id: sessionId } });
       if (!session) return undefined;
       const existingOrder = await transaction.order.findUnique({ where: { paymentSessionId: session.id }, include: { items: true } });
@@ -843,6 +981,23 @@ export function createCommerceRoutes(
       const activeReservations = await transaction.inventoryReservation.findMany({
         where: { paymentSessionId: session.id, status: "active" }
       });
+      const expectedReservations = new Map<string, number>();
+      for (const item of items) {
+        expectedReservations.set(item.skuId, (expectedReservations.get(item.skuId) ?? 0) + item.quantity);
+      }
+      const actualReservations = new Map<string, number>();
+      for (const reservation of activeReservations) {
+        actualReservations.set(
+          reservation.skuId,
+          (actualReservations.get(reservation.skuId) ?? 0) + reservation.quantity
+        );
+      }
+      if (
+        expectedReservations.size !== actualReservations.size ||
+        [...expectedReservations].some(([skuId, quantity]) => actualReservations.get(skuId) !== quantity)
+      ) {
+        throw new Error(`Payment session ${session.id} does not have complete active inventory reservations.`);
+      }
       for (const reservation of activeReservations) {
         const consumed = await consumeInventoryReservation(transaction, reservation);
         if (!consumed) {
@@ -876,10 +1031,35 @@ export function createCommerceRoutes(
       if (session.userId) {
         await transaction.erpSyncJob.create({ data: { type: "customer_sync", payload: { userId: session.userId, orderId: order.id } } });
       }
+      await transaction.paymentEvent.create({
+        data: {
+          paymentSessionId: session.id,
+          type: "order_created",
+          providerEventId: confirmedProviderPaymentId,
+          amountCents: session.totalCents,
+          currency: session.currency,
+          payload: { orderId: order.id }
+        }
+      });
       return order;
-    });
+      });
+    } catch (error) {
+      await markPaymentForReconciliation({
+        paymentSession,
+        providerPaymentId: confirmedProviderPaymentId,
+        payload: { error: error instanceof Error ? error.message : "Order creation failed." }
+      });
+      return publicError(context, 409, "COMMERCE_INVALID", "Payment was confirmed but the order requires reconciliation.");
+    }
     if (result === undefined) return publicError(context, 404, "PAYMENT_SESSION_NOT_FOUND", "Payment session not found.");
-    if (result === null) return publicError(context, 409, "COMMERCE_INVALID", "Payment session cannot be paid.");
+    if (result === null) {
+      await markPaymentForReconciliation({
+        paymentSession,
+        providerPaymentId: confirmedProviderPaymentId,
+        payload: { reason: "payment_session_not_payable" }
+      });
+      return publicError(context, 409, "COMMERCE_INVALID", "Payment was confirmed but the order requires reconciliation.");
+    }
     const paidOrder = await prisma.order.findUnique({
       where: { id: result.id },
       include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } }
@@ -953,11 +1133,26 @@ export function createCommerceRoutes(
   routes.delete("/inventory/reservations/:id", async (context) => {
     const reservation = await prisma.inventoryReservation.findUnique({ where: { id: context.req.param("id") } });
     if (!reservation || reservation.status !== "active" || !reservation.ownerToken || context.req.header("x-reservation-token") !== reservation.ownerToken) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Active reservation not found.");
-    await prisma.$transaction(async (transaction) => {
-      await transaction.inventoryReservation.update({ where: { id: reservation.id }, data: { status: "released" } });
-      const snapshot = await transaction.inventorySnapshot.findFirst({ where: { skuId: reservation.skuId, dealerLocationId: reservation.dealerLocationId } });
-      if (snapshot) await transaction.inventorySnapshot.update({ where: { id: snapshot.id }, data: { quantityReserved: { decrement: reservation.quantity } } });
+    const released = await prisma.$transaction(async (transaction) => {
+      const claimed = await transaction.inventoryReservation.updateMany({
+        where: { id: reservation.id, status: "active", ownerToken: reservation.ownerToken },
+        data: { status: "released" }
+      });
+      if (claimed.count === 0) return false;
+      const snapshotUpdated = await transaction.$executeRaw`
+        UPDATE "inventory_snapshots"
+        SET "quantityReserved" = "quantityReserved" - ${reservation.quantity},
+            "updatedAt" = NOW()
+        WHERE "skuId" = ${reservation.skuId}
+          AND "dealerLocationId" IS NOT DISTINCT FROM ${reservation.dealerLocationId}
+          AND "quantityReserved" >= ${reservation.quantity}
+      `;
+      if (snapshotUpdated !== 1) {
+        throw new Error(`Failed to release inventory reservation ${reservation.id}.`);
+      }
+      return true;
     });
+    if (!released) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Active reservation not found.");
     return context.json({ data: { ok: true } });
   });
 
@@ -1145,7 +1340,9 @@ export function createCommerceRoutes(
     // Fail closed: without a configured secret we cannot verify authenticity, so
     // never process the webhook (including in development) rather than trusting it.
     if (!secret) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
-    const expected = orderId && externalId ? createHmac("sha256", secret).update(`${orderId}:${externalId}:${status}`).digest("hex") : undefined;
+    const expected = orderId && externalId
+      ? createHmac("sha256", secret).update(`${erpSystem}:${orderId}:${externalId}:${status}`).digest("hex")
+      : undefined;
     if (!signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
     if (!orderId || !["processing", "fulfilled", "cancelled"].includes(String(status))) return publicError(context, 400, "COMMERCE_INVALID", "Valid orderId and order status are required.");
     const normalizedStatus = status as ErpOrderStatus;
@@ -1154,13 +1351,21 @@ export function createCommerceRoutes(
     if (existingEvent) return context.json({ data: { ok: true, duplicate: true } });
     const order = await database.order.findUnique({ where: { id: orderId } });
     if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    if (!ERP_ORDER_TRANSITIONS[order.status]?.has(normalizedStatus)) {
+      return publicError(context, 409, "COMMERCE_INVALID", `Cannot transition order from ${order.status} to ${normalizedStatus}.`);
+    }
     try {
       await database.$transaction(async (transaction) => {
         await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "order-status", externalId, payload, processedAt: new Date() } });
-        const previousStatus = order.status;
-        await transaction.order.update({ where: { id: order.id }, data: { status: normalizedStatus } });
+        const claimed = await transaction.order.updateMany({
+          where: { id: order.id, status: order.status },
+          data: { status: normalizedStatus }
+        });
+        if (claimed.count !== 1) {
+          throw new Error(`Order ${order.id} status changed concurrently.`);
+        }
         await transaction.orderStatusEvent.create({ data: { orderId: order.id, status: normalizedStatus, source: `erp:${erpSystem}`, payload } });
-        if (normalizedStatus === "cancelled" && previousStatus !== "cancelled") {
+        if (normalizedStatus === "cancelled") {
           const orderWithItems = await transaction.order.findUniqueOrThrow({
             where: { id: order.id },
             include: { items: true }
@@ -1196,21 +1401,27 @@ export function createCommerceRoutes(
     const secret = config.erpWebhookSecret;
     if (!secret) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
     const expected = orderId && shipmentId
-      ? createHmac("sha256", secret).update(`${orderId}:${shipmentId}:${status ?? ""}`).digest("hex")
+      ? createHmac("sha256", secret)
+          .update(`${erpSystem}:${orderId}:${shipmentId}:${status ?? ""}:${trackingNumber ?? ""}`)
+          .digest("hex")
       : undefined;
     if (!signaturesMatch(expected, context.req.header("x-erp-signature"))) {
       return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
     }
-    if (!orderId || !shipmentId) {
-      return publicError(context, 400, "COMMERCE_INVALID", "orderId and shipmentId are required.");
+    if (!orderId || !shipmentId || !status || !["shipped", "delivered"].includes(status)) {
+      return publicError(context, 400, "COMMERCE_INVALID", "orderId, shipmentId and a valid shipment status are required.");
     }
-    const externalId = shipmentId;
+    const externalId = `${shipmentId}:${status}`;
     const existingEvent = await database.erpWebhookEvent.findFirst({
       where: { erpSystem, eventType: "shipment", externalId }
     });
     if (existingEvent) return context.json({ data: { ok: true, duplicate: true } });
     const order = await database.order.findUnique({ where: { id: orderId } });
     if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    const targetOrderStatus: ErpOrderStatus = status === "delivered" ? "fulfilled" : "processing";
+    if (order.status !== targetOrderStatus && !ERP_ORDER_TRANSITIONS[order.status]?.has(targetOrderStatus)) {
+      return publicError(context, 409, "COMMERCE_INVALID", `Cannot transition order from ${order.status} to ${targetOrderStatus}.`);
+    }
     const payload = { orderId, shipmentId, status, trackingNumber, erpSystem };
     try {
       await database.$transaction(async (transaction) => {
@@ -1218,10 +1429,15 @@ export function createCommerceRoutes(
           data: { erpSystem, eventType: "shipment", externalId, payload, processedAt: new Date() }
         });
         if (status === "shipped" || status === "delivered") {
-          await transaction.order.update({
-            where: { id: order.id },
-            data: { status: status === "delivered" ? "fulfilled" : "processing" }
-          });
+          if (order.status !== targetOrderStatus) {
+            const claimed = await transaction.order.updateMany({
+              where: { id: order.id, status: order.status },
+              data: { status: targetOrderStatus }
+            });
+            if (claimed.count !== 1) {
+              throw new Error(`Order ${order.id} status changed concurrently.`);
+            }
+          }
           await transaction.orderStatusEvent.create({
             data: {
               orderId: order.id,

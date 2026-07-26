@@ -558,7 +558,7 @@ export type CheckoutSessionInput = {
 
 export type CheckoutSession = {
   id: string;
-  status: "pending" | "paid" | "expired" | "cancelled" | "failed";
+  status: "pending" | "paid" | "expired" | "failed" | "reconciliation_required" | "refund_pending" | "refunded" | "refund_failed";
   fulfillment: FulfillmentType;
   paymentMethod: "card" | "pos" | "cash";
   expiresAt: string;

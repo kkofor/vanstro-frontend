@@ -7,7 +7,9 @@ type OrderPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return [{ id: "demo" }];
+}
 
 export const metadata: Metadata = buildPrivateMetadata(
   "Order status",

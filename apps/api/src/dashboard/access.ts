@@ -98,6 +98,8 @@ const DASHBOARD_PERMISSION_RULES: DashboardPermissionRule[] = [
   { method: "GET", path: "/dashboard/operations/alerts", permission: "audit_logs.read" },
   { method: "GET", path: "/dashboard/payment-sessions", permission: "orders.read" },
   { method: "POST", path: "/dashboard/payment-sessions/:id/mark-paid", permission: "orders.update" },
+  { method: "GET", path: "/dashboard/payment-reconciliation", permission: "orders.read" },
+  { method: "PATCH", path: "/dashboard/payment-reconciliation/:id", permission: "orders.update" },
   { method: "GET", path: "/dashboard/erp-webhook-events", permission: "erp.webhooks.read" },
   { method: "GET", path: "/dashboard/email/provider", permission: "email.provider.read" },
   { method: "PUT", path: "/dashboard/email/provider", permission: "email.provider.write" },

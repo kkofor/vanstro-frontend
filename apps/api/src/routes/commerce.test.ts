@@ -6,6 +6,7 @@ import { createCommerceRoutes, dealerSupportsFulfillment } from "./commerce.js";
 
 const secret = "erp-webhook-test-secret";
 const config: ApiConfig = {
+  runtimeMode: "test",
   hostname: "127.0.0.1",
   port: 4000,
   trustProxyHeaders: false,
@@ -37,7 +38,7 @@ test("ERP webhook stores only allowlisted normalized fields in both event payloa
       }
     },
     order: {
-      update: async ({ data }: { data: unknown }) => data
+      updateMany: async () => ({ count: 1 })
     },
     orderStatusEvent: {
       create: async ({ data }: { data: { payload: unknown } }) => {
@@ -48,7 +49,7 @@ test("ERP webhook stores only allowlisted normalized fields in both event payloa
   };
   const database = {
     erpWebhookEvent: { findFirst: async () => null },
-    order: { findUnique: async () => ({ id: "order-42" }) },
+    order: { findUnique: async () => ({ id: "order-42", status: "paid" }) },
     $transaction: async (callback: (client: typeof transaction) => Promise<void>) => callback(transaction)
   };
   const routes = createCommerceRoutes(database as never, config);
@@ -63,7 +64,7 @@ test("ERP webhook stores only allowlisted normalized fields in both event payloa
     unknown: ["must-not-be-stored"]
   };
   const signature = createHmac("sha256", secret)
-    .update("order-42:event-99:fulfilled")
+    .update("netsuite:order-42:event-99:fulfilled")
     .digest("hex");
 
   const response = await routes.request("/integrations/erp/webhooks/order-status", {
@@ -89,6 +90,34 @@ test("ERP webhook stores only allowlisted normalized fields in both event payloa
   assert.equal(JSON.stringify([webhookPayload, statusPayload]).includes("sensitive"), false);
 });
 
+test("ERP webhook rejects terminal order state rollback", async () => {
+  let transactionCalled = false;
+  const database = {
+    erpWebhookEvent: { findFirst: async () => null },
+    order: { findUnique: async () => ({ id: "order-42", status: "fulfilled" }) },
+    $transaction: async () => {
+      transactionCalled = true;
+    }
+  };
+  const routes = createCommerceRoutes(database as never, config);
+  const signature = createHmac("sha256", secret)
+    .update("netsuite:order-42:event-rollback:processing")
+    .digest("hex");
+  const response = await routes.request("/integrations/erp/webhooks/order-status", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-erp-signature": signature },
+    body: JSON.stringify({
+      orderId: "order-42",
+      status: "processing",
+      externalId: "event-rollback",
+      erpSystem: "netsuite"
+    })
+  });
+
+  assert.equal(response.status, 409);
+  assert.equal(transactionCalled, false);
+});
+
 test("concurrent ERP webhook duplicates resolve as idempotent success", async () => {
   let webhookClaimed = false;
   let orderUpdates = 0;
@@ -109,8 +138,9 @@ test("concurrent ERP webhook duplicates resolve as idempotent success", async ()
       }
     },
     order: {
-      update: async () => {
+      updateMany: async () => {
         orderUpdates += 1;
+        return { count: 1 };
       }
     },
     orderStatusEvent: {
@@ -121,7 +151,7 @@ test("concurrent ERP webhook duplicates resolve as idempotent success", async ()
   };
   const database = {
     erpWebhookEvent: { findFirst: async () => null },
-    order: { findUnique: async () => ({ id: "order-42" }) },
+    order: { findUnique: async () => ({ id: "order-42", status: "paid" }) },
     $transaction: async (callback: (client: typeof transaction) => Promise<void>) => callback(transaction)
   };
   const routes = createCommerceRoutes(database as never, config);
@@ -132,7 +162,7 @@ test("concurrent ERP webhook duplicates resolve as idempotent success", async ()
     erpSystem: "netsuite"
   };
   const signature = createHmac("sha256", secret)
-    .update("order-42:event-99:fulfilled")
+    .update("netsuite:order-42:event-99:fulfilled")
     .digest("hex");
   const request = () => routes.request("/integrations/erp/webhooks/order-status", {
     method: "POST",

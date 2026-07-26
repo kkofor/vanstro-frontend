@@ -112,6 +112,32 @@ test("moneris verify rejects mismatched amount", async () => {
   assert.equal(result.ok, false);
 });
 
+test("moneris verify rejects a successful receipt without order_no", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { txn_total: "25.00", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects a successful receipt without amount", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { order_no: "order-1", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
 test("moneris verify rejects an unsuccessful receipt", async () => {
   const fetchMock: typeof fetch = async () =>
     new Response(JSON.stringify({ response: { success: "true", receipt: { cc: { result: { success: "false" } } } } }), { status: 200 });

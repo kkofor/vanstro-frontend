@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "packageManager": "pnpm@11.13.0",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -22,10 +25,14 @@
     "test:functional-consent": "node --experimental-strip-types scripts/verify-functional-consent-storage.mts",
     "test:careers-contact-privacy": "node --experimental-strip-types scripts/verify-careers-contact-privacy.mts",
     "qa:careers-contact-privacy-html": "node --experimental-strip-types scripts/verify-careers-contact-privacy.mts out",
-    "test:api": "pnpm --filter @vanstro/api test",
-    "qa:backend": "pnpm run typecheck:backend && pnpm run test:api && pnpm run api:smoke",
+    "test:api": "pnpm --filter @vanstro/db build && set -a; [ -f .env ] && . ./.env; set +a; pnpm --filter @vanstro/api test",
+    "test:db": "pnpm --filter @vanstro/db test",
+    "test:worker": "pnpm --filter @vanstro/db build && pnpm --filter @vanstro/worker test",
+    "qa:backend": "pnpm run typecheck:backend && pnpm run test:db && pnpm run test:api && pnpm run test:worker && pnpm run api:smoke",
     "typecheck:backend": "pnpm --filter @vanstro/db typecheck && pnpm --filter @vanstro/api typecheck && pnpm --filter @vanstro/worker typecheck && pnpm --filter @vanstro/cli typecheck",
+    "build:backend": "pnpm --filter @vanstro/db build && pnpm --filter @vanstro/api build && pnpm --filter @vanstro/worker build && pnpm --filter @vanstro/cli build",
     "generate:openapi": "node --experimental-strip-types scripts/generate-openapi.mts",
+    "preflight:production": "node --experimental-strip-types scripts/preflight-production.mts",
     "stack:dev": "pnpm api:dev & pnpm worker:dev & pnpm dev",
     "test:product-identifiers": "node --experimental-strip-types scripts/verify-p0-product-fixes.mts",
     "test:package-contracts": "node --experimental-strip-types --test qa/package-a-contracts.test.ts",

@@ -4,6 +4,11 @@ import { INITIAL_PERMISSIONS } from "./permissions.js";
 
 const SUPER_ADMIN_ROLE = "super_admin";
 const MIN_SUPER_ADMIN_PASSWORD_LENGTH = 12;
+
+function demoSeedAllowed() {
+  if (process.env.VANSTRO_RUNTIME_MODE === "deployment") return false;
+  return process.env.ALLOW_DEMO_SEED?.trim().toLowerCase() === "true";
+}
 const PUBLIC_PLACEHOLDER_PASSWORDS = new Set([
   "admin",
   "changeme",
@@ -796,6 +801,12 @@ async function main() {
 
   await seedPermissions();
   await seedSuperAdmin(superAdminPassword);
+
+  if (!demoSeedAllowed()) {
+    console.log("RBAC and super admin bootstrap complete; demo data seed skipped.");
+    return;
+  }
+
   await seedDealers();
   await seedCatalog();
   await seedTaxRates();

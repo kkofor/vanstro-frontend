@@ -57,6 +57,24 @@ async function main() {
   const password = process.env.SUPER_ADMIN_PASSWORD;
   const paymentCallbackSecret = process.env.PAYMENT_CALLBACK_SECRET;
   const smokeStartedAt = new Date();
+  const databaseUrl = process.env.DATABASE_URL ?? "";
+  const databaseName = (() => {
+    try {
+      return new URL(databaseUrl).pathname.replace(/^\//, "");
+    } catch {
+      return "";
+    }
+  })();
+
+  if (
+    process.env.VANSTRO_RUNTIME_MODE !== "test" ||
+    process.env.ALLOW_DESTRUCTIVE_SMOKE?.trim().toLowerCase() !== "true" ||
+    !/(^|[_-])(test|smoke)([_-]|$)/i.test(databaseName)
+  ) {
+    throw new Error(
+      "Destructive API smoke requires VANSTRO_RUNTIME_MODE=test, ALLOW_DESTRUCTIVE_SMOKE=true, and a database name containing test or smoke."
+    );
+  }
 
   if (!email || !password || !paymentCallbackSecret) {
     throw new Error("SUPER_ADMIN_EMAIL, SUPER_ADMIN_PASSWORD and PAYMENT_CALLBACK_SECRET are required.");
@@ -1304,7 +1322,7 @@ async function main() {
     {
       method: "POST",
       status: 400,
-      headers: { "x-cart-token": cartToken },
+      headers: { "x-cart-token": cartToken, "idempotency-key": `smoke-invalid-delivery-${suffix}` },
       body: {
         firstName: "Smoke",
         lastName: "Customer",
@@ -1319,7 +1337,7 @@ async function main() {
   const checkout = await requestJson<{ data: { id: string; guestOrderToken: string; paymentMethod: string; fulfillment: string } }>(
     "create checkout session",
     "/api/v1/checkout/session",
-    { method: "POST", status: 201, headers: { "x-cart-token": cartToken }, body: { firstName: "Smoke", lastName: "Customer", email: customerEmail, phone: "204-555-0199", fulfillment: "pickup", paymentMethod: "cash", notes: "Call on arrival", dealerLocationId: location.id } }
+    { method: "POST", status: 201, headers: { "x-cart-token": cartToken, "idempotency-key": `smoke-checkout-${suffix}` }, body: { firstName: "Smoke", lastName: "Customer", email: customerEmail, phone: "204-555-0199", fulfillment: "pickup", paymentMethod: "cash", notes: "Call on arrival", dealerLocationId: location.id } }
   );
   const checkoutSnapshot = await prisma.paymentSession.findUniqueOrThrow({ where: { id: checkout.data.id } });
   if (checkoutSnapshot.guestFirstName !== "Smoke" || checkoutSnapshot.guestLastName !== "Customer" || checkoutSnapshot.guestPhone !== "204-555-0199" || checkoutSnapshot.paymentMethod !== "cash" || checkoutSnapshot.notes !== "Call on arrival") {
@@ -1485,7 +1503,7 @@ async function main() {
     {
       method: "POST",
       status: 201,
-      headers: { "x-cart-token": deliveryCartToken },
+      headers: { "x-cart-token": deliveryCartToken, "idempotency-key": `smoke-delivery-${suffix}` },
       body: {
         firstName: "Smoke",
         lastName: "Delivery",
@@ -1534,7 +1552,7 @@ async function main() {
   // ERP inbound webhook (signed) against the paid order.
   const erpExternalId = `smoke-erp-${suffix}`;
   const erpSignature = createHmac("sha256", process.env.ERP_WEBHOOK_SECRET ?? "")
-    .update(`${paidOrder.data.id}:${erpExternalId}:fulfilled`)
+    .update(`configured-erp:${paidOrder.data.id}:${erpExternalId}:fulfilled`)
     .digest("hex");
   await requestJson("accept signed ERP order-status webhook", "/api/v1/integrations/erp/webhooks/order-status", {
     method: "POST",

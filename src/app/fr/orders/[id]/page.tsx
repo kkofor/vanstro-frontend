@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { OrderPageContent } from "@/app/orders/[id]/page";
 import { buildPageMetadata } from "@/lib/seo/metadata";
 
-export const dynamic = "force-dynamic";
+export function generateStaticParams() {
+  return [{ id: "demo" }];
+}
 
 export const metadata: Metadata = buildPageMetadata({
   title: "État de la commande",

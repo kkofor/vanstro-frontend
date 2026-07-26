@@ -15,6 +15,7 @@ import { createDashboardSupportRoutes } from "../dashboard/support.js";
 import { revokeUserSessions } from "../auth/session.js";
 import {
   assertAssignableRoles,
+  assertManageableUsers,
   assertPermissionsWithinActorCeiling,
   getActorPermissionCeiling,
   lockUsersForPermissionChange,
@@ -300,6 +301,10 @@ export function createDashboardRoutes() {
       return badRequest(context, "roleIds must be an array of strings.");
     }
     const roleIds = [...new Set(roleIdsValue ?? [])];
+    const password = optionalString(body, "password");
+    if (password && password.length < 12) {
+      return badRequest(context, "password must be at least 12 characters.");
+    }
     const user = await prisma
       .$transaction(async (database) => {
         await assertAssignableRoles(database, roleIds, context.get("actorUserId"));
@@ -328,8 +333,8 @@ export function createDashboardRoutes() {
                     }
                   }
                 : undefined,
-            passwordCredential: optionalString(body, "password")
-              ? { create: hashPassword(optionalString(body, "password") ?? "") }
+            passwordCredential: password
+              ? { create: hashPassword(password) }
               : undefined,
             userRoles: roleIds.length
               ? { create: roleIds.map((roleId) => ({ roleId })) }
@@ -376,9 +381,13 @@ export function createDashboardRoutes() {
     const userId = context.req.param("id");
     const displayName = optionalString(body, "displayName");
     const password = optionalString(body, "password");
+    if (password && password.length < 12) {
+      return badRequest(context, "password must be at least 12 characters.");
+    }
     const passwordCredential = password ? hashPassword(password) : undefined;
     const status = optionalString(body, "status") as UserStatusValue | undefined;
     const user = await prisma.$transaction(async (transaction) => {
+      await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
       if (passwordCredential || status === "suspended" || status === "archived") {
         await revokeUserSessions(transaction, userId);
       }
@@ -408,7 +417,14 @@ export function createDashboardRoutes() {
       }
 
       return updatedUser;
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError) return error;
+      throw error;
     });
+
+    if (user instanceof PermissionCeilingError) {
+      return context.json({ error: user.message }, user.status);
+    }
 
     await writeAudit(context, "dashboard.users.update", "user", user.id);
 
@@ -428,6 +444,7 @@ export function createDashboardRoutes() {
 
     const userId = context.req.param("id");
     const user = await prisma.$transaction(async (transaction) => {
+      await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
       if (status === "suspended" || status === "archived") {
         await revokeUserSessions(transaction, userId);
       }
@@ -436,7 +453,14 @@ export function createDashboardRoutes() {
         where: { id: userId },
         data: { status }
       });
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError) return error;
+      throw error;
     });
+
+    if (user instanceof PermissionCeilingError) {
+      return context.json({ error: user.message }, user.status);
+    }
 
     await writeAudit(context, "dashboard.users.status.update", "user", user.id);
 
@@ -485,12 +509,19 @@ export function createDashboardRoutes() {
     const userId = context.req.param("id");
     const roleId = context.req.param("roleId");
 
-    await prisma.$transaction(async (database) => {
-      await lockUsersForPermissionChange(database, [context.get("actorUserId"), userId]);
+    const result = await prisma.$transaction(async (database) => {
+      await assertManageableUsers(database, context.get("actorUserId"), [userId]);
       await database.userRole.delete({
         where: { userId_roleId: { userId, roleId } }
       });
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError) return error;
+      throw error;
     });
+
+    if (result instanceof PermissionCeilingError) {
+      return context.json({ error: result.message }, result.status);
+    }
 
     await writeAudit(context, "dashboard.users.roles.remove", "user", userId, {
       roleId

@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { readCheckoutPaymentMeta } from "@/components/checkout/CheckoutClient";
+import {
+  readCheckoutPaymentMeta,
+  readGuestOrderToken,
+  storeGuestOrderToken
+} from "@/components/checkout/CheckoutClient";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import { vanstroApi } from "@/lib/api/api-client";
 import type { CheckoutSession } from "@/lib/api/api-contract";
@@ -46,8 +50,16 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    setSessionId(params.get("session") ?? "");
-    setToken(params.get("token") ?? "");
+    const nextSessionId = params.get("session") ?? "";
+    const queryToken = params.get("token") ?? "";
+    if (nextSessionId && queryToken) storeGuestOrderToken(nextSessionId, queryToken);
+    setSessionId(nextSessionId);
+    setToken(nextSessionId ? queryToken || readGuestOrderToken(nextSessionId) : "");
+    if (queryToken) {
+      params.delete("token");
+      const query = params.toString();
+      window.history.replaceState(null, "", `${window.location.pathname}${query ? `?${query}` : ""}`);
+    }
   }, []);
 
   useEffect(() => {
@@ -85,8 +97,8 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
   }, [session, paymentMeta?.ticket, copy.payment.cardUnavailable]);
 
   async function redirectToOrder(orderId: string) {
-    const query = token ? `?token=${encodeURIComponent(token)}` : "";
-    router.push(`${localeHref(`/orders/${orderId}`, locale)}${query}`);
+    if (token) storeGuestOrderToken(orderId, token);
+    router.push(localeHref(`/orders/${orderId}`, locale));
   }
 
   async function completePayment(input: { providerPaymentId?: string; ticket?: string; signature?: string }) {
@@ -150,7 +162,11 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
     return <div className="empty-panel"><h2>{copy.payment.loadingTitle}</h2><p>{message || copy.payment.loadingBody}</p></div>;
   }
 
-  if (session.status === "expired" || session.status === "cancelled") {
+  if (
+    session.status === "expired" ||
+    session.status === "failed" ||
+    session.status === "refund_failed"
+  ) {
     return (
       <div className="empty-panel">
         <h2>{copy.payment.sessionExpired}</h2>

@@ -29,6 +29,9 @@ test("CORS preflight allows X-Cart-Token for approved storefront origins", async
       .split(",")
       .map((header) => header.trim());
     assert.ok(allowedHeaders?.includes("x-cart-token"));
+    assert.ok(allowedHeaders?.includes("x-payment-signature"));
+    assert.ok(allowedHeaders?.includes("x-reservation-token"));
+    assert.ok(allowedHeaders?.includes("idempotency-key"));
   } finally {
     for (const [name, value] of Object.entries(previousEnvironment)) {
       if (value === undefined) delete process.env[name];

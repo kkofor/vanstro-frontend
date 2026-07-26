@@ -103,11 +103,17 @@ export class MonerisPaymentProvider implements PaymentProvider {
       return { ok: false, reason: "Moneris receipt did not confirm a successful payment." };
     }
     const receiptOrderNo = typeof receipt?.order_no === "string" ? receipt.order_no.trim() : undefined;
-    if (receiptOrderNo && receiptOrderNo !== input.paymentSessionId) {
+    if (!receiptOrderNo) {
+      return { ok: false, reason: "Moneris receipt order_no is required." };
+    }
+    if (receiptOrderNo !== input.paymentSessionId) {
       return { ok: false, reason: "Moneris receipt order_no does not match payment session." };
     }
     const paidCents = receiptAmountCents(receipt);
-    if (paidCents !== undefined && paidCents !== input.amountCents) {
+    if (paidCents === undefined) {
+      return { ok: false, reason: "Moneris receipt amount is required." };
+    }
+    if (paidCents !== input.amountCents) {
       return { ok: false, reason: "Moneris receipt amount does not match payment session." };
     }
     return { ok: true, providerPaymentId: input.providerPaymentId ?? input.ticket };

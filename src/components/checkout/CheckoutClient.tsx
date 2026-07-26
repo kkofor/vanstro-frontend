@@ -16,6 +16,15 @@ import { localizeApiError } from "@/lib/i18n/api-error-localization";
 import { formatMoney } from "@/lib/commerce/product-commerce";
 
 const PAYMENT_META_KEY = "vanstro-checkout-payment-meta";
+const GUEST_ORDER_TOKEN_KEY = "vanstro-guest-order-token";
+
+export function storeGuestOrderToken(resourceId: string, token: string) {
+  sessionStorage.setItem(`${GUEST_ORDER_TOKEN_KEY}:${resourceId}`, token);
+}
+
+export function readGuestOrderToken(resourceId: string) {
+  return sessionStorage.getItem(`${GUEST_ORDER_TOKEN_KEY}:${resourceId}`) ?? "";
+}
 
 export function storeCheckoutPaymentMeta(sessionId: string, meta: unknown) {
   sessionStorage.setItem(`${PAYMENT_META_KEY}:${sessionId}`, JSON.stringify(meta));
@@ -72,6 +81,7 @@ export function CheckoutClient({ locale: explicitLocale }: { locale?: SiteLocale
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!cartItems.length) return;
+    const idempotencyKey = crypto.randomUUID();
     const form = new FormData(event.currentTarget);
     setCheckoutMessage("");
     setSubmitting(true);
@@ -97,17 +107,15 @@ export function CheckoutClient({ locale: explicitLocale }: { locale?: SiteLocale
         ...(selectedDealerId === "winnipeg"
           ? {}
           : { dealerLocationId: selectedDealerId })
-      });
+      }, idempotencyKey);
       if (!session.data.guestOrderToken) {
         throw new Error(copy.checkout.tokenError);
       }
       if (session.meta?.payment) {
         storeCheckoutPaymentMeta(session.data.id, session.meta.payment);
       }
-      const query = new URLSearchParams({
-        session: session.data.id,
-        token: session.data.guestOrderToken
-      });
+      storeGuestOrderToken(session.data.id, session.data.guestOrderToken);
+      const query = new URLSearchParams({ session: session.data.id });
       router.push(`${localeHref("/checkout/payment", locale)}?${query.toString()}`);
     } catch (error) {
       setCheckoutMessage(locale === "fr-CA"

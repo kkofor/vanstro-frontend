@@ -1,4 +1,5 @@
 export type ApiConfig = {
+  runtimeMode: RuntimeMode;
   hostname: string;
   port: number;
   trustProxyHeaders: boolean;
@@ -9,12 +10,12 @@ export type ApiConfig = {
   enablePaymentSimulation: boolean;
 };
 
-type RuntimeMode = "development" | "deployment";
+type RuntimeMode = "development" | "test" | "deployment";
 
 function runtimeMode(value: string | undefined): RuntimeMode {
   if (!value) return "deployment";
-  if (value === "development" || value === "deployment") return value;
-  throw new Error("VANSTRO_RUNTIME_MODE must be either development or deployment.");
+  if (value === "development" || value === "test" || value === "deployment") return value;
+  throw new Error("VANSTRO_RUNTIME_MODE must be development, test or deployment.");
 }
 
 function required(name: string, value: string | undefined) {
@@ -49,8 +50,16 @@ function deploymentSecret(name: string, value: string | undefined, mode: Runtime
 export function loadApiConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
   const mode = runtimeMode(env.VANSTRO_RUNTIME_MODE);
   required("DATABASE_URL", env.DATABASE_URL);
+  const enablePaymentSimulation = env.ENABLE_PAYMENT_SIMULATION?.trim().toLowerCase() === "true";
+  if (mode === "deployment" && enablePaymentSimulation) {
+    throw new Error("ENABLE_PAYMENT_SIMULATION must be false in deployment mode.");
+  }
+  if (mode === "deployment") {
+    required("EMAIL_SETTINGS_ENCRYPTION_KEY", env.EMAIL_SETTINGS_ENCRYPTION_KEY);
+  }
 
   return {
+    runtimeMode: mode,
     hostname: required("API_HOST", env.API_HOST ?? "0.0.0.0"),
     port: integer("API_PORT", env.API_PORT, 4000, 1, 65535),
     trustProxyHeaders: trustProxyHeaders(env),
@@ -60,6 +69,6 @@ export function loadApiConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
       ? deploymentSecret("ERP_WEBHOOK_SECRET", env.ERP_WEBHOOK_SECRET, mode)
       : env.ERP_WEBHOOK_SECRET?.trim() || undefined,
     deliveryFlatFeeCents: integer("DELIVERY_FLAT_FEE_CENTS", env.DELIVERY_FLAT_FEE_CENTS, 1500, 0, 100000000),
-    enablePaymentSimulation: env.ENABLE_PAYMENT_SIMULATION?.trim().toLowerCase() === "true"
+    enablePaymentSimulation
   };
 }

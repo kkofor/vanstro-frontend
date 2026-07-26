@@ -1,4 +1,4 @@
-import { prisma, type Prisma } from "@vanstro/db";
+import { encryptSecret, prisma, type Prisma } from "@vanstro/db";
 import { createHmac, randomBytes } from "node:crypto";
 import { Hono } from "hono";
 import {
@@ -11,6 +11,7 @@ import { restockCancelledOrderItems } from "../integrations/erp-sync/inventory.j
 import { type DashboardEnv, writeAudit } from "./access.js";
 import {
   assertAssignableRoles,
+  assertManageableServiceAccounts,
   PermissionCeilingError
 } from "./permission-ceiling.js";
 import { badRequest, optionalString, optionalStringArray, optionalBoolean, optionalNumber, pageMeta, parsePagination, readBody } from "./request.js";
@@ -20,7 +21,8 @@ const EMAIL_PROVIDER_KEY = "default_smtp";
 function maskSmtpSettings(settings: Record<string, unknown> | null | undefined) {
   if (!settings) return {};
   const next = { ...settings };
-  if (typeof next.password === "string" && next.password.length > 0) {
+  if ("encryptedPassword" in next || (typeof next.password === "string" && next.password.length > 0)) {
+    delete next.encryptedPassword;
     next.password = "********";
   }
   return next;
@@ -107,6 +109,7 @@ export function createDashboardSystemRoutes() {
     const serviceAccount = await prisma
       .$transaction(async (database) => {
         await lockServiceAccountLifecycle(database, context.req.param("id"));
+        await assertManageableServiceAccounts(database, context.get("actorUserId"), [context.req.param("id")]);
 
         const existing = await database.serviceAccount.findUnique({
           where: { id: context.req.param("id") },
@@ -176,6 +179,7 @@ export function createDashboardSystemRoutes() {
     const result = await prisma.$transaction(async (database) => {
       const serviceAccountId = context.req.param("id");
       await lockServiceAccountLifecycle(database, serviceAccountId);
+      await assertManageableServiceAccounts(database, context.get("actorUserId"), [serviceAccountId]);
 
       const serviceAccount = await database.serviceAccount.findUnique({
         where: { id: serviceAccountId },
@@ -200,6 +204,16 @@ export function createDashboardSystemRoutes() {
   });
 
   routes.delete("/dashboard/mcp/service-accounts/:id/tokens/:tokenId", async (context) => {
+    const manageable = await prisma.$transaction(async (database) => {
+      await assertManageableServiceAccounts(database, context.get("actorUserId"), [context.req.param("id")]);
+      return true;
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError) return error;
+      throw error;
+    });
+    if (manageable instanceof PermissionCeilingError) {
+      return context.json({ error: manageable.message }, manageable.status);
+    }
     const token = await prisma.serviceAccountToken.findFirst({
       where: { id: context.req.param("tokenId"), serviceAccountId: context.req.param("id"), revokedAt: null },
       select: { id: true, serviceAccountId: true }
@@ -259,6 +273,68 @@ export function createDashboardSystemRoutes() {
       prisma.paymentSession.count()
     ]);
     return context.json({ data: sessions, meta: pageMeta(pagination, total) });
+  });
+
+  routes.get("/dashboard/payment-reconciliation", async (context) => {
+    const pagination = parsePagination(context);
+    const where: Prisma.PaymentSessionWhereInput = {
+      status: { in: ["reconciliation_required", "refund_pending", "refund_failed"] }
+    };
+    const [sessions, total] = await Promise.all([
+      prisma.paymentSession.findMany({
+        where,
+        include: { paymentEvents: { orderBy: { createdAt: "desc" } }, order: true },
+        orderBy: { updatedAt: "asc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.paymentSession.count({ where })
+    ]);
+    return context.json({ data: sessions, meta: pageMeta(pagination, total) });
+  });
+
+  routes.patch("/dashboard/payment-reconciliation/:id", async (context) => {
+    const body = await readBody(context);
+    if (!body) return badRequest(context, "JSON body is required.");
+    const action = optionalString(body, "action");
+    if (action !== "request_refund" && action !== "confirm_refunded" && action !== "mark_refund_failed") {
+      return badRequest(context, "action must be request_refund, confirm_refunded or mark_refund_failed.");
+    }
+    const session = await prisma.paymentSession.findUnique({ where: { id: context.req.param("id") } });
+    if (!session || !["reconciliation_required", "refund_pending", "refund_failed"].includes(session.status)) {
+      return context.json({ error: "Payment session is not awaiting reconciliation.", code: "DASHBOARD_NOT_FOUND" }, 404);
+    }
+    const nextStatus = action === "request_refund"
+      ? "refund_pending"
+      : action === "confirm_refunded"
+        ? "refunded"
+        : "refund_failed";
+    const eventType = action === "request_refund"
+      ? "refund_requested"
+      : action === "confirm_refunded"
+        ? "refunded"
+        : "refund_failed";
+    const updated = await prisma.$transaction(async (database) => {
+      const claimed = await database.paymentSession.updateMany({
+        where: { id: session.id, status: session.status },
+        data: { status: nextStatus }
+      });
+      if (claimed.count !== 1) return undefined;
+      await database.paymentEvent.create({
+        data: {
+          paymentSessionId: session.id,
+          type: eventType,
+          providerEventId: session.providerPaymentId,
+          amountCents: session.totalCents,
+          currency: session.currency,
+          payload: { actorUserId: context.get("actorUserId"), note: optionalString(body, "note") }
+        }
+      });
+      return database.paymentSession.findUniqueOrThrow({ where: { id: session.id } });
+    });
+    if (!updated) return context.json({ error: "Payment status changed concurrently.", code: "DASHBOARD_CONFLICT" }, 409);
+    await writeAudit(context, "dashboard.payment_reconciliation.update", "payment_session", session.id, { action });
+    return context.json({ data: updated });
   });
 
   routes.post("/dashboard/payment-sessions/:id/mark-paid", async (context) => {
@@ -351,15 +427,15 @@ export function createDashboardSystemRoutes() {
 
     const existing = await prisma.emailProviderAccount.findUnique({ where: { key: EMAIL_PROVIDER_KEY } });
     const existingSettings = (existing?.settings as Record<string, unknown> | null) ?? {};
-    const password =
+    const encryptionKey = process.env.EMAIL_SETTINGS_ENCRYPTION_KEY?.trim();
+    if (!encryptionKey) return context.json({ error: "Email settings encryption is not configured.", code: "DASHBOARD_CONFLICT" }, 409);
+    const encryptedPassword =
       passwordInput && passwordInput !== "********"
-        ? passwordInput
-        : typeof existingSettings.password === "string"
-          ? existingSettings.password
-          : undefined;
-    if (!password) return badRequest(context, "password is required.");
+        ? encryptSecret(passwordInput, encryptionKey)
+        : existingSettings.encryptedPassword;
+    if (!encryptedPassword) return badRequest(context, "password is required.");
 
-    const settings = { host, port, user, password, from, requireTls };
+    const settings = { host, port, user, encryptedPassword, from, requireTls };
     const account = await prisma.emailProviderAccount.upsert({
       where: { key: EMAIL_PROVIDER_KEY },
       update: { provider: "smtp", status, settings },
@@ -601,14 +677,16 @@ export function createDashboardSystemRoutes() {
       return context.json({ error: `Cannot transition order from ${order.status} to ${status}.` }, 409);
     }
     const updated = await prisma.$transaction(async (transaction) => {
-      const next = await transaction.order.update({
-        where: { id: order.id },
+      const claimed = await transaction.order.updateMany({
+        where: { id: order.id, status: order.status },
         data: { status: status as "paid" | "processing" | "fulfilled" | "cancelled" }
       });
+      if (claimed.count !== 1) return undefined;
+      const next = await transaction.order.findUniqueOrThrow({ where: { id: order.id } });
       await transaction.orderStatusEvent.create({
         data: { orderId: order.id, status: status as "paid" | "processing" | "fulfilled" | "cancelled", source: "dashboard", payload: { actorUserId: context.get("actorUserId") } }
       });
-      if (status === "cancelled" && order.status !== "cancelled") {
+      if (status === "cancelled") {
         const orderWithItems = await transaction.order.findUniqueOrThrow({
           where: { id: order.id },
           include: { items: true }
@@ -617,6 +695,9 @@ export function createDashboardSystemRoutes() {
       }
       return next;
     });
+    if (!updated) {
+      return context.json({ error: "Order status changed concurrently. Refresh and try again.", code: "DASHBOARD_CONFLICT" }, 409);
+    }
     await writeAudit(context, "dashboard.orders.status.update", "order", order.id, { status });
     return context.json({ data: updated });
   });

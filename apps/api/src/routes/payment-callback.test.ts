@@ -131,6 +131,45 @@ test("payment callback is idempotent for order and ERP job creation", async () =
   }
 });
 
+test("payment callback rejects incomplete inventory reservations", async () => {
+  const suffix = randomBytes(6).toString("hex");
+  const { session, snapshot } = await createCheckoutFixture(`missing-reservation-${suffix}`);
+  const baselineReserved = snapshot.quantityReserved;
+  const providerPaymentId = `pay-missing-reservation-${suffix}`;
+  const signature = createHmac("sha256", paymentCallbackSecret)
+    .update(`${session.id}:${providerPaymentId}`)
+    .digest("hex");
+
+  await prisma.inventoryReservation.deleteMany({ where: { paymentSessionId: session.id } });
+  await prisma.inventorySnapshot.update({
+    where: { id: snapshot.id },
+    data: { quantityReserved: baselineReserved }
+  });
+
+  try {
+    const response = await app.request("/api/v1/payments/callback", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-payment-signature": signature },
+      body: JSON.stringify({ sessionId: session.id, providerPaymentId, status: "paid" })
+    });
+    assert.equal(response.status, 409);
+    assert.equal(await prisma.order.count({ where: { paymentSessionId: session.id } }), 0);
+    const persistedSession = await prisma.paymentSession.findUniqueOrThrow({ where: { id: session.id } });
+    assert.equal(persistedSession.status, "reconciliation_required");
+    assert.equal(
+      await prisma.paymentEvent.count({
+        where: { paymentSessionId: session.id, type: "reconciliation_required" }
+      }),
+      1
+    );
+  } finally {
+    await prisma.paymentEvent.deleteMany({ where: { paymentSessionId: session.id } });
+    await prisma.paymentSession.delete({ where: { id: session.id } });
+    const cart = await prisma.cart.findUnique({ where: { id: session.cartId ?? "" } });
+    if (cart) await prisma.cart.delete({ where: { id: cart.id } });
+  }
+});
+
 test("payment callback decrements quantityReserved and quantityOnHand after consuming reservations", async () => {
   const suffix = randomBytes(6).toString("hex");
   const { session, snapshot, unitPriceCents } = await createCheckoutFixture(`consume-${suffix}`);

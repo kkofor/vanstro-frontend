@@ -13,6 +13,7 @@ import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
 import type { SiteLocale } from "@/lib/i18n/locale";
 import { localeHref } from "@/lib/i18n/routes";
 import { localizeApiError } from "@/lib/i18n/api-error-localization";
+import { readGuestOrderToken, storeGuestOrderToken } from "./CheckoutClient";
 
 export function OrderDetailClient({ orderId, locale: explicitLocale }: { orderId: string; locale?: SiteLocale }) {
   const { getOrder: getLocalOrder, persistenceReady } = useStorefront();
@@ -30,8 +31,15 @@ export function OrderDetailClient({ orderId, locale: explicitLocale }: { orderId
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
-    setGuestToken(query.get("token") ?? undefined);
-  }, []);
+    const queryToken = query.get("token") ?? "";
+    if (queryToken) storeGuestOrderToken(orderId, queryToken);
+    setGuestToken(queryToken || readGuestOrderToken(orderId) || undefined);
+    if (queryToken) {
+      query.delete("token");
+      const nextQuery = query.toString();
+      window.history.replaceState(null, "", `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ""}`);
+    }
+  }, [orderId]);
 
   useEffect(() => {
     let active = true;

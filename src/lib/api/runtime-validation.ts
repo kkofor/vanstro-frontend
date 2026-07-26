@@ -188,7 +188,16 @@ export const validateCheckoutSession: RuntimeValidator<CheckoutSession> = (
 ) => {
   const session = objectValue(value, path);
   const status = stringValue(session.status, `${path}.status`);
-  if (!["pending", "paid", "expired", "cancelled", "failed"].includes(status)) {
+  if (![
+    "pending",
+    "paid",
+    "expired",
+    "failed",
+    "reconciliation_required",
+    "refund_pending",
+    "refunded",
+    "refund_failed"
+  ].includes(status)) {
     return fail(`${path}.status`, "a supported checkout status");
   }
   const paymentMethod = stringValue(session.paymentMethod, `${path}.paymentMethod`);

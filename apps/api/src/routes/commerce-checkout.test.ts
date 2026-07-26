@@ -61,7 +61,8 @@ test("duplicate checkout for the same cart returns 409", async () => {
   });
   const headers = {
     "content-type": "application/json",
-    "x-cart-token": cartToken
+    "x-cart-token": cartToken,
+    "idempotency-key": `checkout-${suffix}`
   };
 
   try {
@@ -104,11 +105,58 @@ test("delivery checkout requires a complete shipping address", async () => {
   });
   const headers = {
     "content-type": "application/json",
-    "x-cart-token": cartToken
+    "x-cart-token": cartToken,
+    "idempotency-key": `checkout-${suffix}`
   };
 
   try {
     const response = await app.request("/api/v1/checkout/session", { method: "POST", headers, body });
+    assert.equal(response.status, 400);
+    const json = (await response.json()) as { code?: string };
+    assert.equal(json.code, "CHECKOUT_INVALID");
+  } finally {
+    await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
+    await prisma.cart.delete({ where: { id: cart.id } });
+  }
+});
+
+test("delivery checkout rejects a non-Canadian address", async () => {
+  const suffix = randomBytes(6).toString("hex");
+  const cartToken = `country-cart-${suffix}`;
+  const location = await prisma.dealerLocation.findFirst({
+    where: { dealer: { status: "active" }, deliveryAvailable: true }
+  });
+  assert.ok(location);
+  const sku = await prisma.platformSku.findFirst({
+    where: { status: "active", product: { status: "active" }, prices: { some: { status: "active" } } }
+  });
+  assert.ok(sku);
+  const cart = await prisma.cart.create({ data: { guestToken: cartToken } });
+  await prisma.cartItem.create({ data: { cartId: cart.id, skuId: sku.id, quantity: 1 } });
+
+  try {
+    const response = await app.request("/api/v1/checkout/session", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-cart-token": cartToken,
+        "idempotency-key": `country-${suffix}`
+      },
+      body: JSON.stringify({
+        firstName: "Ship",
+        lastName: "Test",
+        email: `country-${suffix}@vanstro.test`,
+        phone: "204-555-0100",
+        fulfillment: "delivery",
+        paymentMethod: "cash",
+        dealerLocationId: location!.id,
+        shippingAddressLine1: "123 Main St",
+        shippingCity: "Winnipeg",
+        shippingProvince: "MB",
+        shippingPostalCode: "R3C 1A1",
+        shippingCountry: "US"
+      })
+    });
     assert.equal(response.status, 400);
     const json = (await response.json()) as { code?: string };
     assert.equal(json.code, "CHECKOUT_INVALID");

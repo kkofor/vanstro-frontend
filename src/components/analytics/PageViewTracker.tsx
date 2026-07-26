@@ -6,10 +6,21 @@ import { vanstroApi } from "@/lib/api/api-client";
 import { useLocale } from "@/components/i18n/LocaleProvider";
 import {
   COOKIE_PREFERENCES_SAVED_EVENT,
+  getConsentAnonymousId,
   readCookiePreferences
 } from "@/lib/privacy/cookie-preferences";
 
 const ANALYTICS_SESSION_KEY = "vs_analytics_session_v1";
+
+function sanitizeReferrer(value: string) {
+  if (!value) return undefined;
+  try {
+    const url = new URL(value);
+    return `${url.origin}${url.pathname}`.slice(0, 1000);
+  } catch {
+    return undefined;
+  }
+}
 
 function getOrCreateSessionId() {
   try {
@@ -49,7 +60,8 @@ export function PageViewTracker() {
           path: pathname,
           sessionId: getOrCreateSessionId(),
           consentAnalytics: true,
-          referrer: typeof document !== "undefined" ? document.referrer || undefined : undefined,
+          consentAnonymousId: getConsentAnonymousId(),
+          referrer: typeof document !== "undefined" ? sanitizeReferrer(document.referrer) : undefined,
           locale,
           ...readUtm(searchParams)
         });

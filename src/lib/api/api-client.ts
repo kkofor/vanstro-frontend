@@ -67,8 +67,8 @@ import {
 } from "./runtime-validation";
 import { canonicalProductIdFor, cartProductIdentityFor } from "./product-identity";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "";
+const DEMO_READ_ONLY = process.env.NEXT_PUBLIC_DEMO_READ_ONLY === "true";
 const CART_TOKEN_KEY = "vanstro-cart-token";
 const ACCESS_TOKEN_KEY = "vanstro-access-token";
 const publicApiErrorCodes = new Set<string>(PUBLIC_API_ERROR_CODES);
@@ -117,6 +117,21 @@ async function apiFetch<T>(
   init: RequestInit = {},
   validateData?: RuntimeValidator<T>
 ): Promise<ApiResult<T>> {
+  const method = (init.method ?? "GET").toUpperCase();
+  if (DEMO_READ_ONLY && method !== "GET" && method !== "HEAD") {
+    throw new VanstroApiError({
+      status: 503,
+      code: "API_ERROR",
+      message: "This static demo is read-only."
+    });
+  }
+  if (!API_BASE_URL) {
+    throw new VanstroApiError({
+      status: 503,
+      code: "API_ERROR",
+      message: "The API base URL is not configured."
+    });
+  }
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
     headers: {
@@ -326,8 +341,12 @@ export const vanstroApi = {
   getCart() {
     return apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
   },
-  createCheckoutSession(input: CheckoutSessionInput) {
-    return postJson<CheckoutSession>(API_ENDPOINTS.checkoutSession, input, validateCheckoutSession);
+  createCheckoutSession(input: CheckoutSessionInput, idempotencyKey: string) {
+    return apiFetch<CheckoutSession>(API_ENDPOINTS.checkoutSession, {
+      method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
+      body: JSON.stringify(input)
+    }, validateCheckoutSession);
   },
   getPaymentSession(sessionId: string, token: string) {
     return apiFetch<CheckoutSession>(
@@ -497,6 +516,7 @@ export const vanstroApi = {
     path: string;
     sessionId: string;
     consentAnalytics: true;
+    consentAnonymousId: string;
     referrer?: string;
     locale?: string;
     utmSource?: string;

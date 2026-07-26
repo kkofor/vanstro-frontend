@@ -53,6 +53,19 @@ enum PaymentSessionStatus {
   paid
   failed
   expired
+  reconciliation_required
+  refund_pending
+  refunded
+  refund_failed
+}
+
+enum PaymentEventType {
+  provider_confirmed
+  order_created
+  reconciliation_required
+  refund_requested
+  refunded
+  refund_failed
 }
 
 enum OrderStatus {
@@ -336,6 +349,9 @@ model PaymentSession {
   guestLastName         String
   guestPhone            String
   guestOrderToken       String
+  idempotencyKey        String?                @unique
+  requestHash           String?
+  paymentInit           Json?
   status                PaymentSessionStatus   @default(pending)
   fulfillment           FulfillmentType
   paymentMethod         String
@@ -360,12 +376,29 @@ model PaymentSession {
   updatedAt             DateTime               @updatedAt
   cart                  Cart?                  @relation(fields: [cartId], references: [id], onDelete: SetNull)
   inventoryReservations InventoryReservation[]
+  paymentEvents         PaymentEvent[]
   order                 Order?
   user                  User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([status, expiresAt])
   @@index([cartId, status])
   @@map("payment_sessions")
+}
+
+model PaymentEvent {
+  id                String           @id @default(uuid())
+  paymentSessionId  String
+  type              PaymentEventType
+  providerEventId   String?
+  amountCents       Int?
+  currency          String?
+  payload           Json?
+  createdAt         DateTime         @default(now())
+  paymentSession    PaymentSession   @relation(fields: [paymentSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([paymentSessionId, type, providerEventId])
+  @@index([type, createdAt])
+  @@map("payment_events")
 }
 
 model Order {

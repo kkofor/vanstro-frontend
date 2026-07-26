@@ -20,12 +20,12 @@ export type WorkerConfig = {
   };
 };
 
-type RuntimeMode = "development" | "deployment";
+type RuntimeMode = "development" | "test" | "deployment";
 
 function runtimeMode(value: string | undefined): RuntimeMode {
   if (!value) return "deployment";
-  if (value === "development" || value === "deployment") return value;
-  throw new Error("VANSTRO_RUNTIME_MODE must be either development or deployment.");
+  if (value === "development" || value === "test" || value === "deployment") return value;
+  throw new Error("VANSTRO_RUNTIME_MODE must be development, test or deployment.");
 }
 
 function required(name: string, value: string | undefined) {
@@ -64,6 +64,9 @@ function configuredGroup(env: NodeJS.ProcessEnv, names: string[], requiredInDepl
 export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerConfig {
   const mode = runtimeMode(env.VANSTRO_RUNTIME_MODE);
   const databaseUrl = required("DATABASE_URL", env.DATABASE_URL);
+  if (mode === "deployment") {
+    required("EMAIL_SETTINGS_ENCRYPTION_KEY", env.EMAIL_SETTINGS_ENCRYPTION_KEY);
+  }
   const smtpNames = ["SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD", "SMTP_FROM"];
   const erpNames = ["ERP_API_BASE_URL", "ERP_SERVICE_TOKEN"];
   const smtpEnabled = configuredGroup(env, smtpNames, false, mode);
@@ -71,8 +74,8 @@ export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerCo
   const config: WorkerConfig = {
     databaseUrl,
     pollIntervalMs: integer("WORKER_POLL_INTERVAL_MS", env.WORKER_POLL_INTERVAL_MS, 30000, 1000, 60 * 60 * 1000),
-    emailLockTtlMs: integer("EMAIL_LOCK_TTL_MS", env.EMAIL_LOCK_TTL_MS, 15 * 60 * 1000, 1000, 24 * 60 * 60 * 1000),
-    maxEmailAttempts: integer("EMAIL_MAX_ATTEMPTS", env.EMAIL_MAX_ATTEMPTS, 5, 1, 100),
+    emailLockTtlMs: integer("EMAIL_LOCK_TTL_MS", env.EMAIL_LOCK_TTL_MS, 15 * 60 * 1000, 60_000, 24 * 60 * 60 * 1000),
+    maxEmailAttempts: integer("EMAIL_MAX_ATTEMPTS", env.EMAIL_MAX_ATTEMPTS, 5, 1, 20),
     catalogSyncIntervalMs: integer(
       "CATALOG_SYNC_INTERVAL_MS",
       env.CATALOG_SYNC_INTERVAL_MS,
@@ -112,8 +115,8 @@ export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerCo
     config.erp = {
       baseUrl,
       serviceToken: required("ERP_SERVICE_TOKEN", env.ERP_SERVICE_TOKEN),
-      lockTtlMs: integer("ERP_LOCK_TTL_MS", env.ERP_LOCK_TTL_MS, 15 * 60 * 1000, 1000, 24 * 60 * 60 * 1000),
-      maxAttempts: integer("ERP_MAX_ATTEMPTS", env.ERP_MAX_ATTEMPTS, 5, 1, 100)
+      lockTtlMs: integer("ERP_LOCK_TTL_MS", env.ERP_LOCK_TTL_MS, 15 * 60 * 1000, 30_000, 24 * 60 * 60 * 1000),
+      maxAttempts: integer("ERP_MAX_ATTEMPTS", env.ERP_MAX_ATTEMPTS, 5, 1, 20)
     };
   }
 

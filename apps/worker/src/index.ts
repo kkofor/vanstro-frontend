@@ -1,4 +1,4 @@
-import { deleteExpiredConsentEvents, prisma } from "@vanstro/db";
+import { decryptSecret, deleteExpiredConsentEvents, encryptSecret, prisma } from "@vanstro/db";
 import nodemailer from "nodemailer";
 import { loadWorkerConfig } from "./config.js";
 
@@ -29,28 +29,83 @@ async function readJobBacklog() {
 }
 
 async function releaseExpiredReservations() {
-  const reservations = await prisma.inventoryReservation.findMany({
-    where: { status: "active", expiresAt: { lte: new Date() } },
+  const now = new Date();
+  const sessions = await prisma.paymentSession.findMany({
+    where: { status: "pending", expiresAt: { lte: now } },
+    orderBy: { expiresAt: "asc" },
+    take: 100,
+    select: { id: true }
+  });
+
+  for (const session of sessions) {
+    await prisma.$transaction(async (transaction) => {
+      const claimed = await transaction.paymentSession.updateMany({
+        where: { id: session.id, status: "pending", expiresAt: { lte: now } },
+        data: { status: "expired" }
+      });
+      if (claimed.count === 0) return;
+
+      const reservations = await transaction.inventoryReservation.findMany({
+        where: { paymentSessionId: session.id, status: "active" }
+      });
+      for (const reservation of reservations) {
+        const released = await transaction.inventoryReservation.updateMany({
+          where: { id: reservation.id, status: "active" },
+          data: { status: "expired" }
+        });
+        if (released.count === 0) continue;
+        const snapshotUpdated = await transaction.$executeRaw`
+          UPDATE "inventory_snapshots"
+          SET "quantityReserved" = "quantityReserved" - ${reservation.quantity},
+              "updatedAt" = NOW()
+          WHERE "skuId" = ${reservation.skuId}
+            AND "dealerLocationId" IS NOT DISTINCT FROM ${reservation.dealerLocationId}
+            AND "quantityReserved" >= ${reservation.quantity}
+        `;
+        if (snapshotUpdated !== 1) {
+          throw new Error(`Failed to release inventory reservation ${reservation.id}.`);
+        }
+        await transaction.erpSyncJob.create({
+          data: {
+            type: "inventory_release",
+            payload: {
+              reservationId: reservation.id,
+              skuId: reservation.skuId,
+              dealerLocationId: reservation.dealerLocationId,
+              quantity: reservation.quantity,
+              reason: "reservation_expired"
+            }
+          }
+        });
+      }
+    });
+  }
+
+  const standaloneReservations = await prisma.inventoryReservation.findMany({
+    where: {
+      paymentSessionId: null,
+      status: "active",
+      expiresAt: { lte: now }
+    },
     orderBy: { expiresAt: "asc" },
     take: 100
   });
 
-  for (const reservation of reservations) {
+  for (const reservation of standaloneReservations) {
     await prisma.$transaction(async (transaction) => {
-      const updated = await transaction.inventoryReservation.updateMany({
+      const released = await transaction.inventoryReservation.updateMany({
         where: { id: reservation.id, status: "active" },
         data: { status: "expired" }
       });
-      if (updated.count === 0) return;
-      const snapshot = await transaction.inventorySnapshot.findFirst({
-        where: { skuId: reservation.skuId, dealerLocationId: reservation.dealerLocationId }
-      });
-      if (snapshot) {
-        await transaction.inventorySnapshot.update({
-          where: { id: snapshot.id },
-          data: { quantityReserved: { decrement: reservation.quantity } }
-        });
-      }
+      if (released.count === 0) return;
+      await transaction.$executeRaw`
+        UPDATE "inventory_snapshots"
+        SET "quantityReserved" = "quantityReserved" - ${reservation.quantity},
+            "updatedAt" = NOW()
+        WHERE "skuId" = ${reservation.skuId}
+          AND "dealerLocationId" IS NOT DISTINCT FROM ${reservation.dealerLocationId}
+          AND "quantityReserved" >= ${reservation.quantity}
+      `;
       await transaction.erpSyncJob.create({
         data: {
           type: "inventory_release",
@@ -65,11 +120,6 @@ async function releaseExpiredReservations() {
       });
     });
   }
-
-  await prisma.paymentSession.updateMany({
-    where: { status: "pending", expiresAt: { lte: new Date() } },
-    data: { status: "expired" }
-  });
 }
 
 async function resolveSmtpConfig() {
@@ -81,7 +131,18 @@ async function resolveSmtpConfig() {
     const record = settings as Record<string, unknown>;
     const host = typeof record.host === "string" ? record.host : undefined;
     const user = typeof record.user === "string" ? record.user : undefined;
-    const password = typeof record.password === "string" ? record.password : undefined;
+    const encryptionKey = process.env.EMAIL_SETTINGS_ENCRYPTION_KEY?.trim();
+    let password = record.encryptedPassword && encryptionKey
+      ? decryptSecret(record.encryptedPassword, encryptionKey)
+      : undefined;
+    if (!password && typeof record.password === "string" && encryptionKey && account) {
+      password = record.password;
+      const { password: _legacyPassword, ...safeSettings } = record;
+      await prisma.emailProviderAccount.update({
+        where: { id: account.id },
+        data: { settings: { ...safeSettings, encryptedPassword: encryptSecret(password, encryptionKey) } }
+      });
+    }
     const from = typeof record.from === "string" ? record.from : undefined;
     const port = typeof record.port === "number" ? record.port : Number(record.port ?? 587);
     if (host && user && password && from && Number.isInteger(port)) {
@@ -496,11 +557,34 @@ async function maybeSyncCatalogFromErp() {
   if (!apiBase || !token) return;
 
   const latest = await prisma.catalogSyncRun.findFirst({ orderBy: { startedAt: "desc" } });
-  if (latest && Date.now() - latest.startedAt.getTime() < config.catalogSyncIntervalMs) return;
+  if (latest) {
+    const elapsed = Date.now() - latest.startedAt.getTime();
+    if (latest.status === "succeeded" && elapsed < config.catalogSyncIntervalMs) return;
+    if (latest.status === "failed" && elapsed < Math.min(config.catalogSyncIntervalMs, 15 * 60 * 1000)) return;
+    if (latest.status === "running" && elapsed < 15 * 60 * 1000) return;
+  }
 
+  await prisma.catalogSyncRun.updateMany({
+    where: {
+      source: "scheduled",
+      status: "running",
+      startedAt: { lt: new Date(Date.now() - 15 * 60 * 1000) }
+    },
+    data: {
+      status: "failed",
+      error: "Scheduled catalog sync lease expired.",
+      finishedAt: new Date()
+    }
+  });
   const run = await prisma.catalogSyncRun.create({
     data: { status: "running", source: "scheduled" }
+  }).catch((error: unknown) => {
+    if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
+      return undefined;
+    }
+    throw error;
   });
+  if (!run) return;
 
   try {
     const response = await fetch(`${apiBase}/dashboard/catalog/sync-from-erp`, {
@@ -539,22 +623,53 @@ async function maybeSyncCatalogFromErp() {
   }
 }
 
+const WORKER_HANDLERS = [
+  ["release-expired-reservations", releaseExpiredReservations],
+  ["delete-expired-consent-events", () => deleteExpiredConsentEvents(prisma)],
+  ["send-pending-emails", sendPendingEmails],
+  ["push-pending-erp-orders", pushPendingErpOrders],
+  ["push-pending-erp-customers", pushPendingErpCustomerSync],
+  ["push-pending-erp-inventory", pushPendingErpInventoryRelease],
+  ["sync-catalog", maybeSyncCatalogFromErp],
+  ["read-job-backlog", readJobBacklog]
+] as const;
+
 async function tick() {
-  try {
-    await releaseExpiredReservations();
-    await deleteExpiredConsentEvents(prisma);
-    await sendPendingEmails();
-    await pushPendingErpOrders();
-    await pushPendingErpCustomerSync();
-    await pushPendingErpInventoryRelease();
-    await maybeSyncCatalogFromErp();
-    await readJobBacklog();
-    return true;
-  } catch (error) {
-    console.error("Worker poll failed.", error);
-    return false;
+  let succeeded = true;
+  for (const [name, handler] of WORKER_HANDLERS) {
+    try {
+      await handler();
+    } catch (error) {
+      succeeded = false;
+      console.error(
+        JSON.stringify({
+          service: "vanstro-worker",
+          level: "error",
+          handler: name,
+          message: "Worker handler failed.",
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString()
+        })
+      );
+    }
   }
+  return succeeded;
 }
+
+function shutdown() {
+  shutdownRequested = true;
+
+  if (sleepTimeout) {
+    clearTimeout(sleepTimeout);
+    sleepTimeout = undefined;
+  }
+
+  wakeSleep?.();
+  wakeSleep = undefined;
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 const firstTickSucceeded = await tick();
 
@@ -583,21 +698,6 @@ async function pollForever() {
     }
   }
 }
-
-function shutdown() {
-  shutdownRequested = true;
-
-  if (sleepTimeout) {
-    clearTimeout(sleepTimeout);
-    sleepTimeout = undefined;
-  }
-
-  wakeSleep?.();
-  wakeSleep = undefined;
-}
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
 
 pollForever()
   .then(() => prisma.$disconnect())

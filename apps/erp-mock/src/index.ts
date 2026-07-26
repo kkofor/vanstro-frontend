@@ -35,7 +35,7 @@ async function sendOrderStatusWebhook(orderId: string, externalId: string, statu
     return;
   }
   const signature = createHmac("sha256", webhookSecret)
-    .update(`${orderId}:${externalId}:${status}`)
+    .update(`${erpSystem}:${orderId}:${externalId}:${status}`)
     .digest("hex");
   try {
     const response = await fetch(apiWebhookUrl, {

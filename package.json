@@ -33,6 +33,7 @@
     "build:backend": "pnpm --filter @vanstro/db build && pnpm --filter @vanstro/api build && pnpm --filter @vanstro/worker build && pnpm --filter @vanstro/cli build",
     "generate:openapi": "node --experimental-strip-types scripts/generate-openapi.mts",
     "preflight:production": "node --experimental-strip-types scripts/preflight-production.mts",
+    "migrate:production": "node --experimental-strip-types scripts/migrate-production.mts",
     "stack:dev": "pnpm api:dev & pnpm worker:dev & pnpm dev",
     "test:product-identifiers": "node --experimental-strip-types scripts/verify-p0-product-fixes.mts",
     "test:package-contracts": "node --experimental-strip-types --test qa/package-a-contracts.test.ts",

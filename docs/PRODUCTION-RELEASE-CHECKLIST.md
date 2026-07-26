@@ -36,6 +36,7 @@ WHERE "quantityOnHand" < 0
 Expected: zero rows.
 
 - [ ] Run `prisma migrate deploy` in staging first.
+- [ ] For production, set `ALLOW_PRODUCTION_MIGRATION=true` only after backup approval, then run `pnpm migrate:production`; it enforces inventory/extension preflight and lock/statement timeouts.
 - [ ] Verify all 27 migrations.
 - [ ] Do not run demo seed in production. `ALLOW_DEMO_SEED` must be false.
 - [ ] Run `pnpm db:seed` only for RBAC/super-admin bootstrap.

@@ -1,4 +1,4 @@
-import { decryptSecret, deleteExpiredConsentEvents, encryptSecret, prisma } from "@vanstro/db";
+import { applyDataRetention, decryptSecret, deleteExpiredConsentEvents, encryptSecret, Prisma, prisma } from "@vanstro/db";
 import nodemailer from "nodemailer";
 import { loadWorkerConfig } from "./config.js";
 
@@ -256,9 +256,11 @@ async function sendPendingEmails() {
       const subject = publishedVersion ? render(publishedVersion.subject) : item.subject ?? item.templateKey ?? "VanStro notification";
       const text = publishedVersion?.bodyText ? render(publishedVersion.bodyText) : item.payload ? JSON.stringify(item.payload, null, 2) : "VanStro notification";
       const html = publishedVersion?.bodyHtml ? render(publishedVersion.bodyHtml) : undefined;
+      const messageId = `<${item.id}@vanstro.local>`;
       const delivery = await configured.transport.sendMail({
         from: configured.from,
         to: item.toEmail,
+        messageId,
         subject,
         text,
         html
@@ -266,7 +268,7 @@ async function sendPendingEmails() {
       await prisma.$transaction([
         prisma.emailDeliveryAttempt.create({ data: { emailOutboxId: item.id, provider: "smtp", success: true } }),
         prisma.emailEvent.create({ data: { emailOutboxId: item.id, eventType: "sent", payload: { messageId: delivery.messageId } } }),
-        prisma.emailOutbox.update({ where: { id: item.id }, data: { status: "sent", lastError: null, nextRunAt: null, lockedBy: null, lockedAt: null } })
+        prisma.emailOutbox.updateMany({ where: { id: item.id, status: "running", lockedBy: "worker" }, data: { status: "sent", lastError: null, nextRunAt: null, lockedBy: null, lockedAt: null } })
       ]);
     } catch (error) {
       const message = error instanceof Error ? error.message : "SMTP delivery failed.";
@@ -288,7 +290,7 @@ async function sendPendingEmails() {
       await prisma.$transaction([
         prisma.emailDeliveryAttempt.create({ data: { emailOutboxId: item.id, provider: "smtp", success: false, error: message } }),
         prisma.emailEvent.create({ data: { emailOutboxId: item.id, eventType: "failed", payload: { error: message } } }),
-        prisma.emailOutbox.update({ where: { id: item.id }, data: { status: exhausted ? "failed" : "retry_wait", lastError: message, nextRunAt: exhausted ? null : new Date(Date.now() + retryDelayMs), lockedBy: null, lockedAt: null } })
+        prisma.emailOutbox.updateMany({ where: { id: item.id, status: "running", lockedBy: "worker" }, data: { status: exhausted ? "failed" : "retry_wait", lastError: message, nextRunAt: exhausted ? null : new Date(Date.now() + retryDelayMs), lockedBy: null, lockedAt: null } })
       ]);
     }
   }
@@ -596,11 +598,11 @@ async function maybeSyncCatalogFromErp() {
       signal: AbortSignal.timeout(120_000)
     });
     const payload = (await response.json().catch(() => null)) as {
-      data?: { imported?: number; updated?: number };
+      data?: { imported?: number; updated?: number; errors?: string[] };
       error?: string;
     } | null;
-    if (!response.ok) {
-      throw new Error(payload?.error ?? `Catalog sync failed with HTTP ${response.status}.`);
+    if (!response.ok || payload?.data?.errors?.length) {
+      throw new Error(payload?.error ?? payload?.data?.errors?.slice(0, 10).join("; ") ?? `Catalog sync failed with HTTP ${response.status}.`);
     }
     const upserted = Number(payload?.data?.imported ?? 0) + Number(payload?.data?.updated ?? 0);
     await prisma.catalogSyncRun.update({
@@ -623,9 +625,47 @@ async function maybeSyncCatalogFromErp() {
   }
 }
 
+async function processPrivacyRequests() {
+  const requests = await prisma.privacyRequest.findMany({
+    where: { status: "pending", type: "account_deletion" },
+    orderBy: { requestedAt: "asc" },
+    take: 10
+  });
+  for (const request of requests) {
+    try {
+      await prisma.$transaction(async (transaction) => {
+        const claimed = await transaction.privacyRequest.updateMany({
+          where: { id: request.id, status: "pending" },
+          data: { status: "processing" }
+        });
+        if (claimed.count !== 1) return;
+        const anonymizedEmail = `deleted-${request.userId}@privacy.invalid`;
+        await transaction.customerAddress.deleteMany({ where: { userId: request.userId } });
+        await transaction.favorite.deleteMany({ where: { userId: request.userId } });
+        await transaction.refreshSession.updateMany({ where: { userId: request.userId, revokedAt: null }, data: { revokedAt: new Date() } });
+        await transaction.paymentSession.updateMany({ where: { userId: request.userId }, data: { userId: null, guestEmail: anonymizedEmail, guestFirstName: "Deleted", guestLastName: "User", guestPhone: "deleted" } });
+        await transaction.order.updateMany({ where: { userId: request.userId }, data: { userId: null, email: anonymizedEmail, firstName: "Deleted", lastName: "User", phone: "deleted", notes: null, guestTokenRevokedAt: new Date() } });
+        await transaction.crmContact.updateMany({ where: { userId: request.userId }, data: { userId: null, email: anonymizedEmail, firstName: null, lastName: null, phone: null } });
+        await transaction.emailOutbox.updateMany({ where: { toEmail: request.email }, data: { toEmail: anonymizedEmail, payload: Prisma.DbNull } });
+        await transaction.user.update({ where: { id: request.userId }, data: { email: anonymizedEmail, status: "archived" } });
+        await transaction.customerProfile.updateMany({ where: { userId: request.userId }, data: { firstName: null, lastName: null, phone: null } });
+        await transaction.passwordCredential.deleteMany({ where: { userId: request.userId } });
+        await transaction.privacyRequest.update({ where: { id: request.id }, data: { status: "completed", completedAt: new Date(), error: null } });
+      });
+    } catch (error) {
+      await prisma.privacyRequest.update({
+        where: { id: request.id },
+        data: { status: "failed", error: error instanceof Error ? error.message : String(error) }
+      });
+    }
+  }
+}
+
 const WORKER_HANDLERS = [
   ["release-expired-reservations", releaseExpiredReservations],
   ["delete-expired-consent-events", () => deleteExpiredConsentEvents(prisma)],
+  ["apply-data-retention", () => applyDataRetention(prisma)],
+  ["process-privacy-requests", processPrivacyRequests],
   ["send-pending-emails", sendPendingEmails],
   ["push-pending-erp-orders", pushPendingErpOrders],
   ["push-pending-erp-customers", pushPendingErpCustomerSync],

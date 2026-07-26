@@ -41,7 +41,18 @@ class InventoryConflictError extends Error {
   }
 }
 
-const cartInclude = {
+const activePriceWhere = () => {
+  const now = new Date();
+  return {
+    status: "active" as const,
+    AND: [
+      { OR: [{ effectiveFrom: null }, { effectiveFrom: { lte: now } }] },
+      { OR: [{ effectiveUntil: null }, { effectiveUntil: { gt: now } }] }
+    ]
+  };
+};
+
+const cartInclude = () => ({
   items: {
     include: {
       sku: {
@@ -52,17 +63,17 @@ const cartInclude = {
               specifications: { orderBy: { sortOrder: "asc" as const } }
             }
           },
-          prices: { where: { status: "active" as const }, orderBy: { createdAt: "desc" as const } },
+          prices: { where: activePriceWhere(), orderBy: { effectiveFrom: { sort: "desc" as const, nulls: "last" as const } } },
           inventorySnapshots: true
         }
       }
     }
   }
-};
+});
 
-type CartRecord = Prisma.CartGetPayload<{ include: typeof cartInclude }>;
+type CartRecord = Prisma.CartGetPayload<{ include: ReturnType<typeof cartInclude> }>;
 
-const favoriteInclude = {
+const favoriteInclude = () => ({
   product: {
     include: {
       category: true,
@@ -72,15 +83,15 @@ const favoriteInclude = {
         where: { status: "active" as const },
         orderBy: { sortOrder: "asc" as const },
         include: {
-          prices: { where: { status: "active" as const }, orderBy: { createdAt: "desc" as const } },
+          prices: { where: activePriceWhere(), orderBy: { effectiveFrom: { sort: "desc" as const, nulls: "last" as const } } },
           inventorySnapshots: true
         }
       }
     }
   }
-} satisfies Prisma.FavoriteInclude;
+} satisfies Prisma.FavoriteInclude);
 
-type FavoriteWithProduct = Prisma.FavoriteGetPayload<{ include: typeof favoriteInclude }>;
+type FavoriteWithProduct = Prisma.FavoriteGetPayload<{ include: ReturnType<typeof favoriteInclude> }>;
 
 export function availableQuantity(snapshots: Array<{ quantityOnHand: number; quantityReserved: number }>) {
   return snapshots.reduce((total, snapshot) => total + Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved), 0);
@@ -107,7 +118,10 @@ export function computeCheckoutTotals(
 // warning rather than blocking checkout; finance owns the authoritative table.
 async function resolveCombinedTaxRate(province: string | null | undefined) {
   if (!province) return 0;
-  const rate = await prisma.taxRate.findFirst({ where: { province, isActive: true } });
+  const rate = await prisma.taxRate.findFirst({
+    where: { province, isActive: true, effectiveFrom: { lte: new Date() } },
+    orderBy: { effectiveFrom: "desc" }
+  });
   if (!rate) {
     console.warn(
       JSON.stringify({
@@ -292,7 +306,7 @@ async function resolveCartIdentity(context: Context) {
 }
 
 function loadCart(cartId: string) {
-  return prisma.cart.findUniqueOrThrow({ where: { id: cartId }, include: cartInclude });
+  return prisma.cart.findUniqueOrThrow({ where: { id: cartId }, include: cartInclude() });
 }
 
 function formatCart(cart: CartRecord) {
@@ -353,7 +367,7 @@ async function findSku(productId: string, skuCode?: string) {
       ...(skuCode ? { skuCode } : {}),
       product: { status: "active", OR: [{ id: productId }, { slug: productId }] }
     },
-    include: { prices: { where: { status: "active" }, orderBy: { createdAt: "desc" } } }
+    include: { prices: { where: activePriceWhere(), orderBy: { effectiveFrom: { sort: "desc", nulls: "last" } } } }
   });
 }
 
@@ -590,7 +604,7 @@ export function createCommerceRoutes(
         });
       }
     });
-    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude });
+    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude() });
     return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined }, 201);
   });
 
@@ -602,14 +616,14 @@ export function createCommerceRoutes(
     const item = await prisma.cartItem.findFirst({ where: { id: context.req.param("itemId"), cartId: resolved.cart.id } });
     if (!item) return publicError(context, 404, "CART_ITEM_NOT_FOUND", "Cart item not found.");
     await prisma.cartItem.update({ where: { id: item.id }, data: { quantity } });
-    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude });
+    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude() });
     return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
   });
 
   routes.delete("/cart/items/:itemId", async (context) => {
     const resolved = await resolveCartIdentity(context);
     await prisma.cartItem.deleteMany({ where: { id: context.req.param("itemId"), cartId: resolved.cart.id } });
-    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude });
+    const cart = await prisma.cart.findUniqueOrThrow({ where: { id: resolved.cart.id }, include: cartInclude() });
     return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
   });
 
@@ -948,6 +962,7 @@ export function createCommerceRoutes(
           lastName: session.guestLastName,
           phone: session.guestPhone,
           guestOrderToken: session.guestOrderToken,
+          guestTokenExpiresAt: session.userId ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
           paymentSessionId: session.id,
           fulfillment: session.fulfillment,
           paymentMethod: session.paymentMethod,
@@ -1074,7 +1089,15 @@ export function createCommerceRoutes(
     });
     if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
     const session = await getSessionFromRequest(context);
-    if (session?.user.id !== order.userId && context.req.query("token") !== order.guestOrderToken) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
+    if (
+      session?.user.id !== order.userId &&
+      (
+        context.req.query("token") !== order.guestOrderToken ||
+        order.guestTokenRevokedAt !== null ||
+        !order.guestTokenExpiresAt ||
+        order.guestTokenExpiresAt <= new Date()
+      )
+    ) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
     const shipment = extractShipment(order.statusEvents);
     return context.json({
       data: {
@@ -1095,7 +1118,15 @@ export function createCommerceRoutes(
     });
     if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
     const session = await getSessionFromRequest(context);
-    if (session?.user.id !== order.userId && context.req.query("token") !== order.guestOrderToken) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
+    if (
+      session?.user.id !== order.userId &&
+      (
+        context.req.query("token") !== order.guestOrderToken ||
+        order.guestTokenRevokedAt !== null ||
+        !order.guestTokenExpiresAt ||
+        order.guestTokenExpiresAt <= new Date()
+      )
+    ) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
     return context.json({ data: formatOrder(order) });
   });
 
@@ -1103,7 +1134,7 @@ export function createCommerceRoutes(
     const body = (await context.req.json().catch(() => null)) as { productId?: unknown; quantity?: unknown; dealerLocationId?: unknown } | null;
     const sku = await findSku(optionalString(body?.productId) ?? "");
     const quantity = Number(body?.quantity);
-    if (!sku || !Number.isInteger(quantity) || quantity < 1) return publicError(context, 400, "COMMERCE_INVALID", "productId and positive quantity are required.");
+    if (!sku || !Number.isInteger(quantity) || quantity < 1 || quantity > 25) return publicError(context, 400, "COMMERCE_INVALID", "productId and quantity between 1 and 25 are required.");
     const dealerLocationId = optionalString(body?.dealerLocationId);
     if (!dealerLocationId) return publicError(context, 400, "COMMERCE_INVALID", "dealerLocationId is required.");
     const snapshot = await prisma.inventorySnapshot.findFirst({ where: { skuId: sku.id, dealerLocationId } });
@@ -1282,7 +1313,7 @@ export function createCommerceRoutes(
     if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
     const favorites = await prisma.favorite.findMany({
       where: { userId: session.user.id },
-      include: favoriteInclude,
+      include: favoriteInclude(),
       orderBy: { createdAt: "desc" }
     });
     return context.json({ data: favorites.flatMap((favorite) => {
@@ -1302,7 +1333,7 @@ export function createCommerceRoutes(
         where: { userId_productId: { userId: session.user.id, productId } },
         update: {},
         create: { userId: session.user.id, productId },
-        include: favoriteInclude
+        include: favoriteInclude()
       });
       await recordFavoriteAddForUser(transaction, { userId: session.user.id, productId });
       return record;
@@ -1317,6 +1348,45 @@ export function createCommerceRoutes(
     if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
     await prisma.favorite.deleteMany({ where: { userId: session.user.id, productId: context.req.param("productId") } });
     return context.json({ data: { ok: true } });
+  });
+
+  routes.get("/account/export", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const [user, addresses, favorites, orders, crmContact, loginEvents, emailOutbox] = await Promise.all([
+      prisma.user.findUnique({ where: { id: session.user.id }, include: { customerProfile: true } }),
+      prisma.customerAddress.findMany({ where: { userId: session.user.id } }),
+      prisma.favorite.findMany({ where: { userId: session.user.id }, select: { productId: true, createdAt: true } }),
+      prisma.order.findMany({ where: { userId: session.user.id }, include: { items: true, statusEvents: true } }),
+      prisma.crmContact.findFirst({ where: { OR: [{ userId: session.user.id }, { email: session.user.email }] }, include: { events: true, notes: true } }),
+      prisma.loginEvent.findMany({ where: { userId: session.user.id }, orderBy: { createdAt: "desc" } }),
+      prisma.emailOutbox.findMany({ where: { toEmail: session.user.email }, include: { attempts: true, events: true } })
+    ]);
+    const paymentSessions = await prisma.paymentSession.findMany({
+      where: { OR: [{ userId: session.user.id }, { guestEmail: session.user.email }] },
+      include: { paymentEvents: true }
+    });
+    const erpJobs = await prisma.erpSyncJob.findMany({
+      where: {
+        OR: [
+          { payload: { path: ["userId"], equals: session.user.id } },
+          { payload: { path: ["email"], equals: session.user.email } }
+        ]
+      },
+      include: { attempts: true }
+    });
+    const auditLogs = await prisma.auditLog.findMany({ where: { actorUserId: session.user.id } });
+    return context.json({ data: { exportedAt: new Date().toISOString(), user, addresses, favorites, orders, paymentSessions, crmContact, loginEvents, emailOutbox, erpJobs, auditLogs } });
+  });
+
+  routes.post("/account/deletion-request", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const request = await prisma.privacyRequest.create({
+      data: { userId: session.user.id, email: session.user.email, type: "account_deletion" }
+    });
+    await prisma.refreshSession.updateMany({ where: { userId: session.user.id, revokedAt: null }, data: { revokedAt: new Date() } });
+    return context.json({ data: { requestId: request.id, status: request.status, createdAt: request.requestedAt.toISOString() } }, 202);
   });
 
   routes.get("/account/orders", async (context) => {

@@ -542,17 +542,13 @@ const CANADIAN_TAX_RATES: Array<{
 async function seedTaxRates() {
   for (const rate of CANADIAN_TAX_RATES) {
     const combined = (Number(rate.gst) + Number(rate.pst) + Number(rate.hst)).toFixed(5);
-    await prisma.taxRate.upsert({
-      where: { province: rate.province },
-      update: {
-        label: rate.label,
-        gstRate: rate.gst,
-        pstRate: rate.pst,
-        hstRate: rate.hst,
-        combinedRate: combined,
-        isActive: true
-      },
-      create: {
+    const existing = await prisma.taxRate.findFirst({
+      where: { province: rate.province, isActive: true },
+      orderBy: { effectiveFrom: "desc" }
+    });
+    if (existing) continue;
+    await prisma.taxRate.create({
+      data: {
         province: rate.province,
         label: rate.label,
         gstRate: rate.gst,

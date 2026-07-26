@@ -99,16 +99,16 @@ status: code-remediated — external production verification pending
 | --- | --- |
 | 全仓 TypeScript | 通过 |
 | DB tests | 2/2 通过 |
-| API tests | 79/79 通过 |
+| API tests | 82/82 通过 |
 | Worker tests | 3/3 通过 |
 | Package contract tests | 5/5 通过 |
 | Backend build | DB/API/Worker/CLI 全部通过 |
 | Next dynamic production build | 通过 |
 | GitHub Pages static export | 通过，172 个 fr-CA HTML 已校验 |
-| OpenAPI route inventory | 153 paths，method/path 校验通过 |
+| OpenAPI route inventory | 159 paths，method/path 校验通过；Checkout/Payment 关键请求契约已声明 |
 | 编译 API readiness | `/health/ready` 通过 |
 | 编译 Worker `--once` | 正常退出；本地 SMTP 未运行，邮件按预期进入 retry |
-| Empty DB migrations | 25/25 应用成功 |
+| Empty DB migrations | 33/33 应用成功 |
 | Temporary DB seed + full API smoke | 通过；临时数据库随后删除 |
 | `git diff --check` | 通过 |
 
@@ -120,7 +120,7 @@ status: code-remediated — external production verification pending
 2. **SMTP**：真实凭据、域名 SPF/DKIM/DMARC、投递、退信、重复发送演练。
 3. **ERP**：真实合同、幂等键、乱序/重复 webhook、订单/客户/库存对账。
 4. **Canada Post**：真实 AddressComplete key、配额和字段兼容。
-5. **Node 22 CI**：当前本机 Node 25，所有命令通过但有 engine warning；应由 GitHub CI Node 22 最终确认。
+5. **Node 22 CI**：本机已使用 Node 22.22.2 跑通全门禁；仍需远端 GitHub CI 对提交状态进行最终确认。
 6. **生产数据库**：备份、PITR、restore drill、连接池预算、lock timeout 和在线 migration。
 7. **生产基础设施**：DNS/TLS、API/Worker 编排、readiness/liveness、日志、metrics、告警和回滚。
 8. **法务/财务确认**：各省税率、Delivery place-of-supply、数据 retention、DSAR 期限和订单保留要求。
@@ -141,6 +141,6 @@ status: code-remediated — external production verification pending
 - 真实支付切换；
 - DNS/TLS 切流；
 - 长驻生产 Worker；
-- `git push` 或部署。
+- 线上部署（用户已授权，但于 2026-07-26 最新指令中要求暂缓线上部署）。
 
-这些动作必须获得用户明确授权并完成上述外部验收。
+代码提交和分支 push 已获授权并执行；线上动作按用户最新指令暂缓，待提供部署目标与真实凭据后继续。

@@ -196,6 +196,7 @@ model User {
   refreshSessions    RefreshSession[]
   userRoles          UserRole[]
   crmContact         CrmContact?
+  privacyRequests    PrivacyRequest[]
 
   @@map("users")
 }
@@ -409,6 +410,8 @@ model Order {
   lastName         String
   phone            String
   guestOrderToken  String
+  guestTokenExpiresAt DateTime?
+  guestTokenRevokedAt DateTime?
   paymentSessionId String          @unique
   status           OrderStatus     @default(paid)
   fulfillment      FulfillmentType
@@ -936,6 +939,21 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+model PrivacyRequest {
+  id          String   @id @default(uuid())
+  userId      String
+  email       String
+  type        String
+  status      String   @default("pending")
+  requestedAt DateTime @default(now())
+  completedAt DateTime?
+  error       String?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, requestedAt])
+  @@map("privacy_requests")
+}
+
 model PrivacyConsentEvent {
   id          String   @id @default(uuid())
   anonymousId String
@@ -1019,7 +1037,7 @@ model DealerErpLink {
 
 model TaxRate {
   id            String   @id @default(uuid())
-  province      String   @unique
+  province      String
   label         String
   gstRate       Decimal  @default(0) @db.Decimal(6, 5)
   pstRate       Decimal  @default(0) @db.Decimal(6, 5)
@@ -1030,6 +1048,8 @@ model TaxRate {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  @@unique([province, effectiveFrom])
+  @@index([province, isActive, effectiveFrom])
   @@map("tax_rates")
 }
 

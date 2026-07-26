@@ -5,7 +5,7 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/package.json
 COPY apps/worker/package.json apps/worker/package.json
-COPY apps/cli/package.json apps/cli/package.json
+COPY packages/cli/package.json packages/cli/package.json
 COPY apps/erp-mock/package.json apps/erp-mock/package.json
 COPY packages/db/package.json packages/db/package.json
 RUN pnpm install --frozen-lockfile
@@ -22,12 +22,12 @@ RUN corepack enable
 COPY --from=build /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
 COPY --from=build /app/apps/api/package.json apps/api/package.json
 COPY --from=build /app/apps/worker/package.json apps/worker/package.json
-COPY --from=build /app/apps/cli/package.json apps/cli/package.json
+COPY --from=build /app/packages/cli/package.json packages/cli/package.json
 COPY --from=build /app/packages/db/package.json packages/db/package.json
 RUN pnpm install --prod --frozen-lockfile
 COPY --from=build /app/apps/api/dist apps/api/dist
 COPY --from=build /app/apps/worker/dist apps/worker/dist
-COPY --from=build /app/apps/cli/dist apps/cli/dist
+COPY --from=build /app/packages/cli/dist packages/cli/dist
 COPY --from=build /app/packages/db/dist packages/db/dist
 COPY --from=build /app/packages/db/prisma packages/db/prisma
 USER node

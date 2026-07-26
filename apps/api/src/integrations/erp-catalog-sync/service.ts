@@ -159,10 +159,7 @@ export async function syncProductsFromUpstream(
           }),
           prisma.platformSku.update({
             where: { id: existingMapping.skuId },
-            data: {
-              skuCode: erpSkuKey,
-              attributes: skuAttributes(erpSku)
-            }
+            data: { attributes: skuAttributes(erpSku) }
           })
         ]);
         result.updated += 1;

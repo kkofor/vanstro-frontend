@@ -203,6 +203,18 @@ export function createDashboardRoutes() {
           context.get("actorUserId"),
           [roleId]
         );
+        const targetRole = await database.role.findUnique({
+          where: { id: roleId },
+          include: { rolePermissions: { include: { permission: { select: { key: true } } } } }
+        });
+        if (!targetRole) throw new PermissionCeilingError(400, "Role not found.");
+        assertPermissionsWithinActorCeiling(
+          targetRole.rolePermissions.map((entry) => entry.permission.key),
+          actorPermissionSet
+        );
+        if (targetRole.isSystem && !actorPermissionSet.has("system.settings.write")) {
+          throw new PermissionCeilingError(403, "system.settings.write is required to change a system role.");
+        }
         const uniquePermissionIds = [...new Set(permissionIds ?? [])];
         const uniquePermissionKeys = [...new Set(permissionKeys ?? [])];
         const permissions = await database.permission.findMany({

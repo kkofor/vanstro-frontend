@@ -26,6 +26,8 @@ function policyFor(context: Context): RateLimitPolicy | undefined {
   }
   if (
     path === "/checkout/session" ||
+    path === "/inventory/reservations" ||
+    path.startsWith("/inventory/reservations/") ||
     path === "/payments/callback" ||
     path === "/address/autocomplete" ||
     path === "/cart" ||

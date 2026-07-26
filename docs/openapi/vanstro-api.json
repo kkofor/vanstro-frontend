@@ -95,6 +95,50 @@
         }
       }
     },
+    "/account/deletion-request": {
+      "post": {
+        "summary": "POST /account/deletion-request",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/account/export": {
+      "get": {
+        "summary": "GET /account/export",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
     "/account/favorites": {
       "get": {
         "summary": "GET /account/favorites",
@@ -620,19 +664,88 @@
         "summary": "POST /checkout/session",
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "Idempotent replay"
+          },
+          "201": {
+            "description": "Checkout session created"
           },
           "400": {
             "description": "Invalid request"
           },
-          "401": {
-            "description": "Authentication required"
+          "409": {
+            "description": "Checkout conflict"
           },
-          "403": {
-            "description": "Permission denied"
-          },
-          "500": {
-            "description": "Internal error"
+          "502": {
+            "description": "Payment provider unavailable"
+          }
+        },
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "phone",
+                  "fulfillment",
+                  "paymentMethod"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "fulfillment": {
+                    "type": "string",
+                    "enum": [
+                      "pickup",
+                      "delivery"
+                    ]
+                  },
+                  "paymentMethod": {
+                    "type": "string",
+                    "enum": [
+                      "card",
+                      "pos",
+                      "cash"
+                    ]
+                  },
+                  "dealerLocationId": {
+                    "type": "string"
+                  },
+                  "shippingCountry": {
+                    "type": "string",
+                    "enum": [
+                      "CA"
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -728,48 +841,6 @@
     "/contact/leads": {
       "post": {
         "summary": "POST /contact/leads",
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "400": {
-            "description": "Invalid request"
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Permission denied"
-          },
-          "500": {
-            "description": "Internal error"
-          }
-        }
-      }
-    },
-    "/dashboard/${moduleKey}": {
-      "get": {
-        "summary": "GET /dashboard/${moduleKey}",
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "400": {
-            "description": "Invalid request"
-          },
-          "401": {
-            "description": "Authentication required"
-          },
-          "403": {
-            "description": "Permission denied"
-          },
-          "500": {
-            "description": "Internal error"
-          }
-        }
-      },
-      "put": {
-        "summary": "PUT /dashboard/${moduleKey}",
         "responses": {
           "200": {
             "description": "Successful response"
@@ -1931,6 +2002,90 @@
         }
       }
     },
+    "/dashboard/footer": {
+      "get": {
+        "summary": "GET /dashboard/footer",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      },
+      "put": {
+        "summary": "PUT /dashboard/footer",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/dashboard/home-page": {
+      "get": {
+        "summary": "GET /dashboard/home-page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      },
+      "put": {
+        "summary": "PUT /dashboard/home-page",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
     "/dashboard/inventory/snapshots": {
       "get": {
         "summary": "GET /dashboard/inventory/snapshots",
@@ -2253,6 +2408,48 @@
         }
       }
     },
+    "/dashboard/navigation": {
+      "get": {
+        "summary": "GET /dashboard/navigation",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      },
+      "put": {
+        "summary": "PUT /dashboard/navigation",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
     "/dashboard/operations/alerts": {
       "get": {
         "summary": "GET /dashboard/operations/alerts",
@@ -2344,6 +2541,50 @@
     "/dashboard/orders/{id}/status": {
       "patch": {
         "summary": "PATCH /dashboard/orders/:id/status",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/dashboard/payment-reconciliation": {
+      "get": {
+        "summary": "GET /dashboard/payment-reconciliation",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/dashboard/payment-reconciliation/{id}": {
+      "patch": {
+        "summary": "PATCH /dashboard/payment-reconciliation/:id",
         "responses": {
           "200": {
             "description": "Successful response"
@@ -3810,19 +4051,57 @@
         "summary": "POST /payments/callback",
         "responses": {
           "200": {
-            "description": "Successful response"
+            "description": "Payment confirmed or idempotently replayed"
           },
           "400": {
-            "description": "Invalid request"
+            "description": "Invalid callback"
           },
           "401": {
-            "description": "Authentication required"
+            "description": "Provider verification failed"
           },
-          "403": {
-            "description": "Permission denied"
-          },
-          "500": {
-            "description": "Internal error"
+          "409": {
+            "description": "Payment requires reconciliation"
+          }
+        },
+        "parameters": [
+          {
+            "name": "X-Payment-Signature",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "sessionId",
+                  "status"
+                ],
+                "properties": {
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "paid"
+                    ]
+                  },
+                  "providerPaymentId": {
+                    "type": "string"
+                  },
+                  "ticket": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
         }
       }

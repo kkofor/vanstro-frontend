@@ -19,13 +19,13 @@ export function createAnalyticsRoutes() {
       return publicError(context, 400, "PRIVACY_CONSENT_INVALID", "Analytics consent is required.");
     }
     const consent = await prisma.privacyConsentEvent.findFirst({
-      where: {
-        anonymousId: consentAnonymousId,
-        preferences: { path: ["analytics"], equals: true }
-      },
+      where: { anonymousId: consentAnonymousId },
       orderBy: { createdAt: "desc" }
     });
-    if (!consent) {
+    const currentPreferences = consent?.preferences && typeof consent.preferences === "object" && !Array.isArray(consent.preferences)
+      ? consent.preferences as Record<string, unknown>
+      : undefined;
+    if (!consent || currentPreferences?.analytics !== true) {
       return publicError(context, 403, "PRIVACY_CONSENT_INVALID", "A recorded analytics consent is required.");
     }
     if (!path || !sessionId || !consentAnonymousId || path.length > 500 || sessionId.length > 128 || consentAnonymousId.length > 128) {

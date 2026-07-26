@@ -1,10 +1,13 @@
 import { spawn, spawnSync } from "node:child_process";
 import { createHmac, randomBytes, randomUUID } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
+import { rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname.replace(/\/$/, "");
 const suffix = randomBytes(4).toString("hex");
 const databaseName = `vanstro_smoke_e2e_${suffix}`;
+const mailpitDatabase = join(tmpdir(), `vanstro-mailpit-${suffix}.db`);
 const sourceDatabaseUrl = process.env.DATABASE_URL;
 if (!sourceDatabaseUrl) throw new Error("DATABASE_URL is required to locate the local PostgreSQL server.");
 const source = new URL(sourceDatabaseUrl);
@@ -64,7 +67,7 @@ try {
   run("pnpm", ["--filter", "@vanstro/db", "db:seed"]);
   run("pnpm", ["build:backend"]);
 
-  start("mailpit", ["--smtp", "127.0.0.1:1026", "--listen", "127.0.0.1:8026", "--database", `${root}/tmp-mailpit-${suffix}.db`], baseEnv);
+  start("mailpit", ["--smtp", "127.0.0.1:1026", "--listen", "127.0.0.1:8026", "--database", mailpitDatabase], baseEnv);
   start("pnpm", ["--filter", "@vanstro/erp-mock", "start"], { ...baseEnv, ERP_MOCK_PORT: "4101", ERP_MOCK_SYSTEM: "configured-erp", ERP_MOCK_AUTO_WEBHOOK: "true", ERP_MOCK_API_WEBHOOK_URL: "http://127.0.0.1:4001/api/v1/integrations/erp/webhooks/order-status" });
   start("node", ["apps/api/dist/index.js"], { ...baseEnv, API_HOST: "127.0.0.1", API_PORT: "4001", ENABLE_PAYMENT_SIMULATION: "true" });
   start("node", ["apps/worker/dist/index.js"], { ...baseEnv, WORKER_POLL_INTERVAL_MS: "1000", SMTP_HOST: "127.0.0.1", SMTP_PORT: "1026", SMTP_USER: "test", SMTP_PASSWORD: "test-password", SMTP_FROM: "VanStro Test <test@vanstro.local>", SMTP_REQUIRE_TLS: "false", ERP_API_BASE_URL: "http://127.0.0.1:4101", ERP_SERVICE_TOKEN: "local-staging-erp-service-token", VANSTRO_API_BASE_URL: "http://127.0.0.1:4001/api/v1" });
@@ -91,4 +94,7 @@ try {
   await new Promise((resolve) => setTimeout(resolve, 500));
   const dbArgs = ["-h", source.hostname, "-p", source.port || "5432", "-U", decodeURIComponent(source.username)];
   spawnSync("dropdb", ["--if-exists", ...dbArgs, databaseName], { env: { ...process.env, PGPASSWORD: decodeURIComponent(source.password) } });
+  rmSync(mailpitDatabase, { force: true });
+  rmSync(`${mailpitDatabase}-shm`, { force: true });
+  rmSync(`${mailpitDatabase}-wal`, { force: true });
 }

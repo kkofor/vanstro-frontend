@@ -19,3 +19,8 @@ if (process.env.NODE_ENV !== "production") {
 
 export * from "@prisma/client";
 export { hashPassword, verifyPassword } from "./password.js";
+export {
+  CONSENT_RECORD_RETENTION_MONTHS,
+  consentRetentionCutoff,
+  deleteExpiredConsentEvents
+} from "./privacy-retention.js";

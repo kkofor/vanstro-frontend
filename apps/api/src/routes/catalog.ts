@@ -1,29 +1,9 @@
 import { prisma } from "@vanstro/db";
 import { Hono } from "hono";
+import { formatStorefrontProduct, productDetailInclude, productListInclude } from "../catalog/product-payload.js";
+import { publicError } from "../public-errors.js";
 
-type ProductRecord = Awaited<ReturnType<typeof findProduct>>;
 type CommerceProductRecord = Awaited<ReturnType<typeof findCommerceProduct>>;
-
-const productDisplayInclude = {
-  assets: { orderBy: { sortOrder: "asc" as const } },
-  category: true,
-  specifications: { orderBy: { sortOrder: "asc" as const } },
-  skus: {
-    where: { status: "active" as const },
-    orderBy: { sortOrder: "asc" as const },
-    include: {
-      prices: {
-        where: { status: "active" as const },
-        orderBy: { createdAt: "desc" as const },
-        take: 1
-      }
-    }
-  },
-  reviews: {
-    where: { status: "published" as const },
-    orderBy: { createdAt: "desc" as const }
-  }
-};
 
 const productCommerceInclude = {
   skus: {
@@ -41,74 +21,12 @@ const productCommerceInclude = {
 };
 
 function money(amountCents: number, currency: string) {
-  return {
-    amount: amountCents / 100,
-    amountCents,
-    currency
-  };
+  return { amount: amountCents / 100, amountCents, currency };
 }
 
-function formatProduct(product: NonNullable<ProductRecord>) {
-  const primarySku = product.skus[0];
-  const activePrice = primarySku?.prices[0];
-  const averageRating =
-    product.reviews.length > 0
-      ? product.reviews.reduce((total, review) => total + review.rating, 0) /
-        product.reviews.length
-      : 0;
-
-  return {
-    id: product.id,
-    slug: product.slug,
-    name: product.name,
-    shortDescription: product.shortDescription,
-    description: product.description,
-    status: product.status,
-    category: product.category
-      ? {
-          id: product.category.id,
-          slug: product.category.slug,
-          name: product.category.name
-        }
-      : null,
-    primarySku: primarySku
-      ? {
-          id: primarySku.id,
-          skuCode: primarySku.skuCode,
-          name: primarySku.name,
-          attributes: primarySku.attributes
-        }
-      : null,
-    price: activePrice
-      ? money(activePrice.amountCents, activePrice.currency)
-      : null,
-    assets: product.assets.map((asset) => ({
-      id: asset.id,
-      url: asset.url,
-      altText: asset.altText,
-      kind: asset.kind,
-      sortOrder: asset.sortOrder
-    })),
-    specifications: product.specifications.map((specification) => ({
-      key: specification.key,
-      value: specification.value
-    })),
-    ratingSummary: {
-      average: Number(averageRating.toFixed(1)),
-      count: product.reviews.length,
-      sourceLabel: "Published VanStro product reviews.",
-      writeReviewEnabled: true
-    },
-    reviews: product.reviews.map((review) => ({
-      id: review.id,
-      name: review.nickname,
-      title: review.title ?? "Product review",
-      body: review.body,
-      rating: review.rating,
-      createdAt: review.createdAt.toISOString(),
-      verifiedBuyer: false
-    }))
-  };
+function formatProduct(product: Parameters<typeof formatStorefrontProduct>[0], includeDetail = false) {
+  const formatted = formatStorefrontProduct(product, { includeDetail });
+  return includeDetail ? { ...formatted.websiteApi, ...formatted.detail } : formatted.websiteApi;
 }
 
 function formatCommerce(product: NonNullable<CommerceProductRecord>) {
@@ -117,15 +35,12 @@ function formatCommerce(product: NonNullable<CommerceProductRecord>) {
     slug: product.slug,
     skus: product.skus.map((sku) => {
       const activePrice = sku.prices[0];
-
       return {
         id: sku.id,
         skuCode: sku.skuCode,
         name: sku.name,
         attributes: sku.attributes,
-        price: activePrice
-          ? money(activePrice.amountCents, activePrice.currency)
-          : null,
+        price: activePrice ? money(activePrice.amountCents, activePrice.currency) : null,
         erpMappings: sku.erpMappings.map((mapping) => ({
           erpSystem: mapping.erpSystem,
           erpSkuKey: mapping.erpSkuKey
@@ -137,22 +52,28 @@ function formatCommerce(product: NonNullable<CommerceProductRecord>) {
 
 async function findProduct(identifier: string) {
   return prisma.product.findFirst({
-    where: {
-      OR: [{ id: identifier }, { slug: identifier }],
-      status: "active"
-    },
-    include: productDisplayInclude
+    where: { OR: [{ id: identifier }, { slug: identifier }], status: "active" },
+    include: productDetailInclude
   });
 }
 
 async function findCommerceProduct(identifier: string) {
   return prisma.product.findFirst({
-    where: {
-      OR: [{ id: identifier }, { slug: identifier }],
-      status: "active"
-    },
+    where: { OR: [{ id: identifier }, { slug: identifier }], status: "active" },
     include: productCommerceInclude
   });
+}
+
+function normalizePostalCode(value: string) {
+  return value.replace(/\s+/g, "").toUpperCase();
+}
+
+function postalPrefixes(postalCode: string) {
+  const normalized = normalizePostalCode(postalCode);
+  const prefixes = new Set<string>();
+  if (normalized.length >= 3) prefixes.add(normalized.slice(0, 3));
+  if (normalized.length >= 1) prefixes.add(normalized.slice(0, 1));
+  return [...prefixes];
 }
 
 export function createCatalogRoutes() {
@@ -163,7 +84,6 @@ export function createCatalogRoutes() {
       where: { isActive: true },
       orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
     });
-
     return context.json({
       data: categories.map((category) => ({
         id: category.id,
@@ -178,9 +98,19 @@ export function createCatalogRoutes() {
   routes.get("/products", async (context) => {
     const category = context.req.query("category");
     const q = context.req.query("q");
-    const limit = Math.min(Number(context.req.query("limit") ?? 24), 100);
+    const requestedLimit = Number(context.req.query("limit") ?? 24);
     const offset = Number(context.req.query("offset") ?? 0);
-
+    if (
+      !Number.isFinite(requestedLimit) ||
+      !Number.isInteger(requestedLimit) ||
+      requestedLimit < 0 ||
+      !Number.isFinite(offset) ||
+      !Number.isInteger(offset) ||
+      offset < 0
+    ) {
+      return publicError(context, 400, "CATALOG_INVALID", "limit and offset must be finite nonnegative integers.");
+    }
+    const limit = Math.min(requestedLimit, 100);
     const where = {
       status: "active" as const,
       ...(category ? { category: { slug: category } } : {}),
@@ -193,52 +123,39 @@ export function createCatalogRoutes() {
           }
         : {})
     };
-
     const [items, total] = await Promise.all([
       prisma.product.findMany({
         where,
-        include: productDisplayInclude,
+        include: productListInclude,
         orderBy: { createdAt: "desc" },
         skip: offset,
         take: limit
       }),
       prisma.product.count({ where })
     ]);
-
-    return context.json({
-      data: items.map(formatProduct),
-      meta: { limit, offset, total }
-    });
+    return context.json({ data: items.map((item) => formatProduct(item)), meta: { limit, offset, total } });
   });
 
   routes.post("/products/commerce", async (context) => {
-    const body = (await context.req.json().catch(() => null)) as
-      | { productIds?: string[] }
-      | null;
-    const productIds = body?.productIds?.filter(Boolean) ?? [];
-
-    if (productIds.length === 0) {
-      return context.json({ error: "productIds is required." }, 400);
+    const body = (await context.req.json().catch(() => null)) as { productIds?: unknown } | null;
+    if (
+      !Array.isArray(body?.productIds) ||
+      body.productIds.length === 0 ||
+      body.productIds.some((productId) => typeof productId !== "string" || !productId.trim())
+    ) {
+      return publicError(context, 400, "CATALOG_INVALID", "productIds must be a non-empty array of non-empty strings.");
     }
-
+    const productIds = body.productIds.map((productId) => productId.trim());
     const products = await prisma.product.findMany({
-      where: {
-        id: { in: productIds },
-        status: "active"
-      },
+      where: { id: { in: productIds }, status: "active" },
       include: productCommerceInclude
     });
-
     return context.json({ data: products.map(formatCommerce) });
   });
 
   routes.get("/products/:identifier/commerce", async (context) => {
     const product = await findCommerceProduct(context.req.param("identifier"));
-
-    if (!product) {
-      return context.json({ error: "Product not found." }, 404);
-    }
-
+    if (!product) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
     return context.json({ data: formatCommerce(product) });
   });
 
@@ -250,11 +167,7 @@ export function createCatalogRoutes() {
       },
       include: { assets: { orderBy: { sortOrder: "asc" } } }
     });
-
-    if (!product) {
-      return context.json({ error: "Product not found." }, 404);
-    }
-
+    if (!product) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
     return context.json({
       data: product.assets.map((asset) => ({
         id: asset.id,
@@ -268,12 +181,8 @@ export function createCatalogRoutes() {
 
   routes.get("/products/:identifier", async (context) => {
     const product = await findProduct(context.req.param("identifier"));
-
-    if (!product) {
-      return context.json({ error: "Product not found." }, 404);
-    }
-
-    return context.json({ data: formatProduct(product) });
+    if (!product) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
+    return context.json({ data: formatProduct(product, true) });
   });
 
   routes.get("/promotions/active", async (context) => {
@@ -286,7 +195,6 @@ export function createCatalogRoutes() {
       },
       orderBy: { createdAt: "desc" }
     });
-
     return context.json({ data: promotions });
   });
 
@@ -294,59 +202,96 @@ export function createCatalogRoutes() {
     const dealers = await prisma.dealer.findMany({
       where: { status: "active" },
       include: {
-        locations: {
-          include: { serviceAreas: true },
-          orderBy: { name: "asc" }
-        }
+        locations: { include: { serviceAreas: true }, orderBy: { name: "asc" } }
       },
       orderBy: { name: "asc" }
     });
-
     return context.json({ data: dealers });
+  });
+
+  routes.get("/dealers/lookup", async (context) => {
+    const postalCode = context.req.query("postalCode")?.trim();
+    if (!postalCode) {
+      return publicError(context, 400, "CATALOG_INVALID", "postalCode query parameter is required.");
+    }
+    const prefixes = postalPrefixes(postalCode);
+    const serviceAreas = await prisma.dealerServiceArea.findMany({
+      where: {
+        OR: prefixes.flatMap((prefix) => [
+          { areaType: "postal_prefix", areaCode: prefix },
+          { areaType: "fsa", areaCode: prefix }
+        ])
+      },
+      include: {
+        dealerLocation: {
+          include: {
+            dealer: true,
+            serviceAreas: true
+          }
+        }
+      }
+    });
+    const locations = new Map<string, (typeof serviceAreas)[number]["dealerLocation"]>();
+    for (const area of serviceAreas) {
+      if (area.dealerLocation.dealer.status === "active") locations.set(area.dealerLocation.id, area.dealerLocation);
+    }
+    return context.json({
+      data: [...locations.values()].map((location) => ({
+        dealer: location.dealer,
+        location
+      })),
+      meta: { postalCode: normalizePostalCode(postalCode), matched: locations.size }
+    });
   });
 
   routes.get("/home/products", async (context) => {
     const products = await prisma.product.findMany({
       where: { status: "active" },
-      include: productDisplayInclude,
+      include: productListInclude,
       orderBy: { createdAt: "desc" },
       take: 8
     });
-
-    return context.json({ data: products.map(formatProduct) });
+    return context.json({ data: products.map((item) => formatProduct(item)) });
   });
 
-  routes.get("/home/banners", (context) =>
-    context.json({
-      data: [
-        {
-          id: "p1a-demo-hero",
-          title: "Catalog and pricing now come from Website API",
-          href: "/products"
-        }
-      ]
-    })
-  );
+  routes.get("/home/banners", async (context) => {
+    const requested = context.req.query("locale");
+    const locale = requested === "fr-CA" ? "fr-CA" : "en-CA";
+    const record =
+      (await prisma.siteContentModule.findFirst({ where: { moduleKey: "home-page", locale, status: "published" } })) ??
+      (await prisma.siteContentModule.findFirst({
+        where: { moduleKey: "home-page", locale: "en-CA", status: "published" }
+      }));
+    const payload = (record?.payload ?? {}) as { banners?: unknown };
+    const banners = Array.isArray(payload.banners) ? payload.banners : [];
+    return context.json({ data: banners, meta: { locale } });
+  });
 
   routes.get("/storefront/home", async (context) => {
-    const products = await prisma.product.findMany({
-      where: { status: "active" },
-      include: productDisplayInclude,
-      orderBy: { createdAt: "desc" },
-      take: 8
-    });
-
+    const requested = context.req.query("locale");
+    const locale = requested === "fr-CA" ? "fr-CA" : "en-CA";
+    const [products, homeModule] = await Promise.all([
+      prisma.product.findMany({
+        where: { status: "active" },
+        include: productListInclude,
+        orderBy: { createdAt: "desc" },
+        take: 8
+      }),
+      prisma.siteContentModule
+        .findFirst({ where: { moduleKey: "home-page", locale, status: "published" } })
+        .then(
+          (record) =>
+            record ??
+            prisma.siteContentModule.findFirst({
+              where: { moduleKey: "home-page", locale: "en-CA", status: "published" }
+            })
+        )
+    ]);
+    const payload = (homeModule?.payload ?? {}) as { banners?: unknown };
+    const banners = Array.isArray(payload.banners) ? payload.banners : [];
     return context.json({
-      data: {
-        banners: [
-          {
-            id: "p1a-demo-hero",
-            title: "Catalog and pricing now come from Website API",
-            href: "/products"
-          }
-        ],
-        products: products.map(formatProduct)
-      }
+      data: { banners, products: products.map((item) => formatProduct(item)) },
+      meta: { locale }
     });
   });
 

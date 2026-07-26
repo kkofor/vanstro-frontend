@@ -26,6 +26,7 @@ export const INITIAL_PERMISSIONS = [
   "email.outbox.retry",
   "erp.sync.read",
   "erp.sync.retry",
+  "erp.catalog.read",
   "crm.read",
   "crm.update",
   "crm.promote",

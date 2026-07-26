@@ -39,6 +39,38 @@ test("analytics requires recorded consent and strips referrer query", async () =
   }
 });
 
+test("analytics rejects consent after it is withdrawn", async () => {
+  const anonymousId = randomUUID();
+  await prisma.privacyConsentEvent.createMany({
+    data: [
+      {
+        anonymousId,
+        source: "accept-all",
+        action: "granted",
+        preferences: { strictlyNecessary: true, functional: true, analytics: true, targeting: true },
+        createdAt: new Date(Date.now() - 1000)
+      },
+      {
+        anonymousId,
+        source: "reject-all",
+        action: "withdrawn",
+        preferences: { strictlyNecessary: true, functional: false, analytics: false, targeting: false },
+        createdAt: new Date()
+      }
+    ]
+  });
+  try {
+    const response = await app.request("/api/v1/analytics/pageviews", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ path: "/products", sessionId: randomUUID(), consentAnalytics: true, consentAnonymousId: anonymousId })
+    });
+    assert.equal(response.status, 403);
+  } finally {
+    await prisma.privacyConsentEvent.deleteMany({ where: { anonymousId } });
+  }
+});
+
 test("analytics rejects unrecorded consent and sensitive paths", async () => {
   const unrecorded = await app.request("/api/v1/analytics/pageviews", {
     method: "POST",

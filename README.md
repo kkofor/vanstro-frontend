@@ -1,52 +1,75 @@
-# VanStro Frontend
+# VanStro
 
-Static storefront demo for VanStro Global Supply, a Canada-focused home
-materials commerce and dealer-fulfillment platform.
+Canada-focused home materials commerce platform: Next.js storefront + Dashboard,
+Hono API, background worker, and PostgreSQL — in one monorepo.
 
-Live demo:
+| Surface | URL (local) | Notes |
+| --- | --- | --- |
+| Storefront | http://localhost:3000 | EN + fr-CA |
+| Dashboard | http://localhost:3000/dashboard | Admin RBAC |
+| API | http://localhost:4000/api/v1 | Health: `/health/ready` |
+
+**Latest launch-loop commit:** `3eb35c5` (2026-07-26) — checkout → pay → orders → CRM/email → ERP/ops.
+
+Historical static demo (may lag the monorepo):
 
 [https://kkofor.github.io/vanstro-frontend/](https://kkofor.github.io/vanstro-frontend/)
 
-Repository:
+## Documentation map (start here for handoff)
 
-[https://github.com/kkofor/vanstro-frontend](https://github.com/kkofor/vanstro-frontend)
+| Doc | Audience |
+| --- | --- |
+| [docs/backend/README.md](docs/backend/README.md) | Backend quick start |
+| [docs/BACKEND-HANDOFF-2026-07-26.md](docs/BACKEND-HANDOFF-2026-07-26.md) | **Next backend agent — full handoff** |
+| [docs/SESSION-HANDOFF-FULL-LAUNCH-2026-07-26.md](docs/SESSION-HANDOFF-FULL-LAUNCH-2026-07-26.md) | All projects completed in the launch session |
+| [docs/DEVELOPING.md](docs/DEVELOPING.md) | Local full-stack commands |
+| [docs/API-CONTRACT-ALIGNMENT.md](docs/API-CONTRACT-ALIGNMENT.md) | API route alignment |
+| [docs/FRONTEND-HANDOFF-2026-07-26.md](docs/FRONTEND-HANDOFF-2026-07-26.md) | Frontend handoff |
 
-## Project Positioning
+## Project positioning
 
-VanStro is not a cross-border marketplace. The current site is a frontend
-foundation for a Canadian commerce and supply-chain platform:
+VanStro is not a cross-border marketplace. It is a Canadian commerce and
+dealer-fulfillment platform:
 
-- Homeowners and project buyers browse products, add items to cart, and move
-  toward online checkout.
-- Contractors and B2B buyers browse the same catalog with dealer-backed
-  fulfillment context.
-- Paid orders are handed to a selected or local VanStro dealer for pickup,
-  delivery coordination, and project support.
+- Shoppers browse products, cart, and checkout (card / POS / cash).
+- Delivery uses Canadian address capture (Canada Post AddressComplete when keyed).
+- Paid orders go to a selected or local dealer for pickup or delivery.
+- Website CRM, email outbox, ERP sync jobs, and consent-gated first-party analytics
+  support operations from the Dashboard.
 - Qualified businesses can apply to become VanStro dealers.
-
-The current implementation is a static demo with typed mock data. It is prepared
-so a backend, dashboard, dealer portal, payment system, and inventory service can
-replace mock data later without rewriting page components.
 
 ## Backend
 
-The monorepo includes a production-oriented API (`apps/api`), worker (`apps/worker`),
-and shared database package (`packages/db`). See [docs/DEVELOPING.md](docs/DEVELOPING.md)
-for the full-stack local setup and `pnpm qa:backend` verification.
+Production-oriented packages in this monorepo:
+
+- `apps/api` — Hono API (`/api/v1`)
+- `apps/worker` — email outbox, ERP outbound, catalog sync cron
+- `packages/db` — Prisma schema, migrations, seed, RBAC
+
+Quick start and gates: [docs/backend/README.md](docs/backend/README.md).  
+Agent takeover: [docs/BACKEND-HANDOFF-2026-07-26.md](docs/BACKEND-HANDOFF-2026-07-26.md).
+
+```bash
+pnpm db:generate && pnpm db:migrate && pnpm db:seed
+pnpm api:dev      # :4000
+pnpm worker:dev
+pnpm typecheck && pnpm test:api && pnpm api:smoke
+```
+
+**Production DNS / migrate deploy / live payment credentials require explicit user authorization.**
 
 ## Tech Stack
 
 | Area | Current implementation |
 | --- | --- |
-| Core platform | Next.js App Router static export |
-| Language | TypeScript |
-| Runtime versions | Next.js 16.2.9, React 19.2.7, TypeScript 6.0.3 |
+| Storefront / Dashboard | Next.js App Router, React 19, TypeScript |
+| API | Hono on Node (`apps/api`) |
+| Worker | Node poll loop (`apps/worker`) |
+| Database | PostgreSQL + Prisma (`packages/db`) |
 | Styling | Global CSS in `src/app/globals.css` |
 | Icons | `lucide-react` |
-| Data layer | Typed API contracts plus mock data adapters |
-| Client state | React context with `localStorage` persistence |
+| Contracts | `src/lib/api/api-contract.ts` + Dashboard client |
 | Package manager | pnpm |
-| Deployment | GitHub Pages through GitHub Actions |
 
 ## Run Locally
 
@@ -70,9 +93,19 @@ pnpm dev -- -p 3001
 
 ## Validate
 
+Frontend:
+
 ```bash
 pnpm run typecheck
 pnpm run build:pages
+```
+
+Backend gates (required after API/worker/db changes):
+
+```bash
+pnpm typecheck
+pnpm test:api
+pnpm api:smoke
 ```
 
 Product and homepage smoke QA:
@@ -92,22 +125,28 @@ Current verified routes:
 
 | Route | Purpose |
 | --- | --- |
-| `/` | Approved homepage direction |
-| `/products` | First-level product listing/catalog page |
-| `/products/[slug]` | Product detail page |
-| `/cart` | Cart preview and quantity management |
-| `/checkout` | Checkout placeholder |
-| `/orders/demo-order` | Demo order tracking view |
+| `/` | Homepage |
+| `/products` | Catalog listing |
+| `/products/[slug]` | Product detail |
+| `/cart` | Cart |
+| `/checkout` | Checkout (pickup/delivery + payment method) |
+| `/checkout/payment` | Card / POS / cash payment |
+| `/orders/[id]` | Order status timeline + shipment |
+| `/orders/lookup` | Guest order lookup |
 | `/favorites` | Saved products |
-| `/account/login` | Customer or partner login entry |
-| `/account/register` | Customer registration entry |
-| `/dealers/apply` | Dealer application page |
-| `/articles` | Resource center listing |
-| `/articles/[slug]` | Article detail placeholder |
+| `/account` | Customer account overview |
+| `/account/profile` | Profile |
+| `/account/addresses` | Address book |
+| `/account/orders` | Order history |
+| `/account/login` | Sign in |
+| `/account/register` | Register |
+| `/dashboard` | Admin dashboard |
+| `/dealers/apply` | Dealer application |
+| `/articles` | Resource center |
 | `/about` | Company overview |
-| `/contact` | Contact page |
-| `/privacy` | Privacy placeholder |
-| `/cookie-settings` | Cookie preference route |
+| `/contact` | Contact |
+| `/privacy` | Privacy |
+| `/cookie-settings` | Cookie preferences |
 
 ## Current Page Rules
 

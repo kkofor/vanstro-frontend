@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { randomBytes } from "node:crypto";
+import { createHash, randomBytes } from "node:crypto";
 import test from "node:test";
 import { prisma } from "@vanstro/db";
 import { createApp } from "../app.js";
@@ -163,6 +163,71 @@ test("delivery checkout rejects a non-Canadian address", async () => {
   } finally {
     await prisma.cartItem.deleteMany({ where: { cartId: cart.id } });
     await prisma.cart.delete({ where: { id: cart.id } });
+  }
+});
+
+test("checkout idempotency replay is scoped to the same cart and restores payment metadata", async () => {
+  const suffix = randomBytes(6).toString("hex");
+  const idempotencyKey = `replay-${suffix}`;
+  const body = {
+    firstName: "Replay",
+    lastName: "Buyer",
+    email: `replay-${suffix}@vanstro.test`,
+    phone: "204-555-0100",
+    fulfillment: "pickup",
+    paymentMethod: "cash"
+  };
+  const requestHash = createHash("sha256").update(JSON.stringify(body)).digest("hex");
+  const firstCart = await prisma.cart.create({ data: { guestToken: `first-${suffix}` } });
+  const secondCart = await prisma.cart.create({ data: { guestToken: `second-${suffix}` } });
+  const session = await prisma.paymentSession.create({
+    data: {
+      cartId: firstCart.id,
+      idempotencyKey,
+      requestHash,
+      paymentInit: { provider: "manual", providerRef: "manual-ref" },
+      fulfillment: "pickup",
+      paymentMethod: "cash",
+      guestEmail: body.email,
+      guestFirstName: body.firstName,
+      guestLastName: body.lastName,
+      guestPhone: body.phone,
+      guestOrderToken: randomBytes(16).toString("base64url"),
+      subtotalCents: 1000,
+      totalCents: 1000,
+      items: [],
+      expiresAt: new Date(Date.now() + 30 * 60 * 1000)
+    }
+  });
+
+  try {
+    const replay = await app.request("/api/v1/checkout/session", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-cart-token": firstCart.guestToken!,
+        "idempotency-key": idempotencyKey
+      },
+      body: JSON.stringify(body)
+    });
+    assert.equal(replay.status, 200);
+    const replayBody = await replay.json() as { meta?: { replayed?: boolean; payment?: { providerRef?: string } } };
+    assert.equal(replayBody.meta?.replayed, true);
+    assert.equal(replayBody.meta?.payment?.providerRef, "manual-ref");
+
+    const crossCart = await app.request("/api/v1/checkout/session", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-cart-token": secondCart.guestToken!,
+        "idempotency-key": idempotencyKey
+      },
+      body: JSON.stringify(body)
+    });
+    assert.equal(crossCart.status, 409);
+  } finally {
+    await prisma.paymentSession.delete({ where: { id: session.id } });
+    await prisma.cart.deleteMany({ where: { id: { in: [firstCart.id, secondCart.id] } } });
   }
 });
 

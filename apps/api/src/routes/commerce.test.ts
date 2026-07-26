@@ -118,6 +118,42 @@ test("ERP webhook rejects terminal order state rollback", async () => {
   assert.equal(transactionCalled, false);
 });
 
+test("shipment webhook accepts same-state tracking updates", async () => {
+  let shipmentEventCreated = false;
+  let emailQueued = false;
+  const transaction = {
+    erpWebhookEvent: { create: async () => undefined },
+    order: { updateMany: async () => { throw new Error("same state must not update order"); } },
+    orderStatusEvent: { create: async () => { shipmentEventCreated = true; } },
+    emailSuppressionList: { findUnique: async () => null },
+    emailOutbox: { create: async () => { emailQueued = true; } }
+  };
+  const database = {
+    erpWebhookEvent: { findFirst: async () => null },
+    order: { findUnique: async () => ({ id: "order-42", status: "processing", email: "buyer@example.com", firstName: "Buyer" }) },
+    $transaction: async (callback: (client: typeof transaction) => Promise<void>) => callback(transaction)
+  };
+  const routes = createCommerceRoutes(database as never, config);
+  const signature = createHmac("sha256", secret)
+    .update("netsuite:order-42:shipment-1:shipped:TRACK-1")
+    .digest("hex");
+  const response = await routes.request("/integrations/erp/webhooks/shipment", {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-erp-signature": signature },
+    body: JSON.stringify({
+      orderId: "order-42",
+      shipmentId: "shipment-1",
+      status: "shipped",
+      trackingNumber: "TRACK-1",
+      erpSystem: "netsuite"
+    })
+  });
+
+  assert.equal(response.status, 200);
+  assert.equal(shipmentEventCreated, true);
+  assert.equal(emailQueued, true);
+});
+
 test("concurrent ERP webhook duplicates resolve as idempotent success", async () => {
   let webhookClaimed = false;
   let orderUpdates = 0;

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { Prisma } from "@vanstro/db";
 import {
+  assertManageableServiceAccounts,
   assertManageableUsers,
   PermissionCeilingError
 } from "./permission-ceiling.js";
@@ -46,5 +47,20 @@ test("管理员可以管理权限不超过自身的用户", async () => {
 
   await assert.doesNotReject(
     assertManageableUsers(database, "actor", ["limited-admin"])
+  );
+});
+
+test("管理员不能管理拥有其未持有权限的服务账号", async () => {
+  const database = permissionDatabase(
+    ["dashboard.access", "service_accounts.manage"],
+    ["dashboard.access", "service_accounts.manage", "erp.jobs.retry"]
+  );
+
+  await assert.rejects(
+    assertManageableServiceAccounts(database, "actor", ["elevated-service-account"]),
+    (error: unknown) =>
+      error instanceof PermissionCeilingError &&
+      error.status === 403 &&
+      error.message.includes("erp.jobs.retry")
   );
 });

@@ -1,0 +1,45 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: ["node", "apps/api/dist/index.js"]
+    env_file: .env.production
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    ports:
+      - "127.0.0.1:4000:4000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4000/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+        ]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: ["node", "apps/worker/dist/index.js"]
+    env_file: .env.production
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    depends_on:
+      api:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 768M

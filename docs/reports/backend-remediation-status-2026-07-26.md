@@ -99,7 +99,7 @@ status: code-remediated — external production verification pending
 | --- | --- |
 | 全仓 TypeScript | 通过 |
 | DB tests | 3/3 通过 |
-| API tests | 83/83 通过 |
+| API tests | 86/86 通过 |
 | Worker tests | 3/3 通过 |
 | Package contract tests | 5/5 通过 |
 | Backend build | DB/API/Worker/CLI 全部通过 |
@@ -108,9 +108,9 @@ status: code-remediated — external production verification pending
 | OpenAPI route inventory | 159 paths，method/path 校验通过；Checkout/Payment 关键请求契约已声明 |
 | 编译 API readiness | `/health/ready` 通过 |
 | 编译 Worker `--once` | 正常退出；本地 SMTP 未运行，邮件按预期进入 retry |
-| Empty DB migrations | 33/33 应用成功；最终临时库 full smoke 通过 |
+| Empty DB migrations | 34/34 应用成功；最终临时库 full smoke 通过 |
 | Temporary DB seed + full API smoke | 通过；临时数据库随后删除 |
-| GitHub backend-ci | 通过：`30221969111`（Node 22、fresh PostgreSQL、migration/seed/build/QA） |
+| GitHub backend-ci | 通过：`30222347105`（Node 22、fresh PostgreSQL、34 migrations、seed/build/QA） |
 | `git diff --check` | 通过 |
 
 ## 4. 尚待外部环境验收

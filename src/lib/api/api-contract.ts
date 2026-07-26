@@ -1,6 +1,50 @@
 export type Locale = "en-CA" | "fr-CA" | "zh-CN";
 export type CurrencyCode = "CAD" | "USD";
 
+export const PUBLIC_API_ERROR_CODES = [
+  "AUTH_INVALID_CREDENTIALS",
+  "AUTH_ACCOUNT_EXISTS",
+  "AUTH_PASSWORD_TOO_SHORT",
+  "AUTH_INVALID_INPUT",
+  "AUTH_REQUIRED",
+  "CATALOG_INVALID",
+  "INVENTORY_REFRESHING",
+  "INVENTORY_INSUFFICIENT",
+  "INVENTORY_NO_DEALER",
+  "CART_EMPTY",
+  "CART_ITEM_NOT_FOUND",
+  "CHECKOUT_INVALID",
+  "CHECKOUT_FULFILLMENT_UNAVAILABLE",
+  "PAYMENT_SESSION_NOT_FOUND",
+  "PAYMENT_SESSION_DENIED",
+  "COMMERCE_INVALID",
+  "COMMERCE_NOT_FOUND",
+  "COMMERCE_ACCESS_DENIED",
+  "RATE_LIMITED",
+  "CONTACT_INVALID",
+  "DEALER_APPLICATION_INVALID",
+  "SUBMISSION_INVALID",
+  "PRIVACY_CONSENT_INVALID",
+  "PRIVACY_CONSENT_FAILED",
+  "PRODUCT_IDENTITY_MISMATCH",
+  "ERP_UNAVAILABLE",
+  "ERP_MAPPING_INCOMPLETE",
+  "DASHBOARD_INVALID",
+  "DASHBOARD_NOT_FOUND",
+  "DASHBOARD_FORBIDDEN",
+  "DASHBOARD_CONFLICT",
+  "INTERNAL_ERROR"
+] as const;
+
+export type PublicApiErrorCode = (typeof PUBLIC_API_ERROR_CODES)[number];
+
+export type ApiErrorResult = {
+  /** Legacy human-readable error retained for backward compatibility. */
+  error: string;
+  code: PublicApiErrorCode;
+  fields?: Record<string, string>;
+};
+
 export type ApiResult<T> = {
   data: T;
   meta?: {
@@ -110,6 +154,8 @@ export type ProductFinishOption = {
   name: string;
   sku?: string;
   manufacturerPartNumber?: string;
+  colorName?: string;
+  configuration?: "cabinet-only" | "with-top";
   colorHex?: string;
   image?: ImageAsset;
   images?: ImageAsset[];
@@ -143,7 +189,7 @@ export type ProductRatingSummary = {
 export type ProductReview = {
   id: string;
   name: string;
-  title: string;
+  title?: string | null;
   body: string;
   rating?: number;
   createdAt?: string;
@@ -350,6 +396,7 @@ export type Dealer = {
 
 export type FulfillmentType = "pickup" | "delivery";
 
+/** @deprecated Use CheckoutSessionInput and POST /checkout/session instead. */
 export type DirectOrderInput = {
   productId: string;
   quantity: number;
@@ -357,6 +404,7 @@ export type DirectOrderInput = {
   dealerId?: string;
 };
 
+/** @deprecated Use CheckoutSessionInput and POST /checkout/session instead. */
 export type CartOrderInput = {
   cartId: string;
   fulfillment: FulfillmentType;
@@ -412,8 +460,13 @@ export type DealerApplicationInput = {
 };
 
 export type CheckoutSessionInput = {
+  firstName: string;
+  lastName: string;
   email: string;
+  phone: string;
   fulfillment: FulfillmentType;
+  paymentMethod: "pos" | "cash";
+  notes?: string;
   dealerLocationId?: string;
 };
 
@@ -465,6 +518,25 @@ export const API_ENDPOINTS = {
   productReviews: (productId: string) => `/products/${productId}/reviews`,
   dashboardProducts: "/dashboard/products",
   dashboardProduct: (productId: string) => `/dashboard/products/${productId}`,
+  dashboardProductSpecifications: (productId: string) => `/dashboard/products/${productId}/specifications`,
+  dashboardCatalog: "/dashboard/catalog",
+  dashboardStorefrontConfig: "/dashboard/storefront/config",
+  dashboardDealerPortalSettings: "/dashboard/dealer-portal/settings",
+  dashboardModulesReadiness: "/dashboard/modules/readiness",
+  dashboardModuleConfig: (moduleKey: string) => `/dashboard/modules/${moduleKey}`,
+  dashboardInventorySnapshots: "/dashboard/inventory/snapshots",
+  dashboardOrderStatus: (orderId: string) => `/dashboard/orders/${orderId}/status`,
+  dashboardOrderAssignDealer: (orderId: string) => `/dashboard/orders/${orderId}/assign-dealer`,
+  dashboardEmailTemplates: "/dashboard/email/templates",
+  dashboardSupportHandoffs: "/dashboard/support/handoffs",
+  supportHandoffs: "/support/handoffs",
+  dealersLookup: "/dealers/lookup",
+  productErpColors: (productId: string) => `/products/${productId}/erp-colors`,
+  erpCatalogSkus: "/integrations/erp/catalog/skus",
+  erpUpstreamProducts: "/integrations/erp/upstream/products",
+  erpUpstreamSkus: "/integrations/erp/upstream/skus",
+  erpUpstreamColors: "/integrations/erp/upstream/colors",
+  erpUpstreamCategories: "/integrations/erp/upstream/categories",
   productCommerce: "/products/commerce",
   productCommerceDetail: (productId: string) => `/products/${productId}/commerce`,
   productInventory: "/products/inventory",
@@ -477,8 +549,6 @@ export const API_ENDPOINTS = {
   favorites: "/account/favorites",
   favorite: (productId: string) => `/account/favorites/${productId}`,
   dealers: "/dealers",
-  directOrder: "/orders/direct",
-  cartOrder: "/orders/cart",
   checkoutSession: "/checkout/session",
   paymentSession: (sessionId: string) => `/payments/sessions/${sessionId}`,
   order: (orderId: string) => `/orders/${orderId}`,
@@ -486,5 +556,8 @@ export const API_ENDPOINTS = {
   paymentCallback: "/payments/callback",
   login: "/auth/login",
   register: "/auth/customer/register",
-  dealerApplications: "/dealer-applications"
+  currentSession: "/auth/me",
+  logout: "/auth/logout",
+  dealerApplications: "/dealer-applications",
+  contactLeads: "/contact/leads"
 } as const;

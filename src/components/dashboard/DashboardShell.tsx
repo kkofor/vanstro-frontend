@@ -1,6 +1,9 @@
 "use client";
 
 import { type FormEvent, type ReactNode, useEffect, useState } from "react";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getDashboardCopy, type DashboardCopy } from "@/lib/i18n/dashboard-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
 
 type ApiResult<T> = { data: T };
 type TabKey =
@@ -14,6 +17,7 @@ type TabKey =
   | "dealerApplications"
   | "contactLeads"
   | "productReviews"
+  | "supportHandoffs"
   | "operations"
   | "emailOutbox"
   | "auditLogs";
@@ -138,6 +142,24 @@ type EmailOutboxItem = {
   subject?: string | null;
   status: string;
   attemptCount: number;
+  lastError?: string | null;
+  createdAt: string;
+};
+
+type EmailTemplateItem = {
+  id: string;
+  key: string;
+  name: string;
+  status: string;
+};
+
+type SupportHandoffItem = {
+  id: string;
+  channel: string;
+  sourcePath: string;
+  status: string;
+  dealerId?: string | null;
+  cartId?: string | null;
   createdAt: string;
 };
 
@@ -168,9 +190,18 @@ type DashboardData = {
   dealerApplications: DealerApplication[];
   contactLeads: ContactLead[];
   productReviews: ProductReviewQueueItem[];
+  supportHandoffs: SupportHandoffItem[];
   operationAlerts: OperationalAlert[];
   emailOutbox: EmailOutboxItem[];
+  emailTemplates: EmailTemplateItem[];
   auditLogs: AuditLogRecord[];
+};
+
+type QueueFilters = {
+  contactLeads: string;
+  dealerApplications: string;
+  productReviews: string;
+  supportHandoffs: string;
 };
 
 const API_BASE_URL =
@@ -188,26 +219,26 @@ const emptyData: DashboardData = {
   dealerApplications: [],
   contactLeads: [],
   productReviews: [],
+  supportHandoffs: [],
   operationAlerts: [],
   emailOutbox: [],
+  emailTemplates: [],
   auditLogs: []
 };
 
-const tabs: Array<{ key: TabKey; label: string }> = [
-  { key: "products", label: "Products" },
-  { key: "categories", label: "Categories" },
-  { key: "pricing", label: "Pricing" },
-  { key: "promotions", label: "Promotions" },
-  { key: "users", label: "Users" },
-  { key: "roles", label: "Roles" },
-  { key: "dealers", label: "Dealers" },
-  { key: "dealerApplications", label: "Applications" },
-  { key: "contactLeads", label: "Leads" },
-  { key: "productReviews", label: "Reviews" },
-  { key: "operations", label: "Operations" },
-  { key: "emailOutbox", label: "Email outbox" },
-  { key: "auditLogs", label: "Audit logs" }
+const tabs: TabKey[] = [
+  "products", "categories", "pricing", "promotions", "users", "roles", "dealers",
+  "dealerApplications", "contactLeads", "productReviews", "supportHandoffs", "operations", "emailOutbox", "auditLogs"
 ];
+
+function withQuery(path: string, params: Record<string, string | undefined>) {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value) query.set(key, value);
+  }
+  const serialized = query.toString();
+  return serialized ? `${path}?${serialized}` : path;
+}
 
 function slugify(value: string) {
   return value
@@ -217,20 +248,39 @@ function slugify(value: string) {
     .replace(/^-|-$/g, "");
 }
 
-function formatCents(amountCents: number, currency = "CAD") {
-  return new Intl.NumberFormat("en-CA", {
+function formatCents(amountCents: number, locale: string, currency = "CAD") {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency
   }).format(amountCents / 100);
 }
 
-function formatDate(value?: string) {
+function formatNumber(value: number, locale: string) {
+  return new Intl.NumberFormat(locale).format(value);
+}
+
+function formatDate(value: string | undefined, locale: string) {
   if (!value) return "-";
 
-  return new Intl.DateTimeFormat("en-CA", {
+  return new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
     timeStyle: "short"
   }).format(new Date(value));
+}
+
+function displayDashboardValue(copy: DashboardCopy, value: string) {
+  return value in copy.values
+    ? copy.values[value as keyof DashboardCopy["values"]]
+    : value;
+}
+
+function displayDashboardStatus(
+  copy: DashboardCopy,
+  domain: keyof DashboardCopy["statusValues"],
+  value: string
+) {
+  const values = copy.statusValues[domain] as Record<string, string>;
+  return values[value] ?? displayDashboardValue(copy, value);
 }
 
 function readStoredToken() {
@@ -247,15 +297,25 @@ function clearStoredToken() {
   window.sessionStorage.removeItem("vanstro-dashboard-token");
 }
 
-export function DashboardShell() {
+export function DashboardShell({ locale: explicitLocale }: { locale?: SiteLocale }) {
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getDashboardCopy(locale);
   const [token, setToken] = useState("");
   const [user, setUser] = useState<DashboardUser | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("products");
   const [data, setData] = useState<DashboardData>(emptyData);
+  const [queueFilters, setQueueFilters] = useState<QueueFilters>({
+    contactLeads: "",
+    dealerApplications: "",
+    productReviews: "",
+    supportHandoffs: ""
+  });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [messageTone, setMessageTone] = useState<"status" | "error">("status");
   const [loginInput, setLoginInput] = useState({
-    email: "admin@vanstro.local",
+    email: "",
     password: ""
   });
   const [categoryInput, setCategoryInput] = useState({ name: "", slug: "" });
@@ -310,19 +370,20 @@ export function DashboardShell() {
 
     if (!response.ok) {
       throw new Error(
-        (payload && "error" in payload && payload.error) ||
-          `Request failed with ${response.status}`
+        (locale === "en-CA" && payload && "error" in payload && payload.error) ||
+          copy.errors.requestFailedWith(response.status)
       );
     }
 
     return (payload as ApiResult<T>).data;
   }
 
-  async function loadDashboard(nextToken = token) {
+  async function loadDashboard(nextToken = token, filters: QueueFilters = queueFilters) {
     if (!nextToken) return;
 
     setLoading(true);
     setMessage("");
+    setMessageTone("status");
 
     try {
       const headers = { Authorization: `Bearer ${nextToken}` };
@@ -332,7 +393,7 @@ export function DashboardShell() {
         });
         const payload = (await response.json()) as ApiResult<T>;
 
-        if (!response.ok) throw new Error(`Failed to load ${path}`);
+        if (!response.ok) throw new Error(copy.errors.loadPathFailed(path));
 
         return payload.data;
       };
@@ -347,8 +408,10 @@ export function DashboardShell() {
         dealerApplications,
         contactLeads,
         productReviews,
+        supportHandoffs,
         operationAlerts,
         emailOutbox,
+        emailTemplates,
         auditLogs
       ] = await Promise.all([
         fetchWithToken<Category[]>("/dashboard/categories"),
@@ -358,11 +421,21 @@ export function DashboardShell() {
         fetchWithToken<AdminUser[]>("/dashboard/users"),
         fetchWithToken<Role[]>("/dashboard/roles"),
         fetchWithToken<Dealer[]>("/dashboard/dealers"),
-        fetchWithToken<DealerApplication[]>("/dashboard/dealer-applications"),
-        fetchWithToken<ContactLead[]>("/dashboard/contact-leads"),
-        fetchWithToken<ProductReviewQueueItem[]>("/dashboard/product-reviews"),
+        fetchWithToken<DealerApplication[]>(
+          withQuery("/dashboard/dealer-applications", { status: filters.dealerApplications, pageSize: "50" })
+        ),
+        fetchWithToken<ContactLead[]>(
+          withQuery("/dashboard/contact-leads", { status: filters.contactLeads, pageSize: "50" })
+        ),
+        fetchWithToken<ProductReviewQueueItem[]>(
+          withQuery("/dashboard/product-reviews", { status: filters.productReviews, pageSize: "50" })
+        ),
+        fetchWithToken<SupportHandoffItem[]>(
+          withQuery("/dashboard/support/handoffs", { status: filters.supportHandoffs, pageSize: "50" })
+        ),
         fetchWithToken<OperationalAlert[]>("/dashboard/operations/alerts"),
-        fetchWithToken<EmailOutboxItem[]>("/dashboard/email/outbox"),
+        fetchWithToken<EmailOutboxItem[]>(withQuery("/dashboard/email/outbox", { pageSize: "50" })),
+        fetchWithToken<EmailTemplateItem[]>("/dashboard/email/templates"),
         fetchWithToken<AuditLogRecord[]>("/dashboard/audit-logs")
       ]);
 
@@ -377,12 +450,15 @@ export function DashboardShell() {
         dealerApplications,
         contactLeads,
         productReviews,
+        supportHandoffs,
         operationAlerts,
         emailOutbox,
+        emailTemplates,
         auditLogs
       });
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Dashboard load failed.");
+      setMessageTone("error");
+      setMessage(error instanceof Error ? error.message : copy.errors.dashboardLoadFailed);
     } finally {
       setLoading(false);
     }
@@ -399,7 +475,7 @@ export function DashboardShell() {
       });
       const payload = (await response.json()) as ApiResult<{ user: DashboardUser }>;
 
-      if (!response.ok) throw new Error("Stored session expired.");
+      if (!response.ok) throw new Error(copy.errors.storedSessionExpired);
 
       setToken(storedToken);
       setUser(payload.data.user);
@@ -417,6 +493,7 @@ export function DashboardShell() {
     event.preventDefault();
     setLoading(true);
     setMessage("");
+    setMessageTone("status");
 
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -429,15 +506,16 @@ export function DashboardShell() {
         user: DashboardUser;
       }>;
 
-      if (!response.ok) throw new Error("Login failed.");
+      if (!response.ok) throw new Error(copy.errors.loginFailed);
 
       setToken(payload.data.accessToken);
       setUser(payload.data.user);
       storeToken(payload.data.accessToken);
       await loadDashboard(payload.data.accessToken);
-      setMessage("Signed in.");
+      setMessage(copy.messages.signedIn);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Login failed.");
+      setMessageTone("error");
+      setMessage(error instanceof Error ? error.message : copy.errors.loginFailed);
     } finally {
       setLoading(false);
     }
@@ -455,7 +533,13 @@ export function DashboardShell() {
     setToken("");
     setUser(null);
     setData(emptyData);
-    setMessage("Signed out.");
+    setMessage(copy.messages.signedOut);
+  }
+
+  async function updateQueueFilter(key: keyof QueueFilters, value: string) {
+    const nextFilters = { ...queueFilters, [key]: value };
+    setQueueFilters(nextFilters);
+    await loadDashboard(token, nextFilters);
   }
 
   async function submitJson<T>(
@@ -465,6 +549,7 @@ export function DashboardShell() {
   ) {
     setLoading(true);
     setMessage("");
+    setMessageTone("status");
 
     try {
       await apiFetch(path, {
@@ -474,7 +559,8 @@ export function DashboardShell() {
       setMessage(options.success);
       await loadDashboard();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Request failed.");
+      setMessageTone("error");
+      setMessage(error instanceof Error ? error.message : copy.errors.requestFailed);
     } finally {
       setLoading(false);
     }
@@ -485,16 +571,15 @@ export function DashboardShell() {
       <div className="dashboard-page">
         <section className="dashboard-login-shell">
           <div>
-            <span className="eyebrow">VanStro Dashboard</span>
-            <h1>Admin sign in</h1>
+            <span className="eyebrow">{copy.login.eyebrow}</span>
+            <h1>{copy.login.title}</h1>
             <p>
-              Use the seeded super admin account while P1a is being completed.
-              API base: <code>{API_BASE_URL}</code>
+              {copy.login.intro} {copy.login.apiBase} <code>{API_BASE_URL}</code>
             </p>
           </div>
           <form className="dashboard-card dashboard-login-card" onSubmit={submitLogin}>
             <label className="field">
-              <span>Email</span>
+              <span>{copy.login.email}</span>
               <input
                 autoComplete="email"
                 type="email"
@@ -509,7 +594,7 @@ export function DashboardShell() {
               />
             </label>
             <label className="field">
-              <span>Password</span>
+              <span>{copy.login.password}</span>
               <input
                 autoComplete="current-password"
                 type="password"
@@ -524,9 +609,9 @@ export function DashboardShell() {
               />
             </label>
             <button className="button button-primary" disabled={loading} type="submit">
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? copy.login.signingIn : copy.login.signIn}
             </button>
-            {message ? <p className="dashboard-message" role="status" aria-live="polite">{message}</p> : null}
+            {message ? <p className="dashboard-message" role={messageTone === "error" ? "alert" : "status"}>{message}</p> : null}
           </form>
         </section>
       </div>
@@ -537,48 +622,47 @@ export function DashboardShell() {
     <div className="dashboard-page">
       <section className="dashboard-hero">
         <div>
-          <span className="eyebrow">P1 Dashboard Shell</span>
-          <h1>Catalog, pricing and submissions dashboard</h1>
+          <span className="eyebrow">{copy.hero.eyebrow}</span>
+          <h1>{copy.hero.title}</h1>
           <p>
-            Signed in as {user.email}. This shell talks to the real Website API
-            and keeps the full visual dashboard intentionally thin for now.
+            {copy.hero.signedInAs(user.email)}
           </p>
         </div>
         <div className="dashboard-hero-actions">
           <button className="button button-secondary" onClick={() => loadDashboard()} type="button">
-            {loading ? "Refreshing..." : "Refresh"}
+            {loading ? copy.hero.refreshing : copy.hero.refresh}
           </button>
           <button className="button button-primary" onClick={logout} type="button">
-            Sign out
+            {copy.hero.signOut}
           </button>
         </div>
       </section>
 
-      <section className="dashboard-stats" aria-label="Dashboard counts">
-        <StatCard label="Products" value={data.products.length} />
-        <StatCard label="Categories" value={data.categories.length} />
-        <StatCard label="Prices" value={data.pricing.length} />
-        <StatCard label="Promotions" value={data.promotions.length} />
-        <StatCard label="Users" value={data.users.length} />
-        <StatCard label="Dealers" value={data.dealers.length} />
-        <StatCard label="Applications" value={data.dealerApplications.length} />
-        <StatCard label="Leads" value={data.contactLeads.length} />
-        <StatCard label="Reviews" value={data.productReviews.length} />
-        <StatCard label="Ops alerts" value={data.operationAlerts.length} />
+      <section className="dashboard-stats" aria-label={copy.hero.countsLabel}>
+        <StatCard label={copy.stats.products} value={formatNumber(data.products.length, locale)} />
+        <StatCard label={copy.stats.categories} value={formatNumber(data.categories.length, locale)} />
+        <StatCard label={copy.stats.prices} value={formatNumber(data.pricing.length, locale)} />
+        <StatCard label={copy.stats.promotions} value={formatNumber(data.promotions.length, locale)} />
+        <StatCard label={copy.stats.users} value={formatNumber(data.users.length, locale)} />
+        <StatCard label={copy.stats.dealers} value={formatNumber(data.dealers.length, locale)} />
+        <StatCard label={copy.stats.applications} value={formatNumber(data.dealerApplications.length, locale)} />
+        <StatCard label={copy.stats.leads} value={formatNumber(data.contactLeads.length, locale)} />
+        <StatCard label={copy.stats.reviews} value={formatNumber(data.productReviews.length, locale)} />
+        <StatCard label={copy.stats.opsAlerts} value={formatNumber(data.operationAlerts.length, locale)} />
       </section>
 
-      {message ? <p className="dashboard-message" role="status" aria-live="polite">{message}</p> : null}
+      {message ? <p className="dashboard-message" role={messageTone === "error" ? "alert" : "status"}>{message}</p> : null}
 
       <section className="dashboard-shell-grid">
-        <aside className="dashboard-sidebar" aria-label="Dashboard sections">
+        <aside className="dashboard-sidebar" aria-label={copy.hero.sectionsLabel}>
           {tabs.map((tab) => (
             <button
-              className={tab.key === activeTab ? "active" : ""}
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
+              className={tab === activeTab ? "active" : ""}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
               type="button"
             >
-              {tab.label}
+              {copy.tabs[tab]}
             </button>
           ))}
         </aside>
@@ -586,6 +670,7 @@ export function DashboardShell() {
         <section className="dashboard-panel">
           {activeTab === "products" ? (
             <ProductsPanel
+              copy={copy}
               assetInput={assetInput}
               categories={data.categories}
               onAssetChange={setAssetInput}
@@ -593,17 +678,17 @@ export function DashboardShell() {
               onSkuChange={setSkuInput}
               onSubmitAsset={() =>
                 submitJson(`/dashboard/products/${assetInput.productId}/assets`, assetInput, {
-                  success: "Asset created."
+                  success: copy.messages.assetCreated
                 })
               }
               onSubmitProduct={() =>
                 submitJson("/dashboard/products", productInput, {
-                  success: "Product created."
+                  success: copy.messages.productCreated
                 })
               }
               onSubmitSku={() =>
                 submitJson(`/dashboard/products/${skuInput.productId}/skus`, skuInput, {
-                  success: "SKU created."
+                  success: copy.messages.skuCreated
                 })
               }
               productInput={productInput}
@@ -614,6 +699,7 @@ export function DashboardShell() {
 
           {activeTab === "categories" ? (
             <CategoriesPanel
+              copy={copy}
               categories={data.categories}
               input={categoryInput}
               onChange={setCategoryInput}
@@ -622,7 +708,7 @@ export function DashboardShell() {
                   ...categoryInput,
                   slug: categoryInput.slug || slugify(categoryInput.name)
                 }, {
-                  success: "Category created."
+                  success: copy.messages.categoryCreated
                 })
               }
             />
@@ -630,6 +716,8 @@ export function DashboardShell() {
 
           {activeTab === "pricing" ? (
             <PricingPanel
+              copy={copy}
+              locale={locale}
               input={priceInput}
               onChange={setPriceInput}
               onSubmit={() =>
@@ -637,7 +725,7 @@ export function DashboardShell() {
                   ...priceInput,
                   amountCents: Number(priceInput.amountCents)
                 }, {
-                  success: "Price created."
+                  success: copy.messages.priceCreated
                 })
               }
               prices={data.pricing}
@@ -647,6 +735,7 @@ export function DashboardShell() {
 
           {activeTab === "promotions" ? (
             <PromotionsPanel
+              copy={copy}
               input={promotionInput}
               onChange={setPromotionInput}
               onSubmit={() =>
@@ -654,7 +743,7 @@ export function DashboardShell() {
                   ...promotionInput,
                   key: promotionInput.key || slugify(promotionInput.name)
                 }, {
-                  success: "Promotion created."
+                  success: copy.messages.promotionCreated
                 })
               }
               promotions={data.promotions}
@@ -663,6 +752,7 @@ export function DashboardShell() {
 
           {activeTab === "users" ? (
             <UsersPanel
+              copy={copy}
               input={userInput}
               onChange={setUserInput}
               onSubmit={() =>
@@ -674,7 +764,7 @@ export function DashboardShell() {
                   status: "active",
                   roleIds: userInput.roleId ? [userInput.roleId] : []
                 }, {
-                  success: "Admin user created."
+                  success: copy.messages.adminUserCreated
                 })
               }
               roles={data.roles}
@@ -684,46 +774,81 @@ export function DashboardShell() {
 
           {activeTab === "roles" ? (
             <RolesPanel
+              copy={copy}
               input={roleInput}
               onChange={setRoleInput}
               onSubmit={() =>
                 submitJson("/dashboard/roles", roleInput, {
-                  success: "Role created."
+                  success: copy.messages.roleCreated
                 })
               }
               roles={data.roles}
             />
           ) : null}
 
-          {activeTab === "dealers" ? <DealersPanel dealers={data.dealers} /> : null}
+          {activeTab === "dealers" ? <DealersPanel copy={copy} dealers={data.dealers} /> : null}
 
           {activeTab === "dealerApplications" ? (
             <DealerApplicationsPanel
+              copy={copy}
               applications={data.dealerApplications}
               onAction={submitJson}
+              onFilterChange={(value) => void updateQueueFilter("dealerApplications", value)}
+              statusFilter={queueFilters.dealerApplications}
             />
           ) : null}
 
           {activeTab === "contactLeads" ? (
-            <ContactLeadsPanel leads={data.contactLeads} onAction={submitJson} />
+            <ContactLeadsPanel
+              copy={copy}
+              leads={data.contactLeads}
+              onAction={submitJson}
+              onFilterChange={(value) => void updateQueueFilter("contactLeads", value)}
+              statusFilter={queueFilters.contactLeads}
+            />
           ) : null}
 
           {activeTab === "productReviews" ? (
-            <ProductReviewsPanel reviews={data.productReviews} onAction={submitJson} />
+            <ProductReviewsPanel
+              copy={copy}
+              reviews={data.productReviews}
+              onAction={submitJson}
+              onFilterChange={(value) => void updateQueueFilter("productReviews", value)}
+              statusFilter={queueFilters.productReviews}
+            />
           ) : null}
 
-          {activeTab === "operations" ? <OperationsPanel alerts={data.operationAlerts} /> : null}
+          {activeTab === "supportHandoffs" ? (
+            <SupportHandoffsPanel
+              copy={copy}
+              handoffs={data.supportHandoffs}
+              locale={locale}
+              onAction={submitJson}
+              onFilterChange={(value) => void updateQueueFilter("supportHandoffs", value)}
+              statusFilter={queueFilters.supportHandoffs}
+            />
+          ) : null}
 
-          {activeTab === "emailOutbox" ? <EmailOutboxPanel items={data.emailOutbox} /> : null}
+          {activeTab === "operations" ? <OperationsPanel alerts={data.operationAlerts} copy={copy} /> : null}
 
-          {activeTab === "auditLogs" ? <AuditLogsPanel logs={data.auditLogs} /> : null}
+          {activeTab === "emailOutbox" ? (
+            <EmailOutboxPanel
+              copy={copy}
+              items={data.emailOutbox}
+              locale={locale}
+              onAction={submitJson}
+              templates={data.emailTemplates}
+            />
+          ) : null}
+
+          {activeTab === "auditLogs" ? <AuditLogsPanel copy={copy} locale={locale} logs={data.auditLogs} /> : null}
         </section>
       </section>
     </div>
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ label, value }: { label: string; value: string }) {
   return (
     <article className="dashboard-stat-card">
       <span>{label}</span>
@@ -744,6 +869,7 @@ function PanelHeader({ title, copy }: { title: string; copy: string }) {
 }
 
 function ProductsPanel(props: {
+  copy: DashboardCopy;
   assetInput: { productId: string; url: string; altText: string };
   categories: Category[];
   onAssetChange: (value: { productId: string; url: string; altText: string }) => void;
@@ -764,14 +890,14 @@ function ProductsPanel(props: {
   return (
     <>
       <PanelHeader
-        title="Products"
-        copy="Create products, SKUs and basic image assets from the Website API."
+        title={props.copy.products.title}
+        copy={props.copy.products.copy}
       />
       <div className="dashboard-form-grid">
         <QuickForm
           fields={[
             {
-              label: "Name",
+              label: props.copy.common.name,
               value: props.productInput.name,
               onChange: (name) =>
                 props.onProductChange({
@@ -781,17 +907,17 @@ function ProductsPanel(props: {
                 })
             },
             {
-              label: "Slug",
+              label: props.copy.common.slug,
               value: props.productInput.slug,
               onChange: (slug) =>
                 props.onProductChange({ ...props.productInput, slug })
             }
           ]}
           onSubmit={props.onSubmitProduct}
-          title="Create product"
+          title={props.copy.products.createProduct}
         >
           <label className="field">
-            <span>Category</span>
+            <span>{props.copy.common.category}</span>
             <select
               value={props.productInput.categoryId}
               onChange={(event) =>
@@ -801,7 +927,7 @@ function ProductsPanel(props: {
                 })
               }
             >
-              <option value="">No category</option>
+              <option value="">{props.copy.products.noCategory}</option>
               {props.categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -814,60 +940,60 @@ function ProductsPanel(props: {
         <QuickForm
           fields={[
             {
-              label: "Product ID",
+              label: props.copy.products.productId,
               value: props.skuInput.productId,
               onChange: (productId) =>
                 props.onSkuChange({ ...props.skuInput, productId })
             },
             {
-              label: "SKU code",
+              label: props.copy.products.skuCode,
               value: props.skuInput.skuCode,
               onChange: (skuCode) =>
                 props.onSkuChange({ ...props.skuInput, skuCode })
             },
             {
-              label: "Name",
+              label: props.copy.common.name,
               value: props.skuInput.name,
               onChange: (name) => props.onSkuChange({ ...props.skuInput, name })
             }
           ]}
           onSubmit={props.onSubmitSku}
-          title="Add SKU"
+          title={props.copy.products.addSku}
         />
 
         <QuickForm
           fields={[
             {
-              label: "Product ID",
+              label: props.copy.products.productId,
               value: props.assetInput.productId,
               onChange: (productId) =>
                 props.onAssetChange({ ...props.assetInput, productId })
             },
             {
-              label: "Asset URL",
+              label: props.copy.products.assetUrl,
               value: props.assetInput.url,
               onChange: (url) => props.onAssetChange({ ...props.assetInput, url })
             },
             {
-              label: "Alt text",
+              label: props.copy.products.altText,
               value: props.assetInput.altText,
               onChange: (altText) =>
                 props.onAssetChange({ ...props.assetInput, altText })
             }
           ]}
           onSubmit={props.onSubmitAsset}
-          title="Add asset"
+          title={props.copy.products.addAsset}
         />
       </div>
 
       <Table
-        columns={["Name", "Status", "Category", "SKUs"]}
+        columns={[props.copy.common.name, props.copy.common.status, props.copy.common.category, props.copy.products.skus]}
         rows={props.products.map((product) => [
           <span key="name">
             <strong>{product.name}</strong>
             <small>{product.id}</small>
           </span>,
-          product.status,
+          displayDashboardValue(props.copy, product.status),
           product.category?.name ?? "-",
           product.skus?.map((sku) => sku.skuCode).join(", ") || "-"
         ])}
@@ -877,6 +1003,7 @@ function ProductsPanel(props: {
 }
 
 function CategoriesPanel(props: {
+  copy: DashboardCopy;
   categories: Category[];
   input: { name: string; slug: string };
   onChange: (value: { name: string; slug: string }) => void;
@@ -884,30 +1011,30 @@ function CategoriesPanel(props: {
 }) {
   return (
     <>
-      <PanelHeader title="Categories" copy="Manage catalog grouping used by storefront rails." />
+      <PanelHeader title={props.copy.categories.title} copy={props.copy.categories.copy} />
       <QuickForm
         fields={[
           {
-            label: "Name",
+            label: props.copy.common.name,
             value: props.input.name,
             onChange: (name) =>
               props.onChange({ ...props.input, name, slug: props.input.slug || slugify(name) })
           },
           {
-            label: "Slug",
+            label: props.copy.common.slug,
             value: props.input.slug,
             onChange: (slug) => props.onChange({ ...props.input, slug })
           }
         ]}
         onSubmit={props.onSubmit}
-        title="Create category"
+        title={props.copy.categories.create}
       />
       <Table
-        columns={["Name", "Slug", "Active"]}
+        columns={[props.copy.common.name, props.copy.common.slug, props.copy.categories.active]}
         rows={props.categories.map((category) => [
           category.name,
           category.slug,
-          category.isActive === false ? "No" : "Yes"
+          category.isActive === false ? props.copy.common.no : props.copy.common.yes
         ])}
       />
     </>
@@ -915,6 +1042,8 @@ function CategoriesPanel(props: {
 }
 
 function PricingPanel(props: {
+  copy: DashboardCopy;
+  locale: string;
   input: { skuId: string; amountCents: string; key: string };
   onChange: (value: { skuId: string; amountCents: string; key: string }) => void;
   onSubmit: () => void;
@@ -927,7 +1056,7 @@ function PricingPanel(props: {
 
   return (
     <>
-      <PanelHeader title="Pricing" copy="Create active catalog prices for platform SKUs." />
+      <PanelHeader title={props.copy.pricing.title} copy={props.copy.pricing.copy} />
       <form
         className="dashboard-card dashboard-quick-form"
         onSubmit={(event) => {
@@ -935,16 +1064,16 @@ function PricingPanel(props: {
           props.onSubmit();
         }}
       >
-        <h3>Create price</h3>
+        <h3>{props.copy.pricing.create}</h3>
         <label className="field">
-          <span>SKU</span>
+          <span>{props.copy.products.skus}</span>
           <select
             value={props.input.skuId}
             onChange={(event) =>
               props.onChange({ ...props.input, skuId: event.target.value })
             }
           >
-            <option value="">Select SKU</option>
+            <option value="">{props.copy.pricing.selectSku}</option>
             {skus.map((sku) => (
               <option key={sku.id} value={sku.id}>
                 {sku.skuCode} - {sku.productName}
@@ -953,7 +1082,7 @@ function PricingPanel(props: {
           </select>
         </label>
         <label className="field">
-          <span>Amount cents</span>
+          <span>{props.copy.pricing.amountCents}</span>
           <input
             inputMode="numeric"
             value={props.input.amountCents}
@@ -964,7 +1093,7 @@ function PricingPanel(props: {
           />
         </label>
         <label className="field">
-          <span>Key</span>
+          <span>{props.copy.common.key}</span>
           <input
             value={props.input.key}
             onChange={(event) =>
@@ -974,16 +1103,16 @@ function PricingPanel(props: {
           />
         </label>
         <button className="button button-primary" type="submit">
-          Create price
+          {props.copy.pricing.create}
         </button>
       </form>
       <Table
-        columns={["Key", "SKU", "Amount", "Status"]}
+        columns={[props.copy.common.key, props.copy.products.skus, props.copy.pricing.amount, props.copy.common.status]}
         rows={props.prices.map((price) => [
           price.key,
           price.sku?.skuCode ?? "-",
-          formatCents(price.amountCents, price.currency),
-          price.status
+          formatCents(price.amountCents, props.locale, price.currency),
+          displayDashboardValue(props.copy, price.status)
         ])}
       />
     </>
@@ -991,6 +1120,7 @@ function PricingPanel(props: {
 }
 
 function PromotionsPanel(props: {
+  copy: DashboardCopy;
   input: { name: string; key: string; status: string };
   onChange: (value: { name: string; key: string; status: string }) => void;
   onSubmit: () => void;
@@ -998,30 +1128,30 @@ function PromotionsPanel(props: {
 }) {
   return (
     <>
-      <PanelHeader title="Promotions" copy="Create campaign shells for storefront pricing labels." />
+      <PanelHeader title={props.copy.promotions.title} copy={props.copy.promotions.copy} />
       <QuickForm
         fields={[
           {
-            label: "Name",
+            label: props.copy.common.name,
             value: props.input.name,
             onChange: (name) =>
               props.onChange({ ...props.input, name, key: props.input.key || slugify(name) })
           },
           {
-            label: "Key",
+            label: props.copy.common.key,
             value: props.input.key,
             onChange: (key) => props.onChange({ ...props.input, key })
           }
         ]}
         onSubmit={props.onSubmit}
-        title="Create promotion"
+        title={props.copy.promotions.create}
       />
       <Table
-        columns={["Name", "Key", "Status", "Label"]}
+        columns={[props.copy.common.name, props.copy.common.key, props.copy.common.status, props.copy.promotions.label]}
         rows={props.promotions.map((promotion) => [
           promotion.name,
           promotion.key,
-          promotion.status,
+          displayDashboardStatus(props.copy, "promotion", promotion.status),
           promotion.discountLabel ?? "-"
         ])}
       />
@@ -1030,6 +1160,7 @@ function PromotionsPanel(props: {
 }
 
 function UsersPanel(props: {
+  copy: DashboardCopy;
   input: { email: string; displayName: string; password: string; roleId: string };
   onChange: (value: { email: string; displayName: string; password: string; roleId: string }) => void;
   onSubmit: () => void;
@@ -1038,7 +1169,7 @@ function UsersPanel(props: {
 }) {
   return (
     <>
-      <PanelHeader title="Users" copy="Create admin users and assign an initial role." />
+      <PanelHeader title={props.copy.users.title} copy={props.copy.users.copy} />
       <form
         className="dashboard-card dashboard-quick-form"
         onSubmit={(event) => {
@@ -1046,9 +1177,9 @@ function UsersPanel(props: {
           props.onSubmit();
         }}
       >
-        <h3>Create admin user</h3>
+        <h3>{props.copy.users.create}</h3>
         <label className="field">
-          <span>Email</span>
+          <span>{props.copy.common.email}</span>
           <input
             type="email"
             value={props.input.email}
@@ -1057,7 +1188,7 @@ function UsersPanel(props: {
           />
         </label>
         <label className="field">
-          <span>Display name</span>
+          <span>{props.copy.users.displayName}</span>
           <input
             value={props.input.displayName}
             onChange={(event) =>
@@ -1066,7 +1197,7 @@ function UsersPanel(props: {
           />
         </label>
         <label className="field">
-          <span>Temporary password</span>
+          <span>{props.copy.users.temporaryPassword}</span>
           <input
             type="password"
             value={props.input.password}
@@ -1077,12 +1208,12 @@ function UsersPanel(props: {
           />
         </label>
         <label className="field">
-          <span>Role</span>
+          <span>{props.copy.common.role}</span>
           <select
             value={props.input.roleId}
             onChange={(event) => props.onChange({ ...props.input, roleId: event.target.value })}
           >
-            <option value="">No role</option>
+            <option value="">{props.copy.users.noRole}</option>
             {props.roles.map((role) => (
               <option key={role.id} value={role.id}>
                 {role.name}
@@ -1091,15 +1222,15 @@ function UsersPanel(props: {
           </select>
         </label>
         <button className="button button-primary" type="submit">
-          Create user
+          {props.copy.users.createButton}
         </button>
       </form>
       <Table
-        columns={["Email", "Status", "Kind", "Roles"]}
+        columns={[props.copy.common.email, props.copy.common.status, props.copy.users.kind, props.copy.users.roles]}
         rows={props.users.map((user) => [
           user.email,
-          user.status,
-          user.kind,
+          displayDashboardValue(props.copy, user.status),
+          displayDashboardValue(props.copy, user.kind),
           user.userRoles?.map((role) => role.role.key).join(", ") || "-"
         ])}
       />
@@ -1108,6 +1239,7 @@ function UsersPanel(props: {
 }
 
 function RolesPanel(props: {
+  copy: DashboardCopy;
   input: { key: string; name: string };
   onChange: (value: { key: string; name: string }) => void;
   onSubmit: () => void;
@@ -1115,26 +1247,26 @@ function RolesPanel(props: {
 }) {
   return (
     <>
-      <PanelHeader title="Roles" copy="Create roles. Permission replacement is covered by API smoke." />
+      <PanelHeader title={props.copy.roles.title} copy={props.copy.roles.copy} />
       <QuickForm
         fields={[
           {
-            label: "Name",
+            label: props.copy.common.name,
             value: props.input.name,
             onChange: (name) =>
               props.onChange({ ...props.input, name, key: props.input.key || slugify(name) })
           },
           {
-            label: "Key",
+            label: props.copy.common.key,
             value: props.input.key,
             onChange: (key) => props.onChange({ ...props.input, key })
           }
         ]}
         onSubmit={props.onSubmit}
-        title="Create role"
+        title={props.copy.roles.create}
       />
       <Table
-        columns={["Name", "Key", "Permissions"]}
+        columns={[props.copy.common.name, props.copy.common.key, props.copy.roles.permissions]}
         rows={props.roles.map((role) => [
           role.name,
           role.key,
@@ -1145,16 +1277,16 @@ function RolesPanel(props: {
   );
 }
 
-function DealersPanel({ dealers }: { dealers: Dealer[] }) {
+function DealersPanel({ copy, dealers }: { copy: DashboardCopy; dealers: Dealer[] }) {
   return (
     <>
-      <PanelHeader title="Dealers" copy="Read dealer display data and service locations." />
+      <PanelHeader title={copy.dealers.title} copy={copy.dealers.copy} />
       <Table
-        columns={["Name", "Code", "Status", "Locations"]}
+        columns={[copy.common.name, copy.dealers.code, copy.common.status, copy.dealers.locations]}
         rows={dealers.map((dealer) => [
           dealer.name,
           dealer.code,
-          dealer.status,
+          displayDashboardValue(copy, dealer.status),
           dealer.locations
             ?.map((location) => [location.name, location.city, location.province].filter(Boolean).join(", "))
             .join(" / ") || "-"
@@ -1165,7 +1297,10 @@ function DealersPanel({ dealers }: { dealers: Dealer[] }) {
 }
 
 function DealerApplicationsPanel(props: {
+  copy: DashboardCopy;
   applications: DealerApplication[];
+  statusFilter: string;
+  onFilterChange: (value: string) => void;
   onAction: (
     path: string,
     body: Record<string, unknown>,
@@ -1175,16 +1310,29 @@ function DealerApplicationsPanel(props: {
   return (
     <>
       <PanelHeader
-        title="Dealer applications"
-        copy="Review dealer program submissions and add internal handling notes."
+        title={props.copy.applications.title}
+        copy={props.copy.applications.copy}
+      />
+      <QueueStatusFilter
+        copy={props.copy}
+        value={props.statusFilter}
+        onChange={props.onFilterChange}
+        options={[
+          { value: "", label: props.copy.handoffs.filterAll },
+          { value: "submitted", label: props.copy.statusValues.application.submitted },
+          { value: "under_review", label: props.copy.statusValues.application.under_review },
+          { value: "approved", label: props.copy.statusValues.application.approved },
+          { value: "rejected", label: props.copy.statusValues.application.rejected },
+          { value: "archived", label: props.copy.statusValues.application.archived }
+        ]}
       />
       <div className="dashboard-form-grid">
         <ActionForm
           fields={[
-            { name: "id", label: "Application ID" },
+            { name: "id", label: props.copy.applications.applicationId },
             {
               name: "status",
-              label: "Status",
+              label: props.copy.common.status,
               options: ["submitted", "under_review", "approved", "rejected", "archived"]
             }
           ]}
@@ -1192,28 +1340,28 @@ function DealerApplicationsPanel(props: {
             props.onAction(
               `/dashboard/dealer-applications/${body.id}/status`,
               { status: body.status },
-              { method: "PATCH", success: "Application status updated." }
+              { method: "PATCH", success: props.copy.messages.applicationStatusUpdated }
             )
           }
-          title="Update application"
+          title={props.copy.applications.update}
         />
         <ActionForm
           fields={[
-            { name: "id", label: "Application ID" },
-            { name: "note", label: "Note" }
+            { name: "id", label: props.copy.applications.applicationId },
+            { name: "note", label: props.copy.common.note }
           ]}
           onSubmit={(body) =>
             props.onAction(
               `/dashboard/dealer-applications/${body.id}/notes`,
               { note: body.note },
-              { success: "Application note added." }
+              { success: props.copy.messages.applicationNoteAdded }
             )
           }
-          title="Add note"
+          title={props.copy.applications.addNote}
         />
       </div>
       <Table
-        columns={["Company", "Contact", "Market", "Status", "Message"]}
+        columns={[props.copy.applications.company, props.copy.applications.contact, props.copy.applications.market, props.copy.common.status, props.copy.common.message]}
         rows={props.applications.map((application) => [
           <span key="company">
             <strong>{application.companyName}</strong>
@@ -1221,7 +1369,7 @@ function DealerApplicationsPanel(props: {
           </span>,
           `${application.contactName} / ${application.email}`,
           `${application.city}, ${application.province}`,
-          application.status,
+          displayDashboardStatus(props.copy, "application", application.status),
           application.message ?? "-"
         ])}
       />
@@ -1229,8 +1377,31 @@ function DealerApplicationsPanel(props: {
   );
 }
 
+function QueueStatusFilter(props: {
+  copy: DashboardCopy;
+  value: string;
+  options: Array<{ value: string; label: string }>;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="dashboard-filter">
+      <span>{props.copy.common.status}</span>
+      <select value={props.value} onChange={(event) => props.onChange(event.target.value)}>
+        {props.options.map((option) => (
+          <option key={option.value || "all"} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function ContactLeadsPanel(props: {
+  copy: DashboardCopy;
   leads: ContactLead[];
+  statusFilter: string;
+  onFilterChange: (value: string) => void;
   onAction: (
     path: string,
     body: Record<string, unknown>,
@@ -1240,16 +1411,28 @@ function ContactLeadsPanel(props: {
   return (
     <>
       <PanelHeader
-        title="Contact leads"
-        copy="Route general inquiries from the contact form to an admin user or dealer."
+        title={props.copy.leads.title}
+        copy={props.copy.leads.copy}
+      />
+      <QueueStatusFilter
+        copy={props.copy}
+        value={props.statusFilter}
+        onChange={props.onFilterChange}
+        options={[
+          { value: "", label: props.copy.handoffs.filterAll },
+          { value: "new", label: props.copy.statusValues.lead.new },
+          { value: "routed", label: props.copy.statusValues.lead.routed },
+          { value: "closed", label: props.copy.statusValues.lead.closed },
+          { value: "spam", label: props.copy.statusValues.lead.spam }
+        ]}
       />
       <div className="dashboard-form-grid">
         <ActionForm
           fields={[
-            { name: "id", label: "Lead ID" },
+            { name: "id", label: props.copy.leads.leadId },
             {
               name: "status",
-              label: "Status",
+              label: props.copy.common.status,
               options: ["new", "routed", "closed", "spam"]
             }
           ]}
@@ -1257,16 +1440,16 @@ function ContactLeadsPanel(props: {
             props.onAction(
               `/dashboard/contact-leads/${body.id}/status`,
               { status: body.status },
-              { method: "PATCH", success: "Lead status updated." }
+              { method: "PATCH", success: props.copy.messages.leadStatusUpdated }
             )
           }
-          title="Update lead"
+          title={props.copy.leads.update}
         />
         <ActionForm
           fields={[
-            { name: "id", label: "Lead ID" },
-            { name: "assignedToUserId", label: "Assigned user ID", required: false },
-            { name: "assignedDealerId", label: "Assigned dealer ID", required: false }
+            { name: "id", label: props.copy.leads.leadId },
+            { name: "assignedToUserId", label: props.copy.leads.assignedUserId, required: false },
+            { name: "assignedDealerId", label: props.copy.leads.assignedDealerId, required: false }
           ]}
           onSubmit={(body) =>
             props.onAction(
@@ -1275,28 +1458,28 @@ function ContactLeadsPanel(props: {
                 assignedToUserId: body.assignedToUserId,
                 assignedDealerId: body.assignedDealerId
               },
-              { success: "Lead assigned." }
+              { success: props.copy.messages.leadAssigned }
             )
           }
-          title="Assign lead"
+          title={props.copy.leads.assign}
         />
         <ActionForm
           fields={[
-            { name: "id", label: "Lead ID" },
-            { name: "note", label: "Note" }
+            { name: "id", label: props.copy.leads.leadId },
+            { name: "note", label: props.copy.common.note }
           ]}
           onSubmit={(body) =>
             props.onAction(
               `/dashboard/contact-leads/${body.id}/notes`,
               { note: body.note },
-              { success: "Lead note added." }
+              { success: props.copy.messages.leadNoteAdded }
             )
           }
-          title="Add note"
+          title={props.copy.leads.addNote}
         />
       </div>
       <Table
-        columns={["Name", "Topic", "Status", "Location", "Message"]}
+        columns={[props.copy.common.name, props.copy.leads.topic, props.copy.common.status, props.copy.leads.location, props.copy.common.message]}
         rows={props.leads.map((lead) => [
           <span key="lead">
             <strong>{lead.name}</strong>
@@ -1304,7 +1487,7 @@ function ContactLeadsPanel(props: {
             <small>{lead.email}</small>
           </span>,
           lead.topic,
-          lead.status,
+          displayDashboardStatus(props.copy, "lead", lead.status),
           [lead.city, lead.preferredDealer].filter(Boolean).join(" / ") || "-",
           lead.message
         ])}
@@ -1314,7 +1497,10 @@ function ContactLeadsPanel(props: {
 }
 
 function ProductReviewsPanel(props: {
+  copy: DashboardCopy;
   reviews: ProductReviewQueueItem[];
+  statusFilter: string;
+  onFilterChange: (value: string) => void;
   onAction: (
     path: string,
     body: Record<string, unknown>,
@@ -1324,16 +1510,28 @@ function ProductReviewsPanel(props: {
   return (
     <>
       <PanelHeader
-        title="Product reviews"
-        copy="Moderate submitted product reviews before they appear on product detail pages."
+        title={props.copy.reviews.title}
+        copy={props.copy.reviews.copy}
+      />
+      <QueueStatusFilter
+        copy={props.copy}
+        value={props.statusFilter}
+        onChange={props.onFilterChange}
+        options={[
+          { value: "", label: props.copy.handoffs.filterAll },
+          { value: "pending", label: props.copy.statusValues.review.pending },
+          { value: "published", label: props.copy.statusValues.review.published },
+          { value: "rejected", label: props.copy.statusValues.review.rejected },
+          { value: "archived", label: props.copy.statusValues.review.archived }
+        ]}
       />
       <div className="dashboard-form-grid">
         <ActionForm
           fields={[
-            { name: "id", label: "Review ID" },
+            { name: "id", label: props.copy.reviews.reviewId },
             {
               name: "status",
-              label: "Status",
+              label: props.copy.common.status,
               options: ["pending", "published", "rejected", "archived"]
             }
           ]}
@@ -1341,38 +1539,38 @@ function ProductReviewsPanel(props: {
             props.onAction(
               `/dashboard/product-reviews/${body.id}/status`,
               { status: body.status },
-              { method: "PATCH", success: "Review status updated." }
+              { method: "PATCH", success: props.copy.messages.reviewStatusUpdated }
             )
           }
-          title="Moderate review"
+          title={props.copy.reviews.moderate}
         />
         <ActionForm
           fields={[
-            { name: "id", label: "Review ID" },
-            { name: "note", label: "Note" }
+            { name: "id", label: props.copy.reviews.reviewId },
+            { name: "note", label: props.copy.common.note }
           ]}
           onSubmit={(body) =>
             props.onAction(
               `/dashboard/product-reviews/${body.id}/notes`,
               { note: body.note },
-              { success: "Review note added." }
+              { success: props.copy.messages.reviewNoteAdded }
             )
           }
-          title="Add note"
+          title={props.copy.reviews.addNote}
         />
       </div>
       <Table
-        columns={["Product", "Reviewer", "Rating", "Status", "Review"]}
+        columns={[props.copy.common.product, props.copy.reviews.reviewer, props.copy.reviews.rating, props.copy.common.status, props.copy.reviews.review]}
         rows={props.reviews.map((review) => [
           <span key="product">
-            <strong>{review.product?.name ?? "Product"}</strong>
+            <strong>{review.product?.name ?? props.copy.reviews.fallbackProduct}</strong>
             <small>{review.id}</small>
           </span>,
           `${review.nickname} / ${review.email}`,
           `${review.rating}/5`,
-          review.status,
+          displayDashboardStatus(props.copy, "review", review.status),
           <span key="review">
-            <strong>{review.title ?? "Untitled"}</strong>
+            <strong>{review.title?.trim() || props.copy.reviews.untitled}</strong>
             <small>{review.body}</small>
           </span>
         ])}
@@ -1381,39 +1579,161 @@ function ProductReviewsPanel(props: {
   );
 }
 
-function EmailOutboxPanel({ items }: { items: EmailOutboxItem[] }) {
+function SupportHandoffsPanel(props: {
+  copy: DashboardCopy;
+  handoffs: SupportHandoffItem[];
+  locale: string;
+  statusFilter: string;
+  onFilterChange: (value: string) => void;
+  onAction: (
+    path: string,
+    body: Record<string, unknown>,
+    options: { method?: string; success: string }
+  ) => Promise<void>;
+}) {
   return (
     <>
-      <PanelHeader
-        title="Email outbox"
-        copy="Read pending internal notification emails. Actual SMTP delivery is P3."
+      <PanelHeader title={props.copy.handoffs.title} copy={props.copy.handoffs.copy} />
+      <QueueStatusFilter
+        copy={props.copy}
+        value={props.statusFilter}
+        onChange={props.onFilterChange}
+        options={[
+          { value: "", label: props.copy.handoffs.filterAll },
+          { value: "new", label: props.copy.handoffs.filterNew },
+          { value: "in_progress", label: props.copy.statusValues.handoff.in_progress },
+          { value: "resolved", label: props.copy.statusValues.handoff.resolved },
+          { value: "closed", label: props.copy.statusValues.handoff.closed }
+        ]}
       />
+      <div className="dashboard-form-grid">
+        <ActionForm
+          fields={[
+            { name: "id", label: props.copy.handoffs.handoffId },
+            {
+              name: "status",
+              label: props.copy.common.status,
+              options: ["new", "in_progress", "resolved", "closed"]
+            }
+          ]}
+          onSubmit={(body) =>
+            props.onAction(
+              `/dashboard/support/handoffs/${body.id}/status`,
+              { status: body.status },
+              { method: "PATCH", success: props.copy.messages.handoffStatusUpdated }
+            )
+          }
+          title={props.copy.handoffs.update}
+        />
+      </div>
       <Table
-        columns={["Template", "Recipient", "Status", "Attempts", "Created"]}
-        rows={items.map((item) => [
-          item.templateKey ?? "-",
-          item.toEmail,
-          item.status,
-          String(item.attemptCount),
-          formatDate(item.createdAt)
+        columns={[
+          props.copy.handoffs.channel,
+          props.copy.handoffs.sourcePath,
+          props.copy.common.status,
+          props.copy.common.created
+        ]}
+        rows={props.handoffs.map((handoff) => [
+          <span key="channel">
+            <strong>{handoff.channel}</strong>
+            <small>{handoff.id}</small>
+          </span>,
+          handoff.sourcePath,
+          displayDashboardStatus(props.copy, "handoff", handoff.status),
+          formatDate(handoff.createdAt, props.locale)
         ])}
       />
     </>
   );
 }
 
-function OperationsPanel({ alerts }: { alerts: OperationalAlert[] }) {
+function EmailOutboxPanel({
+  copy,
+  items,
+  locale,
+  templates,
+  onAction
+}: {
+  copy: DashboardCopy;
+  items: EmailOutboxItem[];
+  locale: string;
+  templates: EmailTemplateItem[];
+  onAction: (
+    path: string,
+    body: Record<string, unknown>,
+    options: { method?: string; success: string }
+  ) => Promise<void>;
+}) {
   return (
     <>
       <PanelHeader
-        title="Operations"
-        copy="Failures require review; waiting records will be retried by the worker automatically."
+        title={copy.emailOutbox.title}
+        copy={copy.emailOutbox.copy}
       />
-      {alerts.length === 0 ? <p className="dashboard-empty">No operational alerts.</p> : null}
       <Table
-        columns={["Severity", "Alert", "Count", "Queue"]}
+        columns={[
+          copy.emailOutbox.template,
+          copy.emailOutbox.recipient,
+          copy.common.status,
+          copy.emailOutbox.attempts,
+          copy.emailOutbox.lastError,
+          copy.common.created,
+          copy.emailOutbox.retry
+        ]}
+        rows={items.map((item) => [
+          item.templateKey ?? "-",
+          item.toEmail,
+          displayDashboardValue(copy, item.status),
+          String(item.attemptCount),
+          item.lastError ?? "-",
+          formatDate(item.createdAt, locale),
+          item.status === "failed" || item.status === "retry_wait" ? (
+            <button
+              key={`retry-${item.id}`}
+              className="button button-secondary"
+              type="button"
+              onClick={() =>
+                void onAction(`/dashboard/email/outbox/${item.id}/retry`, {}, {
+                  method: "POST",
+                  success: copy.messages.emailRetried
+                })
+              }
+            >
+              {copy.emailOutbox.retry}
+            </button>
+          ) : (
+            "-"
+          )
+        ])}
+      />
+      <PanelHeader
+        title={copy.emailOutbox.templatesTitle}
+        copy={copy.emailOutbox.templatesCopy}
+      />
+      <Table
+        columns={[copy.common.key, copy.common.name, copy.common.status]}
+        rows={templates.map((template) => [
+          template.key,
+          template.name,
+          displayDashboardValue(copy, template.status)
+        ])}
+      />
+    </>
+  );
+}
+
+function OperationsPanel({ alerts, copy }: { alerts: OperationalAlert[]; copy: DashboardCopy }) {
+  return (
+    <>
+      <PanelHeader
+        title={copy.operations.title}
+        copy={copy.operations.copy}
+      />
+      {alerts.length === 0 ? <p className="dashboard-empty">{copy.operations.empty}</p> : null}
+      <Table
+        columns={[copy.operations.severity, copy.operations.alert, copy.operations.count, copy.operations.queue]}
         rows={alerts.map((alert) => [
-          alert.severity,
+          displayDashboardValue(copy, alert.severity),
           alert.title,
           String(alert.count),
           alert.actionPath
@@ -1423,20 +1743,20 @@ function OperationsPanel({ alerts }: { alerts: OperationalAlert[] }) {
   );
 }
 
-function AuditLogsPanel({ logs }: { logs: AuditLogRecord[] }) {
+function AuditLogsPanel({ copy, locale, logs }: { copy: DashboardCopy; locale: string; logs: AuditLogRecord[] }) {
   return (
     <>
       <PanelHeader
-        title="Audit logs"
-        copy="Read recent Dashboard write activity for traceability."
+        title={copy.auditLogs.title}
+        copy={copy.auditLogs.copy}
       />
       <Table
-        columns={["Action", "Resource", "Resource ID", "Created"]}
+        columns={[copy.auditLogs.action, copy.auditLogs.resource, copy.auditLogs.resourceId, copy.common.created]}
         rows={logs.map((log) => [
           log.action,
           log.resourceType,
           log.resourceId ?? "-",
-          formatDate(log.createdAt)
+          formatDate(log.createdAt, locale)
         ])}
       />
     </>
@@ -1448,6 +1768,9 @@ function ActionForm(props: {
   onSubmit: (body: Record<string, string>) => void;
   title: string;
 }) {
+  const { locale } = useLocale();
+  const copy = getDashboardCopy(locale);
+
   return (
     <form
       className="dashboard-card dashboard-quick-form"
@@ -1468,10 +1791,10 @@ function ActionForm(props: {
           <span>{field.label}</span>
           {field.options ? (
             <select name={field.name} required={field.required ?? true}>
-              <option value="">Select</option>
+              <option value="">{copy.common.select}</option>
               {field.options.map((option) => (
                 <option key={option} value={option}>
-                  {option}
+                  {displayDashboardValue(copy, option)}
                 </option>
               ))}
             </select>
@@ -1517,6 +1840,9 @@ function QuickForm(props: {
 }
 
 function Table({ columns, rows }: { columns: string[]; rows: React.ReactNode[][] }) {
+  const { locale } = useLocale();
+  const copy = getDashboardCopy(locale);
+
   return (
     <div className="dashboard-table-wrap">
       <table className="dashboard-table">
@@ -1538,7 +1864,7 @@ function Table({ columns, rows }: { columns: string[]; rows: React.ReactNode[][]
             ))
           ) : (
             <tr>
-              <td colSpan={columns.length}>No records yet.</td>
+              <td colSpan={columns.length}>{copy.common.noRecords}</td>
             </tr>
           )}
         </tbody>

@@ -30,6 +30,7 @@ export function contactLeadFromForm(
     topic !== "orders" &&
     topic !== "dealer-service" &&
     topic !== "dealer-program" &&
+    topic !== "careers" &&
     topic !== "website-support"
   ) {
     throw new Error("topic is invalid.");

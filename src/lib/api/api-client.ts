@@ -7,12 +7,10 @@ import {
   Banner,
   Cart,
   CategorySummary,
-  CartOrderInput,
   CheckoutSession,
   CheckoutSessionInput,
   Dealer,
   DealerApplicationInput,
-  DirectOrderInput,
   FavoriteItem,
   Locale,
   LoginInput,
@@ -27,6 +25,8 @@ import {
   ProductReviewSubmissionInput,
   ProductSummary,
   ProductUpsertInput,
+  PUBLIC_API_ERROR_CODES,
+  PublicApiErrorCode,
   RegisterInput,
   WebsiteApiProduct
 } from "./api-contract";
@@ -42,8 +42,6 @@ import {
   HomePageModuleInput,
   LegalPageUpsertInput,
   NavigationConfig,
-  PaymentSession,
-  PaymentSessionInput,
   ProductReviewModerationInput,
   SupportHandoffInput
 } from "./dashboard-contract";
@@ -67,19 +65,24 @@ const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
 const CART_TOKEN_KEY = "vanstro-cart-token";
 const ACCESS_TOKEN_KEY = "vanstro-access-token";
+const publicApiErrorCodes = new Set<string>(PUBLIC_API_ERROR_CODES);
+
+function isPublicApiErrorCode(value: unknown): value is PublicApiErrorCode {
+  return typeof value === "string" && publicApiErrorCodes.has(value);
+}
 
 function browserStorage() {
   return typeof window === "undefined" ? undefined : window.sessionStorage;
 }
 
 export class VanstroApiError extends Error {
-  code: string;
+  code: PublicApiErrorCode | "API_ERROR";
   status: number;
   fields?: Record<string, string>;
 
   constructor(input: {
     message: string;
-    code: string;
+    code: PublicApiErrorCode | "API_ERROR";
     status: number;
     fields?: Record<string, string>;
   }) {
@@ -130,12 +133,16 @@ async function apiFetch<T>(
     const errorPayload = payload && typeof payload === "object"
       ? (payload as { error?: unknown })
       : undefined;
+    const topLevelCode = errorPayload && "code" in errorPayload
+      ? (errorPayload as { code?: unknown }).code
+      : undefined;
     const nestedError = errorPayload?.error && typeof errorPayload.error === "object"
       ? (errorPayload.error as { code?: unknown; message?: unknown; fields?: unknown })
       : undefined;
+    const responseCode = topLevelCode ?? nestedError?.code;
     throw new VanstroApiError({
       status: response.status,
-      code: typeof nestedError?.code === "string" ? nestedError.code : "API_ERROR",
+      code: isPublicApiErrorCode(responseCode) ? responseCode : "API_ERROR",
       message:
         typeof errorPayload?.error === "string"
           ? errorPayload.error
@@ -375,12 +382,6 @@ export const vanstroApi = {
   getDealers(input?: { province?: string; postalCode?: string }) {
     return apiFetch<Dealer[]>(withQuery(API_ENDPOINTS.dealers, input), {}, arrayOf(validateDealer));
   },
-  createDirectOrder(input: DirectOrderInput) {
-    return postJson<Order>(API_ENDPOINTS.directOrder, input);
-  },
-  createCartOrder(input: CartOrderInput) {
-    return postJson<Order>(API_ENDPOINTS.cartOrder, input);
-  },
   login(input: LoginInput) {
     return postJson<AuthSession>(API_ENDPOINTS.login, input, validateAuthSession).then((result) => {
       if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
@@ -394,6 +395,17 @@ export const vanstroApi = {
       window.dispatchEvent(new Event("vanstro-authenticated"));
       return result;
     });
+  },
+  getCurrentSession() {
+    return apiFetch<AuthSession>(API_ENDPOINTS.currentSession, {}, validateAuthSession);
+  },
+  async logout() {
+    try {
+      return await postJson<{ ok: true }>(API_ENDPOINTS.logout, {});
+    } finally {
+      browserStorage()?.removeItem(ACCESS_TOKEN_KEY);
+      window.dispatchEvent(new Event("vanstro-logged-out"));
+    }
   },
   submitDealerApplication(input: DealerApplicationInput) {
     return postJson<{ applicationId: string; status: "submitted" | "under_review" }>(
@@ -447,16 +459,13 @@ export const vanstroApi = {
     );
   },
   requestSupportHandoff(input: SupportHandoffInput) {
-    return postJson<{ handoffId: string; status: "queued" | "assigned" }>(
+    return postJson<{ id: string; status: string }>(
       DASHBOARD_API_ENDPOINTS.supportHandoffs,
       input
     );
   },
-  createPaymentSession(input: PaymentSessionInput) {
-    return postJson<PaymentSession>(DASHBOARD_API_ENDPOINTS.paymentSessions, input);
-  },
   assignOrderDealer(orderId: string, input: DealerAssignmentInput) {
-    return putJson<Order>(
+    return postJson<Order>(
       DASHBOARD_API_ENDPOINTS.dealerAssignment(orderId),
       input
     );

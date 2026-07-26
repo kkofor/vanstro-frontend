@@ -1,7 +1,31 @@
 import { prisma, type Prisma } from "@vanstro/db";
 import { Hono, type Context } from "hono";
+import { queueCustomerEmail, queueInternalAlert } from "../email/queue.js";
+import { publicError, type PublicApiErrorCode } from "../public-errors.js";
+import {
+  PUBLIC_SUBMISSION_LIMITS,
+  isBoundedText,
+  isValidCapabilities,
+  isValidEmail,
+  isValidLocale,
+  isValidOptionalUrl,
+  isValidRating
+} from "../public-submission-validation.js";
 
 type SubmissionBody = Record<string, unknown>;
+
+const contactTopics = new Set([
+  "products",
+  "orders",
+  "dealer-service",
+  "dealer-program",
+  "careers",
+  "website-support"
+]);
+
+function isValidContactTopic(topic: string | undefined): topic is string {
+  return typeof topic === "string" && contactTopics.has(topic);
+}
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -62,33 +86,14 @@ function numberValue(body: SubmissionBody, key: string) {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
-function jsonPayload(body: SubmissionBody) {
-  const entries: Array<[string, Prisma.InputJsonValue]> = [];
+export function submissionRawPayload(body: SubmissionBody): Prisma.InputJsonObject | undefined {
+  const locale = stringValue(body, "locale");
 
-  for (const [key, value] of Object.entries(body)) {
-    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
-      entries.push([key, value]);
-      continue;
-    }
-
-    if (Array.isArray(value)) {
-      entries.push([
-        key,
-        value.filter(
-          (item): item is string | number | boolean =>
-            typeof item === "string" ||
-            typeof item === "number" ||
-            typeof item === "boolean"
-        )
-      ]);
-    }
-  }
-
-  return Object.fromEntries(entries) as Prisma.InputJsonObject;
+  return locale ? { locale } : undefined;
 }
 
-function badRequest(context: Context, message: string) {
-  return context.json({ error: message }, 400);
+function badRequest(context: Context, code: PublicApiErrorCode, message: string) {
+  return publicError(context, 400, code, message);
 }
 
 function publicReview(review: {
@@ -102,7 +107,7 @@ function publicReview(review: {
   return {
     id: review.id,
     name: review.nickname,
-    title: review.title ?? "Product review",
+    title: review.title,
     body: review.body,
     rating: review.rating,
     createdAt: review.createdAt.toISOString(),
@@ -110,59 +115,82 @@ function publicReview(review: {
   };
 }
 
-async function queueInternalEmail(transaction: Prisma.TransactionClient, input: {
-  templateKey: string;
-  subject: string;
-  payload: Prisma.InputJsonObject;
-}) {
-  await transaction.emailOutbox.create({
-    data: {
-      templateKey: input.templateKey,
-      toEmail: process.env.INTERNAL_ALERT_EMAIL ?? "info@vanstro.ca",
-      subject: input.subject,
-      payload: input.payload
-    }
-  });
-}
-
-export function createSubmissionRoutes() {
+export function createSubmissionRoutes(database: typeof prisma = prisma) {
   const routes = new Hono();
 
   routes.post("/contact/leads", async (context) => {
     const body = await readBody(context);
 
-    if (!body) return badRequest(context, "JSON or form body is required.");
+    if (!body) return badRequest(context, "SUBMISSION_INVALID", "JSON or form body is required.");
 
     const name = stringValue(body, "name") ?? stringValue(body, "contactName");
     const email = stringValue(body, "email");
+    const phone = stringValue(body, "phone");
     const topic = stringValue(body, "topic");
+    const city = stringValue(body, "city");
+    const preferredDealer = stringValue(body, "dealer") ?? stringValue(body, "preferredDealer");
+    const orderNumber = stringValue(body, "orderNumber");
     const message = stringValue(body, "message");
+    const sourcePath = stringValue(body, "sourcePath");
+    const locale = stringValue(body, "locale");
 
-    if (!name || !email || !topic || !message) {
-      return badRequest(context, "name, email, topic and message are required.");
+    if (
+      !isBoundedText(name, PUBLIC_SUBMISSION_LIMITS.name, { required: true }) ||
+      !isValidEmail(email) ||
+      !isBoundedText(phone, PUBLIC_SUBMISSION_LIMITS.phone) ||
+      !isValidContactTopic(topic) ||
+      !isBoundedText(city, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isBoundedText(preferredDealer, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isBoundedText(orderNumber, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isBoundedText(message, PUBLIC_SUBMISSION_LIMITS.message, { required: true }) ||
+      !isBoundedText(sourcePath, PUBLIC_SUBMISSION_LIMITS.url) ||
+      !locale ||
+      !isValidLocale(locale)
+    ) {
+      return badRequest(context, "CONTACT_INVALID", "Contact submission is invalid.");
     }
 
-    const rawPayload = jsonPayload(body);
-    const lead = await prisma.$transaction(async (transaction) => {
+    const validatedName = name as string;
+    const validatedEmail = email as string;
+    const validatedTopic = topic as string;
+    const validatedMessage = message as string;
+    const rawPayload = submissionRawPayload(body);
+    const lead = await database.$transaction(async (transaction) => {
       const record = await transaction.contactLead.create({
         data: {
-          name,
-          email: email.toLowerCase(),
-          phone: stringValue(body, "phone"),
-          topic,
-          city: stringValue(body, "city"),
-          preferredDealer: stringValue(body, "dealer") ?? stringValue(body, "preferredDealer"),
-          orderNumber: stringValue(body, "orderNumber"),
-          message,
-          sourcePath: stringValue(body, "sourcePath"),
+          name: validatedName,
+          email: validatedEmail.toLowerCase(),
+          phone,
+          topic: validatedTopic,
+          city,
+          preferredDealer,
+          orderNumber,
+          message: validatedMessage,
+          locale,
+          sourcePath,
           rawPayload
         }
       });
 
-      await queueInternalEmail(transaction, {
+      await queueInternalAlert(transaction, {
         templateKey: "contact_lead_received",
-        subject: `New VanStro contact lead: ${topic}`,
-        payload: { contactLeadId: record.id, name, email: email.toLowerCase(), topic, message }
+        subject: `New VanStro contact lead: ${validatedTopic}`,
+        payload: {
+          contactLeadId: record.id,
+          name: validatedName,
+          email: validatedEmail.toLowerCase(),
+          topic: validatedTopic,
+          message: validatedMessage
+        }
+      });
+      await queueCustomerEmail(transaction, {
+        templateKey: "contact_lead_ack",
+        toEmail: validatedEmail.toLowerCase(),
+        payload: {
+          contactLeadId: record.id,
+          name: validatedName,
+          topic: validatedTopic
+        }
       });
 
       return record;
@@ -174,38 +202,89 @@ export function createSubmissionRoutes() {
   routes.post("/dealer-applications", async (context) => {
     const body = await readBody(context);
 
-    if (!body) return badRequest(context, "JSON or form body is required.");
+    if (!body) return badRequest(context, "SUBMISSION_INVALID", "JSON or form body is required.");
 
     const companyName = stringValue(body, "companyName");
     const contactName = stringValue(body, "contactName");
     const email = stringValue(body, "email");
     const phone = stringValue(body, "phone");
+    const website = stringValue(body, "website");
+    const businessType = stringValue(body, "businessType");
     const city = stringValue(body, "city");
     const province = stringValue(body, "province");
+    const serviceArea = stringValue(body, "serviceArea");
+    const productFocus = stringValue(body, "productFocus");
+    const capabilities = stringArrayValue(body, "capabilities").map((value) => value.trim());
+    const message = stringValue(body, "message");
+    const source = stringValue(body, "source");
+    const locale = stringValue(body, "locale");
 
-    if (!companyName || !contactName || !email || !phone || !city || !province) {
-      return badRequest(
-        context,
-        "companyName, contactName, email, phone, city and province are required."
-      );
+    const applicationAcknowledgement = booleanValue(body, "applicationAcknowledgement");
+
+    if (
+      !isBoundedText(companyName, PUBLIC_SUBMISSION_LIMITS.companyName, { required: true }) ||
+      !isBoundedText(contactName, PUBLIC_SUBMISSION_LIMITS.name, { required: true }) ||
+      !isValidEmail(email) ||
+      !isBoundedText(phone, PUBLIC_SUBMISSION_LIMITS.phone, { required: true }) ||
+      !isValidOptionalUrl(website) ||
+      !isBoundedText(businessType, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isBoundedText(city, PUBLIC_SUBMISSION_LIMITS.shortText, { required: true }) ||
+      !isBoundedText(province, PUBLIC_SUBMISSION_LIMITS.shortText, { required: true }) ||
+      !isBoundedText(serviceArea, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isBoundedText(productFocus, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isValidCapabilities(body.capabilities, capabilities) ||
+      !isBoundedText(message, PUBLIC_SUBMISSION_LIMITS.message) ||
+      !isBoundedText(source, PUBLIC_SUBMISSION_LIMITS.shortText) ||
+      !isValidLocale(locale) ||
+      applicationAcknowledgement !== true
+    ) {
+      return badRequest(context, "DEALER_APPLICATION_INVALID", "Dealer application is invalid.");
     }
 
-    const rawPayload = jsonPayload(body);
-    const application = await prisma.$transaction(async (transaction) => {
+    const validatedCompanyName = companyName as string;
+    const validatedContactName = contactName as string;
+    const validatedEmail = email as string;
+    const validatedPhone = phone as string;
+    const validatedCity = city as string;
+    const validatedProvince = province as string;
+    const rawPayload = submissionRawPayload(body);
+    const application = await database.$transaction(async (transaction) => {
       const record = await transaction.dealerApplication.create({
         data: {
-          companyName, contactName, email: email.toLowerCase(), phone,
-          website: stringValue(body, "website"), businessType: stringValue(body, "businessType"), city, province,
-          serviceArea: stringValue(body, "serviceArea"), productFocus: stringValue(body, "productFocus"),
-          capabilities: stringArrayValue(body, "capabilities"), message: stringValue(body, "message"),
-          source: stringValue(body, "source"), applicationAcknowledgement: booleanValue(body, "applicationAcknowledgement"), rawPayload
+          companyName: validatedCompanyName,
+          contactName: validatedContactName,
+          email: validatedEmail.toLowerCase(),
+          phone: validatedPhone,
+          website,
+          businessType,
+          city: validatedCity,
+          province: validatedProvince,
+          serviceArea, productFocus,
+          capabilities, message,
+          source, applicationAcknowledgement, rawPayload
         }
       });
 
-      await queueInternalEmail(transaction, {
+      await queueInternalAlert(transaction, {
         templateKey: "dealer_application_received",
-        subject: `New VanStro dealer application: ${companyName}`,
-        payload: { dealerApplicationId: record.id, companyName, contactName, email: email.toLowerCase(), city, province }
+        subject: `New VanStro dealer application: ${validatedCompanyName}`,
+        payload: {
+          dealerApplicationId: record.id,
+          companyName: validatedCompanyName,
+          contactName: validatedContactName,
+          email: validatedEmail.toLowerCase(),
+          city: validatedCity,
+          province: validatedProvince
+        }
+      });
+      await queueCustomerEmail(transaction, {
+        templateKey: "dealer_application_ack",
+        toEmail: validatedEmail.toLowerCase(),
+        payload: {
+          dealerApplicationId: record.id,
+          companyName: validatedCompanyName,
+          contactName: validatedContactName
+        }
       });
 
       return record;
@@ -220,10 +299,10 @@ export function createSubmissionRoutes() {
   routes.post("/products/:identifier/reviews", async (context) => {
     const body = await readBody(context);
 
-    if (!body) return badRequest(context, "JSON or form body is required.");
+    if (!body) return badRequest(context, "SUBMISSION_INVALID", "JSON or form body is required.");
 
     const identifier = context.req.param("identifier");
-    const product = await prisma.product.findFirst({
+    const product = await database.product.findFirst({
       where: {
         OR: [{ id: identifier }, { slug: identifier }],
         status: "active"
@@ -232,7 +311,7 @@ export function createSubmissionRoutes() {
     });
 
     if (!product) {
-      return context.json({ error: "Product not found." }, 404);
+      return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
     }
 
     const rating = numberValue(body, "rating");
@@ -242,25 +321,59 @@ export function createSubmissionRoutes() {
     const email = stringValue(body, "email");
     const acceptedTerms = booleanValue(body, "acceptedTerms");
 
-    if (!rating || rating < 1 || rating > 5 || !reviewBody || !nickname || !email || !acceptedTerms) {
-      return badRequest(
-        context,
-        "rating, body, nickname, email and acceptedTerms are required."
-      );
+    if (
+      !isValidRating(rating) ||
+      !isBoundedText(title, PUBLIC_SUBMISSION_LIMITS.title) ||
+      !isBoundedText(reviewBody, PUBLIC_SUBMISSION_LIMITS.message, { required: true }) ||
+      !isBoundedText(nickname, PUBLIC_SUBMISSION_LIMITS.name, { required: true }) ||
+      !isValidEmail(email) ||
+      !acceptedTerms
+    ) {
+      return badRequest(context, "SUBMISSION_INVALID", "Product review is invalid.");
     }
 
-    const review = await prisma.$transaction(async (transaction) => {
+    const validatedRating = rating as number;
+    const validatedReviewBody = reviewBody as string;
+    const validatedNickname = nickname as string;
+    const validatedEmail = email as string;
+
+    const existingPending = await database.productReview.findFirst({
+      where: {
+        productId: product.id,
+        email: validatedEmail.toLowerCase(),
+        status: "pending"
+      }
+    });
+    if (existingPending) {
+      return publicError(context, 409, "SUBMISSION_INVALID", "A pending review already exists for this product and email.");
+    }
+
+    const review = await database.$transaction(async (transaction) => {
       const record = await transaction.productReview.create({
         data: {
-          productId: product.id, rating, title, body: reviewBody, nickname,
-          email: email.toLowerCase(), topics: stringArrayValue(body, "topics"), acceptedTerms, status: "pending"
+          productId: product.id,
+          rating: validatedRating,
+          title,
+          body: validatedReviewBody,
+          nickname: validatedNickname,
+          email: validatedEmail.toLowerCase(),
+          topics: stringArrayValue(body, "topics"),
+          acceptedTerms,
+          status: "pending"
         }
       });
 
-      await queueInternalEmail(transaction, {
+      await queueInternalAlert(transaction, {
         templateKey: "product_review_pending",
         subject: `New VanStro product review pending: ${product.name}`,
-        payload: { productReviewId: record.id, productId: product.id, productSlug: product.slug, rating, nickname }
+        payload: {
+          productReviewId: record.id,
+          productId: product.id,
+          productSlug: product.slug,
+          productName: product.name,
+          rating: validatedRating,
+          nickname: validatedNickname
+        }
       });
 
       return record;
@@ -274,7 +387,7 @@ export function createSubmissionRoutes() {
 
   routes.get("/products/:identifier/reviews", async (context) => {
     const identifier = context.req.param("identifier");
-    const product = await prisma.product.findFirst({
+    const product = await database.product.findFirst({
       where: {
         OR: [{ id: identifier }, { slug: identifier }],
         status: "active"
@@ -283,10 +396,10 @@ export function createSubmissionRoutes() {
     });
 
     if (!product) {
-      return context.json({ error: "Product not found." }, 404);
+      return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
     }
 
-    const reviews = await prisma.productReview.findMany({
+    const reviews = await database.productReview.findMany({
       where: { productId: product.id, status: "published" },
       orderBy: { createdAt: "desc" }
     });

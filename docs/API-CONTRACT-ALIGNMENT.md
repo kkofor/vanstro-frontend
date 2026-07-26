@@ -287,7 +287,7 @@ PUT  /dashboard/modules/:moduleKey
 
 | Method | Canonical path | Phase | Frontend today | Action |
 | --- | --- | --- | --- | --- |
-| POST | `/support/handoffs` | P1b+ | `/support/handoffs` | Implement when support backend ready |
+| POST | `/support/handoffs` | P1b+ | `/support/handoffs` | Implemented |
 | POST | `/privacy/consent-events` | P2+ | `/privacy/consent-events` | Implement if legal scope requires |
 | POST | `/integrations/erp/webhooks/order-status` | P2 | — | Implement + HMAC |
 | POST | `/integrations/erp/webhooks/shipment` | P2 | — | Implement + HMAC |

@@ -930,9 +930,10 @@ async function main() {
       body: {
         name: `Smoke Lead ${suffix}`,
         email: `smoke-lead-${suffix}@vanstro.local`,
-        topic: "smoke-topic",
+        topic: "careers",
         city: "Winnipeg, MB",
-        message: "Smoke contact lead"
+        message: "Smoke contact lead",
+        locale: "en-CA"
       }
     }
   );
@@ -1093,6 +1094,34 @@ async function main() {
     throw new Error("published review response leaked private reviewer fields.");
   }
 
+  const supportHandoff = await requestJson<{ data: { id: string; status: "new" } }>(
+    "submit support handoff",
+    "/api/v1/support/handoffs",
+    {
+      method: "POST",
+      status: 201,
+      body: {
+        channel: "human",
+        sourcePath: "/products",
+        transcript: [{ role: "user", message: "Smoke handoff request", createdAt: new Date().toISOString() }]
+      }
+    }
+  );
+  await requestJson<{ data: unknown[] }>(
+    "dashboard support handoffs",
+    "/api/v1/dashboard/support/handoffs",
+    { token }
+  );
+  await requestJson<{ data: { id: string } }>(
+    "patch support handoff status",
+    `/api/v1/dashboard/support/handoffs/${supportHandoff.data.id}/status`,
+    {
+      token,
+      method: "PATCH",
+      body: { status: "in_progress" }
+    }
+  );
+
   await requestJson<{ data: unknown[] }>(
     "dashboard email outbox",
     "/api/v1/dashboard/email/outbox",
@@ -1110,15 +1139,18 @@ async function main() {
       templateKey: {
         in: [
           "contact_lead_received",
+          "contact_lead_ack",
           "dealer_application_received",
-          "product_review_pending"
+          "dealer_application_ack",
+          "product_review_pending",
+          "support_handoff_received"
         ]
       }
     }
   });
 
-  if (p1bEmailCount !== 3) {
-    throw new Error("P1b submissions did not create three pending email outbox items.");
+  if (p1bEmailCount !== 6) {
+    throw new Error("P1b submissions did not create six pending email outbox items.");
   }
 
   const retryableEmail = await prisma.emailOutbox.findFirstOrThrow({
@@ -1250,8 +1282,12 @@ async function main() {
   const checkout = await requestJson<{ data: { id: string; guestOrderToken: string } }>(
     "create checkout session",
     "/api/v1/checkout/session",
-    { method: "POST", status: 201, headers: { "x-cart-token": cartToken }, body: { email: customerEmail, fulfillment: "pickup", dealerLocationId: location.id } }
+    { method: "POST", status: 201, headers: { "x-cart-token": cartToken }, body: { firstName: "Smoke", lastName: "Customer", email: customerEmail, phone: "204-555-0199", fulfillment: "pickup", paymentMethod: "cash", notes: "Call on arrival", dealerLocationId: location.id } }
   );
+  const checkoutSnapshot = await prisma.paymentSession.findUniqueOrThrow({ where: { id: checkout.data.id } });
+  if (checkoutSnapshot.guestFirstName !== "Smoke" || checkoutSnapshot.guestLastName !== "Customer" || checkoutSnapshot.guestPhone !== "204-555-0199" || checkoutSnapshot.paymentMethod !== "cash" || checkoutSnapshot.notes !== "Call on arrival") {
+    throw new Error("checkout session did not persist customer, payment, and notes fields.");
+  }
   const ordersBeforePayment = await prisma.order.count({ where: { email: customerEmail } });
   if (ordersBeforePayment !== 0) throw new Error("pending payment session created an order.");
   await expectStatus(
@@ -1273,6 +1309,10 @@ async function main() {
     { method: "POST", headers: { "x-payment-signature": paymentSignature }, body: { sessionId: checkout.data.id, providerPaymentId, status: "paid" } }
   );
   if (paidOrder.data.status !== "paid") throw new Error("paid callback did not create a paid order.");
+  const paidOrderSnapshot = await prisma.order.findUniqueOrThrow({ where: { id: paidOrder.data.id } });
+  if (paidOrderSnapshot.firstName !== "Smoke" || paidOrderSnapshot.lastName !== "Customer" || paidOrderSnapshot.phone !== "204-555-0199" || paidOrderSnapshot.paymentMethod !== "cash" || paidOrderSnapshot.notes !== "Call on arrival") {
+    throw new Error("paid order did not preserve checkout customer, payment, and notes fields.");
+  }
   await requestJson("get guest order", `/api/v1/orders/${paidOrder.data.id}?token=${checkout.data.guestOrderToken}`);
   await requestJson("read guest order status", `/api/v1/orders/${paidOrder.data.id}/status?token=${checkout.data.guestOrderToken}`);
   await requestJson(
@@ -1285,6 +1325,171 @@ async function main() {
     prisma.erpSyncJob.count({ where: { payload: { path: ["orderId"], equals: paidOrder.data.id } } })
   ]);
   if (paidOrderCount !== 1 || erpJobCount !== 1) throw new Error("payment callback was not idempotent for order or ERP sync job creation.");
+  const orderConfirmationCount = await prisma.emailOutbox.count({
+    where: {
+      createdAt: { gte: smokeStartedAt },
+      templateKey: "order_confirmation",
+      toEmail: customerEmail
+    }
+  });
+  if (orderConfirmationCount !== 1) {
+    throw new Error("payment callback did not enqueue an order confirmation email.");
+  }
+
+  // --- Extended local-backend coverage: consent, addresses, reservation, CMS, delivery tax ---
+  await requestJson<{ data: { id: string } }>(
+    "record privacy consent event",
+    "/api/v1/privacy/consent-events",
+    {
+      method: "POST",
+      status: 201,
+      body: {
+        anonymousId: `smoke-anon-${suffix}`,
+        source: "accept-all",
+        preferences: { strictlyNecessary: true, functional: true, analytics: true, targeting: true }
+      }
+    }
+  );
+  const address = await requestJson<{ data: { id: string; province: string } }>(
+    "create customer address",
+    "/api/v1/account/addresses",
+    {
+      token: customer.data.accessToken,
+      method: "POST",
+      status: 201,
+      body: {
+        firstName: "Smoke",
+        lastName: "Customer",
+        addressLine1: "100 Main St",
+        city: "Winnipeg",
+        province: "MB",
+        postalCode: "R3C 1A1",
+        country: "CA"
+      }
+    }
+  );
+  if (address.data.province !== "MB") throw new Error("customer address province was not persisted.");
+  await requestJson<{ data: Array<{ id: string }> }>("list customer addresses", "/api/v1/account/addresses", {
+    token: customer.data.accessToken
+  });
+
+  const reservation = await requestJson<{ data: { reservationId: string; reservationToken: string } }>(
+    "create inventory reservation",
+    "/api/v1/inventory/reservations",
+    {
+      method: "POST",
+      status: 201,
+      body: { productId: seededSku.product.id, quantity: 1, dealerLocationId: location.id }
+    }
+  );
+  await requestJson(
+    "release inventory reservation",
+    `/api/v1/inventory/reservations/${reservation.data.reservationId}`,
+    {
+      method: "DELETE",
+      headers: { "x-reservation-token": reservation.data.reservationToken }
+    }
+  );
+
+  const banners = await requestJson<{ data: Array<{ id: string }> }>("read CMS home banners", "/api/v1/home/banners?locale=en-CA");
+  if (!Array.isArray(banners.data) || banners.data.length === 0) throw new Error("CMS home banners were empty.");
+  const navigation = await requestJson<{ data: { primaryItems: unknown[] }; meta: { locale: string } }>(
+    "read CMS navigation fr-CA",
+    "/api/v1/navigation?locale=fr-CA"
+  );
+  if (navigation.meta.locale !== "fr-CA" || !Array.isArray(navigation.data.primaryItems)) {
+    throw new Error("CMS navigation did not return fr-CA primary items.");
+  }
+  await requestJson("read CMS legal page", "/api/v1/legal-pages/privacy?locale=en-CA");
+  await requestJson<{ data: Array<{ slug: string }> }>("read CMS articles", "/api/v1/articles?locale=en-CA");
+
+  // Delivery checkout should apply MB 12% tax + flat delivery fee from TaxRate + DELIVERY_FLAT_FEE_CENTS.
+  await prisma.inventorySnapshot.update({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } },
+    data: { quantityOnHand: 100, quantityReserved: 0, updatedAt: new Date() }
+  });
+  const deliveryCart = await requestJson<{ meta?: { cartToken?: string } }>("create delivery cart", "/api/v1/cart");
+  const deliveryCartToken = deliveryCart.meta?.cartToken;
+  if (!deliveryCartToken) throw new Error("delivery cart did not return a cart token.");
+  await requestJson("add delivery cart item", "/api/v1/cart/items", {
+    method: "POST",
+    status: 201,
+    headers: { "x-cart-token": deliveryCartToken },
+    body: { productId: seededSku.product.id, quantity: 1 }
+  });
+  const deliveryCheckout = await requestJson<{ data: { id: string; total: { amount: number } }; meta?: { payment?: { provider: string } } }>(
+    "create delivery checkout session",
+    "/api/v1/checkout/session",
+    {
+      method: "POST",
+      status: 201,
+      headers: { "x-cart-token": deliveryCartToken },
+      body: {
+        firstName: "Smoke",
+        lastName: "Delivery",
+        email: `smoke-delivery-${suffix}@vanstro.local`,
+        phone: "204-555-0198",
+        fulfillment: "delivery",
+        paymentMethod: "pos",
+        dealerLocationId: location.id
+      }
+    }
+  );
+  const deliverySession = await prisma.paymentSession.findUniqueOrThrow({ where: { id: deliveryCheckout.data.id } });
+  const expectedDeliveryShipping = Number(process.env.DELIVERY_FLAT_FEE_CENTS ?? "1500");
+  if (deliverySession.shippingCents !== expectedDeliveryShipping) {
+    throw new Error(`delivery shipping expected ${expectedDeliveryShipping}, got ${deliverySession.shippingCents}.`);
+  }
+  if (deliverySession.taxCents <= 0) throw new Error("delivery checkout did not apply provincial tax.");
+  if (deliveryCheckout.meta?.payment?.provider !== "manual") {
+    throw new Error("checkout did not advertise the manual payment provider.");
+  }
+  // Release unused delivery reservations and expire the session so smoke leaves no holds.
+  const deliveryReservations = await prisma.inventoryReservation.findMany({
+    where: { paymentSessionId: deliverySession.id, status: "active" }
+  });
+  for (const held of deliveryReservations) {
+    await prisma.$transaction(async (transaction) => {
+      await transaction.inventoryReservation.update({ where: { id: held.id }, data: { status: "released" } });
+      const snapshot = await transaction.inventorySnapshot.findFirst({
+        where: { skuId: held.skuId, dealerLocationId: held.dealerLocationId }
+      });
+      if (snapshot) {
+        await transaction.inventorySnapshot.update({
+          where: { id: snapshot.id },
+          data: { quantityReserved: { decrement: held.quantity } }
+        });
+      }
+    });
+  }
+  await prisma.paymentSession.update({ where: { id: deliverySession.id }, data: { status: "expired" } });
+
+  // ERP inbound webhook (signed) against the paid order.
+  const erpExternalId = `smoke-erp-${suffix}`;
+  const erpSignature = createHmac("sha256", process.env.ERP_WEBHOOK_SECRET ?? "")
+    .update(`${paidOrder.data.id}:${erpExternalId}:fulfilled`)
+    .digest("hex");
+  await requestJson("accept signed ERP order-status webhook", "/api/v1/integrations/erp/webhooks/order-status", {
+    method: "POST",
+    headers: { "x-erp-signature": erpSignature },
+    body: { orderId: paidOrder.data.id, status: "fulfilled", externalId: erpExternalId, erpSystem: "configured-erp" }
+  });
+  const fulfilledOrder = await prisma.order.findUniqueOrThrow({ where: { id: paidOrder.data.id } });
+  if (fulfilledOrder.status !== "fulfilled") throw new Error("ERP webhook did not update order status to fulfilled.");
+  await requestJson(
+    "reject ERP webhook without signature",
+    "/api/v1/integrations/erp/webhooks/order-status",
+    {
+      method: "POST",
+      status: 401,
+      body: { orderId: paidOrder.data.id, status: "cancelled", externalId: `smoke-erp-bad-${suffix}`, erpSystem: "configured-erp" }
+    }
+  );
+
+  await prisma.privacyConsentEvent.deleteMany({ where: { anonymousId: `smoke-anon-${suffix}` } });
+  await prisma.customerAddress.deleteMany({ where: { id: address.data.id } });
+  await prisma.paymentSession.deleteMany({ where: { guestEmail: `smoke-delivery-${suffix}@vanstro.local` } });
+  await prisma.erpWebhookEvent.deleteMany({ where: { externalId: erpExternalId } });
 
   await prisma.product.update({
     where: { id: product.data.id },
@@ -1295,14 +1500,19 @@ async function main() {
   await prisma.dealerApplication.delete({
     where: { id: dealerApplication.data.applicationId }
   });
+  await prisma.supportHandoff.delete({ where: { id: supportHandoff.data.id } });
   await prisma.emailOutbox.deleteMany({
     where: {
       createdAt: { gte: smokeStartedAt },
       templateKey: {
         in: [
           "contact_lead_received",
+          "contact_lead_ack",
           "dealer_application_received",
-          "product_review_pending"
+          "dealer_application_ack",
+          "product_review_pending",
+          "support_handoff_received",
+          "order_confirmation"
         ]
       }
     }

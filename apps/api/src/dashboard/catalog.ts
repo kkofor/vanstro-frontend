@@ -526,8 +526,9 @@ export function createDashboardCatalogRoutes() {
       await prisma.catalogSyncRun.update({
         where: { id: run.id },
         data: {
-          status: "succeeded",
+          status: result.errors.length ? "failed" : "succeeded",
           productsUpserted: result.imported + result.updated,
+          error: result.errors.length ? result.errors.slice(0, 50).join("\n") : null,
           finishedAt: new Date()
         }
       });

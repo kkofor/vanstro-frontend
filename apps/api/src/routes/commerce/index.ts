@@ -1246,7 +1246,12 @@ export function createCommerceRoutes(
     const body = (await context.req.json().catch(() => null)) as Record<string, unknown> | null;
     const required = ["firstName", "lastName", "addressLine1", "city", "province", "postalCode"] as const;
     if (required.some((key) => !optionalString(body?.[key]))) return publicError(context, 400, "COMMERCE_INVALID", "Address name, line 1, city, province and postalCode are required.");
-    const address = await prisma.customerAddress.create({ data: { userId: session.user.id, label: optionalString(body?.label), firstName: optionalString(body?.firstName)!, lastName: optionalString(body?.lastName)!, phone: optionalString(body?.phone), addressLine1: optionalString(body?.addressLine1)!, addressLine2: optionalString(body?.addressLine2), city: optionalString(body?.city)!, province: optionalString(body?.province)!, postalCode: optionalString(body?.postalCode)!, country: optionalString(body?.country) ?? "CA", isDefault: body?.isDefault === true } });
+    const address = await prisma.$transaction(async (transaction) => {
+      if (body?.isDefault === true) {
+        await transaction.customerAddress.updateMany({ where: { userId: session.user.id, isDefault: true }, data: { isDefault: false } });
+      }
+      return transaction.customerAddress.create({ data: { userId: session.user.id, label: optionalString(body?.label), firstName: optionalString(body?.firstName)!, lastName: optionalString(body?.lastName)!, phone: optionalString(body?.phone), addressLine1: optionalString(body?.addressLine1)!, addressLine2: optionalString(body?.addressLine2), city: optionalString(body?.city)!, province: optionalString(body?.province)!, postalCode: optionalString(body?.postalCode)!, country: optionalString(body?.country) ?? "CA", isDefault: body?.isDefault === true } });
+    });
     return context.json({ data: address }, 201);
   });
 
@@ -1256,7 +1261,13 @@ export function createCommerceRoutes(
     const address = await prisma.customerAddress.findFirst({ where: { id: context.req.param("id"), userId: session.user.id } });
     if (!address) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Address not found.");
     const body = (await context.req.json().catch(() => null)) as Record<string, unknown> | null;
-    return context.json({ data: await prisma.customerAddress.update({ where: { id: address.id }, data: { label: optionalString(body?.label), firstName: optionalString(body?.firstName), lastName: optionalString(body?.lastName), phone: optionalString(body?.phone), addressLine1: optionalString(body?.addressLine1), addressLine2: optionalString(body?.addressLine2), city: optionalString(body?.city), province: optionalString(body?.province), postalCode: optionalString(body?.postalCode), country: optionalString(body?.country), isDefault: typeof body?.isDefault === "boolean" ? body.isDefault : undefined } }) });
+    const updated = await prisma.$transaction(async (transaction) => {
+      if (body?.isDefault === true) {
+        await transaction.customerAddress.updateMany({ where: { userId: session.user.id, isDefault: true, id: { not: address.id } }, data: { isDefault: false } });
+      }
+      return transaction.customerAddress.update({ where: { id: address.id }, data: { label: optionalString(body?.label), firstName: optionalString(body?.firstName), lastName: optionalString(body?.lastName), phone: optionalString(body?.phone), addressLine1: optionalString(body?.addressLine1), addressLine2: optionalString(body?.addressLine2), city: optionalString(body?.city), province: optionalString(body?.province), postalCode: optionalString(body?.postalCode), country: optionalString(body?.country), isDefault: typeof body?.isDefault === "boolean" ? body.isDefault : undefined } });
+    });
+    return context.json({ data: updated });
   });
 
   routes.delete("/account/addresses/:id", async (context) => {
@@ -1311,12 +1322,19 @@ export function createCommerceRoutes(
   routes.get("/account/orders", async (context) => {
     const session = await requireCustomer(context);
     if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
-    const orders = await prisma.order.findMany({
-      where: { userId: session.user.id },
-      include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } },
-      orderBy: { createdAt: "desc" }
-    });
-    return context.json({ data: orders.map(formatOrder) });
+    const page = Math.max(1, Number.parseInt(context.req.query("page") ?? "1", 10) || 1);
+    const pageSize = Math.min(50, Math.max(1, Number.parseInt(context.req.query("pageSize") ?? "20", 10) || 20));
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where: { userId: session.user.id },
+        include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        skip: (page - 1) * pageSize,
+        take: pageSize
+      }),
+      prisma.order.count({ where: { userId: session.user.id } })
+    ]);
+    return context.json({ data: orders.map(formatOrder), meta: { page, pageSize, total, totalPages: Math.max(1, Math.ceil(total / pageSize)) } });
   });
 
   routes.get("/account/orders/:id", async (context) => {

@@ -27,7 +27,10 @@ async function checkDatabase() {
   if (!process.env.DATABASE_URL) return "not_configured" as const;
 
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await Promise.race([
+      prisma.$queryRaw`SELECT 1`,
+      new Promise((_, reject) => setTimeout(() => reject(new Error("Database readiness timeout.")), 2000))
+    ]);
     return "ok" as const;
   } catch {
     return "error" as const;
@@ -157,6 +160,7 @@ export function createApp() {
         message: "Unhandled request error.",
         path: context.req.path,
         method: context.req.method,
+        requestId: context.res.headers.get("X-Request-Id") ?? undefined,
         error: error instanceof Error ? error.message : String(error)
       })
     );

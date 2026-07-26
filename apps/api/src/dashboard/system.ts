@@ -487,11 +487,11 @@ export function createDashboardSystemRoutes() {
     const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const [pageViews, uniqueSessions, topPaths, checkoutSessions, paidOrders, alerts] = await Promise.all([
       prisma.pageViewEvent.count({ where: { createdAt: { gte: since } } }),
-      prisma.pageViewEvent.findMany({
-        where: { createdAt: { gte: since } },
-        distinct: ["sessionId"],
-        select: { sessionId: true }
-      }),
+      prisma.$queryRaw<Array<{ count: bigint }>>`
+        SELECT COUNT(DISTINCT "sessionId") AS count
+        FROM "page_view_events"
+        WHERE "createdAt" >= ${since}
+      `,
       prisma.pageViewEvent.groupBy({
         by: ["path"],
         where: { createdAt: { gte: since } },
@@ -500,14 +500,14 @@ export function createDashboardSystemRoutes() {
         take: 10
       }),
       prisma.paymentSession.count({ where: { createdAt: { gte: since } } }),
-      prisma.order.count({ where: { createdAt: { gte: since }, status: "paid" } }),
+      prisma.paymentSession.count({ where: { paidAt: { gte: since }, status: "paid" } }),
       getOperationalAlerts()
     ]);
     return context.json({
       data: {
         since: since.toISOString(),
         pageViews,
-        uniqueSessions: uniqueSessions.length,
+        uniqueSessions: Number(uniqueSessions[0]?.count ?? 0n),
         topPaths: topPaths.map((row) => ({ path: row.path, count: row._count.path })),
         funnel: {
           checkoutSessions,

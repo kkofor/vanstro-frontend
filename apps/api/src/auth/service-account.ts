@@ -60,12 +60,16 @@ export async function createServiceAccountToken(
   database: ServiceAccountTokenDatabase = prisma
 ) {
   const token = `vsa_${randomBytes(32).toString("base64url")}`;
+  const expiresAt = options.expiresAt ?? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+  if (expiresAt.getTime() > Date.now() + 365 * 24 * 60 * 60 * 1000) {
+    throw new Error("Service account tokens cannot be valid for more than 365 days.");
+  }
   const record = await database.serviceAccountToken.create({
     data: {
       serviceAccountId,
       tokenHash: hashToken(token),
       name: options.name,
-      expiresAt: options.expiresAt
+      expiresAt
     }
   });
 

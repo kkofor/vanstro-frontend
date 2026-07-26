@@ -1261,6 +1261,20 @@ model ErpWebhookEvent {
   @@map("erp_webhook_events")
 }
 
+model RateLimitBucket {
+  id        String   @id @default(uuid())
+  key       String
+  window    BigInt
+  count     Int      @default(1)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, window])
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+}
+
 model PageViewEvent {
   id          String   @id @default(uuid())
   path        String

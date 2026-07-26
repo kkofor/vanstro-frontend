@@ -123,8 +123,15 @@ export async function syncProductsFromUpstream(
     }
   }
 
-  const products = await client.productList({ limit: 500, page: 1 });
-  const productById = new Map(products.list.map((product) => [product.id, product]));
+  const productPageSize = 500;
+  const productRows = [];
+  for (let page = 1; page <= 100; page += 1) {
+    const response = await client.productList({ limit: productPageSize, page });
+    productRows.push(...response.list);
+    const total = response.total ?? response.list.length;
+    if (response.list.length < productPageSize || productRows.length >= total) break;
+  }
+  const productById = new Map(productRows.map((product) => [product.id, product]));
   const skus = await client.skuList();
 
   for (const erpSku of skus.list) {

@@ -36,6 +36,7 @@
     "migrate:production": "node --experimental-strip-types scripts/migrate-production.mts",
     "qa:local-staging": "node --experimental-strip-types scripts/local-staging-e2e.mts",
     "stack:dev": "pnpm api:dev & pnpm worker:dev & pnpm dev",
+    "demo:preflight": "set -a; . ./.env.demo; set +a; node --experimental-strip-types scripts/preflight-demo.mts",
     "demo:api": "set -a; . ./.env.demo; set +a; pnpm --filter @vanstro/api dev",
     "demo:worker": "set -a; . ./.env.demo; set +a; pnpm --filter @vanstro/worker dev",
     "demo:erp": "set -a; . ./.env.demo; set +a; pnpm --filter @vanstro/erp-mock start",

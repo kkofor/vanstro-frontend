@@ -203,6 +203,9 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
         </div>
         {session.paymentMethod === "card" ? (
           <>
+            {paymentMeta?.provider === "demo" ? (
+              <p className="quantity-limit-note" role="status">Demo payment — no real card will be charged.</p>
+            ) : null}
             <div id="moneris-checkout" />
             <button className="button button-primary" type="button" disabled={(paymentMeta?.provider !== "demo" && !monerisReady) || processing} onClick={() => void startCardPayment()}>
               {processing ? copy.payment.processing : copy.payment.payNow}

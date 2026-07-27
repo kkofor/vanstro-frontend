@@ -1,3 +1,4 @@
+import { DemoCardPaymentProvider } from "./demo.js";
 import { ManualPaymentProvider } from "./manual.js";
 import { MonerisPaymentProvider, type MonerisConfig } from "./moneris.js";
 import type { PaymentProvider } from "./types.js";
@@ -17,8 +18,18 @@ function readMonerisConfig(env: NodeJS.ProcessEnv): MonerisConfig | undefined {
   return { environment, storeId, apiToken, checkoutId };
 }
 
+let cachedDemo: DemoCardPaymentProvider | undefined;
 let cachedManual: ManualPaymentProvider | undefined;
 let cachedMoneris: MonerisPaymentProvider | undefined;
+
+function demoIntegrationsEnabled(env: NodeJS.ProcessEnv) {
+  return env.VANSTRO_RUNTIME_MODE !== "deployment" && env.ENABLE_DEMO_INTEGRATIONS?.trim().toLowerCase() === "true";
+}
+
+function getDemoProvider() {
+  cachedDemo ??= new DemoCardPaymentProvider();
+  return cachedDemo;
+}
 
 function getManualProvider(env: NodeJS.ProcessEnv = process.env): ManualPaymentProvider {
   if (cachedManual) return cachedManual;
@@ -39,7 +50,7 @@ function getMonerisProvider(env: NodeJS.ProcessEnv = process.env): MonerisPaymen
 }
 
 export function isMonerisConfigured(env: NodeJS.ProcessEnv = process.env) {
-  return Boolean(readMonerisConfig(env));
+  return Boolean(readMonerisConfig(env)) || demoIntegrationsEnabled(env);
 }
 
 /** Resolve the payment provider for a checkout session payment method. */
@@ -47,7 +58,7 @@ export function resolvePaymentProvider(
   paymentMethod: CheckoutPaymentMethod,
   env: NodeJS.ProcessEnv = process.env
 ): PaymentProvider {
-  if (paymentMethod === "card") return getMonerisProvider(env);
+  if (paymentMethod === "card") return demoIntegrationsEnabled(env) ? getDemoProvider() : getMonerisProvider(env);
   return getManualProvider(env);
 }
 
@@ -63,6 +74,7 @@ export function getPaymentProvider(env: NodeJS.ProcessEnv = process.env): Paymen
 
 /** Test helper to reset cached providers between cases. */
 export function resetPaymentProviderCache() {
+  cachedDemo = undefined;
   cachedManual = undefined;
   cachedMoneris = undefined;
 }

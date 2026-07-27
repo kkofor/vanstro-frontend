@@ -64,6 +64,9 @@ function configuredGroup(env: NodeJS.ProcessEnv, names: string[], requiredInDepl
 export function loadWorkerConfig(env: NodeJS.ProcessEnv = process.env): WorkerConfig {
   const mode = runtimeMode(env.VANSTRO_RUNTIME_MODE);
   const databaseUrl = required("DATABASE_URL", env.DATABASE_URL);
+  if (mode === "deployment" && env.ENABLE_DEMO_INTEGRATIONS?.trim().toLowerCase() === "true") {
+    throw new Error("ENABLE_DEMO_INTEGRATIONS must be false in deployment mode.");
+  }
   if (mode === "deployment") {
     required("EMAIL_SETTINGS_ENCRYPTION_KEY", env.EMAIL_SETTINGS_ENCRYPTION_KEY);
   }

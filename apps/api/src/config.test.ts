@@ -17,6 +17,13 @@ test("deployment 模式拒绝启用支付模拟", () => {
   );
 });
 
+test("deployment 模式拒绝 Demo integrations", () => {
+  assert.throws(
+    () => loadApiConfig({ ...deploymentEnv, ENABLE_DEMO_INTEGRATIONS: "true" }),
+    /must be false in deployment mode/
+  );
+});
+
 test("development 模式允许显式启用支付模拟", () => {
   const config = loadApiConfig({
     ...deploymentEnv,

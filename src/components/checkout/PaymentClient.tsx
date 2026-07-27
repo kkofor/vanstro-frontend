@@ -80,7 +80,7 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
   }, [sessionId, token, locale, copy.payment.unavailableTitle]);
 
   useEffect(() => {
-    if (!session || session.paymentMethod !== "card" || !paymentMeta?.ticket) return;
+    if (!session || session.paymentMethod !== "card" || !paymentMeta?.ticket || paymentMeta.provider === "demo") return;
     if (window.monerisCheckout) {
       setMonerisReady(true);
       return;
@@ -119,6 +119,10 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
   }
 
   async function startCardPayment() {
+    if (paymentMeta?.provider === "demo" && paymentMeta.ticket) {
+      await completePayment({ ticket: paymentMeta.ticket });
+      return;
+    }
     if (!paymentMeta?.ticket || !window.monerisCheckout) {
       setMessage(copy.payment.cardUnavailable);
       return;
@@ -200,7 +204,7 @@ export function PaymentClient({ locale: explicitLocale }: { locale?: SiteLocale 
         {session.paymentMethod === "card" ? (
           <>
             <div id="moneris-checkout" />
-            <button className="button button-primary" type="button" disabled={!monerisReady || processing} onClick={() => void startCardPayment()}>
+            <button className="button button-primary" type="button" disabled={(paymentMeta?.provider !== "demo" && !monerisReady) || processing} onClick={() => void startCardPayment()}>
               {processing ? copy.payment.processing : copy.payment.payNow}
             </button>
           </>

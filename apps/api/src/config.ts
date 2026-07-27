@@ -51,6 +51,10 @@ export function loadApiConfig(env: NodeJS.ProcessEnv = process.env): ApiConfig {
   const mode = runtimeMode(env.VANSTRO_RUNTIME_MODE);
   required("DATABASE_URL", env.DATABASE_URL);
   const enablePaymentSimulation = env.ENABLE_PAYMENT_SIMULATION?.trim().toLowerCase() === "true";
+  const demoIntegrations = env.ENABLE_DEMO_INTEGRATIONS?.trim().toLowerCase() === "true";
+  if (mode === "deployment" && demoIntegrations) {
+    throw new Error("ENABLE_DEMO_INTEGRATIONS must be false in deployment mode.");
+  }
   if (mode === "deployment" && enablePaymentSimulation) {
     throw new Error("ENABLE_PAYMENT_SIMULATION must be false in deployment mode.");
   }

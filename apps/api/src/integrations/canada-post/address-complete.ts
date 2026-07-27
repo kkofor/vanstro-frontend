@@ -92,8 +92,31 @@ export class CanadaPostAddressCompleteClient {
   }
 }
 
+class DemoCanadaPostClient {
+  async find(query: string): Promise<CanadaPostSuggestion[]> {
+    if (query.trim().length < 3) return [];
+    return [
+      { id: "demo-winnipeg-main", label: "100 Main Street, Winnipeg MB R3C 1A1" },
+      { id: "demo-toronto-king", label: "100 King Street West, Toronto ON M5X 1A9" },
+      { id: "demo-vancouver-granville", label: "701 West Georgia Street, Vancouver BC V7Y 1G5" }
+    ].filter((item) => item.label.toLowerCase().includes(query.trim().toLowerCase()) || query.trim().length >= 3);
+  }
+
+  async retrieve(id: string): Promise<CanadaPostAddress | undefined> {
+    const addresses: Record<string, CanadaPostAddress> = {
+      "demo-winnipeg-main": { line1: "100 Main Street", city: "Winnipeg", province: "MB", postalCode: "R3C 1A1", country: "CA" },
+      "demo-toronto-king": { line1: "100 King Street West", city: "Toronto", province: "ON", postalCode: "M5X 1A9", country: "CA" },
+      "demo-vancouver-granville": { line1: "701 West Georgia Street", city: "Vancouver", province: "BC", postalCode: "V7Y 1G5", country: "CA" }
+    };
+    return addresses[id];
+  }
+}
+
 export function createCanadaPostClient(env: NodeJS.ProcessEnv = process.env) {
   const apiKey = env.CANADA_POST_API_KEY?.trim();
-  if (!apiKey) return undefined;
-  return new CanadaPostAddressCompleteClient(apiKey);
+  if (apiKey) return new CanadaPostAddressCompleteClient(apiKey);
+  if (env.VANSTRO_RUNTIME_MODE !== "deployment" && env.ENABLE_DEMO_INTEGRATIONS?.trim().toLowerCase() === "true") {
+    return new DemoCanadaPostClient();
+  }
+  return undefined;
 }

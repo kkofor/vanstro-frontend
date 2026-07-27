@@ -7,6 +7,13 @@ const baseEnv: NodeJS.ProcessEnv = {
   DATABASE_URL: "postgresql://localhost/vanstro_test"
 };
 
+test("deployment 模式拒绝 Demo integrations", () => {
+  assert.throws(
+    () => loadWorkerConfig({ ...baseEnv, VANSTRO_RUNTIME_MODE: "deployment", ENABLE_DEMO_INTEGRATIONS: "true" }),
+    /must be false in deployment mode/
+  );
+});
+
 test("邮件租约必须长于 SMTP 最大请求窗口", () => {
   assert.throws(
     () => loadWorkerConfig({ ...baseEnv, EMAIL_LOCK_TTL_MS: "30000" }),

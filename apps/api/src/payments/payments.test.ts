@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
+import { DemoCardPaymentProvider } from "./demo.js";
 import { ManualPaymentProvider } from "./manual.js";
 import { MonerisPaymentProvider, type MonerisConfig } from "./moneris.js";
 
@@ -44,6 +45,16 @@ test("manual provider initiate is a no-op handoff", async () => {
   const provider = new ManualPaymentProvider(SECRET);
   const result = await provider.initiate({ paymentSessionId: "sess-1", amountCents: 1000, currency: "CAD", email: "a@b.ca" });
   assert.deepEqual(result, { provider: "manual" });
+});
+
+test("demo card provider issues and verifies a session-bound ticket", async () => {
+  const provider = new DemoCardPaymentProvider();
+  const initiated = await provider.initiate({ paymentSessionId: "demo-session", amountCents: 1234, currency: "CAD", email: "demo@example.com" });
+  assert.equal(initiated.provider, "demo");
+  assert.equal(initiated.demo, true);
+  assert.ok(initiated.ticket);
+  assert.equal((await provider.verify({ paymentSessionId: "demo-session", amountCents: 1234, currency: "CAD", ticket: initiated.ticket })).ok, true);
+  assert.equal((await provider.verify({ paymentSessionId: "other-session", amountCents: 1234, currency: "CAD", ticket: initiated.ticket })).ok, false);
 });
 
 const monerisConfig: MonerisConfig = {

@@ -69,17 +69,28 @@ try {
 
   start("mailpit", ["--smtp", "127.0.0.1:1026", "--listen", "127.0.0.1:8026", "--database", mailpitDatabase], baseEnv);
   start("pnpm", ["--filter", "@vanstro/erp-mock", "start"], { ...baseEnv, ERP_MOCK_PORT: "4101", ERP_MOCK_SYSTEM: "configured-erp", ERP_MOCK_AUTO_WEBHOOK: "true", ERP_MOCK_API_WEBHOOK_URL: "http://127.0.0.1:4001/api/v1/integrations/erp/webhooks/order-status" });
-  start("node", ["apps/api/dist/index.js"], { ...baseEnv, API_HOST: "127.0.0.1", API_PORT: "4001", ENABLE_PAYMENT_SIMULATION: "true" });
+  start("node", ["apps/api/dist/index.js"], { ...baseEnv, API_HOST: "127.0.0.1", API_PORT: "4001", ENABLE_PAYMENT_SIMULATION: "true", ENABLE_DEMO_INTEGRATIONS: "true" });
   start("node", ["apps/worker/dist/index.js"], { ...baseEnv, WORKER_POLL_INTERVAL_MS: "1000", SMTP_HOST: "127.0.0.1", SMTP_PORT: "1026", SMTP_USER: "test", SMTP_PASSWORD: "test-password", SMTP_FROM: "VanStro Test <test@vanstro.local>", SMTP_REQUIRE_TLS: "false", ERP_API_BASE_URL: "http://127.0.0.1:4101", ERP_SERVICE_TOKEN: "local-staging-erp-service-token", VANSTRO_API_BASE_URL: "http://127.0.0.1:4001/api/v1" });
   await Promise.all([waitFor("http://127.0.0.1:4001/health/ready"), waitFor("http://127.0.0.1:4101/health"), waitFor("http://127.0.0.1:8026/api/v1/info")]);
 
   const fixture = spawnSync("psql", [psqlUrl.toString(), "-Atc", `SELECT p.id || '|' || dl.id FROM products p JOIN platform_skus s ON s.\"productId\"=p.id JOIN inventory_snapshots i ON i.\"skuId\"=s.id JOIN dealer_locations dl ON dl.id=i.\"dealerLocationId\" WHERE p.status='active' AND s.status='active' AND i.\"quantityOnHand\">i.\"quantityReserved\" LIMIT 1`], { env: pgEnv, encoding: "utf8" });
   if (fixture.status !== 0) throw new Error(fixture.stderr);
   const [productId, dealerLocationId] = fixture.stdout.trim().split("|");
+  const addressSuggestions = await request("/address/autocomplete?query=Winnipeg");
+  const demoAddress = await request(`/address/autocomplete?id=${encodeURIComponent(addressSuggestions.data.suggestions[0].id)}`);
+  if (demoAddress.data.address.country !== "CA") throw new Error("Demo address adapter did not return a Canadian address.");
+
   const cart = await request("/cart");
   const cartToken = cart.meta.cartToken;
   await request("/cart/items", { method: "POST", headers: { "x-cart-token": cartToken }, body: JSON.stringify({ productId, quantity: 1 }) });
   const checkout = await request("/checkout/session", { method: "POST", headers: { "x-cart-token": cartToken, "idempotency-key": randomUUID() }, body: JSON.stringify({ firstName: "Stage", lastName: "Buyer", email: `stage-${suffix}@vanstro.test`, phone: "2045550100", fulfillment: "pickup", paymentMethod: "cash", dealerLocationId }) });
+  const cardCart = await request("/cart");
+  await request("/cart/items", { method: "POST", headers: { "x-cart-token": cardCart.meta.cartToken }, body: JSON.stringify({ productId, quantity: 1 }) });
+  const cardCheckout = await request("/checkout/session", { method: "POST", headers: { "x-cart-token": cardCart.meta.cartToken, "idempotency-key": randomUUID() }, body: JSON.stringify({ firstName: "Demo", lastName: "Card", email: `demo-card-${suffix}@vanstro.test`, phone: "2045550101", fulfillment: "pickup", paymentMethod: "card", dealerLocationId }) });
+  if (cardCheckout.meta.payment.provider !== "demo" || cardCheckout.meta.payment.demo !== true) throw new Error("Demo card provider was not selected.");
+  const cardPaid = await request("/payments/callback", { method: "POST", body: JSON.stringify({ sessionId: cardCheckout.data.id, status: "paid", ticket: cardCheckout.meta.payment.ticket }) });
+  if (cardPaid.data.status !== "paid") throw new Error("Demo card payment did not create a paid order.");
+
   const simulation = await request("/payments/simulate", { method: "POST", body: JSON.stringify({ sessionId: checkout.data.id }) });
   const paid = await request("/payments/callback", { method: "POST", headers: { "x-payment-signature": simulation.data.signature }, body: JSON.stringify({ sessionId: checkout.data.id, status: "paid", providerPaymentId: simulation.data.providerPaymentId }) });
   await request("/payments/callback", { method: "POST", headers: { "x-payment-signature": simulation.data.signature }, body: JSON.stringify({ sessionId: checkout.data.id, status: "paid", providerPaymentId: simulation.data.providerPaymentId }) });
@@ -88,7 +99,7 @@ try {
   if (order.data.status !== "processing") throw new Error(`Expected processing, got ${order.data.status}`);
   const messages = await fetch("http://127.0.0.1:8026/api/v1/messages").then((response) => response.json()) as { total: number };
   if (messages.total < 1) throw new Error("No email reached Mailpit.");
-  console.log(JSON.stringify({ ok: true, orderId: paid.data.id, status: order.data.status, mailCount: messages.total }, null, 2));
+  console.log(JSON.stringify({ ok: true, orderId: paid.data.id, demoCardOrderId: cardPaid.data.id, status: order.data.status, demoAddress: demoAddress.data.address, mailCount: messages.total }, null, 2));
 } finally {
   for (const child of children.reverse()) child.kill("SIGTERM");
   await new Promise((resolve) => setTimeout(resolve, 500));

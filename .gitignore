@@ -20,6 +20,8 @@ qa/*
 *.tsbuildinfo
 *.log
 .env
+.env.demo
+.env.production
 .env*.local
 footer-redesign-*.png
 tmp/

@@ -1,4 +1,4 @@
-export type PaymentProviderName = "manual" | "moneris";
+export type PaymentProviderName = "manual" | "moneris" | "demo";
 
 export type PaymentInitiateInput = {
   paymentSessionId: string;
@@ -18,6 +18,7 @@ export type PaymentInitiateResult = {
   ticket?: string;
   /** Provider-side reference id, when known at initiation. */
   providerRef?: string;
+  demo?: boolean;
 };
 
 export type PaymentVerifyInput = {

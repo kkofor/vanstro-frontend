@@ -123,8 +123,8 @@ ERP 必须按 `Idempotency-Key` 幂等：重复请求返回同一个 `erpOrderId
 | `dealerLocationId` | UUID/null | 否 | `website_location_id` | VanStro 履约门店 ID |
 | `erpLocationId` | string/null | 否 | `warehouse_id` | ERP 仓库/门店 ID |
 | `subtotalCents` | integer | 是 | `subtotal_cents` | 折扣前商品小计 |
-| `discountCents` | integer | 建议 | `discount_cents` | 优惠金额；当前 Worker 后续应一并传递 |
-| `promotionKey` | string/null | 建议 | `promotion_code` | 优惠券/活动代码 |
+| `discountCents` | integer | 是 | `discount_cents` | 优惠金额；无优惠时为 `0`，Worker 已传递 |
+| `promotionKey` | string/null | 是 | `promotion_code` | 优惠券/活动代码；无优惠时为 `null`，Worker 已传递 |
 | `taxCents` | integer | 是 | `tax_cents` | 税额 |
 | `shippingCents` | integer | 是 | `shipping_cents` | 运费 |
 | `totalCents` | integer | 是 | `total_cents` | 实付总额 |

@@ -82,7 +82,17 @@ export function createErpIntegrationRoutes() {
         where,
         include: {
           product: { include: { category: true } },
-          prices: { where: { status: "active" }, orderBy: { createdAt: "desc" }, take: 1 },
+          prices: {
+            where: {
+              status: "active",
+              AND: [
+                { OR: [{ effectiveFrom: null }, { effectiveFrom: { lte: new Date() } }] },
+                { OR: [{ effectiveUntil: null }, { effectiveUntil: { gt: new Date() } }] }
+              ]
+            },
+            orderBy: { effectiveFrom: { sort: "desc", nulls: "last" } },
+            take: 1
+          },
           assets: { orderBy: { sortOrder: "asc" }, take: 1 },
           erpMappings: true
         },

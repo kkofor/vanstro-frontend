@@ -25,8 +25,8 @@ order,paymentMethod,enum,yes,payment_method,card或pos或cash
 order,dealerLocationId,string(UUID)|null,no,website_location_id,VanStro履约门店
 order,erpLocationId,string|null,no,warehouse_id,ERP仓库门店ID
 order,subtotalCents,integer,yes,subtotal_cents,折扣前小计
-order,discountCents,integer,recommended,discount_cents,优惠金额
-order,promotionKey,string|null,no,promotion_code,优惠代码
+order,discountCents,integer,yes,discount_cents,优惠金额无优惠为0
+order,promotionKey,string|null,yes,promotion_code,优惠代码无优惠为null
 order,taxCents,integer,yes,tax_cents,税额
 order,shippingCents,integer,yes,shipping_cents,运费
 order,totalCents,integer,yes,total_cents,实付总额

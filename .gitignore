@@ -19,6 +19,7 @@ qa/*
 !qa/package-a-contracts.test.ts
 *.tsbuildinfo
 *.log
+docs/reports/real-integration-verification.json
 .env
 .env.demo
 .env.production

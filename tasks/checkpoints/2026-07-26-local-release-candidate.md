@@ -6,15 +6,15 @@ Latest verified source commit before this checkpoint: `3ca66e2`
 
 ## Status
 
-Local code and integration scope is release-candidate ready. Online deployment is intentionally paused by the user's latest instruction: “先不需要部署线上，本地先完善”.
+Demo Release Candidate scope is complete. On 2026-07-27 the user explicitly selected “Demo RC 完成” as this phase's completion target. Online deployment and real vendor verification are a later phase.
 
 ## Verified gates
 
 - Node.js 22.22.2
 - TypeScript: pass
-- API tests: 86/86
+- API tests: 87/87
 - DB tests: 3/3
-- Worker tests: 3/3
+- Worker tests: 4/4
 - Contract tests: 5/5
 - Backend build: DB/API/Worker/CLI pass
 - Next dynamic production build: pass
@@ -39,8 +39,8 @@ Local code and integration scope is release-candidate ready. Online deployment i
 Verified journey:
 
 ```text
-cart → checkout → manual payment simulation → signed callback → paid order
-→ Worker ERP order push → ERP signed processing webhook
+Demo address lookup → cart → Demo card + manual payment → signed callback → paid order
+→ Worker ERP mock order push → ERP signed processing webhook
 → order processing → customer email delivered to Mailpit
 ```
 
@@ -69,6 +69,10 @@ Observed evidence:
 - shared production rate limiting
 - API graceful shutdown/readiness/logging
 - production build/container/preflight/migration runner
+
+## Real integration evidence gate
+
+`pnpm qa:real-integrations` performs non-destructive checks and produces redacted evidence. Current result is `0 passed / 0 failed / 5 blocked` because real credentials and `PRODUCTION_API_URL` were not supplied. Demo results must not be substituted for real vendor evidence.
 
 ## Remaining online-only gates
 

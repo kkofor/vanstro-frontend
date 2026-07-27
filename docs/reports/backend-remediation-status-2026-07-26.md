@@ -2,14 +2,14 @@
 title: VanStro 后端审计整改与上线就绪状态
 date: 2026-07-26
 baseline_audit: docs/reports/backend-full-audit-2026-07-26.md
-status: code-remediated — external production verification pending
+status: demo-release-candidate-complete — real integration and production verification deferred
 ---
 
 # VanStro 后端审计整改与上线就绪状态
 
 ## 1. 结论
 
-审计报告中的代码内生产阻断问题已完成第一轮系统整改。当前代码状态已经从“NEEDS WORK / 不可进入生产验收”提升为：
+审计报告中的代码内生产阻断问题已完成系统整改。2026-07-27 用户明确选择“Demo RC 完成”为本阶段目标。当前代码状态已经从“NEEDS WORK / 不可进入生产验收”提升为：
 
 > **代码级上线候选（release candidate）；真实外部服务、Node 22 CI、生产基础设施和恢复演练尚待环境验收。**
 

@@ -1,0 +1,42 @@
+section,json_field,type,required,erp_recommended_field,description
+product,productId,string(UUID),yes,website_product_id,VanStro商品主键
+product,productSlug,string,yes,website_product_slug,网站URL标识
+product,productName,string,yes,product_name,商品名称
+sku,platformSkuId,string(UUID),yes,website_sku_id,VanStro SKU主键
+sku,skuCode,string,yes,website_sku_code,平台业务SKU编码
+sku,skuName,string,yes,sku_name,SKU名称规格
+sku,category,string|null,no,category_name,商品分类
+sku,status,string,yes,sale_status,仅导出active
+price,price.amountCents,integer,no,sale_price_cents,整数分
+price,price.currency,string,no,currency,当前CAD
+asset,imageUrl,string|null,no,primary_image_url,主图URL
+mapping,erpSystem,string|null,no,erp_system,ERP系统标识
+mapping,erpSkuKey,string|null,recommended,erp_sku_key,ERP SKU Key
+mapping,erpProductId,integer|null,no,erp_product_id,ERP商品ID
+mapping,erpSkuId,integer|null,no,erp_sku_id,ERP SKU ID
+sync,updatedAt,ISO8601,yes,website_updated_at,增量同步游标
+order,externalOrderId,string(UUID),yes,website_order_id,VanStro订单ID与幂等键
+order,email,string,yes,customer_email,客户邮箱
+order,firstName,string,yes,customer_first_name,客户名
+order,lastName,string,yes,customer_last_name,客户姓
+order,phone,string,yes,customer_phone,客户电话
+order,fulfillment,enum,yes,fulfillment_type,pickup或delivery
+order,paymentMethod,enum,yes,payment_method,card或pos或cash
+order,dealerLocationId,string(UUID)|null,no,website_location_id,VanStro履约门店
+order,erpLocationId,string|null,no,warehouse_id,ERP仓库门店ID
+order,subtotalCents,integer,yes,subtotal_cents,折扣前小计
+order,discountCents,integer,recommended,discount_cents,优惠金额
+order,promotionKey,string|null,no,promotion_code,优惠代码
+order,taxCents,integer,yes,tax_cents,税额
+order,shippingCents,integer,yes,shipping_cents,运费
+order,totalCents,integer,yes,total_cents,实付总额
+order,currency,string,yes,currency,当前CAD
+line,items[].skuCode,string,yes,website_sku_code,平台SKU编码
+line,items[].erpSkuKey,string|null,recommended,erp_sku_key,ERP SKU Key
+line,items[].erpSkuId,integer|null,no,erp_sku_id,ERP SKU ID
+line,items[].quantity,integer,yes,quantity,销售出库数量
+line,items[].unitPriceCents,integer,yes,unit_price_cents,整数分单价
+inventory,inventoryLines[].skuId,string(UUID)|null,yes,website_sku_id,VanStro SKU ID
+inventory,inventoryLines[].dealerLocationId,string(UUID)|null,no,website_location_id,履约门店
+inventory,inventoryLines[].quantity,integer,yes,quantity,库存扣减数量
+response,erpOrderId,string,yes,erp_order_id,ERP销售出库单ID

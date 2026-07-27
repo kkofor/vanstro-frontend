@@ -400,6 +400,8 @@ async function pushPendingErpOrders() {
           dealerLocationId: order.dealerLocationId,
           erpLocationId,
           subtotalCents: order.subtotalCents,
+          discountCents: order.discountCents,
+          promotionKey: order.promotionKey,
           taxCents: order.taxCents,
           shippingCents: order.shippingCents,
           totalCents: order.totalCents,

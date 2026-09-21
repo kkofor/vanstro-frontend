@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "vanstro.v11-r1.erp-readiness.v1",
+  "frozenAt": "2026-08-13",
+  "baseline": {
+    "commit": "ee6f4b1aedd17bc12610e160d7cb401d0e3074d6",
+    "tree": "be662e25db94bfd4f4ebb840f3fb8c050b9a35a3",
+    "migrationCount": 81,
+    "migrationCeiling": "20260810110000_s12_erp_webhooks"
+  },
+  "stableIds": {
+    "product": { "vanstro": ["id", "slug"], "erp": ["erpProductId", "erpSkuId"] },
+    "sku": { "vanstro": ["id", "skuCode"], "erp": ["erpSystem", "erpSkuKey", "erpSkuId"] },
+    "category": { "vanstro": ["id", "slug"], "erp": ["erpSystem", "erpCategoryKey", "erpCategoryId"], "storage": "new erp_category_mappings" },
+    "location": { "vanstro": ["id", "code"], "erp": ["erpSystem", "erpLocationId"], "storage": "dealer_erp_links extended inbound" },
+    "order": { "vanstro": ["id"], "erp": ["erpOrderId"], "storage": "erp_order_links" }
+  },
+  "fieldOwnership": {
+    "price": {
+      "erp": ["amountCents", "cost"],
+      "vanstro": ["compareAtCents", "status"],
+      "newColumns": { "source": "TEXT NOT NULL default 'vanstro' enum vanstro|erp", "externalVersion": "INT nullable", "sourceUpdatedAt": "timestamptz nullable" },
+      "activeSemantics": "single active per (skuId,currency); active = status='active' AND effectiveFrom<=now<effectiveUntil; partial unique to prevent overlap"
+    },
+    "inventory": { "erp": ["onHand"], "vanstro": ["reserved"], "derived": ["available = onHand - reserved"] },
+    "category": { "erp": ["code", "name", "status"], "vanstro": ["displayOrder", "seo"] }
+  },
+  "ingestRules": {
+    "canonicalIngest": "dashboard/batch-ingest.ts async worker single source",
+    "requestHashRequired": true,
+    "idempotencyKeyHeader": true,
+    "dryRunZeroWrites": true,
+    "overLimitStatus": 413,
+    "unmappedFailure": "ERP_MAPPING_INCOMPLETE per-item",
+    "nonOwnerField": "explicit per-item result, never silent ignore/overwrite"
+  },
+  "order": {
+    "lineIdentity": ["skuCode NOT NULL", "skuId", "dealerLocationId snapshot"],
+    "address": "immutable finalize-time snapshot",
+    "writeback": "deferred until owner freeze"
+  },
+  "compatibility": "additive only; no physical delete; no history migration edit; migration forward-append from 81",
+  "erpLinkStatus": "internal READY pending real integration; no real endpoint/credentials"
+}

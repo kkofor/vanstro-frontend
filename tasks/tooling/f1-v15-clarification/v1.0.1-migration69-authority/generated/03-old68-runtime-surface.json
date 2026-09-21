@@ -1,0 +1,808 @@
+{
+  "header": {
+    "generated": "GENERATED — DO NOT EDIT",
+    "generatorSha256": "f19cee679a0c112b62e5cc19465ffce409adfd4a32b97a2101bd6013e7627301",
+    "modelSha256": "7376e74962984bf4a73733edcfdf308b979d62a0fc34a8ee9c11e9e013a181a8",
+    "packageVersion": "1.0.1",
+    "parentFrozenManifestSha256": "e6c3cb275b3ecee17022418586613f6739757802b705bd17444b5c95be5a6e8f",
+    "schemaSha256": "b40af890b5a81e3aacde2d2715c6b10fe0a64f930d0c3c5eb97c147e5ae56f2b",
+    "status": "FROZEN"
+  },
+  "old68RuntimeSurface": [
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [],
+      "id": "old68.p08_canonical_text_array",
+      "identityArguments": "value text[]",
+      "identitySignature": "public.p08_canonical_text_array(value text[])",
+      "name": "p08_canonical_text_array",
+      "owner": "vanstro_migrator",
+      "preserve69Acl": [],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": false,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803100000_dashboard_p08_import_export_foundation"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_authorized_binding",
+      "identityArguments": "session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[]",
+      "identitySignature": "public.p08_authorized_binding(session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[])",
+      "name": "p08_authorized_binding",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_commit_sample",
+      "identityArguments": "job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_batch_version integer, row_number integer, expected_target_version integer, external_key text, label text, sample_state text, quantity integer, effective_date date, note text",
+      "identitySignature": "public.p08_commit_sample(job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_batch_version integer, row_number integer, expected_target_version integer, external_key text, label text, sample_state text, quantity integer, effective_date date, note text)",
+      "name": "p08_commit_sample",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_create_export",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], export_id uuid, query_snapshot jsonb, job_id uuid",
+      "identitySignature": "public.p08_create_export(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], export_id uuid, query_snapshot jsonb, job_id uuid)",
+      "name": "p08_create_export",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_create_import",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], import_id uuid, filename text, content_type text, declared_bytes bigint, token_hash text, token_expires_at timestamp with time zone, intent_hash text, registry_version text, schema_version text, parser_version text, security_policy_version text",
+      "identitySignature": "public.p08_create_import(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], import_id uuid, filename text, content_type text, declared_bytes bigint, token_hash text, token_expires_at timestamp with time zone, intent_hash text, registry_version text, schema_version text, parser_version text, security_policy_version text)",
+      "name": "p08_create_import",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_export_detail",
+      "identityArguments": "session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text",
+      "identitySignature": "public.p08_export_detail(session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text)",
+      "name": "p08_export_detail",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_export_list",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer",
+      "identitySignature": "public.p08_export_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer)",
+      "name": "p08_export_list",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_export_samples",
+      "identityArguments": "job_id uuid, lease_owner text, lease_revision integer, export_id uuid, expected_version integer, row_limit integer",
+      "identitySignature": "public.p08_export_samples(job_id uuid, lease_owner text, lease_revision integer, export_id uuid, expected_version integer, row_limit integer)",
+      "name": "p08_export_samples",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_import_list",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer",
+      "identitySignature": "public.p08_import_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer)",
+      "name": "p08_import_list",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_purge_row_payloads",
+      "identityArguments": "job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_version integer",
+      "identitySignature": "public.p08_purge_row_payloads(job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_version integer)",
+      "name": "p08_purge_row_payloads",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_transition_export",
+      "identityArguments": "session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text",
+      "identitySignature": "public.p08_transition_export(session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text)",
+      "name": "p08_transition_export",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_transition_import",
+      "identityArguments": "session_token_hash text, permission_key text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text, source_artifact_id uuid",
+      "identitySignature": "public.p08_transition_import(session_token_hash text, permission_key text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text, source_artifact_id uuid)",
+      "name": "p08_transition_import",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_import_detail",
+      "identityArguments": "session_token_hash text, permission_key text, import_id uuid, expected_actor_id text, expected_context_revision text, expected_scope_fingerprint text, expected_field_visibility_fingerprint text",
+      "identitySignature": "public.p08_import_detail(session_token_hash text, permission_key text, import_id uuid, expected_actor_id text, expected_context_revision text, expected_scope_fingerprint text, expected_field_visibility_fingerprint text)",
+      "name": "p08_import_detail",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_import_finalize_context",
+      "identityArguments": "session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer",
+      "identitySignature": "public.p08_import_finalize_context(session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer)",
+      "name": "p08_import_finalize_context",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "permanent",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p08_import_rows",
+      "identityArguments": "session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, after_row integer, row_limit integer",
+      "identitySignature": "public.p08_import_rows(session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, after_row integer, row_limit integer)",
+      "name": "p08_import_rows",
+      "owner": "vanstro_p08_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803110000_dashboard_p08_runtime_permission_boundary"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_config_list",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[]",
+      "identitySignature": "public.p09_config_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[])",
+      "name": "p09_config_list",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_authorized_binding",
+      "identityArguments": "session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[]",
+      "identitySignature": "public.p09_authorized_binding(session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[])",
+      "name": "p09_authorized_binding",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [],
+      "id": "old68.p09_validate_config",
+      "identityArguments": "config_key text, desired_value jsonb, scope_kind text",
+      "identitySignature": "public.p09_validate_config(config_key text, desired_value jsonb, scope_kind text)",
+      "name": "p09_validate_config",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": false,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_write_audit",
+      "identityArguments": "actor_id text, permission_key text, scope_kind text, dealer_ids text[], location_ids text[], context_revision text, action_resource text, resource_id text, result_value text, reason_value text, request_id text, metadata_value jsonb",
+      "identitySignature": "public.p09_write_audit(actor_id text, permission_key text, scope_kind text, dealer_ids text[], location_ids text[], context_revision text, action_resource text, resource_id text, result_value text, reason_value text, request_id text, metadata_value jsonb)",
+      "name": "p09_write_audit",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_config_propose",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, schema_version text, desired_value jsonb, expected_version integer, idempotency_hash text, request_hash text, request_id text",
+      "identitySignature": "public.p09_config_propose(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, schema_version text, desired_value jsonb, expected_version integer, idempotency_hash text, request_hash text, request_id text)",
+      "name": "p09_config_propose",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_config_activate",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, idempotency_hash text, request_hash text, request_id text, simulate_failure boolean",
+      "identitySignature": "public.p09_config_activate(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, idempotency_hash text, request_hash text, request_id text, simulate_failure boolean)",
+      "name": "p09_config_activate",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_config_rollback",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, rollback_version integer, idempotency_hash text, request_hash text, request_id text",
+      "identitySignature": "public.p09_config_rollback(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, rollback_version integer, idempotency_hash text, request_hash text, request_id text)",
+      "name": "p09_config_rollback",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_flag_list",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[]",
+      "identitySignature": "public.p09_flag_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[])",
+      "name": "p09_flag_list",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_flag_propose",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, desired_state text, expected_version integer, idempotency_hash text, request_hash text, request_id text",
+      "identitySignature": "public.p09_flag_propose(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, desired_state text, expected_version integer, idempotency_hash text, request_hash text, request_id text)",
+      "name": "p09_flag_propose",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_flag_activate",
+      "identityArguments": "session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, expected_version integer, kill_switch boolean, confirmation text, request_id text",
+      "identitySignature": "public.p09_flag_activate(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, expected_version integer, kill_switch boolean, confirmation text, request_id text)",
+      "name": "p09_flag_activate",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803120000_dashboard_p09_runtime_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_worker_startup",
+      "identityArguments": "instance_id text, registry_version text, registry_fingerprint text, supported_job_types text[], declared_capacity integer, observed_at timestamp with time zone",
+      "identitySignature": "public.p09_worker_startup(instance_id text, registry_version text, registry_fingerprint text, supported_job_types text[], declared_capacity integer, observed_at timestamp with time zone)",
+      "name": "p09_worker_startup",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803130000_dashboard_p09_worker_lifecycle_authority"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_worker_heartbeat",
+      "identityArguments": "instance_id text, expected_generation bigint, expected_version integer, effective_capacity integer, observed_at timestamp with time zone",
+      "identitySignature": "public.p09_worker_heartbeat(instance_id text, expected_generation bigint, expected_version integer, effective_capacity integer, observed_at timestamp with time zone)",
+      "name": "p09_worker_heartbeat",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803130000_dashboard_p09_worker_lifecycle_authority"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p09_worker_transition",
+      "identityArguments": "instance_id text, expected_generation bigint, expected_version integer, target_state text, observed_at timestamp with time zone",
+      "identitySignature": "public.p09_worker_transition(instance_id text, expected_generation bigint, expected_version integer, target_state text, observed_at timestamp with time zone)",
+      "name": "p09_worker_transition",
+      "owner": "vanstro_p09_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803130000_dashboard_p09_worker_lifecycle_authority"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p10_ingest_event",
+      "identityArguments": "session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text",
+      "identitySignature": "public.p10_ingest_event(session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text)",
+      "name": "p10_ingest_event",
+      "owner": "vanstro_p10_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803140000_dashboard_p10_analytics_foundation"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [],
+      "id": "old68.p10_audit",
+      "identityArguments": "actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], event_name text, schema_fingerprint text, scope_fingerprint text, resource_id text, idempotency_hash text, request_id text, result_value text, reason_value text",
+      "identitySignature": "public.p10_audit(actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], event_name text, schema_fingerprint text, scope_fingerprint text, resource_id text, idempotency_hash text, request_id text, result_value text, reason_value text)",
+      "name": "p10_audit",
+      "owner": "vanstro_p10_guard_owner",
+      "preserve69Acl": [],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803150000_dashboard_p10_audit_atomicity"
+    },
+    {
+      "disposition": "revoke_in_70",
+      "effectiveExecuteAuthority": [
+        "vanstro_runtime"
+      ],
+      "id": "old68.p10_ingest_event_v2",
+      "identityArguments": "session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text, request_id text",
+      "identitySignature": "public.p10_ingest_event_v2(session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text, request_id text)",
+      "name": "p10_ingest_event_v2",
+      "owner": "vanstro_p10_guard_owner",
+      "preserve69Acl": [
+        "vanstro_runtime"
+      ],
+      "preserveThrough69": true,
+      "probeIdentityMatch": true,
+      "reason": "implementation_audit_missing_authority",
+      "revoke70Acl": [
+        "vanstro_runtime"
+      ],
+      "schema": "public",
+      "searchPath": [
+        "search_path=pg_catalog, public"
+      ],
+      "securityDefiner": true,
+      "source": "observed_owned_pg16",
+      "sourceMigration": "20260803150000_dashboard_p10_audit_atomicity"
+    }
+  ]
+}

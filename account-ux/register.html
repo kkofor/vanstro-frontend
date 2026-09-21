@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create your account · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  .consent { display: grid; gap: 12px; padding: 14px 16px; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); background: var(--vs-grey-50); margin: 4px 0 20px; }
+  .consent .check { align-items: flex-start; }
+  .consent .check__box { margin-top: 2px; }
+  .consent .small { color: var(--vs-text-2); line-height: 1.5; }
+  .consent .tag { font-family: var(--vs-mono, ui-monospace, Menlo, monospace); font-size: 11px; font-weight: 700; letter-spacing: .02em; white-space: nowrap; line-height: 1; }
+  .consent .tag--req { color: var(--vs-error); display: inline-block; margin-left: 4px; }
+  .consent .tag--casl { color: var(--vs-orange-ink); border: 1px solid var(--vs-orange); background: var(--vs-orange-50); padding: 2px 6px; border-radius: 4px; margin-left: 2px; }
+  /* tighter vertical rhythm: empty hints collapse, 14px between fields, 16px around the divider */
+  /* One-screen budget: the create-account form must fit a 1366×768 laptop without scrolling */
+  .auth__topbar { padding: 14px 40px; }
+  .auth__content { padding: 4px 40px 20px; }
+  .auth__panel h1 { font-size: 26px; margin-bottom: 4px; }
+  .auth__content .field { margin-bottom: 10px; gap: 4px; }
+  .auth__content .field__hint:empty { display: none; }
+  .auth__content .divider { margin: 12px 0; }
+  .auth__content .lead { margin-bottom: 14px; }
+  .auth__content .consent { margin: 2px 0 12px; padding: 10px 12px; gap: 8px; }
+  .auth__content .auth__legal { margin-top: 12px; line-height: 1.5; }
+  .pw-hint { margin-top: 6px; }
+  @media (max-height: 800px) {
+    .auth__topbar { padding: 10px 40px; }
+    .auth__panel h1 { font-size: 24px; }
+    .auth__content .auth__legal { display: none; }
+    .consent__foot { display: none; }
+  }
+  .social-stack { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+  .social-stack .btn { justify-content: center; width: 100%; min-width: 0; }
+  .strength { margin-top: 10px; }
+  /* Submit stays clickable (so validation can point at what's missing) but reads muted until the Terms box is checked */
+  #submitBtn.is-muted { background: color-mix(in srgb, var(--vs-navy) 62%, #fff); }
+  #submitBtn.is-muted:hover { background: color-mix(in srgb, var(--vs-navy) 78%, #fff); }
+  .lead { margin-bottom: 22px; }
+  .lead a { font-weight: 600; }
+  .consent .field__hint { margin: -4px 0 0 30px; }
+  .consent.is-error { border-color: var(--vs-error); }
+  .consent.is-error .field__hint { color: var(--vs-error); }
+  .consent__foot { margin: 0; font-size: 11px; line-height: 1.45; color: var(--vs-text-3); }
+  .pw-hint { font-size: 12px; color: var(--vs-text-3); margin-top: 8px; }
+  .pw-hint.is-error { color: var(--vs-error); }
+  .center { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px 24px 20px; }
+  .center .card__body { padding: 26px 28px !important; }
+  .center .field { margin-bottom: 10px; gap: 4px; }
+  .center .consent { padding: 10px 12px; gap: 8px; margin: 2px 0 12px; }
+  .center .card { width: 100%; max-width: 480px; }
+  .ring { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .ring--ok { background: var(--vs-green-50); color: var(--vs-green); }
+  .ring--mail { background: var(--vs-navy-50); color: var(--vs-navy); }
+  .ring svg { width: 30px; height: 30px; }
+  .offer { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: var(--vs-r-md); background: var(--vs-navy-50); margin: 18px 0; text-align: left; }
+  .offer__badge { flex: none; width: 44px; height: 44px; border-radius: 10px; background: var(--vs-orange); display: inline-flex; align-items: center; justify-content: center; color: #3a2400; font-weight: 800; font-size: 13px; letter-spacing: -.02em; }
+  .offer code { font-family: var(--vs-mono, ui-monospace, SFMono-Regular, Menlo, monospace); font-size: 12.5px; background: #fff; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--vs-grey-150); }
+  .order-sum { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); background: #fff; margin: 14px 0 22px; font-size: 13px; }
+  .order-sum strong { font-variant-numeric: tabular-nums; }
+  .readonly input { background: var(--vs-grey-50); color: var(--vs-text-2); }
+  .relay { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: var(--vs-r-md); background: var(--vs-navy-50); color: var(--vs-navy); font-size: 13px; margin-bottom: 18px; }
+  .relay svg { width: 18px; height: 18px; flex: none; margin-top: 1px; }
+  .payload { font-family: var(--vs-mono, ui-monospace, Menlo, monospace); font-size: 11px; line-height: 1.5; white-space: pre-wrap; background: var(--vs-navy-900); color: #cfe3df; padding: 10px; border-radius: 8px; margin-top: 8px; max-height: 220px; overflow: auto; }
+  .lang-note { font-size: 11px; color: var(--vs-text-3); margin-top: 6px; }
+  [hidden] { display: none !important; }
+  .pick-list { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .auth__panel .grid-2 > .field { min-width: 0; }
+  @media (max-width: 520px) { .pick-list { grid-template-columns: 1fr; } }
+  .pick { position: relative; display: flex; gap: 10px; align-items: center; padding: 12px; border: 1px solid var(--vs-grey-100); border-radius: 10px; background: #fff; cursor: pointer; min-height: 100%; }
+  .pick > input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pick__radio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--vs-grey-200); flex: none; position: relative; background: #fff; }
+  .pick > input:checked ~ .pick__radio { border-color: var(--vs-navy); }
+  .pick > input:checked ~ .pick__radio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--vs-navy); }
+  .pick.is-on { border-color: var(--vs-navy); background: var(--vs-navy-50); }
+  .pick__body { flex: 1; min-width: 0; font-size: 13px; }
+  .pick__body .muted { display: block; margin-top: 2px; font-size: 12px; line-height: 1.35; }
+  .invite-store { margin: 8px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--vs-navy-50); color: var(--vs-navy); font-size: 13px; }
+  .auth__foot-sep { color: var(--vs-text-on-dark-2); }
+
+</style>
+</head>
+<body>
+
+<div class="auth">
+  <aside class="auth__brand">
+    <img class="mark" src="/account/assets/brand/mark-white.png" alt="">
+    <div>
+      <a class="js-home" href="/" aria-label="Vanstro home"><img class="vs-logo vs-logo--lg" src="/account/assets/brand/logo-reverse.png" alt="VANSTRO Global Supply"></a>
+      <p class="vs-slogan" style="margin-top:14px;color:var(--vs-green-100)">Your Global Supply Platform</p>
+    </div>
+    <div>
+      <p class="auth__tag" data-i18n="brandTag">Kitchen Cabinets · Wall Panels · Building Supply — Canada</p>
+      <h2 class="auth__headline" style="color:#fff" data-i18n="brandHead">One Account For Every Project.</h2>
+      <p class="auth__sub" data-i18n="brandSub">Save project lists, request dealer quotes and track deliveries to any province.</p>
+      <ul class="auth__points">
+        <li><span data-icon="truck"></span> <span data-i18n="p1">Shipping across Canada · prices in CAD</span></li>
+        <li><span data-icon="shield"></span> <span data-i18n="p2">Your data stays in Canada · PIPEDA &amp; Law 25</span></li>
+        <li><span data-icon="globe"></span> <span data-i18n="p3">English &amp; Français</span></li>
+      </ul>
+    </div>
+    <div class="auth__foot">
+      <span>© 2026 Vanstro Global Supply Inc.</span>
+      <a class="js-privacy" href="/privacy" data-i18n="fPriv">Privacy</a><span class="auth__foot-sep" aria-hidden="true">·</span><a class="js-terms" href="/terms-and-conditions" data-i18n="fTerms">Terms</a><span class="auth__foot-sep" aria-hidden="true">·</span><a class="js-help" href="/contact" data-i18n="fHelp">Help</a>
+    </div>
+  </aside>
+
+  <main class="auth__main">
+    <header class="auth__topbar">
+      <div class="auth__topbar-left">
+        <a class="js-home" href="/" aria-label="Vanstro home"><img class="vs-logo" src="/account/assets/brand/logo-navy.png" alt="VANSTRO"></a>
+        <a class="auth__back" href="/">Back to vanstro.ca</a>
+      </div>
+      <span></span>
+      <div class="lang" role="group" aria-label="Language"><button class="is-active" data-lang="en">EN</button><button data-lang="fr">FR</button></div>
+    </header>
+
+    <!-- ============ Screen: create account (default / exists / apple) ============ -->
+    <div class="auth__content" id="scrForm">
+      <form class="auth__panel" id="regForm" novalidate>
+        <h1 id="h1" data-i18n="title">Create your account</h1>
+        <p class="lead" id="lead"><span data-i18n="haveAcct">Already have an account?</span> <a class="js-login" href="/account/login" data-i18n="signIn">Sign in</a></p>
+
+        <div id="alertHost"></div>
+
+        <div id="socialBlock">
+          <div class="social-stack">
+            <button class="btn btn--google" type="button" id="googleBtn"><span class="btn__icon" data-icon="google"></span> <span data-i18n="withGoogle">Google</span></button>
+            <button class="btn btn--apple" type="button" id="appleBtn"><span class="btn__icon" data-icon="apple"></span> <span data-i18n="withApple">Apple</span></button>
+          </div>
+          <div class="divider" data-i18n="or">or continue with</div>
+        </div>
+
+        <div id="relayNote" class="relay" hidden><span data-icon="mail"></span><div><strong data-i18n="relayT">You’re using Hide My Email</strong><br><span id="relayAddr">xk29fp3q@privaterelay.appleid.com</span> <span data-i18n="relayB">will receive your order updates. If you turn off forwarding in Apple settings, add a backup email in your account.</span></div></div>
+
+        <div class="grid-2" style="gap:12px">
+          <div class="field" id="fFirst">
+            <label class="field__label" for="first" data-i18n="first">First name</label>
+            <div class="control"><input id="first" type="text" autocomplete="given-name" autocapitalize="words" placeholder="First name"></div>
+            <div class="field__hint" id="hFirst"></div>
+          </div>
+          <div class="field" id="fLast">
+            <label class="field__label" for="last" data-i18n="last">Last name</label>
+            <div class="control"><input id="last" type="text" autocomplete="family-name" autocapitalize="words" placeholder="Last name"></div>
+            <div class="field__hint" id="hLast"></div>
+          </div>
+        </div>
+
+        <div class="field" id="fRole">
+          <label class="field__label" data-i18n="acctType">Account type</label>
+          <div class="pick-list" style="margin-top:4px">
+            <label class="pick is-on"><input type="radio" name="acctType" value="customer" checked><span class="pick__radio"></span><div class="pick__body"><strong data-i18n="acctCust">Customer</strong></div></label>
+            <label class="pick"><input type="radio" name="acctType" value="dealer"><span class="pick__radio"></span><div class="pick__body"><strong data-i18n="acctDeal">Dealer</strong></div></label>
+          </div>
+          <div class="field" id="fDealerInvite" hidden style="margin-top:10px">
+            <label class="field__label" for="acctInvite" data-i18n="invite">Dealer invite code</label>
+            <div class="control"><input id="acctInvite" type="text" autocomplete="off" spellcheck="false" autocapitalize="characters" placeholder="VS-XXXX-XXXX"><!-- invite codes are long-lived; never bake a real code into this page --></div>
+            <div class="field__hint" id="hInvite" data-i18n="inviteHint">Issued by Vanstro to your store. Not the public map code (MB10).</div>
+            <p class="invite-store" id="inviteStore" hidden></p>
+          </div>
+        </div>
+
+        <div class="field" id="fEmail">
+          <label class="field__label" for="email" data-i18n="email">Email</label>
+          <div class="control"><input id="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="name@example.ca"></div>
+          <div class="field__hint" id="hEmail"></div>
+        </div>
+
+        <div class="field" id="fPw">
+          <label class="field__label" for="pw" data-i18n="pw">Password</label>
+          <div class="control">
+            <input id="pw" type="password" autocomplete="new-password" placeholder="8+ characters" aria-describedby="hPw">
+            <span class="control__suffix"><button type="button" class="icon-btn" data-toggle-password="pw" aria-label="Show password"></button></span>
+          </div>
+          <div class="strength" id="strength" data-level="0"><span></span><span></span><span></span><span></span></div>
+          <ul class="rules" id="rules" hidden></ul>
+          <div class="pw-hint" id="hPw" data-i18n="pwHint">8+ characters with mixed types, or a 12+ character passphrase.</div>
+        </div>
+
+        <!-- ConsentGroup: two independent, unchecked controls. Terms = contract prerequisite; marketing = CASL express consent -->
+        <div class="consent" id="consent">
+          <label class="check" id="lTerms">
+            <input type="checkbox" id="terms">
+            <span class="check__box"><span data-icon="check"></span></span>
+            <span class="small"><span data-i18n="termsA">I accept the</span> <a class="js-terms" href="/terms-and-conditions" data-i18n="tos">Terms of Service</a> <span data-i18n="termsB">and the</span> <a class="js-privacy" href="/privacy" data-i18n="pp">Privacy Policy</a>. <span class="tag tag--req" data-i18n="req">required</span></span>
+          </label>
+          <div class="field__hint" id="hTerms"></div>
+          <label class="check">
+            <input type="checkbox" id="mkt">
+            <span class="check__box"><span data-icon="check"></span></span>
+            <span class="small"><span data-i18n="mkt">Email me Vanstro offers, new arrivals and sale alerts. Unsubscribe any time.</span> <span class="tag tag--casl" data-i18n="casl">CASL express</span></span>
+          </label>
+          <p class="consent__foot" data-i18n="consentFoot">Sender: Vanstro Global Supply Inc., Winnipeg, MB. Order, receipt and security emails are always sent (transactional, not marketing).</p>
+        </div>
+
+        <button class="btn btn--primary btn--block is-muted" id="submitBtn" type="submit" data-i18n="create">Create account</button>
+        <div class="grid-2" id="existsActions" style="gap:12px" hidden>
+          <a class="btn btn--primary js-login" href="/account/login" data-i18n="signInInstead">Sign in instead</a>
+          <a class="btn btn--ghost js-forgot" href="/account/forgot-password" data-i18n="reset">Reset password</a>
+        </div>
+
+        <p class="auth__legal" data-i18n="legal">Handled under Canada’s PIPEDA and Québec’s Law 25. See the Privacy Policy for what we collect and why.</p>
+      </form>
+    </div>
+
+    <!-- ============ Screen: check inbox ============ -->
+    <div class="center" id="scrVerify" hidden>
+      <div class="card" style="text-align:center">
+        <div class="card__body" style="padding:36px 32px">
+          <div class="ring ring--mail"><span data-icon="mail"></span></div>
+          <h1 style="margin:0 0 8px" data-i18n="vTitle">Check your inbox</h1>
+          <p class="muted" data-i18n="vBody">We sent a verification link to</p>
+          <p style="margin:2px 0 4px"><strong id="vEmail"></strong></p>
+          <p class="muted small" data-i18n="vExp">It expires in 24 hours.</p>
+          <div class="row" style="justify-content:center;gap:12px;margin:22px 0 16px;flex-wrap:wrap">
+            <button class="btn btn--secondary btn--sm" id="vResend" disabled><span data-i18n="vResend">Resend email in</span> <span class="lockout" id="vCount">47s</span></button>
+            <a class="btn btn--ghost btn--sm" href="#" id="vChange" data-i18n="vChange">Wrong address? Change it</a>
+          </div>
+          <div class="alert alert--info" style="text-align:left"><span data-icon="info"></span><div><strong data-i18n="vNowT">You can browse and order right now.</strong><span data-i18n="vNowB">Saving payment methods and writing reviews unlock after you verify.</span></div></div>
+          <div class="row" style="justify-content:center;gap:12px;margin-top:18px"><a class="btn btn--primary js-account" href="/account" data-i18n="vShop">Continue to the store</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Screen: verified / welcome ============ -->
+    <div class="center" id="scrDone" hidden>
+      <div class="card" style="text-align:center">
+        <div class="card__body" style="padding:36px 32px">
+          <div class="ring ring--ok"><span data-icon="checkCircle"></span></div>
+          <h1 style="margin:0 0 8px"><span data-i18n="dTitle">You’re all set,</span> <span id="dName"></span></h1>
+          <p class="muted" data-i18n="dBody">Your email is verified and your account is ready.</p>
+          <p class="small" id="dClaimed" hidden style="margin:-6px 0 10px;color:var(--vs-green-ink, var(--vs-green))">Order <b></b> now lives in your account — track it and download the tax invoice from <a href="/account#orders">Orders</a>.</p>
+          <div class="offer">
+            <div class="offer__badge">15%</div>
+            <div><strong data-i18n="dOfferT">Welcome offer: 15% off your first order</strong><br><span class="small muted"><span data-i18n="dCode">Code</span> <code>WELCOME15</code> · <span data-i18n="dValid">valid 30 days · also emailed to you</span></span></div>
+          </div>
+          <div class="grid-2" style="gap:12px">
+            <a class="btn btn--primary js-account" href="/account" data-i18n="dShop">Start shopping</a>
+            <a class="btn btn--secondary js-account" href="/account" data-i18n="dAcct">Go to your account</a>
+          </div>
+          <p class="lang-note" style="margin-top:14px" data-i18n="dNote">The code is only issued after verification, so disposable inboxes can’t farm it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ Screen: guest → account after checkout ============ -->
+    <div class="center" id="scrGuest" hidden>
+      <div class="card">
+        <div class="card__body" style="padding:32px">
+          <div class="row" style="gap:12px;align-items:flex-start;margin-bottom:6px"><span class="ring ring--ok" style="width:40px;height:40px;margin:0"><span data-icon="checkCircle" style="display:inline-flex;width:20px;height:20px"></span></span><div><h1 style="margin:0" data-i18n="gTitle">Order confirmed</h1><p class="muted small" style="margin-top:2px"><span data-i18n="gReceipt">A receipt is on its way to</span> <strong id="gRcpt"></strong></p></div></div>
+          <div class="order-sum"><span><strong id="gNo"></strong> <span class="muted" id="gMeta">· 3 items · Winnipeg MB</span></span><strong id="gTotal">CAD $184.20</strong></div>
+          <h2 style="font-size:18px;margin:0 0 4px" data-i18n="gSave">Save your details for next time</h2>
+          <p class="muted small" style="margin-bottom:12px" data-i18n="gSub">Your email and shipping address are already filled in — just choose a password.</p>
+          <form id="guestForm" novalidate>
+            <div class="grid-2" style="gap:12px">
+              <div class="field"><label class="field__label" for="gFirst" data-i18n="gFirst">First name</label><div class="control"><input id="gFirst" autocomplete="given-name"></div></div>
+              <div class="field"><label class="field__label" for="gLast" data-i18n="gLast">Last name</label><div class="control"><input id="gLast" autocomplete="family-name"></div></div>
+            </div>
+            <div class="field readonly">
+              <label class="field__label" for="gEmail" data-i18n="email2">Email</label>
+              <div class="control"><span class="control__prefix" data-icon="mail"></span><input id="gEmail" type="email" value="" readonly></div>
+            </div>
+            <div class="field" id="fGpw">
+              <label class="field__label" for="gpw" data-i18n="gPw">Choose a password</label>
+              <div class="control"><span class="control__prefix" data-icon="lock"></span><input id="gpw" type="password" autocomplete="new-password" placeholder="8+ characters"><span class="control__suffix"><button type="button" class="icon-btn" data-toggle-password="gpw" aria-label="Show password"></button></span></div>
+              <div class="strength" id="gStrength" data-level="0"><span></span><span></span><span></span><span></span></div>
+              <div class="pw-hint" id="hGpw"></div>
+            </div>
+            <div class="consent" id="gConsent">
+              <label class="check"><input type="checkbox" id="gTerms"><span class="check__box"><span data-icon="check"></span></span><span class="small"><span data-i18n="termsA2">I accept the</span> <a class="js-terms" href="/terms-and-conditions" data-i18n="tos2">Terms of Service</a> <span data-i18n="termsB2">and the</span> <a class="js-privacy" href="/privacy" data-i18n="pp2">Privacy Policy</a>. <span class="tag tag--req" data-i18n="req2">required</span></span></label>
+              <div class="field__hint" id="hGTerms"></div>
+              <label class="check"><input type="checkbox" id="gMkt"><span class="check__box"><span data-icon="check"></span></span><span class="small"><span data-i18n="gMkt">Email me Vanstro offers and new arrivals. Unsubscribe any time.</span> <span class="tag tag--casl" data-i18n="casl2">CASL express</span></span></label>
+              <p class="consent__foot" data-i18n="gFoot">Order updates are always sent (implied consent from your purchase, 24 months); marketing still needs the box above.</p>
+            </div>
+            <div class="grid-2" style="gap:12px">
+              <button class="btn btn--primary" type="submit" data-i18n="create2">Create account</button>
+              <a class="btn btn--ghost" id="gSkip" href="order-status.html" data-i18n="gNo">No thanks</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+
+
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script src="/account/assets/moneris-client.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  VS.icons(); VS.bindPasswordToggles();
+  $('#rules').innerHTML = VS.PASSWORD_RULES_HTML;
+
+  /* ---------- i18n (en-CA / fr-CA) — the FR strings are the ones that stress layout ---------- */
+  const FR = {
+    brandTag: 'Armoires de cuisine · Panneaux muraux · Matériaux — Canada', brandHead: 'Un seul compte pour tous vos projets.',
+    brandSub: 'Enregistrez vos listes, demandez des devis et suivez vos livraisons dans toutes les provinces.',
+    p1: 'Livraison partout au Canada · prix en CAD', p2: 'Vos données restent au Canada · LPRPDE et Loi 25', p3: 'English & Français',
+    fPriv: 'Confidentialité', fTerms: 'Conditions', fHelp: 'Aide', haveAcct: 'Vous avez déjà un compte ?', signIn: 'Se connecter',
+    title: 'Créer votre compte', lead: 'Environ une minute. Nous vous écrivons uniquement au sujet de vos commandes, sauf indication contraire.',
+    or: 'ou continuer avec', withGoogle: 'Google', withApple: 'Apple', first: 'Prénom', last: 'Nom', email: 'Adresse courriel', pw: 'Mot de passe',
+    pwHint: '8 caractères ou plus avec des types mélangés, ou une phrase de 12 caractères et plus.',
+    termsA: 'J’accepte les', tos: 'Conditions d’utilisation', termsB: 'et la', pp: 'Politique de confidentialité', req: 'obligatoire',
+    mkt: 'Je souhaite recevoir par courriel les offres, nouveautés et soldes de Vanstro. Désabonnement possible à tout moment.',
+    consentFoot: 'Expéditeur : Vanstro Global Supply Inc., Winnipeg (Manitoba). Commandes, reçus et courriels de sécurité sont toujours envoyés (transactionnels, pas du marketing).',
+    create: 'Créer un compte', signInInstead: 'Se connecter plutôt', reset: 'Réinitialiser le mot de passe',
+    acctType: 'Type de compte', acctCust: 'Client', acctDeal: 'Détaillant',
+    invite: 'Code d’invitation détaillant', inviteHint: 'Remis par Vanstro à votre magasin. Ce n’est pas le code public de la carte (MB10).',
+    legal: 'Traité selon la LPRPDE (Canada) et la Loi 25 (Québec). La Politique de confidentialité précise ce que nous recueillons et pourquoi.',
+    relayT: 'Vous utilisez Masquer mon courriel', relayB: 'recevra vos mises à jour de commande. Si vous désactivez le transfert dans les réglages Apple, ajoutez un courriel de secours dans votre compte.',
+    vTitle: 'Vérifiez votre boîte de réception', vBody: 'Nous avons envoyé un lien de vérification à', vExp: 'Il expire dans 24 heures.', vResend: 'Renvoyer le courriel dans', vChange: 'Mauvaise adresse ? La modifier',
+    vNowT: 'Vous pouvez naviguer et commander dès maintenant.', vNowB: 'L’enregistrement des modes de paiement et la rédaction d’avis seront débloqués après la vérification.', vShop: 'Continuer vers la boutique',
+    dTitle: 'Tout est prêt,', dBody: 'Votre courriel est vérifié et votre compte est prêt.', dOfferT: 'Offre de bienvenue : 15 % sur votre première commande', dCode: 'Code', dValid: 'valide 30 jours · aussi envoyé par courriel', dShop: 'Commencer à magasiner', dAcct: 'Aller à mon compte',
+    dNote: 'Le code n’est émis qu’après la vérification, pour éviter les boîtes jetables.',
+    gTitle: 'Commande confirmée', gReceipt: 'Un reçu est en route vers', gSave: 'Enregistrez vos informations pour la prochaine fois', gSub: 'Votre courriel et votre adresse de livraison sont déjà remplis — choisissez simplement un mot de passe.',
+    email2: 'Adresse courriel', gPw: 'Choisissez un mot de passe', termsA2: 'J’accepte les', termsB2: 'et la', req2: 'obligatoire', gMkt: 'Je souhaite recevoir par courriel les offres et nouveautés de Vanstro. Désabonnement possible à tout moment.',
+    casl: 'LCAP exprès', casl2: 'LCAP exprès', tos2: 'Conditions d’utilisation', pp2: 'Politique de confidentialité',
+    gFoot: 'Les mises à jour de commande sont toujours envoyées (consentement tacite lié à l’achat, 24 mois) ; le marketing exige la case ci-dessus.', create2: 'Créer un compte', gNo: 'Non merci',
+  };
+  const EN = {}; $$('[data-i18n]').forEach(el => EN[el.dataset.i18n] = el.innerHTML);
+  let lang = 'en';
+  function setLang(l) {
+    lang = l; document.documentElement.lang = l === 'fr' ? 'fr-CA' : 'en-CA';
+    $$('[data-i18n]').forEach(el => { const k = el.dataset.i18n; el.innerHTML = l === 'fr' ? (FR[k] || EN[k]) : EN[k]; });
+    $$('.lang button').forEach(b => b.classList.toggle('is-active', b.dataset.lang === l));
+    document.title = (l === 'fr' ? 'Créer votre compte' : 'Create your account') + ' · VANSTRO';
+    if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(l === 'fr');
+    $('#pw').placeholder = l === 'fr' ? '8 caractères ou plus' : '8+ characters';
+    $('#first').placeholder = l === 'fr' ? 'Prénom' : 'First name';
+    $('#last').placeholder = l === 'fr' ? 'Nom' : 'Last name';
+    const RULES = l === 'fr' ? { len: '8 caractères ou plus', breach: 'Absent des fuites connues', history: 'Différent de vos 3 derniers', strong: 'Robuste' } : { len: '8+ characters', breach: 'Not in a known breach', history: 'Not one of your last 3', strong: 'Strong' };
+    $$('#rules li').forEach(li => li.textContent = RULES[li.dataset.r]);
+    refreshInviteStore();
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  const t = (en, fr) => lang === 'fr' ? fr : en;
+  let inviteCache = { key: '', dealer: null };
+  function normInvite(raw) { return String(raw || '').trim().toUpperCase().replace(/[\s-]+/g, ''); }
+  async function fetchInvite(raw) {
+    const key = normInvite(raw);
+    if (!key) { inviteCache = { key: '', dealer: null }; return null; }
+    if (inviteCache.key === key) return inviteCache.dealer;
+    try {
+      const r = await fetch('/api/dealers/invite?code=' + encodeURIComponent(String(raw).trim()));
+      const dealer = r.ok ? await r.json() : null;
+      inviteCache = { key, dealer };
+      return dealer;
+    } catch (e) {
+      inviteCache = { key, dealer: null };
+      return null;
+    }
+  }
+  function syncRoleUi() {
+    const dealer = (document.querySelector('input[name="acctType"]:checked') || {}).value === 'dealer';
+    document.querySelectorAll('input[name="acctType"]').forEach(r => {
+      r.closest('.pick').classList.toggle('is-on', r.checked);
+    });
+    $('#fDealerInvite').hidden = !dealer;
+    if (!dealer) { $('#inviteStore').hidden = true; clr($('#fDealerInvite'), $('#hInvite')); }
+    else {
+      $('#hInvite').textContent = t(EN.inviteHint, FR.inviteHint);
+      refreshInviteStore();
+    }
+  }
+  let inviteTimer;
+  function refreshInviteStore() {
+    clearTimeout(inviteTimer);
+    inviteTimer = setTimeout(async () => {
+      const d = await fetchInvite($('#acctInvite').value);
+      const store = $('#inviteStore');
+      if (!d) { store.hidden = true; store.textContent = ''; return; }
+      store.hidden = false;
+      store.textContent = t(`Store: ${d.name} · ${d.city}`, `Magasin : ${d.name} · ${d.city}`);
+      clr($('#fDealerInvite'), $('#hInvite'));
+      $('#hInvite').textContent = t(EN.inviteHint, FR.inviteHint);
+    }, 200);
+  }
+  document.querySelectorAll('input[name="acctType"]').forEach(r => r.addEventListener('change', syncRoleUi));
+  $('#acctInvite').addEventListener('input', refreshInviteStore);
+
+  /* ---------- helpers ---------- */
+  const alertHost = $('#alertHost');
+  function alert(type, title, html) { alertHost.innerHTML = `<div class="alert alert--${type}" role="alert"><span>${type === 'success' ? VS.I.checkCircle : type === 'warning' ? VS.I.warn : type === 'info' ? VS.I.info : VS.I.alert}</span><div><strong>${title}</strong>${html}</div></div>`; }
+  function setErr(field, hint, msg) { field.classList.add('is-error'); hint.innerHTML = VS.I.alert + '<span></span>'; hint.querySelector('span').textContent = msg; }
+  function clr(field, hint) { field.classList.remove('is-error'); hint.textContent = ''; }
+  function clearAll() { [['#fFirst', '#hFirst'], ['#fLast', '#hLast'], ['#fEmail', '#hEmail'], ['#fPw', '#hPw'], ['#consent', '#hTerms'], ['#fDealerInvite', '#hInvite']].forEach(([f, h]) => clr($(f), $(h))); $('#hPw').textContent = EN.pwHint && lang === 'en' ? EN.pwHint : FR.pwHint; $('#hPw').classList.remove('is-error'); $('#hInvite').textContent = t(EN.inviteHint || 'Issued by Vanstro to your store. Not the public map code (MB10).', FR.inviteHint); alertHost.innerHTML = ''; $('#existsActions').hidden = true; $('#submitBtn').hidden = false; }
+  function show(id) { ['scrForm', 'scrVerify', 'scrDone', 'scrGuest'].forEach(s => $('#' + s).hidden = s !== id); }
+
+  // Names: allow accents, hyphens, apostrophes (incl. U+2019). Never ASCII-only.
+  const NAME_RE = /^[\p{L}\p{M}'’\- ]{1,50}$/u;
+  const DISPOSABLE = ['mailinator.com', 'guerrillamail.com', 'tempmail.com', '10minutemail.com', 'yopmail.com'];
+
+  /* ---------- password live feedback ---------- */
+  function bindPw(input, strengthEl, hintEl) {
+    input.addEventListener('input', () => {
+      const pw = input.value; strengthEl.dataset.level = VS.passwordLevel(pw);
+      if (strengthEl.id === 'strength') { const r = VS.passwordRules(pw); $$('#rules li').forEach(li => li.classList.toggle('ok', !!r[li.dataset.r])); }
+      const h = VS.passwordHint(pw); hintEl.textContent = h || (strengthEl.id === 'strength' ? (lang === 'fr' ? FR.pwHint : EN.pwHint) : ''); hintEl.classList.toggle('is-error', !!h && VS.passwordLevel(pw) <= 1);
+      input.closest('.field').classList.remove('is-error');
+    });
+  }
+  bindPw($('#pw'), $('#strength'), $('#hPw')); bindPw($('#gpw'), $('#gStrength'), $('#hGpw'));
+  ['#first', '#last', '#email'].forEach(s => $(s).addEventListener('input', () => { const f = $(s).closest('.field'); clr(f, f.querySelector('.field__hint')); }));
+  $('#terms').addEventListener('change', () => { $('#consent').classList.remove('is-error'); $('#hTerms').textContent = ''; $('#submitBtn').classList.toggle('is-muted', !$('#terms').checked); });
+
+  /* ---------- validation ---------- */
+  async function validate() {
+    clearAll(); let first = null;
+    const bad = (f, h, msg, input) => { setErr($(f), $(h), msg); first = first || input; };
+    const social = $('#socialBlock').hidden; // provider flow: no email / password fields, names + consent still required
+    if (!NAME_RE.test($('#first').value.trim())) bad('#fFirst', '#hFirst', t('Enter your first name.', 'Saisissez votre prénom.'), $('#first'));
+    if (!NAME_RE.test($('#last').value.trim())) bad('#fLast', '#hLast', t('Enter your last name.', 'Saisissez votre nom.'), $('#last'));
+    const em = $('#email').value.trim().toLowerCase();
+    if (!social) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em) || em.length > 254) bad('#fEmail', '#hEmail', t('Enter a valid email address.', 'Saisissez une adresse courriel valide.'), $('#email'));
+      else if (DISPOSABLE.includes(em.split('@')[1])) bad('#fEmail', '#hEmail', t('Use a permanent email address so we can send your order updates.', 'Utilisez une adresse permanente pour recevoir le suivi de vos commandes.'), $('#email'));
+    }
+    const pw = $('#pw').value, lvl = VS.passwordLevel(pw);
+    if (social) { /* password optional: provider is the credential; can be added later in Security */ }
+    else if (!pw) bad('#fPw', '#hPw', t('Choose a password.', 'Choisissez un mot de passe.'), $('#pw'));
+    else if (lvl <= 1 || !VS.passwordRules(pw).len) { $('#fPw').classList.add('is-error'); $('#hPw').classList.add('is-error'); $('#hPw').textContent = VS.passwordHint(pw) || t('Use at least 8 characters with mixed types, or 12+ as a passphrase.', 'Utilisez au moins 8 caractères de types mélangés, ou une phrase de 12 caractères et plus.'); first = first || $('#pw'); }
+    if (!$('#terms').checked) { $('#consent').classList.add('is-error'); setErr($('#consent'), $('#hTerms'), t('Accept the Terms and Privacy Policy to continue.', 'Acceptez les Conditions et la Politique de confidentialité pour continuer.')); first = first || $('#terms'); }
+    if ((document.querySelector('input[name="acctType"]:checked') || {}).value === 'dealer') {
+      const d = await fetchInvite($('#acctInvite').value);
+      if (!d) { setErr($('#fDealerInvite'), $('#hInvite'), t('Enter the invite code Vanstro issued to your store.', 'Saisissez le code d’invitation remis par Vanstro à votre magasin.')); first = first || $('#acctInvite'); }
+    }
+    if (first) first.focus();
+    return !first;
+  }
+
+  /* ---------- consent evidence payload (what <ConsentGroup> must emit) ---------- */
+  function consentPayload(email, mktChecked, source) {
+    const now = new Date().toISOString();
+    const rec = [{ consent_id: 'cns_' + Math.random().toString(36).slice(2, 12).toUpperCase(), principal: email, channel: 'terms', method: 'express_checkbox', granted_at: now, source_url: source, terms_version: 'tos-2026-04 / pp-2026-04', ip: '198.51.100.24', user_agent: navigator.userAgent.split(' ').slice(-1)[0] }];
+    if (mktChecked) rec.push({ consent_id: 'cns_' + Math.random().toString(36).slice(2, 12).toUpperCase(), principal: email, channel: 'email_marketing', method: 'express_checkbox', granted_at: now, source_url: source, terms_version: 'tos-2026-04', withdrawn_at: null });
+    else rec.push({ channel: 'email_marketing', method: 'not_given', note: 'unchecked · nothing stored except this absence · implied consent starts only on purchase (24 mo)' });
+    const dump = $('#payload'); if (dump) dump.textContent = JSON.stringify(rec, null, 1);
+    return rec;
+  }
+
+  async function registerAccount(input) {
+    const res = await fetch('/api/auth/register', { method: 'POST', credentials: 'include', headers: { 'content-type': 'application/json' }, body: JSON.stringify(input) });
+    const body = await res.json().catch(() => ({}));
+    return { res, body };
+  }
+  function showExists() {
+    alert('error', t('This email is already registered.', 'Cette adresse est déjà inscrite.'), t('Sign in instead, or reset your password if you’ve forgotten it.', 'Connectez-vous ou réinitialisez votre mot de passe si vous l’avez oublié.'));
+    setErr($('#fEmail'), $('#hEmail'), t('An account already uses this address.', 'Un compte utilise déjà cette adresse.'));
+    $('#existsActions').hidden = false; $('#socialBlock').hidden = true; $('#submitBtn').hidden = true; $('#email').focus();
+  }
+
+  $('#regForm').addEventListener('submit', async e => {
+    e.preventDefault(); if (!(await validate())) return;
+    const b = $('#submitBtn'); b.classList.add('is-loading'); b.disabled = true;
+    const email = $('#relayNote').hidden ? $('#email').value.trim().toLowerCase() : $('#relayAddr').textContent;
+    const role = (document.querySelector('input[name="acctType"]:checked') || {}).value === 'dealer' ? 'dealer' : 'customer';
+    try {
+      const { res, body } = await registerAccount({ firstName: $('#first').value.trim(), lastName: $('#last').value.trim(), email, password: $('#pw').value, acceptTerms: true, marketingConsent: $('#mkt').checked, locale: lang === 'fr' ? 'fr-CA' : 'en-CA', role, inviteCode: role === 'dealer' ? $('#acctInvite').value.trim() : undefined });
+      if (res.status === 409) return showExists();
+      if (body.error === 'invalid_invite' || body.error === 'rate_limited') {
+        setErr($('#fDealerInvite'), $('#hInvite'), body.error === 'rate_limited'
+          ? t('Too many attempts. Wait a minute and try again.', 'Trop de tentatives. Attendez une minute et réessayez.')
+          : t('Enter the invite code Vanstro issued to your store.', 'Saisissez le code d’invitation remis par Vanstro à votre magasin.'));
+        return;
+      }
+      if (!res.ok) {
+        const issueLines = [];
+        const fieldErrors = body.issues && (body.issues.fieldErrors || body.issues);
+        if (fieldErrors && typeof fieldErrors === 'object' && !Array.isArray(fieldErrors)) {
+          Object.entries(fieldErrors).forEach(([k, v]) => {
+            const arr = Array.isArray(v) ? v : (v == null ? [] : [v]);
+            arr.filter(Boolean).forEach(s => issueLines.push(k === 'password' ? s : k + ': ' + s));
+          });
+        }
+        const issueHtml = issueLines.map(s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))).join('<br>');
+        if (fieldErrors && fieldErrors.password) {
+          const msg = (Array.isArray(fieldErrors.password) ? fieldErrors.password : [fieldErrors.password]).filter(Boolean).join(' ');
+          if (msg) { $('#fPw').classList.add('is-error'); $('#hPw').classList.add('is-error'); $('#hPw').textContent = msg; }
+        }
+        return alert('error', t('We could not create your account.', 'Nous n’avons pas pu créer votre compte.'), issueHtml || body.error || t('Try again in a moment.', 'Réessayez dans un instant.'));
+      }
+      consentPayload(email, $('#mkt').checked, lang === 'fr' ? '/fr/creer-un-compte' : '/create-account');
+      $('#vEmail').textContent = email; show('scrVerify'); startResend();
+      try {
+        if (window.VSMoneris && typeof VSMoneris.claimOrders === 'function') {
+          Promise.resolve(VSMoneris.claimOrders()).catch(err => console.warn('claim failed', err));
+        }
+      } catch (err) { console.warn('claim failed', err); }
+    } catch (err) {
+      console.error('register submit', err);
+      const network = err instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(String(err && err.message || err));
+      if (network) alert('error', t('We could not reach the account service.', 'Le service de compte est momentanément indisponible.'), t('Try again in a moment.', 'Réessayez dans un instant.'));
+      else alert('error', t('Something went wrong after we created your account.', 'Un problème est survenu après la création du compte.'), t('If you received a verification email, open that link. Otherwise try again.', 'Si vous avez reçu le courriel de vérification, ouvrez le lien. Sinon réessayez.'));
+    }
+    finally { b.classList.remove('is-loading'); b.disabled = false; }
+  });
+
+  /* ---------- verify screen ---------- */
+  let rt = null;
+  function startResend() {
+    clearInterval(rt); let s = 47; const btn = $('#vResend'), c = $('#vCount'); btn.disabled = true; c.textContent = s + 's';
+    rt = setInterval(() => { s--; c.textContent = s + 's'; if (s <= 0) { clearInterval(rt); btn.disabled = false; btn.innerHTML = t('Resend email', 'Renvoyer le courriel'); } }, 1000);
+  }
+  $('#vResend').addEventListener('click', () => { VS.toast(t('Verification email sent again', 'Courriel de vérification renvoyé')); $('#vResend').innerHTML = `<span>${t('Resend email in', 'Renvoyer le courriel dans')}</span> <span class="lockout" id="vCount">47s</span>`; startResend(); });
+  $('#vChange').addEventListener('click', e => { e.preventDefault(); show('scrForm'); $('#email').focus(); $('#email').select(); });
+
+  /* ---------- guest → account ---------- */
+  $('#gTerms').addEventListener('change', () => { $('#gConsent').classList.remove('is-error'); $('#hGTerms').textContent = ''; });
+  /* Real guest order (from checkout confirmation / order-status): ?order=VS-…&email=…&from=checkout|status.
+     The order token is already in localStorage (VSSession.setOrderToken) so GET /api/orders/:no works signed out. */
+  let guestOrder = null;
+  async function loadGuestOrder(orderNo, email) {
+    const t = q.get('t'); if (t && window.VSSession) VSSession.setOrderToken(orderNo, t);
+    const cad = c => 'CAD ' + new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(c / 100);
+    $('#gEmail').value = email; $('#gRcpt').textContent = email; $('#gNo').textContent = orderNo;
+    $('#gSkip').href = 'order-status.html?o=' + encodeURIComponent(orderNo);
+    $('#gMeta').textContent = ''; $('#gTotal').textContent = '';
+    try {
+      const o = await VSMoneris.getOrder(orderNo);
+      guestOrder = o;
+      const n = o.items.reduce((s, i) => s + i.qty, 0);
+      const place = o.deliveryMethod === 'pickup' && o.dealer ? `${o.dealer.city} ${o.dealer.province}` : `${o.shipping.city} ${o.shipping.province}`;
+      $('#gMeta').textContent = `· ${n} item${n === 1 ? '' : 's'} · ${place}`;
+      $('#gTotal').textContent = cad(o.quote.totalCents);
+      if (o.shipping && o.shipping.name) { const p = o.shipping.name.trim().split(/\s+/); $('#gFirst').value = p[0] || ''; $('#gLast').value = p.slice(1).join(' '); }
+    } catch (e) { $('#gMeta').textContent = t('· details in your confirmation email', '· détails dans votre courriel de confirmation'); }
+  }
+  $('#guestForm').addEventListener('submit', async e => {
+    e.preventDefault(); let ok = true;
+    const pw = $('#gpw').value;
+    if (!pw || VS.passwordLevel(pw) <= 1 || !VS.passwordRules(pw).len) { $('#fGpw').classList.add('is-error'); $('#hGpw').classList.add('is-error'); $('#hGpw').textContent = VS.passwordHint(pw) || t('Use at least 8 characters with mixed types, or 12+ as a passphrase.', 'Utilisez au moins 8 caractères de types mélangés.'); ok = false; }
+    if (!$('#gTerms').checked) { $('#gConsent').classList.add('is-error'); setErr($('#gConsent'), $('#hGTerms'), t('Accept the Terms and Privacy Policy to continue.', 'Acceptez les Conditions et la Politique de confidentialité pour continuer.')); ok = false; }
+    if (!ok) return;
+    const email = $('#gEmail').value.trim().toLowerCase();
+    const first = ($('#gFirst') && $('#gFirst').value.trim()) || (guestOrder && guestOrder.shipping && guestOrder.shipping.name.split(/\s+/)[0]) || '';
+    const name = [$('#gFirst').value.trim(), $('#gLast').value.trim()].filter(Boolean).join(' ') || (guestOrder && guestOrder.shipping && guestOrder.shipping.name) || email;
+    const b = $('#guestForm button[type="submit"]'); b.classList.add('is-loading'); b.disabled = true;
+    consentPayload(email, $('#gMkt').checked, '/en/checkout/complete');
+    // Mock register (prototype) → sign in → attach every guest order placed with this email (POST /api/orders/claim).
+    VSSession.set({ userId: 'usr_' + email.replace(/[^a-z0-9]/gi, '').slice(0, 24), email, name, role: 'customer', dealerId: null });
+    let claimed = [];
+    try { claimed = (await VSMoneris.claimOrders()).claimed || []; } catch (err) { console.warn('claim failed', err); }
+    b.classList.remove('is-loading'); b.disabled = false;
+    $('#dName').textContent = first || t('there', '');
+    const dSub = $('#dClaimed');
+    if (dSub) { dSub.hidden = !claimed.length; dSub.querySelector('b').textContent = claimed.join(', '); }
+    show('scrDone'); // email already proven by the receipt path
+  });
+
+  /* ---------- social ---------- */
+  let provider = 'Google';
+  function openSocial(p) { alert('info', `${p} sign-up unavailable`, 'Google and Apple sign-up are not enabled yet. Use your email and password.'); }
+  $('#googleBtn').addEventListener('click', () => openSocial('Google'));
+  $('#appleBtn').addEventListener('click', () => openSocial('Apple'));
+  // OAuth ≠ CASL consent: after the provider returns we still show the consent group, and it can't be skipped.
+  function appleScreen(addr) {
+    show('scrForm'); clearAll();
+    $('#h1').textContent = t('Almost done', 'Presque terminé'); $('#lead').textContent = t(`${provider} shared these details with us. Confirm them to finish.`, `${provider} nous a transmis ces informations. Confirmez-les pour terminer.`);
+    $('#socialBlock').hidden = true; $('#fEmail').hidden = true; $('#fPw').hidden = true;
+    $('#relayNote').hidden = !addr.includes('privaterelay'); $('#relayAddr').textContent = addr;
+    $('#first').value = 'Jamie'; $('#last').value = 'Lee'; $('#terms').checked = false; $('#mkt').checked = false;
+    $('#submitBtn').textContent = t('Continue', 'Continuer');
+    if (!addr.includes('privaterelay')) alert('info', t('Signed in with ' + provider, 'Connecté avec ' + provider), t(`We’ll use <strong>${addr}</strong> for your account. Marketing still needs your explicit yes below — the ${provider} authorization doesn’t count as consent.`, `Nous utiliserons <strong>${addr}</strong>. Le marketing exige toujours votre oui explicite ci-dessous.`));
+  }
+  function resetForm() {
+    show('scrForm'); clearAll(); $('#regForm').reset(); $('#submitBtn').classList.add('is-muted'); $('#strength').dataset.level = 0; $$('#rules li').forEach(li => li.classList.remove('ok'));
+    $('#socialBlock').hidden = false; $('#fEmail').hidden = false; $('#fPw').hidden = false; $('#relayNote').hidden = true; $('#submitBtn').hidden = false; $('#existsActions').hidden = true;
+    $('#h1').innerHTML = t(EN.title, FR.title); $('#lead').innerHTML = `<span data-i18n="haveAcct">${t(EN.haveAcct, FR.haveAcct)}</span> <a class="js-login" href="/account/login" data-i18n="signIn">${t(EN.signIn, FR.signIn)}</a>`; $('#submitBtn').innerHTML = t(EN.create, FR.create);
+    if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(lang === 'fr');
+    syncRoleUi();
+  }
+
+  const q = new URLSearchParams(location.search);
+  if (/^\/fr(\/|$)/.test(location.pathname) || q.get('lang') === 'fr') setLang('fr');
+  { const keep = new URLSearchParams(); for (const k of ['export']) if (q.has(k)) keep.set(k, q.get(k)); const qs = keep.toString(); history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); }
+})();
+</script>
+</body>
+</html>

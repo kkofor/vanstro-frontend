@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "v11-r1-functional-first-v2-deferred.v1",
+  "registerId": "v11-r1-functional-first-v2-deferred",
+  "version": "v1",
+  "status": "REGISTERED",
+  "nonBlocking": true,
+  "generatedAt": "2026-08-12T08:26:36Z",
+  "baseHead": "ccddebdbabe470ea39aad6f29da2ebd3f313dda5",
+  "authority": {
+    "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v11-r1-functional-first-migration-closure-prompt.md",
+    "status": "AUTHORIZED V1 FUNCTION DELIVERY — NON-BLOCKING HARDENING DEFERRED TO V2",
+    "sections": ["1", "5", "8", "9", "11", "12"]
+  },
+  "scope": {
+    "v1": "只修会导致功能不能用、Migration失败、确定性数据损坏或部署失败的问题",
+    "v2": "集中修bug、安全加固、权限细分和代码质量治理（Authority §1、§9、§10）",
+    "registrationPolicy": "本register只登记v2延期项并给出evidence与entryCriteria，不声称任何项已修复",
+    "credentialPolicy": "本register不含secret、token、email、UUID或个人数据值"
+  },
+  "v1BlockerHigh": {
+    "verdict": "0 v1 functional Blocker/High",
+    "adjudicatedByThisRegister": false,
+    "reference": "由 Gate F6 独立复核（Backend Architect 数据与功能链、Test Automation Engineer Dashboard/ERP/前台真实行为、Database Reliability Engineer Migration可执行与原子回滚、Reality Checker 可用性）及 commit-bound 复验结果裁定（Authority §11-§12 完成条件）；本register引用该验证结果，不自行裁决",
+    "evidenceRefs": [
+      "authority:§11 Gate F6 验收复核角色清单",
+      "authority:§12 完成条件「没有功能Blocker/High；v2延期项已登记但不阻塞」"
+    ]
+  },
+  "items": [
+    {
+      "id": "db-multi-account-guard-owner-noninherit-acl-purification",
+      "classification": "db-security-hardening",
+      "status": "DEFERRED",
+      "title": "复杂DB多账号/guard-owner/NOINHERIT/ACL grantor-grantable纯化",
+      "reasonNonBlocking": "用户明确决定：v1不新增数据库多账号职责分离，不以guard-owner、NOINHERIT、grantor/grantable、ACL纯化或复杂postassert阻塞v1；v1只需deployment-only单一迁移身份能执行完整Migration且API/Worker获得运行所需函数权限（Authority §1、§5、§9）。多账号职责分离与ACL闭集纯化属v2安全加固，不影响功能与数据正确性。",
+      "evidence": [
+        { "kind": "authority", "ref": "§1 用户决定；§5 v1可移除清单；§9 统一登记v2清单", "note": "guard-owner/NOINHERIT/ACL纯化显式列为v2" },
+        { "kind": "file", "ref": "packages/db/prisma/migrations/20260804110000_f1_v15_phase_b/migration.sql", "note": "v1候选为最小简化版：相对HEAD净-82/+7行，现338行，仅剩2处SET LOCAL ROLE vanstro_p02_guard_owner包装registry约束DDL；0处NOINHERIT；0处direct-ACL grantor/grantable闭集" },
+        { "kind": "run", "ref": "tasks/evidence/v11-r1-functional-first-migration/runs/20260812T004129Z-31995c6d", "note": "最终run SUCCESS：fresh 81/81、production 41→81、no-op；70-81由deployment-only vanstro_deployment_owner执行（run-2 runnerRoleAttributes），API/Worker不使用该身份" },
+        { "kind": "run", "ref": "tasks/evidence/v11-r1-functional-first-migration/runs/20260812T004129Z-31995c6d/candidate-manifest.json", "note": "candidate闭集含migration70（sha256 pin于run identity）与conformance harness" }
+      ],
+      "entryCriteria": [
+        "v2设计并实现API/Worker/Migrator角色职责分离与权限最小化",
+        "重新引入guard-owner/NOINHERIT拓扑门与grantor/grantable精确闭集（含撤权矩阵）",
+        "ACL纯度postassert在fresh与production-equivalent两路全链通过",
+        "重跑完整功能矩阵，确认无403/500回归"
+      ],
+      "ownerRole": "Database Reliability Engineer + Security Architect"
+    },
+    {
+      "id": "permission-granularity-shared-admin-attribution",
+      "classification": "permission-governance",
+      "status": "DEFERRED",
+      "title": "权限细分与共享管理员人员归因",
+      "reasonNonBlocking": "用户明确决定：ERP部门人员v1使用现有共享管理员账号，不扩建ERP人员账号体系；权限细分与人员级审计列入v2（Authority §1、§9）。v1承认人工Audit只能归因共享账号、不能追踪具体人员，属于明示的治理债而非功能缺陷。",
+      "evidence": [
+        { "kind": "authority", "ref": "§1「ERP部门人员使用用户现有共享管理员账号，不在v1扩建ERP人员账号体系」；§9「权限细分与人员级审计；共享管理员账号的人员归因问题」", "note": "显式v2登记项" },
+        { "kind": "file", "ref": "qa/v11-auth-browser/run-v11-auth.sh", "note": "seed单个synthetic super admin（共享登录身份）+ customer/no-dashboard partial admin actor，无人员级账号体系" },
+        { "kind": "file", "ref": "qa/v11-auth-browser/v11-r1-functional-first-acceptance.py", "note": "F4-4 partial-readonly用例验证权限面（无写控件、403），为现有RBAC粒度，非人员级" },
+        { "kind": "file", "ref": "apps/api/src/dashboard/access.ts; apps/api/src/auth/service-account.ts", "note": "现有共享admin/super-admin与Service Account能力保留但不扩建（Authority §1）" }
+      ],
+      "entryCriteria": [
+        "v2定义模块/动作级细分权限模型并落地DB/API/Dashboard三层",
+        "建立ERP人员级账号与人员归因（或正式冻结共享账号审计披露策略）",
+        "Audit记录可归因到人员或明确披露共享账号限制",
+        "权限细分回归：越权deny测试与完整功能矩阵通过"
+      ],
+      "ownerRole": "Security Architect + Backend Architect"
+    },
+    {
+      "id": "p8b-waiting-for-erp-provided-interfaces",
+      "classification": "external-dependency",
+      "status": "DEFERRED — WAITING FOR ERP-PROVIDED INTERFACES",
+      "title": "P8-B VanStro主动调用ERP（endpoint/认证/字段映射缺失）",
+      "reasonNonBlocking": "Authority §8：VanStro主动调用ERP所需endpoint、认证和字段资料当前留空，标记「DEFERRED — WAITING FOR ERP-PROVIDED INTERFACES」，不阻塞本次VanStro上线；订单回写字段（发货单号、物流、履约/取消/退款状态）待与ERP部门冻结字段owner后再定，v1只落地只读订单端点。",
+      "evidence": [
+        { "kind": "authority", "ref": "§8 P8-B段；§5 生产输入硬门（ERP endpoint/认证协议/字段字典属缺失外部输入）", "note": "ERP侧接口资料缺endpoint、auth、field mapping" },
+        { "kind": "observation", "ref": "grep tasks/ qa/ scripts/ 无任何P8-B/ERP-PROVIDED/WAITING FOR ERP标记或ERP接口spec文件", "note": "仓库内不存在ERP-provided接口文档，无实现依据" },
+        { "kind": "file", "ref": "qa/v11-auth-browser/v11-7-erp-acceptance.py", "note": "v1验证的是VanStro对ERP部门暴露的API可调用（products/orders/batch/sync），非P8-B反向调用" }
+      ],
+      "entryCriteria": [
+        "ERP部门提供：生产/测试endpoint、认证协议与凭据交付渠道、字段字典/版本/错误/幂等Contract",
+        "冻结字段owner与canary边界后实现P8-B push/pull/webhook",
+        "真实ERP联调：canary小批、双向对账、error/retry/rate-limit、Audit",
+        "P8-B证据（调用日志、对账结果）入evidence，无明文凭据"
+      ],
+      "ownerRole": "ERP Integration Lead（等待ERP部门输入）+ Backend Architect"
+    },
+    {
+      "id": "historical-9-file-ui0-allowlist-drift",
+      "classification": "contract-guard-debt",
+      "status": "DEFERRED",
+      "title": "历史9文件UI0 allowlist漂移",
+      "reasonNonBlocking": "9个M69/M70/M71迁移harness/static文件（migration69 migration.sql、f1-migration69/70/71静态与owned测试、三个test-f1-migration*.sh包装、owned-pg16-conformance.mjs）在既有HEAD提交历史中已修改，clean HEAD即可复现；本候选不隐藏且不扩大该历史集合。这些文件不在UI-0 allowlist lease内，本轮按决定不把它们加入lease，保留为可见v2债（只影响UI-0契约guard的通过性，不改产品行为、Migration内容或测试断言语义）。",
+      "evidence": [
+        { "kind": "file", "ref": "qa/v1-ui0-contracts/ui-dependency-allowlist.test.mjs", "note": "「only the closed existing-file allowlist is modified」guard以git diff --name-only --diff-filter=M <ui0Baseline>..HEAD计算changed集合；本轮F4 lease仅新增catalog.ts/dealers.ts/v11-r1-catalog-dealers.test.ts/foundation.ts/foundation.test.ts/api-contract.ts/DashboardF0ReadOnlyContent.tsx/DashboardPanelRouter.tsx/DashboardPanels.tsx，未包含下列9个历史M69/M70/M71 harness/static文件" },
+        { "kind": "observation", "ref": "历史9文件UI0漂移（Main裁决的精确清单）", "note": "9个文件：packages/db/prisma/migrations/20260804100000_f1_v15_expand/migration.sql；scripts/f1-migration69-authority.test.mjs；scripts/f1-migration70-static.test.mjs；scripts/f1-migration71-owned-pg16.mjs；scripts/f1-migration71-static.test.mjs；scripts/test-f1-migration69.sh；scripts/test-f1-migration70.sh；scripts/test-f1-migration71.sh；tasks/tooling/f1-v15-clarification/owned-pg16-conformance.mjs" },
+        { "kind": "observation", "ref": "UI0 clean detached HEAD机械复现：git diff --name-only --diff-filter=M f111bb74..ccddebdb @ HEAD（worktree baseline=f111bb74）", "note": "9文件全部位于clean HEAD提交历史changed集合（72文件）且不在HEAD版allowlist allowed集合；drift@HEAD总计12文件（另package.json/pnpm-lock.yaml/src/app/globals.css，非本9项）；静态门审查确认本候选不隐藏、不扩大该历史集合" },
+        { "kind": "authority", "ref": "Goal/Contract「保留历史9文件UI0漂移为可见v2债，不把它们加入本轮lease」", "note": "决策已定：不lease、可见漂移" }
+      ],
+      "entryCriteria": [
+        "v2审查精确列出的9个M69/M70/M71 migration/harness/static文件并给出明确处置（纳入带理由lease或收窄guard基线）",
+        "候选commit后ui-dependency-allowlist.test.mjs与ui-css-collision.test.mjs全绿",
+        "lease条目附带reviewed rationale注释"
+      ],
+      "ownerRole": "UI-0契约owner + DB tooling QA owner"
+    },
+    {
+      "id": "f1-migration72-functional-test-stale-asserts-source-latest-73",
+      "classification": "test-technical-debt",
+      "status": "DEFERRED",
+      "title": "f1-migration72-functional.test.mjs过期72断言（source latest=73）",
+      "reasonNonBlocking": "该测试断言SOURCE_LATEST_MIGRATION_NUMBER=72且20260804130000为唯一forward functional migration，而packages/db/src/generated/source-latest-migration.ts（与HEAD一致、未改动）声明latest=73（20260805100000_s01_settings_core）；实测node --test 2 pass/1 fail。属不影响核心功能的测试技术债（Authority §9），仅由M69-era静态包装test-f1-migration71.sh引用，不在v1功能优先gate套件执行路径内（最终run 20260812T004129Z-31995c6d未运行它）。",
+      "evidence": [
+        { "kind": "file", "ref": "scripts/f1-migration72-functional.test.mjs", "note": "断言`SOURCE_LATEST_MIGRATION_NUMBER = 72`、`20260804130000_f1_v15_runtime_acl_closure`为72号migration路径，并断言migration不含20260804140000" },
+        { "kind": "file", "ref": "packages/db/src/generated/source-latest-migration.ts", "note": "实际生成值：SOURCE_LATEST_MIGRATION_NUMBER = 73、SOURCE_LATEST_MIGRATION = 20260805100000_s01_settings_core（与HEAD字节一致，非本轮改动）" },
+        { "kind": "observation", "ref": "node --experimental-strip-types --test scripts/f1-migration72-functional.test.mjs（本worktree实测）", "note": "3 tests: pass 2 / fail 1，失败为72正则断言AssertionError" },
+        { "kind": "file", "ref": "scripts/test-f1-migration71.sh:20", "note": "该包装脚本第20行调用此过期测试；不在run-v11-r1-functional-first-migration.sh gate路径内" }
+      ],
+      "entryCriteria": [
+        "将断言更新为source latest=73（或把测试重定向为只验证migration72链自身），并同步SOURCE_LATEST_MIGRATION引用",
+        "scripts/test-f1-migration71.sh全绿",
+        "确认无其他文件重复断言72（全局grep SOURCE_LATEST_MIGRATION_NUMBER）"
+      ],
+      "ownerRole": "Test Automation Engineer（DB tooling）"
+    },
+    {
+      "id": "foundation-route-tests-need-seeded-disposable-db",
+      "classification": "test-infrastructure-debt",
+      "status": "DEFERRED",
+      "title": "foundation route tests需要seeded disposable DB",
+      "reasonNonBlocking": "apps/api/src/dashboard/foundation.test.ts的28个route测试实例化PrismaClient（VANSTRO_TEST_SETUP_DATABASE_URL ?? DATABASE_URL）并调用createApp/createSession，需要已seed的disposable PostgreSQL才能运行；当前无package.json/scripts命名入口。属不影响核心功能的测试技术债（Authority §9），v1的route行为由real-backend browser/E2E evidence覆盖（v11-r1-functional-first-*、batch-erp、catalog-dealer runs）。",
+      "evidence": [
+        { "kind": "file", "ref": "apps/api/src/dashboard/foundation.test.ts:5,41-43", "note": "import { PrismaClient } from \"@vanstro/db\"；`new PrismaClient({ datasources: { db: { url: process.env.VANSTRO_TEST_SETUP_DATABASE_URL ?? process.env.DATABASE_URL } } })`；28个test()" },
+        { "kind": "observation", "ref": "grep package.json scripts/ 无foundation.test引用", "note": "无命名runner/文档入口，依赖外部DB环境" },
+        { "kind": "run", "ref": "tasks/evidence/v11-r1-functional-first-batch-erp/; tasks/evidence/v11-r1-functional-first-catalog-dealer/; tasks/evidence/v11-r1-functional-first-commerce-e2e/", "note": "v1真实行为证据路径（seed.json + acceptance + logs）" }
+      ],
+      "entryCriteria": [
+        "提供确定性seeded disposable PG16 harness与命名runner命令（如pnpm qa:foundation-route）",
+        "foundation.test.ts全绿且不依赖开发/生产DATABASE_URL",
+        "或重构纯单元部分与DB依赖部分分离，DB部分固定fixture"
+      ],
+      "ownerRole": "Test Automation Engineer（Backend）"
+    },
+    {
+      "id": "non-core-comment-doc-and-performance-optimization",
+      "classification": "code-quality",
+      "status": "DEFERRED",
+      "title": "非核心Comment/Documentation专项与性能优化",
+      "reasonNonBlocking": "Authority §9明确将Comment & Documentation专项、性能优化、一般Medium/Low bug与代码优化、非核心安全加固统一登记v2；v1评审范围仅限会导致功能失败或确定性数据损坏的问题（§11），本轮不新增非功能性扩审。",
+      "evidence": [
+        { "kind": "authority", "ref": "§9 统一登记到v2清单；§11 评审范围限制", "note": "显式v2类别" },
+        { "kind": "observation", "ref": "候选diff范围内无性能/文档专项工作项", "note": "v1候选仅功能与最小迁移修正" }
+      ],
+      "entryCriteria": [
+        "v2建立Medium/Low遗留评审发现清单并逐项处理",
+        "Comment & Documentation专项（公共API/DB函数/迁移注释对齐Authority）",
+        "性能优化：catalog/orders/batch热路径profile与基准，改进需有实测证据"
+      ],
+      "ownerRole": "Code Reviewer + Backend Architect"
+    },
+    {
+      "id": "dealer-location-address-field-minimization-review",
+      "classification": "schema-field-review",
+      "status": "DEFERRED",
+      "title": "dealer location地址字段最小化复核",
+      "reasonNonBlocking": "DealerLocation地址字段（addressLine1/2、city、province、postalCode、country）均为optional且当前create/edit/location管理功能可用；字段最小化属schema/DTO整洁性复核，需先冻结消费方需求（pickup/delivery、ERP links、前台展示），且任何字段移除都涉及migration，故列为v2不阻塞v1。",
+      "evidence": [
+        { "kind": "file", "ref": "packages/db/prisma/schema.prisma:1895-1911", "note": "model DealerLocation含6个optional地址字段（addressLine1/addressLine2/city/province/postalCode/country default CA）及pickup/delivery flags" },
+        { "kind": "file", "ref": "apps/api/src/dashboard/dealers.ts", "note": "F4 lease内location detail DTO select新增`addressLine1, addressLine2, city, province, postalCode, country`（expanded detail DTO）" },
+        { "kind": "authority", "ref": "§9「一般Medium/Low bug和代码优化」v2类别", "note": "字段面最小化属v2优化范围" }
+      ],
+      "entryCriteria": [
+        "冻结DealerLocation地址字段消费方（dealer编辑、pickup/delivery、ERP links、storefront展示）需求清单",
+        "输出最小字段集结论（保留/合并/移除）",
+        "若需移除字段：design migration（forward-only、backfill、无物理删除）并跑fresh+production-equivalent",
+        "DTO/校验/测试同步更新"
+      ],
+      "ownerRole": "Backend Architect + 字段owner（Product）"
+    }
+  ]
+}

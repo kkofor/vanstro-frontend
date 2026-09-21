@@ -1,0 +1,7 @@
+{
+  "name": "vanstro-ui0-browser-fixture",
+  "private": true,
+  "scripts": {
+    "dev": "next dev"
+  }
+}

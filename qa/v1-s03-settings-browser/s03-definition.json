@@ -1,0 +1,86 @@
+{
+  "suiteId": "vanstro.s03.commerce.settings.desktop.v1",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "scope": "S03 Commerce/Tax/Shipping/Inventory/Orders Settings desktop acceptance against the frozen S03 contract and implemented backend (descriptor settings.commerce)",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    {
+      "id": "S03-01",
+      "name": "Five-family panel renders with compiled defaults",
+      "expectation": "commerce/tax/shipping/inventory/order policies and 默认值 projection render"
+    },
+    {
+      "id": "S03-02",
+      "name": "Empty validation and history states",
+      "expectation": "尚未验证当前草稿 and 尚无发布历史 shown"
+    },
+    {
+      "id": "S03-03",
+      "name": "Consumer readiness matrix",
+      "expectation": "consumer readiness matrix renders future obligations before publication"
+    },
+    {
+      "id": "S03-04",
+      "name": "Create draft",
+      "expectation": "typed draft with minimumOrderAmountCents 1000 created"
+    },
+    {
+      "id": "S03-05",
+      "name": "Structurally invalid value rejected",
+      "expectation": "negative minimum rejected client-side, draft unchanged"
+    },
+    {
+      "id": "S03-06",
+      "name": "Validate draft",
+      "expectation": "validated with no blockers"
+    },
+    {
+      "id": "S03-07",
+      "name": "Safe diff",
+      "expectation": "public field diff visible"
+    },
+    {
+      "id": "S03-08",
+      "name": "Publish with zero side effects",
+      "expectation": "generation increments, businessWrites/providerCalls/jobs stay 0"
+    },
+    {
+      "id": "S03-09",
+      "name": "Exact-generation readiness (4 ready / 2 coverage-limited degraded)",
+      "expectation": "ready only with exact consumer generation; all consumers implemented_ready"
+    },
+    {
+      "id": "S03-10",
+      "name": "Read-only impact preview",
+      "expectation": "aggregate quote only; zero business/provider/job effects"
+    },
+    {
+      "id": "S03-11",
+      "name": "Rollback draft",
+      "expectation": "rollback_draft created from current publication"
+    },
+    {
+      "id": "S03-12",
+      "name": "FR static route",
+      "expectation": "/fr/dashboard/settings/commerce renders the same panel"
+    },
+    {
+      "id": "S03-13",
+      "name": "A11y landmarks",
+      "expectation": "named region and tables present"
+    },
+    {
+      "id": "S03-14",
+      "name": "Zero unexpected console errors",
+      "expectation": "no console error entries"
+    },
+    {
+      "id": "S03-15",
+      "name": "Zero unexpected requests",
+      "expectation": "no requests outside WEB/API/data/blob origins"
+    }
+  ]
+}

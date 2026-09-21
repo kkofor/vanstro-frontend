@@ -6,14 +6,46 @@ import {
   writeAudit
 } from "../dashboard/access.js";
 import { createDashboardSystemRoutes } from "../dashboard/system.js";
+import { createDashboardFoundationRoutes } from "../dashboard/foundation.js";
+import { createP02AccessRoutes } from "../dashboard/p02-access.js";
+import { createDashboardCmsRoutes } from "../dashboard/cms.js";
+import { createDashboardCatalogRoutes } from "../dashboard/catalog.js";
+import { createDashboardBatchRoutes } from "../dashboard/batch.js";
+import { createDashboardErpWebhookRoutes } from "../dashboard/erp-webhooks.js";
+import { createDashboardModuleRoutes } from "../dashboard/modules.js";
+import { createDashboardDealerRoutes } from "../dashboard/dealers.js";
+import { createDashboardCrmRoutes } from "../dashboard/crm.js";
+import { createDashboardSupportRoutes } from "../dashboard/support.js";
+import { createDashboardJobRoutes } from "../dashboard/jobs.js";
+import { createDashboardWorkQueueRoutes } from "../dashboard/work-queue.js";
+import { createDashboardMediaRoutes } from "../dashboard/media.js";
+import { createDashboardDataJobRoutes } from "../dashboard/data-jobs.js";
+import { createDashboardRuntimeFoundationRoutes } from "../dashboard/runtime-foundation.js";
+import { createDashboardAnalyticsFoundationRoutes } from "../dashboard/analytics-foundation.js";
+import { createDashboardSettingsRoutes } from "../dashboard/settings.js";
+import { createDashboardS02SettingsRoutes } from "../dashboard/s02-settings.js";
+import { createDashboardS09SettingsRoutes } from "../dashboard/s09-settings.js";
+import { createDashboardS10SettingsRoutes } from "../dashboard/s10-settings.js";
+import { createDashboardS03SettingsRoutes } from "../dashboard/s03-settings.js";
+import { createDashboardS08SettingsRoutes } from "../dashboard/s08-settings.js";
 import { revokeUserSessions } from "../auth/session.js";
+import { isDealerScopedRoleKey } from "../dashboard/authorization.js";
+import { assertLastSuperAdminPreserved, P02InvariantError } from "../dashboard/p02-invariants.js";
 import {
   assertAssignableRoles,
+  assertManageableUsers,
   assertPermissionsWithinActorCeiling,
   getActorPermissionCeiling,
   lockUsersForPermissionChange,
   PermissionCeilingError
 } from "../dashboard/permission-ceiling.js";
+import {
+  CUSTOMER_ADDRESS_INVALID_MESSAGE,
+  CUSTOMER_ADDRESS_REQUIRED_FIELDS,
+  CUSTOMER_ADDRESS_REQUIRED_MESSAGE,
+  parseCustomerAddressCreate,
+  parseCustomerAddressPatch
+} from "../customer-address-validation.js";
 
 type CatalogStatus = "draft" | "active" | "archived";
 type PriceStatusValue = "draft" | "active" | "archived";
@@ -28,13 +60,32 @@ type DealerApplicationStatusValue =
   | "rejected"
   | "archived";
 type ProductReviewStatusValue = "pending" | "published" | "rejected" | "archived";
+
+const CONTACT_LEAD_STATUSES = new Set<ContactLeadStatusValue>(["new", "routed", "closed", "spam"]);
+const DEALER_APPLICATION_STATUSES = new Set<DealerApplicationStatusValue>([
+  "submitted",
+  "under_review",
+  "approved",
+  "rejected",
+  "archived"
+]);
+const PRODUCT_REVIEW_STATUSES = new Set<ProductReviewStatusValue>([
+  "pending",
+  "published",
+  "rejected",
+  "archived"
+]);
 import {
   badRequest,
+  conflict,
+  notFound,
   optionalBoolean,
   optionalNumber,
   optionalRecord,
   optionalString,
   optionalStringArray,
+  pageMeta,
+  parsePagination,
   readBody
 } from "../dashboard/request.js";
 
@@ -116,19 +167,59 @@ export function createDashboardRoutes() {
 
     if (!body) return badRequest(context, "JSON body is required.");
 
-    const role = await prisma.role.update({
-      where: { id: context.req.param("id") },
-      data: {
-        key: optionalString(body, "key"),
-        name: optionalString(body, "name"),
-        description: optionalString(body, "description"),
-        isSystem: optionalBoolean(body, "isSystem")
+    const roleId = context.req.param("id");
+    const nextKey = optionalString(body, "key");
+    const nextIsSystem = optionalBoolean(body, "isSystem");
+    const role = await prisma.$transaction(async (database) => {
+      const actorPermissionSet = await getActorPermissionCeiling(database, context.get("actorUserId"), [roleId]);
+      const current = await database.role.findUnique({ where: { id: roleId } });
+      if (!current) throw new PermissionCeilingError(400, "Role not found.");
+      if ((current.isSystem || isDealerScopedRoleKey(current.key)) && (nextKey !== undefined || nextIsSystem !== undefined)) {
+        throw new PermissionCeilingError(403, "System role scope identity cannot be changed.");
       }
+      if (nextIsSystem === true && !actorPermissionSet.has("settings.write")) {
+        throw new PermissionCeilingError(403, "settings.write is required to create a system role identity.");
+      }
+      const updated = await database.role.update({
+        where: { id: roleId },
+        data: {
+          key: nextKey,
+          name: optionalString(body, "name"),
+          description: optionalString(body, "description"),
+          isSystem: nextIsSystem
+        }
+      });
+      await writeAudit(context, "dashboard.roles.update", "role", updated.id, {
+        previousKey: current.key,
+        nextKey: updated.key,
+        previousIsSystem: current.isSystem,
+        nextIsSystem: updated.isSystem
+      }, database);
+      return updated;
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError) return error;
+      throw error;
     });
 
-    await writeAudit(context, "dashboard.roles.update", "role", role.id);
-
+    if (role instanceof PermissionCeilingError) return context.json({ error: role.message }, role.status);
     return context.json({ data: role });
+  });
+
+  routes.delete("/dashboard/roles/:id", async (context) => {
+    const role = await prisma.role.findUnique({
+      where: { id: context.req.param("id") },
+      include: { _count: { select: { userRoles: true, serviceAccountRoles: true } } }
+    });
+    if (!role) return notFound(context, "Role not found.");
+    if (role.isSystem) return conflict(context, "System roles cannot be deleted.");
+    if (role._count.userRoles > 0 || role._count.serviceAccountRoles > 0) {
+      return conflict(context, "Role is still assigned to users or service accounts.");
+    }
+
+    await prisma.role.delete({ where: { id: role.id } });
+    await writeAudit(context, "dashboard.roles.delete", "role", role.id);
+
+    return context.json({ data: { id: role.id, deleted: true } });
   });
 
   routes.put("/dashboard/roles/:id/permissions", async (context) => {
@@ -160,6 +251,18 @@ export function createDashboardRoutes() {
           context.get("actorUserId"),
           [roleId]
         );
+        const targetRole = await database.role.findUnique({
+          where: { id: roleId },
+          include: { rolePermissions: { include: { permission: { select: { key: true } } } } }
+        });
+        if (!targetRole) throw new PermissionCeilingError(400, "Role not found.");
+        assertPermissionsWithinActorCeiling(
+          targetRole.rolePermissions.map((entry) => entry.permission.key),
+          actorPermissionSet
+        );
+        if (targetRole.isSystem && !actorPermissionSet.has("settings.write")) {
+          throw new PermissionCeilingError(403, "settings.write is required to change a system role.");
+        }
         const uniquePermissionIds = [...new Set(permissionIds ?? [])];
         const uniquePermissionKeys = [...new Set(permissionKeys ?? [])];
         const permissions = await database.permission.findMany({
@@ -196,25 +299,28 @@ export function createDashboardRoutes() {
           );
         }
 
+        const beforePermissionKeys = targetRole.rolePermissions.map((entry) => entry.permission.key).sort();
         await database.rolePermission.deleteMany({ where: { roleId } });
         if (permissions.length) {
           await database.rolePermission.createMany({
             data: permissions.map((permission) => ({ roleId, permissionId: permission.id }))
           });
         }
+        await writeAudit(context, "dashboard.roles.permissions.replace", "role", roleId, {
+          beforePermissionKeys,
+          afterPermissionKeys: permissions.map((permission) => permission.key).sort()
+        }, database);
 
         return true;
       })
       .catch((error: unknown) => {
-        if (error instanceof PermissionCeilingError) return error;
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
         throw error;
       });
 
     if (result instanceof PermissionCeilingError) {
       return context.json({ error: result.message }, result.status);
     }
-
-    await writeAudit(context, "dashboard.roles.permissions.replace", "role", roleId);
 
     const role = await prisma.role.findUnique({
       where: { id: roleId },
@@ -258,6 +364,10 @@ export function createDashboardRoutes() {
       return badRequest(context, "roleIds must be an array of strings.");
     }
     const roleIds = [...new Set(roleIdsValue ?? [])];
+    const password = optionalString(body, "password");
+    if (password && password.length < 12) {
+      return badRequest(context, "password must be at least 12 characters.");
+    }
     const user = await prisma
       .$transaction(async (database) => {
         await assertAssignableRoles(database, roleIds, context.get("actorUserId"));
@@ -286,8 +396,8 @@ export function createDashboardRoutes() {
                     }
                   }
                 : undefined,
-            passwordCredential: optionalString(body, "password")
-              ? { create: hashPassword(optionalString(body, "password") ?? "") }
+            passwordCredential: password
+              ? { create: hashPassword(password) }
               : undefined,
             userRoles: roleIds.length
               ? { create: roleIds.map((roleId) => ({ roleId })) }
@@ -296,11 +406,11 @@ export function createDashboardRoutes() {
         });
       })
       .catch((error: unknown) => {
-        if (error instanceof PermissionCeilingError) return error;
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
         throw error;
       });
 
-    if (user instanceof PermissionCeilingError) {
+    if (user instanceof PermissionCeilingError || user instanceof P02InvariantError) {
       return context.json({ error: user.message }, user.status);
     }
 
@@ -312,10 +422,36 @@ export function createDashboardRoutes() {
   routes.get("/dashboard/users/:id", async (context) => {
     const user = await prisma.user.findUnique({
       where: { id: context.req.param("id") },
-      include: {
-        adminProfile: true,
-        customerProfile: true,
-        userRoles: { include: { role: true } }
+      select: {
+        id: true,
+        email: true,
+        kind: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        emailVerifiedAt: true,
+        // Safe detail DTO: customer/admin profile fields only. Never includes
+        // password hashes, reset tokens, sessions or payment data.
+        adminProfile: { select: { displayName: true } },
+        customerProfile: { select: { firstName: true, lastName: true, phone: true } },
+        addresses: {
+          select: {
+            id: true,
+            label: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            addressLine1: true,
+            addressLine2: true,
+            city: true,
+            province: true,
+            postalCode: true,
+            country: true,
+            isDefault: true
+          },
+          orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }]
+        },
+        userRoles: { select: { role: { select: { id: true, key: true, name: true } } } }
       }
     });
 
@@ -334,13 +470,27 @@ export function createDashboardRoutes() {
     const userId = context.req.param("id");
     const displayName = optionalString(body, "displayName");
     const password = optionalString(body, "password");
+    if (password && password.length < 12) {
+      return badRequest(context, "password must be at least 12 characters.");
+    }
     const passwordCredential = password ? hashPassword(password) : undefined;
     const status = optionalString(body, "status") as UserStatusValue | undefined;
+    const firstName = optionalString(body, "firstName");
+    const lastName = optionalString(body, "lastName");
+    const phone = optionalString(body, "phone");
     const user = await prisma.$transaction(async (transaction) => {
+      await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
+      await assertLastSuperAdminPreserved(transaction, userId, { nextStatus: status });
       if (passwordCredential || status === "suspended" || status === "archived") {
-        await revokeUserSessions(transaction, userId);
+        await revokeUserSessions(transaction,userId,{sessionTokenHash:context.get("actorSessionTokenHash"),actorId:context.get("actorUserId")});
       }
 
+      // Profile writes are kind-guarded: an admin edit can never create a
+      // CustomerProfile and a customer edit can never create an AdminProfile.
+      const current = await transaction.user.findUniqueOrThrow({
+        where: { id: userId },
+        select: { id: true, kind: true }
+      });
       const updatedUser = await transaction.user.update({
         where: { id: userId },
         data: {
@@ -349,11 +499,28 @@ export function createDashboardRoutes() {
         }
       });
 
-      if (displayName) {
+      if (displayName && current.kind === "admin") {
         await transaction.adminProfile.upsert({
           where: { userId },
           update: { displayName },
           create: { userId, displayName }
+        });
+      }
+
+      if (current.kind === "customer" && (firstName !== undefined || lastName !== undefined || phone !== undefined)) {
+        await transaction.customerProfile.upsert({
+          where: { userId },
+          update: {
+            firstName: firstName ?? undefined,
+            lastName: lastName ?? undefined,
+            phone: phone ?? undefined
+          },
+          create: {
+            userId,
+            firstName: firstName ?? null,
+            lastName: lastName ?? null,
+            phone: phone ?? null
+          }
         });
       }
 
@@ -366,11 +533,184 @@ export function createDashboardRoutes() {
       }
 
       return updatedUser;
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
+      throw error;
     });
 
-    await writeAudit(context, "dashboard.users.update", "user", user.id);
+    if (user instanceof PermissionCeilingError || user instanceof P02InvariantError) {
+      return context.json({ error: user.message }, user.status);
+    }
+
+    // Desensitized audit: record only the names of changed fields, never the
+    // values (no full phone/address/profile payloads in audit metadata).
+    const changedFields = [
+      ...(firstName !== undefined ? ["firstName"] : []),
+      ...(lastName !== undefined ? ["lastName"] : []),
+      ...(phone !== undefined ? ["phone"] : []),
+      ...(displayName ? ["displayName"] : []),
+      ...(status ? ["status"] : []),
+      ...(optionalString(body, "email") ? ["email"] : [])
+    ];
+    await writeAudit(context, "dashboard.users.update", "user", user.id, {
+      changedFields,
+      valuesRedacted: true
+    });
 
     return context.json({ data: user });
+  });
+
+  // The Dashboard address book is a customer-domain surface: address writes
+  // for non-customer users are rejected without touching any rows.
+  class CustomerAddressBookForbiddenError extends Error {
+    constructor() {
+      super("The address book is only available for customer users.");
+    }
+  }
+
+  routes.post("/dashboard/users/:id/addresses", async (context) => {
+    const body = await readBody(context);
+
+    if (!body) return badRequest(context, "JSON body is required.");
+
+    const userId = context.req.param("id");
+    const parsed = parseCustomerAddressCreate(body);
+    if (!parsed) {
+      const message = CUSTOMER_ADDRESS_REQUIRED_FIELDS.some((key) => !optionalString(body, key)?.trim())
+        ? CUSTOMER_ADDRESS_REQUIRED_MESSAGE
+        : CUSTOMER_ADDRESS_INVALID_MESSAGE;
+      return badRequest(context, message);
+    }
+
+    const address = await prisma
+      .$transaction(async (transaction) => {
+        await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
+        const target = await transaction.user.findUniqueOrThrow({
+          where: { id: userId },
+          select: { kind: true }
+        });
+        if (target.kind !== "customer") throw new CustomerAddressBookForbiddenError();
+        if (parsed.isDefault) {
+          await transaction.customerAddress.updateMany({
+            where: { userId, isDefault: true },
+            data: { isDefault: false }
+          });
+        }
+        return transaction.customerAddress.create({
+          data: { userId, ...parsed }
+        });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError || error instanceof CustomerAddressBookForbiddenError) return error;
+        throw error;
+      });
+
+    if (address instanceof PermissionCeilingError || address instanceof P02InvariantError) {
+      return context.json({ error: address.message }, address.status);
+    }
+    if (address instanceof CustomerAddressBookForbiddenError) {
+      return conflict(context, address.message);
+    }
+
+    // Desensitized audit: the address body, phone and names never enter the
+    // audit metadata.
+    await writeAudit(context, "dashboard.users.addresses.create", "customer_address", address.id, {
+      isDefault: parsed.isDefault,
+      valuesRedacted: true
+    });
+
+    return context.json({ data: address }, 201);
+  });
+
+  routes.patch("/dashboard/users/:id/addresses/:addressId", async (context) => {
+    const body = await readBody(context);
+
+    if (!body) return badRequest(context, "JSON body is required.");
+
+    const userId = context.req.param("id");
+    const addressId = context.req.param("addressId");
+    const parsed = parseCustomerAddressPatch(body);
+    if (!parsed) return badRequest(context, CUSTOMER_ADDRESS_INVALID_MESSAGE);
+
+    const result = await prisma
+      .$transaction(async (transaction) => {
+        await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
+        const target = await transaction.user.findUniqueOrThrow({
+          where: { id: userId },
+          select: { kind: true }
+        });
+        if (target.kind !== "customer") throw new CustomerAddressBookForbiddenError();
+        const existing = await transaction.customerAddress.findFirst({
+          where: { id: addressId, userId }
+        });
+        if (!existing) return undefined;
+        if (parsed.isDefault === true) {
+          await transaction.customerAddress.updateMany({
+            where: { userId, isDefault: true, id: { not: addressId } },
+            data: { isDefault: false }
+          });
+        }
+        return transaction.customerAddress.update({
+          where: { id: addressId },
+          data: parsed
+        });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError || error instanceof CustomerAddressBookForbiddenError) return error;
+        throw error;
+      });
+
+    if (result instanceof PermissionCeilingError || result instanceof P02InvariantError) {
+      return context.json({ error: result.message }, result.status);
+    }
+    if (result instanceof CustomerAddressBookForbiddenError) {
+      return conflict(context, result.message);
+    }
+    if (!result) return notFound(context, "Address not found.");
+
+    await writeAudit(context, "dashboard.users.addresses.update", "customer_address", addressId, {
+      isDefault: parsed.isDefault === true ? true : undefined,
+      valuesRedacted: true
+    });
+
+    return context.json({ data: result });
+  });
+
+  routes.delete("/dashboard/users/:id/addresses/:addressId", async (context) => {
+    const userId = context.req.param("id");
+    const addressId = context.req.param("addressId");
+
+    const result = await prisma
+      .$transaction(async (transaction) => {
+        await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
+        const target = await transaction.user.findUniqueOrThrow({
+          where: { id: userId },
+          select: { kind: true }
+        });
+        if (target.kind !== "customer") throw new CustomerAddressBookForbiddenError();
+        const deleted = await transaction.customerAddress.deleteMany({
+          where: { id: addressId, userId }
+        });
+        return deleted.count;
+      })
+      .catch((error: unknown) => {
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError || error instanceof CustomerAddressBookForbiddenError) return error;
+        throw error;
+      });
+
+    if (result instanceof PermissionCeilingError || result instanceof P02InvariantError) {
+      return context.json({ error: result.message }, result.status);
+    }
+    if (result instanceof CustomerAddressBookForbiddenError) {
+      return conflict(context, result.message);
+    }
+    if (result === 0) return notFound(context, "Address not found.");
+
+    await writeAudit(context, "dashboard.users.addresses.delete", "customer_address", addressId, {
+      valuesRedacted: true
+    });
+
+    return context.json({ data: { ok: true } });
   });
 
   routes.patch("/dashboard/users/:id/status", async (context) => {
@@ -386,17 +726,26 @@ export function createDashboardRoutes() {
 
     const userId = context.req.param("id");
     const user = await prisma.$transaction(async (transaction) => {
+      await assertManageableUsers(transaction, context.get("actorUserId"), [userId]);
+      await assertLastSuperAdminPreserved(transaction, userId, { nextStatus: status });
       if (status === "suspended" || status === "archived") {
-        await revokeUserSessions(transaction, userId);
+        await revokeUserSessions(transaction,userId,{sessionTokenHash:context.get("actorSessionTokenHash"),actorId:context.get("actorUserId")});
       }
 
-      return transaction.user.update({
+      const updatedUser = await transaction.user.update({
         where: { id: userId },
         data: { status }
       });
+      await writeAudit(context, "dashboard.users.status.update", "user", userId, { status }, transaction);
+      return updatedUser;
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
+      throw error;
     });
 
-    await writeAudit(context, "dashboard.users.status.update", "user", user.id);
+    if (user instanceof PermissionCeilingError || user instanceof P02InvariantError) {
+      return context.json({ error: user.message }, user.status);
+    }
 
     return context.json({ data: user });
   });
@@ -417,24 +766,22 @@ export function createDashboardRoutes() {
       .$transaction(async (database) => {
         await assertAssignableRoles(database, [roleId], context.get("actorUserId"), [userId]);
 
-        return database.userRole.upsert({
+        const record = await database.userRole.upsert({
           where: { userId_roleId: { userId, roleId } },
           update: {},
           create: { userId, roleId }
         });
+        await writeAudit(context, "dashboard.users.roles.add", "user", userId, { roleId }, database);
+        return record;
       })
       .catch((error: unknown) => {
-        if (error instanceof PermissionCeilingError) return error;
+        if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
         throw error;
       });
 
-    if (userRole instanceof PermissionCeilingError) {
+    if (userRole instanceof PermissionCeilingError || userRole instanceof P02InvariantError) {
       return context.json({ error: userRole.message }, userRole.status);
     }
-
-    await writeAudit(context, "dashboard.users.roles.add", "user", context.req.param("id"), {
-      roleId
-    });
 
     return context.json({ data: userRole }, 201);
   });
@@ -443,482 +790,42 @@ export function createDashboardRoutes() {
     const userId = context.req.param("id");
     const roleId = context.req.param("roleId");
 
-    await prisma.$transaction(async (database) => {
-      await lockUsersForPermissionChange(database, [context.get("actorUserId"), userId]);
+    const result = await prisma.$transaction(async (database) => {
+      await assertManageableUsers(database, context.get("actorUserId"), [userId]);
+      await assertLastSuperAdminPreserved(database, userId, { removeRoleId: roleId });
       await database.userRole.delete({
         where: { userId_roleId: { userId, roleId } }
       });
+      await writeAudit(context, "dashboard.users.roles.remove", "user", userId, { roleId }, database);
+    }).catch((error: unknown) => {
+      if (error instanceof PermissionCeilingError || error instanceof P02InvariantError) return error;
+      throw error;
     });
 
-    await writeAudit(context, "dashboard.users.roles.remove", "user", userId, {
-      roleId
-    });
+    if (result instanceof PermissionCeilingError || result instanceof P02InvariantError) {
+      return context.json({ error: result.message, code: "DASHBOARD_CONFLICT", requestId: context.res.headers.get("X-Request-Id") }, result.status);
+    }
 
     return context.json({ data: { ok: true } });
   });
 
-  routes.get("/dashboard/categories", async (context) => {
-    const categories = await prisma.category.findMany({
-      orderBy: [{ sortOrder: "asc" }, { name: "asc" }]
-    });
-
-    return context.json({ data: categories });
-  });
-
-  routes.post("/dashboard/categories", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const slug = optionalString(body, "slug") ?? (name ? slugify(name) : "");
-
-    if (!name || !slug) {
-      return badRequest(context, "name is required.");
-    }
-
-    const category = await prisma.category.create({
-      data: {
-        slug,
-        name,
-        description: optionalString(body, "description"),
-        parentId: optionalString(body, "parentId"),
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0,
-        isActive: optionalBoolean(body, "isActive") ?? true
-      }
-    });
-
-    await writeAudit(context, "dashboard.categories.create", "category", category.id);
-
-    return context.json({ data: category }, 201);
-  });
-
-  routes.patch("/dashboard/categories/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const category = await prisma.category.update({
-      where: { id: context.req.param("id") },
-      data: {
-        slug: optionalString(body, "slug"),
-        name: optionalString(body, "name"),
-        description: optionalString(body, "description"),
-        parentId: optionalString(body, "parentId"),
-        sortOrder: optionalNumber(body, "sortOrder"),
-        isActive: optionalBoolean(body, "isActive")
-      }
-    });
-
-    await writeAudit(context, "dashboard.categories.update", "category", category.id);
-
-    return context.json({ data: category });
-  });
-
-  routes.get("/dashboard/products", async (context) => {
-    const products = await prisma.product.findMany({
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        status: true,
-        createdAt: true,
-        category: { select: { id: true, name: true, slug: true } },
-        skus: {
-          select: { id: true, skuCode: true, name: true, status: true },
-          orderBy: { sortOrder: "asc" }
-        }
-      },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: products });
-  });
-
-  routes.post("/dashboard/products", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const slug = optionalString(body, "slug") ?? (name ? slugify(name) : "");
-
-    if (!name || !slug) {
-      return badRequest(context, "name is required.");
-    }
-
-    const categoryId = await resolveCategoryId(body);
-    const product = await prisma.product.create({
-      data: {
-        slug,
-        name,
-        shortDescription: optionalString(body, "shortDescription"),
-        description: optionalString(body, "description"),
-        status: (optionalString(body, "status") as CatalogStatus) ?? "draft",
-        categoryId
-      }
-    });
-
-    await writeAudit(context, "dashboard.products.create", "product", product.id);
-
-    return context.json({ data: product }, 201);
-  });
-
-  routes.patch("/dashboard/products/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const categoryId = await resolveCategoryId(body);
-    const product = await prisma.product.update({
-      where: { id: context.req.param("id") },
-      data: {
-        slug: optionalString(body, "slug"),
-        name: optionalString(body, "name"),
-        shortDescription: optionalString(body, "shortDescription"),
-        description: optionalString(body, "description"),
-        status: optionalString(body, "status") as CatalogStatus | undefined,
-        categoryId
-      }
-    });
-
-    await writeAudit(context, "dashboard.products.update", "product", product.id);
-
-    return context.json({ data: product });
-  });
-
-  routes.post("/dashboard/products/:id/skus", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuCode = optionalString(body, "skuCode");
-
-    if (!skuCode) {
-      return badRequest(context, "skuCode is required.");
-    }
-
-    const sku = await prisma.platformSku.create({
-      data: {
-        productId: context.req.param("id"),
-        skuCode,
-        name: optionalString(body, "name") ?? skuCode,
-        status: (optionalString(body, "status") as CatalogStatus) ?? "active",
-        attributes: optionalRecord(body, "attributes"),
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0
-      }
-    });
-
-    await writeAudit(context, "dashboard.skus.create", "platform_sku", sku.id);
-
-    return context.json({ data: sku }, 201);
-  });
-
-  routes.patch("/dashboard/skus/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const sku = await prisma.platformSku.update({
-      where: { id: context.req.param("id") },
-      data: {
-        skuCode: optionalString(body, "skuCode"),
-        name: optionalString(body, "name"),
-        status: optionalString(body, "status") as CatalogStatus | undefined,
-        attributes: optionalRecord(body, "attributes"),
-        sortOrder: optionalNumber(body, "sortOrder")
-      }
-    });
-
-    await writeAudit(context, "dashboard.skus.update", "platform_sku", sku.id);
-
-    return context.json({ data: sku });
-  });
-
-  routes.post("/dashboard/products/:id/assets", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const url = optionalString(body, "url");
-
-    if (!url) {
-      return badRequest(context, "url is required.");
-    }
-
-    const asset = await prisma.productAsset.create({
-      data: {
-        productId: context.req.param("id"),
-        skuId: optionalString(body, "skuId"),
-        url,
-        altText: optionalString(body, "altText"),
-        kind: optionalString(body, "kind") ?? "image",
-        sortOrder: optionalNumber(body, "sortOrder") ?? 0
-      }
-    });
-
-    await writeAudit(context, "dashboard.product_assets.create", "product_asset", asset.id);
-
-    return context.json({ data: asset }, 201);
-  });
-
-  routes.get("/dashboard/pricing", async (context) => {
-    const prices = await prisma.price.findMany({
-      include: { sku: { include: { product: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: prices });
-  });
-
-  routes.post("/dashboard/pricing", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuId = optionalString(body, "skuId");
-    const amountCents = optionalNumber(body, "amountCents");
-
-    if (!skuId || amountCents === undefined) {
-      return badRequest(context, "skuId and amountCents are required.");
-    }
-
-    const price = await prisma.price.create({
-      data: {
-        key: optionalString(body, "key") ?? `retail:${skuId}`,
-        skuId,
-        currency: optionalString(body, "currency") ?? "CAD",
-        amountCents,
-        compareAtCents: optionalNumber(body, "compareAtCents"),
-        status: (optionalString(body, "status") as PriceStatusValue) ?? "active"
-      }
-    });
-
-    await writeAudit(context, "dashboard.pricing.create", "price", price.id);
-
-    return context.json({ data: price }, 201);
-  });
-
-  routes.patch("/dashboard/pricing/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const price = await prisma.price.update({
-      where: { id: context.req.param("id") },
-      data: {
-        currency: optionalString(body, "currency"),
-        amountCents: optionalNumber(body, "amountCents"),
-        compareAtCents: optionalNumber(body, "compareAtCents"),
-        status: optionalString(body, "status") as PriceStatusValue | undefined
-      }
-    });
-
-    await writeAudit(context, "dashboard.pricing.update", "price", price.id);
-
-    return context.json({ data: price });
-  });
-
-  routes.get("/dashboard/promotions", async (context) => {
-    const promotions = await prisma.promotion.findMany({
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: promotions });
-  });
-
-  routes.post("/dashboard/promotions", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const name = optionalString(body, "name");
-    const key = optionalString(body, "key") ?? (name ? slugify(name) : "");
-
-    if (!name || !key) {
-      return badRequest(context, "name is required.");
-    }
-
-    const promotion = await prisma.promotion.create({
-      data: {
-        key,
-        name,
-        description: optionalString(body, "description"),
-        discountLabel: optionalString(body, "discountLabel"),
-        status: (optionalString(body, "status") as PromotionStatusValue) ?? "draft"
-      }
-    });
-
-    await writeAudit(context, "dashboard.promotions.create", "promotion", promotion.id);
-
-    return context.json({ data: promotion }, 201);
-  });
-
-  routes.patch("/dashboard/promotions/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const promotion = await prisma.promotion.update({
-      where: { id: context.req.param("id") },
-      data: {
-        key: optionalString(body, "key"),
-        name: optionalString(body, "name"),
-        description: optionalString(body, "description"),
-        discountLabel: optionalString(body, "discountLabel"),
-        status: optionalString(body, "status") as PromotionStatusValue | undefined
-      }
-    });
-
-    await writeAudit(context, "dashboard.promotions.update", "promotion", promotion.id);
-
-    return context.json({ data: promotion });
-  });
-
-  routes.get("/dashboard/sku-mappings", async (context) => {
-    const mappings = await prisma.productSkuErpMapping.findMany({
-      include: { sku: { include: { product: true } } },
-      orderBy: { createdAt: "desc" }
-    });
-
-    return context.json({ data: mappings });
-  });
-
-  routes.post("/dashboard/sku-mappings", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const skuId = optionalString(body, "skuId");
-    const erpSystem = optionalString(body, "erpSystem");
-    const erpSkuKey = optionalString(body, "erpSkuKey");
-
-    if (!skuId || !erpSystem || !erpSkuKey) {
-      return badRequest(context, "skuId, erpSystem and erpSkuKey are required.");
-    }
-
-    const mapping = await prisma.productSkuErpMapping.create({
-      data: { skuId, erpSystem, erpSkuKey }
-    });
-
-    await writeAudit(context, "dashboard.sku_mappings.create", "sku_mapping", mapping.id);
-
-    return context.json({ data: mapping }, 201);
-  });
-
-  routes.patch("/dashboard/sku-mappings/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const mapping = await prisma.productSkuErpMapping.update({
-      where: { id: context.req.param("id") },
-      data: {
-        erpSystem: optionalString(body, "erpSystem"),
-        erpSkuKey: optionalString(body, "erpSkuKey")
-      }
-    });
-
-    await writeAudit(context, "dashboard.sku_mappings.update", "sku_mapping", mapping.id);
-
-    return context.json({ data: mapping });
-  });
-
-  routes.get("/dashboard/dealers", async (context) => {
-    const dealers = await prisma.dealer.findMany({
-      include: {
-        erpLinks: true,
-        locations: { include: { serviceAreas: true } }
-      },
-      orderBy: { name: "asc" }
-    });
-
-    return context.json({ data: dealers });
-  });
-
-  routes.patch("/dashboard/dealers/:id", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const dealer = await prisma.dealer.update({
-      where: { id: context.req.param("id") },
-      data: {
-        code: optionalString(body, "code"),
-        name: optionalString(body, "name"),
-        status: optionalString(body, "status") as "active" | "inactive" | undefined,
-        phone: optionalString(body, "phone"),
-        email: optionalString(body, "email"),
-        website: optionalString(body, "website")
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealers.update", "dealer", dealer.id);
-
-    return context.json({ data: dealer });
-  });
-
-  routes.post("/dashboard/dealer-locations/:id/service-areas", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const areaType = optionalString(body, "areaType");
-    const areaCode = optionalString(body, "areaCode");
-
-    if (!areaType || !areaCode) {
-      return badRequest(context, "areaType and areaCode are required.");
-    }
-
-    const area = await prisma.dealerServiceArea.create({
-      data: {
-        dealerLocationId: context.req.param("id"),
-        areaType,
-        areaCode
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealer_service_areas.create", "dealer_service_area", area.id);
-
-    return context.json({ data: area }, 201);
-  });
-
-  routes.post("/dashboard/dealers/:id/erp-links", async (context) => {
-    const body = await readBody(context);
-
-    if (!body) return badRequest(context, "JSON body is required.");
-
-    const erpSystem = optionalString(body, "erpSystem");
-    const erpLocationId = optionalString(body, "erpLocationId");
-
-    if (!erpSystem || !erpLocationId) {
-      return badRequest(context, "erpSystem and erpLocationId are required.");
-    }
-
-    const link = await prisma.dealerErpLink.create({
-      data: {
-        dealerId: context.req.param("id"),
-        dealerLocationId: optionalString(body, "dealerLocationId"),
-        erpSystem,
-        erpLocationId
-      }
-    });
-
-    await writeAudit(context, "dashboard.dealer_erp_links.create", "dealer_erp_link", link.id);
-
-    return context.json({ data: link }, 201);
-  });
 
   routes.get("/dashboard/dealer-applications", async (context) => {
     const status = context.req.query("status") as DealerApplicationStatusValue | undefined;
-    const applications = await prisma.dealerApplication.findMany({
-      where: status ? { status } : undefined,
-      include: { notes: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [applications, total] = await Promise.all([
+      prisma.dealerApplication.findMany({
+        where,
+        include: { notes: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.dealerApplication.count({ where })
+    ]);
 
-    return context.json({ data: applications });
+    return context.json({ data: applications, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/dealer-applications/:id", async (context) => {
@@ -943,7 +850,9 @@ export function createDashboardRoutes() {
       | DealerApplicationStatusValue
       | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !DEALER_APPLICATION_STATUSES.has(status)) {
+      return badRequest(context, "status must be submitted, under_review, approved, rejected or archived.");
+    }
 
     const application = await prisma.dealerApplication.update({
       where: { id: context.req.param("id") },
@@ -990,14 +899,20 @@ export function createDashboardRoutes() {
 
   routes.get("/dashboard/contact-leads", async (context) => {
     const status = context.req.query("status") as ContactLeadStatusValue | undefined;
-    const leads = await prisma.contactLead.findMany({
-      where: status ? { status } : undefined,
-      include: { notes: { orderBy: { createdAt: "desc" } } },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [leads, total] = await Promise.all([
+      prisma.contactLead.findMany({
+        where,
+        include: { notes: { orderBy: { createdAt: "desc" } } },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.contactLead.count({ where })
+    ]);
 
-    return context.json({ data: leads });
+    return context.json({ data: leads, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/contact-leads/:id", async (context) => {
@@ -1020,7 +935,9 @@ export function createDashboardRoutes() {
 
     const status = optionalString(body, "status") as ContactLeadStatusValue | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !CONTACT_LEAD_STATUSES.has(status)) {
+      return badRequest(context, "status must be new, routed, closed or spam.");
+    }
 
     const lead = await prisma.contactLead.update({
       where: { id: context.req.param("id") },
@@ -1092,17 +1009,23 @@ export function createDashboardRoutes() {
 
   routes.get("/dashboard/product-reviews", async (context) => {
     const status = context.req.query("status") as ProductReviewStatusValue | undefined;
-    const reviews = await prisma.productReview.findMany({
-      where: status ? { status } : undefined,
-      include: {
-        product: { select: { id: true, slug: true, name: true } },
-        notes: { orderBy: { createdAt: "desc" } }
-      },
-      orderBy: { createdAt: "desc" },
-      take: 100
-    });
+    const pagination = parsePagination(context);
+    const where = status ? { status } : undefined;
+    const [reviews, total] = await Promise.all([
+      prisma.productReview.findMany({
+        where,
+        include: {
+          product: { select: { id: true, slug: true, name: true } },
+          notes: { orderBy: { createdAt: "desc" } }
+        },
+        orderBy: { createdAt: "desc" },
+        skip: pagination.skip,
+        take: pagination.take
+      }),
+      prisma.productReview.count({ where })
+    ]);
 
-    return context.json({ data: reviews });
+    return context.json({ data: reviews, meta: pageMeta(pagination, total) });
   });
 
   routes.get("/dashboard/product-reviews/:id", async (context) => {
@@ -1128,7 +1051,9 @@ export function createDashboardRoutes() {
 
     const status = optionalString(body, "status") as ProductReviewStatusValue | undefined;
 
-    if (!status) return badRequest(context, "status is required.");
+    if (!status || !PRODUCT_REVIEW_STATUSES.has(status)) {
+      return badRequest(context, "status must be pending, published, rejected or archived.");
+    }
 
     const review = await prisma.productReview.update({
       where: { id: context.req.param("id") },
@@ -1172,7 +1097,29 @@ export function createDashboardRoutes() {
     return context.json({ data: record }, 201);
   });
 
+  routes.route("/", createDashboardFoundationRoutes());
+  routes.route("/", createP02AccessRoutes());
   routes.route("/", createDashboardSystemRoutes());
+  routes.route("/", createDashboardCmsRoutes());
+  routes.route("/", createDashboardCatalogRoutes());
+  routes.route("/", createDashboardBatchRoutes());
+  routes.route("/", createDashboardErpWebhookRoutes());
+  routes.route("/", createDashboardModuleRoutes());
+  routes.route("/", createDashboardDealerRoutes());
+  routes.route("/", createDashboardCrmRoutes());
+  routes.route("/", createDashboardSupportRoutes());
+  routes.route("/", createDashboardJobRoutes());
+  routes.route("/", createDashboardWorkQueueRoutes());
+  routes.route("/", createDashboardMediaRoutes());
+  routes.route("/", createDashboardDataJobRoutes());
+  routes.route("/", createDashboardRuntimeFoundationRoutes());
+  routes.route("/", createDashboardAnalyticsFoundationRoutes());
+  routes.route("/", createDashboardSettingsRoutes());
+  routes.route("/", createDashboardS02SettingsRoutes());
+  routes.route("/", createDashboardS09SettingsRoutes());
+  routes.route("/", createDashboardS10SettingsRoutes());
+  routes.route("/", createDashboardS03SettingsRoutes());
+  routes.route("/", createDashboardS08SettingsRoutes());
 
   return routes;
 }

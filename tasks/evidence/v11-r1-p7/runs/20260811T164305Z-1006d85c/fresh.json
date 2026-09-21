@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "v11-r1-p7-run-1",
+  "runId": "20260811T164305Z-1006d85c",
+  "path": "fresh",
+  "container": "vanstro-v11-p7-fresh-pg",
+  "database": "vanstro_p7_drill_fresh",
+  "expectedTotal": 81,
+  "verdict": "EXPECTED_BLOCKED_M70",
+  "classification": {
+    "verdict": "EXPECTED_BLOCKED_M70",
+    "reason": "EXPECTED_BLOCKER_REPRODUCED"
+  },
+  "blocker": {
+    "reproduced": true,
+    "sqlStateReproduced": true,
+    "firstErrorSignatureReproduced": true,
+    "applied": 69,
+    "failedMigration": "20260804110000_f1_v15_phase_b",
+    "ledger": {
+      "applied": 69,
+      "failed": [
+        "20260804110000_f1_v15_phase_b"
+      ],
+      "rolledBack": [
+        "20260804100000_f1_v15_expand",
+        "20260804110000_f1_v15_phase_b"
+      ]
+    },
+    "pass2": {
+      "sqlState": "P0001",
+      "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+      "statement": " BEGIN;",
+      "query": "",
+      "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    },
+    "pass3": {
+      "sqlState": "P0001",
+      "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+      "statement": " BEGIN;",
+      "query": "",
+      "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    }
+  },
+  "identity": {
+    "schemaVersion": "v11-r1-p7-run-1",
+    "runId": "20260811T164305Z-1006d85c",
+    "generatedAt": "2026-08-11T16:43:06Z",
+    "testedCandidateKind": "working-tree",
+    "testedCommit": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+    "testedTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+    "baseHead": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+    "baseTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+    "migration69Sha": "07c2591b57b27f08573348e3601601c2dc0ecc74e61f8ba27d29d3258231d051",
+    "migration70Sha": "5789b68576b375bc94adec6373b6c02a976c3e5a3813697c5bbadf266977713b",
+    "candidateManifestSha": "382946cfc2ae27f4a7974288ee31f0d67c970e69ddcbeda5a12429b7fd10ef6c",
+    "harnessSha": "db21322c31068d3817b4700a2b29edc452a259bdbea15e9f0c08957226292581",
+    "conformanceSha": "9121bc6bc09c8d08cb333cc4045b99103ff440e628a75c01a3295861f979d479",
+    "postgresImage": "postgres:16-bookworm",
+    "postgresImageId": "92620daddcd947f8d5ab5ba66e848702fe443d87fed30c4cea8e389fd78dfc55",
+    "prismaVersion": "Prisma schema loaded from prisma/schema.prisma",
+    "runnerRoleAttributes": "vanstro_migrator:LOGIN,NOINHERIT,NOSUPERUSER,NOCREATEDB,NOCREATEROLE,NOREPLICATION,NOBYPASSRLS;cap-role memberships WITH ADMIN OPTION;owner of database+public schema;runner=prisma migrate deploy over 127.0.0.1 TCP"
+  },
+  "segments": [
+    {
+      "name": "provision",
+      "startedAt": "2026-08-11T16:43:06Z",
+      "endedAt": "2026-08-11T16:43:11Z",
+      "durationMs": 4431
+    },
+    {
+      "name": "deploy-pass1",
+      "startedAt": "2026-08-11T16:43:11Z",
+      "endedAt": "2026-08-11T16:43:13Z",
+      "durationMs": 2265,
+      "appliedCount": 68,
+      "failedMigration": "20260804100000_f1_v15_expand"
+    },
+    {
+      "name": "provision-manifest",
+      "startedAt": "2026-08-11T16:43:13Z",
+      "endedAt": "2026-08-11T16:43:16Z",
+      "durationMs": 3088
+    },
+    {
+      "name": "deploy-pass2",
+      "startedAt": "2026-08-11T16:43:16Z",
+      "endedAt": "2026-08-11T16:43:18Z",
+      "durationMs": 1745,
+      "appliedCount": 69,
+      "failedMigration": "20260804110000_f1_v15_phase_b"
+    },
+    {
+      "name": "provision-blocker",
+      "startedAt": "2026-08-11T16:43:18Z",
+      "endedAt": "2026-08-11T16:43:19Z",
+      "durationMs": 1333
+    },
+    {
+      "name": "deploy-pass3",
+      "startedAt": "2026-08-11T16:43:19Z",
+      "endedAt": "2026-08-11T16:43:21Z",
+      "durationMs": 1816,
+      "appliedCount": 69,
+      "failedMigration": "20260804110000_f1_v15_phase_b"
+    }
+  ],
+  "recoveries": [
+    {
+      "migration": "20260804100000_f1_v15_expand",
+      "sqlState": "UNKNOWN",
+      "message": "",
+      "action": "resolve --rolled-back; provision 68-row f1_source_migration_manifest + f1_authority_bootstrap_audit AS vanstro_migrator; ALTER DATABASE GUCs",
+      "reason": "deterministic failure: f1_v15_expand asserts the out-of-migration manifest/audit tables + bootstrap roles; the deploy transaction rolled the migration back; resolve --rolled-back (never --applied) records the true never-applied state for the retry",
+      "startedAt": "2026-08-11T16:43:13Z",
+      "endedAt": "2026-08-11T16:43:14Z"
+    },
+    {
+      "migration": "20260804110000_f1_v15_phase_b",
+      "sqlState": "UNKNOWN",
+      "message": "",
+      "action": "resolve --rolled-back; fixture intentionally NOT provisioned",
+      "reason": "deterministic blocker: f1_v15_phase_b consumes the deployment fixture that is absent by design; the deploy transaction rolled the migration back; resolve --rolled-back (never --applied) records the true never-applied state so pass3 reproduces the blocker",
+      "startedAt": "2026-08-11T16:43:18Z",
+      "endedAt": "2026-08-11T16:43:19Z"
+    }
+  ],
+  "assertions": {
+    "provision.roles": {
+      "expected": "21",
+      "actual": "21",
+      "pass": true
+    },
+    "manifest.rows": {
+      "expected": "68",
+      "actual": "68",
+      "pass": true
+    },
+    "manifest.auditRows": {
+      "expected": "1",
+      "actual": "1",
+      "pass": true
+    },
+    "manifest.schemaCreateOwners": {
+      "expected": "7",
+      "actual": "7",
+      "pass": true
+    },
+    "migration69.diagnosticExit": {
+      "expected": "0",
+      "actual": "0",
+      "pass": true
+    },
+    "migration69.aclWarnings": {
+      "expected": "0",
+      "actual": "0",
+      "pass": true
+    }
+  },
+  "facts": {
+    "image": "postgres:16-bookworm",
+    "prismaVersion": "Prisma schema loaded from prisma/schema.prisma",
+    "testedCommit": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+    "testedTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+    "generatedAt": "2026-08-11T16:43:06Z",
+    "baselineTarget": 0,
+    "pass1.applied": 68,
+    "pass1.firstSqlState": "UNKNOWN",
+    "fixtureA": {
+      "tag": "fresh",
+      "rolloutId": "rollout-fresh-a",
+      "environment": "test",
+      "schemaCompatibility": 69,
+      "manifestDigest": "08ce21f7f99818c59e5bb38353c1d1b04fa63d8579e4a417415b3aefc4750773",
+      "expectedCount": 1,
+      "telemetryCount": 31
+    },
+    "pass2.applied": 69,
+    "pass2.firstSqlState": "UNKNOWN",
+    "pass2.failed": "20260804110000_f1_v15_phase_b",
+    "pass2.firstError": {
+      "sqlState": "P0001",
+      "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+      "statement": " BEGIN;",
+      "query": "",
+      "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    },
+    "ledger.rolledBack": "20260804100000_f1_v15_expand,20260804110000_f1_v15_phase_b,",
+    "pass3.applied": 69,
+    "pass3.failed": "20260804110000_f1_v15_phase_b",
+    "pass3.firstSqlState": "UNKNOWN",
+    "pass3.firstError": {
+      "sqlState": "P0001",
+      "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+      "statement": " BEGIN;",
+      "query": "",
+      "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    },
+    "pass3.classification": {
+      "verdict": "EXPECTED_BLOCKED_M70",
+      "reason": "EXPECTED_BLOCKER_REPRODUCED"
+    },
+    "blocker.info": {
+      "reproduced": true,
+      "sqlStateReproduced": true,
+      "firstErrorSignatureReproduced": true,
+      "applied": 69,
+      "failedMigration": "20260804110000_f1_v15_phase_b",
+      "ledger": {
+        "applied": 69,
+        "failed": [
+          "20260804110000_f1_v15_phase_b"
+        ],
+        "rolledBack": [
+          "20260804100000_f1_v15_expand",
+          "20260804110000_f1_v15_phase_b"
+        ]
+      },
+      "pass2": {
+        "sqlState": "P0001",
+        "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+        "statement": " BEGIN;",
+        "query": "",
+        "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+        "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+      },
+      "pass3": {
+        "sqlState": "P0001",
+        "message": "ATTESTATION_EXPECTED_SET_EMPTY",
+        "statement": " BEGIN;",
+        "query": "",
+        "context": "PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE",
+        "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+      }
+    },
+    "consumedRollout": "none (fixture intentionally absent)"
+  }
+}

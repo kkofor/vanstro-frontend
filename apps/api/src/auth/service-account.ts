@@ -9,6 +9,8 @@ export type ServiceAccountPrincipal = {
   name: string;
   roles: string[];
   permissions: string[];
+  /** Machine scope environment (S08 migration79 column; 'production' default). */
+  environment: string;
 };
 
 function hashToken(token: string) {
@@ -30,6 +32,7 @@ function formatServiceAccount(account: {
   id: string;
   key: string;
   name: string;
+  environment: string;
   roles: Array<{
     role: {
       key: string;
@@ -50,7 +53,8 @@ function formatServiceAccount(account: {
     key: account.key,
     name: account.name,
     roles: account.roles.map((accountRole) => accountRole.role.key),
-    permissions: [...permissions].sort()
+    permissions: [...permissions].sort(),
+    environment: account.environment
   };
 }
 
@@ -60,12 +64,16 @@ export async function createServiceAccountToken(
   database: ServiceAccountTokenDatabase = prisma
 ) {
   const token = `vsa_${randomBytes(32).toString("base64url")}`;
+  const expiresAt = options.expiresAt ?? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000);
+  if (expiresAt.getTime() > Date.now() + 365 * 24 * 60 * 60 * 1000) {
+    throw new Error("Service account tokens cannot be valid for more than 365 days.");
+  }
   const record = await database.serviceAccountToken.create({
     data: {
       serviceAccountId,
       tokenHash: hashToken(token),
       name: options.name,
-      expiresAt: options.expiresAt
+      expiresAt
     }
   });
 
@@ -107,8 +115,15 @@ export async function getServiceAccountFromRequest(context: Context) {
     data: { lastUsedAt: new Date() }
   });
 
+  // S08 migration79 adds service_accounts.environment (not part of the Prisma
+  // schema yet); resolve it explicitly for machine scope enforcement.
+  const environmentRows = await prisma.$queryRaw<Array<{ environment: string }>>`
+    SELECT "environment" FROM "service_accounts" WHERE "id" = ${record.serviceAccount.id}
+  `;
+  const environment = environmentRows[0]?.environment ?? "production";
+
   return {
     tokenId: record.id,
-    serviceAccount: formatServiceAccount(record.serviceAccount)
+    serviceAccount: formatServiceAccount({ ...record.serviceAccount, environment })
   };
 }

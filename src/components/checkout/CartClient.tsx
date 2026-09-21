@@ -1,25 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { MapPin, Minus, PackageCheck, Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-import { getEffectivePrice } from "@/lib/commerce/product-commerce";
+import { CommercePageSkeleton, CommerceStatePanel } from "@/components/ui/CommerceStatePanel";
+import { formatMoney } from "@/lib/commerce/product-commerce";
 import { formatProductSize } from "@/lib/product/product-display";
+import { useLocale } from "@/components/i18n/LocaleProvider";
+import { getCommerceCopy } from "@/lib/i18n/commerce-copy";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { canonicalCatalogUrl, localeHref } from "@/lib/i18n/routes";
+import { handleCanonicalCatalogClick } from "@/lib/i18n/canonical-catalog";
 
-function formatCad(amount: number) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD"
-  }).format(amount);
-}
-
-export function CartClient() {
+export function CartClient({ locale: explicitLocale }: { locale?: SiteLocale }) {
+  const { locale: contextLocale } = useLocale();
+  const locale = explicitLocale ?? contextLocale;
+  const copy = getCommerceCopy(locale);
   const {
     cartItems,
+    cartCount,
     cartSubtotal,
     cartState,
     mutationState,
     selectedDealerName,
+    refreshCart,
     updateCartQuantity,
     removeFromCart
   } = useStorefront();
@@ -27,113 +31,173 @@ export function CartClient() {
   const cartMutationPending = mutationState.status === "loading" &&
     mutationState.action?.includes("cart");
 
-  function changeQuantity(productId: string, quantity: number) {
-    void updateCartQuantity(productId, quantity);
-  }
-
-  function removeItem(productId: string) {
-    void removeFromCart(productId);
-  }
-
   if (cartState.status === "loading") {
-    return <div className="empty-panel"><h2>Loading your cart</h2><p>Checking saved items and current pricing.</p></div>;
+    return <CommercePageSkeleton label={copy.cart.loadingTitle} />;
   }
 
   if (cartState.status === "error" && !cartItems.length) {
-    return <div className="empty-panel"><h2>Your cart is unavailable</h2><p>{cartState.error}</p></div>;
+    return (
+      <CommerceStatePanel
+        tone="error"
+        title={copy.cart.unavailableTitle}
+        body={copy.storefront.requestError}
+        actions={(
+          <>
+            <button className="button button-primary" type="button" onClick={refreshCart}>
+              {copy.cart.retry}
+            </button>
+            <Link className="button button-secondary" href={canonicalCatalogUrl(locale)} prefetch={false} onClick={handleCanonicalCatalogClick(locale)}>
+              {copy.cart.continueShopping}
+            </Link>
+          </>
+        )}
+      />
+    );
   }
 
   if (!cartItems.length) {
     return (
-      <div className="empty-panel">
-        <h2>Your cart is empty</h2>
-        <p>Add stocked products to start a pickup or delivery order.</p>
-        <Link className="button button-primary" href="/products">
-          Shop Products
-        </Link>
-      </div>
+      <CommerceStatePanel
+        title={copy.cart.emptyTitle}
+        body={copy.cart.emptyBody}
+        actions={(
+          <Link className="button button-primary" href={canonicalCatalogUrl(locale)} prefetch={false} onClick={handleCanonicalCatalogClick(locale)}>
+            {copy.common.shopProducts}
+          </Link>
+        )}
+      />
     );
   }
 
   return (
-    <div className="two-column-page">
-      <div className="cart-list">
-        {cartItems.map((item) => (
-          <article className="cart-row" key={item.product.id}>
-            <img
-              src={item.product.images[0].url}
-              alt={item.product.images[0].alt}
-              width={item.product.images[0].width}
-              height={item.product.images[0].height}
-              loading="lazy"
-              decoding="async"
-            />
-            <div>
-              <h2 className="product-name">{item.product.name}</h2>
-              <p className="product-meta">
-                {formatProductSize(item.product.dimensions)} - {selectedDealerName}
-              </p>
-              <div className="quantity-stepper" aria-label={`Quantity for ${item.product.name}`}>
-                <button
-                  type="button"
-                  onClick={() =>
-                    changeQuantity(item.product.id, item.quantity - 1)
-                  }
-                  aria-label="Decrease quantity"
-                  disabled={cartMutationPending}
-                >
-                  <Minus size={15} strokeWidth={2} />
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    changeQuantity(item.product.id, item.quantity + 1)
-                  }
-                  aria-label="Increase quantity"
-                  disabled={cartMutationPending}
-                >
-                  <Plus size={15} strokeWidth={2} />
-                </button>
-              </div>
-            </div>
-            <div className="cart-line-actions">
-              <strong>{formatCad(getEffectivePrice(item.product).amount * item.quantity)}</strong>
-              <button
-                className="icon-only"
-                type="button"
-                onClick={() => removeItem(item.product.id)}
-                aria-label={`Remove ${item.product.name}`}
-                disabled={cartMutationPending}
-              >
-                <Trash2 size={18} strokeWidth={2} />
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
-      <aside className="summary-panel">
-        <h2>Order summary</h2>
-        <div className="spec-list">
-          <div className="spec-row">
-            <strong>Serving store</strong>
-            <span>{selectedDealerName}</span>
+    <div className="cart-layout">
+      <section className="cart-main" aria-labelledby="cart-items-title">
+        <header className="commerce-section-heading cart-section-heading">
+          <div>
+            <h2 id="cart-items-title">{copy.cart.reviewTitle}</h2>
+            <p>{copy.cart.reviewBody}</p>
           </div>
-          <div className="spec-row">
-            <strong>Subtotal</strong>
-            <span>{formatCad(cartSubtotal)}</span>
-          </div>
-          <div className="spec-row">
-            <strong>Payment</strong>
-            <span>POS or cash</span>
-          </div>
+          <Link className="text-link" href={canonicalCatalogUrl(locale)} prefetch={false} onClick={handleCanonicalCatalogClick(locale)}>
+            {copy.cart.continueShopping}
+          </Link>
+        </header>
+        <div className="cart-item-count">
+          <PackageCheck size={18} aria-hidden="true" />
+          <strong>{copy.cart.itemCount(cartCount)}</strong>
         </div>
-        <Link className="button button-primary" href="/checkout">
-          Continue to checkout
-        </Link>
-        {mutationState.status === "error" ? (
-          <p className="quantity-limit-note" aria-live="polite">{mutationState.error}</p>
+
+        {cartState.status === "error" ? (
+          <CommerceStatePanel
+            compact
+            tone="error"
+            title={copy.cart.unavailableTitle}
+            body={copy.storefront.requestError}
+            actions={<button className="button button-secondary" type="button" onClick={refreshCart}>{copy.cart.retry}</button>}
+          />
         ) : null}
+
+        <div className="cart-list">
+          {cartItems.map((item) => {
+            const headingId = `cart-item-${item.cartItemId}`;
+            return (
+              <article className="cart-row" key={item.cartItemId} aria-labelledby={headingId}>
+                <Link className="cart-product-image" href={localeHref(`/products/${item.product.slug}`, locale)}>
+                  <img
+                    src={item.product.images[0].url}
+                    alt={item.product.images[0].alt}
+                    width={item.product.images[0].width}
+                    height={item.product.images[0].height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </Link>
+                <div className="cart-product-copy">
+                  <h3 id={headingId}>
+                    <Link className="cart-product-name" href={localeHref(`/products/${item.product.slug}`, locale)}>
+                      {item.product.name}
+                    </Link>
+                  </h3>
+                  <dl className="cart-product-meta">
+                    <div><dt>{copy.order.sku}</dt><dd>{item.product.sku}</dd></div>
+                    <div><dt>{copy.cart.unitPrice}</dt><dd>{formatMoney(item.unitPrice, locale)}</dd></div>
+                    <div><dt>{locale === "fr-CA" ? "Dimensions" : "Dimensions"}</dt><dd>{formatProductSize(item.product.dimensions, locale)}</dd></div>
+                  </dl>
+                  <div className="cart-quantity-control">
+                    <span>{copy.cart.quantity}</span>
+                    <div className="quantity-stepper" aria-label={copy.cart.quantityFor(item.product.name)}>
+                    <button
+                      type="button"
+                      onClick={() => void updateCartQuantity(item.cartItemId, item.quantity - 1)}
+                      aria-label={`${copy.cart.decrease}: ${item.product.name}`}
+                      disabled={cartMutationPending || item.quantity <= 1}
+                    >
+                      <Minus size={16} strokeWidth={2} aria-hidden="true" />
+                    </button>
+                    <span aria-live="polite">{item.quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => void updateCartQuantity(item.cartItemId, item.quantity + 1)}
+                      aria-label={`${copy.cart.increase}: ${item.product.name}`}
+                      disabled={cartMutationPending}
+                    >
+                      <Plus size={16} strokeWidth={2} aria-hidden="true" />
+                    </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="cart-line-actions">
+                  <span>{copy.cart.lineTotal}</span>
+                  <strong>{formatMoney(item.lineTotal, locale)}</strong>
+                  <button
+                    className="icon-only"
+                    type="button"
+                    onClick={() => void removeFromCart(item.cartItemId)}
+                    aria-label={copy.cart.remove(item.product.name)}
+                    disabled={cartMutationPending}
+                  >
+                    <Trash2 size={19} strokeWidth={2} aria-hidden="true" />
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <aside className="cart-summary">
+        <section className="cart-fulfillment">
+          <MapPin size={22} strokeWidth={2} aria-hidden="true" />
+          <div>
+            <span>{copy.cart.fulfillmentTitle}</span>
+            <strong>{copy.cart.chooseAtCheckout}</strong>
+            <p>{copy.cart.fulfillmentConfirmation}</p>
+            <small>{copy.cart.requestedDealer(selectedDealerName)}</small>
+          </div>
+        </section>
+        <section className="summary-panel">
+          <h2>{copy.cart.summary}</h2>
+          <dl className="cart-totals">
+            <div className="cart-current-total"><dt>{copy.cart.productsSubtotal}<small>{copy.cart.itemCount(cartCount)}</small></dt><dd>{formatMoney(cartSubtotal, locale)}</dd></div>
+          </dl>
+          <p className="cart-total-note">{copy.cart.taxesDelivery}</p>
+          <p className="cart-inventory-notice"><ShieldCheck size={18} aria-hidden="true" />{copy.cart.inventoryNotice}</p>
+          {cartMutationPending ? <p className="cart-update-status" role="status">{copy.cart.mutationPending}</p> : null}
+          {mutationState.status === "error" ? (
+            <p className="form-message form-message-error" role="alert">
+              {copy.storefront.requestError}
+            </p>
+          ) : null}
+          {cartMutationPending ? (
+            <button className="button button-primary" type="button" disabled>{copy.cart.mutationPending}</button>
+          ) : (
+            <Link className="button button-primary" href={localeHref("/checkout", locale)}>
+              <ShieldCheck size={18} aria-hidden="true" />{copy.cart.secureCheckout}
+            </Link>
+          )}
+          <Link className="cart-summary-link" href={canonicalCatalogUrl(locale)} prefetch={false} onClick={handleCanonicalCatalogClick(locale)}>
+            {copy.cart.continueShopping}
+          </Link>
+        </section>
       </aside>
     </div>
   );

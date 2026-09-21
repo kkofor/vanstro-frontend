@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ops · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  :root { --side: 232px; }
+  html, body { margin: 0; background: var(--vs-grey-50); color: var(--vs-text); }
+  a { color: var(--vs-navy); }
+  .shell { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); min-height: 100vh; }
+
+  /* ---- sidebar ---- */
+  .side { background: var(--vs-navy-900); color: #fff; position: sticky; top: 0; height: 100vh; overflow: auto; display: flex; flex-direction: column; }
+  .side__brand { display: grid; gap: 10px; padding: 18px 18px 14px; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .side__brand img { height: 26px; width: auto; justify-self: start; }
+  .side__brand strong { font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; display: block; }
+  .side__brand span { display: block; color: rgba(255,255,255,.5); font-size: 11.5px; font-weight: 500; margin-top: 2px; }
+  .side nav { padding: 12px 10px; display: grid; gap: 2px; flex: 1; }
+  .side .grp { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.42); padding: 14px 10px 6px; font-weight: 700; }
+  .side nav a { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: rgba(255,255,255,.76); padding: 8px 10px; border-radius: 8px; font-size: 13.5px; font-weight: 600; text-decoration: none; }
+  .side nav a:hover { background: rgba(255,255,255,.07); color: #fff; }
+  .side nav a.is-on { background: rgba(255,255,255,.14); color: #fff; }
+  .side nav a .n { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: rgba(255,255,255,.14); color: #fff; font-variant-numeric: tabular-nums; }
+  .side nav a .n.warn { background: var(--vs-orange); color: #1b1200; }
+  .side nav a .n.bad { background: #e0574d; }
+  .side__foot { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,.08); font-size: 12px; color: rgba(255,255,255,.6); display: grid; gap: 8px; }
+  .side__foot .btn { color: #fff; justify-self: start; }
+
+  /* ---- main ---- */
+  .main { min-width: 0; padding: 22px 32px 80px; display: grid; gap: 18px; align-content: start; max-width: 1480px; }
+  .topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .topbar h1 { margin: 0; font-size: 24px; letter-spacing: -.01em; }
+  .topbar .sub { margin: 4px 0 0; color: var(--vs-text-3); font-size: 13.5px; }
+  .topbar .crumbs { margin: 0 0 4px; font-size: 12.5px; color: var(--vs-text-3); }
+  .topbar .right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .seg { display: inline-flex; background: #fff; border: 1px solid var(--vs-grey-200); border-radius: 8px; padding: 3px; }
+  .seg button { font: inherit; font-size: 12.5px; font-weight: 600; padding: 6px 12px; border: 0; border-radius: 6px; background: transparent; color: var(--vs-text-2); cursor: pointer; }
+  .seg button.is-on { background: var(--vs-navy); color: #fff; }
+  .jump { min-width: 260px; height: 38px; }
+  .control { height: 40px; }
+  textarea.control { height: auto; }
+
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 12px; }
+  .kpi { background: #fff; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-lg); padding: 14px 16px; text-align: left; color: inherit; text-decoration: none; display: block; width: 100%; min-width: 0; }
+  button.kpi { cursor: pointer; font: inherit; }
+  button.kpi:hover, a.kpi:hover { border-color: var(--vs-navy); }
+  .kpi em { display: block; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi b { display: block; font-size: 24px; margin-top: 6px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; white-space: nowrap; }
+  .kpi small { display: block; color: var(--vs-text-3); font-size: 12px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .kpi.warn b { color: var(--vs-orange-ink); }
+  .kpi.bad b { color: var(--vs-error); }
+
+  .row { display: grid; gap: 16px; align-items: start; }
+  .row--2 { grid-template-columns: 1fr 1fr; }
+  .row--3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row--main { grid-template-columns: minmax(0, 1.5fr) minmax(320px, .9fr); }
+  .stack { display: grid; gap: 16px; }
+
+  .panel { background: #fff; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-lg); min-width: 0; }
+  .panel__h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--vs-grey-100); }
+  .panel__h h3 { margin: 0; font-size: 14.5px; }
+  .panel__h p { margin: 0; font-size: 12.5px; color: var(--vs-text-3); }
+  .panel__b { padding: 16px 18px; }
+  .panel__b.tight { padding: 0; }
+  .panel__b.tight table.data td:first-child, .panel__b.tight table.data th:first-child { padding-left: 18px; }
+  .panel__b.tight table.data td:last-child, .panel__b.tight table.data th:last-child { padding-right: 18px; }
+  .panel .empty { padding: 26px; text-align: center; color: var(--vs-text-3); font-size: 13.5px; }
+
+  table.data { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.data th, table.data td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--vs-grey-100); vertical-align: middle; }
+  table.data tbody tr:last-child td { border-bottom: 0; }
+  table.data th { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--vs-text-3); white-space: nowrap; font-weight: 700; }
+  table.data tr[data-go] { cursor: pointer; }
+  table.data tr[data-go]:hover td { background: var(--vs-grey-50); }
+  table.data td.num, table.data th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  table.data td.nw { white-space: nowrap; }
+  table.data .sub { display: block; color: var(--vs-text-3); font-size: 12px; margin-top: 2px; }
+  .mono { font-family: var(--vs-mono, ui-monospace, monospace); font-size: 12.5px; white-space: nowrap; }
+  .muted { color: var(--vs-text-3); }
+  .chips { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+
+  .gate { max-width: 440px; margin: 72px auto; }
+  .kv { display: grid; grid-template-columns: 140px 1fr; gap: 8px 14px; font-size: 13.5px; margin: 0; }
+  .kv dt { color: var(--vs-text-3); font-weight: 600; }
+  .kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  .notes { display: grid; gap: 8px; }
+  .note { padding: 10px 12px; background: var(--vs-grey-50); border-radius: 8px; font-size: 13px; }
+  .note time { color: var(--vs-text-3); font-size: 12px; display: block; margin-bottom: 2px; }
+  .prod { display: flex; gap: 12px; align-items: center; }
+  .prod img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; background: var(--vs-grey-100); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .span2 { grid-column: 1 / -1; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .chk { display: flex; gap: 8px; align-items: center; font-size: 13px; }
+  .svc { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 6px; }
+  .banner { padding: 12px 16px; border-radius: 10px; font-size: 13.5px; display: grid; gap: 4px; }
+  .banner--high { background: var(--vs-error-50); }
+  .banner--review { background: var(--vs-orange-50); }
+  .banner--info { background: var(--vs-navy-50); }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .toolbar .control { min-width: 150px; }
+  .toolbar .control.grow { flex: 1; min-width: 220px; }
+  h4.sec { margin: 18px 0 8px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-text-3); }
+
+  /* charts (pure CSS) */
+  .bars { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding-top: 6px; }
+  .bars i { flex: 1; min-width: 4px; background: var(--vs-navy); border-radius: 3px 3px 0 0; position: relative; display: block; min-height: 2px; opacity: .92; }
+  .bars i.alt { background: var(--vs-navy-100); }
+  .bars i.zero { background: var(--vs-grey-150); }
+  .bars i:hover { opacity: 1; filter: brightness(1.1); }
+  .axis { display: flex; justify-content: space-between; font-size: 11px; color: var(--vs-text-3); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--vs-text-3); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--vs-navy); vertical-align: -1px; margin-right: 6px; }
+  .legend i.alt { background: var(--vs-navy-100); }
+  .hlist { display: grid; gap: 9px; }
+  .hrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; font-size: 13px; align-items: center; }
+  .hrow .lab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .hrow .val { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--vs-text-2); }
+  .hrow .val small { color: var(--vs-text-3); margin-left: 6px; }
+  .hrow .bar { grid-column: 1 / -1; height: 6px; background: var(--vs-grey-100); border-radius: 3px; overflow: hidden; }
+  .hrow .bar i { display: block; height: 100%; background: var(--vs-navy); border-radius: 3px; }
+  .hrow .bar i.orange { background: var(--vs-orange); }
+  .funnel { display: grid; gap: 10px; }
+  .fstep { display: grid; grid-template-columns: 130px minmax(0, 1fr) 90px; gap: 12px; align-items: center; font-size: 13px; }
+  .fstep .bar { height: 22px; background: var(--vs-grey-100); border-radius: 6px; overflow: hidden; }
+  .fstep .bar i { display: block; height: 100%; background: var(--vs-navy); border-radius: 6px; }
+  .fstep .n { text-align: right; font-variant-numeric: tabular-nums; }
+  .fstep .n small { display: block; color: var(--vs-text-3); font-size: 11.5px; }
+  .tl { display: grid; gap: 0; position: relative; }
+  .tl__i { display: grid; grid-template-columns: 118px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--vs-grey-100); font-size: 13px; }
+  .tl__i:last-child { border-bottom: 0; }
+  .tl__i time { color: var(--vs-text-3); font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .tl__i .k { font-weight: 600; }
+  .tl__i .d { color: var(--vs-text-2); }
+  .alerts { display: grid; gap: 8px; }
+  .alert { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; background: var(--vs-grey-50); font-size: 13px; text-decoration: none; color: inherit; }
+  .alert.bad { background: var(--vs-error-50); }
+  .alert.warn { background: var(--vs-orange-50); }
+  .alert b { white-space: nowrap; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--vs-green); display: inline-block; margin-right: 6px; }
+  .dot.off { background: var(--vs-grey-300); }
+
+  @media (max-width: 1180px) { .row--3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 980px) {
+    .shell { grid-template-columns: 1fr; }
+    .side { position: static; height: auto; }
+    .side nav { display: flex; flex-wrap: wrap; gap: 4px; }
+    .side .grp { display: none; }
+    .main { padding: 18px 16px 60px; }
+    .row--2, .row--3, .row--main, .grid2 { grid-template-columns: 1fr; }
+  }
+
+  /* traffic: channel cards + stacked bars */
+  .chans { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .chan { border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); padding: 12px; display: grid; gap: 6px; min-width: 0; }
+  .chan--empty { opacity: .55; }
+  .chan__h { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .chan__h b { font-size: 20px; font-variant-numeric: tabular-nums; }
+  .chan__bar { display: block; height: 6px; background: var(--vs-grey-50); border-radius: 3px; overflow: hidden; }
+  .chan__bar i { display: block; height: 100%; background: var(--vs-navy); border-radius: 3px; }
+  .chan small { display: block; font-size: 12px; color: var(--vs-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chan small.muted { color: var(--vs-text-3); }
+  .bars.stacked span { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; min-width: 3px; border-radius: 3px 3px 0 0; overflow: hidden; background: transparent; }
+  .bars.stacked span b { display: block; width: 100%; min-height: 1px; }
+  .bars.stacked span:hover { filter: brightness(.92); }
+  .sec2 { font-size: 16px; margin: 22px 0 10px; }
+  .panel__b.scrolly { max-height: 460px; overflow: auto; }
+  .panel__b.scrolly thead th { position: sticky; top: 0; background: #fff; z-index: 1; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script src="/account/assets/tax.js"></script>
+<script>
+(function () {
+  /* ------------------------------------------------------------ helpers */
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = c => (window.VSTax ? VSTax.formatCAD(c) : new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format((Number(c) || 0) / 100));
+  const num = n => new Intl.NumberFormat('en-CA').format(Number(n) || 0);
+  const pct = (a, b) => b ? Math.round((1000 * a) / b) / 10 + '%' : '—';
+  const when = iso => iso ? new Date(iso).toLocaleString('en-CA', { timeZone: 'America/Winnipeg', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+  const whenFull = iso => iso ? new Date(iso).toLocaleString('en-CA', { timeZone: 'America/Winnipeg', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) : '—';
+  const dayShort = d => { const [, m, dd] = String(d).split('-'); return `${Number(m)}/${Number(dd)}`; };
+  const ago = iso => {
+    if (!iso) return '—';
+    const m = Math.round((Date.now() - Date.parse(iso)) / 60000);
+    if (m < 1) return 'just now'; if (m < 60) return m + ' min'; const h = Math.round(m / 60); if (h < 48) return h + ' h'; return Math.round(h / 24) + ' d';
+  };
+  const chip = (label, kind) => `<span class="chip chip--${kind || 'navy'}">${esc(label)}</span>`;
+  const statusChip = s => ({
+    paid: chip('Paid', 'green'), pending_payment: chip('Pending', 'orange'), declined: chip('Declined'),
+    expired: chip('Expired'), cancelled: chip('Cancelled'),
+  }[s] || chip(s || '—'));
+  const fulfillChip = s => ({
+    unfulfilled: chip('Unfulfilled', 'orange'), processing: chip('Processing', 'navy'),
+    in_transit: chip('In transit', 'navy'), delivered: chip('Delivered', 'green'), returned: chip('Returned'),
+  }[s] || (s ? chip(s) : '—'));
+  const riskChip = r => !r || r.level === 'clear' ? '' : chip(r.level === 'high' ? 'High risk' : 'Review', r.level === 'high' ? undefined : 'orange');
+  const holdChip = h => h ? chip('Hold') : '';
+  const DELIVERY = { freight: 'Curbside freight', white: 'White-glove', pickup: 'Dealer pickup' };
+  const PROVS = ['AB','BC','MB','NB','NL','NS','NT','NU','ON','PE','QC','SK','YT'];
+  const SVCS = [
+    ['pickup','Pickup'],['delivery','Local delivery'],['installation','Installation'],
+    ['measurement','Site measurement'],['design','Design'],['disposal','Disposal'],
+  ];
+  const phoneOut = p => {
+    const d = String(p || '').replace(/\D/g, '').replace(/^1/, '');
+    return d.length === 10 ? `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}` : (p || '');
+  };
+
+  /* ------------------------------------------------------------ state */
+  let win = localStorage.getItem('vs.ops.win') || '7d';   // today | 7d | 30d | all
+  let pendingOrderQ = '';
+  let pendingFilters = {};
+  let navCounts = null;
+  function setWin(w) { win = w; localStorage.setItem('vs.ops.win', w); }
+  const winFor = (api) => {
+    if (api === 'traffic') return win === 'all' ? '30d' : win;
+    if (api === 'payments') return win === '30d' ? 'all' : win;
+    return win;
+  };
+  const WIN_LABEL = { today: 'Today', '7d': 'Last 7 days', '30d': 'Last 30 days', all: 'All time' };
+  function hash() {
+    const raw = (location.hash || '#overview').replace(/^#/, '');
+    const path = raw.split('?')[0];
+    const [page, ...rest] = path.split('/');
+    return { page: page || 'overview', id: rest.length ? decodeURIComponent(rest.join('/')) : '' };
+  }
+  function go(h) { location.hash = h; }
+
+  /* ------------------------------------------------------------ form bits */
+  function sel(id, val, opts, extra = '') {
+    return `<select class="control" id="${id}" ${extra}>${opts.map(([v, l]) => `<option value="${esc(v)}"${String(val)===String(v)?' selected':''}>${esc(l)}</option>`).join('')}</select>`;
+  }
+  function field(id, label, value, extra = '') {
+    return `<label class="field"><span class="field__label">${esc(label)}</span><input class="control" id="${id}" value="${esc(value ?? '')}" ${extra}></label>`;
+  }
+  function addrFields(p, a) {
+    a = a || {};
+    return `<div class="grid2">
+      ${field(p+'Name','Recipient', a.name)}
+      ${field(p+'Company','Company', a.company || '')}
+      <div class="span2">${field(p+'Street','Street', a.street)}</div>
+      ${field(p+'Unit','Unit', a.unit || '')}
+      ${field(p+'City','City', a.city)}
+      <label class="field"><span class="field__label">Province</span>${sel(p+'Prov', a.province, PROVS.map(x => [x, x]))}</label>
+      ${field(p+'Postal','Postal code', a.postalCode)}
+      ${field(p+'Phone','Phone', phoneOut(a.phone))}
+    </div>`;
+  }
+  function readAddr(p) {
+    return {
+      name: ($('#'+p+'Name').value || '').trim(),
+      company: ($('#'+p+'Company').value || '').trim(),
+      street: ($('#'+p+'Street').value || '').trim(),
+      unit: ($('#'+p+'Unit').value || '').trim(),
+      city: ($('#'+p+'City').value || '').trim(),
+      province: $('#'+p+'Prov').value,
+      postalCode: ($('#'+p+'Postal').value || '').trim(),
+      phone: ($('#'+p+'Phone').value || '').trim(),
+    };
+  }
+
+  /* ------------------------------------------------------------ viz bits */
+  function bars(series, key, opts = {}) {
+    const max = Math.max(1, ...series.map(s => Number(s[key]) || 0));
+    const fmt = opts.fmt || num;
+    return `<div class="bars">${series.map(s => {
+      const v = Number(s[key]) || 0;
+      const h = v ? Math.max(3, Math.round((100 * v) / max)) : 2;
+      return `<i class="${v ? (opts.alt ? 'alt' : '') : 'zero'}" style="height:${h}%" title="${esc(s.day || s.hour)} · ${esc(fmt(v))}"></i>`;
+    }).join('')}</div>
+    <div class="axis"><span>${esc(series.length ? (series[0].day ? dayShort(series[0].day) : series[0].hour + ':00') : '')}</span><span>${esc(series.length ? (series[series.length-1].day ? dayShort(series[series.length-1].day) : series[series.length-1].hour + ':00') : '')}</span></div>`;
+  }
+  function hlist(items, opts = {}) {
+    if (!items || !items.length) return `<p class="muted" style="margin:0">${esc(opts.empty || 'No data yet.')}</p>`;
+    const total = items.reduce((s, x) => s + (Number(x[opts.valueKey || 'count']) || 0), 0);
+    const max = Math.max(1, ...items.map(x => Number(x[opts.valueKey || 'count']) || 0));
+    return `<div class="hlist">${items.map(x => {
+      const v = Number(x[opts.valueKey || 'count']) || 0;
+      const label = opts.label ? opts.label(x) : (x.label || x.key || x.sku);
+      const val = opts.fmt ? opts.fmt(v, x) : num(v);
+      const share = opts.share === false ? '' : `<small>${pct(v, total)}</small>`;
+      return `<div class="hrow"${x.go ? ` data-go="${esc(x.go)}" style="cursor:pointer"` : ''}><span class="lab" title="${esc(label)}">${esc(label)}</span><span class="val">${esc(val)}${share}</span><span class="bar"><i class="${opts.orange ? 'orange' : ''}" style="width:${Math.round((100 * v) / max)}%"></i></span></div>`;
+    }).join('')}</div>`;
+  }
+  function funnel(steps) {
+    const base = Math.max(1, steps[0] ? steps[0].n : 0);
+    return `<div class="funnel">${steps.map((s, i) => {
+      const prev = i ? steps[i - 1].n : s.n;
+      const step = !i ? '100%' : s.n > prev ? 'more than prev — traffic gap' : pct(s.n, prev) + ' of prev';
+      return `<div class="fstep"><span>${esc(s.label)}</span><span class="bar"><i style="width:${Math.min(100, Math.round((100 * s.n) / base))}%"></i></span><span class="n">${num(s.n)}<small>${step}</small></span></div>`;
+    }).join('')}</div>`;
+  }
+  function panel(title, body, opts = {}) {
+    return `<section class="panel"><div class="panel__h"><div><h3>${esc(title)}</h3>${opts.sub ? `<p>${opts.sub}</p>` : ''}</div>${opts.right || ''}</div><div class="panel__b ${opts.tight ? 'tight' : ''} ${opts.cls || ''}">${body}</div></section>`;
+  }
+  const table = (head, rows, empty) => rows
+    ? `<table class="data"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>`
+    : `<p class="empty">${esc(empty || 'Nothing here.')}</p>`;
+  const kpi = (label, value, sub, opts = {}) => {
+    const tag = opts.go ? 'a' : opts.jump ? 'button' : 'div';
+    const attrs = opts.go ? ` href="#${opts.go}"` : opts.jump ? ` type="button" data-jump="${opts.jump}"` : '';
+    return `<${tag} class="kpi ${opts.kind || ''}"${attrs}><em>${esc(label)}</em><b>${value}</b><small>${sub || ''}</small></${tag}>`;
+  };
+  function orderRows(list, opts = {}) {
+    return (list || []).map(o => `<tr data-go="#orders/${encodeURIComponent(o.orderNo)}">
+      <td class="mono">${esc(o.orderNo)}</td>
+      <td class="nw">${when(o.createdAt)}</td>
+      <td><span>${esc(o.email)}</span><span class="sub">${o.guest ? 'Guest' : 'Account'}${o.dealer ? ' · ' + esc(o.dealer.name) : ''}${opts.province !== false && o.shipping ? ' · ' + esc(o.shipping.province) : ''}</span></td>
+      <td><span class="chips">${statusChip(o.status)} ${o.fulfillment ? fulfillChip(o.fulfillment) : ''} ${riskChip(o.risk)} ${holdChip(o.riskHold)}</span></td>
+      <td class="num">${esc(money(o.quote && o.quote.totalCents))}</td>
+    </tr>`).join('');
+  }
+  const ORDER_HEAD = '<th>Order</th><th>Placed</th><th>Customer</th><th>Status</th><th class="num">Total</th>';
+
+  /* ------------------------------------------------------------ api */
+  async function api(path, opts = {}) {
+    const r = await fetch(path, {
+      ...opts,
+      headers: { 'content-type': 'application/json', ...VSSession.headers(), ...(opts.headers || {}) },
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error(data.error || 'request_failed'), { status: r.status, data });
+    return data;
+  }
+  async function run(btn, fn, ok) {
+    if (btn) btn.disabled = true;
+    try { await fn(); if (ok) VS.toast(ok); }
+    catch (e) { VS.toast(e.data && e.data.error ? e.data.error.replace(/_/g, ' ') : e.message, 'error'); }
+    finally { if (btn) btn.disabled = false; }
+  }
+  function staffSession() { return VSSession.isStaff() ? VSSession.get() : null; }
+  function setStaff(email) { VSSession.set({ userId: 'usr_staff_ops', email, name: 'Operations', role: 'staff', dealerId: null }); }
+
+  /* ------------------------------------------------------------ chrome */
+  const NAV = [
+    ['Overview', [['overview', 'Dashboard']]],
+    ['Sales', [['orders', 'Orders'], ['payments', 'Payments'], ['risk', 'Risk'], ['reports', 'Reports']]],
+    ['Growth', [['traffic', 'Traffic'], ['seo', 'SEO'], ['customers', 'Customers']]],
+    ['Catalogue', [['products', 'Products'], ['dealers', 'Dealers']]],
+    ['Admin', [['ops', 'System']]],
+  ];
+  const PARENT = { order: 'orders', customer: 'customers', product: 'products', dealer: 'dealers' };
+  function badge(k) {
+    const c = navCounts || {};
+    if (k === 'orders' && c.pending) return `<span class="n warn">${c.pending}</span>`;
+    if (k === 'payments' && c.unresolved) return `<span class="n bad">${c.unresolved}</span>`;
+    if (k === 'risk' && (c.high || c.holds)) return `<span class="n ${c.high ? 'bad' : 'warn'}">${(c.high || 0) + (c.holds || 0)}</span>`;
+    if (k === 'traffic' && c.live) return `<span class="n">${c.live} live</span>`;
+    return '';
+  }
+  function chrome(active, head, body, opts = {}) {
+    const s = VSSession.get() || {};
+    const on = k => (active === k || PARENT[active] === k) ? 'is-on' : '';
+    const segs = opts.win ? `<div class="seg">${['today','7d','30d','all'].filter(w => !(opts.winOpts && !opts.winOpts.includes(w))).map(w => `<button type="button" data-win="${w}" class="${win===w?'is-on':''}">${WIN_LABEL[w].replace('Last ', '')}</button>`).join('')}</div>` : '';
+    return `<div class="shell">
+      <aside class="side">
+        <a class="side__brand" href="#overview"><img src="/account/assets/brand/logo-reverse.png" alt="VANSTRO"><div><strong>Ops console</strong><span>Vanstro Global Supply</span></div></a>
+        <nav>${NAV.map(([g, items]) => `<div class="grp">${g}</div>${items.map(([k, l]) => `<a href="#${k}" class="${on(k)}"><span>${l}</span>${badge(k)}</a>`).join('')}`).join('')}</nav>
+        <div class="side__foot"><span>${esc(s.email || '')}</span><span>America/Winnipeg · ${new Date().toLocaleTimeString('en-CA', { timeZone: 'America/Winnipeg', hour: '2-digit', minute: '2-digit' })}</span><button type="button" class="btn btn--ghost btn--sm" id="signOut">Sign out</button></div>
+      </aside>
+      <main class="main">
+        <div class="topbar">
+          <div>${head}</div>
+          <div class="right">${segs}<input class="control jump" id="jump" placeholder="Jump to order # or email…" autocomplete="off">${opts.right || ''}</div>
+        </div>
+        ${body}
+      </main>
+    </div>`;
+  }
+  const title = (h1, sub, crumbs) => `${crumbs ? `<p class="crumbs">${crumbs}</p>` : ''}<h1${/^VS-/.test(h1) ? ' class="mono" style="font-size:22px"' : ''}>${esc(h1)}</h1>${sub ? `<p class="sub">${sub}</p>` : ''}`;
+
+  function gate() {
+    return `<main class="main" style="max-width:none"><div class="gate card">
+      <div class="card__body" style="display:grid;gap:14px">
+        <div><p class="eyebrow">Staff only</p><h1>Ops console</h1>
+        <p class="muted">Orders, payments, risk, traffic, catalogue, dealers. Customer and dealer accounts cannot open this.</p></div>
+        <label class="field"><span class="field__label">Work email</span><input class="control" id="gEmail" type="email" value="ops@vanstro.ca" autocomplete="username"></label>
+        <label class="field"><span class="field__label">Password</span><input class="control" id="gPw" type="password" value="Vanstro2026!" data-demo="Vanstro2026!" autocomplete="current-password"></label>
+        <p class="muted" id="gErr" hidden></p>
+        <button type="button" class="btn btn--primary" id="gGo">Open console</button>
+        <p class="muted">Prototype: <code>ops@vanstro.ca</code> / <code>Vanstro2026!</code>. Production replaces this with an IdP group.</p>
+      </div>
+    </div></main>`;
+  }
+
+  async function loadNavCounts() {
+    try {
+      const [s, t] = await Promise.all([api('/api/admin/summary'), api('/api/admin/traffic?window=today').catch(() => null)]);
+      navCounts = { pending: s.orders.pending, unresolved: (s.payments && s.payments.unresolved) || 0, high: (s.risk && s.risk.high) || 0, holds: (s.risk && s.risk.holds) || 0, live: t ? t.live.visitors : 0 };
+      return s;
+    } catch { return null; }
+  }
+
+  /* ------------------------------------------------------------ dashboard */
+  async function overview() {
+    const [s, rep, tr, recent] = await Promise.all([
+      api('/api/admin/summary'),
+      api('/api/admin/reports?window=' + winFor('reports')),
+      api('/api/admin/traffic?window=' + winFor('traffic')).catch(() => null),
+      api('/api/admin/orders?').then(d => d.orders.slice(0, 8)).catch(() => []),
+    ]);
+    const o = s.orders, t = rep.totals, tf = tr ? tr.totals : null, fn = tr ? tr.funnel : null;
+    const alerts = [];
+    if ((s.payments && s.payments.unresolved) > 0) alerts.push({ k: 'bad', t: `${s.payments.unresolved} unresolved card attempt${s.payments.unresolved === 1 ? '' : 's'}`, d: 'Do not retry with a new card until Moneris reconciles.', go: '#payments' });
+    if ((s.risk && s.risk.high) > 0) alerts.push({ k: 'bad', t: `${s.risk.high} high-risk order${s.risk.high === 1 ? '' : 's'}`, d: 'Review before shipping.', go: '#risk' });
+    if ((s.risk && s.risk.holds) > 0) alerts.push({ k: 'warn', t: `${s.risk.holds} order${s.risk.holds === 1 ? '' : 's'} on hold`, d: 'Fulfillment is blocked until released.', go: '#risk' });
+    if (o.unfulfilled > 0) alerts.push({ k: 'warn', t: `${o.unfulfilled} paid, not handed off`, d: 'Warehouse / dealer handoff pending.', go: '#orders', jump: 'unfulfilled' });
+    if (!s.health.ht && s.health.payment === 'live') alerts.push({ k: 'bad', t: 'Moneris HT profile missing', d: 'Live checkout cannot tokenise cards.', go: '#ops' });
+    if (!s.health.mail) alerts.push({ k: 'warn', t: 'Mail not configured', d: 'Confirmations and invoices are not being sent.', go: '#ops' });
+    if ((s.orders && s.orders.erpFailed) > 0) alerts.push({ k: 'bad', t: `${s.orders.erpFailed} paid order${s.orders.erpFailed === 1 ? '' : 's'} failed ERP push`, d: 'Open the order and retry. Payment already captured — this is warehouse sync only.', go: '#orders' });
+    if (!s.health.erp && s.health.payment === 'live') alerts.push({ k: 'warn', t: 'ERP not configured', d: 'Paid orders are not reaching erp.vanstro.ca until ERP_BASE_URL and ERP_TOKEN are set.', go: '#ops' });
+    if (tr && !tr.collecting) alerts.push({ k: '', t: 'No traffic collected yet', d: 'assets/analytics.js beacons once storefront pages are opened.', go: '#traffic' });
+    if (!alerts.length) alerts.push({ k: '', t: 'All clear', d: 'No open payment, risk, or configuration issues.' });
+
+    const winTxt = WIN_LABEL[win].toLowerCase();
+    return chrome('overview', title('Dashboard', `${winTxt} · America/Winnipeg · live from <code>data/orders</code> + <code>data/traffic</code>`), `
+      <div class="kpis">
+        ${kpi('Revenue', esc(money(t.revenueCents)), `${t.paid} paid · AOV ${esc(money(t.aovCents))}`, { go: 'reports' })}
+        ${kpi('Orders created', num(t.created), `${t.paidRate == null ? '—' : t.paidRate + '%'} paid · ${t.medianMinutesToPay == null ? '—' : t.medianMinutesToPay + ' min'} to pay`, { go: 'orders' })}
+        ${kpi('Visitors', tf ? num(tf.visitors) : '—', tf ? `${num(tf.sessions)} sessions · ${num(tf.pageviews)} views` : 'beacon not collecting', { go: 'traffic' })}
+        ${kpi('Conversion', fn && fn.conversion != null ? fn.conversion + '%' : '—', fn ? `${fn.paid} paid / ${fn.sessions} sessions` : 'needs traffic', { go: 'traffic' })}
+        ${kpi('Customers', num(t.customers), `${t.newCustomers} new · ${t.returningCustomers} returning`, { go: 'customers' })}
+        ${kpi('Live now', tr ? num(tr.live.visitors) : '—', 'visitors in last 5 min', { go: 'traffic' })}
+      </div>
+      <div class="kpis">
+        ${kpi('Open payment', num(o.pending), 'pending card / POS', { jump: 'pending', kind: o.pending ? 'warn' : '' })}
+        ${kpi('Unfulfilled', num(o.unfulfilled), 'paid, not handed off', { jump: 'unfulfilled', kind: o.unfulfilled ? 'warn' : '' })}
+        ${kpi('Declined / expired', num((s.payments && s.payments.declined) || 0), `${(s.payments && s.payments.expired) || 0} expired · ${(s.payments && s.payments.unresolved) || 0} unresolved`, { go: 'payments', kind: (s.payments && s.payments.unresolved) ? 'bad' : '' })}
+        ${kpi('Risk queue', num((s.risk && s.risk.high) || 0), `${(s.risk && s.risk.review) || 0} review · ${(s.risk && s.risk.holds) || 0} holds · ${(s.risk && s.risk.blocks) || 0} blocked`, { go: 'risk', kind: (s.risk && s.risk.high) ? 'bad' : '' })}
+        ${kpi('Paid today', esc(money(o.todayCents)), `${o.todayCount} order${o.todayCount === 1 ? '' : 's'}`, { jump: 'paid-today' })}
+        ${kpi('Catalogue', num(s.products.skuCount), `${s.products.overrides} override${s.products.overrides === 1 ? '' : 's'} · ${s.dealers.count} dealers`, { go: 'products' })}
+      </div>
+      <div class="row row--2">
+        ${panel('Revenue by day', bars(rep.daily, 'cents', { fmt: money }), { sub: `${WIN_LABEL[win]} · paid orders, CAD incl. tax`, right: `<span class="legend"><span><i></i>Paid CAD</span></span>` })}
+        ${panel('Visitors by day', tr ? bars(tr.daily, 'visitors') : '<p class="empty">Traffic API unavailable.</p>', { sub: tr && tr.collecting ? `${WIN_LABEL[win === 'all' ? '30d' : win]} · unique visitors` : 'Collecting starts when a storefront page loads', right: `<span class="legend"><span><i></i>Visitors</span></span>` })}
+      </div>
+      <div class="row row--3">
+        ${panel('Funnel', fn ? funnel([
+          { label: 'Sessions', n: fn.sessions }, { label: 'Viewed cart', n: fn.cart }, { label: 'Reached checkout', n: fn.checkout },
+          { label: 'Order created', n: fn.ordersCreated }, { label: 'Paid', n: fn.paid },
+        ]) : '<p class="empty">Needs traffic.</p>', { sub: fn && fn.revenuePerSession != null ? `${esc(money(fn.revenuePerSession))} per session` : 'sessions → cart → checkout → paid' })}
+        ${panel('Top products', hlist(rep.topSkus.slice(0, 8), { valueKey: 'cents', fmt: money, label: x => `${x.name}${x.variant ? ' · ' + x.variant : ''}`, share: false }), { sub: 'paid revenue by SKU', right: `<a href="#reports" class="muted" style="font-size:12.5px">All →</a>` })}
+        ${panel('Provinces', hlist(rep.provinces.slice(0, 8), { valueKey: 'cents', fmt: money }), { sub: 'ship-to province, paid revenue' })}
+      </div>
+      <div class="row row--main">
+        ${panel('Recent orders', table(ORDER_HEAD, orderRows(recent), 'No orders yet.'), { tight: true, right: `<a href="#orders" class="muted" style="font-size:12.5px">All orders →</a>` })}
+        <div class="stack">
+          ${panel('Attention', `<div class="alerts">${alerts.map(a => `<${a.go ? 'a' : 'div'} class="alert ${a.k}"${a.go ? ` href="${a.go}"` : ''}${a.jump ? ` data-jump="${a.jump}"` : ''}><b>${esc(a.t)}</b><span class="muted">${esc(a.d)}</span></${a.go ? 'a' : 'div'}>`).join('')}</div>`)}
+          ${panel('Health', `<dl class="kv">
+            <dt>Payment</dt><dd><span class="dot ${s.health.payment === 'live' ? '' : 'off'}"></span>${esc(s.health.payment)}${s.health.payment === 'live' ? '' : ' (mock)'}</dd>
+            <dt>HT profile</dt><dd><span class="dot ${s.health.ht ? '' : 'off'}"></span>${s.health.ht ? 'set' : 'missing'}</dd>
+            <dt>Mail</dt><dd><span class="dot ${s.health.mail ? '' : 'off'}"></span>${s.health.mail ? 'Azure Communication Services' : 'off'}</dd>
+            <dt>POS / Go</dt><dd><span class="dot ${s.health.pos ? '' : 'off'}"></span>${s.health.pos ? 'ready' : 'off'}</dd>
+            <dt>ERP</dt><dd><span class="dot ${s.health.erp ? '' : 'off'}"></span>${s.health.erp ? 'Order/syncEspoQuote' : 'off'}</dd>
+            <dt>Traffic</dt><dd><span class="dot ${tr && tr.collecting ? '' : 'off'}"></span>${tr && tr.collecting ? 'collecting' : 'no events yet'}</dd>
+          </dl>`, { right: `<a href="#ops" class="muted" style="font-size:12.5px">System →</a>` })}
+        </div>
+      </div>`, { win: true });
+  }
+
+  /* ------------------------------------------------------------ orders */
+  async function ordersList() {
+    const q = $('#fQ') ? $('#fQ').value : (pendingOrderQ || pendingFilters.q || '');
+    pendingOrderQ = '';
+    const status = $('#fSt') ? $('#fSt').value : (pendingFilters.status || '');
+    const fulfillment = $('#fFf') ? $('#fFf').value : (pendingFilters.fulfillment || '');
+    const guest = $('#fGu') ? $('#fGu').value : (pendingFilters.guest || '');
+    const risk = $('#fRk') ? $('#fRk').value : (pendingFilters.risk || '');
+    pendingFilters = {};
+    const qs = new URLSearchParams();
+    if (q) qs.set('q', q); if (status) qs.set('status', status); if (fulfillment) qs.set('fulfillment', fulfillment); if (guest) qs.set('guest', guest); if (risk) qs.set('risk', risk);
+    const d = await api('/api/admin/orders?' + qs);
+    const sum = d.orders.reduce((a, o) => a + (o.status === 'paid' ? o.quote.totalCents : 0), 0);
+    const rows = d.orders.map(o => `<tr data-go="#orders/${encodeURIComponent(o.orderNo)}">
+      <td class="mono">${esc(o.orderNo)}</td>
+      <td class="nw">${when(o.createdAt)}<span class="sub">${ago(o.createdAt)} ago</span></td>
+      <td>${esc(o.email)}<span class="sub">${o.guest ? 'Guest' : 'Account'} · ${esc(o.shipping.city)}, ${esc(o.shipping.province)}${o.dealer ? ' · ' + esc(o.dealer.name) : ''}</span></td>
+      <td class="nw">${esc(DELIVERY[o.deliveryMethod] || o.deliveryMethod)}<span class="sub">${o.payChannel === 'pos' ? 'POS / Go' : 'Card online'} · ${(o.items || []).reduce((a, i) => a + i.qty, 0)} item${(o.items || []).reduce((a, i) => a + i.qty, 0) === 1 ? '' : 's'}</span></td>
+      <td><span class="chips">${statusChip(o.status)} ${o.fulfillment ? fulfillChip(o.fulfillment) : ''} ${riskChip(o.risk)} ${holdChip(o.riskHold)}</span></td>
+      <td class="num">${esc(money(o.quote.totalCents))}</td>
+    </tr>`).join('');
+    return chrome('orders', title('Orders', `${d.total} matching · ${esc(money(sum))} paid in this list · open a row to edit, reopen, hold, or clone`), `
+      <div class="toolbar">
+        <input class="control grow" id="fQ" placeholder="Order, email, SKU, city, dealer" value="${esc(q)}">
+        <select class="control" id="fSt"><option value="">All payment</option>
+          ${['pending_payment','paid','declined','expired','cancelled'].map(s => `<option value="${s}"${status===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}</select>
+        <select class="control" id="fFf"><option value="">All fulfillment</option>
+          ${['unfulfilled','processing','in_transit','delivered','returned'].map(s => `<option value="${s}"${fulfillment===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}</select>
+        <select class="control" id="fGu"><option value="">Guest + account</option>
+          <option value="1"${guest==='1'?' selected':''}>Guest only</option>
+          <option value="0"${guest==='0'?' selected':''}>Account only</option></select>
+        <select class="control" id="fRk"><option value="">All risk</option>
+          <option value="high"${risk==='high'?' selected':''}>High</option>
+          <option value="review"${risk==='review'?' selected':''}>Review</option>
+          <option value="hold"${risk==='hold'?' selected':''}>On hold</option></select>
+        <button type="button" class="btn btn--secondary btn--sm" id="fGo">Filter</button>
+      </div>
+      ${panel('Results', table('<th>Order</th><th>Placed</th><th>Customer</th><th>Delivery</th><th>Status</th><th class="num">Total</th>', rows, 'No orders match.'), { tight: true })}`);
+  }
+
+  function totalsTable(q) {
+    const lines = (q.tax && q.tax.lines) || [];
+    return `<table class="data"><tbody>
+      <tr><td>Subtotal</td><td class="num">${esc(money(q.subtotalCents))}</td></tr>
+      ${q.discountCents ? `<tr><td>Promo ${q.promo ? `<span class="mono">${esc(q.promo.code)}</span> (${q.promo.pct}%)` : ''}</td><td class="num">−${esc(money(q.discountCents))}</td></tr>` : ''}
+      <tr><td>Delivery</td><td class="num">${esc(money(q.freightCents))}</td></tr>
+      ${lines.map(l => `<tr><td>${esc(l.labelEn || l.code)} ${l.rate != null ? `<span class="muted">${(l.rate * 100).toFixed(3).replace(/\.?0+$/, '')}%</span>` : ''}</td><td class="num">${esc(money(l.cents))}</td></tr>`).join('')}
+      ${!lines.length && q.tax ? `<tr><td>Tax (${esc(q.tax.province || '')})</td><td class="num">${esc(money(q.tax.taxTotal))}</td></tr>` : ''}
+      <tr><td><strong>Total</strong></td><td class="num"><strong>${esc(money(q.totalCents))}</strong></td></tr>
+    </tbody></table>`;
+  }
+
+  function timeline(o) {
+    const ev = [];
+    ev.push({ at: o.createdAt, k: 'Order created', d: `${o.guest ? 'Guest' : 'Account'} checkout · ${o.payChannel === 'pos' ? 'POS / Go' : 'card online'} · ${esc(o.locale || '')}` });
+    (o.consents || []).forEach(c => ev.push({ at: c.at, k: 'Consent', d: `${esc(c.kind)} · ip ${esc(c.ip || '—')}` }));
+    (o.paymentAttempts || []).forEach(a => ev.push({ at: a.at, k: `Card attempt #${a.n}`, d: a.outcome ? `${esc(a.outcome)}${a.code ? ' · ' + esc(a.label || a.code) : ''}` : 'unresolved — no response recorded' }));
+    if (o.declined && !(o.paymentAttempts || []).some(a => a.at === o.declined.at)) ev.push({ at: o.declined.at, k: 'Declined', d: esc(o.declined.code) });
+    if (o.openedAt && o.openedAt !== o.createdAt) ev.push({ at: o.openedAt, k: 'Reopened for payment', d: 'TTL restarted by ops' });
+    if (o.pos && o.pos.pushedAt) ev.push({ at: o.pos.pushedAt, k: 'Pushed to terminal', d: `${esc(o.posTerminalId || '')} · ${esc(o.pos.status)}${o.pos.cloudTicket ? ' · ticket ' + esc(o.pos.cloudTicket) : ''}` });
+    if (o.payment && o.payment.paidAt) ev.push({ at: o.payment.paidAt, k: 'Paid', d: `${esc(o.payment.brand || '')} •••• ${esc(o.payment.last4 || '')} · ${esc(money(o.payment.amountCents || o.quote.totalCents))}${o.payment.threeDS ? ' · 3DS' : ''}` });
+    if (o.erp && o.erp.at) ev.push({ at: o.erp.at, k: o.erp.status === 'success' ? 'Pushed to ERP' : o.erp.status === 'skipped' ? 'ERP skipped' : 'ERP push failed', d: `${esc(o.erp.path || 'Order/syncEspoQuote')} · ${o.erp.attempts || 1} attempt${(o.erp.attempts || 1) === 1 ? '' : 's'}${o.erp.error ? ' · ' + esc(o.erp.error) : ''}` });
+    if (o.invoiceDate) ev.push({ at: o.invoiceDate, k: 'Invoice issued', d: esc(o.invoiceNo || '') });
+    (o.notifications || []).forEach(n => ev.push({ at: n.sentAt || o.createdAt, k: n.sentAt ? 'Mail sent' : 'Mail failed', d: `${esc(n.kind.replace(/_/g, ' '))} → ${esc(n.to)}${n.error ? ' · ' + esc(n.error) : ''}` }));
+    if (o.riskHold) ev.push({ at: o.riskHold.at, k: 'Risk hold', d: `${esc(o.riskHold.reason)} · ${esc(o.riskHold.by)}` });
+    (o.internalNotes || []).forEach(n => ev.push({ at: n.at, k: 'Note', d: `${esc(n.by)}: ${esc(n.text)}` }));
+    if (o.claimedAt) ev.push({ at: o.claimedAt, k: 'Claimed by account', d: esc(o.userId || '') });
+    ev.sort((a, b) => String(a.at).localeCompare(String(b.at)));
+    return `<div class="tl">${ev.map(e => `<div class="tl__i"><time>${esc(whenFull(e.at))}</time><div><span class="k">${e.k}</span><div class="d">${e.d}</div></div></div>`).join('')}</div>`;
+  }
+
+  async function orderDetail(id) {
+    const [{ order: o }, dealers] = await Promise.all([
+      api('/api/admin/orders/' + encodeURIComponent(id)),
+      api('/api/admin/dealers').catch(() => ({ dealers: [] })),
+    ]);
+    const canMoney = !!o.canEditMoney;
+    const canFulfill = o.status === 'paid' || o.status === 'cancelled';
+    const risk = o.risk || { level: 'clear', signals: [], score: 0 };
+    const attempts = (o.paymentAttempts || []).map(a => `<tr>
+      <td>${a.n}</td>
+      <td class="nw">${when(a.at)}</td>
+      <td>${esc(a.outcome || 'unresolved')}</td>
+      <td>${esc(a.label || a.code || '—')}</td>
+    </tr>`).join('');
+    const sigs = (risk.signals || []).map(s => `<span>· ${esc(s.label)}</span>`).join('');
+    const items = (o.items || []).map(i => `<tr>
+      <td class="mono">${esc(i.sku)}</td>
+      <td>${esc(i.name)}${i.variant ? `<span class="sub">${esc(i.variant)}</span>` : ''}</td>
+      <td class="num">${canMoney ? `<input class="control" data-qty="${esc(i.sku)}" value="${i.qty}" inputmode="numeric" style="width:72px;text-align:right;height:34px">` : i.qty}</td>
+      <td class="num">${esc(money(i.unitCents))}</td>
+      <td class="num">${esc(money(i.unitCents * i.qty))}</td>
+      <td class="num">${canMoney ? `<button type="button" class="btn btn--ghost btn--sm" data-rm="${esc(i.sku)}">Remove</button>` : ''}</td>
+    </tr>`).join('');
+    const notes = (o.internalNotes || []).slice().reverse().map(n => `<div class="note"><time>${esc(when(n.at))} · ${esc(n.by)}</time><div>${esc(n.text)}</div></div>`).join('') || '<p class="muted" style="margin:0">No internal notes.</p>';
+    const dealerOpts = [['','Vanstro direct']].concat((dealers.dealers || []).map(d => [d.id, `${d.name} · ${d.city}${d.disabled ? ' (off)' : ''}`]));
+    const units = (o.items || []).reduce((a, i) => a + i.qty, 0);
+    return chrome('order', title(o.orderNo, `<span class="chips">${statusChip(o.status)} ${o.fulfillment ? fulfillChip(o.fulfillment) : ''} ${riskChip(risk)} ${holdChip(o.riskHold)}</span> &nbsp; ${o.guest ? 'Guest' : 'Account'} · ${o.payChannel === 'pos' ? 'POS / Go' : 'card online'} · placed ${when(o.createdAt)} (${ago(o.createdAt)} ago)`, `<a href="#orders">Orders</a> · ${esc(o.orderNo)}`), `
+      <div class="toolbar">
+        ${o.canReopen ? `<button type="button" class="btn btn--primary btn--sm" id="reopen">Reopen for payment</button>` : ''}
+        <button type="button" class="btn btn--secondary btn--sm" id="cloneOrder">Clone as new order</button>
+        ${o.invoiceNo ? `<button type="button" class="btn btn--secondary btn--sm" id="pdf">Invoice PDF</button>` : ''}
+        <button type="button" class="btn btn--secondary btn--sm" id="copyLink">Copy status link</button>
+        <a class="btn btn--secondary btn--sm" href="#customers/${encodeURIComponent(o.email)}">Customer profile</a>
+        ${o.status !== 'cancelled' && o.status !== 'expired' ? `<button type="button" class="btn btn--ghost btn--sm" id="cancel">Cancel order</button>` : ''}
+      </div>
+      ${risk.level !== 'clear' || o.riskHold ? `<div class="banner banner--${risk.level === 'high' || o.riskHold ? 'high' : 'review'}">
+        <strong>${o.riskHold ? 'On hold — do not ship' : risk.level === 'high' ? 'High risk' : 'Review'}${o.riskHold ? ` · ${esc(o.riskHold.reason)} (${esc(o.riskHold.by)}, ${when(o.riskHold.at)})` : ''} · score ${risk.score}</strong>
+        <span>${sigs}</span>
+      </div>` : ''}
+      <div class="kpis">
+        ${kpi('Total', esc(money(o.quote.totalCents)), `${units} unit${units === 1 ? '' : 's'} · ${esc(o.quote.tax && o.quote.tax.province || o.shipping.province)} tax`)}
+        ${kpi('Payment', o.payment ? `${esc(o.payment.brand || 'Card')} ••${esc(o.payment.last4 || '')}` : esc(o.status.replace('_', ' ')), o.payment ? `paid ${when(o.payment.paidAt)}${o.payment.threeDS ? ' · 3DS' : ' · no 3DS'}` : `${(o.paymentAttempts || []).length} attempt${(o.paymentAttempts || []).length === 1 ? '' : 's'}${o.declined ? ' · last ' + esc(o.declined.code) : ''}`, { kind: o.status === 'declined' ? 'bad' : o.status === 'pending_payment' ? 'warn' : '' })}
+        ${kpi('Delivery', esc(DELIVERY[o.deliveryMethod] || o.deliveryMethod), o.dealer ? `${esc(o.dealer.name)} · ${esc(o.dealer.city)}` : 'Vanstro direct')}
+        ${kpi('Fulfillment', esc((o.fulfillment || (canFulfill ? 'unfulfilled' : 'locked')).replace('_', ' ')), o.riskHold ? 'blocked by risk hold' : canFulfill ? 'ready to hand off' : 'unlocks after payment', { kind: o.riskHold ? 'bad' : '' })}
+        ${kpi('Risk', `${risk.score}`, risk.level === 'clear' ? 'no signals' : `${risk.level} · ${(risk.signals || []).length} signal${(risk.signals || []).length === 1 ? '' : 's'}`, { kind: risk.level === 'high' ? 'bad' : risk.level === 'review' ? 'warn' : '' })}
+        ${kpi('Invoice', o.invoiceNo ? `<span class="mono">${esc(o.invoiceNo)}</span>` : '—', o.invoiceDate ? when(o.invoiceDate) : 'issued when paid')}
+      </div>
+      <div class="row row--main">
+        <div class="stack">
+          ${panel('Lines', `${table('<th>SKU</th><th>Item</th><th class="num">Qty</th><th class="num">Unit</th><th class="num">Line</th><th></th>', items, 'No lines.').replace('<tbody>', '<tbody id="lines">')}
+            <div style="padding:14px 18px;display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start">
+              <div>${canMoney ? `<div class="toolbar">
+                <input class="control" id="addSku" placeholder="Add SKU">
+                <input class="control" id="addQty" value="1" inputmode="numeric" style="width:80px;min-width:0">
+                <button type="button" class="btn btn--secondary btn--sm" id="addLine">Add</button>
+                <button type="button" class="btn btn--primary btn--sm" id="saveLines">Save lines &amp; re-quote</button>
+              </div><p class="muted" style="margin:10px 0 0;font-size:12.5px">Pending, declined, or expired orders re-price from the live catalogue and reopen so the customer can pay. Paid invoices stay frozen — clone instead.</p>`
+              : `<p class="muted" style="margin:0;font-size:12.5px">Prices and tax are frozen after payment. Use <em>Clone as new order</em> to sell a corrected basket.</p>`}</div>
+              <div>${totalsTable(o.quote)}</div>
+            </div>`, { tight: true, sub: canMoney ? 'editable — re-quotes on save' : 'locked after payment' })}
+          ${panel('Customer & shipping', `
+            <div class="grid2">
+              ${field('email','Email', o.email, 'type="email"')}
+              ${field('firstName','First name', o.firstName)}
+              ${field('phone','Phone', phoneOut(o.phone))}
+              <label class="field"><span class="field__label">Delivery</span>${sel('shipMethod', o.deliveryMethod, [['freight','Curbside freight'],['white','White-glove'],['pickup','Dealer pickup']])}</label>
+              <label class="field span2"><span class="field__label">Dealer</span>${sel('dealerId', o.dealer && o.dealer.id || '', dealerOpts)}</label>
+              <label class="field span2"><span class="field__label">Customer delivery notes</span><input class="control" id="custNotes" value="${esc(o.notes || '')}" maxlength="140"></label>
+            </div>
+            <h4 class="sec">Shipping address</h4>
+            ${addrFields('s', o.shipping)}
+            <h4 class="sec">Billing address</h4>
+            ${addrFields('b', o.billing)}
+            <div class="actions"><button type="button" class="btn btn--primary" id="saveOrder">Save customer &amp; addresses</button></div>`, { sub: canMoney ? 'province or delivery change re-quotes tax and freight' : 'contact and address edits only; totals stay frozen' })}
+          ${panel('Timeline', timeline(o), { sub: 'every recorded event on this order' })}
+        </div>
+        <div class="stack">
+          ${panel('Payment', `${o.payment ? `<dl class="kv">
+              <dt>Captured</dt><dd>${esc(o.payment.brand || '')} •••• ${esc(o.payment.last4 || '')} · ${esc(money(o.payment.amountCents || o.quote.totalCents))}</dd>
+              <dt>Method</dt><dd>${esc(o.payment.method || '')}${o.payment.wallet ? ' · ' + esc(o.payment.wallet) : ''}${o.payment.saved ? ' · saved card' : ''}</dd>
+              <dt>3-D Secure</dt><dd>${o.payment.threeDS ? 'Yes' : 'No'}</dd>
+              <dt>Auth / ref</dt><dd class="mono">${esc(o.payment.authCode || '—')} · ${esc(o.payment.referenceNo || '—')}</dd>
+              <dt>Paid</dt><dd>${whenFull(o.payment.paidAt)}</dd>
+            </dl>` : `<p style="margin:0 0 6px">${o.declined ? `Last decline <span class="mono">${esc(o.declined.code)}</span> · ${when(o.declined.at)}.` : 'No capture yet.'}</p><p class="muted" style="margin:0;font-size:12.5px">This console never marks an unpaid order as paid. Reopen lets the customer pay again.</p>`}
+            ${attempts ? `<h4 class="sec">Attempts</h4><table class="data"><thead><tr><th>#</th><th>When</th><th>Outcome</th><th>Code</th></tr></thead><tbody>${attempts}</tbody></table>` : ''}
+            ${o.payChannel === 'pos' ? `<h4 class="sec">POS / Go</h4><dl class="kv"><dt>Terminal</dt><dd class="mono">${esc(o.posTerminalId || '—')}</dd><dt>Push</dt><dd>${esc(o.pos ? o.pos.status : 'idle')}${o.pos && o.pos.error ? ' · ' + esc(o.pos.error) : ''}</dd></dl>` : ''}`)}
+          ${panel('ERP', o.status === 'paid' ? `<dl class="kv">
+              <dt>Status</dt><dd>${o.erp && o.erp.status === 'success' ? chip('Pushed', 'green') : o.erp && o.erp.status === 'failed' ? chip('Failed', 'error') : o.erp && o.erp.status === 'skipped' ? chip('Skipped', 'orange') : chip('Not yet', 'navy')}</dd>
+              <dt>Endpoint</dt><dd class="mono">${esc((o.erp && o.erp.path) || 'Order/syncEspoQuote')}</dd>
+              <dt>Last try</dt><dd>${o.erp && o.erp.at ? whenFull(o.erp.at) : '—'} · ${o.erp && o.erp.attempts ? o.erp.attempts + ' attempt' + (o.erp.attempts === 1 ? '' : 's') : ''}</dd>
+              <dt>Error</dt><dd>${o.erp && o.erp.error ? esc(o.erp.error) : '—'}</dd>
+              <dt>Espo userId</dt><dd class="mono">${esc((o.erp && o.erp.userId) || '—')}</dd>
+              <dt>Espo accountId</dt><dd class="mono">${esc((o.erp && o.erp.accountId) || '—')}</dd>
+            </dl>
+            <p class="muted" style="margin:10px 0 0;font-size:12.5px">Same id space as CRM: <span class="mono">source: EspoCRM</span>, Espo User + Account. Set those ids on the dealer (and the customer for Hosted Tokenization). A failed push does not un-pay the order.</p>
+            <button type="button" class="btn btn--secondary btn--sm" id="erpGo" style="margin-top:10px">${o.erp && o.erp.status === 'success' ? 'Push again' : 'Push to ERP'}</button>`
+            : `<p class="muted" style="margin:0;font-size:12.5px">ERP receives the order only after payment is captured.</p>`)}
+          ${panel('Risk hold', `
+            <p class="muted" style="margin:0 0 10px;font-size:12.5px">Hold blocks fulfillment (processing / in transit / delivered). The customer can still pay. It does not record a payment.</p>
+            ${field('holdReason','Reason', o.riskHold && o.riskHold.reason || 'Held for review')}
+            <div class="actions">
+              ${o.riskHold ? `<button type="button" class="btn btn--secondary btn--sm" id="releaseGo">Release hold</button>` : `<button type="button" class="btn btn--secondary btn--sm" id="holdGo">Hold fulfillment</button>`}
+              <button type="button" class="btn btn--ghost btn--sm" id="blockEmailOrder">Block ${esc(o.email)}</button>
+            </div>`, { sub: `score ${risk.score} · ${risk.level}` })}
+          ${panel('Fulfillment', `
+            <select class="control" id="ff" ${canFulfill ? '' : 'disabled'}>
+              ${['unfulfilled','processing','in_transit','delivered','returned'].map(s => `<option value="${s}"${(o.fulfillment||'unfulfilled')===s?' selected':''}>${s.replace('_',' ')}</option>`).join('')}
+            </select>
+            <button type="button" class="btn btn--secondary btn--sm" id="ffGo" style="margin-top:10px" ${canFulfill ? '' : 'disabled'}>Update fulfillment</button>
+            ${canFulfill ? (o.riskHold ? '<p class="muted" style="margin:8px 0 0;font-size:12.5px">Release the risk hold before shipping.</p>' : '') : '<p class="muted" style="margin:8px 0 0;font-size:12.5px">Fulfillment unlocks after payment (or cancel).</p>'}`)}
+          ${panel('Mail', `
+            ${field('resendTo','Send to', o.email, 'type="email"')}
+            <label class="field" style="margin-top:10px"><span class="field__label">Kind</span>${sel('resendKind', 'confirmation', [['confirmation','Order confirmation'],['invoice','Invoice']])}</label>
+            <button type="button" class="btn btn--secondary btn--sm" id="resend" style="margin-top:10px" ${o.status==='paid'?'':'disabled'}>Send</button>
+            ${o.status==='paid'?'':'<p class="muted" style="margin:8px 0 0;font-size:12.5px">Receipts send after the order is paid.</p>'}
+            ${(o.notifications || []).length ? `<h4 class="sec">Sent</h4>${(o.notifications || []).map(n => `<p style="margin:4px 0;font-size:12.5px">${n.sentAt ? '<span class="dot"></span>' : '<span class="dot off"></span>'}${esc(n.kind.replace(/_/g,' '))} → ${esc(n.to)} <span class="muted">${n.sentAt ? when(n.sentAt) : esc(n.error || 'failed')}</span></p>`).join('')}` : ''}`)}
+          ${panel('Internal notes', `
+            <div class="notes">${notes}</div>
+            <textarea class="control" id="note" rows="3" placeholder="Visible to staff only" style="margin-top:10px"></textarea>
+            <button type="button" class="btn btn--secondary btn--sm" id="noteGo" style="margin-top:10px">Add note</button>`)}
+          ${panel('Record', `<dl class="kv">
+            <dt>Order</dt><dd class="mono">${esc(o.orderNo)}</dd>
+            <dt>Account</dt><dd>${o.userId ? `<span class="mono">${esc(o.userId)}</span>${o.claimedAt ? ' · claimed ' + when(o.claimedAt) : ''}` : 'guest'}</dd>
+            <dt>Locale</dt><dd>${esc(o.locale || '—')}</dd>
+            <dt>Client IP</dt><dd class="mono">${esc(o.clientIp || '—')}</dd>
+            <dt>Consents</dt><dd>${(o.consents || []).map(c => esc(c.kind)).join(', ') || '—'}</dd>
+            <dt>Opened</dt><dd>${whenFull(o.openedAt || o.createdAt)}</dd>
+            <dt>Save card</dt><dd>${o.saveCard ? 'requested' : 'no'}</dd>
+            <dt>Status link</dt><dd><a href="${esc(o.statusHref)}" target="_blank" rel="noopener" style="font-size:12.5px">order-status ↗</a></dd>
+          </dl>`)}
+        </div>
+      </div>`);
+  }
+
+  /* ------------------------------------------------------------ payments */
+  async function payments() {
+    const d = await api('/api/admin/payments?window=' + encodeURIComponent(winFor('payments')));
+    const t = d.totals || {};
+    const ch = d.byChannel || { ht: {}, pos: {} };
+    const brands = Object.entries(d.byBrand || {}).map(([key, v]) => ({ key, count: v.cents, paid: v.paid }));
+    const codes = (d.declineCodes || []).map(c => `<tr><td class="mono">${esc(c.code)}</td><td>${esc(c.label)}</td><td class="num">${c.count}</td></tr>`).join('');
+    const clusters = (d.last4Clusters || []).map(x => `<tr><td class="mono">•••• ${esc(x.last4)}</td><td>${esc(x.brand)}</td><td class="num">${x.emails}</td><td class="num">${x.orders}</td><td class="num">${x.paid}</td></tr>`).join('');
+    const daily = (d.daily || []).slice(-30);
+    const dailyRows = daily.slice().reverse().slice(0, 14).map(x => `<tr><td class="nw">${esc(x.day)}</td><td class="num">${x.paid}</td><td class="num">${x.declined}</td><td class="num">${esc(money(x.paidCents))}</td></tr>`).join('');
+    return chrome('payments', title('Payments', `${WIN_LABEL[winFor('payments')]} · attempts, decline codes, channels, last-4 clusters · no PAN stored`), `
+      <div class="kpis">
+        ${kpi('Paid', esc(money(t.paidCents)), `${t.paid || 0} orders`)}
+        ${kpi('Approval rate', t.approvalRate == null ? '—' : t.approvalRate + '%', `${t.attempts || 0} attempts`)}
+        ${kpi('Declined', num(t.declined || 0), `${t.expired || 0} expired · ${t.pending || 0} open`, { kind: t.declined ? 'warn' : '' })}
+        ${kpi('3-D Secure', num(t.threeDS || 0), `${t.no3DS || 0} paid without 3DS`)}
+        ${kpi('Unresolved', num((d.unresolved || []).length), 'do not retry a new card', { kind: (d.unresolved || []).length ? 'bad' : '' })}
+        ${kpi('High risk', num((d.highRisk || []).length), 'in window', { kind: (d.highRisk || []).length ? 'bad' : '' })}
+      </div>
+      <div class="row row--2">
+        ${panel('Paid vs declined by day', daily.length ? `${bars(daily, 'paid')}<div style="height:8px"></div>${bars(daily, 'declined', { alt: true })}` : '<p class="empty">No activity.</p>', { sub: 'Winnipeg days', right: '<span class="legend"><span><i></i>Paid</span><span><i class="alt"></i>Declined</span></span>' })}
+        ${panel('Channel', table('<th></th><th class="num">Paid</th><th class="num">CAD</th><th class="num">Declined</th><th class="num">Open</th>', `
+            <tr><td>Hosted tokenization (card online)</td><td class="num">${ch.ht.paid||0}</td><td class="num">${esc(money(ch.ht.cents))}</td><td class="num">${ch.ht.declined||0}</td><td class="num">${ch.ht.pending||0}</td></tr>
+            <tr><td>POS / Vanstro Go</td><td class="num">${ch.pos.paid||0}</td><td class="num">${esc(money(ch.pos.cents))}</td><td class="num">${ch.pos.declined||0}</td><td class="num">${ch.pos.pending||0}</td></tr>`) + `<div style="padding:14px 18px">${hlist(brands, { fmt: money, label: x => x.key + ' · ' + x.paid + ' paid', empty: 'No card brands yet.' })}</div>`, { tight: true, sub: 'channel and card brand' })}
+      </div>
+      <div class="row row--3">
+        ${panel('Decline / error codes', table('<th>Code</th><th>Meaning</th><th class="num">n</th>', codes, 'No declines in this window.'), { tight: true })}
+        ${panel('Last-4 clusters', table('<th>Last 4</th><th>Brand</th><th class="num">Emails</th><th class="num">Orders</th><th class="num">Paid</th>', clusters, 'No clusters.'), { tight: true, sub: 'same last-4 across emails or ≥3 orders' })}
+        ${panel('Daily', table('<th>Day</th><th class="num">Paid</th><th class="num">Declined</th><th class="num">CAD</th>', dailyRows, 'No activity.'), { tight: true })}
+      </div>
+      <div class="row row--2">
+        ${panel('Unresolved attempts', table(ORDER_HEAD, orderRows(d.unresolved), 'None.'), { tight: true, sub: 'a card call got no answer — wait for reconciliation' })}
+        ${panel('High risk in window', table(ORDER_HEAD, orderRows(d.highRisk), 'None.'), { tight: true })}
+      </div>`, { win: true, winOpts: ['today', '7d', 'all'] });
+  }
+
+  /* ------------------------------------------------------------ risk */
+  async function riskPage() {
+    const d = await api('/api/admin/risk');
+    const blocks = (d.blocks || []).map(b => `<tr>
+      <td>${esc(b.email)}</td>
+      <td>${esc(b.reason)}</td>
+      <td class="nw">${esc(b.by)} · ${when(b.at)}</td>
+      <td class="num"><button type="button" class="btn btn--ghost btn--sm" data-unblock="${esc(b.email)}">Unblock</button></td>
+    </tr>`).join('');
+    const holds = (d.holds || []).map(o => `<tr data-go="#orders/${encodeURIComponent(o.orderNo)}">
+      <td class="mono">${esc(o.orderNo)}</td><td>${esc(o.email)}</td><td>${esc(o.riskHold && o.riskHold.reason || '')}<span class="sub">${esc(o.riskHold && o.riskHold.by || '')} · ${when(o.riskHold && o.riskHold.at)}</span></td><td class="num">${esc(money(o.quote.totalCents))}</td>
+    </tr>`).join('');
+    const sigCounts = {};
+    (d.queue || []).forEach(o => (o.risk && o.risk.signals || []).forEach(s => { sigCounts[s.label] = (sigCounts[s.label] || 0) + 1; }));
+    const sigList = Object.entries(sigCounts).map(([key, count]) => ({ key, count })).sort((a, b) => b.count - a.count);
+    return chrome('risk', title('Risk', 'Score from attempts, ticket size, address mismatch, velocity, and last-4 reuse · hold blocks shipping, block stops new checkouts'), `
+      <div class="kpis">
+        ${kpi('High', num((d.high || []).length), 'open the order list', { jump: 'risk-high', kind: (d.high || []).length ? 'bad' : '' })}
+        ${kpi('Review', num((d.review || []).length), 'signals, no hold', { jump: 'risk-review', kind: (d.review || []).length ? 'warn' : '' })}
+        ${kpi('Holds', num((d.holds || []).length), 'do not ship', { jump: 'risk-hold' })}
+        ${kpi('Blocked emails', num((d.blocks || []).length), 'checkout returns 403')}
+      </div>
+      <div class="row row--main">
+        <div class="stack">
+          ${panel('Queue', table(ORDER_HEAD, orderRows(d.queue), 'Queue is empty.'), { tight: true, sub: 'high and review, newest first' })}
+          ${panel('Active holds', table('<th>Order</th><th>Customer</th><th>Reason</th><th class="num">Total</th>', holds, 'No holds.'), { tight: true })}
+        </div>
+        <div class="stack">
+          ${panel('Signals in queue', hlist(sigList, { empty: 'No signals.', orange: true }), { sub: 'how often each heuristic fires' })}
+          ${panel('Block an email', `
+            ${field('riskEmail','Email', '', 'type="email"')}
+            <div style="margin-top:10px">${field('riskReason','Reason', 'Blocked by ops')}</div>
+            <div class="actions"><button type="button" class="btn btn--primary btn--sm" id="blockGo">Block checkout</button></div>`)}
+          ${panel('Blocked emails', table('<th>Email</th><th>Reason</th><th>By</th><th></th>', blocks, 'No blocked emails.'), { tight: true })}
+        </div>
+      </div>`);
+  }
+
+  /* ------------------------------------------------------------ traffic */
+  const CHANNEL_LABEL = { organic: 'Organic search', paid: 'Paid', social: 'Social', ai: 'AI assistants', email: 'Email / SMS', referral: 'Referral', direct: 'Direct', internal: 'Internal' };
+  const CHANNEL_HELP = { organic: 'Google, Bing, DuckDuckGo, Yahoo, Baidu…', paid: 'gclid / fbclid / msclkid / ttclid or utm_medium=cpc', social: 'Facebook, Instagram, TikTok, Pinterest, YouTube, LinkedIn, X, Reddit…', ai: 'ChatGPT, Perplexity, Copilot, Gemini, Claude referrals', email: 'utm_medium=email · newsletter · sms', referral: 'Other websites', direct: 'Typed / bookmark / app with no referrer', internal: 'Navigation within the site' };
+  const chanChip = k => chip(CHANNEL_LABEL[k] || k, { organic: 'green', paid: 'orange', social: 'navy', ai: 'navy', email: 'navy', referral: 'navy', direct: 'navy', internal: 'navy' }[k] || 'navy');
+  function acqRows(list, opts = {}) {
+    return list.map(b => `<tr>
+      <td>${opts.label ? opts.label(b) : esc(b.label || b.key)}${opts.channel && b.channel ? `<span class="sub">${esc(CHANNEL_LABEL[b.channel] || b.channel)}</span>` : ''}</td>
+      <td class="num">${num(b.sessions)}</td>
+      <td class="num">${num(b.visitors)}</td>
+      <td class="num">${b.bounceRate}%</td>
+      <td class="num">${num(b.cart)}</td>
+      <td class="num">${num(b.checkout)}</td>
+      <td class="num">${num(b.paid)}</td>
+      <td class="num">${esc(money(b.cents))}</td>
+      <td class="num">${b.conversion}%</td>
+    </tr>`).join('');
+  }
+  const ACQ_HEAD = '<th class="num">Sessions</th><th class="num">Visitors</th><th class="num">Bounce</th><th class="num">Cart</th><th class="num">Checkout</th><th class="num">Paid</th><th class="num">Revenue</th><th class="num">Conv.</th>';
+  function stackedDaily(days) {
+    const keys = [['organic', 'var(--vs-green)'], ['paid', 'var(--vs-orange)'], ['social', 'var(--vs-navy)'], ['direct', 'var(--vs-grey-300)']];
+    const max = Math.max(1, ...days.map(d => d.sessions));
+    return `<div class="bars stacked">${days.map(d => {
+      const other = Math.max(0, d.sessions - d.organic - d.paid - d.social - d.direct);
+      const seg = (v, c) => v ? `<b style="height:${(100 * v) / max}%;background:${c}"></b>` : '';
+      return `<span title="${esc(d.day)} · ${num(d.sessions)} sessions · organic ${d.organic} · paid ${d.paid} · social ${d.social} · direct ${d.direct}">${seg(other, 'var(--vs-grey-100)')}${keys.slice().reverse().map(([k, c]) => seg(d[k], c)).join('')}</span>`;
+    }).join('')}</div>
+    <div class="axis"><span>${esc(dayShort(days[0].day))}</span><span>${esc(dayShort(days[days.length - 1].day))}</span></div>
+    <div class="legend" style="margin-top:8px">${keys.map(([k, c]) => `<span><i style="background:${c}"></i>${CHANNEL_LABEL[k]}</span>`).join('')}<span><i style="background:var(--vs-grey-100)"></i>Other</span></div>`;
+  }
+  async function traffic() {
+    const d = await api('/api/admin/traffic?window=' + winFor('traffic'));
+    const t = d.totals, f = d.funnel;
+    const w = winFor('traffic');
+    const collectingNote = d.collecting ? '' : `<div class="banner banner--info"><strong>No events yet.</strong><span>Every storefront page loads <code>assets/analytics.js</code>, which beacons pageviews, events and Core Web Vitals to <code>POST /api/track</code>; the server logs crawler hits and 404s itself. Open the shop in another tab and this page fills in. Staff sessions are excluded.</span></div>`;
+    const channels = d.channels.filter(c => c.key !== 'internal');
+    const totalSessions = Math.max(1, channels.reduce((s, c) => s + c.sessions, 0));
+    const channelCards = ['organic', 'paid', 'social', 'ai', 'email', 'referral', 'direct'].map(k => {
+      const c = channels.find(x => x.key === k) || { sessions: 0, paid: 0, cents: 0, conversion: 0 };
+      return `<div class="chan ${c.sessions ? '' : 'chan--empty'}"><div class="chan__h">${chanChip(k)}<b>${num(c.sessions)}</b></div><span class="chan__bar"><i style="width:${Math.round((100 * c.sessions) / totalSessions)}%"></i></span><small>${pct(c.sessions, totalSessions)} of sessions · ${c.paid} paid · ${esc(money(c.cents))}</small><small class="muted">${CHANNEL_HELP[k]}</small></div>`;
+    }).join('');
+    const platformRows = acqRows(d.platforms.filter(p => p.key !== 'internal').slice(0, 25), { channel: true, label: b => esc(b.key === 'direct' ? 'Direct / none' : b.key) });
+    const landingRows = d.landing.map(b => `<tr><td class="mono">${esc(b.key)}</td><td class="num">${num(b.sessions)}</td><td class="num">${b.bounceRate}%</td><td class="num">${num(b.checkout)}</td><td class="num">${num(b.paid)}</td><td class="num">${esc(money(b.cents))}</td><td class="num">${b.conversion}%</td></tr>`).join('');
+    const campaignRows = d.campaigns.map(b => { const [src, med, camp] = b.key.split(' / '); return `<tr><td>${esc(src)}<span class="sub">${esc(med)}</span></td><td>${esc(camp)}</td><td class="num">${num(b.sessions)}</td><td class="num">${num(b.checkout)}</td><td class="num">${num(b.paid)}</td><td class="num">${esc(money(b.cents))}</td><td class="num">${b.conversion}%</td></tr>`; }).join('');
+    const clickLabel = { gclid: 'Google Ads (gclid)', msclkid: 'Microsoft Ads (msclkid)', fbclid: 'Meta (fbclid)', ttclid: 'TikTok Ads (ttclid)', li_fat_id: 'LinkedIn Ads', twclid: 'X Ads (twclid)' };
+    const cwv = d.vitals.length ? table('<th>Page</th><th class="num">Samples</th><th class="num">LCP</th><th class="num">INP</th><th class="num">CLS</th><th class="num">FCP</th><th class="num">TTFB</th>',
+      d.vitals.map(v => `<tr><td class="mono">${esc(v.path)}</td><td class="num">${num(v.samples)}</td><td class="num">${vital(v.lcp, 2500, 4000, 'ms')}</td><td class="num">${vital(v.inp, 200, 500, 'ms')}</td><td class="num">${vital(v.cls, 0.1, 0.25, '')}</td><td class="num">${vital(v.fcp, 1800, 3000, 'ms')}</td><td class="num">${vital(v.ttfb, 800, 1800, 'ms')}</td></tr>`).join('')) : '<p class="empty">No vitals yet. The beacon reports LCP / INP / CLS / FCP / TTFB when a visitor leaves a page.</p>';
+    return chrome('traffic', title('Traffic', `${WIN_LABEL[w]} · first-party beacon + server log · visitor id in localStorage, IP hashed, no email · ${num(t.bots)} crawler hits kept separately`), `
+      ${collectingNote}
+      <div class="kpis">
+        ${kpi('Visitors', num(t.visitors), 'unique browsers')}
+        ${kpi('Sessions', num(t.sessions), `${t.pagesPerSession} pages each · ${t.bounceRate}% bounce`)}
+        ${kpi('Pageviews', num(t.pageviews), `${num(t.events)} events`)}
+        ${kpi('Conversion', f.conversion == null ? '—' : f.conversion + '%', `${f.paid} paid / ${f.sessions} sessions`)}
+        ${kpi('Attributed revenue', esc(money(t.attributedCents)), `${t.attributedPaid} paid orders linked to a session`)}
+        ${kpi('Live', num(d.live.visitors), 'last 5 minutes')}
+        ${kpi('Crawlers', num(t.bots), 'bot hits on HTML pages', { go: 'seo' })}
+        ${kpi('404s', num(t.notFound), 'broken URLs requested', { kind: t.notFound ? 'warn' : '', go: 'seo' })}
+      </div>
+
+      ${panel('Acquisition channels', `<div class="chans">${channelCards}</div>`, { sub: 'first pageview of each session decides the channel · click ids and utm_medium override the referrer' })}
+
+      <div class="row row--2">
+        ${panel(w === 'today' ? 'Pageviews by hour' : 'Sessions by day and channel', w === 'today' && d.hourly ? bars(d.hourly, 'pageviews') : stackedDaily(d.daily), { sub: 'Winnipeg time' })}
+        ${panel('Funnel', funnel([
+          { label: 'Sessions', n: f.sessions }, { label: 'Viewed cart', n: f.cart }, { label: 'Reached checkout', n: f.checkout },
+          { label: 'Order created', n: f.ordersCreated }, { label: 'Paid', n: f.paid },
+        ]) + `<p class="muted" style="margin:12px 0 0;font-size:12.5px">${f.revenuePerSession != null ? `${esc(money(f.revenuePerSession))} revenue per session · ` : ''}order and paid counts come from <code>data/orders</code> in the same window; per-channel numbers below use the <code>order_created</code> / <code>purchase</code> events fired by checkout.</p>`)}
+      </div>
+
+      ${panel('Platforms', table('<th>Platform</th>' + ACQ_HEAD, platformRows, 'No sessions yet.'), { tight: true, sub: 'every entry point, grouped by referrer host or utm_source — Google, Bing, Facebook, Instagram, TikTok, Pinterest, YouTube, LinkedIn, X, Reddit, ChatGPT, Perplexity, email, other sites' })}
+
+      <div class="row row--2">
+        ${panel('Landing pages', table('<th>Entry page</th><th class="num">Sessions</th><th class="num">Bounce</th><th class="num">Checkout</th><th class="num">Paid</th><th class="num">Revenue</th><th class="num">Conv.</th>', landingRows, 'No sessions yet.'), { tight: true, sub: 'first page of each session' })}
+        ${panel('Campaigns', campaignRows ? table('<th>Source / medium</th><th>Campaign</th><th class="num">Sessions</th><th class="num">Checkout</th><th class="num">Paid</th><th class="num">Revenue</th><th class="num">Conv.</th>', campaignRows) : '<div class="panel__b"><p class="muted" style="margin:0">No UTM-tagged sessions. Tag links as <span class="mono">?utm_source=instagram&utm_medium=social&utm_campaign=spring</span>. Ad click ids (gclid, fbclid, msclkid, ttclid) are picked up automatically.</p></div>', { tight: true, sub: 'utm_source / utm_medium / utm_campaign' })}
+      </div>
+
+      <div class="row row--3">
+        ${panel('Paid click ids', hlist(d.clicks, { label: x => clickLabel[x.key] || x.key, empty: 'No ad clicks landed yet.' }), { sub: 'sessions that arrived with an ad click id' })}
+        ${panel('Search terms', hlist(d.terms, { empty: 'No utm_term. Search engines hide keywords — use the SEO page (Search Console import) for organic queries.' }), { sub: 'utm_term from paid search' })}
+        ${panel('Referrers', hlist(d.referrers.filter(r => r.key !== 'internal').map(r => ({ key: r.key, count: r.sessions })), { empty: 'No sessions.' }), { sub: 'raw referrer host, sessions' })}
+      </div>
+
+      <div class="row row--3">
+        ${panel('Pages', hlist(d.paths, { empty: 'No pageviews.' }), { sub: 'pageviews by path' })}
+        ${panel('Devices & browsers', `${hlist(d.devices)}<h4 class="sec">Browser</h4>${hlist(d.browsers)}`)}
+        ${panel('Audience', `${hlist(d.roles, { label: x => ({ guest: 'Guests', customer: 'Signed-in customers', dealer: 'Dealers' }[x.key] || x.key) })}<h4 class="sec">Language</h4>${hlist(d.languages)}`, { sub: 'sessions by sign-in state' })}
+      </div>
+
+      <div class="row row--2">
+        ${panel('Core Web Vitals', cwv, { tight: !!d.vitals.length, sub: 'p75 per page · green = good, orange = needs improvement, red = poor (Google thresholds)' })}
+        ${panel('Events', hlist(d.events, { empty: 'No events. add_to_cart, order_created, purchase and vitals fire from the storefront.' }), { sub: 'named events from the storefront' })}
+      </div>
+      ${d.live.pages.length ? panel('Live pages', hlist(d.live.pages), { sub: 'pageviews in the last 5 minutes' }) : ''}`, { win: true, winOpts: ['today', '7d', '30d'] });
+  }
+  function vital(v, good, poor, unit) {
+    if (v == null) return '<span class="muted">—</span>';
+    const k = v <= good ? 'green' : v <= poor ? 'orange' : 'error';
+    const txt = unit === 'ms' ? (v >= 1000 ? (v / 1000).toFixed(2) + ' s' : Math.round(v) + ' ms') : v.toFixed(3);
+    return chip(txt, k);
+  }
+
+  /* ------------------------------------------------------------ seo */
+  const lvlChip = l => chip(l === 'error' ? 'Error' : l === 'warn' ? 'Warn' : 'Info', l === 'error' ? 'error' : l === 'warn' ? 'orange' : 'navy');
+  const scoreChip = s => chip(s, s >= 85 ? 'green' : s >= 60 ? 'orange' : 'error');
+  async function seo() {
+    const w = winFor('traffic');
+    const d = await api('/api/admin/seo?window=' + w);
+    const h = d.health, c = d.crawlability, s = d.search;
+    const pageRows = d.pages.map(p => `<tr data-go="#seo/${encodeURIComponent(p.file)}">
+      <td class="mono">${esc(p.path)}${p.indexable ? '' : '<span class="sub">noindex</span>'}</td>
+      <td>${scoreChip(p.score)}</td>
+      <td>${p.title ? esc(p.title) : '<span class="muted">missing</span>'}<span class="sub">${p.titleLength} chars${p.description ? ` · description ${p.descriptionLength} chars` : ' · <b style="color:var(--vs-error)">no description</b>'}</span></td>
+      <td class="num">${p.h1.length}</td>
+      <td class="num">${num(p.words)}</td>
+      <td class="num">${p.imagesMissingAlt ? `<span style="color:var(--vs-orange-ink)">${p.imagesMissingAlt}/${p.images}</span>` : `${p.images}`}</td>
+      <td class="num">${p.inbound}</td>
+      <td>${p.canonical ? chip('yes', 'green') : chip('no', 'orange')}</td>
+      <td>${p.og.title && p.og.description && p.og.image ? chip('full', 'green') : chip('partial', 'orange')}</td>
+      <td>${p.jsonLd.length ? chip(p.jsonLd.join(', '), 'green') : chip('none', 'navy')}</td>
+      <td class="num">${p.issues.filter(i => i.level === 'error').length ? `<span style="color:var(--vs-error)">${p.issues.filter(i => i.level === 'error').length}</span>` : ''} ${p.issues.filter(i => i.level === 'warn').length ? `<span style="color:var(--vs-orange-ink)">${p.issues.filter(i => i.level === 'warn').length}</span>` : ''}</td>
+    </tr>`).join('');
+    const issueList = [];
+    for (const i of c.issues) issueList.push({ where: 'site', ...i });
+    for (const p of d.pages) for (const i of p.issues) issueList.push({ where: p.path, ...i, file: p.file });
+    const order = { error: 0, warn: 1, info: 2 };
+    issueList.sort((a, b) => order[a.level] - order[b.level]);
+    const issueRows = issueList.slice(0, 40).map(i => `<tr${i.file ? ` data-go="#seo/${encodeURIComponent(i.file)}"` : ''}><td>${lvlChip(i.level)}</td><td class="mono">${esc(i.where)}</td><td>${esc(i.text)}</td></tr>`).join('');
+    const botRows = d.crawlers.bots.map(b => `<tr><td>${esc(b.key)}</td><td class="num">${num(b.count)}</td><td class="nw">${b.last ? when(b.last) : '<span class="muted">via beacon</span>'}</td></tr>`).join('');
+    const nfRows = d.notFound.map(n => `<tr><td class="mono">${esc(n.path)}</td><td class="num">${num(n.count)}</td><td class="num">${num(n.bot)}</td><td>${n.referrers.map(r => esc(r.key)).join(', ') || '—'}</td><td class="nw">${when(n.last)}</td></tr>`).join('');
+    const cwvRows = d.vitals.map(v => `<tr><td class="mono">${esc(v.path)}</td><td class="num">${num(v.samples)}</td><td class="num">${vital(v.lcp, 2500, 4000, 'ms')}</td><td class="num">${vital(v.inp, 200, 500, 'ms')}</td><td class="num">${vital(v.cls, 0.1, 0.25, '')}</td><td class="num">${vital(v.ttfb, 800, 1800, 'ms')}</td></tr>`).join('');
+    const delta = (v, invert) => v == null ? '' : v === 0 ? '<small class="muted">±0</small>' : `<small style="color:${(invert ? v < 0 : v > 0) ? 'var(--vs-green)' : 'var(--vs-error)'}">${v > 0 ? '+' : ''}${v}</small>`;
+    const qRows = s.queries.map(q => `<tr><td>${esc(q.query)}</td><td class="num">${num(q.clicks)} ${delta(q.dClicks)}</td><td class="num">${num(q.impressions)}</td><td class="num">${q.ctr}%</td><td class="num">${q.position.toFixed(1)} ${delta(q.dPosition, true)}</td></tr>`).join('');
+    const pRows = s.pages.map(q => `<tr><td class="mono">${esc(q.query.replace(/^https?:\/\/[^/]+/, '') || '/')}</td><td class="num">${num(q.clicks)} ${delta(q.dClicks)}</td><td class="num">${num(q.impressions)}</td><td class="num">${q.ctr}%</td><td class="num">${q.position.toFixed(1)} ${delta(q.dPosition, true)}</td></tr>`).join('');
+    const watchRows = s.watch.map(k => `<tr><td>${esc(k.term)}<span class="sub mono">${esc(k.targetPath)}${k.note ? ' · ' + esc(k.note) : ''}</span></td><td class="num">${k.position == null ? '<span class="muted">not in import</span>' : k.position.toFixed(1) + ' ' + delta(k.dPosition, true)}</td><td class="num">${k.clicks == null ? '—' : num(k.clicks)}</td><td class="num">${k.impressions == null ? '—' : num(k.impressions)}</td><td class="num">${k.ctr == null ? '—' : k.ctr + '%'}</td><td class="num"><button type="button" class="btn btn--ghost btn--sm" data-kw-del="${esc(k.id)}">Remove</button></td></tr>`).join('');
+    const strikingRows = s.striking.map(q => `<tr><td>${esc(q.query)}</td><td class="num">${q.position.toFixed(1)}</td><td class="num">${num(q.impressions)}</td><td class="num">${num(q.clicks)}</td></tr>`).join('');
+    const importRows = s.imports.map(i => `<tr><td>${esc(i.label)}<span class="sub">${when(i.at)}</span></td><td>${i.kind}</td><td class="num">${num(i.rows)}</td><td class="num"><button type="button" class="btn btn--ghost btn--sm" data-imp-del="${esc(i.id)}">Delete</button></td></tr>`).join('');
+    const organicPlat = d.organic.platforms.map(p => ({ key: p.key, count: p.sessions }));
+    const organicDaily = d.organic.daily;
+    return chrome('seo', title('SEO', `${WIN_LABEL[w]} for traffic-derived panels · on-page audit reads the HTML on disk every load · Search Console data via CSV import`), `
+      <div class="kpis">
+        ${kpi('Site score', h.score, `${h.pages} pages audited`, { kind: h.score >= 85 ? '' : h.score >= 60 ? 'warn' : 'bad' })}
+        ${kpi('Issues', `${h.errors} <small style="display:inline;font-size:14px;color:var(--vs-text-3)">errors</small>`, `${h.warns} warnings`, { kind: h.errors ? 'bad' : h.warns ? 'warn' : '' })}
+        ${kpi('Indexable', `${h.indexable}/${h.pages}`, 'pages without noindex')}
+        ${kpi('robots / sitemap', `${c.robots.present ? '✓' : '✗'} / ${c.sitemap.present ? '✓' : '✗'}`, c.sitemap.present ? `${c.sitemap.urls} URLs in sitemap` : 'add both at the site root', { kind: c.robots.present && c.sitemap.present ? '' : 'bad' })}
+        ${kpi('Organic sessions', num(d.organic.sessions), `${d.organic.paid} paid · ${esc(money(d.organic.cents))}`)}
+        ${kpi('Crawler hits', num(d.crawlers.total), `${d.crawlers.bots.length} distinct bots`)}
+        ${kpi('404s', num(d.notFound.reduce((n, x) => n + x.count, 0)), `${d.notFound.length} distinct URLs`, { kind: d.notFound.length ? 'warn' : '' })}
+        ${kpi('Search clicks', s.totals ? num(s.totals.clicks) : '—', s.totals ? `${num(s.totals.impressions)} impressions · ${s.totals.ctr}% CTR${s.totals.avgPosition != null ? ` · pos ${s.totals.avgPosition}` : ''}` : 'import a Search Console CSV below')}
+      </div>
+
+      <div class="row row--main">
+        ${panel('Issues to fix', table('<th>Level</th><th>Where</th><th>Issue</th>', issueRows, 'No issues. Nice.'), { tight: true, cls: 'scrolly', sub: `${issueList.length} findings, errors first · click a row to open the page audit` })}
+        ${panel('Crawlability', `
+          <dl class="kv">
+            <dt>robots.txt</dt><dd>${c.robots.present ? `${chip('present', 'green')} · ${c.robots.disallow.length} disallow rules${c.robots.sitemapRef ? ' · references sitemap' : ''}` : chip('missing', 'error')}</dd>
+            <dt>sitemap.xml</dt><dd>${c.sitemap.present ? `${chip('present', 'green')} · ${c.sitemap.urls} URLs` : chip('missing', 'error')}</dd>
+            <dt>Disallowed</dt><dd class="mono">${c.robots.disallow.length ? c.robots.disallow.map(esc).join(', ') : '—'}</dd>
+            <dt>Sitemap sample</dt><dd class="mono" style="font-size:12px">${c.sitemap.sample.length ? c.sitemap.sample.map(u => esc(u.replace(/^https?:\/\/[^/]+/, ''))).join('<br>') : '—'}</dd>
+          </dl>
+          <p class="muted" style="margin:12px 0 0;font-size:12.5px">Both files live at the web root next to <code>index.html</code>. Recommended robots.txt: allow <code>/</code>, disallow <code>/admin</code>, <code>/api/</code>, <code>/account</code>, <code>/checkout</code>, <code>/order-status</code>, and add <code>Sitemap: https://…/sitemap.xml</code>.</p>`)}
+      </div>
+
+      ${panel('Page audit', table('<th>Page</th><th>Score</th><th>Title · description</th><th class="num">H1</th><th class="num">Words</th><th class="num">Img no-alt</th><th class="num">Inbound</th><th>Canonical</th><th>Open Graph</th><th>Structured data</th><th class="num">E / W</th>', pageRows), { tight: true, sub: 'every storefront HTML file · click a row for the full breakdown' })}
+
+      <div class="row row--2">
+        ${panel('Search engine crawlers', table('<th>Bot</th><th class="num">Hits</th><th>Last seen</th>', botRows, 'No crawler hits logged yet. The dev server records every HTML request from a known bot user-agent (Googlebot, Bingbot, GPTBot, Applebot…).'), { tight: !!botRows, sub: `${WIN_LABEL[w]} · server-side, does not rely on JavaScript` })}
+        ${panel('Organic search', `${hlist(organicPlat, { empty: 'No organic sessions in the window.' })}<h4 class="sec">Organic sessions by day</h4>${bars(organicDaily, 'organic')}`, { sub: 'sessions arriving from a search engine, by engine' })}
+      </div>
+
+      <div class="row row--2">
+        ${panel('Broken URLs (404)', table('<th>Path</th><th class="num">Hits</th><th class="num">by bots</th><th>Referrers</th><th>Last</th>', nfRows, 'No 404s recorded.'), { tight: !!nfRows, sub: 'requests for pages that do not exist · redirect or fix the linking page' })}
+        ${panel('Core Web Vitals (p75)', cwvRows ? table('<th>Page</th><th class="num">Samples</th><th class="num">LCP</th><th class="num">INP</th><th class="num">CLS</th><th class="num">TTFB</th>', cwvRows) : '<div class="panel__b"><p class="muted" style="margin:0">No samples yet. Real-user LCP / INP / CLS / TTFB arrive with the beacon when visitors leave a page. Google’s thresholds: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1.</p></div>', { tight: !!cwvRows, sub: 'real-user field data · a ranking factor in Google’s page experience signals' })}
+      </div>
+
+      <h2 class="sec2">Google Search Console</h2>
+      <p class="muted" style="margin:-6px 0 14px;font-size:13px">Search Console is the only source of organic queries and rankings. Export <em>Performance → Search results → Export → CSV</em> (Queries and Pages tabs) and paste below; each import is kept, and the latest is compared to the one before. ${s.lastImport ? `Latest import <strong>${esc(s.lastImport.label)}</strong> (${when(s.lastImport.at)}) · ${s.lastImport.queries} queries · ${s.lastImport.pages} pages.` : 'Nothing imported yet.'}</p>
+      <div class="row row--main">
+        ${panel('Top queries', table('<th>Query</th><th class="num">Clicks</th><th class="num">Impressions</th><th class="num">CTR</th><th class="num">Position</th>', qRows, 'Import a Queries CSV to see what people search to find you.'), { tight: !!qRows, sub: 'latest import · deltas vs previous import' })}
+        <div class="stack">
+          ${panel('Keyword watchlist', `${table('<th>Keyword</th><th class="num">Position</th><th class="num">Clicks</th><th class="num">Impr.</th><th class="num">CTR</th><th></th>', watchRows, 'Track the phrases you want to rank for; positions fill in from the Search Console import.')}
+            <div class="grid2" style="margin-top:12px">${field('kwTerm', 'Keyword', '', 'placeholder="kitchen cabinets winnipeg"')}${field('kwPath', 'Target page', '/', '')}<div class="span2 actions"><button type="button" class="btn btn--primary btn--sm" id="kwAdd">Add keyword</button></div></div>`, { sub: 'targets you care about' })}
+          ${panel('Striking distance', table('<th>Query</th><th class="num">Position</th><th class="num">Impr.</th><th class="num">Clicks</th>', strikingRows, 'Queries ranking 5–20 with real impressions show here — the cheapest wins.'), { tight: !!strikingRows, sub: 'position 5–20, ≥ 20 impressions' })}
+        </div>
+      </div>
+      <div class="row row--2">
+        ${panel('Top pages in search', table('<th>Page</th><th class="num">Clicks</th><th class="num">Impressions</th><th class="num">CTR</th><th class="num">Position</th>', pRows, 'Import a Pages CSV to see which URLs earn search traffic.'), { tight: !!pRows })}
+        ${panel('Import Search Console CSV', `
+          <label class="field"><span class="field__label">Label</span><input class="control" id="gscLabel" placeholder="e.g. 2026-09 last 28 days"></label>
+          <label class="field" style="margin-top:10px"><span class="field__label">Paste CSV (Queries or Pages export)</span><textarea class="control" id="gscCsv" rows="6" placeholder="Top queries,Clicks,Impressions,CTR,Position&#10;vanstro cabinets,120,1500,8%,3.2"></textarea></label>
+          <div class="actions" style="margin-top:10px"><button type="button" class="btn btn--primary btn--sm" id="gscGo">Import</button><span class="muted" style="font-size:12.5px">Low-CTR queries in top 10: ${s.lowCtr.length ? s.lowCtr.map(q => esc(q.query)).join(', ') : 'none'}</span></div>
+          ${importRows ? `<h4 class="sec">Imports</h4>${table('<th>Import</th><th>Kind</th><th class="num">Rows</th><th></th>', importRows)}` : ''}`)}
+      </div>`, { win: true, winOpts: ['today', '7d', '30d'] });
+  }
+  async function seoPage(file) {
+    const d = await api('/api/admin/seo?window=' + winFor('traffic'));
+    const p = d.pages.find(x => x.file === file);
+    if (!p) return chrome('seo', title('Page not audited'), '<div class="panel"><div class="panel__b">Unknown page.</div></div>');
+    const yes = v => v ? chip('yes', 'green') : chip('no', 'orange');
+    const gsc = d.search.pages.filter(q => (q.query.replace(/^https?:\/\/[^/]+/, '') || '/').replace(/\.html$/, '') === p.path);
+    return chrome('seo', title(`SEO · ${p.path}`, `<a href="#seo">SEO</a> › ${esc(p.file)} · ${p.bytes > 1024 ? Math.round(p.bytes / 1024) + ' KB' : p.bytes + ' B'} on disk`), `
+      <div class="kpis">
+        ${kpi('Score', p.score, `${p.issues.length} findings`, { kind: p.score >= 85 ? '' : p.score >= 60 ? 'warn' : 'bad' })}
+        ${kpi('Indexable', p.indexable ? 'Yes' : 'No', p.robots ? `robots: ${esc(p.robots)}` : 'no robots meta')}
+        ${kpi('Title', p.titleLength + ' chars', p.titleLength > 60 ? 'too long' : p.titleLength ? 'ok' : 'missing', { kind: !p.titleLength || p.titleLength > 60 ? 'warn' : '' })}
+        ${kpi('Description', p.descriptionLength + ' chars', p.descriptionLength > 160 ? 'too long' : p.descriptionLength ? 'ok' : 'missing', { kind: !p.descriptionLength || p.descriptionLength > 160 ? 'warn' : '' })}
+        ${kpi('Words', num(p.words), `${p.h1.length} h1 · ${p.h2} h2`)}
+        ${kpi('Links', `${p.internalLinks} / ${p.externalLinks}`, `internal / external · ${p.inbound} inbound`)}
+      </div>
+      <div class="row row--main">
+        ${panel('Findings', table('<th>Level</th><th>Issue</th>', p.issues.map(i => `<tr><td>${lvlChip(i.level)}</td><td>${esc(i.text)}</td></tr>`).join(''), 'Nothing to fix on this page.'), { tight: !!p.issues.length })}
+        ${panel('Head tags', `<dl class="kv">
+          <dt>Title</dt><dd>${p.title ? esc(p.title) : '<span class="muted">missing</span>'}</dd>
+          <dt>Description</dt><dd>${p.description ? esc(p.description) : '<span class="muted">missing</span>'}</dd>
+          <dt>Canonical</dt><dd class="mono">${p.canonical ? esc(p.canonical) : '—'}</dd>
+          <dt>Lang</dt><dd>${p.lang ? esc(p.lang) : '—'}</dd>
+          <dt>Viewport</dt><dd>${yes(p.viewport)}</dd>
+          <dt>hreflang</dt><dd>${p.hreflang || '—'}</dd>
+          <dt>Open Graph</dt><dd>title ${yes(p.og.title)} description ${yes(p.og.description)} image ${yes(p.og.image)} url ${yes(p.og.url)}</dd>
+          <dt>Twitter card</dt><dd>${yes(p.twitterCard)}</dd>
+          <dt>JSON-LD</dt><dd>${p.jsonLd.length ? p.jsonLd.map(t => chip(t, t === 'invalid' ? 'error' : 'green')).join(' ') : '<span class="muted">none</span>'}</dd>
+          <dt>H1</dt><dd>${p.h1.length ? p.h1.map(esc).join('<br>') : '<span class="muted">none</span>'}</dd>
+          <dt>Images</dt><dd>${p.images} · ${p.imagesMissingAlt} without alt</dd>
+        </dl>`)}
+      </div>
+      ${gsc.length ? panel('Search Console', table('<th>URL</th><th class="num">Clicks</th><th class="num">Impressions</th><th class="num">CTR</th><th class="num">Position</th>', gsc.map(q => `<tr><td class="mono">${esc(q.query)}</td><td class="num">${num(q.clicks)}</td><td class="num">${num(q.impressions)}</td><td class="num">${q.ctr}%</td><td class="num">${q.position.toFixed(1)}</td></tr>`).join('')), { tight: true }) : ''}`);
+  }
+
+  /* ------------------------------------------------------------ reports */
+  async function reports() {
+    const d = await api('/api/admin/reports?window=' + winFor('reports'));
+    const t = d.totals;
+    const skuRows = d.topSkus.map(x => `<tr data-go="#products/${encodeURIComponent(x.sku)}"><td class="mono">${esc(x.sku)}</td><td>${esc(x.name)}${x.variant ? `<span class="sub">${esc(x.variant)}</span>` : ''}</td><td class="num">${num(x.qty)}</td><td class="num">${num(x.orders)}</td><td class="num">${esc(money(x.cents))}</td><td class="num">${pct(x.cents, t.productCents)}</td></tr>`).join('');
+    const mix = (list, labels) => hlist(list, { valueKey: 'cents', fmt: (v, x) => `${money(v)} · ${x.orders}`, label: x => (labels && labels[x.key]) || x.label || x.key, empty: 'No paid orders.' });
+    const aging = d.pendingAging.map(p => `<tr data-go="#orders/${encodeURIComponent(p.orderNo)}"><td class="mono">${esc(p.orderNo)}</td><td>${esc(p.email)}</td><td>${p.channel === 'pos' ? 'POS' : 'Card'}</td><td class="num">${p.ageMin < 60 ? p.ageMin + ' min' : Math.round(p.ageMin / 60) + ' h'}</td><td class="num">${esc(money(p.cents))}</td></tr>`).join('');
+    const statusList = Object.entries(d.status).map(([key, count]) => ({ key: key.replace('_', ' '), count }));
+    const ffList = Object.entries(d.fulfillment).map(([key, count]) => ({ key: key.replace('_', ' '), count }));
+    return chrome('reports', title('Reports', `${WIN_LABEL[win]} · derived from order snapshots, nothing recomputed · CAD incl. tax unless noted`), `
+      <div class="kpis">
+        ${kpi('Revenue', esc(money(t.revenueCents)), `${t.paid} paid orders`)}
+        ${kpi('Average order', esc(money(t.aovCents)), `${num(t.unitsSold)} units sold`)}
+        ${kpi('Products', esc(money(t.productCents)), `−${esc(money(t.discountCents))} promo`)}
+        ${kpi('Delivery', esc(money(t.freightCents)), 'freight / white-glove')}
+        ${kpi('Tax collected', esc(money(t.taxCents)), 'GST / HST / PST / QST')}
+        ${kpi('Customers', num(t.customers), `${t.newCustomers} new · ${t.returningCustomers} returning`)}
+        ${kpi('Created → paid', t.paidRate == null ? '—' : t.paidRate + '%', `${t.created} created`)}
+        ${kpi('Time to pay', t.medianMinutesToPay == null ? '—' : t.medianMinutesToPay + ' min', 'median, created → paid')}
+      </div>
+      <div class="row row--2">
+        ${panel('Revenue by day', bars(d.daily, 'cents', { fmt: money }), { sub: 'paid orders, Winnipeg days', right: '<span class="legend"><span><i></i>Paid CAD</span></span>' })}
+        ${panel('Orders by day', `${bars(d.daily, 'created', { alt: true })}<div style="height:8px"></div>${bars(d.daily, 'paid')}`, { sub: 'created vs paid', right: '<span class="legend"><span><i class="alt"></i>Created</span><span><i></i>Paid</span></span>' })}
+      </div>
+      ${panel('Top products', table('<th>SKU</th><th>Product</th><th class="num">Units</th><th class="num">Orders</th><th class="num">Revenue</th><th class="num">Share</th>', skuRows, 'No paid orders in this window.'), { tight: true, sub: 'paid line revenue before tax' })}
+      <div class="row row--3">
+        ${panel('Provinces', mix(d.provinces), { sub: 'ship-to province' })}
+        ${panel('Dealers', mix(d.dealers), { sub: 'pickup / assigned dealer' })}
+        ${panel('Delivery', mix(d.delivery, DELIVERY), { sub: 'method chosen at checkout' })}
+      </div>
+      <div class="row row--3">
+        ${panel('Channel & account', `${mix(d.channel, { ht: 'Card online', pos: 'POS / Go' })}<h4 class="sec">Account</h4>${mix(d.account, { guest: 'Guest checkout', account: 'Signed in' })}`)}
+        ${panel('Card brands & promos', `${mix(d.brands)}<h4 class="sec">Promo codes (discount given)</h4>${hlist(d.promos, { valueKey: 'cents', fmt: (v, x) => `${money(v)} · ${x.orders}`, empty: 'No promo codes used.' })}`)}
+        ${panel('Status', `${hlist(statusList, { empty: 'No orders.' })}<h4 class="sec">Fulfillment (all paid)</h4>${hlist(ffList, { empty: 'No paid orders.' })}`, { sub: 'orders created in window' })}
+      </div>
+      ${panel('Pending payment — aging', table('<th>Order</th><th>Customer</th><th>Channel</th><th class="num">Age</th><th class="num">Total</th>', aging, 'Nothing pending.'), { tight: true, sub: 'oldest first · pending TTL counts from open/reopen' })}`, { win: true });
+  }
+
+  /* ------------------------------------------------------------ customers */
+  async function customers() {
+    const q = $('#cQ') ? $('#cQ').value : '';
+    const d = await api('/api/admin/customers' + (q ? '?q=' + encodeURIComponent(q) : ''));
+    const rows = d.customers.map(c => `<tr data-go="#customers/${encodeURIComponent(c.email)}">
+      <td>${esc(c.name)}<span class="sub">${esc(c.email)}${c.note ? ' · ' + esc(c.note).slice(0,60) : ''}</span></td>
+      <td><span class="chips">${c.guest ? chip('Guest', 'orange') : chip('Account', 'navy')}${c.claimed ? chip('Claimed', 'green') : ''}</span></td>
+      <td class="num">${c.paid} / ${c.orders}</td>
+      <td class="num">${esc(money(c.totalCents))}</td>
+      <td class="num">${c.paid ? esc(money(Math.round(c.totalCents / c.paid))) : '—'}</td>
+      <td>${esc((c.provinces || []).join(', ') || '—')}</td>
+      <td class="nw">${when(c.lastAt)}</td>
+    </tr>`).join('');
+    const ltv = d.customers.reduce((a, c) => a + c.totalCents, 0);
+    return chrome('customers', title('Customers', `${d.customers.length} shown · ${esc(money(ltv))} lifetime paid · rolled up from orders; open a row for profile, block, and history`), `
+      <div class="toolbar"><input class="control grow" id="cQ" placeholder="Email, name, note" value="${esc(q)}"><button type="button" class="btn btn--secondary btn--sm" id="cGo">Search</button></div>
+      ${panel('Customers', table('<th>Customer</th><th>Kind</th><th class="num">Paid / all</th><th class="num">Lifetime</th><th class="num">AOV</th><th>Province</th><th>Last order</th>', rows, 'No customers yet.'), { tight: true })}`);
+  }
+
+  async function customerDetail(email) {
+    const [{ customer: c }, risk] = await Promise.all([
+      api('/api/admin/customers/' + encodeURIComponent(email)),
+      api('/api/admin/risk').catch(() => ({ blocks: [] })),
+    ]);
+    const blocked = (risk.blocks || []).find(b => b.email.toLowerCase() === c.email.toLowerCase());
+    const list = c.orderList || [];
+    const paid = list.filter(o => o.status === 'paid');
+    const first = list.length ? list[list.length - 1] : null;
+    const rows = list.map(o => `<tr data-go="#orders/${encodeURIComponent(o.orderNo)}">
+      <td class="mono">${esc(o.orderNo)}</td>
+      <td class="nw">${when(o.createdAt)}</td>
+      <td>${esc(DELIVERY[o.deliveryMethod] || o.deliveryMethod)}<span class="sub">${esc(o.shipping.city)}, ${esc(o.shipping.province)}${o.dealer ? ' · ' + esc(o.dealer.name) : ''}</span></td>
+      <td><span class="chips">${statusChip(o.status)} ${o.fulfillment ? fulfillChip(o.fulfillment) : ''}</span></td>
+      <td class="num">${esc(money(o.quote.totalCents))}</td>
+    </tr>`).join('');
+    const skus = {};
+    paid.forEach(o => (o.items || []).forEach(i => { skus[i.sku] = skus[i.sku] || { key: i.name, count: 0 }; skus[i.sku].count += i.qty; }));
+    const skuList = Object.values(skus).sort((a, b) => b.count - a.count).slice(0, 6);
+    return chrome('customer', title(c.name || c.email, `<span class="chips">${c.guest ? chip('Guest', 'orange') : chip('Account', 'navy')}${c.claimed ? chip('Claimed', 'green') : ''}${blocked ? chip('Checkout blocked') : ''}</span> &nbsp; ${esc(c.email)}${c.phone ? ' · ' + esc(phoneOut(c.phone)) : ''}`, `<a href="#customers">Customers</a> · ${esc(c.email)}`), `
+      ${blocked ? `<div class="banner banner--high"><strong>Checkout blocked</strong><span>${esc(blocked.reason)} · ${esc(blocked.by)} · ${when(blocked.at)}. New orders from this email return 403.</span></div>` : ''}
+      <div class="kpis">
+        ${kpi('Lifetime paid', esc(money(c.totalCents)), `${c.paid} paid / ${c.orders} orders`)}
+        ${kpi('Average order', c.paid ? esc(money(Math.round(c.totalCents / c.paid))) : '—', 'paid orders')}
+        ${kpi('First order', first ? when(first.createdAt) : '—', first ? ago(first.createdAt) + ' ago' : '')}
+        ${kpi('Last order', when(c.lastAt), c.lastAt ? ago(c.lastAt) + ' ago' : '')}
+        ${kpi('Provinces', esc((c.provinces || []).join(', ') || '—'), 'ship-to')}
+        ${kpi('Open issues', num(list.filter(o => o.status === 'pending_payment' || o.status === 'declined').length), 'pending or declined', { kind: list.some(o => o.status === 'declined') ? 'warn' : '' })}
+      </div>
+      <div class="row row--main">
+        <div class="stack">
+          ${panel('Orders', table('<th>Order</th><th>Placed</th><th>Delivery</th><th>Status</th><th class="num">Total</th>', rows, 'No orders.'), { tight: true })}
+          ${panel('Most bought', hlist(skuList, { empty: 'No paid items yet.', share: false, fmt: v => v + ' units' }))}
+        </div>
+        <div class="stack">
+          ${panel('Support profile', `
+            <div class="grid2">
+              ${field('crmName','Display name', c.name)}
+              ${field('crmPhone','Phone', phoneOut(c.phone))}
+              ${field('crmErpUser','Espo User id', c.erpUserId || '', 'placeholder="same id CRM sends as userId" autocomplete="off"')}
+              <label class="field span2"><span class="field__label">Internal note</span><textarea class="control" id="crmNote" rows="4">${esc(c.note || '')}</textarea></label>
+            </div>
+            <div class="actions"><button type="button" class="btn btn--primary btn--sm" id="saveCrm">Save profile</button></div>
+            <p class="muted" style="margin:10px 0 0;font-size:12.5px">Espo User id is what ERP receives as <span class="mono">userId</span> on Hosted Tokenization orders — the same id CRM uses. Leave blank for guests. Does not change past invoices.${c.updatedAt ? ` Last edited ${when(c.updatedAt)} by ${esc(c.by || 'ops')}.` : ''}</p>`)})
+          ${panel('Checkout block', `
+            ${field('blockReason','Reason', blocked ? blocked.reason : 'Blocked by ops')}
+            <div class="actions">
+              ${blocked ? `<button type="button" class="btn btn--secondary btn--sm" id="unblockEmail">Unblock</button>` : `<button type="button" class="btn btn--ghost btn--sm" id="blockEmail">Block this email from new checkout</button>`}
+            </div>`, { sub: blocked ? 'active' : 'not blocked' })}
+        </div>
+      </div>`);
+  }
+
+  /* ------------------------------------------------------------ products */
+  async function products() {
+    const q = $('#pQ') ? $('#pQ').value : '';
+    const d = await api('/api/admin/products' + (q ? '?q=' + encodeURIComponent(q) : ''));
+    const rows = d.products.map(p => `<tr data-go="#products/${encodeURIComponent(p.sku)}">
+      <td><div class="prod">${p.img ? `<img src="${esc(p.img)}" alt="">` : ''}<div><strong>${esc(p.name)}</strong><span class="sub mono">${esc(p.sku)}</span></div></div></td>
+      <td>${esc(p.variant || '—')}</td>
+      <td>${esc(p.category || '—')}</td>
+      <td><span class="chips">${p.disabled ? chip('Hidden', 'orange') : ''}${p.overridden ? chip('Override', 'navy') : ''}${p.extra ? chip('Ops SKU', 'green') : ''}</span></td>
+      <td class="num">${esc(money(p.unitCents))}${p.overridden && p.snapshotCents !== p.unitCents ? `<span class="sub">was ${esc(money(p.snapshotCents))}</span>` : ''}</td>
+    </tr>`).join('');
+    return chrome('products', title('Products', `${d.total} SKUs · checkout uses these prices and names immediately · the live vanstro.ca list is separate`), `
+      <div class="toolbar"><input class="control grow" id="pQ" placeholder="SKU, name, category" value="${esc(q)}"><button type="button" class="btn btn--secondary btn--sm" id="pGo">Search</button><a class="btn btn--primary btn--sm" href="#products/new" style="margin-left:auto">Add SKU</a></div>
+      ${panel('Catalogue', table('<th>Product</th><th>Variant</th><th>Category</th><th>Flags</th><th class="num">Live CAD</th>', rows, 'No SKUs.'), { tight: true })}`);
+  }
+
+  async function productDetail(sku) {
+    if (sku === 'new') {
+      return chrome('product', title('Add SKU', 'Available at checkout on this package. Does not publish to vanstro.ca.', '<a href="#products">Products</a> · New'), `
+        ${panel('New SKU', `
+          <div class="grid2">
+            ${field('sku','SKU','')}
+            ${field('name','Name','')}
+            ${field('variant','Variant','')}
+            ${field('category','Category','')}
+            ${field('price','Price CAD','0.00','inputmode="decimal"')}
+            ${field('img','Image URL','')}
+          </div>
+          <div class="actions"><button type="button" class="btn btn--primary" id="createSku">Create SKU</button></div>`)}`);
+    }
+    const [d, rep] = await Promise.all([
+      api('/api/admin/products?q=' + encodeURIComponent(sku)),
+      api('/api/admin/reports?window=all').catch(() => null),
+    ]);
+    const p = (d.products || []).find(x => x.sku === sku) || d.products[0];
+    if (!p) throw Object.assign(new Error('not_found'), { status: 404 });
+    const sales = rep ? (rep.topSkus || []).find(x => x.sku === p.sku) : null;
+    return chrome('product', title(p.name, `<span class="chips">${p.disabled ? chip('Hidden from checkout', 'orange') : chip('Live at checkout', 'green')}${p.overridden ? chip('Override', 'navy') : ''}${p.extra ? chip('Ops SKU', 'green') : ''}</span> &nbsp; <span class="mono">${esc(p.sku)}</span>`, `<a href="#products">Products</a> · ${esc(p.sku)}`), `
+      <div class="kpis">
+        ${kpi('Live price', esc(money(p.unitCents)), `snapshot ${esc(money(p.snapshotCents))}`)}
+        ${kpi('Units sold', sales ? num(sales.qty) : '0', 'all time, paid')}
+        ${kpi('Revenue', sales ? esc(money(sales.cents)) : esc(money(0)), sales ? `${sales.orders} orders` : 'no paid orders')}
+        ${kpi('Category', esc(p.category || '—'), esc(p.variant || ''))}
+      </div>
+      <div class="row row--main">
+        ${panel('Edit', `
+          <div class="grid2">
+            ${field('name','Name', p.name)}
+            ${field('variant','Variant', p.variant || '')}
+            ${field('category','Category', p.category || '')}
+            ${field('price','Price CAD', (p.unitCents / 100).toFixed(2), 'inputmode="decimal"')}
+            <div class="span2">${field('img','Image URL', p.img || '')}</div>
+            <label class="chk span2"><input type="checkbox" id="disabled"${p.disabled?' checked':''}> Hide this SKU from checkout (unknown_sku)</label>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn--primary" id="saveSku">Save</button>
+            <button type="button" class="btn btn--secondary" data-jump-q="${esc(p.sku)}">Orders with this SKU</button>
+            ${p.overridden && !p.extra ? `<button type="button" class="btn btn--ghost" id="revertSku">Revert to snapshot</button>` : ''}
+            ${p.extra ? `<button type="button" class="btn btn--ghost" id="revertSku">Remove ops SKU</button>` : ''}
+          </div>`)}
+        ${panel('Preview', `${p.img ? `<img src="${esc(p.img)}" alt="" style="width:100%;border-radius:8px;background:var(--vs-grey-100);aspect-ratio:1;object-fit:cover">` : '<p class="muted" style="margin:0">No image.</p>'}<p class="muted" style="margin:10px 0 0;font-size:12.5px">Edits write <code>data/catalogue-overrides.json</code>. Checkout quotes from this list on the next request.</p>`)}
+      </div>`);
+  }
+
+  /* ------------------------------------------------------------ dealers */
+  async function dealers() {
+    const d = await api('/api/admin/dealers');
+    const rows = d.dealers.map(x => `<tr data-go="#dealers/${encodeURIComponent(x.id)}">
+      <td><strong>${esc(x.name)}</strong><span class="sub">${esc(x.street)}, ${esc(x.city)} ${esc(x.postalCode)}</span></td>
+      <td class="mono">${esc(x.code)}</td>
+      <td>${esc(x.province)}</td>
+      <td>${esc(x.phone)}<span class="sub">${esc(x.email)}</span></td>
+      <td><span class="chips">${x.disabled ? chip('Off', 'orange') : chip('Live', 'green')}${x.terminalId ? chip('Terminal', 'navy') : ''}${x.erpAccountId ? chip('ERP', 'navy') : chip('No Espo id', 'orange')}</span></td>
+      <td class="num">${x.paid} / ${x.orders}</td>
+      <td class="num">${esc(money(x.paidCents))}</td>
+    </tr>`).join('');
+    const total = d.dealers.reduce((a, x) => a + x.paidCents, 0);
+    return chrome('dealers', title('Dealers', `${d.dealers.length} dealers · ${esc(money(total))} paid through dealers · edits write <code>data/dealers.json</code>; invite codes stay staff-only`), `
+      <div class="toolbar"><a class="btn btn--primary btn--sm" href="#dealers/new" style="margin-left:auto">Add dealer</a></div>
+      ${panel('Network', table('<th>Dealer</th><th>Code</th><th>Prov</th><th>Contact</th><th>Flags</th><th class="num">Paid / all</th><th class="num">Paid CAD</th>', rows, 'No dealers.'), { tight: true })}`);
+  }
+
+  function dealerForm(x) {
+    const ids = new Set(x.serviceIds || (x.services || []).map(s => s.id || s));
+    return `
+      <div class="grid2">
+        ${field('dId','ID', x.id || '', x.id ? 'disabled' : 'placeholder="AB-FOOTHILL"')}
+        ${field('dCode','Public code', x.code || '', 'placeholder="AB20"')}
+        ${field('dName','Name', x.name || '')}
+        ${field('dInvite','Invite code', x.inviteCode || '', 'placeholder="auto if blank"')}
+        <div class="span2">${field('dStreet','Street', x.street || '')}</div>
+        ${field('dCity','City', x.city || '')}
+        <label class="field"><span class="field__label">Province</span>${sel('dProv', x.province || 'MB', PROVS.map(p => [p, p]))}</label>
+        ${field('dPostal','Postal code', x.postalCode || '')}
+        ${field('dPhone','Phone', x.phone || '')}
+        ${field('dEmail','Email', x.email || '', 'type="email"')}
+        ${field('dHoursEn','Hours (EN)', x.hoursEn || '')}
+        ${field('dHoursFr','Hours (FR)', x.hoursFr || '')}
+        ${field('dAreaEn','Area (EN)', x.areaEn || '')}
+        ${field('dAreaFr','Area (FR)', x.areaFr || '')}
+        <div class="span2"><span class="field__label">Services</span><div class="svc">${SVCS.map(([id,l]) => `<label class="chk"><input type="checkbox" data-svc="${id}"${ids.has(id)?' checked':''}> ${esc(l)}</label>`).join('')}</div></div>
+        ${field('dErpAccount','ERP Account id', x.erpAccountId || '', 'placeholder="MB01" autocomplete="off"')}
+        ${field('dErpUser','ERP User id', x.erpUserId || '', 'placeholder="ERP userId on POS" autocomplete="off"')}
+        <label class="chk span2"><input type="checkbox" id="dOff"${x.disabled?' checked':''}> Hide from checkout and invite sign-up</label>
+      </div>
+      <p class="muted" style="margin:10px 0 0;font-size:12.5px">Paste the Espo Account id ERP already has for this dealer (Yuan / MB01 is <span class="mono">6a8810b93b08b6495</span>), not the storefront id (${esc(x.id || 'AB-FOOTHILL')}).</p>`;
+  }
+
+  async function dealerDetail(id) {
+    if (id === 'new') {
+      return chrome('dealer', title('Add dealer', '', '<a href="#dealers">Dealers</a> · New'), `
+        ${panel('New dealer', `${dealerForm({ province: 'MB', serviceIds: ['pickup','delivery'] })}
+          <div class="actions"><button type="button" class="btn btn--primary" id="createDealer">Create dealer</button></div>`)}`);
+    }
+    const [d, rep] = await Promise.all([api('/api/admin/dealers'), api('/api/admin/reports?window=all').catch(() => null)]);
+    const x = (d.dealers || []).find(n => n.id === id);
+    if (!x) throw Object.assign(new Error('not_found'), { status: 404 });
+    const share = rep ? (rep.dealers || []).find(r => r.key === x.id) : null;
+    return chrome('dealer', title(x.name, `<span class="chips">${x.disabled ? chip('Off', 'orange') : chip('Live', 'green')}</span> &nbsp; ${esc(x.code)} · ${esc(x.city)}, ${esc(x.province)}${x.terminalId ? ` · terminal <span class="mono">${esc(x.terminalId)}</span>` : ''}`, `<a href="#dealers">Dealers</a> · ${esc(x.id)}`), `
+      <div class="kpis">
+        ${kpi('Paid through dealer', esc(money(x.paidCents)), `${x.paid} paid / ${x.orders} orders`)}
+        ${kpi('Share of dealer sales', share && rep ? pct(share.cents, rep.dealers.reduce((a, r) => a + (r.key === 'direct' ? 0 : r.cents), 0)) : '—', 'all time')}
+        ${kpi('Invite code', `<span class="mono">${esc(x.inviteCode)}</span>`, 'staff-only')}
+        ${kpi('Services', num((x.services || []).length), esc((x.services || []).map(s => s.id || s).join(', ')))}
+      </div>
+      <div class="toolbar"><button type="button" class="btn btn--secondary btn--sm" data-jump-dealer="${esc(x.id)}">View orders</button></div>
+      ${panel('Dealer record', `${dealerForm(x)}<div class="actions"><button type="button" class="btn btn--primary" id="saveDealer">Save dealer</button></div>`)}`);
+  }
+
+  /* ------------------------------------------------------------ system */
+  async function ops() {
+    const d = await api('/api/admin/ops');
+    const rows = Object.entries(d.keys).map(([k, v]) => `<tr><td class="mono">${esc(k)}</td><td>${typeof v === 'boolean' ? (v ? chip('Set', 'green') : chip('Empty', 'orange')) : esc(String(v))}</td></tr>`).join('');
+    const fmtB = b => b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : b > 1024 ? Math.round(b / 1024) + ' KB' : b + ' B';
+    const up = d.process ? d.process.uptimeSec : 0;
+    const upTxt = up > 3600 ? Math.floor(up / 3600) + ' h ' + Math.round((up % 3600) / 60) + ' min' : Math.round(up / 60) + ' min';
+    return chrome('ops', title('System', `${esc(d.bind.host)}:${d.bind.port} · APP_URL host ${esc(d.bind.appHost || '—')} · TRUST_PROXY ${d.bind.trustProxy ? 'on' : 'off'}`), `
+      <div class="kpis">
+        ${kpi('Payment mode', esc(d.health.payment), d.health.payment === 'live' ? 'Moneris' : 'MONERIS_MOCK', { kind: d.health.payment === 'live' ? '' : 'warn' })}
+        ${kpi('Mail', d.health.mail ? 'ACS' : 'off', d.mailRedirect ? 'redirected — not reaching customers' : 'AZURE_COMMUNICATION_CONNECTION_STRING', { kind: d.health.mail ? (d.mailRedirect ? 'warn' : '') : 'bad' })}
+        ${kpi('POS / Go', d.health.pos ? 'ready' : 'off', 'MONERIS_GO_*')}
+        ${kpi('ERP', d.health.erp ? 'ready' : 'off', 'ERP_BASE_URL + ERP_TOKEN', { kind: d.health.erp ? '' : 'warn' })}
+        ${kpi('Uptime', upTxt, d.process ? `node ${esc(d.process.node)} · ${d.process.rssMb} MB` : '')}
+        ${kpi('Orders on disk', d.data ? num(d.data.orders.files) : '—', d.data ? fmtB(d.data.orders.bytes) + ' · data/orders' : '')}
+        ${kpi('Traffic on disk', d.data ? num(d.data.traffic.files) + ' days' : '—', d.data ? fmtB(d.data.traffic.bytes) + ' · data/traffic' : '')}
+      </div>
+      ${d.mailRedirect ? '<div class="banner banner--review"><strong>MAIL_REDIRECT_TO is set</strong><span>Outbound mail is not going to real customers.</span></div>' : ''}
+      <div class="row row--main">
+        ${panel('Environment', table('<th>Key</th><th>Present</th>', rows), { tight: true, sub: 'values are never shown' })}
+        <div class="stack">
+          ${panel('Data stores', `<dl class="kv">
+            <dt>Orders</dt><dd><span class="mono">data/orders/*.json</span></dd>
+            <dt>Traffic</dt><dd><span class="mono">data/traffic/YYYY-MM-DD.jsonl</span></dd>
+            <dt>Risk</dt><dd><span class="mono">data/risk.json</span> — holds, blocked emails</dd>
+            <dt>Catalogue</dt><dd><span class="mono">data/catalogue-overrides.json</span></dd>
+            <dt>Dealers</dt><dd><span class="mono">data/dealers.json</span></dd>
+            <dt>CRM</dt><dd><span class="mono">data/customer-crm.json</span></dd>
+          </dl>`)}
+          ${panel('Auth', `<p style="margin:0;font-size:13px">Staff access is the prototype <span class="mono">x-vs-user</span> header with role <span class="mono">staff</span>. Every <span class="mono">/api/admin/*</span> route returns 403 to customers and dealers. Production replaces the gate with the IdP group.</p><p class="muted" style="margin:10px 0 0;font-size:12.5px">Docs: <a href="docs/12-admin.md" target="_blank">12-admin.md</a> · <a href="docs/09-deploy-handoff.md" target="_blank">09-deploy-handoff.md</a></p>`)}
+        </div>
+      </div>`);
+  }
+
+  function readDealer() {
+    return {
+      id: ($('#dId') && !$('#dId').disabled) ? $('#dId').value.trim() : undefined,
+      code: $('#dCode').value.trim(),
+      inviteCode: $('#dInvite').value.trim() || undefined,
+      name: $('#dName').value.trim(),
+      street: $('#dStreet').value.trim(),
+      city: $('#dCity').value.trim(),
+      province: $('#dProv').value,
+      postalCode: $('#dPostal').value.trim(),
+      phone: $('#dPhone').value.trim(),
+      email: $('#dEmail').value.trim(),
+      hoursEn: $('#dHoursEn').value.trim(),
+      hoursFr: $('#dHoursFr').value.trim(),
+      areaEn: $('#dAreaEn').value.trim(),
+      areaFr: $('#dAreaFr').value.trim(),
+      services: $$('input[data-svc]:checked').map(x => x.dataset.svc),
+      disabled: $('#dOff').checked,
+      erpAccountId: $('#dErpAccount').value.trim(),
+      erpUserId: $('#dErpUser').value.trim(),
+    };
+  }
+
+  /* ------------------------------------------------------------ render */
+  async function render() {
+    const root = $('#app');
+    if (!staffSession()) {
+      root.innerHTML = gate();
+      $('#gGo').onclick = () => {
+        const email = ($('#gEmail').value || '').trim().toLowerCase();
+        const pw = $('#gPw').value || $('#gPw').getAttribute('data-demo') || '';
+        if ((email === 'ops@vanstro.ca' || email === 'admin@vanstro.ca') && pw === 'Vanstro2026!') {
+          setStaff('ops@vanstro.ca'); render();
+        } else {
+          $('#gErr').hidden = false; $('#gErr').textContent = 'Not a staff account.';
+        }
+      };
+      return;
+    }
+    const { page, id } = hash();
+    try {
+      if (!navCounts) await loadNavCounts();
+      if (page === 'orders' && id) root.innerHTML = await orderDetail(id);
+      else if (page === 'orders') root.innerHTML = await ordersList();
+      else if (page === 'payments') root.innerHTML = await payments();
+      else if (page === 'risk') root.innerHTML = await riskPage();
+      else if (page === 'traffic') root.innerHTML = await traffic();
+      else root.innerHTML = await overview();
+      bind(page, id);
+    } catch (e) {
+      root.innerHTML = `<div class="alert bad">${esc(e.message || 'Unable to load admin console')}</div>`;
+    }
+  }
+
+  function bind(page, id) {
+    $$('[data-go]').forEach(el => el.addEventListener('click', e => { if (e.target.closest('a,button,input')) return; go(el.getAttribute('data-go').replace(/^#/, '')); }));
+    $('#jump')?.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      const v = e.currentTarget.value.trim(); if (!v) return;
+      if (/^VS-\d{4}-\d{6}/i.test(v)) go('orders/' + encodeURIComponent(v.toUpperCase()));
+      else if (v.includes('@')) go('customers/' + encodeURIComponent(v.toLowerCase()));
+      else { pendingOrderQ = v; go('orders'); if (hash().page === 'orders') render(); }
+    });
+    $('#fGo')?.addEventListener('click', () => render());
+    $('#fQ')?.addEventListener('keydown', e => { if (e.key === 'Enter') render(); });
+    $('#cGo')?.addEventListener('click', () => render());
+    $('#cQ')?.addEventListener('keydown', e => { if (e.key === 'Enter') render(); });
+    $('#pGo')?.addEventListener('click', () => render());
+    $('#pQ')?.addEventListener('keydown', e => { if (e.key === 'Enter') render(); });
+    $$('[data-jump]').forEach(btn => btn.addEventListener('click', e => {
+      e.preventDefault();
+      const k = btn.dataset.jump;
+      pendingFilters = k === 'pending' ? { status: 'pending_payment' }
+        : k === 'unfulfilled' ? { status: 'paid', fulfillment: 'unfulfilled' }
+        : k === 'guest' ? { guest: '1' }
+        : k === 'risk-high' ? { risk: 'high' } : k === 'risk-review' ? { risk: 'review' } : k === 'risk-hold' ? { risk: 'hold' }
+        : { status: 'paid' };
+      go('orders');
+    }));
+    $$('[data-jump-dealer]').forEach(btn => btn.addEventListener('click', () => { pendingOrderQ = btn.dataset.jumpDealer; go('orders'); }));
+    $$('[data-jump-q]').forEach(btn => btn.addEventListener('click', () => { pendingOrderQ = btn.dataset.jumpQ; go('orders'); }));
+    $$('[data-win]').forEach(btn => btn.addEventListener('click', () => { setWin(btn.dataset.win); render(); }));
+
+    $('#kwAdd')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const term = $('#kwTerm').value.trim(); if (!term) { VS.toast('Enter a keyword', 'error'); return; }
+      await api('/api/admin/seo', { method: 'POST', body: JSON.stringify({ action: 'add_keyword', term, targetPath: $('#kwPath').value.trim() || '/' }) });
+      render();
+    }, 'Keyword added'));
+    $$('[data-kw-del]').forEach(btn => btn.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/seo', { method: 'POST', body: JSON.stringify({ action: 'remove_keyword', id: btn.dataset.kwDel }) });
+      render();
+    }, 'Removed')));
+    $('#gscGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const csv = $('#gscCsv').value; if (csv.trim().length < 10) { VS.toast('Paste a Search Console CSV', 'error'); return; }
+      const r = await api('/api/admin/seo', { method: 'POST', body: JSON.stringify({ action: 'import_gsc', csv, label: $('#gscLabel').value.trim() || undefined }) });
+      VS.toast(`Imported ${r.import.rows} ${r.import.kind}`); render();
+    }));
+    $$('[data-imp-del]').forEach(btn => btn.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      if (!confirm('Delete this import?')) return;
+      await api('/api/admin/seo', { method: 'POST', body: JSON.stringify({ action: 'remove_import', id: btn.dataset.impDel }) });
+      render();
+    }, 'Deleted')));
+
+    $('#erpGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ erpPush: true }) });
+      render();
+    }, 'ERP push finished'));
+
+    $('#reopen')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ reopen: true }) });
+      render();
+    }, 'Reopened for payment'));
+
+    $('#cloneOrder')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const { order } = await api('/api/admin/orders', { method: 'POST', body: JSON.stringify({ cloneFrom: id }) });
+      go('orders/' + encodeURIComponent(order.orderNo));
+    }, 'Cloned'));
+
+    $('#holdGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ riskHold: true, riskReason: $('#holdReason').value.trim() }) });
+      render();
+    }, 'On hold'));
+
+    $('#releaseGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ riskHold: false }) });
+      render();
+    }, 'Hold released'));
+
+    $('#blockEmailOrder')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const email = $('#email').value.trim();
+      if (!confirm(`Block ${email} from new checkouts?`)) return;
+      await api('/api/admin/risk', { method: 'POST', body: JSON.stringify({ action: 'block_email', email, reason: $('#holdReason').value.trim() || 'Blocked by ops' }) });
+      render();
+    }, 'Email blocked'));
+
+    $('#blockGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const email = $('#riskEmail').value.trim();
+      if (!email) { VS.toast('Enter an email', 'error'); return; }
+      await api('/api/admin/risk', { method: 'POST', body: JSON.stringify({ action: 'block_email', email, reason: $('#riskReason').value.trim() }) });
+      render();
+    }, 'Email blocked'));
+
+    $$('[data-unblock]').forEach(btn => btn.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/risk', { method: 'POST', body: JSON.stringify({ action: 'unblock_email', email: btn.dataset.unblock }) });
+      render();
+    }, 'Unblocked')));
+
+    $('#blockEmail')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/risk', { method: 'POST', body: JSON.stringify({ action: 'block_email', email: id, reason: $('#blockReason').value.trim() }) });
+      render();
+    }, 'Email blocked'));
+
+    $('#unblockEmail')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/risk', { method: 'POST', body: JSON.stringify({ action: 'unblock_email', email: id }) });
+      render();
+    }, 'Unblocked'));
+
+    $('#saveOrder')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({
+        email: $('#email').value.trim(),
+        firstName: $('#firstName').value.trim(),
+        phone: $('#phone').value.trim(),
+        deliveryMethod: $('#shipMethod').value,
+        dealerId: $('#dealerId').value || null,
+        notes: $('#custNotes').value.trim(),
+        shipping: readAddr('s'),
+        billing: readAddr('b'),
+      }) });
+      render();
+    }, 'Order updated'));
+
+    $('#saveLines')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const items = collectLines();
+      if (!items.length) { VS.toast('Add at least one line', 'error'); return; }
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ items }) });
+      render();
+    }, 'Lines re-quoted'));
+
+    $('#addLine')?.addEventListener('click', () => {
+      const sku = ($('#addSku').value || '').trim();
+      const qty = Math.max(1, parseInt($('#addQty').value, 10) || 1);
+      if (!sku) return;
+      const tb = $('#lines');
+      tb.insertAdjacentHTML('beforeend', `<tr>
+        <td class="mono">${esc(sku)}</td><td>${esc(sku)}<span class="sub">priced on save</span></td>
+        <td class="num"><input class="control" data-qty="${esc(sku)}" value="${qty}" inputmode="numeric" style="width:72px;text-align:right;height:34px"></td>
+        <td class="num">—</td><td class="num">—</td>
+        <td class="num"><button type="button" class="btn btn--ghost btn--sm" data-rm="${esc(sku)}">Remove</button></td>
+      </tr>`);
+      $('#addSku').value = '';
+      tb.querySelector(`[data-rm="${CSS.escape(sku)}"]`)?.addEventListener('click', e => e.currentTarget.closest('tr').remove());
+    });
+    $$('[data-rm]').forEach(btn => btn.addEventListener('click', () => btn.closest('tr').remove()));
+
+    $('#ffGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ fulfillment: $('#ff').value }) });
+      render();
+    }, 'Fulfillment updated'));
+
+    $('#noteGo')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const note = $('#note').value.trim(); if (!note) return;
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ note }) });
+      render();
+    }, 'Note saved'));
+
+    $('#cancel')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      if (!confirm('Cancel this order? Payment is not refunded from this console.')) return;
+      await api('/api/admin/orders/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ status: 'cancelled' }) });
+      render();
+    }, 'Order cancelled'));
+
+    $('#resend')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/orders/' + encodeURIComponent(id) + '/resend', { method: 'POST', body: JSON.stringify({ kind: $('#resendKind').value, email: $('#resendTo').value.trim() }) });
+    }, 'Mail queued'));
+
+    $('#copyLink')?.addEventListener('click', async () => {
+      try {
+        const { order } = await api('/api/admin/orders/' + encodeURIComponent(id));
+        await navigator.clipboard.writeText(order.statusHref);
+        VS.toast('Status link copied');
+      } catch { VS.toast('Could not copy link', 'error'); }
+    });
+
+    $('#pdf')?.addEventListener('click', async () => {
+      const r = await fetch('/api/orders/' + encodeURIComponent(id) + '/invoice.pdf', { headers: VSSession.headers() });
+      if (!r.ok) { VS.toast('Invoice unavailable', 'error'); return; }
+      window.open(URL.createObjectURL(await r.blob()), '_blank');
+    });
+
+    $('#saveCrm')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      await api('/api/admin/customers/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({
+        name: $('#crmName').value.trim(), phone: $('#crmPhone').value.trim(), note: $('#crmNote').value.trim(),
+        erpUserId: $('#crmErpUser').value.trim(),
+      }) });
+      render();
+    }, 'Customer saved'));
+
+    $('#createSku')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const cad = Number($('#price').value);
+      const { product } = await api('/api/admin/products', { method: 'POST', body: JSON.stringify({
+        sku: $('#sku').value.trim(), name: $('#name').value.trim(), variant: $('#variant').value.trim(),
+        category: $('#category').value.trim(), img: $('#img').value.trim(), unitCents: Math.round(cad * 100),
+      }) });
+      go('products/' + encodeURIComponent(product.sku));
+    }, 'SKU created'));
+
+    $('#saveSku')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const cad = Number($('#price').value);
+      await api('/api/admin/products/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({
+        name: $('#name').value.trim(), variant: $('#variant').value.trim(), category: $('#category').value.trim(),
+        img: $('#img').value.trim(), unitCents: Math.round(cad * 100), disabled: $('#disabled').checked,
+      }) });
+      render();
+    }, 'Product saved'));
+
+    $('#revertSku')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const out = await api('/api/admin/products/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify({ revert: true }) });
+      if (out.product && out.product.removed) go('products');
+      else render();
+    }, 'Reverted'));
+
+    $('#createDealer')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const body = readDealer();
+      const { dealer } = await api('/api/admin/dealers', { method: 'POST', body: JSON.stringify(body) });
+      go('dealers/' + encodeURIComponent(dealer.id));
+    }, 'Dealer created'));
+
+    $('#saveDealer')?.addEventListener('click', ev => run(ev.currentTarget, async () => {
+      const body = readDealer();
+      delete body.id;
+      await api('/api/admin/dealers/' + encodeURIComponent(id), { method: 'PATCH', body: JSON.stringify(body) });
+      render();
+    }, 'Dealer saved'));
+  }
+
+  window.addEventListener('hashchange', () => { window.scrollTo(0, 0); render(); });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+{
+  "assets": [
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-lifestyle-front.jpg",
+      "sha256": "bb7855d3e553b284aa0223364fa1f3dee912cea3e1d1a951c1f63a51227406c6",
+      "bytes": 385183,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDL-WH-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621511-white-storage-open.jpg",
+      "sha256": "2b3581b104842f5d3bc3ae5569d35cc53b5fec33876d9b59f8d88a0fe2e282f1",
+      "bytes": 450111,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDL-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621513-light-grey-lifestyle-front.jpg",
+      "sha256": "91e3634cd948e561f04ec6e43188a4f8bdb13f070353441a099968f541738c29",
+      "bytes": 246990,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDL-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdl-023621513-light-grey-product-white-background.jpg",
+      "sha256": "34016be46dfe7f7a2ef71539cde94779a0791f32cbd7e95599729495a8da5093",
+      "bytes": 127219,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDL-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-lifestyle-front.jpg",
+      "sha256": "52eb486c500ab4a264a7593983ded97b3d91b51f543e25d1b825feb337183667",
+      "bytes": 384985,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDR-WH-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621411-white-storage-open.jpg",
+      "sha256": "67c9997300fc6015c52508f12c82eef9699e88a73cdc45d068a25cd0e2c961dd",
+      "bytes": 449959,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDR-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-light-grey-lifestyle-front.jpg",
+      "sha256": "0fd2227aea51043e494ef17ccca8552aeb0e04871eb4fab0366793c4b2e174c6",
+      "bytes": 246969,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDR-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v3621tdr-023621413-light-grey-product-white-background.jpg",
+      "sha256": "7fd307b5b4de082cdb01410126bc4c266b3757928be12bfb6461b36a6845a471",
+      "bytes": 126942,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V3621TDR-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221611-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "26014d88fca3dde70850b481d7a124775c13dd3580fdf432003edf73dfe23982",
+      "bytes": 91746,
+      "width": 1280,
+      "height": 1280,
+      "source": "business-approved-image-refresh-20260722/b4046d1634489e508cc9200f1cf6a96a.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221612-white-cabinet-product-white-background.jpg",
+      "sha256": "6c327f365e9c01045c1a0d3ba154d3f5cea8a9282158e2fb5fd82c762d16cfba",
+      "bytes": 200698,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4221-WH-3.JPG"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4221-024221614-light-grey-cabinet-product-white-background.jpg",
+      "sha256": "a59ba7ee04f175553c9f6b87c706f8cc1ac61b6fba8315a37cb48088638ae636",
+      "bytes": 160272,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4221-4.JPG"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "179870d7c4b2701011cc03df4a87d48eccb7bd7fa531e9c628c3a360cae9f1a7",
+      "bytes": 95555,
+      "width": 1280,
+      "height": 1280,
+      "source": "business-approved-image-refresh-20260722/2a47b89e7273fbc90855ef206aa86da2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821611-white-with-top-lifestyle-storage-open-angle.jpg",
+      "sha256": "355ca9944a2bcc3cabfe6c1689229ca15b6b96186699d7f1a29319828f28d156",
+      "bytes": 518780,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-WH-TOP-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-lifestyle-front.jpg",
+      "sha256": "3cd6e9c2c487b413550553a8a8cd61ee4c6911a09075768e34e9a4467825302d",
+      "bytes": 205403,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-WH-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-lifestyle-storage-open.jpg",
+      "sha256": "50d10af54446ead79816c162d1ae2a6c4ae769a20116c48c4dfd7618c13b1ba4",
+      "bytes": 193992,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-WH-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821612-white-cabinet-storage-open-white-background.jpg",
+      "sha256": "860588ed697cae6bc779278543edd1081bbc49528417b5abd4b6db86928a3296",
+      "bytes": 168109,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-lifestyle-storage-open.jpg",
+      "sha256": "21a2c9def11c54524b31296406be68c288c9b1c30625d634a1bf93927fef84b1",
+      "bytes": 212966,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/v4821-LG-TOP-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-product-white-background.jpg",
+      "sha256": "2f5e6ae1870e2f75ec45f0b96277430b1b7b546c7d9f7573001c2aa8a01f98a8",
+      "bytes": 471788,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-LG-TOP-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821613-light-grey-with-top-storage-open-white-background.jpg",
+      "sha256": "48736b66f13cddda8dc6f4b4e42dd8da1788de72d67a49302cd93d90c21dcfa2",
+      "bytes": 426570,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-LG-TOP-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821614-light-grey-cabinet-product-white-background.jpg",
+      "sha256": "c8751ca1286c563516728354e88f0e680031efc50d0fa84c26b9d51811e819c9",
+      "bytes": 210814,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/V4821-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-v4821-024821614-light-grey-cabinet-storage-open-white-background.jpg",
+      "sha256": "21a0ec7c64e26e2124c4b7fa079225c39d482526d04a85846bacad56f581f1c6",
+      "bytes": 167714,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/v4821-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs24-022421011-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "4a8fd3526d04949aafaa3966b61de07973cbed24d99a3943f318b192fcccefa8",
+      "bytes": 9337827,
+      "width": 4000,
+      "height": 4000,
+      "source": "business-approved-image-refresh-20260722/VS24.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-countertop-detail.jpg",
+      "sha256": "b8855e6c3e04a5d005e7b80e5bcf971d501a4d03a2a9ab00777aada8edfcf6b6",
+      "bytes": 273220,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-WH-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-product-white-background.jpg",
+      "sha256": "f88c33ab52bc0147c4c644d36096e9f2860312a12c6a09fe5c657c44502b7478",
+      "bytes": 142142,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-WH-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-storage-open.jpg",
+      "sha256": "5bba5925b4fc132f8c8939bd189c87ed659efff19033b8282b59cf6c506f0080",
+      "bytes": 418853,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721011-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "2629b431a06e8eed5a68302ff1325e0184f958487ceb43410935d5e83b027041",
+      "bytes": 303578,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-lifestyle-front.jpg",
+      "sha256": "b04ac7c32dc469274af12f28d405b0240d362259b755f35090739b9deba0105f",
+      "bytes": 279901,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-product-white-background.jpg",
+      "sha256": "79d7b41e2496d6097e4fc0db7329db966355bfe65dda7fc1888892deff23f3e6",
+      "bytes": 115552,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-LG-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-storage-open-white-background.jpg",
+      "sha256": "d179c34d15d652e07eaf1af74cc7237189abf5d9a5c7b94828ab29bdab4f45e5",
+      "bytes": 116582,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-LG-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs27-022721013-light-grey-storage-open.jpg",
+      "sha256": "fa15b769b431c62352405308f1f7c43579513d951e3f487ccf46112fd81f06d0",
+      "bytes": 304157,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS27-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-countertop-detail.jpg",
+      "sha256": "16fa9b2a1678294642fb81e2c7a7afdcdc6613b32682ee443b2978bbd7feddbe",
+      "bytes": 288885,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-WH-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-product-white-background.jpg",
+      "sha256": "3fc1494c70b44d043797631c405c869c58fda6dd99108221831bfc5e0ed135b5",
+      "bytes": 131503,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-WH-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-storage-open.jpg",
+      "sha256": "a1fa8183d445091feb09d0480cae3b5b0cd1c37a193739ce423d44ed4eb54217",
+      "bytes": 411311,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "3786ac75a890b6717909ffdece5825f52096f15566fc693de75e7be5286cbafe",
+      "bytes": 291405,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-lifestyle-front.jpg",
+      "sha256": "d909376e4451a2d46451f6e15a3d6c90fb1f799029928642a10c36fe9cff5cdb",
+      "bytes": 269277,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-product-white-background.jpg",
+      "sha256": "6c348e607c52b28d88f88bc92425f5773089c80708986cd350a67e935379d45a",
+      "bytes": 108803,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-LG-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-storage-open-white-background.jpg",
+      "sha256": "00e28b2151a84f490e31c702aa6289c04ff045d74d81e8f2819bbb28d92ccc3e",
+      "bytes": 109904,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-LG-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021013-light-grey-storage-open.jpg",
+      "sha256": "92ab29cb69d1d7f35d1af2d8304bdfbbdc62f42134c7ad5559365a83137f9409",
+      "bytes": 300489,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS30-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-countertop-detail.jpg",
+      "sha256": "9bb243ac857ef17f9fd4bc9259085160c56656d6b8dcf52d17b2b09b3c0cbbf0",
+      "bytes": 287825,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-WH-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-product-white-background.jpg",
+      "sha256": "5b7fd32da8e8e9abb974629539819371963aa39cfe34e8577f61e39ec23603cd",
+      "bytes": 123353,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-WH-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-storage-open.jpg",
+      "sha256": "bdc1938b5f888e8f9cf9ec9eb089363d306aeb4b9771f231804043d4f4296844",
+      "bytes": 415083,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-WH-2.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "sha256": "dcb69dead6fe85f56bd5ce340e818d1612912e65d6ec77c831e10147d70c52a5",
+      "bytes": 284427,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-lifestyle-front.jpg",
+      "sha256": "2d5bf8b277eac887f20034603cb7dcb4d129aa9546ba5dea193354f28277e70d",
+      "bytes": 262784,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-LG-1.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-product-white-background.jpg",
+      "sha256": "6aa6a401b9db60885220947dc2f6afb47022293a42819256e901d29709edc80e",
+      "bytes": 103632,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-LG-4.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-storage-open-white-background.jpg",
+      "sha256": "090741ef35aa9f6fb166cd1a7c8fca7b14e03193b263b5e3cd9ba1c40b8c23ee",
+      "bytes": 104570,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-LG-3.jpg"
+    },
+    {
+      "path": "/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621013-light-grey-storage-open.jpg",
+      "sha256": "92ab29cb69d1d7f35d1af2d8304bdfbbdc62f42134c7ad5559365a83137f9409",
+      "bytes": 300489,
+      "width": 1440,
+      "height": 1440,
+      "source": "business-approved-image-refresh-20260722/VS36-LG-2.jpg"
+    },
+    {
+      "path": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-specification-primary.jpg",
+      "sha256": "f1ec674904f61a1c5084825e9ab81b8bc395d36f155e1f9975fed0ae37be630e",
+      "bytes": 212579,
+      "width": 1254,
+      "height": 1254,
+      "source": "approved cache-safe Handle specification image"
+    },
+    {
+      "path": "/assets/products/kitchen-cabinets/aluminum-alloy-handle-060102411-ctc-192mm-specification-primary.jpg",
+      "sha256": "02c0c10f39c2ddb97f5dc8c69fe43a050b3f7b70ca90771f94ae10b057dd6161",
+      "bytes": 217569,
+      "width": 1254,
+      "height": 1254,
+      "source": "approved cache-safe Handle specification image"
+    }
+  ]
+}

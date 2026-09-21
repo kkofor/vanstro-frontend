@@ -6,6 +6,7 @@ import {
   type MachineEnv,
   writeMachineAudit
 } from "../auth/service-account-access.js";
+import { rateLimitServiceAccount } from "../middleware/rate-limit-sa.js";
 import { getOperationalAlerts } from "../operations/alerts.js";
 
 const MCP_TOOLS = [
@@ -36,14 +37,14 @@ export function createMcpRoutes() {
     }
   });
 
-  routes.get("/mcp/tools", requireMachineAccess("mcp.access"), (context) => {
+  routes.get("/mcp/tools", requireMachineAccess("mcp.access"), rateLimitServiceAccount, (context) => {
     const account = context.get("serviceAccount");
     const tools = MCP_TOOLS.filter((tool) => hasMachinePermission(account, tool.permission));
 
     return context.json({ data: tools });
   });
 
-  routes.post("/mcp", requireMachineAccess("mcp.access"), async (context) => {
+  routes.post("/mcp", requireMachineAccess("mcp.access"), rateLimitServiceAccount, async (context) => {
     const body = await context.req.json().catch(() => null);
     const toolKey =
       body && typeof body === "object" && "tool" in body && typeof body.tool === "string"

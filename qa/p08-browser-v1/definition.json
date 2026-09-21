@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.p08.authenticated-browser.v1",
+  "contractSha256": "128ae596734963b77269e18e01894789733de782449033a5669bcf8b8f28db9d",
+  "cleanReset": "new fixture process; random actor/resources; empty request/state ledger; one full run only",
+  "resultSchema": { "statuses": ["pass", "fail", "intentional-skip", "not-executed"], "required": ["testedCommit", "definitionSha256", "fixtureSha256", "actorProfiles", "ports", "startStop", "cases", "requests", "states"] },
+  "cases": [
+    {"id":"P08-A01","name":"create awaiting_upload; zero Job and Artifact"},
+    {"id":"P08-A02","name":"controlled PUT returns authoritative uploaded; one generation-0 Job and Artifact"},
+    {"id":"P08-A03","name":"same-binding finalize replay; changed bytes conflict; no duplicates"},
+    {"id":"P08-A04","name":"capability denied pre-fetch and Backend denial fail closed"},
+    {"id":"P08-A05","name":"cross-scope read and mutation non-disclosure"},
+    {"id":"P08-A06","name":"actor/context/scope/visibility stale response fencing"},
+    {"id":"P08-A07","name":"stale expected version and no automatic mutation replay"},
+    {"id":"P08-A08","name":"validation preview normalized rows and awaiting-upload parse/commit rejection"},
+    {"id":"P08-A09","name":"explicit commit and completed_with_errors partial result"},
+    {"id":"P08-A10","name":"export progress and completion"},
+    {"id":"P08-A11","name":"authenticated streaming download and neutralized exact bytes/headers"},
+    {"id":"P08-A12","name":"signed URL redirect arbitrary proxy expired stale cross-scope download denial"},
+    {"id":"P08-A13","name":"active cancel request observed; cancelled state; duplicate no extra effect"},
+    {"id":"P08-A14","name":"error redaction and safe user feedback"},
+    {"id":"P08-A15","name":"keyboard focus modal live-region behavior"},
+    {"id":"P08-A16","name":"320px/390px reflow"},
+    {"id":"P08-A17","name":"localhost-only network and no unexpected mutation endpoints"}
+  ]
+}

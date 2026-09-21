@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" fill="none">
+  <title>Abstract stacked bars suggesting layered quantities</title>
+  <rect width="480" height="320" fill="#f1f4f3"/>
+  <g stroke="#0d4544" stroke-width="1.5">
+    <rect x="72" y="64" width="336" height="36" rx="8" fill="#f1f4f3"/>
+    <rect x="72" y="116" width="268" height="36" rx="8" fill="#f1f4f3"/>
+    <rect x="72" y="168" width="300" height="36" rx="8" fill="#f1f4f3"/>
+    <rect x="72" y="220" width="196" height="36" rx="8" fill="#f1f4f3"/>
+  </g>
+</svg>

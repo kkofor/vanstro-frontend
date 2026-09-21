@@ -24,6 +24,13 @@ enum ServiceAccountStatus {
   disabled
 }
 
+enum ServiceAccountEnvironment {
+  production
+  staging
+  development
+  test
+}
+
 enum OutboxStatus {
   pending
   running
@@ -53,13 +60,29 @@ enum PaymentSessionStatus {
   paid
   failed
   expired
+  reconciliation_required
+  refund_pending
+  refund_processing
+  refunded
+  refund_failed
+}
+
+enum PaymentEventType {
+  provider_confirmed
+  order_created
+  reconciliation_required
+  refund_requested
+  refunded
+  refund_failed
 }
 
 enum OrderStatus {
+  pending_payment
   paid
   processing
   fulfilled
   cancelled
+  payment_expired
 }
 
 enum FulfillmentType {
@@ -75,6 +98,18 @@ enum InventoryReservationStatus {
 }
 
 enum DealerStatus {
+  active
+  inactive
+}
+
+enum DealerMembershipStatus {
+  invited
+  active
+  suspended
+  revoked
+}
+
+enum DealerLocationStatus {
   active
   inactive
 }
@@ -119,102 +154,170 @@ enum ProductReviewStatus {
   archived
 }
 
+enum SupportHandoffStatus {
+  new
+  in_progress
+  resolved
+  closed
+}
+
+enum CrmContactStage {
+  registered
+  engaged
+  checkout_started
+  customer
+  high_intent
+  archived
+}
+
+enum CrmContactSource {
+  registration
+  contact_form
+  guest_checkout
+}
+
+enum CrmErpSyncStatus {
+  none
+  queued
+  synced
+  failed
+}
+
+enum CrmContactEventType {
+  registered
+  login
+  cart_add
+  checkout_started
+  order_paid
+  favorite_add
+  note
+  stage_change
+  erp_promoted
+}
+
 model User {
-  id                 String              @id @default(uuid())
-  email              String              @unique
-  kind               UserKind
-  status             UserStatus          @default(active)
-  emailVerifiedAt    DateTime?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  adminProfile       AdminProfile?
-  auditLogs          AuditLog[]
-  authIdentities     AuthIdentity[]
-  addresses          CustomerAddress[]
-  carts              Cart[]
-  customerProfile    CustomerProfile?
-  erpCustomerLinks   ErpCustomerLink[]
-  loginEvents        LoginEvent[]
-  passwordCredential PasswordCredential?
-  paymentSessions    PaymentSession[]
-  orders             Order[]
-  favorites          Favorite[]
-  refreshSessions    RefreshSession[]
-  userRoles          UserRole[]
+  id                       String               @id @default(uuid())
+  email                    String               @unique
+  kind                     UserKind
+  status                   UserStatus           @default(active)
+  emailVerifiedAt          DateTime?
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @updatedAt
+  adminProfile             AdminProfile?
+  auditLogs                AuditLog[]
+  authIdentities           AuthIdentity[]
+  addresses                CustomerAddress[]
+  carts                    Cart[]
+  customerProfile          CustomerProfile?
+  erpCustomerLinks         ErpCustomerLink[]
+  loginEvents              LoginEvent[]
+  dealerMemberships        DealerMembership[]   @relation("DealerMembershipSubject")
+  dealerMembershipsCreated DealerMembership[]   @relation("DealerMembershipCreator")
+  passwordCredential       PasswordCredential?
+  passwordResetTokens      PasswordResetToken[]
+  paymentSessions          PaymentSession[]
+  orders                   Order[]
+  favorites                Favorite[]
+  refreshSessions          RefreshSession[]
+  userRoles                UserRole[]
+  crmContact               CrmContact?
+  privacyRequests          PrivacyRequest[]
+  crmContactsOwned         CrmContact[]         @relation("CrmContactOwner")
+  crmTasksAssigned         CrmTask[]            @relation("CrmTaskAssignee")
+  workQueueAssignments     WorkQueueItem[]      @relation("WorkQueueAssignee")
+  inAppNotifications       InAppNotification[]  @relation("NotificationRecipient")
 
   @@map("users")
 }
 
 model Category {
-  id          String     @id @default(uuid())
-  slug        String     @unique
+  id          String               @id @default(uuid())
+  slug        String               @unique
   name        String
   description String?
   parentId    String?
-  sortOrder   Int        @default(0)
-  isActive    Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
-  children    Category[] @relation("CategoryTree")
+  sortOrder   Int                  @default(0)
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  parent      Category?            @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[]           @relation("CategoryTree")
   products    Product[]
+  erpMappings ErpCategoryMapping[]
 
   @@map("categories")
 }
 
 model Product {
-  id               String                 @id @default(uuid())
-  slug             String                 @unique
-  name             String
-  shortDescription String?
-  description      String?
-  status           CatalogItemStatus      @default(draft)
-  categoryId       String?
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @updatedAt
-  assets           ProductAsset[]
-  category         Category?              @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  reviews          ProductReview[]
-  favorites        Favorite[]
-  skus             PlatformSku[]
-  specifications   ProductSpecification[]
+  id                     String                 @id @default(uuid())
+  slug                   String                 @unique
+  name                   String
+  shortDescription       String?
+  description            String?
+  status                 CatalogItemStatus      @default(draft)
+  categoryId             String?
+  brand                  String?
+  manufacturerPartNumber String?
+  subCategoryKey         String?
+  unit                   String?
+  dimensions             String?
+  finish                 String?
+  colorName              String?
+  colorHex               String?
+  packageQuantity        Json?
+  finishOptions          Json?
+  productHighlights      Json?
+  documents              Json?
+  supportLinks           Json?
+  recommendations        Json?
+  certificationRequired  Boolean                @default(false)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  assets                 ProductAsset[]
+  category               Category?              @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  reviews                ProductReview[]
+  favorites              Favorite[]
+  skus                   PlatformSku[]
+  specifications         ProductSpecification[]
 
   @@index([status, categoryId])
   @@map("products")
 }
 
 model PlatformSku {
-  id                    String                 @id @default(uuid())
-  productId             String
-  skuCode               String                 @unique
-  name                  String
-  status                CatalogItemStatus      @default(active)
-  attributes            Json?
-  sortOrder             Int                    @default(0)
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  assets                ProductAsset[]
-  erpMappings           ProductSkuErpMapping[]
-  prices                Price[]
-  cartItems             CartItem[]
-  inventoryReservations InventoryReservation[]
-  inventorySnapshots    InventorySnapshot[]
-  orderItems            OrderItem[]
-  product               Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id                     String                 @id @default(uuid())
+  productId              String
+  skuCode                String                 @unique
+  name                   String
+  manufacturerPartNumber String?
+  status                 CatalogItemStatus      @default(active)
+  attributes             Json?
+  sortOrder              Int                    @default(0)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  assets                 ProductAsset[]
+  erpMappings            ProductSkuErpMapping[]
+  prices                 Price[]
+  cartItems              CartItem[]
+  inventoryReservations  InventoryReservation[]
+  inventorySnapshots     InventorySnapshot[]
+  orderItems             OrderItem[]
+  product                Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([productId, skuCode])
   @@map("platform_skus")
 }
 
 model Cart {
-  id         String     @id @default(uuid())
-  userId     String?    @unique
-  guestToken String?    @unique
-  currency   String     @default("CAD")
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  items      CartItem[]
-  user       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String           @id @default(uuid())
+  userId          String?          @unique
+  guestToken      String?          @unique
+  currency        String           @default("CAD")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  items           CartItem[]
+  paymentSessions PaymentSession[]
+  user            User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("carts")
 }
@@ -243,7 +346,7 @@ model InventorySnapshot {
   dealerLocation   DealerLocation? @relation(fields: [dealerLocationId], references: [id], onDelete: SetNull)
   sku              PlatformSku     @relation(fields: [skuId], references: [id], onDelete: Cascade)
 
-  @@unique([skuId, dealerLocationId])
+  @@unique([skuId, dealerLocationId], map: "inventory_snapshots_sku_dealer_unique")
   @@map("inventory_snapshots")
 }
 
@@ -259,61 +362,118 @@ model InventoryReservation {
   createdAt        DateTime                   @default(now())
   updatedAt        DateTime                   @updatedAt
   dealerLocation   DealerLocation?            @relation(fields: [dealerLocationId], references: [id], onDelete: SetNull)
+  paymentSession   PaymentSession?            @relation(fields: [paymentSessionId], references: [id], onDelete: SetNull)
   sku              PlatformSku                @relation(fields: [skuId], references: [id], onDelete: Restrict)
 
   @@index([status, expiresAt])
+  @@index([paymentSessionId])
+  @@index([skuId, dealerLocationId, status])
   @@map("inventory_reservations")
 }
 
 model PaymentSession {
-  id                String               @id @default(uuid())
-  userId            String?
-  guestEmail        String
-  guestOrderToken   String
-  status            PaymentSessionStatus @default(pending)
-  fulfillment       FulfillmentType
-  dealerLocationId  String?
-  items             Json
-  subtotalCents     Int
-  taxCents          Int                  @default(0)
-  shippingCents     Int                  @default(0)
-  totalCents        Int
-  currency          String               @default("CAD")
-  providerPaymentId String?              @unique
-  expiresAt         DateTime
-  paidAt            DateTime?
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @updatedAt
-  order             Order?
-  user              User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id                    String                 @id @default(uuid())
+  userId                String?
+  cartId                String?
+  guestEmail            String
+  guestFirstName        String
+  guestLastName         String
+  guestPhone            String
+  guestOrderToken       String
+  idempotencyKey        String?                @unique
+  requestHash           String?
+  paymentInit           Json?
+  status                PaymentSessionStatus   @default(pending)
+  fulfillment           FulfillmentType
+  paymentMethod         String
+  notes                 String?
+  shippingAddressLine1  String?
+  shippingAddressLine2  String?
+  shippingCity          String?
+  shippingProvince      String?
+  shippingPostalCode    String?
+  shippingCountry       String?                @default("CA")
+  dealerLocationId      String?
+  items                 Json
+  subtotalCents         Int
+  discountCents         Int                    @default(0)
+  promotionKey          String?
+  taxCents              Int                    @default(0)
+  shippingCents         Int                    @default(0)
+  totalCents            Int
+  currency              String                 @default("CAD")
+  providerPaymentId     String?                @unique
+  expiresAt             DateTime
+  paidAt                DateTime?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  cart                  Cart?                  @relation(fields: [cartId], references: [id], onDelete: SetNull)
+  inventoryReservations InventoryReservation[]
+  paymentEvents         PaymentEvent[]
+  order                 Order?
+  user                  User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([status, expiresAt])
+  @@index([cartId, status])
   @@map("payment_sessions")
 }
 
+model PaymentEvent {
+  id               String           @id @default(uuid())
+  paymentSessionId String
+  type             PaymentEventType
+  providerEventId  String?
+  amountCents      Int?
+  currency         String?
+  payload          Json?
+  createdAt        DateTime         @default(now())
+  paymentSession   PaymentSession   @relation(fields: [paymentSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([paymentSessionId, type, providerEventId])
+  @@index([type, createdAt])
+  @@map("payment_events")
+}
+
 model Order {
-  id               String          @id @default(uuid())
-  userId           String?
-  email            String
-  guestOrderToken  String
-  paymentSessionId String          @unique
-  status           OrderStatus     @default(paid)
-  fulfillment      FulfillmentType
-  dealerLocationId String?
-  subtotalCents    Int
-  taxCents         Int             @default(0)
-  shippingCents    Int             @default(0)
-  totalCents       Int
-  currency         String          @default("CAD")
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  items            OrderItem[]
-  statusEvents     OrderStatusEvent[]
-  paymentSession   PaymentSession  @relation(fields: [paymentSessionId], references: [id], onDelete: Restrict)
-  user             User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id                   String             @id @default(uuid())
+  userId               String?
+  email                String
+  firstName            String
+  lastName             String
+  phone                String
+  guestOrderToken      String
+  guestTokenExpiresAt  DateTime?
+  guestTokenRevokedAt  DateTime?
+  paymentSessionId     String             @unique
+  status               OrderStatus        @default(paid)
+  fulfillment          FulfillmentType
+  paymentMethod        String
+  notes                String?
+  shippingAddressLine1 String?
+  shippingAddressLine2 String?
+  shippingCity         String?
+  shippingProvince     String?
+  shippingPostalCode   String?
+  shippingCountry      String?            @default("CA")
+  dealerLocationId     String?
+  subtotalCents        Int
+  discountCents        Int                @default(0)
+  promotionKey         String?
+  taxCents             Int                @default(0)
+  shippingCents        Int                @default(0)
+  totalCents           Int
+  currency             String             @default("CAD")
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  items                OrderItem[]
+  statusEvents         OrderStatusEvent[]
+  erpOrderLink         ErpOrderLink?
+  paymentSession       PaymentSession     @relation(fields: [paymentSessionId], references: [id], onDelete: Restrict)
+  user                 User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])
   @@index([email, createdAt])
+  @@index([guestOrderToken])
   @@map("orders")
 }
 
@@ -378,34 +538,39 @@ model ProductSpecification {
 }
 
 model Price {
-  id             String      @id @default(uuid())
-  key            String      @unique
-  skuId          String
-  currency       String      @default("CAD")
-  amountCents    Int
-  compareAtCents Int?
-  status         PriceStatus @default(active)
-  effectiveFrom  DateTime?
-  effectiveUntil DateTime?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  sku            PlatformSku @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  id              String      @id @default(uuid())
+  key             String      @unique
+  skuId           String
+  currency        String      @default("CAD")
+  amountCents     Int
+  compareAtCents  Int?
+  status          PriceStatus @default(active)
+  effectiveFrom   DateTime?
+  effectiveUntil  DateTime?
+  source          String      @default("vanstro")
+  externalVersion Int?
+  sourceUpdatedAt DateTime?   @db.Timestamptz(3)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  sku             PlatformSku @relation(fields: [skuId], references: [id], onDelete: Cascade)
 
   @@index([status, currency])
   @@map("prices")
 }
 
 model Promotion {
-  id            String          @id @default(uuid())
-  key           String          @unique
-  name          String
-  description   String?
-  discountLabel String?
-  status        PromotionStatus @default(draft)
-  startsAt      DateTime?
-  endsAt        DateTime?
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id                   String          @id @default(uuid())
+  key                  String          @unique
+  name                 String
+  description          String?
+  discountLabel        String?
+  discountPercent      Int?
+  minimumSubtotalCents Int?
+  status               PromotionStatus @default(draft)
+  startsAt             DateTime?
+  endsAt               DateTime?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
 
   @@index([status, startsAt, endsAt])
   @@map("promotions")
@@ -421,6 +586,7 @@ model ContactLead {
   preferredDealer  String?
   orderNumber      String?
   message          String
+  locale           String?
   sourcePath       String?
   status           ContactLeadStatus @default(new)
   assignedToUserId String?
@@ -443,6 +609,77 @@ model ContactLeadNote {
   contactLead   ContactLead @relation(fields: [contactLeadId], references: [id], onDelete: Cascade)
 
   @@map("contact_lead_notes")
+}
+
+model CrmContact {
+  id             String            @id @default(uuid())
+  userId         String?           @unique
+  email          String            @unique
+  firstName      String?
+  lastName       String?
+  phone          String?
+  stage          CrmContactStage   @default(registered)
+  source         CrmContactSource
+  erpSyncStatus  CrmErpSyncStatus  @default(none)
+  ownerUserId    String?
+  tags           String[]          @default([])
+  lastActivityAt DateTime          @default(now())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  user           User?             @relation(fields: [userId], references: [id], onDelete: SetNull)
+  owner          User?             @relation("CrmContactOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+  events         CrmContactEvent[]
+  notes          CrmContactNote[]
+  tasks          CrmTask[]
+
+  @@index([stage, lastActivityAt])
+  @@index([ownerUserId, lastActivityAt])
+  @@map("crm_contacts")
+}
+
+model CrmTask {
+  id             String     @id @default(uuid())
+  contactId      String
+  assigneeUserId String?
+  title          String
+  description    String?
+  status         String     @default("open")
+  dueAt          DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  contact        CrmContact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  assignee       User?      @relation("CrmTaskAssignee", fields: [assigneeUserId], references: [id], onDelete: SetNull)
+
+  @@index([contactId, status, dueAt])
+  @@index([assigneeUserId, status, dueAt])
+  @@map("crm_tasks")
+}
+
+model CrmContactEvent {
+  id          String              @id @default(uuid())
+  contactId   String
+  type        CrmContactEventType
+  payload     Json?
+  actorUserId String?
+  createdAt   DateTime            @default(now())
+  contact     CrmContact          @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId, createdAt])
+  @@index([contactId, type, createdAt])
+  @@map("crm_contact_events")
+}
+
+model CrmContactNote {
+  id           String     @id @default(uuid())
+  contactId    String
+  authorUserId String?
+  note         String
+  createdAt    DateTime   @default(now())
+  contact      CrmContact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId, createdAt])
+  @@map("crm_contact_notes")
 }
 
 model DealerApplication {
@@ -516,17 +753,34 @@ model ProductReviewNote {
 }
 
 model ProductSkuErpMapping {
-  id        String      @id @default(uuid())
-  skuId     String
-  erpSystem String
-  erpSkuKey String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  sku       PlatformSku @relation(fields: [skuId], references: [id], onDelete: Cascade)
+  id           String      @id @default(uuid())
+  skuId        String
+  erpSystem    String
+  erpSkuKey    String
+  erpProductId Int?
+  erpSkuId     Int?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  sku          PlatformSku @relation(fields: [skuId], references: [id], onDelete: Cascade)
 
   @@unique([skuId, erpSystem])
   @@unique([erpSystem, erpSkuKey])
   @@map("product_sku_erp_mappings")
+}
+
+model ErpCategoryMapping {
+  id             String   @id @default(uuid()) @db.Uuid
+  erpSystem      String
+  erpCategoryKey String
+  erpCategoryId  Int?
+  categoryId     String
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@unique([erpSystem, erpCategoryKey])
+  @@unique([categoryId, erpSystem])
+  @@map("erp_category_mappings")
 }
 
 model CustomerProfile {
@@ -613,6 +867,19 @@ model PasswordCredential {
   @@map("password_credentials")
 }
 
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@map("password_reset_tokens")
+}
+
 model RefreshSession {
   id        String    @id @default(uuid())
   userId    String
@@ -628,16 +895,17 @@ model RefreshSession {
 }
 
 model Role {
-  id                  String               @id @default(uuid())
-  key                 String               @unique
+  id                  String                 @id @default(uuid())
+  key                 String                 @unique
   name                String
   description         String?
-  isSystem            Boolean              @default(false)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  isSystem            Boolean                @default(false)
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
   rolePermissions     RolePermission[]
   serviceAccountRoles ServiceAccountRole[]
   userRoles           UserRole[]
+  membershipRoles     DealerMembershipRole[]
 
   @@map("roles")
 }
@@ -677,16 +945,17 @@ model UserRole {
 }
 
 model ServiceAccount {
-  id        String                @id @default(uuid())
-  name      String
-  key       String                @unique
-  status    ServiceAccountStatus  @default(active)
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  auditLogs AuditLog[]
+  id             String                    @id @default(uuid())
+  name           String
+  key            String                    @unique
+  status         ServiceAccountStatus      @default(active)
+  environment    ServiceAccountEnvironment @default(production)
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  auditLogs      AuditLog[]
   mcpInvocations McpToolInvocation[]
-  roles     ServiceAccountRole[]
-  tokens    ServiceAccountToken[]
+  roles          ServiceAccountRole[]
+  tokens         ServiceAccountToken[]
 
   @@map("service_accounts")
 }
@@ -704,16 +973,29 @@ model ServiceAccountRole {
 }
 
 model ServiceAccountToken {
-  id               String         @id @default(uuid())
-  serviceAccountId String
-  tokenHash        String         @unique
-  name             String?
-  lastUsedAt       DateTime?
-  expiresAt        DateTime?
-  revokedAt        DateTime?
-  createdAt        DateTime       @default(now())
-  serviceAccount   ServiceAccount @relation(fields: [serviceAccountId], references: [id], onDelete: Cascade)
+  id                   String               @id @default(uuid())
+  serviceAccountId     String
+  tokenHash            String               @unique
+  name                 String?
+  lastUsedAt           DateTime?
+  expiresAt            DateTime?
+  revokedAt            DateTime?
+  replacedByTokenId    String?              @unique
+  rotateIdempotencyKey String?
+  rotateRequestHash    String?
+  createIdempotencyKey String?
+  createRequestHash    String?
+  revokeIdempotencyKey String?
+  revokeRequestHash    String?
+  overlapUntil         DateTime?
+  createdAt            DateTime             @default(now())
+  serviceAccount       ServiceAccount       @relation(fields: [serviceAccountId], references: [id], onDelete: Cascade)
+  replacedBy           ServiceAccountToken? @relation("TokenReplacement", fields: [replacedByTokenId], references: [id], onDelete: SetNull)
+  replacementOf        ServiceAccountToken? @relation("TokenReplacement")
 
+  @@index([rotateIdempotencyKey])
+  @@index([serviceAccountId, createIdempotencyKey])
+  @@index([serviceAccountId, revokeIdempotencyKey])
   @@map("service_account_tokens")
 }
 
@@ -763,35 +1045,881 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+model AuditEvent {
+  id                           String       @id @default(uuid()) @db.Uuid
+  eventVersion                 String
+  occurredAt                   DateTime     @default(now()) @db.Timestamptz(3)
+  actorType                    String
+  actorId                      String?
+  actorDisplayClass            String
+  effectiveRoles               Json
+  permissionGrants             Json
+  authorizationScopeKind       String
+  dealerIds                    Json
+  locationIds                  Json
+  contextRevision              String
+  authorizationContractVersion String
+  capabilityVersion            String?
+  action                       String
+  resourceType                 String
+  resourceId                   String?
+  result                       String
+  reason                       String?
+  requestId                    String
+  source                       String
+  correlationId                String?
+  parentEventId                String?      @db.Uuid
+  idempotencyKeyHash           String?
+  eventIntentHash              String?
+  beforeSummary                Json?
+  afterSummary                 Json?
+  metadata                     Json?
+  sensitive                    Boolean      @default(false)
+  retentionClass               String
+  retentionPolicyVersion       String
+  expiresAt                    DateTime     @db.Timestamptz(3)
+  createdAt                    DateTime     @default(now()) @db.Timestamptz(3)
+  parentEvent                  AuditEvent?  @relation("AuditEventParent", fields: [parentEventId], references: [id], onDelete: Restrict)
+  childEvents                  AuditEvent[] @relation("AuditEventParent")
+
+  @@index([occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([actorType, actorId, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([action, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([resourceType, resourceId, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([result, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([requestId, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([authorizationScopeKind, occurredAt(sort: Desc), id(sort: Desc)])
+  @@index([expiresAt, occurredAt(sort: Desc), id(sort: Desc)])
+  @@map("audit_events")
+}
+
+model AsyncJob {
+  id                      String                   @id @default(uuid()) @db.Uuid
+  contractVersion         String
+  schemaVersion           String
+  jobType                 String
+  jobTypeVersion          String
+  payloadSchemaVersion    String
+  resultSchemaVersion     String
+  status                  String
+  createdByActorType      String
+  createdByActorId        String?
+  effectiveRoles          Json
+  permissionGrants        Json
+  authorizationScopeKind  String
+  dealerIds               Json
+  locationIds             Json
+  contextRevision         String
+  payload                 Json
+  executionBinding        Json?
+  bindingRevision         Int                      @default(0)
+  bindingHash             String?
+  payloadIdentityHash     String
+  idempotencyKeyHash      String?
+  idempotencyKeyKid       String?
+  eventIntentHash         String?
+  idempotencyExpiresAt    DateTime?                @db.Timestamptz(3)
+  progressKind            String
+  progressCurrent         Int?
+  progressTotal           Int?
+  progressStage           String
+  progressMessage         String?
+  progressUpdatedAt       DateTime                 @db.Timestamptz(3)
+  processedCount          Int                      @default(0)
+  failedCount             Int                      @default(0)
+  totalCount              Int?
+  attempt                 Int                      @default(0)
+  generationAttempt       Int                      @default(0)
+  maxAttempts             Int
+  retryGeneration         Int                      @default(0)
+  maxRetryGenerations     Int                      @default(0)
+  nextRetryAt             DateTime?                @db.Timestamptz(3)
+  leaseOwner              String?
+  leaseRevision           Int                      @default(0)
+  leaseAcquiredAt         DateTime?                @db.Timestamptz(3)
+  leaseExpiresAt          DateTime?                @db.Timestamptz(3)
+  heartbeatAt             DateTime?                @db.Timestamptz(3)
+  attemptDeadline         DateTime?                @db.Timestamptz(3)
+  cancellationRequestedAt DateTime?                @db.Timestamptz(3)
+  cancellationRequestedBy String?
+  cancellationReason      String?
+  cancelledAt             DateTime?                @db.Timestamptz(3)
+  startedAt               DateTime?                @db.Timestamptz(3)
+  finishedAt              DateTime?                @db.Timestamptz(3)
+  failureClass            String?
+  resultSummary           Json?
+  errorSummary            Json?
+  requestId               String
+  retentionClass          String
+  retentionPolicyVersion  String
+  expiresAt               DateTime                 @db.Timestamptz(3)
+  version                 Int                      @default(0)
+  createdAt               DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt               DateTime                 @updatedAt @db.Timestamptz(3)
+  attempts                AsyncJobAttempt[]
+  batchIngestResults      BatchIngestResult[]
+  artifacts               JobArtifact[]
+  dashboardExportRequests DashboardExportRequest[]
+
+  @@index([status, nextRetryAt, createdAt, id])
+  @@index([jobType, status, leaseExpiresAt])
+  @@index([createdByActorType, createdByActorId, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([authorizationScopeKind, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([expiresAt])
+  @@map("async_jobs")
+}
+
+model AsyncJobAttempt {
+  id                  String    @id @default(uuid()) @db.Uuid
+  jobId               String    @db.Uuid
+  attempt             Int
+  leaseRevision       Int
+  workerIdentityClass String
+  workerIdentityHash  String
+  acquiredAt          DateTime  @db.Timestamptz(3)
+  startedAt           DateTime  @db.Timestamptz(3)
+  heartbeatEndedAt    DateTime? @db.Timestamptz(3)
+  finishedAt          DateTime? @db.Timestamptz(3)
+  outcome             String
+  failureClass        String?
+  errorCode           String?
+  errorSummary        String?
+  processedCount      Int       @default(0)
+  failedCount         Int       @default(0)
+  createdAt           DateTime  @default(now()) @db.Timestamptz(3)
+  job                 AsyncJob  @relation(fields: [jobId], references: [id], onDelete: Restrict)
+
+  @@unique([jobId, attempt])
+  @@unique([jobId, leaseRevision])
+  @@index([jobId, createdAt])
+  @@map("async_job_attempts")
+}
+
+model BatchIngestResult {
+  id        String   @id @default(uuid()) @db.Uuid
+  jobId     String   @db.Uuid
+  itemIndex Int
+  status    String
+  error     String?
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  job       AsyncJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, itemIndex])
+  @@index([jobId])
+  @@map("batch_ingest_results")
+}
+
+model JobArtifact {
+  id                         String                   @id @default(uuid()) @db.Uuid
+  jobId                      String                   @db.Uuid
+  ownerClass                 String
+  ownerId                    String
+  artifactType               String
+  displayName                String
+  contentType                String
+  byteCount                  BigInt
+  checksumAlgorithm          String
+  checksumDigest             String
+  storageProvider            String?
+  storageReference           String?
+  createdAt                  DateTime                 @default(now()) @db.Timestamptz(3)
+  expiresAt                  DateTime                 @db.Timestamptz(3)
+  deletedAt                  DateTime?                @db.Timestamptz(3)
+  requiredDownloadPermission String
+  authorizationScopeKind     String
+  dealerIds                  Json
+  locationIds                Json
+  sensitivityClass           String
+  retentionClass             String
+  retentionPolicyVersion     String
+  version                    Int                      @default(0)
+  job                        AsyncJob                 @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  sourceImportBatches        DashboardImportBatch[]   @relation("DashboardImportSourceArtifact")
+  exportRequests             DashboardExportRequest[] @relation("DashboardExportArtifact")
+
+  @@index([jobId, createdAt])
+  @@index([expiresAt, deletedAt])
+  @@map("job_artifacts")
+}
+
+model DashboardImportBatch {
+  id                           String               @id @default(uuid()) @db.Uuid
+  authorizationScopeKind       String
+  dealerIdsSnapshot            String[]
+  locationIdsSnapshot          String[]
+  contextRevision              String
+  scopeFingerprint             String
+  fieldVisibilityFingerprint   String
+  objectKey                    String
+  status                       String
+  sourceArtifactId             String?              @unique @db.Uuid
+  uploadIntentFilename         String
+  uploadIntentContentType      String
+  uploadIntentDeclaredByteSize BigInt
+  uploadTokenHash              String
+  uploadTokenExpiresAt         DateTime             @db.Timestamptz(3)
+  uploadTokenConsumedAt        DateTime?            @db.Timestamptz(3)
+  uploadIntentHash             String
+  rowCount                     Int                  @default(0)
+  validRowCount                Int                  @default(0)
+  invalidRowCount              Int                  @default(0)
+  committedRowCount            Int                  @default(0)
+  failedCommitRowCount         Int                  @default(0)
+  createdBy                    String
+  createdAt                    DateTime             @default(now()) @db.Timestamptz(3)
+  previewedAt                  DateTime?            @db.Timestamptz(3)
+  commitRequestedAt            DateTime?            @db.Timestamptz(3)
+  completedAt                  DateTime?            @db.Timestamptz(3)
+  registryVersion              String
+  schemaVersion                String
+  parserVersion                String
+  securityPolicyVersion        String
+  normalizedRowsSha256         String?
+  previewBindingHash           String?
+  previewExpiresAt             DateTime?            @db.Timestamptz(3)
+  payloadPurgeDueAt            DateTime?            @db.Timestamptz(3)
+  payloadsPurgedAt             DateTime?            @db.Timestamptz(3)
+  payloadPurgeAttemptCount     Int                  @default(0)
+  payloadPurgeLastAttemptAt    DateTime?            @db.Timestamptz(3)
+  payloadPurgeLastErrorCode    String?
+  version                      Int                  @default(0)
+  sourceArtifact               JobArtifact?         @relation("DashboardImportSourceArtifact", fields: [sourceArtifactId], references: [id], onDelete: Restrict)
+  rows                         DashboardImportRow[]
+
+  @@index([scopeFingerprint, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([status, uploadTokenExpiresAt])
+  @@index([payloadPurgeDueAt, payloadsPurgedAt])
+  @@index([createdBy, createdAt(sort: Desc)])
+  @@map("dashboard_import_batch")
+}
+
+model DashboardImportRow {
+  id                String               @id @default(uuid()) @db.Uuid
+  batchId           String               @db.Uuid
+  rowNumber         Int
+  rawPayload        Json?
+  normalizedPayload Json?
+  validationStatus  String
+  validationErrors  Json
+  commitStatus      String
+  targetRecordId    String?
+  createdAt         DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime             @updatedAt @db.Timestamptz(3)
+  batch             DashboardImportBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+
+  @@unique([batchId, rowNumber])
+  @@index([batchId, rowNumber, id])
+  @@map("dashboard_import_row")
+}
+
+model DashboardExportRequest {
+  id                         String       @id @default(uuid()) @db.Uuid
+  authorizationScopeKind     String
+  dealerIdsSnapshot          String[]
+  locationIdsSnapshot        String[]
+  contextRevision            String
+  scopeFingerprint           String
+  fieldVisibilityFingerprint String
+  objectKey                  String
+  status                     String
+  querySnapshot              Json
+  formulaVersion             String
+  requestedFormat            String
+  jobId                      String       @db.Uuid
+  artifactId                 String?      @db.Uuid
+  rowCount                   Int          @default(0)
+  createdBy                  String
+  createdAt                  DateTime     @default(now()) @db.Timestamptz(3)
+  startedAt                  DateTime?    @db.Timestamptz(3)
+  completedAt                DateTime?    @db.Timestamptz(3)
+  version                    Int          @default(0)
+  job                        AsyncJob     @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  artifact                   JobArtifact? @relation("DashboardExportArtifact", fields: [artifactId], references: [id], onDelete: Restrict)
+
+  @@index([scopeFingerprint, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
+  @@index([createdBy, createdAt(sort: Desc)])
+  @@index([jobId])
+  @@map("dashboard_export_request")
+}
+
+model FoundationSample {
+  id                         String    @id @default(uuid()) @db.Uuid
+  externalKey                String
+  label                      String
+  state                      String
+  quantity                   Int
+  effectiveDate              DateTime? @db.Date
+  note                       String?
+  authorizationScopeKind     String
+  dealerIdsSnapshot          String[]
+  locationIdsSnapshot        String[]
+  scopeFingerprint           String
+  fieldVisibilityFingerprint String
+  contextRevision            String    @default("foundation-context.v1")
+  version                    Int       @default(0)
+  createdAt                  DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt                  DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@unique([authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, scopeFingerprint, fieldVisibilityFingerprint, externalKey])
+  @@index([scopeFingerprint, externalKey, id])
+  @@map("foundation_sample")
+}
+
+model RuntimeConfigVersion {
+  id                              String    @id @default(uuid()) @db.Uuid
+  configKey                       String
+  schemaVersion                   String
+  authorizationScopeKind          String
+  dealerIdsSnapshot               String[]
+  locationIdsSnapshot             String[]
+  contextRevision                 String
+  scopeFingerprint                String
+  fieldVisibilityFingerprint      String
+  desiredValue                    Json
+  effectiveValue                  Json?
+  desiredSource                   String
+  effectiveSource                 String?
+  validationStatus                String
+  activationStatus                String
+  failureReasonCode               String?
+  version                         Int
+  generation                      BigInt    @default(0)
+  createdBy                       String
+  idempotencyKeyHash              String
+  requestHash                     String
+  rollbackFromVersion             Int?
+  authorityVersion                Int       @default(1) @db.SmallInt
+  successAuditEventId             String?   @unique @db.Uuid
+  settingsChangeReason            String?
+  settingsRollbackOfPublicationId String?   @db.Uuid
+  settingsValidateIdempotencyHash String?
+  settingsValidateRequestHash     String?
+  settingsPublishIdempotencyHash  String?
+  settingsPublishRequestHash      String?
+  settingsRevision                Int?
+  settingsLifecycleStatus         String?
+  settingsValidatedAt             DateTime? @db.Timestamptz(3)
+  settingsUpdatedAt               DateTime? @db.Timestamptz(3)
+  createdAt                       DateTime  @default(now()) @db.Timestamptz(3)
+  activatedAt                     DateTime? @db.Timestamptz(3)
+
+  @@unique([configKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, version])
+  @@unique([createdBy, configKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, idempotencyKeyHash])
+  @@index([configKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, version(sort: Desc)])
+  @@map("runtime_config_version")
+}
+
+model SettingsCommandLedger {
+  id                    String   @id @default(uuid()) @db.Uuid
+  actorId               String
+  operation             String
+  idempotencyHash       String
+  requestHash           String
+  resultRuntimeConfigId String   @db.Uuid
+  resultRevision        Int
+  resultSnapshot        Json
+  successAuditEventId   String   @unique @db.Uuid
+  createdAt             DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([actorId, operation, idempotencyHash])
+  @@map("settings_command_ledger")
+}
+
+model SettingsPublicationEvent {
+  id                          String   @id @default(uuid()) @db.Uuid
+  descriptorKey               String
+  runtimeConfigId             String   @db.Uuid
+  publicationSequence         Int
+  eventType                   String
+  sourceDraftId               String?  @db.Uuid
+  sourceDraftVersion          Int?
+  rollbackSourcePublicationId String?  @db.Uuid
+  changeReason                String?
+  auditEventId                String   @db.Uuid
+  occurredAt                  DateTime @default(now()) @db.Timestamptz(3)
+
+  @@unique([descriptorKey, publicationSequence])
+  @@index([descriptorKey, publicationSequence])
+  @@map("s01_settings_publication_event")
+}
+
+model FeatureFlagVersion {
+  id                         String    @id @default(uuid()) @db.Uuid
+  flagKey                    String
+  schemaVersion              String
+  authorizationScopeKind     String
+  dealerIdsSnapshot          String[]
+  locationIdsSnapshot        String[]
+  contextRevision            String
+  scopeFingerprint           String
+  fieldVisibilityFingerprint String
+  desiredState               String
+  effectiveState             String?
+  validationStatus           String
+  activationStatus           String
+  failureReasonCode          String?
+  version                    Int
+  generation                 BigInt    @default(0)
+  createdBy                  String
+  idempotencyKeyHash         String
+  requestHash                String
+  rollbackFromVersion        Int?
+  authorityVersion           Int       @default(1) @db.SmallInt
+  successAuditEventId        String?   @unique @db.Uuid
+  createdAt                  DateTime  @default(now()) @db.Timestamptz(3)
+  activatedAt                DateTime? @db.Timestamptz(3)
+
+  @@unique([flagKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, version])
+  @@unique([createdBy, flagKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, idempotencyKeyHash])
+  @@index([flagKey, authorizationScopeKind, dealerIdsSnapshot, locationIdsSnapshot, version(sort: Desc)])
+  @@map("feature_flag_version")
+}
+
+model WorkQueueItem {
+  id                      String              @id @default(uuid()) @db.Uuid
+  contractVersion         String
+  registryVersion         String
+  type                    String
+  typeVersion             String
+  status                  String
+  severity                String
+  health                  String
+  source                  String
+  titleKey                String
+  safeSummary             Json
+  resourceType            String
+  resourceId              String
+  deepLink                String?
+  authorizationScopeKind  String
+  dealerIds               Json
+  locationIds             Json
+  sourcePermission        String
+  sourceRevision          String
+  lastObservedAt          DateTime            @db.Timestamptz(3)
+  deduplicationKeyKid     String
+  deduplicationKeyHash    String
+  sourceIntentHash        String
+  occurrence              Int
+  dueAt                   DateTime            @db.Timestamptz(3)
+  assignedToUserId        String?
+  assignedAt              DateTime?           @db.Timestamptz(3)
+  assignedByActorType     String?
+  assignedByActorId       String?
+  acknowledgedAt          DateTime?           @db.Timestamptz(3)
+  acknowledgedByActorType String?
+  acknowledgedByActorId   String?
+  resolvedAt              DateTime?           @db.Timestamptz(3)
+  resolvedByActorType     String?
+  resolvedByActorId       String?
+  resolutionReason        String?
+  dismissedAt             DateTime?           @db.Timestamptz(3)
+  dismissedByActorType    String?
+  dismissedByActorId      String?
+  dismissalReason         String?
+  lastTransitionReason    String?
+  requestId               String
+  retentionClass          String
+  retentionPolicyVersion  String
+  retentionExpiresAt      DateTime?           @db.Timestamptz(3)
+  attentionExpiresAt      DateTime?           @db.Timestamptz(3)
+  version                 Int                 @default(0)
+  createdAt               DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt               DateTime            @updatedAt @db.Timestamptz(3)
+  assignedTo              User?               @relation("WorkQueueAssignee", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  notifications           InAppNotification[]
+
+  @@index([status, severity, dueAt, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([assignedToUserId, status, dueAt])
+  @@index([resourceType, resourceId])
+  @@index([source, status, createdAt(sort: Desc)])
+  @@index([retentionExpiresAt])
+  @@map("work_queue_items")
+}
+
+model InAppNotification {
+  id                     String        @id @default(uuid()) @db.Uuid
+  contractVersion        String
+  type                   String
+  typeVersion            String
+  recipientUserId        String
+  workItemId             String        @db.Uuid
+  severity               String
+  titleKey               String
+  messageKey             String
+  safeMessageArgs        Json
+  resourceType           String
+  resourceId             String
+  deepLink               String?
+  authorizationScopeKind String
+  dealerIds              Json
+  locationIds            Json
+  deduplicationKeyKid    String
+  deduplicationKeyHash   String
+  readAt                 DateTime?     @db.Timestamptz(3)
+  createdAt              DateTime      @default(now()) @db.Timestamptz(3)
+  expiresAt              DateTime      @db.Timestamptz(3)
+  version                Int           @default(0)
+  recipient              User          @relation("NotificationRecipient", fields: [recipientUserId], references: [id], onDelete: Restrict)
+  workItem               WorkQueueItem @relation(fields: [workItemId], references: [id], onDelete: Restrict)
+
+  @@unique([recipientUserId, type, deduplicationKeyHash])
+  @@index([recipientUserId, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([expiresAt])
+  @@map("in_app_notifications")
+}
+
+model WorkQueueSourceState {
+  id             String    @id @default(uuid()) @db.Uuid
+  adapterKey     String
+  adapterVersion String
+  health         String
+  lastSuccessAt  DateTime? @db.Timestamptz(3)
+  lastFailureAt  DateTime? @db.Timestamptz(3)
+  safeErrorCode  String?
+  capturedAt     DateTime  @db.Timestamptz(3)
+  revision       Int       @default(0)
+  updatedAt      DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@unique([adapterKey, adapterVersion])
+  @@map("work_queue_source_states")
+}
+
+model MediaAsset {
+  id                        String                  @id @default(uuid()) @db.Uuid
+  contractVersion           String
+  schemaVersion             String
+  registryVersion           String
+  kind                      String
+  status                    String
+  priorRestorableStatus     String?
+  originalFilename          String
+  safeDisplayName           String
+  declaredContentType       String
+  detectedContentType       String?
+  expectedBytes             BigInt
+  receivedBytes             BigInt?
+  uploadChecksum            String?
+  originalBytes             BigInt?
+  originalChecksum          String?
+  width                     Int?
+  height                    Int?
+  durationMs                Int?
+  source                    String
+  provenanceOrigin          String
+  storageProvider           String
+  processingPolicyVersion   String
+  securityPolicyVersion     String
+  processingConfigHash      String
+  variantSetState           String
+  safeFailureCode           String?
+  decorative                Boolean                 @default(false)
+  accessibilityComplete     Boolean                 @default(false)
+  focalX                    Float?
+  focalY                    Float?
+  credit                    String?
+  copyright                 String?
+  tags                      Json
+  duplicateGroupFingerprint String?
+  authorizationScopeKind    String
+  dealerIds                 Json
+  locationIds               Json
+  createdByActorType        String
+  createdByActorId          String?
+  effectiveRoles            Json
+  permissionGrants          Json
+  contextRevision           String
+  archivedAt                DateTime?               @db.Timestamptz(3)
+  archivedByActorType       String?
+  archivedByActorId         String?
+  archiveReason             String?
+  retiring                  Boolean                 @default(false)
+  tombstonedAt              DateTime?               @db.Timestamptz(3)
+  retentionClass            String
+  retentionPolicyVersion    String
+  legalHold                 Boolean                 @default(false)
+  retentionExpiresAt        DateTime?               @db.Timestamptz(3)
+  requestId                 String
+  version                   Int                     @default(0)
+  createdAt                 DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt                 DateTime                @updatedAt @db.Timestamptz(3)
+  locales                   MediaAssetLocale[]
+  variants                  MediaVariant[]
+  usages                    MediaUsage[]
+  uploadIntents             MediaUploadIntent[]
+  storageOperations         MediaStorageOperation[]
+
+  @@index([status, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([kind, detectedContentType, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([authorizationScopeKind, createdAt(sort: Desc), id(sort: Desc)])
+  @@index([retentionExpiresAt])
+  @@map("media_assets")
+}
+
+model MediaAssetLocale {
+  id                 String     @id @default(uuid()) @db.Uuid
+  assetId            String     @db.Uuid
+  contractVersion    String
+  locale             String
+  altText            String?
+  caption            String?
+  updatedByActorType String
+  updatedByActorId   String?
+  contextRevision    String
+  version            Int        @default(0)
+  createdAt          DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime   @updatedAt @db.Timestamptz(3)
+  asset              MediaAsset @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@unique([assetId, locale])
+  @@map("media_asset_locales")
+}
+
+model MediaVariant {
+  id                 String                 @id @default(uuid()) @db.Uuid
+  assetId            String                 @db.Uuid
+  contractVersion    String
+  role               String
+  status             String
+  sourceAssetVersion Int
+  contentType        String?
+  width              Int?
+  height             Int?
+  byteCount          BigInt?
+  checksum           String?
+  storageOperationId String?                @unique @db.Uuid
+  configVersion      String
+  configHash         String
+  safeFailureCode    String?
+  version            Int                    @default(0)
+  createdAt          DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime               @updatedAt @db.Timestamptz(3)
+  asset              MediaAsset             @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  storageOperation   MediaStorageOperation? @relation(fields: [storageOperationId], references: [id], onDelete: Restrict)
+
+  @@unique([assetId, sourceAssetVersion, role, configHash])
+  @@index([assetId, status, role])
+  @@map("media_variants")
+}
+
+model MediaUsage {
+  id                     String     @id @default(uuid()) @db.Uuid
+  assetId                String     @db.Uuid
+  contractVersion        String
+  entityType             String
+  entityId               String
+  slot                   String?
+  requiredLocales        Json
+  authorizationScopeKind String
+  dealerIds              Json
+  locationIds            Json
+  attachedByActorType    String
+  attachedByActorId      String?
+  permissionGrants       Json
+  contextRevision        String
+  version                Int        @default(0)
+  createdAt              DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime   @updatedAt @db.Timestamptz(3)
+  asset                  MediaAsset @relation(fields: [assetId], references: [id], onDelete: Restrict)
+
+  @@unique([assetId, entityType, entityId, slot])
+  @@index([entityType, entityId])
+  @@map("media_usages")
+}
+
+model MediaUploadIntent {
+  id                     String                  @id @default(uuid()) @db.Uuid
+  assetId                String                  @db.Uuid
+  contractVersion        String
+  status                 String
+  actorId                String
+  contextRevision        String
+  permissionGrantHash    String
+  scopeHash              String
+  authorizationScopeKind String
+  dealerIds              Json
+  locationIds            Json
+  expectedBytes          BigInt
+  capabilityKid          String
+  capabilityHash         String
+  intentHash             String
+  nonceHash              String
+  expiresAt              DateTime                @db.Timestamptz(3)
+  consumedAt             DateTime?               @db.Timestamptz(3)
+  failureCode            String?
+  operationId            String?                 @db.Uuid
+  tempEntryName          String?
+  leaseOwner             String?
+  leaseRevision          Int                     @default(0)
+  leaseExpiresAt         DateTime?               @db.Timestamptz(3)
+  heartbeatAt            DateTime?               @db.Timestamptz(3)
+  operationState         String
+  cleanupState           String
+  version                Int                     @default(0)
+  createdAt              DateTime                @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime                @updatedAt @db.Timestamptz(3)
+  asset                  MediaAsset              @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  storageOperations      MediaStorageOperation[]
+
+  @@unique([contractVersion, capabilityHash])
+  @@unique([tempEntryName])
+  @@index([status, expiresAt])
+  @@map("media_upload_intents")
+}
+
+model MediaStorageOperation {
+  id                     String             @id @default(uuid()) @db.Uuid
+  assetId                String             @db.Uuid
+  variantId              String?            @db.Uuid
+  uploadIntentId         String?            @db.Uuid
+  jobId                  String?            @db.Uuid
+  contractVersion        String
+  provider               String
+  objectKey              String
+  objectRole             String
+  state                  String
+  cleanupStatus          String
+  cleanupReason          String?
+  jobRetryGeneration     Int?
+  jobAttempt             Int?
+  leaseRevision          Int?
+  expectedAssetVersion   Int
+  sourceChecksum         String?
+  processingConfigHash   String
+  authorizationScopeKind String
+  dealerIds              Json
+  locationIds            Json
+  byteCount              BigInt?
+  checksum               String?
+  expiresAt              DateTime?          @db.Timestamptz(3)
+  version                Int                @default(0)
+  createdAt              DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime           @updatedAt @db.Timestamptz(3)
+  asset                  MediaAsset         @relation(fields: [assetId], references: [id], onDelete: Restrict)
+  uploadIntent           MediaUploadIntent? @relation(fields: [uploadIntentId], references: [id], onDelete: Restrict)
+  selectedByVariant      MediaVariant?
+
+  @@unique([provider, objectKey])
+  @@index([cleanupStatus, state, expiresAt])
+  @@index([assetId, state])
+  @@map("media_storage_operations")
+}
+
+model MediaRetryCommand {
+  id                     String   @id @default(uuid()) @db.Uuid
+  assetId                String   @db.Uuid
+  jobId                  String   @db.Uuid
+  contractVersion        String
+  commandKeyKid          String
+  commandKeyHash         String
+  intentHash             String
+  actorId                String
+  contextRevision        String
+  authorizationScopeKind String
+  dealerIds              Json
+  locationIds            Json
+  retryGeneration        Int
+  executionBinding       Json
+  responseProjection     Json
+  expiresAt              DateTime @db.Timestamptz(3)
+  createdAt              DateTime @default(now()) @db.Timestamptz(3)
+
+  // Intentionally relation-free in Prisma: strict runtime cannot SELECT this protected evidence table.
+  // PostgreSQL migration 56 owns the assetId/jobId FKs; disposable DB consistency tests verify both.
+  @@unique([contractVersion, commandKeyHash])
+  @@index([commandKeyKid, expiresAt])
+  @@map("media_retry_commands")
+}
+
+model MediaHmacKidRetirement {
+  kid                  String   @id
+  lastCommandExpiresAt DateTime @db.Timestamptz(3)
+  removeAfter          DateTime @db.Timestamptz(3)
+  revision             Int      @default(0)
+  createdAt            DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([removeAfter])
+  @@map("media_hmac_kid_retirements")
+}
+
+model MediaProcessingReadiness {
+  id                      String   @id @default(uuid()) @db.Uuid
+  contractVersion         String
+  deploymentEnvironmentId String
+  instanceId              String
+  sandboxImageDigest      String
+  parserDigest            String
+  securityPolicyDigest    String
+  processingConfigDigest  String
+  supportedKinds          Json
+  capacityByKind          Json
+  probeResult             String
+  probedAt                DateTime @db.Timestamptz(3)
+  probeExpiresAt          DateTime @db.Timestamptz(3)
+  heartbeatAt             DateTime @db.Timestamptz(3)
+  revision                Int      @default(0)
+  createdAt               DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt               DateTime @updatedAt @db.Timestamptz(3)
+
+  @@unique([contractVersion, deploymentEnvironmentId, instanceId])
+  @@index([probeResult, probeExpiresAt])
+  @@map("media_processing_readiness")
+}
+
+model PrivacyRequest {
+  id          String    @id @default(uuid())
+  userId      String
+  email       String
+  type        String
+  status      String    @default("pending")
+  requestedAt DateTime  @default(now())
+  completedAt DateTime?
+  error       String?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, requestedAt])
+  @@map("privacy_requests")
+}
+
 model PrivacyConsentEvent {
-  id          String   @id @default(uuid())
-  anonymousId String
-  preferences Json
-  source      String
-  createdAt   DateTime @default(now())
+  id                         String   @id @default(uuid())
+  anonymousId                String
+  preferences                Json
+  source                     String
+  action                     String
+  authenticatedSubjectDigest Bytes?
+  subjectKeyVersion          String?
+  identityRealmVersion       String?
+  identityEpoch              String?
+  consentSchemaVersion       String?
+  authorityVersion           Int      @default(1) @db.SmallInt
+  createdAt                  DateTime @default(now())
 
   @@index([anonymousId, createdAt])
+  @@index([createdAt])
   @@map("privacy_consent_events")
 }
 
 model Dealer {
-  id        String           @id @default(uuid())
-  code      String           @unique
-  name      String
-  status    DealerStatus     @default(active)
-  phone     String?
-  email     String?
-  website   String?
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
-  erpLinks  DealerErpLink[]
-  locations DealerLocation[]
+  id          String             @id @default(uuid())
+  code        String             @unique
+  name        String
+  status      DealerStatus       @default(active)
+  phone       String?
+  email       String?
+  website     String?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  erpLinks    DealerErpLink[]
+  locations   DealerLocation[]
+  memberships DealerMembership[]
 
   @@map("dealers")
 }
 
 model DealerLocation {
-  id                    String                 @id @default(uuid())
+  id                    String                     @id @default(uuid())
   dealerId              String
   code                  String
   name                  String
@@ -800,19 +1928,74 @@ model DealerLocation {
   city                  String?
   province              String?
   postalCode            String?
-  country               String                 @default("CA")
-  pickupAvailable       Boolean                @default(false)
-  deliveryAvailable     Boolean                @default(false)
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  dealer                Dealer                 @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  country               String                     @default("CA")
+  latitude              Float?
+  longitude             Float?
+  status                DealerLocationStatus       @default(active)
+  pickupAvailable       Boolean                    @default(false)
+  deliveryAvailable     Boolean                    @default(false)
+  createdAt             DateTime                   @default(now())
+  updatedAt             DateTime                   @updatedAt
+  dealer                Dealer                     @relation(fields: [dealerId], references: [id], onDelete: Cascade)
   erpLinks              DealerErpLink[]
   serviceAreas          DealerServiceArea[]
   inventorySnapshots    InventorySnapshot[]
   inventoryReservations InventoryReservation[]
+  membershipLocations   DealerMembershipLocation[]
 
   @@unique([dealerId, code])
+  @@unique([id, dealerId])
   @@map("dealer_locations")
+}
+
+model DealerMembership {
+  id              String                     @id @default(uuid())
+  userId          String
+  dealerId        String
+  status          DealerMembershipStatus     @default(invited)
+  validFrom       DateTime                   @default(now())
+  expiresAt       DateTime?
+  revokedAt       DateTime?
+  createdByUserId String?
+  revision        Int                        @default(0)
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  user            User                       @relation("DealerMembershipSubject", fields: [userId], references: [id], onDelete: Cascade)
+  createdBy       User?                      @relation("DealerMembershipCreator", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  dealer          Dealer                     @relation(fields: [dealerId], references: [id], onDelete: Restrict)
+  roles           DealerMembershipRole[]
+  locations       DealerMembershipLocation[]
+
+  @@unique([userId, dealerId])
+  @@unique([id, dealerId])
+  @@index([userId, status])
+  @@index([dealerId, status])
+  @@map("dealer_memberships")
+}
+
+model DealerMembershipRole {
+  membershipId String
+  roleId       String
+  createdAt    DateTime         @default(now())
+  membership   DealerMembership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+  role         Role             @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@id([membershipId, roleId])
+  @@index([roleId])
+  @@map("dealer_membership_roles")
+}
+
+model DealerMembershipLocation {
+  membershipId     String
+  dealerId         String
+  dealerLocationId String
+  createdAt        DateTime         @default(now())
+  membership       DealerMembership @relation(fields: [membershipId, dealerId], references: [id, dealerId], onDelete: Cascade)
+  dealerLocation   DealerLocation   @relation(fields: [dealerLocationId, dealerId], references: [id, dealerId], onDelete: Restrict)
+
+  @@id([membershipId, dealerLocationId])
+  @@index([dealerLocationId, dealerId])
+  @@map("dealer_membership_locations")
 }
 
 model DealerServiceArea {
@@ -842,6 +2025,96 @@ model DealerErpLink {
   @@map("dealer_erp_links")
 }
 
+model TaxRate {
+  id            String   @id @default(uuid())
+  province      String
+  label         String
+  gstRate       Decimal  @default(0) @db.Decimal(6, 5)
+  pstRate       Decimal  @default(0) @db.Decimal(6, 5)
+  hstRate       Decimal  @default(0) @db.Decimal(6, 5)
+  combinedRate  Decimal  @db.Decimal(6, 5)
+  effectiveFrom DateTime @default(now())
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([province, effectiveFrom])
+  @@index([province, isActive, effectiveFrom])
+  @@map("tax_rates")
+}
+
+model SiteContentModule {
+  id              String   @id @default(uuid())
+  moduleKey       String
+  locale          String
+  status          String   @default("draft")
+  payload         Json
+  updatedByUserId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([moduleKey, locale])
+  @@map("site_content_modules")
+}
+
+model LegalPage {
+  id              String   @id @default(uuid())
+  slug            String
+  locale          String
+  title           String
+  summary         String?
+  sections        Json
+  status          String   @default("draft")
+  updatedByUserId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([slug, locale])
+  @@map("legal_pages")
+}
+
+model Article {
+  id              String    @id @default(uuid())
+  slug            String
+  locale          String
+  title           String
+  excerpt         String?
+  body            Json
+  category        String?
+  status          String    @default("draft")
+  publishedAt     DateTime?
+  updatedByUserId String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([slug, locale])
+  @@map("articles")
+}
+
+model SupportKnowledgeDocument {
+  id         String                  @id @default(uuid())
+  sourcePath String                  @unique
+  title      String
+  locale     String
+  audience   String
+  checksum   String
+  updatedAt  DateTime                @updatedAt
+  chunks     SupportKnowledgeChunk[]
+
+  @@map("support_knowledge_documents")
+}
+
+model SupportKnowledgeChunk {
+  id         String                   @id @default(uuid())
+  documentId String
+  ordinal    Int
+  text       String
+  updatedAt  DateTime                 @updatedAt
+  document   SupportKnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@map("support_knowledge_chunks")
+}
+
 model EmailTemplate {
   id        String                 @id @default(uuid())
   key       String                 @unique
@@ -866,6 +2139,21 @@ model EmailTemplateVersion {
 
   @@unique([templateId, version])
   @@map("email_template_versions")
+}
+
+model SupportHandoff {
+  id         String               @id @default(uuid())
+  channel    String
+  sourcePath String
+  dealerId   String?
+  cartId     String?
+  transcript Json
+  status     SupportHandoffStatus @default(new)
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+
+  @@index([status, createdAt])
+  @@map("support_handoffs")
 }
 
 model EmailOutbox {
@@ -986,6 +2274,7 @@ model ErpOrderLink {
   erpSystem      String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  order          Order    @relation(fields: [websiteOrderId], references: [id], onDelete: Cascade)
 
   @@unique([erpSystem, erpOrderId])
   @@map("erp_order_links")
@@ -1002,6 +2291,183 @@ model ErpWebhookEvent {
   createdAt   DateTime  @default(now())
 
   @@unique([erpSystem, eventType, externalId])
-
   @@map("erp_webhook_events")
+}
+
+model ErpWebhook {
+  id            String    @id @default(uuid()) @db.Uuid
+  url           String
+  secretHash    String
+  events        String[]
+  active        Boolean   @default(true)
+  retryCount    Int       @default(0)
+  lastStatus    String?
+  lastAttemptAt DateTime? @db.Timestamptz(3)
+  nextRetryAt   DateTime? @db.Timestamptz(3)
+  createdAt     DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime  @updatedAt @db.Timestamptz(3)
+
+  @@index([active, nextRetryAt])
+  @@map("erp_webhooks")
+}
+
+model RateLimitBucket {
+  id        String   @id @default(uuid())
+  key       String
+  window    BigInt
+  count     Int      @default(1)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([key, window])
+  @@index([expiresAt])
+  @@map("rate_limit_buckets")
+}
+
+model WorkerHeartbeat {
+  key                 String    @id
+  instanceId          String
+  lastStartedAt       DateTime
+  lastSucceededAt     DateTime?
+  lastFailedAt        DateTime?
+  lastError           String?
+  lifecycleState      String?
+  claimEnabled        Boolean?
+  declaredCapacity    Int?
+  effectiveCapacity   Int?
+  supportedJobTypes   String[]
+  registryVersion     String?
+  registryFingerprint String?
+  generation          BigInt?
+  lifecycleVersion    Int?
+  startedObservedAt   DateTime? @db.Timestamptz(3)
+  heartbeatObservedAt DateTime? @db.Timestamptz(3)
+  drainingStartedAt   DateTime? @db.Timestamptz(3)
+  shutdownObservedAt  DateTime? @db.Timestamptz(3)
+  updatedAt           DateTime  @updatedAt
+
+  @@index([lifecycleState, heartbeatObservedAt])
+  @@map("worker_heartbeats")
+}
+
+model PageViewEvent {
+  id          String   @id @default(uuid())
+  path        String
+  referrer    String?
+  locale      String?
+  sessionId   String
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path, createdAt])
+  @@index([sessionId, createdAt])
+  @@map("page_view_events")
+}
+
+model AnalyticsFoundationEvent {
+  id                         String   @id @default(uuid()) @db.Uuid
+  eventName                  String
+  eventVersion               String
+  schemaVersion              String
+  schemaFingerprint          String
+  producer                   String
+  source                     String
+  occurredAt                 DateTime @db.Timestamptz(3)
+  observedAt                 DateTime @db.Timestamptz(3)
+  ingestedAt                 DateTime @default(now()) @db.Timestamptz(3)
+  subjectClass               String
+  subjectDigest              String
+  contextRevision            String
+  authorizationScopeKind     String
+  dealerIds                  String[]
+  locationIds                String[]
+  scopeFingerprint           String
+  fieldVisibilityFingerprint String
+  resourceType               String
+  resourceId                 String
+  dimensions                 Json
+  idempotencyKeyHash         String
+  eventIntentHash            String
+  occurrenceIdentity         String
+  sequence                   Int
+  provenance                 String
+  consentClass               String
+  consentVersion             String
+  late                       Boolean  @default(false)
+  authenticatedSubjectDigest Bytes?
+  subjectKeyVersion          String?
+  identityEpoch              String?
+  authorityVersion           Int      @default(1) @db.SmallInt
+  successAuditEventId        String?  @unique @db.Uuid
+  postSealLate               Boolean  @default(false)
+  expiresAt                  DateTime @db.Timestamptz(3)
+
+  @@unique([eventName, producer, subjectDigest, scopeFingerprint, resourceType, resourceId, idempotencyKeyHash])
+  @@index([authorizationScopeKind, dealerIds, locationIds, ingestedAt(sort: Desc), id(sort: Desc)])
+  @@index([eventName, occurredAt, id])
+  @@index([resourceType, resourceId, sequence, occurredAt, id])
+  @@index([expiresAt])
+  @@map("analytics_foundation_event")
+}
+
+model AnalyticsFoundationRelease {
+  id                       String   @id @db.Uuid
+  scopeFingerprint         String
+  releaseDay               DateTime @db.Date
+  metricDefinitionVersion  String
+  identityEpoch            String
+  suppressionPolicyVersion String
+  fieldVisibilityProfile   String
+  authorizationScopeKind   String   @default("global")
+  status                   String
+  completeness             String
+  sourceCutoff             DateTime @db.Timestamptz(3)
+  sealedAt                 DateTime @db.Timestamptz(3)
+  lateExcludedCount        BigInt   @default(0)
+  authorityVersion         Int      @default(2) @db.SmallInt
+  successAuditEventId      String   @unique @db.Uuid
+
+  @@unique([scopeFingerprint, releaseDay, metricDefinitionVersion, identityEpoch, suppressionPolicyVersion, fieldVisibilityProfile], map: "analytics_foundation_release_family_key")
+  @@map("analytics_foundation_release")
+}
+
+model AnalyticsFoundationReleaseEvent {
+  releaseId String @db.Uuid
+  eventId   String @db.Uuid
+
+  @@id([releaseId, eventId])
+  @@map("analytics_foundation_release_event")
+}
+
+model AnalyticsFoundationReleaseCell {
+  id                  String   @id @db.Uuid
+  releaseId           String   @db.Uuid
+  cellKey             String
+  state               String
+  valueKind           String
+  denominatorDistinct BigInt?
+  numeratorDistinct   BigInt?
+  complementDistinct  BigInt?
+  publishedValue      Decimal?
+  completeness        String
+
+  @@unique([releaseId, cellKey], map: "analytics_foundation_release_cell_key")
+  @@map("analytics_foundation_release_cell")
+}
+
+model CatalogSyncRun {
+  id               String    @id @default(uuid())
+  status           String
+  source           String
+  productsUpserted Int       @default(0)
+  error            String?
+  startedAt        DateTime  @default(now())
+  finishedAt       DateTime?
+
+  @@index([startedAt])
+  @@map("catalog_sync_runs")
 }

@@ -1,0 +1,1901 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.p09.authenticated-browser.v2",
+  "testedCommit": "10204c944b6bf8785bc758be2a07e45fee57a638",
+  "definitionSha256": "59207b734f7418ed9b63d2245096a51ff57fdfbe1e4b27d90e163d86434a7fca",
+  "fixtureSha256": "41e991c8d2cc0aea4672b197c8fd9c7c05521e78de17f7f07e33420bb30c577e",
+  "harnessSha256": "4269c149c4145af2bd19306e9709485f08433f4dac8cf0825b818d3ee750a46a",
+  "actorProfiles": {
+    "actor": "9c4d6fd1-37d0-4677-abb8-4052cd8f54ee",
+    "profiles": [
+      "global",
+      "denied"
+    ],
+    "contexts": [
+      1,
+      2,
+      3
+    ]
+  },
+  "ports": {
+    "web": "http://127.0.0.1:4440",
+    "api": "http://127.0.0.1:4441"
+  },
+  "counts": {
+    "pass": 17,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "P09-A01",
+      "name": "authorized Config registry list and detail",
+      "status": "pass",
+      "observations": [
+        "registry list rendered"
+      ]
+    },
+    {
+      "id": "P09-A02",
+      "name": "typed validation and unknown key/schema denial",
+      "status": "pass",
+      "observations": [
+        "typed form rendered; arbitrary keys absent"
+      ]
+    },
+    {
+      "id": "P09-A03",
+      "name": "proposal changes desired but not effective",
+      "status": "pass",
+      "observations": [
+        "desired changed; effective unchanged"
+      ]
+    },
+    {
+      "id": "P09-A04",
+      "name": "activation success changes effective generation",
+      "status": "pass",
+      "observations": [
+        "activation effective/generation"
+      ]
+    },
+    {
+      "id": "P09-A05",
+      "name": "activation failure preserves desired and prior effective",
+      "status": "pass",
+      "observations": [
+        "desired persisted/effective prior"
+      ]
+    },
+    {
+      "id": "P09-A06",
+      "name": "explicit retry recovers activation",
+      "status": "pass",
+      "observations": [
+        "explicit retry recovery"
+      ]
+    },
+    {
+      "id": "P09-A07",
+      "name": "stale version conflict no auto replay",
+      "status": "pass",
+      "observations": [
+        "{'status': 409, 'body': {'code': 'VERSION_CONFLICT'}}"
+      ]
+    },
+    {
+      "id": "P09-A08",
+      "name": "rollback creates new version",
+      "status": "pass",
+      "observations": [
+        "rollback new version"
+      ]
+    },
+    {
+      "id": "P09-A09",
+      "name": "Global Dealer Location source precedence",
+      "status": "pass",
+      "observations": [
+        "fixture established legal layers; UI selected global scope; effective global=standard"
+      ]
+    },
+    {
+      "id": "P09-A10",
+      "name": "flag enable disable and authorization independence",
+      "status": "pass",
+      "observations": [
+        "flag enabled; authorization warning"
+      ]
+    },
+    {
+      "id": "P09-A11",
+      "name": "independent kill confirmation and fallback",
+      "status": "pass",
+      "observations": [
+        "kill dialog exact confirmation/fallback"
+      ]
+    },
+    {
+      "id": "P09-A12",
+      "name": "permission and cross-scope fail closed",
+      "status": "pass",
+      "observations": [
+        "denied profile hides data/actions"
+      ]
+    },
+    {
+      "id": "P09-A13",
+      "name": "actor context scope generation fencing",
+      "status": "pass",
+      "observations": [
+        "actor/context projection replaced"
+      ]
+    },
+    {
+      "id": "P09-A14",
+      "name": "API Worker readiness ready degraded stale zero capacity",
+      "status": "pass",
+      "observations": [
+        "degraded and zero capacity rendered"
+      ]
+    },
+    {
+      "id": "P09-A15",
+      "name": "secret redaction and public health minimization",
+      "status": "pass",
+      "observations": [
+        "public health minimized; protected UI redacted"
+      ]
+    },
+    {
+      "id": "P09-A16",
+      "name": "keyboard focus live region and 320 390 reflow",
+      "status": "pass",
+      "observations": [
+        "keyboard/live region/reflow=[(390, 0), (320, 0)]"
+      ]
+    },
+    {
+      "id": "P09-A17",
+      "name": "exact transport arbitrary key URL denial localhost-only network",
+      "status": "pass",
+      "observations": [
+        "unknown key denied; localhost-only network"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/control",
+      "body": {
+        "profile": "global",
+        "context": 1,
+        "readiness": "degraded"
+      },
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global",
+      "body": {
+        "schemaVersion": "runtime-config-schema.v1",
+        "desiredValue": "compact",
+        "expectedVersion": 0
+      },
+      "idempotency": "c72bf78c-be68-4047-bd64-ba87cfbe4bf5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/activate?scopeKind=global",
+      "body": {
+        "expectedVersion": 1
+      },
+      "idempotency": "fe537820-0a9c-493c-ae36-e3c56a909a12"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global",
+      "body": {
+        "schemaVersion": "runtime-config-schema.v1",
+        "desiredValue": "standard",
+        "expectedVersion": 1
+      },
+      "idempotency": "d107f506-4304-4fb3-badd-192831861109"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/activate?scopeKind=global",
+      "body": {
+        "expectedVersion": 2,
+        "simulateFailure": true
+      },
+      "idempotency": "4c56bc15-8793-41a8-afef-68e5d8cc0624"
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/retry?scopeKind=global",
+      "body": {
+        "expectedVersion": 2
+      },
+      "idempotency": "cd0818f7-a058-4150-ba09-bf09d783d782"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global",
+      "body": {
+        "schemaVersion": "runtime-config-schema.v1",
+        "desiredValue": "compact",
+        "expectedVersion": 0
+      },
+      "idempotency": "stale-browser"
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/rollback?scopeKind=global",
+      "body": {
+        "expectedVersion": 2,
+        "rollbackVersion": 1
+      },
+      "idempotency": "dc592cb3-143c-48aa-b5af-d65232ba5198"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/control",
+      "body": {
+        "precedence": {
+          "global": "standard",
+          "dealer": "compact",
+          "location": "standard"
+        },
+        "profile": "global"
+      },
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/config?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/versions?scopeKind=global",
+      "body": {
+        "desiredState": "enabled",
+        "expectedVersion": 0
+      },
+      "idempotency": "f597ca72-7cd0-439b-aaf3-24a081568306"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/activate?scopeKind=global",
+      "body": {
+        "expectedVersion": 1
+      },
+      "idempotency": "3ae9476d-6090-4e6c-bf32-ad265f7eec43"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/kill?scopeKind=global",
+      "body": {
+        "expectedVersion": 1,
+        "confirmation": "KILL"
+      },
+      "idempotency": "e5b5e1a8-ca44-4737-a7d9-92f11fa6e5f8"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/control",
+      "body": {
+        "profile": "denied",
+        "context": 2
+      },
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/control",
+      "body": {
+        "profile": "global",
+        "context": 3
+      },
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/foundation",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cart",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/account/favorites",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/authorization",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/readiness?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/readiness?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/health/live",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/health/ready",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/dashboard/runtime/readiness?scopeKind=global",
+      "body": null,
+      "idempotency": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/dashboard/runtime/config/unknown/versions?scopeKind=global",
+      "body": {},
+      "idempotency": "arbitrary-browser"
+    },
+    {
+      "method": "GET",
+      "path": "/control/state",
+      "body": null,
+      "idempotency": null
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=config"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=config"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/activate?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/activate?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/retry?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/versions?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=config&key=foundation.runtime.display_mode"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode/rollback?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/foundation.runtime.display_mode?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/versions?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/activate?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag/kill?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/dashboard/runtime/?view=flags&key=foundation.runtime.sample_flag"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_02wev3x._.css"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_12ipddu._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_1cnec0y._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_0e4gx6g._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/12ne__pnpm_01evoqx._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_lib_0s73ql6._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0r-5hvd._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_0c-qrd_._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_runtime_page_tsx_0fcjv_b._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_0fcjv_b.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4440/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/flags/foundation.runtime.sample_flag?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/readiness?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/readiness?scopeKind=global"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/health/live"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/health/ready"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/readiness?scopeKind=global"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4441/api/v1/dashboard/runtime/config/unknown/versions?scopeKind=global"
+    }
+  ]
+}

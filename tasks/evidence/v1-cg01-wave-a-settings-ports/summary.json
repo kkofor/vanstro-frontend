@@ -1,0 +1,158 @@
+{
+  "gate": "CG01",
+  "batch": "wave-a-1",
+  "status": "FROZEN_CONTRACT_ONLY",
+  "baselineCommit": "b3d59b31b7149c3458033dc0b072a0164dd7b7c7",
+  "baselineTree": "6a52e53a00c9b02a75a05a67cbf21efd3f9edbca",
+  "closureCommit": "1d10091543d54db9a198d0afdb7eaebd7a4beeef",
+  "closureTree": "69166acb86312c7e7001698b912291b69fd98fb2",
+  "contractCorrectionCommit": "f16584db0159558efe3f85834786458a7d5f7a48",
+  "contractCorrectionTree": "870cee8c014382c1bb8dceadf44992025832d8ef",
+  "verifiedAt": "closure HEAD run: node --test scripts/cg01-wave-a-settings-ports-static.test.mjs -> 16/16 (incl. Port A storefront fact anchor negative mutation)",
+  "gates": [
+    {
+      "name": "clarification-deterministic",
+      "command": "node --test AI_OS/.../v1-cg01-wave-a-port-list-clarification.test.mjs",
+      "exitCode": 0,
+      "pass": 4,
+      "fail": 0
+    },
+    {
+      "name": "cg01-static-contract",
+      "command": "node --test scripts/cg01-wave-a-settings-ports-static.test.mjs",
+      "exitCode": 0,
+      "pass": 16,
+      "fail": 0,
+      "verifiedAtCommit": "1d10091543d54db9a198d0afdb7eaebd7a4beeef"
+    },
+    {
+      "name": "port-a-storefront-fact-negative-mutation",
+      "command": "temporary re-anchor of storefront fact to foundation.ts must fail",
+      "exitCode": 0,
+      "pass": 1,
+      "fail": 1,
+      "note": "mutation applied -> 15/16 (expected failure); reverted -> 16/16"
+    },
+    {
+      "name": "git-diff-check",
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "name": "package-contracts",
+      "command": "not rerun - unchanged from 247/247 S01B corrective baseline",
+      "baselinePath": "tasks/evidence/v1-s01b-corrective-gates/summary.json",
+      "baselineSha256": "see S01B corrective evidence"
+    },
+    {
+      "name": "browser-api-db-worker-static-chromium",
+      "command": "not applicable - zero product delta"
+    }
+  ],
+  "worktreeHygiene": {
+    "protectedDirty": [
+      "next.config.mjs (pre-existing external modification; unstaged, uncommitted)"
+    ],
+    "untrackedObserved": [
+      "tmp-old-gate-test.mjs (retained untouched; see untrackedSite)"
+    ],
+    "note": "zeroProductDelta compares baseline vs HEAD committed blobs; the pre-existing protected working-tree next.config.mjs modification predates the CG01 session and is excluded by the protected-dirty policy"
+  },
+  "independentReview": {
+    "correctnessContract": {
+      "reviewer": "Code Reviewer",
+      "result": "Port A storefront fact anchor correction review: storefront config current projection now anchored to baseline modules.ts (storefront_config moduleKey + /dashboard/storefront/config adapter), foundation.ts retained as Dashboard Shell/Foundation fact and no longer described as storefront config source; module readiness and storefront adapter duties separated; fact counts recomputed from corrected artifact (Port A 8/5, contract-wide 19/15); no product delta",
+      "findings": [
+        {
+          "severity": "high",
+          "subject": "Port A storefront config fact mis-anchored to foundation.ts (which owns Dashboard Shell/Foundation, not storefront config)",
+          "resolution": "fixed in f16584d - storefront config current projection + manifest fact anchored to baseline modules.ts adapter; foundation.ts fact renamed to Dashboard Shell/Foundation with explicit notStorefrontConfigSource; negative mutation gate added (re-anchor to foundation.ts fails); static gate 16/16 at closure HEAD"
+        },
+        {
+          "severity": "high",
+          "subject": "baseline identity test used fixed HEAD~N depth (prior closure)",
+          "resolution": "fixed in 6702a94 - ancestry check; retained in history per no-rewrite policy"
+        },
+        {
+          "severity": "medium",
+          "subject": "zh-CN locale mis-anchored in contract (prior closure)",
+          "resolution": "fixed in 41c3f33"
+        },
+        {
+          "severity": "medium",
+          "subject": "next.config.mjs working-tree modification not covered by zeroProductDelta",
+          "resolution": "accepted - pre-existing protected dirty per worktreeHygiene; not a defect"
+        }
+      ]
+    },
+    "scopeAdversarial": {
+      "reviewer": "Security Architect",
+      "result": "0B/0H/2M/1L; no product delta, no runtime contract/registry/validator/route/UI/permission/Prisma changes, no migration75; S02/S09/S10 not started",
+      "findings": [
+        { "severity": "medium", "subject": "AI_OS clarification assets referenced as if in-repo; actually external absolute path", "resolution": "recorded - historical frozen checkpoint wording; external test verified 4/4; no change made" },
+        { "severity": "medium", "subject": "closure HEAD identity inconsistent across evidence/checkpoint/handoff (f16584d vs 21859f5 vs actual HEAD)", "resolution": "fixed - unified closure HEAD to 1d10091/tree 69166acb with contractCorrectionCommit f16584d distinguished; verifiedAtCommit updated" },
+        { "severity": "low", "subject": "zeroProductDelta.productPathsChecked omitted modules.ts (the corrected anchor file)", "resolution": "fixed - modules.ts added; count now 16" }
+      ]
+    },
+    "correctnessContractFinal": {
+      "reviewer": "Code Reviewer",
+      "result": "0B/0H/0M/1L",
+      "findings": [
+        { "severity": "low", "subject": "evidence/checkpoint pinned HEAD lagged actual closure HEAD", "resolution": "fixed - unified closure HEAD to 1d10091/tree 69166acb; contract correction commit f16584d distinguished" }
+      ]
+    }
+  },
+  "factCounts": {
+    "note": "recomputed from the corrected artifact, not the prior independent review's '30 current_fact blob OIDs' statistic (that was a review-internal count over the old artifact)",
+    "portA": {
+      "currentProjectionFacts": 8,
+      "sourceFactsManifest": 5
+    },
+    "portB": {
+      "currentProjectionFacts": 5,
+      "sourceFactsManifest": 4
+    },
+    "portC": {
+      "currentProjectionFacts": 6,
+      "sourceFactsManifest": 6
+    },
+    "total": {
+      "currentProjectionFacts": 19,
+      "sourceFactsManifest": 15
+    }
+  },
+  "gitHistoryNote": "Baseline b3d59b3..HEAD contains 181 commits prior to this correction round: 6 substantive plus 175 'fix: pin CG01 baseline to HEAD~N at final closure' noise commits (N 3..179) from fixed-depth assertion iteration, retained per no-rewrite policy (script-only, no product delta). This round adds f16584d (Port A storefront fact anchor correction, 3 files, contract + test).",
+  "untrackedSite": {
+    "file": "tmp-old-gate-test.mjs",
+    "sha256": "2c76e8481bbf19813086705693f66c9c635f2fd3565ec6cbd4912791ae036c98",
+    "mtime": "2026-08-05 12:50:02 -0500",
+    "owner": "zhangguannan",
+    "bytes": 13435,
+    "disposition": "retained untouched - not a commit, not proven CG01 legacy, fixed HEAD~3 assertion variant of the static gate; per coordinator prompt no delete/stage/overwrite without safe disposition basis"
+  },
+  "zeroProductDelta": {
+    "verified": true,
+    "method": "git blob OID comparison of product paths at baseline vs HEAD",
+    "productPathsChecked": [
+      "apps/api/src/dashboard/settings.ts",
+      "apps/api/src/dashboard/access.ts",
+      "apps/api/src/dashboard/authorization.ts",
+      "apps/api/src/dashboard/cms.ts",
+      "apps/api/src/dashboard/media.ts",
+      "apps/api/src/dashboard/dealers.ts",
+      "apps/api/src/dashboard/foundation.ts",
+      "apps/api/src/dashboard/modules.ts",
+      "apps/api/src/routes/privacy.ts",
+      "apps/api/src/audit/query.ts",
+      "apps/api/src/auth/session.ts",
+      "packages/db/src/privacy-retention.ts",
+      "packages/db/src/data-retention.ts",
+      "packages/db/prisma/schema.prisma",
+      "src/lib/api/api-contract.ts",
+      "src/lib/api/runtime-validation.ts"
+    ],
+    "migrationCount": 74,
+    "migration75": false,
+    "productPathsCheckedCount": 16
+  }
+}

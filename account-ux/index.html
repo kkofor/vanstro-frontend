@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANSTRO 账户体系 UX 设计 · 目录与规范</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  .hero { background: var(--vs-navy-900); color: #fff; padding: 56px 24px; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(50% 60% at 90% 110%, rgba(13,137,104,.35), transparent 70%); }
+  .hero__in { max-width: 1200px; margin: 0 auto; position: relative; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+  .hero h1 { color: #fff; font-size: 40px; margin: 18px 0 12px; }
+  .hero p { color: rgba(255,255,255,.72); font-size: 16px; max-width: 52ch; }
+  .hero .mark { width: 220px; justify-self: end; opacity: .9; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 36px 24px 90px; display: grid; gap: 28px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .proto-card { display: flex; flex-direction: column; overflow: hidden; }
+  .proto-card__thumb { aspect-ratio: 16/10; background: var(--vs-grey-50); border-bottom: 1px solid var(--vs-grey-100); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .proto-card__thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .proto-card__body { padding: 18px 20px 20px; display: grid; gap: 8px; flex: 1; }
+  .proto-card__body h3 { font-size: 17px; }
+  .proto-card__body ul { margin: 0; padding-left: 18px; color: var(--vs-text-2); font-size: 13px; display: grid; gap: 3px; }
+  .proto-card__foot { display: flex; gap: 8px; margin-top: auto; padding-top: 10px; }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .sw { border-radius: var(--vs-r-lg); overflow: hidden; border: 1px solid var(--vs-grey-100); background: #fff; }
+  .sw__c { height: 84px; }
+  .sw__m { padding: 12px 14px; font-size: 12px; }
+  .sw__m strong { display: block; font-size: 13px; }
+  .sw__m code { color: var(--vs-text-3); }
+  .type-row { display: grid; grid-template-columns: 200px 1fr 220px; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid var(--vs-grey-100); }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .muted { font-size: 12px; }
+  .comp { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .comp .stack { gap: 12px; }
+  .comp h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--vs-text-3); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--vs-grey-100); vertical-align: top; }
+  th { color: var(--vs-text-3); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  @media (max-width: 900px) { .hero__in, .grid-3, .comp, .type-row { grid-template-columns: 1fr; } .swatches { grid-template-columns: repeat(2, 1fr); } .hero .mark { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero__in">
+    <div>
+      <img class="vs-logo vs-logo--lg" src="/account/assets/brand/logo-reverse.png" alt="VANSTRO Global Supply">
+      <h1>账户体系 UX 设计<br>登录 · 忘记密码 · 个人中心 · 结算支付</h1>
+      <p>vanstro.ca 商城用户账户与结账流程的交互流程图与高保真可交互原型。所有颜色、字体与标识用法均遵循《万拓品牌视觉白皮书》（Vanstro Global Supply Inc.），并针对加拿大用户（CAD、GST/HST、+1 手机、EN/FR、PIPEDA/CASL）与 Google / Apple 登录、Moneris 信用卡支付做了适配。</p>
+      <div class="row" style="margin-top:22px;gap:10px;flex-wrap:wrap">
+        <a class="btn btn--accent" href="flows.html">查看交互流程图</a>
+        <a class="btn" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)" href="components.html">shadcn 组件切片</a>
+        <a class="btn" style="background:#fff;color:var(--vs-navy)" href="login.html">打开登录原型</a>
+        <a class="btn" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)" href="register.html">注册原型</a>
+        <a class="btn" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)" href="forgot-password.html">忘记密码原型</a>
+        <a class="btn" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)" href="account.html">个人中心原型</a>
+        <a class="btn" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.35)" href="checkout.html">结算 / 支付原型</a>
+      </div>
+    </div>
+    <img class="mark" src="/account/assets/brand/mark-white.png" alt="">
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ===== Prototypes ===== -->
+  <section>
+    <h2 style="margin-bottom:6px">可交互原型</h2>
+    <p class="muted" style="margin-bottom:18px">在浏览器中直接打开。每个页面右下角有 “Prototype · states” 面板，可一键切换到任意状态用于评审。</p>
+    <div class="grid-3">
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/login-default.png" alt="登录页原型" onerror="this.parentElement.textContent='login.html'"></div>
+        <div class="proto-card__body">
+          <h3>1 · 用户登录</h3>
+          <ul>
+            <li>邮箱 / 手机号 / 用户名 单输入框自动识别</li>
+            <li>密码可见 / 隐藏切换，Caps Lock 提示</li>
+            <li>“记住我”30 天持久会话</li>
+            <li>错误提示：通用凭证错误、5 次锁定、未验证邮箱、仅社交账号</li>
+            <li>3 次失败后 CAPTCHA（含音频替代）；5 次失败锁定 15 分钟</li>
+            <li>成功后 2.4s 自动跳转，<code>?redirect=</code> 白名单，外域降级 /account</li>
+            <li>Continue with Google / Apple，首次登录自动建号 + CASL 同意</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="login.html">打开原型</a><a class="btn btn--ghost btn--sm" href="docs/01-login.md">交互说明</a></div>
+        </div>
+      </article>
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/register-default.png" alt="注册原型" onerror="this.parentElement.textContent='register.html'"></div>
+        <div class="proto-card__body">
+          <h3>1b · 注册</h3>
+          <ul>
+            <li>Google / Apple 置顶；Apple Hide My Email 中继说明</li>
+            <li>姓名 + 邮箱 + 密码：12+ 位、泄露库、无符号规则（NIST 800-63B）</li>
+            <li>Terms 必勾、CASL 营销默认不勾并写明主体地址</li>
+            <li>邮箱已注册仅在提交后告知（防枚举）；验证邮件 60s 重发</li>
+            <li>验证成功 → 欢迎优惠 → 自动跳转；Guest 结算一键转账号</li>
+            <li>EN / FR 全量文案，规则清单同步翻译</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="register.html">打开原型</a><a class="btn btn--ghost btn--sm" href="docs/07-register.md">交互说明</a></div>
+        </div>
+      </article>
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/forgot-step2-link-sent.png" alt="忘记密码原型" onerror="this.parentElement.textContent='forgot-password.html'"></div>
+        <div class="proto-card__body">
+          <h3>2 · 忘记密码</h3>
+          <ul>
+            <li>Step 1 输入账号邮箱（仅邮件，不提供短信码）</li>
+            <li>Step 2 链接已发送：15 分钟一次性、52s 后可重发、重发即作废旧链接</li>
+            <li>Step 3 新密码：12+ 位、泄露库、最近 3 次不可重用、令牌倒计时</li>
+            <li>Step 4 成功反馈：时间戳、购物车不受影响、“Not you? Freeze account”</li>
+            <li>防枚举文案、限流（3 次/小时）、仅社交账号引导</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="forgot-password.html">打开原型</a><a class="btn btn--ghost btn--sm" href="docs/03-forgot-password.md">交互说明</a></div>
+        </div>
+      </article>
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/account-profile.png" alt="个人中心原型" onerror="this.parentElement.textContent='account.html'"></div>
+        <div class="proto-card__body">
+          <h3>3 · 个人中心</h3>
+          <ul>
+            <li>头像上传 / 拖放 / 圆形裁剪缩放 / 移除（类型、大小、尺寸三重校验）</li>
+            <li>Overview：最近订单、默认地址 + 省税率提示、语言、会员等级、完成度</li>
+            <li>只读视图默认，Edit 进入编辑；昵称、姓名、性别（含非二元）、生日（每年一次）、语言、省份</li>
+            <li>修改密码：12+ 位 / 泄露 / 最近 3 次；“接下来会发生什么” 与 “为什么不要求符号”</li>
+            <li>Orders &amp; quotes：筛选表格、状态芯片、tabular 金额、报价审批</li>
+            <li>设备列表含 IP、可信设备；通讯偏好（CASL）与数据权利（PIPEDA / Law 25）</li>
+            <li>关联 Google / Apple、两步验证、已登录设备、删除账号</li><li>地址簿：添加 / 编辑 / 删除，默认收货 / 账单，邮编与省份交叉校验</li><li>支付方式：添加 / 编辑 / 删除银行卡，品牌识别、Luhn、到期提醒、银行拒绝态</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="account.html">打开原型</a><a class="btn btn--ghost btn--sm" href="docs/02-account.md">交互说明</a></div>
+        </div>
+      </article>
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/cart-default.png" alt="购物车原型" onerror="this.parentElement.textContent='cart.html'"></div>
+        <div class="proto-card__body">
+          <h3>4 · 购物车</h3>
+          <ul>
+            <li>行内数量步进（上限 50）、移除后 8 秒内可撤销、高价行移除前二次确认 / 转「稍后再买」</li>
+            <li>库存不足、商品下架、价格变动三种阻断态：结账按钮置灰并说明原因</li>
+            <li>促销码：生效 / 过期 / 未识别；按省预估 GST / HST / PST / QST，最终以结账页为准</li>
+            <li>数量变更在途骨架、保存失败 → Retry；EN / FR 随顶栏切换</li>
+            <li>购物车快照写入 <code>localStorage</code>，结账页与回执沿用同一份商品与折扣</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="cart.html">打开原型</a></div>
+        </div>
+      </article>
+      <article class="card proto-card">
+        <div class="proto-card__thumb"><img src="exports/checkout-shipping.png" alt="结算支付原型" onerror="this.parentElement.textContent='checkout.html'"></div>
+        <div class="proto-card__body">
+          <h3>5 · 结算 / 支付</h3>
+          <ul>
+            <li>三步：Shipping → Review（总额核对 + 同意）→ Payment，再到确认 / 税票</li>
+            <li>按送达省计算 GST / HST / PST / QST（含 NS 14% HST、QC 法文税行）</li>
+            <li>卡数据在 Moneris 托管 iframe 中采集（PCI SAQ A），Vanstro 不存 PAN；已存卡仅 CVV</li>
+            <li>PIPEDA 明示同意、隐私通知弹窗、魁北克 Law 25、CASL 营销默认关闭</li>
+            <li>3-D Secure 挑战、银行拒绝、票据过期等失败态；成功后即时邮件 / SMS 回执，可重发 / 打印</li>
+          </ul>
+          <div class="proto-card__foot"><a class="btn btn--primary btn--sm" href="checkout.html">打开原型</a><a class="btn btn--ghost btn--sm" href="docs/05-checkout.md">交互说明</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===== VI tokens ===== -->
+  <section class="card">
+    <div class="card__head"><h2 style="font-size:22px">VI 应用规范 · 颜色与职责</h2><p class="muted small" style="margin-top:4px">四个品牌色各有明确界面职责：深藏青是唯一的主色（含焦点环），青翠绿只表达成功，暖阳橙只用于图形（文字改用加深版 #8A5A0B），中性灰全部沿豆绿灰色相偏移。错误色与警告文字色为白皮书未定义，登记为例外。</p></div>
+    <div class="card__body">
+      <div class="swatches">
+        <div class="sw"><div class="sw__c" style="background:#004744"></div><div class="sw__m"><strong>深藏青 · 主打色</strong><code>#004744 · CMYK 100/53/67/41</code><br>主按钮、链接、焦点环、进度、选中态</div></div>
+        <div class="sw"><div class="sw__c" style="background:#9BA8A2"></div><div class="sw__m"><strong>豆绿灰 · 主打色</strong><code>#9BA8A2 · CMYK 45/28/35/0</code><br>中性色取色源：页面底、描边、文字灰均带此色相</div></div>
+        <div class="sw"><div class="sw__c" style="background:#0D8968"></div><div class="sw__m"><strong>青翠绿 · 辅助色</strong><code>#0D8968 · CMYK 82/30/69/0</code><br>仅成功语义：保存成功、验证通过、强度达标</div></div>
+        <div class="sw"><div class="sw__c" style="background:#F5A93F"></div><div class="sw__m"><strong>暖阳橙 · 辅助色</strong><code>#F5A93F · CMYK 0/42/78.5/0</code><br>少量、仅图形：徽章底、强度中档；不做按钮与文字</div></div>
+        <div class="sw"><div class="sw__c" style="background:#021816"></div><div class="sw__m"><strong>深色底</strong><code>#021816</code><br>登录页品牌区、Toast、保存条（反白稿 Logo）</div></div>
+      </div>
+      <div class="swatches" style="margin-top:14px;grid-template-columns:repeat(6,1fr)">
+        <div class="sw"><div class="sw__c" style="background:#E0EBE9;height:44px"></div><div class="sw__m"><code>brand-soft #E0EBE9</code></div></div>
+        <div class="sw"><div class="sw__c" style="background:#DEEFE9;height:44px"></div><div class="sw__m"><code>ok-soft #DEEFE9</code></div></div>
+        <div class="sw"><div class="sw__c" style="background:#FDEFDB;height:44px"></div><div class="sw__m"><code>accent-soft #FDEFDB</code></div></div>
+        <div class="sw"><div class="sw__c" style="background:#F1F4F3;height:44px"></div><div class="sw__m"><code>ground #F1F4F3 页面底</code></div></div>
+        <div class="sw"><div class="sw__c" style="background:#B3261E;height:44px"></div><div class="sw__m"><code>error #B3261E 例外</code></div></div>
+        <div class="sw"><div class="sw__c" style="background:#8A5A0B;height:44px"></div><div class="sw__m"><code>orange-ink #8A5A0B 警告文字</code></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card__head"><h2 style="font-size:22px">VI 应用规范 · 字体与标识</h2></div>
+    <div class="card__body">
+      <div class="type-row"><span class="muted">字体家族</span><span style="font-weight:700;font-size:18px">HarmonyOS Sans Bold — 标题 / 按钮 / 标语</span><span class="muted">回退：Inter → system-ui → PingFang SC；正文使用 Regular/Medium</span></div>
+      <div class="type-row"><span class="muted">H1 页面标题</span><span style="font-size:28px;font-weight:700">Sign in</span><span class="muted">28px / 700 / -0.01em</span></div>
+      <div class="type-row"><span class="muted">H2 区块标题</span><span style="font-size:22px;font-weight:700">Profile</span><span class="muted">22–26px / 700</span></div>
+      <div class="type-row"><span class="muted">H3 卡片标题</span><span style="font-size:20px;font-weight:700">Change password</span><span class="muted">20px / 700</span></div>
+      <div class="type-row"><span class="muted">标语</span><span class="vs-slogan" style="color:var(--vs-green)">Your Global Supply Platform</span><span class="muted">12px / 700 / 字距 0.28em / 大写 · 仅品牌区使用</span></div>
+      <div class="type-row"><span class="muted">正文 / 表单</span><span style="font-size:15px">Use your email, mobile number or username.</span><span class="muted">14–15px / 400 / 行高 1.5</span></div>
+      <div class="type-row"><span class="muted">辅助 / 提示</span><span style="font-size:12px;color:var(--vs-text-3)">JPG, PNG or WebP · up to 5 MB</span><span class="muted">12–13px / text-3 #6F817E</span></div>
+      <div class="type-row" style="align-items:center"><span class="muted">标识用法</span><span class="row" style="gap:28px;flex-wrap:wrap"><img src="/account/assets/brand/logo-navy.png" style="height:36px" alt="标准组合标"><span style="background:var(--vs-navy);padding:10px 16px;border-radius:8px"><img src="/account/assets/brand/logo-reverse.png" style="height:36px" alt="反白稿"></span><img src="/account/assets/brand/mark.png" style="height:36px" alt="单标"><span style="background:var(--vs-navy);padding:8px 12px;border-radius:8px"><img src="/account/assets/brand/mark-white.png" style="height:28px" alt="单标反白"></span></span><span class="muted">浅色底：标准英文标识（深藏青）；深色底：反白稿；辅助图形仅作背景装饰，需与公司全称同版面</span></div>
+    </div>
+  </section>
+
+  <!-- ===== Components ===== -->
+  <section class="card">
+    <div class="card__head"><h2 style="font-size:22px">组件规范</h2><p class="muted small" style="margin-top:4px">控件高度 46px · 圆角 8px（输入/按钮）· 12/16px（卡片）· 焦点环 3px 青翠绿 28%</p></div>
+    <div class="card__body comp">
+      <div class="stack">
+        <h4>按钮</h4>
+        <div class="row" style="flex-wrap:wrap"><button class="btn btn--primary">Primary</button><button class="btn btn--secondary">Secondary</button><button class="btn btn--ghost">Ghost</button><button class="btn btn--accent">Accent</button><button class="btn btn--danger">Danger</button><button class="btn btn--primary" disabled>Disabled</button></div>
+        <div class="row"><button class="btn btn--google"><span class="btn__icon" data-icon="google"></span> Continue with Google</button><button class="btn btn--apple"><span class="btn__icon" data-icon="apple"></span> Sign in with Apple</button></div>
+        <p class="muted small">Google / Apple 按钮遵循各自品牌指南：不得重新着色，图标与文字并列，保持原始比例。</p>
+        <h4 style="margin-top:8px">标签 / 状态芯片</h4>
+        <div class="row" style="flex-wrap:wrap"><span class="chip">Username</span><span class="chip chip--navy">Email</span><span class="chip chip--green">Verified</span><span class="chip chip--orange">Not verified</span><span class="chip chip--error">Locked</span></div>
+      </div>
+      <div class="stack">
+        <h4>输入框状态</h4>
+        <div class="field"><label class="field__label">Default</label><div class="control"><span class="control__prefix" data-icon="mail"></span><input placeholder="name@example.com"></div><div class="field__hint">Helper text</div></div>
+        <div class="field is-error"><label class="field__label">Error</label><div class="control"><span class="control__prefix" data-icon="lock"></span><input value="wrong"><span class="control__suffix"><button class="icon-btn" data-icon="eye"></button></span></div><div class="field__hint"><span data-icon="alert"></span>That password is incorrect.</div></div>
+        <div class="field is-success"><label class="field__label">Success</label><div class="control"><input value="Maple!Leaf2026" type="password"></div><div class="field__hint"><span data-icon="checkCircle"></span>Passwords match</div></div>
+        <h4 style="margin-top:8px">反馈横幅</h4>
+        <div class="alert alert--error" style="margin:0"><span data-icon="alert"></span><div><strong>Incorrect email/mobile or password.</strong>Check your details and try again.</div></div>
+        <div class="alert alert--warning" style="margin:0"><span data-icon="warn"></span><div><strong>Too many attempts.</strong>Sign-in is paused for 15:00.</div></div>
+        <div class="alert alert--success" style="margin:0"><span data-icon="checkCircle"></span><div><strong>Password updated.</strong>All other devices were signed out.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Canada-specific ===== -->
+  <section class="card">
+    <div class="card__head"><h2 style="font-size:22px">加拿大本地化与合规要点</h2></div>
+    <div class="card__body">
+      <table>
+        <thead><tr><th style="width:200px">主题</th><th>设计决策</th><th style="width:260px">出现位置</th></tr></thead>
+        <tbody>
+          <tr><td>手机号</td><td>默认国家码 +1，10 位校验（首位 2–9），显示格式 <code>+1 (204) 555-0142</code>，SMS 提示“Standard message rates may apply”。</td><td>登录 · 忘记密码 · 个人中心</td></tr>
+          <tr><td>双语</td><td>EN / FR 切换器置于顶栏右侧；个人中心可保存“Preferred language”，用于邮件与收据（魁北克 Bill 96 / Law 25）。</td><td>全部页面顶栏 · Profile</td></tr>
+          <tr><td>隐私 PIPEDA / Law 25</td><td>登录页脚注声明；性别、生日均为可选并说明用途；删除账号说明 CRA 6 年保留义务。</td><td>登录 · Profile · Security</td></tr>
+          <tr><td>反垃圾邮件 CASL</td><td>营销邮件需明示同意：默认不勾选，写明发件主体与地址，可随时退订；开关变更记录时间戳。</td><td>首次社交登录弹窗 · Profile</td></tr>
+          <tr><td>货币 / 地区 / 税</td><td>价格以 CAD 显示；送达省决定 GST/HST/PST/QST；发票印 GST/HST BN；时间戳 America/Winnipeg。</td><td>Overview · Profile · 结算 · 税票</td></tr>
+          <tr><td>结算支付</td><td>Moneris Checkout 托管卡表；卡号不经 Vanstro；PIPEDA 明示同意 + 加密声明；成功后即时交易回执邮件。</td><td>checkout.html</td></tr>
+          <tr><td>安全</td><td>通用错误文案防账号枚举；5 次失败锁定 15 分钟；OTP 10 分钟一次性；重置后撤销其他会话并邮件通知；敏感变更需密码 + 新地址 OTP。</td><td>登录 · 忘记密码 · Security</td></tr>
+          <tr><td>Google / Apple</td><td>OIDC + PKCE + nonce；首次登录自动建号（无密码）；已验证同邮箱自动合并；Apple Hide My Email 中继地址；不可解绑最后一种登录方式。</td><td>登录 · Security 关联账号</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card__head"><h2 style="font-size:22px">交付物清单</h2></div>
+    <div class="card__body">
+      <table>
+        <thead><tr><th style="width:280px">文件</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><a href="flows.html">flows.html</a></td><td>14 张交互流程图 / 状态机 / 时序图（Mermaid，离线可用），对应 README 中同名图</td></tr>
+          <tr><td><a href="login.html">login.html</a></td><td>登录页高保真交互原型（含所有错误态、CAPTCHA、Google/Apple、白名单跳转）</td></tr>
+          <tr><td><a href="register.html">register.html</a></td><td>注册原型（邮箱 / 社交、验证邮箱、欢迎优惠、Guest 转账号、FR）</td></tr>
+          <tr><td><a href="forgot-password.html">forgot-password.html</a></td><td>忘记密码四步原型（含过期、限流、错误次数等边界态）</td></tr>
+          <tr><td><a href="account.html">account.html</a></td><td>个人中心原型：Overview / Profile / Sign-in &amp; security / Orders &amp; quotes / Addresses / Payment methods / Communications</td></tr>
+          <tr><td><a href="cart.html">cart.html</a></td><td>购物车原型：数量步进、移除 / 撤销、稍后再买、库存 / 下架 / 价格变动阻断、促销码、按省预估税、FR</td></tr>
+          <tr><td><a href="checkout.html">checkout.html</a></td><td>结算支付原型：三步结账、GST/HST/PST/QST 计税、Moneris 托管 iframe + 3-D Secure、PIPEDA 同意、即时回执</td></tr>
+          <tr><td><a href="components.html">components.html</a></td><td>shadcn/ui 组件切片页：每个组件的 shadcn 映射、需扩展的 variant、全部状态</td></tr>
+          <tr><td><a href="shadcn/globals.css">shadcn/</a></td><td>shadcn 主题变量（VI → CSS variables）、<code>components.json</code>、扩展 variant 的 button / alert / badge、业务组件示例、zod 校验 <code>lib/validators.ts</code></td></tr>
+          <tr><td><a href="docs/00-design-system.md">docs/*.md</a></td><td>设计规范、三份交互说明（字段规则、错误文案、接口契约、状态表）与 <a href="docs/04-shadcn-ui-slices.md">04 shadcn 组件切片清单</a>、<a href="docs/06-error-codes.md">06 错误码与 EN / FR 文案对照</a>、<a href="docs/07-register.md">07 注册</a>、<a href="docs/08-canada-compliance.md">08 加拿大合规与本地化清单</a></td></tr>
+          <tr><td><a href="exports/">exports/</a></td><td>各页面关键状态 PNG 截图与流程图 PNG，便于放入 PPT / 需求文档</td></tr>
+          <tr><td><a href="/account/assets/vi.css">assets/vi.css</a></td><td>设计令牌与组件样式（可直接复用到前端工程）</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="/account/assets/vi.js"></script><script>VS.icons();</script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "v11-r1-p7-run-1",
+  "runId": "20260811T164305Z-1006d85c",
+  "generatedAt": "2026-08-11T16:43:06Z",
+  "evidenceDir": "/Users/zhangguannan/Documents/codex/vanstro/.claude/worktrees/integration/tasks/evidence/v11-r1-p7/runs/20260811T164305Z-1006d85c",
+  "identity": {
+    "schemaVersion": "v11-r1-p7-run-1",
+    "runId": "20260811T164305Z-1006d85c",
+    "generatedAt": "2026-08-11T16:43:06Z",
+    "testedCandidateKind": "working-tree",
+    "testedCommit": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+    "testedTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+    "baseHead": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+    "baseTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+    "migration69Sha": "07c2591b57b27f08573348e3601601c2dc0ecc74e61f8ba27d29d3258231d051",
+    "migration70Sha": "5789b68576b375bc94adec6373b6c02a976c3e5a3813697c5bbadf266977713b",
+    "candidateManifestSha": "382946cfc2ae27f4a7974288ee31f0d67c970e69ddcbeda5a12429b7fd10ef6c",
+    "harnessSha": "db21322c31068d3817b4700a2b29edc452a259bdbea15e9f0c08957226292581",
+    "conformanceSha": "9121bc6bc09c8d08cb333cc4045b99103ff440e628a75c01a3295861f979d479",
+    "postgresImage": "postgres:16-bookworm",
+    "postgresImageId": "92620daddcd947f8d5ab5ba66e848702fe443d87fed30c4cea8e389fd78dfc55",
+    "prismaVersion": "Prisma schema loaded from prisma/schema.prisma",
+    "runnerRoleAttributes": "vanstro_migrator:LOGIN,NOINHERIT,NOSUPERUSER,NOCREATEDB,NOCREATEROLE,NOREPLICATION,NOBYPASSRLS;cap-role memberships WITH ADMIN OPTION;owner of database+public schema;runner=prisma migrate deploy over 127.0.0.1 TCP"
+  },
+  "overall": "EXPECTED_BLOCKED_M70",
+  "isMigrationSuccess": false,
+  "blockedAt": "20260804110000_f1_v15_phase_b",
+  "blockerConsistency": {
+    "consistent": true,
+    "sqlState": {
+      "fresh": "P0001",
+      "production": "P0001"
+    },
+    "firstErrorSignature": {
+      "fresh": "PL/pgSQL function f1_consume_no_old_instances_v2(...)",
+      "production": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    }
+  },
+  "paths": {
+    "fresh": {
+      "verdict": "EXPECTED_BLOCKED_M70",
+      "applied": 69,
+      "failedMigration": "20260804110000_f1_v15_phase_b",
+      "sqlState": "P0001",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    },
+    "production": {
+      "verdict": "EXPECTED_BLOCKED_M70",
+      "applied": 69,
+      "failedMigration": "20260804110000_f1_v15_phase_b",
+      "sqlState": "P0001",
+      "firstErrorSignature": "PL/pgSQL function f1_consume_no_old_instances_v2(...)"
+    }
+  }
+}

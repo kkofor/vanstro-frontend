@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "v11-r1-p7-run-1",
+  "runId": "20260811T164305Z-1006d85c",
+  "records": [
+    {
+      "path": "fixtures/fixture-fresh-rollout-fresh-a.json",
+      "category": "fixture-json",
+      "sha256": "efe676ac7d146c58a0692f019c5726456a05c6970260649a921b35b4ec7676bc",
+      "bytes": 1509,
+      "deleted": true
+    },
+    {
+      "path": "fixtures/fixture-fresh-rollout-fresh-a.sql",
+      "category": "fixture-sql",
+      "sha256": "bdcf38e75c645b51ccc99cac4692ad55124b1f5e19c1cb2a35e286347e04360c",
+      "bytes": 12434,
+      "deleted": true
+    },
+    {
+      "path": "fixtures/fixture-production-rollout-production-a.json",
+      "category": "fixture-json",
+      "sha256": "6406c60e6844f44ad4f623029c13f7a871af2667da6dd3e2b4151b12862122ee",
+      "bytes": 1539,
+      "deleted": true
+    },
+    {
+      "path": "fixtures/fixture-production-rollout-production-a.sql",
+      "category": "fixture-sql",
+      "sha256": "685975126a068ce52d543765e075e3b8fbb1fa7616ab7f9aee4e34170a8c27d8",
+      "bytes": 12464,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-deploy-pass1.log",
+      "category": "deploy-log",
+      "sha256": "7077884600d7cc2789d2acf0148a6797dfce57b00612d5a517f96366da8c2b9b",
+      "bytes": 4930,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-deploy-pass2.log",
+      "category": "deploy-log",
+      "sha256": "48257cb8584223786a99a7e8509ae77b9fe47133b8cb12a6fbdbaa0ae023c32c",
+      "bytes": 688,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-deploy-pass3.log",
+      "category": "deploy-log",
+      "sha256": "880d95e115782415598fde12b3a1db3c89ce7a6119476fb06f760764b5c7b144",
+      "bytes": 638,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-migration69-diagnostic.log",
+      "category": "diagnostic-log",
+      "sha256": "a9379f217f8348d118870a151de3af739480e699dbcdbae08d2387a601828f08",
+      "bytes": 3906,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-postgres-pass2.log",
+      "category": "postgres-log",
+      "sha256": "7c954dc73912028ca426ba6ad4ccc45f0076b48e8103dd8f05a8f934f715415d",
+      "bytes": 325463,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-postgres-pass3.log",
+      "category": "postgres-log",
+      "sha256": "83a251f5f82ffca768961df7259ca4f1b7ff8e254e4bcbb01601a125ef58c8ab",
+      "bytes": 353643,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-postgres.log",
+      "category": "postgres-log",
+      "sha256": "83a251f5f82ffca768961df7259ca4f1b7ff8e254e4bcbb01601a125ef58c8ab",
+      "bytes": 353643,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-resolve-20260804100000_f1_v15_expand.log",
+      "category": "resolve-log",
+      "sha256": "706b6f574fa0e70c9a2afba1924db0ac1ff9464082648b6d71ecd8551739b619",
+      "bytes": 211,
+      "deleted": true
+    },
+    {
+      "path": "logs/fresh-resolve-20260804110000_f1_v15_phase_b.log",
+      "category": "resolve-log",
+      "sha256": "f73ebdc5f7c1160534612833e1cf9e2968df6a7c275ff9cb7fe1db479b34a0cf",
+      "bytes": 212,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-baseline.log",
+      "category": "baseline-log",
+      "sha256": "e673c56bb7b73bbe50e58405c6d5ceb757bed8554c01053d30b27a8bfcdd279b",
+      "bytes": 5693,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-deploy-pass1.log",
+      "category": "deploy-log",
+      "sha256": "38735db26289f2418485dc0fe37d857ce970dee86ed97f5b25aaa540d310d081",
+      "bytes": 2573,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-deploy-pass2.log",
+      "category": "deploy-log",
+      "sha256": "e3683d3e5e3c729f2b857d2d6688a9ad13db2e23885e78e9425aa7e038897483",
+      "bytes": 687,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-deploy-pass3.log",
+      "category": "deploy-log",
+      "sha256": "ab7dd4b05b6c75177dd7bdb66c4b4a3f9ec6bc4555b6be63c5433423e2f6f964",
+      "bytes": 637,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-migration69-diagnostic.log",
+      "category": "diagnostic-log",
+      "sha256": "a9379f217f8348d118870a151de3af739480e699dbcdbae08d2387a601828f08",
+      "bytes": 3906,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-postgres-pass2.log",
+      "category": "postgres-log",
+      "sha256": "87bbf964e22a0cf4fec66a89f26a95319c3290440117c47f1405bc1ea990ab0c",
+      "bytes": 325606,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-postgres-pass3.log",
+      "category": "postgres-log",
+      "sha256": "05fc308158ef3713fe4644b04851bd883478f39360012d1604af4a31a7e241fa",
+      "bytes": 353786,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-postgres.log",
+      "category": "postgres-log",
+      "sha256": "05fc308158ef3713fe4644b04851bd883478f39360012d1604af4a31a7e241fa",
+      "bytes": 353786,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-resolve-20260804100000_f1_v15_expand.log",
+      "category": "resolve-log",
+      "sha256": "c3378950e96d480a53b345ad8c1da9221b9f2038755a782b3dc66bc4a9d81d08",
+      "bytes": 210,
+      "deleted": true
+    },
+    {
+      "path": "logs/production-resolve-20260804110000_f1_v15_phase_b.log",
+      "category": "resolve-log",
+      "sha256": "63bacc436d634d809dc563cb9a4ab1e640570ed0195715d1ff190d546ade3a9f",
+      "bytes": 211,
+      "deleted": true
+    }
+  ]
+}

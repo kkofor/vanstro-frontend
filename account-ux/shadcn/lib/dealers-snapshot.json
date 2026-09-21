@@ -1,0 +1,124 @@
+[
+  {
+    "id": "AB-CGY",
+    "code": "AB10",
+    "inviteCode": "VS-AB10-F1T6",
+    "name": "AB10",
+    "street": "Macleod Trail SE",
+    "city": "Calgary",
+    "province": "AB",
+    "postalCode": "T2G 2M3",
+    "phone": "431-8772658",
+    "email": "ab10@vanstro.ca",
+    "hoursEn": "",
+    "hoursFr": "",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Calgary",
+    "areaFr": "Calgary"
+  },
+  {
+    "id": "BC-SAA",
+    "code": "BC10",
+    "inviteCode": "VS-BC10-I9S4",
+    "name": "BC10",
+    "street": "Vernon Avenue",
+    "city": "Saanich",
+    "province": "BC",
+    "postalCode": "V8X 2W7",
+    "phone": "431-8772658",
+    "email": "bc10@vanstro.ca",
+    "hoursEn": "",
+    "hoursFr": "",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Saanich",
+    "areaFr": "Saanich"
+  },
+  {
+    "id": "ON-WAT",
+    "code": "ON10",
+    "inviteCode": "VS-ON10-G8R2",
+    "name": "ON10",
+    "street": "Regina Street South",
+    "city": "Waterloo",
+    "province": "ON",
+    "postalCode": "N2J 4P9",
+    "phone": "431-8772658",
+    "email": "on10@vanstro.ca",
+    "hoursEn": "",
+    "hoursFr": "",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Waterloo",
+    "areaFr": "Waterloo"
+  },
+  {
+    "id": "QC-PCL",
+    "code": "QC10",
+    "inviteCode": "VS-QC10-L3H7",
+    "name": "QC10",
+    "street": "Saint-Jean Boulevard",
+    "city": "Pointe-Claire",
+    "province": "QC",
+    "postalCode": "H9R 3J3",
+    "phone": "431-8772658",
+    "email": "qc10@vanstro.ca",
+    "hoursEn": "",
+    "hoursFr": "",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Pointe-Claire",
+    "areaFr": "Pointe-Claire"
+  },
+  {
+    "id": "SK-SKT",
+    "code": "SK10",
+    "inviteCode": "VS-SK10-P5K8",
+    "name": "SK10",
+    "street": "3rd Avenue North",
+    "city": "Saskatoon",
+    "province": "SK",
+    "postalCode": "S7K 0J5",
+    "phone": "431-8772658",
+    "email": "sk10@vanstro.ca",
+    "hoursEn": "",
+    "hoursFr": "",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Saskatoon",
+    "areaFr": "Saskatoon"
+  },
+  {
+    "id": "MB-YUAN",
+    "code": "MB01",
+    "inviteCode": "VS-MB10-K4F9",
+    "name": "Yuan Construction Ltd.",
+    "street": "856 Century St",
+    "city": "Winnipeg",
+    "province": "MB",
+    "postalCode": "R3H 0M5",
+    "phone": "204 505 2288",
+    "email": "mb01@vanstro.ca",
+    "hoursEn": "Mon–Fri 9 a.m.–5 p.m.",
+    "hoursFr": "Lun–Ven 9 h–17 h",
+    "services": [
+      "pickup",
+      "delivery"
+    ],
+    "areaEn": "Winnipeg",
+    "areaFr": "Winnipeg",
+    "erpAccountId": "6a8810b93b08b6495",
+    "erpUserId": "6a97d38cb6253f01b"
+  }
+]

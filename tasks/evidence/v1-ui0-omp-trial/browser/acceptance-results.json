@@ -1,0 +1,634 @@
+{
+  "cases": [
+    {
+      "id": "UI0-B01",
+      "name": "Server render hydrates without mismatch",
+      "observations": [
+        "status=200",
+        "serverRendered=True",
+        "hydrationIssues=0"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B02",
+      "name": "Dialog trigger opens and close returns focus",
+      "observations": [
+        "opened=true",
+        "closed=true",
+        "focusReturned=true"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B03",
+      "name": "Escape closes the active dialog",
+      "observations": [
+        "escapeClosed=true"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B04",
+      "name": "Tab and Shift+Tab remain contained",
+      "observations": [
+        "forwardContained=True",
+        "reverseContained=True",
+        "samples=['dialog-action', 'open-nested', 'close-dialog', 'dialog-content-close', 'dialog-input', 'dialog-action', 'open-nested']"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B05",
+      "name": "Nested dialog closes independently",
+      "observations": [
+        "nestedClosed=true",
+        "parentMountedDuringNested=True",
+        "parentRestoredAfterEscape=True"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B06",
+      "name": "Content portals after hydration",
+      "observations": [
+        "portalParent=BODY"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B07",
+      "name": "Open dialog locks document scrolling",
+      "observations": [
+        "bodyOverflow=hidden",
+        "dataScrollLocked=1"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B08",
+      "name": "Overlay policy is safe by default and supports explicit dismissal",
+      "observations": [
+        "optInDismissed=True",
+        "defaultRemainedOpen=True"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B09",
+      "name": "Title and description label the dialog",
+      "observations": [
+        "labelledby=radix-_R_14lrlbH1_",
+        "describedby=radix-_R_14lrlbH2_",
+        "title=编辑库存",
+        "description=更新当前库存记录。"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B10",
+      "name": "Close control has stable Chinese text",
+      "observations": [
+        "closeCount=1",
+        "accessibleName=关闭对话框"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B11",
+      "name": "Forced colors retain visible boundaries",
+      "observations": [
+        "{\"background-color\": \"rgb(255, 255, 255)\", \"border-top-color\": \"rgb(0, 0, 0)\", \"border-top-style\": \"solid\", \"border-top-width\": \"1px\", \"color\": \"rgb(0, 0, 0)\"}"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B12",
+      "name": "Reduced motion removes material animation",
+      "observations": [
+        "{\"animation-duration\": \"1e-05s\", \"transition-duration\": \"1e-05s\"}"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B13",
+      "name": "Destructive Button hover has computed style",
+      "observations": [
+        "normal={\"background-color\": \"rgb(163, 49, 37)\", \"border-color\": \"rgb(163, 49, 37)\", \"color\": \"rgb(255, 255, 255)\"}",
+        "hover={\"background-color\": \"rgb(172, 68, 57)\", \"border-color\": \"rgb(163, 49, 37)\", \"color\": \"rgb(246, 235, 234)\"}"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B14",
+      "name": "Input typography matches desktop density",
+      "observations": [
+        "fontSize=14px",
+        "fontWeight=400"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B15",
+      "name": "Dialog computed colors use UI tokens",
+      "observations": [
+        "{\"background-color\": \"rgb(255, 255, 255)\", \"border-color\": \"rgb(0, 0, 0)\", \"color\": \"rgb(0, 0, 0)\"}"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B16",
+      "name": "Tailwind utilities emit layout output",
+      "observations": [
+        "{\"border-radius\": \"14px\", \"display\": \"flex\", \"gap\": \"12px\", \"padding-top\": \"16px\"}"
+      ],
+      "status": "pass"
+    },
+    {
+      "id": "UI0-B17",
+      "name": "Legacy sentinel is not restyled by UI classes",
+      "observations": [
+        "before={\"color\": \"rgb(1, 2, 3)\", \"font-size\": \"19px\", \"font-weight\": \"400\"}",
+        "after={\"color\": \"rgb(1, 2, 3)\", \"font-size\": \"19px\", \"font-weight\": \"400\"}"
+      ],
+      "status": "pass"
+    }
+  ],
+  "counts": {
+    "fail": 0,
+    "not-executed": 0,
+    "pass": 17
+  },
+  "expectedEvidence": {
+    "console": [
+      {
+        "kind": "console",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "type": "info"
+      },
+      {
+        "kind": "console",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "type": "info"
+      }
+    ],
+    "requests": [
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_fixture_1n7lc-7.css"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_175qv-o._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_next-devtools_index_0yu6noi.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-dom_168vud3._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-server-dom-turbopack_1ztuh3y._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_05os3x9._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_1ri-qb-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_1tgaskt._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0vvp_%40swc_helpers_cjs_0vb02wp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_1anvha4._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/turbopack-qa_v1-ui0-browser_1j2d8rj._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_18m-071._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_layout_tsx_0c92e2s._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/node_modules__pnpm_1eafn4f._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/_1f82w_-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_page_tsx_0_qdhv2._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_components_builtin_global-error_0_qdhv2.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0xkcysp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/icon.svg"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_fixture_1n7lc-7.css"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_175qv-o._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_next-devtools_index_0yu6noi.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-dom_168vud3._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-server-dom-turbopack_1ztuh3y._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_05os3x9._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_1ri-qb-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_1tgaskt._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0vvp_%40swc_helpers_cjs_0vb02wp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_1anvha4._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/turbopack-qa_v1-ui0-browser_1j2d8rj._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_18m-071._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_layout_tsx_0c92e2s._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/node_modules__pnpm_1eafn4f._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/_1f82w_-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_page_tsx_0_qdhv2._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_components_builtin_global-error_0_qdhv2.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0xkcysp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/icon.svg"
+      }
+    ]
+  },
+  "rawEvidence": {
+    "console": [
+      {
+        "kind": "console",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "type": "info"
+      },
+      {
+        "kind": "console",
+        "text": "[HMR] connected",
+        "type": "log"
+      },
+      {
+        "kind": "console",
+        "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold",
+        "type": "info"
+      },
+      {
+        "kind": "console",
+        "text": "[HMR] connected",
+        "type": "log"
+      }
+    ],
+    "requests": [
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_fixture_1n7lc-7.css"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_175qv-o._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_next-devtools_index_0yu6noi.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-dom_168vud3._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-server-dom-turbopack_1ztuh3y._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_05os3x9._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_1ri-qb-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_1tgaskt._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0vvp_%40swc_helpers_cjs_0vb02wp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_1anvha4._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/turbopack-qa_v1-ui0-browser_1j2d8rj._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_18m-071._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_layout_tsx_0c92e2s._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/node_modules__pnpm_1eafn4f._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/_1f82w_-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_page_tsx_0_qdhv2._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_components_builtin_global-error_0_qdhv2.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0xkcysp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/icon.svg"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_fixture_1n7lc-7.css"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_175qv-o._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_next-devtools_index_0yu6noi.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-dom_168vud3._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_react-server-dom-turbopack_1ztuh3y._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_compiled_05os3x9._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_1ri-qb-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_1tgaskt._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0vvp_%40swc_helpers_cjs_0vb02wp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_1anvha4._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/turbopack-qa_v1-ui0-browser_1j2d8rj._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_18m-071._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_layout_tsx_0c92e2s._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/node_modules__pnpm_1eafn4f._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/_1f82w_-._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/qa_v1-ui0-browser_app_page_tsx_0_qdhv2._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/0ly8_next_dist_client_components_builtin_global-error_0_qdhv2.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0xkcysp._.js"
+      },
+      {
+        "kind": "request",
+        "method": "GET",
+        "url": "/icon.svg"
+      }
+    ]
+  },
+  "sourceFingerprint": "a7ab9e1b06907607de1283c2851af49626146baadaabdb6fa2c8c10a5fcc9fc2",
+  "suiteId": "vanstro.ui0.desktop.browser.v1",
+  "unexpectedEvidence": {
+    "console": [],
+    "requests": []
+  },
+  "viewport": {
+    "height": 1000,
+    "width": 1440
+  }
+}

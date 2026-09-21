@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.cross-foundation-f1.desktop.v1",
+  "profile": "desktop-v1",
+  "testedCommit": "c51585b105185e0e7298d3dc42114d3d37b362a9",
+  "includedCaseIds": [
+    "F1-X01",
+    "F1-X02",
+    "F1-X03",
+    "F1-X04",
+    "F1-X05",
+    "F1-X06",
+    "F1-X08",
+    "F1-X11"
+  ],
+  "outOfV1ScopeCaseIds": [
+    "F1-X07",
+    "F1-X09",
+    "F1-X10"
+  ],
+  "definitionSha256": "4aaef0b92dd9f1328c50863d046db756bd0b54e236aa6c3652ee1b454b9977c2",
+  "fixtureSha256": "41b10e7acdb8755d23934e35d54ad9cf9b229e83c0cef0d6e379149b5889fa33",
+  "harnessSha256": "6e1a01cb561ce6f0c8a63ee910812a046a96b0d0ef6a33672bde925d6e6a57de",
+  "runnerSha256": "f8de2319e208865983e80e39b5b68f6129825545c8ffa1c60c5592cd072d2841",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "counts": {
+    "pass": 8,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "F1-X01",
+      "name": "Shell renders server-authoritative actor and navigation",
+      "status": "pass",
+      "observations": [
+        "server-authoritative actor and shell visible"
+      ]
+    },
+    {
+      "id": "F1-X02",
+      "name": "P08 controlled PUT uses exact headers and sole finalize path",
+      "status": "pass",
+      "observations": [
+        "exact PUT headers",
+        "one Job/Artifact"
+      ]
+    },
+    {
+      "id": "F1-X03",
+      "name": "P08 alternate upload-complete finalize is 404 with zero state change",
+      "status": "pass",
+      "observations": [
+        "{'status': 404, 'body': {'code': 'DASHBOARD_NOT_FOUND'}}",
+        "state unchanged"
+      ]
+    },
+    {
+      "id": "F1-X04",
+      "name": "P09 Shell navigation and permission denial performs no protected fetch",
+      "status": "pass",
+      "observations": [
+        "denied P09 zero protected fetch"
+      ]
+    },
+    {
+      "id": "F1-X05",
+      "name": "P10 Shell navigation and permission denial performs no protected fetch",
+      "status": "pass",
+      "observations": [
+        "denied P10 zero protected fetch"
+      ]
+    },
+    {
+      "id": "F1-X06",
+      "name": "actual delayed P09 response is fenced after context generation changes",
+      "status": "pass",
+      "observations": [
+        "late response fenced"
+      ]
+    },
+    {
+      "id": "F1-X08",
+      "name": "keyboard P08 modal traps focus, Escape closes, restores trigger, and announces live text",
+      "status": "pass",
+      "observations": [
+        "desktop modal trap/Escape/restore",
+        "live=当前导入记录 1 项"
+      ]
+    },
+    {
+      "id": "F1-X11",
+      "name": "strict parsed localhost-only network and allowed methods",
+      "status": "pass",
+      "observations": [
+        "parsed=112",
+        "violations=[]"
+      ]
+    }
+  ],
+  "requestCount": 57,
+  "networkCount": 112,
+  "unexpectedNetwork": [],
+  "startStop": {
+    "started": true,
+    "cleanupAttempted": true,
+    "ownedPidsTerminated": true,
+    "portsClosed": true
+  },
+  "resultSha256": "8fbbfc5f119b83d627435c83378d3d8d3779d9c8133efbc011e8ebcca0ff0248"
+}

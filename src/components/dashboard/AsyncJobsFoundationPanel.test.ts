@@ -1,0 +1,9 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+const panel = readFileSync(new URL("./AsyncJobsFoundationPanel.tsx", import.meta.url), "utf8");
+const shell = readFileSync(new URL("./DashboardF0Shell.tsx", import.meta.url), "utf8");
+const data = readFileSync(new URL("./hooks/useDashboardData.ts", import.meta.url), "utf8");
+test("P05 panel applies local filters and uses shared accessible primitives", () => { assert.match(panel, /useState\(props\.query\)/); assert.match(panel, /preventDefault\(\); apply\(\)/); assert.match(panel, /type="submit">应用/); assert.match(panel, /<Table /); assert.match(panel, /<DetailDrawer /); assert.match(panel, /取消请求/); });
+test("P05 panel exposes indicators and metadata but no write or download controls", () => { assert.doesNotMatch(panel, /method:\s*["'](?:POST|PATCH|PUT|DELETE)/); assert.doesNotMatch(panel, />\s*(?:创建任务|取消任务|重试任务|下载|导入|导出|AI|工作队列)\s*</); assert.match(panel, /仅能力指示/); assert.match(panel, /产物元数据/); assert.doesNotMatch(panel, /storageReference|payload|idempotency|leaseOwner/); });
+test("P05 shell owns canonical jobs URL and data owns isolated cursor lifecycle", () => { assert.match(shell, /parseDashboardJobsLocation/); assert.match(shell, /jobsLocation\.kind === "valid"/); assert.match(shell, /asyncJobQueryState=/); assert.match(data, /const asyncJobCursorRef/); assert.match(data, /asyncJobCursorRef\.current = \{ previous: \[\] \}/); assert.match(data, /strictAsyncJobsApiPath/); assert.match(data, /loadNextAsyncJobPage/); assert.match(data, /validateAsyncJobCursorResult\(value, asyncJobSensitive\)/); assert.match(data, /setAsyncJobAdapterStateRaw\(adaptersResult\.status === "fulfilled" \? adaptersResult\.value\.meta\.completion : "unavailable"\)/); assert.match(panel, /当前范围没有可读取的旧系统适配器/); assert.match(data, /isAsyncJobFresh/); assert.match(panel, /validateAsyncJobDetail[\s\S]*props\.sensitive/); });

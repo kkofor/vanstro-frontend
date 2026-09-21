@@ -1,4 +1,5 @@
 import type { ProductDetail } from "@/lib/api/api-contract";
+import { inferFinishColorName, inferFinishConfiguration } from "@/lib/product/product-finish-options";
 import { getEffectivePrice } from "@/lib/commerce/product-commerce";
 import { getProductInventory } from "@/lib/commerce/product-inventory";
 import { publicAssetUrl, publicUrl } from "@/lib/seo/site";
@@ -7,13 +8,44 @@ export { serializeJsonLd } from "@/lib/seo/json-ld";
 type ProductVariantSchema = Record<string, unknown> & { sku: string };
 
 function availabilityUrl(product: ProductDetail) {
+  // Storefront copy is "availability confirmed at checkout". Do not emit
+  // site-wide OutOfStock just because no dealer is selected on the PDP.
+  if (product.inStock) {
+    return "https://schema.org/InStock";
+  }
   const status = getProductInventory(product).status;
-
   if (status === "in_stock" || status === "low_stock") {
     return "https://schema.org/InStock";
   }
   if (status === "backorder") return "https://schema.org/BackOrder";
-  return "https://schema.org/OutOfStock";
+  return undefined;
+}
+
+export function articleSchema(input: {
+  title: string;
+  description: string;
+  path: string;
+  image?: string;
+  datePublished?: string;
+  dateModified?: string;
+  inLanguage: "en-CA" | "fr-CA";
+}) {
+  const url = publicUrl(input.path);
+  if (!url) return null;
+  const image = input.image ? publicAssetUrl(input.image) : undefined;
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: input.title,
+    description: input.description,
+    url,
+    mainEntityOfPage: url,
+    inLanguage: input.inLanguage,
+    ...(image ? { image } : {}),
+    ...(input.datePublished ? { datePublished: input.datePublished } : {}),
+    ...(input.dateModified ? { dateModified: input.dateModified } : {})
+  };
 }
 
 export function organizationSchema() {
@@ -30,8 +62,8 @@ export function organizationSchema() {
   };
 }
 
-export function productSchema(product: ProductDetail) {
-  const productUrl = publicUrl(`/products/${product.slug}`);
+export function productSchema(product: ProductDetail, path = `/products/${product.slug}`) {
+  const productUrl = publicUrl(path);
   const availability = availabilityUrl(product);
   const options = product.finishOptions?.length ? product.finishOptions : [];
   const variesBy = ["https://schema.org/color"];
@@ -54,16 +86,27 @@ export function productSchema(product: ProductDetail) {
     const price = option.price ?? getEffectivePrice(product);
     const variantUrl = productUrl ? `${productUrl}?sku=${encodeURIComponent(sku)}` : undefined;
 
+    const colorName = inferFinishColorName(option);
+    const configuration = inferFinishConfiguration(option);
     return [{
       "@type": "Product",
-      name: `${product.name} - ${option.name}`,
+      name: `${product.name} - ${colorName}`,
       sku,
       ...(option.manufacturerPartNumber || product.manufacturerPartNumber
         ? { mpn: option.manufacturerPartNumber ?? product.manufacturerPartNumber }
         : {}),
       description: option.description ?? product.description,
       ...(imageUrls.length ? { image: imageUrls } : {}),
-      color: option.name,
+      color: colorName,
+      ...(configuration
+        ? {
+            additionalProperty: {
+              "@type": "PropertyValue",
+              name: "configuration",
+              value: configuration
+            }
+          }
+        : {}),
       offers: {
         "@type": "Offer",
         price: price.amount,

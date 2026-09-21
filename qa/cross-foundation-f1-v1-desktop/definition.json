@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.cross-foundation-f1.desktop.v1",
+  "profile": "desktop-v1",
+  "viewport": { "width": 1280, "height": 900 },
+  "includedCaseIds": ["F1-X01", "F1-X02", "F1-X03", "F1-X04", "F1-X05", "F1-X06", "F1-X08", "F1-X11"],
+  "outOfV1ScopeCaseIds": ["F1-X07", "F1-X09", "F1-X10"],
+  "networkPolicy": "parsed URL hostname must be localhost or 127.0.0.1 and port must be 4480 or 4481",
+  "ports": { "web": 4480, "fixture": 4481 },
+  "cases": [
+    {"id":"F1-X01","name":"Shell renders server-authoritative actor and navigation"},
+    {"id":"F1-X02","name":"P08 controlled PUT uses exact headers and sole finalize path"},
+    {"id":"F1-X03","name":"P08 alternate upload-complete finalize is 404 with zero state change"},
+    {"id":"F1-X04","name":"P09 Shell navigation and permission denial performs no protected fetch"},
+    {"id":"F1-X05","name":"P10 Shell navigation and permission denial performs no protected fetch"},
+    {"id":"F1-X06","name":"actual delayed P09 response is fenced after context generation changes"},
+    {"id":"F1-X08","name":"keyboard P08 modal traps focus, Escape closes, restores trigger, and announces live text"},
+    {"id":"F1-X11","name":"strict parsed localhost-only network and allowed methods"}
+  ]
+}

@@ -9,12 +9,15 @@ import type { Dealer } from "@/lib/api/api-contract";
 import {
   formatMoney,
   getCompareAtPrice,
-  getEffectivePrice,
-  getProductPricing
+  getEffectivePrice
 } from "@/lib/commerce/product-commerce";
 import type { ProductDetailViewModel } from "@/lib/product/product-detail-view-model";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
 import { resolveProductVariant } from "@/lib/product/product-variants";
+import {
+  CATEGORY_DISPLAY_NAME_BY_SLUG,
+  localizeProductTaxonomyLabel
+} from "@/lib/product/product-localization";
 
 type ProductBuyPanelProps = {
   viewModel: ProductDetailViewModel;
@@ -23,73 +26,107 @@ type ProductBuyPanelProps = {
 
 export function ProductBuyPanel({ viewModel, dealers }: ProductBuyPanelProps) {
   const {
-    brandName,
     colorHex,
     colorName,
     manufacturerPartNumber,
     product,
-    reviewSummary
+    promotionBadges,
+    reviewSummary,
+    locale
   } = viewModel;
+  const french = locale === "fr-CA";
   const productVariant = useProductVariant();
   const selectedProduct = resolveProductVariant(product, productVariant?.selectedFinishName);
-  const pricing = getProductPricing(selectedProduct);
   const effectivePrice = getEffectivePrice(selectedProduct);
   const compareAtPrice = getCompareAtPrice(selectedProduct);
+  const primaryPromotion = promotionBadges[0];
+  const promoChipLabel = french && primaryPromotion
+    ? primaryPromotion.label
+        .replace(/Special offer/gi, "Offre spéciale")
+        .replace(/Limited time/gi, "Durée limitée")
+        .replace(/Clearance/gi, "Liquidation")
+    : primaryPromotion?.label;
+  // Unit suffix matches the aside.buy prototype: “/ea · CAD, before tax” (EN) / “/ch · CAD, avant taxes” (FR).
+  const unitSuffix = selectedProduct.unit === "each" ? (french ? "ch" : "ea") : selectedProduct.unit;
+  // Kicker is the categoryFilter taxonomy label (category · subcategory), localized like the breadcrumb.
+  const categoryLabel = localizeProductTaxonomyLabel(
+    CATEGORY_DISPLAY_NAME_BY_SLUG[product.category] ?? product.category,
+    locale
+  );
+  const subCategoryLabel = product.subCategory
+    ? localizeProductTaxonomyLabel(product.subCategory, locale)
+    : null;
 
   return (
-    <aside className="pdp-sticky-column">
-      <article className="purchase-panel pdp-buy-panel">
-        <p className="pdp-buy-brand">{brandName}</p>
+    <aside className="buy" aria-label="Buy">
+      <div className="buy__top">
+        <div className="buy__kicker">
+          <span>{categoryLabel}</span>
+          {subCategoryLabel ? <span>{subCategoryLabel}</span> : null}
+        </div>
         <h1>{product.name}</h1>
-        <ProductVariantIdentifiers
-          manufacturerPartNumber={manufacturerPartNumber}
-          product={product}
-        />
+        <div className="buy__ids">
+          <ProductVariantIdentifiers
+            manufacturerPartNumber={manufacturerPartNumber}
+            product={product}
+            locale={locale}
+          />
+        </div>
         <div
-          className="pdp-rating-line"
+          className="buy__rating"
           aria-label={reviewSummary.count > 0
-            ? `${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`
-            : "No published reviews"}
+            ? french
+              ? `${reviewSummary.average} étoiles sur 5 selon ${reviewSummary.count} avis`
+              : `${reviewSummary.average} out of 5 stars from ${reviewSummary.count} reviews`
+            : french ? "Aucun avis publié" : "No published reviews"}
         >
+          <span className="stars" aria-hidden="true">
+            {[0, 1, 2, 3, 4].map((index) => (
+              <Star
+                className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
+                size={14}
+                strokeWidth={2}
+                fill="currentColor"
+                key={index}
+              />
+            ))}
+          </span>
           {reviewSummary.count > 0 ? (
-            <>
-              <span aria-hidden="true">
-                {[0, 1, 2, 3, 4].map((index) => (
-                  <Star
-                    className={index < Math.round(reviewSummary.average) ? "rating-star filled" : "rating-star"}
-                    size={15}
-                    strokeWidth={2}
-                    fill={index < Math.round(reviewSummary.average) ? "currentColor" : "none"}
-                    key={index}
-                  />
-                ))}
-              </span>
-              <small>{reviewSummary.average.toFixed(1)} ({reviewSummary.count} reviews)</small>
-            </>
+            <small>{reviewSummary.average.toFixed(1)} ({reviewSummary.count} {french ? "avis" : "reviews"})</small>
           ) : (
-            <small>No published reviews</small>
+            <small>{french ? "Aucun avis publié" : "No published reviews"}</small>
           )}
           {reviewSummary.writeReviewEnabled ?? true ? (
-            <ProductReviewOpenButton />
+            <ProductReviewOpenButton label={french ? "Rédiger un avis" : "Write a review"} />
           ) : null}
         </div>
+      </div>
 
-        <div className="pdp-price-stack">
-          {compareAtPrice ? <span className="compare-price">{formatMoney(compareAtPrice)}</span> : null}
-          <div className="price-line pdp-price">
-            {formatMoney(effectivePrice)}
-            <span>/ {selectedProduct.unit}</span>
-          </div>
-          <small>{pricing.priceLabel ?? "Current price"}</small>
+      <div className="buy__commerce">
+        <div className="buy__price">
+          <span className="n">{formatMoney(effectivePrice, locale)}</span>
+          <small>
+            {french
+              ? `/${unitSuffix} · CAD, avant taxes`
+              : `/${unitSuffix} · CAD, before tax`}
+          </small>
+          {compareAtPrice ? (
+            <s>{formatMoney(compareAtPrice, locale)}</s>
+          ) : null}
+          {promoChipLabel ? (
+            <span className="chip chip--orange">{promoChipLabel}</span>
+          ) : null}
         </div>
         <ProductFinishSelector
           options={product.finishOptions}
           fallbackColorHex={colorHex}
           fallbackName={colorName}
+          locale={locale}
+          category={product.category}
         />
 
-        <ProductPurchaseActions product={product} dealers={dealers} />
-      </article>
+        <ProductPurchaseActions product={product} dealers={dealers} locale={locale} />
+      </div>
     </aside>
   );
 }

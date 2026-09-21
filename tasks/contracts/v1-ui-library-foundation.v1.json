@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contractId": "vanstro.ui-library-foundation.v1",
+  "title": "VanStro UI Library Foundation v1 (Integration-Frozen)",
+  "version": "1.0.0",
+  "status": "FORMALIZED_INTEGRATION_CERTIFIED",
+  "disposition": "integration_frozen_and_accepted",
+  "authority": {
+    "base": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-ui0-vanstro-ui-library-foundation-coordinator-prompt.md",
+    "trialAddendum": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-ui0-omp-uncommitted-trial-addendum.md",
+    "continuousGoal": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-ui0-l3-l4-continuous-goal.md",
+    "closureGoal": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-ui0-l4-authority-closure-correction-goal.md",
+    "precedence": "The continuous and closure goals supersede the trial addendum's Git lifecycle for the formalization and certification phases; the base technical and scope requirements remain authoritative."
+  },
+  "classification": {
+    "countsAsWorkPackage": false,
+    "addsDagNode": false,
+    "changesDependencies": false,
+    "addsContractGate": false,
+    "progressContribution": 0,
+    "migration": "none"
+  },
+  "dimensions": {
+    "publicEntryAndApi": {
+      "importRoot": "@/components/ui/*",
+      "physicalRoot": "src/components/ui/",
+      "barrel": "src/components/ui/index.ts",
+      "featureRule": "Feature code consumes public UI modules through @/components/ui/* and must not observe Radix or CVA implementation types.",
+      "components": {
+        "Button": { "exports": ["buttonVariants", "Button", "ButtonProps", "ButtonVariant", "ButtonSize"], "variants": ["primary", "secondary", "ghost", "destructive", "link"], "sizes": ["default", "sm", "lg", "icon"], "contract": ["44px effective target for default interactive use", "native button semantics", "loading exposes busy state and suppresses activation", "disabled suppresses activation", "icon-only use requires an accessible name"] },
+        "Field": { "exports": ["Field", "FieldLabel", "FieldDescription", "FieldError", "FieldProps", "FieldLabelProps", "FieldDescriptionProps", "FieldErrorProps"], "contract": ["stable label/help/error/required wiring", "generated or supplied ids connect control, help, and error", "error produces aria-invalid and aria-describedby"] },
+        "Input": { "exports": ["Input", "InputProps"], "contract": ["native input props", "ref forwarding", "field wiring remains caller-visible"] },
+        "Textarea": { "exports": ["Textarea", "TextareaProps"], "contract": ["native textarea props", "ref forwarding", "field wiring remains caller-visible"] },
+        "Select": { "exports": ["Select", "SelectProps"], "implementation": "native select wrapper", "contract": ["native select semantics", "no Radix Select dependency"] },
+        "Checkbox": { "exports": ["Checkbox", "CheckboxProps"], "implementation": "native checkbox wrapper", "contract": ["native checkbox semantics", "no Radix Checkbox dependency"] },
+        "Badge": { "exports": ["badgeVariants", "Badge", "BadgeProps", "BadgeVariant"], "variants": ["neutral", "success", "warning", "error", "info", "readiness"] },
+        "Card": { "exports": ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter", "CardProps", "CardHeaderProps", "CardTitleProps", "CardDescriptionProps", "CardContentProps", "CardFooterProps"], "contract": ["real content grouping", "no decorative KPI template"] },
+        "Section": { "exports": ["Section", "SectionHeader", "SectionTitle", "SectionDescription", "SectionContent", "SectionActions", "SectionProps", "SectionHeaderProps", "SectionTitleProps", "SectionDescriptionProps", "SectionContentProps", "SectionActionsProps"], "contract": ["real content grouping", "no decorative KPI template"] },
+        "Separator": { "exports": ["Separator", "SeparatorProps", "SeparatorOrientation"], "orientations": ["horizontal", "vertical"], "contract": ["decorative and semantic orientation remain explicit"] },
+        "Table": { "exports": ["Table", "TableHeader", "TableBody", "TableFooter", "TableRow", "TableHead", "TableCell", "TableCaption", "TableEmpty", "TableProps", "TableHeaderProps", "TableBodyProps", "TableFooterProps", "TableRowProps", "TableHeadProps", "TableCellProps", "TableCaptionProps", "TableEmptyProps"], "contract": ["caption preserved", "header semantics preserved", "empty state supported", "horizontal overflow region is labelled"] },
+        "Pagination": { "exports": ["Pagination", "PaginationProps"], "contract": ["current page and total pages are explicit", "previous and next controls have accessible names", "pagination region has an accessible name", "disabled boundary controls remain native buttons"] },
+        "Skeleton": { "exports": ["Skeleton", "SkeletonProps"], "contract": ["screen-reader loading text"] },
+        "EmptyState": { "exports": ["EmptyState", "EmptyStateIcon", "EmptyStateTitle", "EmptyStateDescription", "EmptyStateActions", "EmptyStateProps", "EmptyStateIconProps", "EmptyStateTitleProps", "EmptyStateDescriptionProps", "EmptyStateActionsProps"], "contract": ["screen-reader-visible outcome text"] },
+        "StatusMessage": { "exports": ["StatusMessage", "StatusMessageTitle", "StatusMessageContent", "StatusMessageActions", "StatusMessageProps", "StatusMessageTitleProps", "StatusMessageContentProps", "StatusMessageActionsProps", "StatusMessageVariant", "StatusMessageRole"], "variants": ["neutral", "info", "success", "warning", "error"], "roles": ["status", "alert"] },
+        "LiveRegion": { "exports": ["LiveRegion", "LiveRegionProps", "LiveRegionPoliteness"], "politeness": ["polite", "assertive"], "atomic": [true, false] },
+        "Dialog": { "exports": ["DialogRoot", "DialogTrigger", "DialogPortal", "DialogOverlay", "DialogContent", "DialogHeader", "DialogFooter", "DialogTitle", "DialogDescription", "DialogClose", "ConfirmDialog", "DialogRootProps", "DialogTriggerProps", "DialogPortalProps", "DialogOverlayProps", "DialogContentProps", "DialogHeaderProps", "DialogFooterProps", "DialogTitleProps", "DialogDescriptionProps", "DialogCloseProps", "ConfirmDialogProps"], "implementation": "@radix-ui/react-dialog", "contract": ["features receive no Radix types", "ConfirmDialog is the VanStro high-level confirmation API", "async confirmation rejection keeps the dialog open and renders role=alert", "errorMessage may be content or an unknown-error formatter", "onConfirmError receives unknown without owning business error interpretation"] }
+      }
+    },
+    "dataSlot": {
+      "required": true,
+      "format": "lowercase-kebab-case",
+      "rule": "Every public component and rendered public Dialog part renders a stable data-slot on its semantic outer element; DialogPortal and DialogRoot are the non-rendering public-part exemptions because the Radix portal renders no semantic outer element and DialogRoot is a context provider that renders no element. DialogOverlay and DialogContent remain required to render data-slot=dialog-overlay and data-slot=dialog-content. The exemptions must not add a DOM wrapper; slots identify component parts, not business state.",
+      "publicPartExemptions": ["DialogPortal", "DialogRoot"],
+      "requiredDialogSlots": { "DialogOverlay": "dialog-overlay", "DialogContent": "dialog-content" },
+      "wrapperForExemption": false
+    },
+    "tokenMapping": {
+      "sourceOfTruth": "Existing :root variables in src/app/globals.css",
+      "aliases": {
+        "--ui-background": "var(--color-surface)",
+        "--ui-foreground": "var(--color-text)",
+        "--ui-surface": "var(--color-surface)",
+        "--ui-surface-muted": "var(--color-soft)",
+        "--ui-border": "var(--color-line)",
+        "--ui-primary": "var(--color-ink)",
+        "--ui-primary-hover": "var(--color-ink-2)",
+        "--ui-primary-foreground": "var(--color-surface)",
+        "--ui-accent": "var(--color-accent)",
+        "--ui-accent-hover": "var(--color-accent-dark)",
+        "--ui-accent-foreground": "var(--color-text)",
+        "--ui-muted-foreground": "var(--color-text-muted)",
+        "--ui-success": "var(--color-success)",
+        "--ui-warning": "var(--color-accent-text)",
+        "--ui-error": "var(--color-error)",
+        "--ui-error-surface": "var(--color-error-soft)",
+        "--ui-focus": "var(--color-focus)",
+        "--ui-radius-sm": "var(--radius-sm)",
+        "--ui-radius-md": "var(--radius-md)",
+        "--ui-radius-lg": "var(--radius-lg)",
+        "--ui-shadow-panel": "var(--shadow-panel)",
+        "--ui-shadow-floating": "var(--shadow-floating)",
+        "--ui-font-sans": "\"Segoe UI Variable Text\", \"Segoe UI Variable Display\", \"Segoe UI\", \"Helvetica Neue\", Arial, sans-serif"
+      },
+      "rules": ["Aliases must not self-reference", "Do not duplicate brand color literals", "The literal --ui-font-sans stack is the sole exception because it exactly matches the established body typography stack", "@theme inline exposes aliases to Tailwind", "The existing variables remain the only visual color, radius, and shadow token source"]
+    },
+    "cssCoexistence": {
+      "tailwindVersion": 4,
+      "preflight": false,
+      "legacyCss": "Existing CSS remains unlayered, unmoved, unformatted, and unchanged except for the approved top-level Tailwind/token wiring.",
+      "compatibilityStylesheet": "src/components/ui/ui-compat.css",
+      "compatibilitySelectorRule": "Only single .vs-ui-* class selectors; no element, feature, legacy, compound, id, or !important selectors.",
+      "ownership": {
+        "tailwindUtilities": ["layout", "spacing", "size", "overflow", "positioning"],
+        "uiCompat": ["font", "color", "variant colors", "hover colors", "focus colors", "disabled colors", "destructive colors"]
+      },
+      "singleStyleAuthority": {
+        "ButtonAndBadgeVariants": "CVA-emitted .vs-ui-*-<variant> classes are the sole visual selectors; data-variant remains state metadata only.",
+        "FormControlInvalidState": "Input, Textarea, Select, and Checkbox use [aria-invalid=true] as the sole invalid-state visual selector; data-invalid remains state metadata only."
+      }
+    },
+    "dependencyBoundary": {
+      "runtimeAllowlist": ["@radix-ui/react-dialog", "class-variance-authority", "clsx", "tailwind-merge"],
+      "developmentAllowlist": ["tailwindcss", "@tailwindcss/postcss", "postcss"],
+      "directImportAllowedRoot": "src/components/ui/**",
+      "directImportDenyRoot": "src/** outside src/components/ui/**",
+      "notAuthorized": ["additional Radix packages", "Bun", "Turborepo", "Vitest", "Jest", "Storybook", "Chromatic", "next-themes", "sonner", "cmdk", "react-hook-form", "zod", "recharts"],
+      "futureDependencyRule": "Popover, Tooltip, Dropdown, Command, Select, and other headless dependencies require a real consumer and a new contract authorization."
+    },
+    "renderingBoundaries": {
+      "ssr": "Components must emit deterministic server markup without accessing browser globals during render.",
+      "staticExport": "The library and owned QA fixture must remain compatible with the current Next.js static-export chain.",
+      "rsc": "Modules are server-compatible by default; add use client only to the smallest module requiring state, effects, event handlers, refs, or a client-only third-party primitive.",
+      "client": ["Dialog implementation is a client boundary", "Interactive controls may be client boundaries only where their behavior requires it", "Pure variant modules and cn remain client-directive-free"],
+      "hydration": "Dialog portal and controlled/uncontrolled states must not produce hydration mismatch."
+    },
+    "accessibility": {
+      "general": ["Preserve native semantics", "Expose visible or programmatic labels", "Keyboard operation and visible focus are required", "Disabled and loading states remain perceivable", "Errors are associated with their controls"],
+      "dialog": ["Trigger and return focus", "Escape close", "Tab containment", "nested dialog containment", "labelled title and description", "Chinese close-button or sr-only label", "defined overlay-click policy", "scroll lock", "forced-colors support", "reduced-motion support"],
+      "status": ["StatusMessage chooses status or alert intentionally", "LiveRegion supports polite/assertive and atomic behavior"],
+      "contentStates": ["Skeleton and EmptyState include screen-reader text"]
+    },
+    "visualFreeze": {
+      "design": "Use current VanStro tokens and Chinese desktop density; UI-0 grants no redesign authority.",
+      "existingPages": "Existing page screenshots, DOM, accessibility behavior, and static artifacts must remain equivalent to the accepted S02 baseline.",
+      "failureRule": "Any unexplained visible difference blocks formalization."
+    },
+    "rollbackAndDeprecation": {
+      "rollback": "Because adoption is zero, rollback removes the candidate UI/config/QA files and reverts only the approved package, lockfile, and globals.css candidate deltas after explicit authorization.",
+      "deprecation": "After formalization, a stable public export or variant is not removed or renamed silently; publish a replacement and migration window, migrate all consumers, then remove under a separately authorized contract.",
+      "breakingChange": "Token aliases, data-slot values, public names, prop semantics, and variant values are contract surface."
+    },
+    "zeroPageAdoption": {
+      "required": true,
+      "existingPageOrComponentChanges": [],
+      "productRoutesAdded": [],
+      "forbiddenConsumers": ["GeneralStorefrontSettingsPanel", "SettingsFoundationPanel", "F0 Shell", "legacy Dashboard panels", "Storefront", "Header", "Footer", "PDP", "Cart", "Checkout", "Account", "existing Drawer/Dialog consumers"],
+      "fixtureRoot": "qa/v1-ui0-browser/",
+      "fixtureRule": "The browser fixture is owned QA infrastructure and must not be placed under src/app or alter product/static routes."
+    },
+    "futurePackageExtraction": {
+      "currentDecision": "Do not create packages/ui in UI-0.",
+      "earliestScope": "v4 only, under separate authorization.",
+      "conditions": ["More than one application has real consumers of the same stable primitives", "The public API and token contract have remained stable through measured adoption", "The package can remain free of application Auth, Observability, API, P02, and business-state coupling", "RSC/client boundaries and CSS delivery work across every consuming application", "A migration plan preserves import and visual contracts", "Independent contract, build, static-export, browser, accessibility, rollback, and deprecation gates are approved"]
+    },
+    "legacyUiEntryExceptions": {
+      "entries": [
+        { "file": "src/components/ui/CommerceStatePanel.tsx", "importsRemain": "@/components/ui/CommerceStatePanel" },
+        { "file": "src/components/ui/HorizontalScrollRail.tsx", "importsRemain": "@/components/ui/HorizontalScrollRail" }
+      ],
+      "rules": ["read-only in UI-0", "not exported from the new barrel", "existing import paths remain unchanged", "direct-import and lowercase-filename guards explicitly exempt only these entries", "migration is deferred to v4"]
+    }
+  },
+  "formalizationDeferrals": {
+    "integrationFrozenContract": "c3b81aa0500817acf69db5ea539d5f3bfaef2023",
+    "integrationCheckpoint": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/checkpoints/v1-ui0-l3-l4-formalization-integration-certified.md",
+    "integrationHandoff": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/checkpoints/2026-08-06-omp-formal-coordinator-complete-handoff-v2.md",
+    "integrationEvidence": "tasks/evidence/v1-ui0-omp-trial/",
+    "frontendCommit": "e933defca7f101fc17813f729b0a9a6ef0254af9",
+    "integrationMerge": "c3b81aa0500817acf69db5ea539d5f3bfaef2023",
+    "finalAcceptance": "c3b81aa0500817acf69db5ea539d5f3bfaef2023"
+  },
+  "claims": {
+    "frozen": true,
+    "accepted": true,
+    "implemented": true,
+    "formalized": true
+  }
+}

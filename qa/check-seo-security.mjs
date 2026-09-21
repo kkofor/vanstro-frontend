@@ -48,7 +48,11 @@ for (const asset of [
 }
 
 const supportWidget = read("src/components/layout/CustomerSupportWidget.tsx");
-assert(supportWidget.includes('Tiledesk?.("destroy")'), "Tiledesk must be destroyed on consent revocation");
+const tiledeskLifecycle = read("src/lib/support/tiledesk-lifecycle.ts");
+assert(
+  supportWidget.includes("teardownTiledesk") && tiledeskLifecycle.includes('Tiledesk?.("destroy")'),
+  "Tiledesk must be destroyed on consent revocation"
+);
 assert(!supportWidget.includes("postalCode"), "Tiledesk attributes must not include postal code");
 assert(!supportWidget.includes("cartCount"), "Tiledesk attributes must not include cart count");
 

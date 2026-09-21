@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Products · VANSTRO</title>
+<link rel="stylesheet" href="/ux/assets/vi.css">
+<link rel="stylesheet" href="/ux/assets/storefront-chrome.css">
+<style>
+  .site { background: var(--vs-bg-page); min-height: 100vh; }
+
+  /* Same shell as account.html: 250px sticky rail on the left, content on the right. */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 24px 80px; display: grid; grid-template-columns: 250px minmax(0, 1fr); column-gap: 24px; row-gap: 14px; align-items: start; }
+  .wrap > .full { grid-column: 1 / -1; }
+  .card { border-radius: 12px; }
+  .card__head { padding: 18px 22px 0; }
+  .card__body { padding: 14px 22px 20px; }
+  .card__head h3 { font-size: 17px; letter-spacing: -0.005em; }
+
+  /* ---- Breadcrumb + title (cart/account page-title pattern) ---- */
+  .crumb { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--vs-text-3); }
+  .crumb a { color: var(--vs-text-3); font-weight: 500; }
+  .crumb a:hover { color: var(--vs-navy); }
+  .crumb svg { width: 12px; height: 12px; }
+  .page-title { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-top: -6px; }
+  .page-title h2 { font-size: 26px; line-height: 1.15; letter-spacing: -0.01em; }
+  .page-title p { color: var(--vs-text-3); font-size: 14px; margin-top: 4px; }
+  .page-title .dealer { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--vs-text-2); padding: 8px 12px; border-radius: 10px; background: #fff; border: 1px solid var(--vs-grey-100); }
+  .page-title .dealer svg { width: 16px; height: 16px; color: var(--vs-navy); }
+  .page-title .dealer a { font-weight: 700; font-size: 13px; }
+
+  /* ---- Category rail: white tiles, thumbnail + name + count; active = navy ring (same as address default card) ---- */
+  .cats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .cat {
+    display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 12px 10px 10px;
+    background: #fff; border: 1px solid var(--vs-grey-100); border-radius: 12px; box-shadow: var(--vs-shadow-sm); cursor: pointer; text-align: left; font: inherit; color: inherit; min-width: 0;
+  }
+  .cat:hover { border-color: var(--vs-border-strong); }
+  .cat:focus-visible { outline: none; box-shadow: var(--vs-focus); }
+  .cat.is-active { border-color: var(--vs-navy); box-shadow: 0 0 0 1px var(--vs-navy); }
+  .cat__img { width: 52px; height: 52px; border-radius: 8px; background: var(--vs-grey-50); border: 1px solid var(--vs-grey-100); overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--vs-navy); }
+  .cat__img img { width: 100%; height: 100%; object-fit: cover; }
+  .cat__img svg { width: 22px; height: 22px; }
+  .cat strong { display: block; font-size: 13.5px; line-height: 1.25; }
+  .cat small { display: block; font-size: 12px; color: var(--vs-text-3); margin-top: 2px; }
+  .cat.is-active strong { color: var(--vs-navy); }
+
+  /* ---- Filter rail ---- */
+  .side { position: sticky; top: calc(var(--header-h, 72px) + 16px); display: grid; gap: 12px; }
+  .side .card__head { padding: 16px 18px 0; display: flex; justify-content: space-between; align-items: baseline; }
+  .side .card__body { padding: 6px 0 8px; }
+  .link-btn { border: 0; background: none; color: var(--vs-navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 0; font-family: inherit; }
+  .link-btn:hover { text-decoration: underline; }
+  .link-btn:disabled { color: var(--vs-text-3); cursor: default; text-decoration: none; }
+  .fg { border-top: 1px solid var(--vs-grey-100); }
+  .fg:first-child { border-top: 0; }
+  .fg > summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; font-size: 13.5px; font-weight: 700; cursor: pointer; color: var(--vs-text); }
+  .fg > summary::-webkit-details-marker { display: none; }
+  .fg > summary svg { width: 16px; height: 16px; color: var(--vs-text-3); transform: rotate(90deg); transition: transform .15s; }
+  .fg[open] > summary svg { transform: rotate(-90deg); }
+  .fg > summary .n { margin-left: auto; margin-right: 8px; font-size: 11.5px; font-weight: 700; color: #fff; background: var(--vs-navy); border-radius: 999px; min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; }
+  .fg__body { padding: 0 18px 12px; display: grid; gap: 2px; }
+  .fopt { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 13.5px; color: var(--vs-text-2); cursor: pointer; }
+  .fopt .check__box { flex: none; }
+  .fopt span.l { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fopt em { font-style: normal; font-size: 12px; color: var(--vs-text-3); font-variant-numeric: tabular-nums; }
+  .fopt.is-zero { opacity: .45; }
+  .fopt .sw { width: 14px; height: 14px; border-radius: 50%; border: 1px solid var(--vs-grey-200); flex: none; }
+  .fchips { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 2px; }
+  .fchips label { position: relative; }
+  .fchips input { position: absolute; opacity: 0; inset: 0; width: 0; height: 0; }
+  .fchips span { display: inline-flex; align-items: center; height: 30px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--vs-border-strong); background: #fff; font-size: 13px; font-weight: 600; color: var(--vs-text-2); cursor: pointer; }
+  .fchips input:checked + span { background: var(--vs-navy); border-color: var(--vs-navy); color: #fff; }
+  .fchips input:focus-visible + span { box-shadow: var(--vs-focus); }
+  .fchips label.is-zero span { opacity: .45; }
+  .price-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+  .price-row .control { height: 38px; min-width: 0; }
+  .price-row .control input { width: 100%; min-width: 0; -moz-appearance: textfield; }
+  .price-row .control input::-webkit-outer-spin-button, .price-row .control input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .side .card, .fg__body { min-width: 0; }
+  .price-row .control__prefix { padding-left: 10px; font-size: 13px; }
+  .price-row .control input { font-size: 13.5px; }
+  .price-row .dash { color: var(--vs-text-3); font-size: 13px; }
+  .price-apply { margin-top: 8px; width: 100%; }
+  .side .trust { padding: 14px 16px; display: grid; gap: 6px; background: var(--vs-navy-50); border-radius: 10px; font-size: 12.5px; color: var(--vs-text-2); }
+  .side .trust li { display: flex; gap: 6px; align-items: flex-start; list-style: none; }
+  .side .trust svg { width: 13px; height: 13px; color: var(--vs-navy); flex: none; margin-top: 2px; }
+  .side .trust ul { margin: 0; padding: 0; display: grid; gap: 4px; }
+
+  /* ---- Results ---- */
+  .main { display: grid; gap: 14px; min-width: 0; }
+  .toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 14px; background: #fff; border: 1px solid var(--vs-grey-100); border-radius: 12px; }
+  .toolbar .count { font-size: 13.5px; color: var(--vs-text-2); }
+  .toolbar .count b { color: var(--vs-text); }
+  .toolbar .spacer { flex: 1; }
+  .toolbar .sort { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--vs-text-3); }
+  .toolbar .sort .control { height: 36px; min-width: 190px; }
+  .toolbar .sort select { font-size: 13.5px; font-weight: 600; color: var(--vs-text); }
+  .toolbar .filters-btn { display: none; }
+  .view { display: inline-flex; border: 1px solid var(--vs-border); border-radius: var(--vs-r-sm); overflow: hidden; }
+  .view button { width: 34px; height: 34px; border: 0; background: #fff; color: var(--vs-text-3); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .view button + button { border-left: 1px solid var(--vs-border); }
+  .view button.is-active { background: var(--vs-navy-50); color: var(--vs-navy); }
+  .view button svg { width: 16px; height: 16px; }
+  .active-f { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .active-f:empty { display: none; }
+  .active-f button { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 8px 0 10px; border-radius: 999px; border: 1px solid var(--vs-grey-200); background: var(--vs-grey-50); font: inherit; font-size: 12.5px; font-weight: 600; color: var(--vs-text-2); cursor: pointer; }
+  .active-f button:hover { border-color: var(--vs-navy); color: var(--vs-navy); }
+  .active-f button svg { width: 12px; height: 12px; }
+  .active-f .link-btn { font-size: 12.5px; margin-left: 4px; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .pc { position: relative; display: grid; grid-template-rows: auto 1fr; background: #fff; border: 1px solid var(--vs-grey-100); border-radius: 12px; box-shadow: var(--vs-shadow-sm); overflow: hidden; min-width: 0; }
+  .pc:hover { border-color: var(--vs-border-strong); }
+  .pc__img { display: block; aspect-ratio: 1; background: var(--vs-grey-50); border-bottom: 1px solid var(--vs-grey-100); overflow: hidden; }
+  .pc__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
+  .pc:hover .pc__img img { transform: scale(1.03); }
+  .pc__save { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.92); border: 1px solid var(--vs-grey-100); color: var(--vs-text-3); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .pc__save:hover { color: var(--vs-navy); border-color: var(--vs-navy); }
+  .pc__save.is-on { color: var(--vs-error); border-color: var(--vs-error); }
+  .pc__save.is-on svg { fill: currentColor; }
+  .pc__save svg { width: 16px; height: 16px; }
+  .pc__body { padding: 12px 14px 14px; display: grid; gap: 4px; align-content: start; }
+  .pc__eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--vs-text-3); }
+  .pc__name { font-size: 14.5px; font-weight: 700; line-height: 1.3; color: var(--vs-text); }
+  .pc__name:hover { text-decoration: underline; }
+  .pc__spec { font-size: 12.5px; color: var(--vs-text-2); }
+  .pc__sku { font-family: var(--vs-mono); font-size: 11.5px; color: var(--vs-text-3); letter-spacing: .01em; }
+  .pc__price { display: flex; align-items: baseline; gap: 6px; margin-top: 6px; }
+  .pc__price b { font-size: 17px; font-variant-numeric: tabular-nums; }
+  .pc__price small { font-size: 12px; color: var(--vs-text-3); }
+  .pc__stock { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--vs-text-3); flex-wrap: wrap; }
+  .pc__stock .chip { height: 20px; font-size: 10.5px; }
+  .pc__act { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 10px; }
+  .pc__act .btn--sm { height: 36px; }
+  .pc__act .btn--ghost { padding: 0 10px; }
+  .pc__act .btn svg { width: 16px; height: 16px; }
+
+  /* list view: image left, one row per product (mirrors the cart line) */
+  .grid.is-list { grid-template-columns: 1fr; gap: 10px; }
+  .grid.is-list .pc { grid-template-columns: 132px minmax(0, 1fr); grid-template-rows: none; }
+  .grid.is-list .pc__img { aspect-ratio: 1; border-bottom: 0; border-right: 1px solid var(--vs-grey-100); }
+  .grid.is-list .pc__body { padding: 14px 16px; grid-template-columns: minmax(0, 1fr) auto; column-gap: 20px; }
+  .grid.is-list .pc__body > * { grid-column: 1; }
+  .grid.is-list .pc__price { grid-column: 2; grid-row: 1 / span 3; align-self: start; justify-self: end; margin: 0; }
+  .grid.is-list .pc__act { grid-column: 2; grid-row: 4 / span 2; align-self: end; justify-self: end; grid-template-columns: auto auto; margin: 0; }
+  .grid.is-list .pc__save { top: 12px; right: auto; left: 12px; }
+
+  .pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 14px; background: #fff; border: 1px solid var(--vs-grey-100); border-radius: 12px; font-size: 13px; color: var(--vs-text-3); }
+  .pager__pages { display: inline-flex; gap: 4px; }
+  .pager button { min-width: 34px; height: 34px; padding: 0 8px; border-radius: var(--vs-r-sm); border: 1px solid transparent; background: transparent; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--vs-text-2); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
+  .pager button:hover { background: var(--vs-grey-50); }
+  .pager button.is-active { background: var(--vs-navy); color: #fff; }
+  .pager button:disabled { color: var(--vs-grey-300); cursor: default; background: transparent; }
+  .pager button svg { width: 16px; height: 16px; }
+  .pager .ell { width: 24px; text-align: center; color: var(--vs-text-3); }
+
+  /* empty results: same .card.empty recipe as account */
+  .empty { padding: 44px 24px; text-align: center; }
+  .empty__icon { width: 56px; height: 56px; border-radius: 50%; background: var(--vs-navy-50); color: var(--vs-navy); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .empty__icon svg { width: 26px; height: 26px; }
+  .empty h4 { margin-bottom: 4px; }
+
+  /* help strip under the grid (same trust tone as cart) */
+  .help { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .help > div { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; background: #fff; border: 1px solid var(--vs-grey-100); border-radius: 12px; font-size: 13px; color: var(--vs-text-2); }
+  .help svg { width: 20px; height: 20px; color: var(--vs-navy); flex: none; margin-top: 1px; }
+  .help b { display: block; color: var(--vs-text); margin-bottom: 2px; font-size: 13.5px; }
+  .help a { font-weight: 700; }
+
+  /* mobile filter drawer reuses .modal */
+  .drawer .modal { max-width: 420px; }
+  .drawer .modal__body { padding: 0; max-height: 70vh; overflow: auto; }
+  .drawer .fg > summary, .drawer .fg__body { padding-left: 20px; padding-right: 20px; }
+
+  @media (max-width: 1080px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cats { grid-template-columns: repeat(3, minmax(0, 1fr)); } .help { grid-template-columns: 1fr; } }
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; }
+    .side { display: none; }
+    .toolbar .filters-btn { display: inline-flex; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 14px 14px 72px; }
+    .cats { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity; margin: 0 -14px; padding: 2px 14px 6px; scrollbar-width: none; }
+    .cats::-webkit-scrollbar { display: none; }
+    .cat { flex: 0 0 auto; min-width: 156px; grid-template-columns: 40px 1fr; padding: 8px; scroll-snap-align: start; }
+    .cat__img { width: 40px; height: 40px; }
+    .cat strong { white-space: nowrap; }
+    .grid { gap: 10px; }
+    .pc__body { padding: 10px 12px 12px; }
+    .pc__act { grid-template-columns: 1fr; }
+    .pc__act .btn--ghost { display: none; }
+    .toolbar .sort .control { min-width: 0; }
+    .toolbar .view { display: none; }
+    .grid.is-list .pc { grid-template-columns: 96px 1fr; }
+  }
+</style>
+</head>
+<body class="site">
+
+<header class="site-header" data-site-header data-signed-in="1" data-cart-href="/cart"></header>
+
+<div class="wrap">
+  <nav class="crumb full" aria-label="Breadcrumb"><a href="https://www.vanstro.ca/" id="crumbHome">Home</a><span data-icon="chevron"></span><span id="crumbHere">Products</span></nav>
+
+  <div class="page-title full">
+    <div><h2 id="ttl">Products</h2><p id="ttlSub"></p></div>
+    <div class="dealer"><span data-icon="pin"></span><span id="dealerTxt">Priced for <b>Yuan Construction · Winnipeg</b></span><a href="/account#dealer" id="dealerChange">Change</a></div>
+  </div>
+
+  <div class="cats full" id="cats" role="tablist" aria-label="Product categories"></div>
+
+  <!-- ================= FILTERS ================= -->
+  <aside class="side" id="side">
+    <div class="card">
+      <div class="card__head"><h3 id="hFilters">Filters</h3><button type="button" class="link-btn" id="clearAll">Clear all</button></div>
+      <div class="card__body" id="filterBody"></div>
+    </div>
+    <div class="trust">
+      <ul id="trustUl">
+        <li><span data-icon="check"></span><span>Prices in CAD, before tax</span></li>
+        <li><span data-icon="check"></span><span>Pickup or delivery through your local dealer</span></li>
+        <li><span data-icon="check"></span><span>Trade pricing applied at sign-in</span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- ================= RESULTS ================= -->
+  <main class="main" id="main">
+    <div class="toolbar">
+      <button type="button" class="btn btn--secondary btn--sm filters-btn" id="filtersOpen"><span class="btn__icon" data-icon="sliders"></span><span id="filtersOpenT">Filters</span><span class="n hidden" id="filtersN"></span></button>
+      <span class="count" id="count"></span>
+      <span class="spacer"></span>
+      <label class="sort"><span id="sortLbl">Sort by</span><span class="control"><select id="sort" aria-label="Sort products"></select></span></label>
+      <div class="view" role="group" aria-label="View">
+        <button type="button" data-view="grid" class="is-active" aria-label="Grid view" aria-pressed="true"><span data-icon="grid"></span></button>
+        <button type="button" data-view="list" aria-label="List view" aria-pressed="false"><span data-icon="list"></span></button>
+      </div>
+      <div class="active-f" id="activeF" style="flex-basis:100%"></div>
+    </div>
+
+    <div class="grid" id="grid" aria-live="polite"></div>
+
+    <div class="card empty hidden" id="emptyCard">
+      <div class="empty__icon"><span data-icon="search"></span></div>
+      <h4 id="emptyH">No products match these filters</h4>
+      <p class="muted small" id="emptyP" style="margin-bottom:16px">Try removing a filter, or ask your dealer — they can quote sizes and finishes that aren’t listed online.</p>
+      <div class="row" style="justify-content:center;gap:10px">
+        <button type="button" class="btn btn--primary" id="emptyClear">Clear filters</button>
+        <a class="btn btn--secondary" href="https://www.vanstro.ca/contact/" id="emptyAsk">Ask your dealer</a>
+      </div>
+    </div>
+
+    <div class="pager hidden" id="pager"></div>
+
+    <div class="help">
+      <div><span data-icon="truck"></span><div><b id="h1T">Delivery across Canada</b><span id="h1P">Delivery quoted by your dealer, or free pickup at your dealer.</span></div></div>
+      <div><span data-icon="fileText"></span><div><b id="h2T">Need a full kitchen?</b><span id="h2P"><a href="https://www.vanstro.ca/design-studio/">Design Studio</a> turns your measurements into a priced cabinet list.</span></div></div>
+      <div><span data-icon="shield"></span><div><b id="h3T">30-day returns</b><span id="h3P">Unopened items, through your dealer. <a href="https://www.vanstro.ca/return-policy/">Return policy</a></span></div></div>
+    </div>
+  </main>
+</div>
+
+<footer class="site-footer" data-site-footer></footer>
+
+<!-- Mobile filter drawer -->
+<div class="modal-backdrop hidden drawer" id="drawer">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <div class="modal__head"><strong id="drawerTitle">Filters</strong><button class="icon-btn" data-close aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="modal__body" id="drawerBody"></div>
+    <div class="modal__foot"><button class="btn btn--ghost" id="drawerClear">Clear all</button><button class="btn btn--primary" data-close id="drawerDone">Show results</button></div>
+  </div>
+</div>
+
+<script src="/ux/assets/vi.js"></script>
+<script src="/ux/assets/session.js"></script>
+<script src="/ux/assets/site-header.js"></script>
+<script src="/ux/assets/site-footer.js"></script>
+<script src="/ux/assets/tax.js?v=bn-71411"></script>
+<script src="/ux/assets/catalogue-data.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
+  /* icons this page needs beyond vi.js */
+  VS.I.sliders = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>';
+  VS.I.grid = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>';
+  VS.I.list = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>';
+  VS.I.heart = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5 4.3 12.9a4.6 4.6 0 0 1 6.5-6.5l1.2 1.2 1.2-1.2a4.6 4.6 0 0 1 6.5 6.5Z"/></svg>';
+  VS.icons();
+
+  const SITE = 'https://www.vanstro.ca';
+  const KEY = 'vs.cart'; const SAVED_KEY = 'vs.saved';
+  const PAGE = 24;
+  const ALL = window.VS_CATALOGUE || [];
+  const CATS = [
+    { slug: 'all', name: 'All products', nameFr: 'Tous les produits' },
+    { slug: 'kitchen-cabinets', name: 'Kitchen cabinets', nameFr: 'Armoires de cuisine', path: '/products/kitchen-cabinets/' },
+    { slug: 'bathroom-vanities', name: 'Bathroom vanities', nameFr: 'Meubles-lavabos', path: '/products/bathroom-vanities/' },
+    { slug: 'baseboards-and-mouldings', name: 'Baseboards & mouldings', nameFr: 'Plinthes et moulures', path: '/products/baseboards-and-mouldings/' },
+    { slug: 'handle-series', name: 'Handles', nameFr: 'Poignées', path: '/products/handle-series/' },
+  ];
+  /* order types the way a kitchen is specified: base → wall → tall → trim */
+  const TYPE_ORDER = ['Base', 'Sink base', 'Drawer base', 'Corner base', 'Wall', 'Corner wall', 'Tall & pantry', 'Panels, fillers & trim', 'Vanity with top', 'Vanity cabinet only', 'Baseboard', 'Casing', 'Handles'];
+  const TYPE_FR = { 'Base': 'Armoires du bas', 'Sink base': 'Base d’évier', 'Drawer base': 'Base à tiroirs', 'Corner base': 'Base d’angle', 'Wall': 'Armoires murales', 'Corner wall': 'Murale d’angle', 'Tall & pantry': 'Garde-manger et colonnes', 'Panels, fillers & trim': 'Panneaux, remplissages et finitions', 'Vanity with top': 'Meuble-lavabo avec comptoir', 'Vanity cabinet only': 'Meuble-lavabo seul', 'Baseboard': 'Plinthe', 'Casing': 'Chambranle', 'Handles': 'Poignées' };
+  const SWATCH = { 'White': '#f7f6f2', 'White · with top': '#f7f6f2', 'Putty White': '#ece9e1', 'Matte Black': '#222' };
+
+  let lang = 'en';
+  const L = () => lang === 'fr';
+  const money = c => L() ? VSTax.formatCADFr(c) : VSTax.formatCAD(c);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const T = {
+    en: { docTitle: 'Products · VANSTRO', title: 'Products', home: 'Home', here: 'Products',
+      sub: (n) => `${n} products · Prices in CAD, before tax · Ready to order, ships from Winnipeg`,
+      dealer: 'Priced for', change: 'Change', filters: 'Filters', clearAll: 'Clear all', showResults: 'Show results',
+      type: 'Type', width: 'Width', finish: 'Finish', price: 'Price', min: 'Min', max: 'Max', apply: 'Apply', inches: n => `${n}"`,
+      sortLbl: 'Sort by', sorts: { featured: 'Best match', priceAsc: 'Price: low to high', priceDesc: 'Price: high to low', name: 'Name A–Z', width: 'Width: narrow to wide' },
+      showing: (a, b, n) => `Showing <b>${a}–${b}</b> of <b>${n}</b> products`, showingOne: n => `<b>${n}</b> ${n === 1 ? 'product' : 'products'}`,
+      search: q => `Search: “${q}”`, priceF: (a, b) => a && b ? `${money(a)} – ${money(b)}` : a ? `From ${money(a)}` : `Up to ${money(b)}`,
+      items: n => `${n} ${n === 1 ? 'item' : 'items'}`, each: '/ea', inStock: 'In stock', ships: 'Ships in 2–3 days · pickup at Yuan Construction', made: 'Made to order · 3–4 weeks',
+      add: 'Add to cart', added: n => `Added “${n}” to your cart`, viewCart: 'View cart', save: 'Save for later', saved: 'Saved to your list', unsaved: 'Removed from your list', details: 'Details',
+      emptyH: 'No products match these filters', emptyP: 'Try removing a filter, or ask your dealer — they can quote sizes and finishes that aren’t listed online.', emptyClear: 'Clear filters', emptyAsk: 'Ask your dealer',
+      prev: 'Previous', next: 'Next', page: (p, n) => `Page ${p} of ${n}`,
+      h1T: 'Delivery across Canada', h1P: 'Delivery quoted by your dealer, or free pickup at your dealer.', h2T: 'Need a full kitchen?', h2P: '<a href="' + SITE + '/design-studio/">Design Studio</a> turns your measurements into a priced cabinet list.', h3T: '30-day returns', h3P: 'Unopened items, through your dealer. <a href="' + SITE + '/return-policy/">Return policy</a>',
+      trust: ['Prices in CAD, before tax', 'Pickup or delivery through your local dealer', 'Trade pricing applied at sign-in'] },
+    fr: { docTitle: 'Produits · VANSTRO', title: 'Produits', home: 'Accueil', here: 'Produits',
+      sub: (n) => `${n} produits · Prix en CAD, avant taxes · Prêts à commander, expédiés de Winnipeg`,
+      dealer: 'Prix pour', change: 'Changer', filters: 'Filtres', clearAll: 'Tout effacer', showResults: 'Voir les résultats',
+      type: 'Type', width: 'Largeur', finish: 'Fini', price: 'Prix', min: 'Min', max: 'Max', apply: 'Appliquer', inches: n => `${n} po`,
+      sortLbl: 'Trier par', sorts: { featured: 'Pertinence', priceAsc: 'Prix : croissant', priceDesc: 'Prix : décroissant', name: 'Nom A–Z', width: 'Largeur : étroit à large' },
+      showing: (a, b, n) => `<b>${a}–${b}</b> sur <b>${n}</b> produits`, showingOne: n => `<b>${n}</b> ${n === 1 ? 'produit' : 'produits'}`,
+      search: q => `Recherche : « ${q} »`, priceF: (a, b) => a && b ? `${money(a)} – ${money(b)}` : a ? `À partir de ${money(a)}` : `Jusqu’à ${money(b)}`,
+      items: n => `${n} ${n === 1 ? 'article' : 'articles'}`, each: '/ch.', inStock: 'En stock', ships: 'Expédié en 2 à 3 jours · ramassage chez Yuan Construction', made: 'Sur commande · 3 à 4 semaines',
+      add: 'Ajouter au panier', added: n => `« ${n} » ajouté au panier`, viewCart: 'Voir le panier', save: 'Garder pour plus tard', saved: 'Ajouté à votre liste', unsaved: 'Retiré de votre liste', details: 'Détails',
+      emptyH: 'Aucun produit ne correspond à ces filtres', emptyP: 'Retirez un filtre ou demandez à votre détaillant — il peut coter des dimensions et finis non listés en ligne.', emptyClear: 'Effacer les filtres', emptyAsk: 'Demander au détaillant',
+      prev: 'Précédent', next: 'Suivant', page: (p, n) => `Page ${p} sur ${n}`,
+      h1T: 'Livraison partout au Canada', h1P: 'Livraison sur devis de votre détaillant, ou ramassage gratuit chez votre détaillant.', h2T: 'Une cuisine complète ?', h2P: 'Le <a href="' + SITE + '/fr/design-studio/">Studio de design</a> transforme vos mesures en liste d’armoires chiffrée.', h3T: 'Retours sous 30 jours', h3P: 'Articles non ouverts, via votre détaillant. <a href="' + SITE + '/fr/return-policy/">Politique de retour</a>',
+      trust: ['Prix en CAD, avant taxes', 'Ramassage ou livraison via votre détaillant local', 'Prix de gros appliqués à la connexion'] },
+  };
+  const t = k => T[lang][k];
+  const catName = c => L() ? c.nameFr : c.name;
+  const typeName = x => L() ? (TYPE_FR[x] || x) : x;
+
+  /* ---------------- state (URL is the source of truth so filters are shareable) ---------------- */
+  const S = { cat: 'all', type: new Set(), w: new Set(), finish: new Set(), min: 0, max: 0, sort: 'featured', page: 1, q: '', view: localStorage.getItem('vs.plp.view') || 'grid' };
+  function readUrl() {
+    const q = new URLSearchParams(location.search);
+    S.cat = CATS.some(c => c.slug === q.get('cat')) ? q.get('cat') : 'all';
+    S.type = new Set((q.get('type') || '').split(',').filter(Boolean));
+    S.w = new Set((q.get('w') || '').split(',').filter(Boolean));
+    S.finish = new Set((q.get('finish') || '').split(',').filter(Boolean));
+    S.min = Number(q.get('min')) || 0; S.max = Number(q.get('max')) || 0;
+    S.sort = T.en.sorts[q.get('sort')] ? q.get('sort') : 'featured';
+    S.page = Math.max(1, Number(q.get('page')) || 1);
+    S.q = (q.get('q') || '').trim();
+    if (q.get('lang') === 'fr') lang = 'fr';
+  }
+  function writeUrl() {
+    const q = new URLSearchParams();
+    if (S.cat !== 'all') q.set('cat', S.cat);
+    if (S.type.size) q.set('type', [...S.type].join(','));
+    if (S.w.size) q.set('w', [...S.w].join(','));
+    if (S.finish.size) q.set('finish', [...S.finish].join(','));
+    if (S.min) q.set('min', S.min); if (S.max) q.set('max', S.max);
+    if (S.sort !== 'featured') q.set('sort', S.sort);
+    if (S.page > 1) q.set('page', S.page);
+    if (S.q) q.set('q', S.q);
+    if (L()) q.set('lang', 'fr');
+    const s = q.toString(); history.replaceState(null, '', location.pathname + (s ? '?' + s : ''));
+  }
+  const activeCount = () => S.type.size + S.w.size + S.finish.size + (S.min || S.max ? 1 : 0);
+
+  /* ---------------- filtering ---------------- */
+  const inCat = p => S.cat === 'all' || p.cat === S.cat;
+  const matchQ = p => !S.q || [p.name, p.sku, p.type, p.dims].join(' ').toLowerCase().includes(S.q.toLowerCase());
+  const base = () => ALL.filter(p => inCat(p) && matchQ(p));
+  function filtered(skip) {
+    return base().filter(p =>
+      (skip === 'type' || !S.type.size || S.type.has(p.type)) &&
+      (skip === 'w' || !S.w.size || S.w.has(p.w)) &&
+      (skip === 'finish' || !S.finish.size || S.finish.has(p.finish)) &&
+      (skip === 'price' || ((!S.min || p.cents >= S.min * 100) && (!S.max || p.cents <= S.max * 100))));
+  }
+  const wNum = w => parseFloat(String(w).replace('½', '.5').replace('¼', '.25').replace('¾', '.75').replace('⅜', '.375')) || 0;
+  function sorted(list) {
+    const s = S.sort;
+    if (s === 'priceAsc') return list.slice().sort((a, b) => a.cents - b.cents);
+    if (s === 'priceDesc') return list.slice().sort((a, b) => b.cents - a.cents);
+    if (s === 'name') return list.slice().sort((a, b) => a.name.localeCompare(b.name));
+    if (s === 'width') return list.slice().sort((a, b) => wNum(a.w) - wNum(b.w) || a.name.localeCompare(b.name));
+    /* best match: group by type in the order a kitchen is specified, narrow → wide inside each type */
+    return list.slice().sort((a, b) => TYPE_ORDER.indexOf(a.type) - TYPE_ORDER.indexOf(b.type) || wNum(a.w) - wNum(b.w) || a.name.localeCompare(b.name));
+  }
+  const counts = (list, key) => list.reduce((m, p) => { const k = p[key]; if (k) m[k] = (m[k] || 0) + 1; return m; }, {});
+
+  /* ---------------- cart + saved (same vs.cart snapshot shape cart.html / checkout.html read) ---------------- */
+  const loadCart = () => { try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); return s && Array.isArray(s.items) ? s : { items: [], saved: [], promo: null, prov: 'MB' }; } catch { return { items: [], saved: [], promo: null, prov: 'MB' }; } };
+  function addToCart(p) {
+    const c = loadCart();
+    const ex = c.items.find(i => i.sku === p.sku);
+    if (ex) ex.qty = Math.min(50, (Number(ex.qty) || 0) + 1);
+    else c.items.push({ sku: p.sku, name: p.name, meta: [p.dims, p.finish].filter(Boolean).join(' · '), unit: p.cents, qty: 1, img: p.img, url: SITE + '/products/' + p.slug + '/?sku=' + p.sku });
+    c.at = new Date().toISOString();
+    localStorage.setItem(KEY, JSON.stringify(c));
+    const cartHref = location.pathname.includes('/ux/') ? '/ux/cart' : (location.pathname.endsWith('.html') ? 'cart.html' : '/cart');
+    VS.toast(`${esc(t('added')(p.name))} · <a href="${cartHref}" style="color:inherit;font-weight:700;text-decoration:underline">${esc(t('viewCart'))}</a>`, 'html');
+  }
+  const savedSet = () => { try { return new Set(JSON.parse(localStorage.getItem(SAVED_KEY) || '[]')); } catch { return new Set(); } };
+  function toggleSaved(sku, btn) {
+    const s = savedSet(); const on = !s.has(sku); on ? s.add(sku) : s.delete(sku);
+    localStorage.setItem(SAVED_KEY, JSON.stringify([...s]));
+    btn.classList.toggle('is-on', on); btn.setAttribute('aria-pressed', String(on));
+    VS.toast(on ? t('saved') : t('unsaved'));
+  }
+
+  /* ---------------- render ---------------- */
+  function renderStatic() {
+    const c = T[lang];
+    document.title = c.docTitle; $('#ttl').textContent = c.title; $('#crumbHome').textContent = c.home; $('#crumbHere').textContent = c.here;
+    $('#crumbHome').href = L() ? SITE + '/fr/' : SITE + '/';
+    $('#ttlSub').textContent = c.sub(ALL.length);
+    $('#dealerTxt').innerHTML = `${c.dealer} <b>Yuan Construction · Winnipeg</b>`; $('#dealerChange').textContent = c.change;
+    $('#hFilters').textContent = c.filters; $('#clearAll').textContent = c.clearAll; $('#drawerTitle').textContent = c.filters; $('#drawerClear').textContent = c.clearAll; $('#drawerDone').textContent = c.showResults; $('#filtersOpenT').textContent = c.filters;
+    $('#sortLbl').textContent = c.sortLbl;
+    $('#sort').innerHTML = Object.keys(c.sorts).map(k => `<option value="${k}">${c.sorts[k]}</option>`).join(''); $('#sort').value = S.sort;
+    $('#emptyH').textContent = c.emptyH; $('#emptyP').textContent = c.emptyP; $('#emptyClear').textContent = c.emptyClear; $('#emptyAsk').textContent = c.emptyAsk;
+    $('#h1T').textContent = c.h1T; $('#h1P').textContent = c.h1P; $('#h2T').textContent = c.h2T; $('#h2P').innerHTML = c.h2P; $('#h3T').textContent = c.h3T; $('#h3P').innerHTML = c.h3P;
+    $('#trustUl').innerHTML = c.trust.map(x => `<li>${VS.I.check}<span>${x}</span></li>`).join('');
+  }
+
+  function renderCats() {
+    const all = ALL.filter(matchQ);
+    $('#cats').innerHTML = CATS.map(c => {
+      const list = c.slug === 'all' ? all : all.filter(p => p.cat === c.slug);
+      const img = list[0] && list[0].img;
+      return `<button type="button" class="cat${S.cat === c.slug ? ' is-active' : ''}" role="tab" aria-selected="${S.cat === c.slug}" data-cat="${c.slug}">
+        <span class="cat__img">${c.slug === 'all' ? VS.I.grid : (img ? `<img src="${esc(img)}" alt="" loading="lazy">` : VS.I.box)}</span>
+        <span><strong>${catName(c)}</strong><small>${t('items')(list.length)}</small></span>
+      </button>`;
+    }).join('');
+  }
+
+  function filterHtml() {
+    const c = T[lang]; const b = base();
+    const typeC = counts(filtered('type'), 'type'), wC = counts(filtered('w'), 'w'), finC = counts(filtered('finish'), 'finish');
+    const allTypes = TYPE_ORDER.filter(x => b.some(p => p.type === x));
+    const allW = [...new Set(b.map(p => p.w).filter(Boolean))].sort((a, z) => wNum(a) - wNum(z));
+    const allFin = [...new Set(b.map(p => p.finish).filter(Boolean))];
+    const group = (id, title, n, body) => `<details class="fg" open><summary>${title}${n ? `<span class="n">${n}</span>` : ''}${VS.I.chevron}</summary><div class="fg__body">${body}</div></details>`;
+    const opt = (key, v, n, label, extra = '') => `<label class="fopt${n ? '' : ' is-zero'}"><span class="check"><input type="checkbox" data-f="${key}" value="${esc(v)}" ${S[key].has(v) ? 'checked' : ''}><span class="check__box">${VS.I.check}</span></span>${extra}<span class="l">${esc(label)}</span><em>${n || 0}</em></label>`;
+    let html = '';
+    if (allTypes.length > 1) html += group('type', c.type, S.type.size, allTypes.map(x => opt('type', x, typeC[x], typeName(x))).join(''));
+    if (allW.length > 1) html += group('w', c.width, S.w.size, `<div class="fchips">${allW.map(w => `<label class="${wC[w] ? '' : 'is-zero'}"><input type="checkbox" data-f="w" value="${esc(w)}" ${S.w.has(w) ? 'checked' : ''}><span>${esc(c.inches(w))}</span></label>`).join('')}</div>`);
+    if (allFin.length > 1) html += group('finish', c.finish, S.finish.size, allFin.map(f => opt('finish', f, finC[f], f, `<span class="sw" style="background:${esc(SWATCH[f] || '#ddd')}"></span>`)).join(''));
+    html += group('price', c.price, S.min || S.max ? 1 : 0, `<div class="price-row">
+      <span class="control"><span class="control__prefix">$</span><input type="number" inputmode="decimal" min="0" placeholder="${c.min}" data-price="min" value="${S.min || ''}" aria-label="${c.min}"></span><span class="dash">–</span>
+      <span class="control"><span class="control__prefix">$</span><input type="number" inputmode="decimal" min="0" placeholder="${c.max}" data-price="max" value="${S.max || ''}" aria-label="${c.max}"></span></div>
+      <button type="button" class="btn btn--secondary btn--sm price-apply" data-price-apply>${c.apply}</button>`);
+    return html;
+  }
+  function renderFilters() {
+    $('#filterBody').innerHTML = filterHtml();
+    if (!$('#drawer').classList.contains('hidden')) $('#drawerBody').innerHTML = filterHtml();
+    const n = activeCount();
+    $('#clearAll').disabled = !n && !S.q;
+    $('#filtersN').classList.toggle('hidden', !n); $('#filtersN').textContent = n;
+  }
+
+  function chipsHtml() {
+    const c = T[lang]; const out = [];
+    const chip = (label, key, v) => `<button type="button" data-rm="${esc(key)}" data-v="${esc(v || '')}"><span>${esc(label)}</span>${VS.I.close}</button>`;
+    if (S.q) out.push(chip(c.search(S.q), 'q'));
+    S.type.forEach(x => out.push(chip(typeName(x), 'type', x)));
+    S.w.forEach(x => out.push(chip(c.inches(x), 'w', x)));
+    S.finish.forEach(x => out.push(chip(x, 'finish', x)));
+    if (S.min || S.max) out.push(chip(c.priceF(S.min * 100, S.max * 100), 'price'));
+    if (out.length) out.push(`<button type="button" class="link-btn" data-rm="all">${c.clearAll}</button>`);
+    return out.join('');
+  }
+
+  function cardHtml(p, saved) {
+    const c = T[lang]; const cat = CATS.find(x => x.slug === p.cat);
+    const url = SITE + (L() ? '/fr' : '') + '/products/' + encodeURIComponent(p.slug) + '/?sku=' + encodeURIComponent(p.sku);
+    const stock = p.cat === 'bathroom-vanities' && p.cents >= 100000 ? `<span class="chip chip--navy">${c.made}</span>` : `<span class="chip chip--green">${c.inStock}</span><span>${c.ships}</span>`;
+    return `<article class="pc" data-sku="${esc(p.sku)}">
+      <a class="pc__img" href="${esc(url)}" tabindex="-1" aria-hidden="true"><img src="${esc(p.img)}" alt="" loading="lazy"></a>
+      <button type="button" class="pc__save${saved.has(p.sku) ? ' is-on' : ''}" data-save="${esc(p.sku)}" aria-label="${esc(c.save)}" aria-pressed="${saved.has(p.sku)}">${VS.I.heart}</button>
+      <div class="pc__body">
+        <span class="pc__eyebrow">${esc(cat ? catName(cat) : p.cat)}${p.type && p.type !== 'Handles' ? ` · ${esc(typeName(p.type))}` : ''}</span>
+        <a class="pc__name" href="${esc(url)}">${esc(p.name)}</a>
+        <span class="pc__spec">${esc([p.dims, p.finish].filter(Boolean).join(' · '))}</span>
+        <span class="pc__sku">SKU ${esc(p.sku)}</span>
+        <div class="pc__price"><b>${money(p.cents)}</b><small>${c.each}</small></div>
+        <div class="pc__stock">${stock}</div>
+        <div class="pc__act">
+          <button type="button" class="btn btn--secondary btn--sm" data-add="${esc(p.sku)}"><span class="btn__icon">${VS.I.plus}</span>${c.add}</button>
+          <a class="btn btn--ghost btn--sm" href="${esc(url)}" aria-label="${esc(c.details)}: ${esc(p.name)}">${VS.I.chevron}</a>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function renderResults() {
+    const c = T[lang]; const list = sorted(filtered()); const n = list.length;
+    const pages = Math.max(1, Math.ceil(n / PAGE)); if (S.page > pages) S.page = pages;
+    const a = (S.page - 1) * PAGE, slice = list.slice(a, a + PAGE);
+    $('#count').innerHTML = n > PAGE ? c.showing(a + 1, a + slice.length, n) : c.showingOne(n);
+    $('#activeF').innerHTML = chipsHtml();
+    const saved = savedSet();
+    $('#grid').innerHTML = slice.map(p => cardHtml(p, saved)).join('');
+    $('#grid').classList.toggle('is-list', S.view === 'list');
+    $$('.view button').forEach(b => { const on = b.dataset.view === S.view; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', String(on)); });
+    $('#emptyCard').classList.toggle('hidden', n > 0);
+    $('#grid').classList.toggle('hidden', n === 0);
+    /* pager */
+    const pg = $('#pager'); pg.classList.toggle('hidden', pages <= 1);
+    if (pages > 1) {
+      const nums = []; for (let i = 1; i <= pages; i++) if (i === 1 || i === pages || Math.abs(i - S.page) <= 1) nums.push(i); else if (nums[nums.length - 1] !== '…') nums.push('…');
+      pg.innerHTML = `<span>${c.page(S.page, pages)}</span><div class="pager__pages">
+        <button type="button" data-page="${S.page - 1}" ${S.page === 1 ? 'disabled' : ''} aria-label="${c.prev}"><span style="display:inline-flex;transform:rotate(180deg)">${VS.I.chevron}</span></button>
+        ${nums.map(x => x === '…' ? `<span class="ell">…</span>` : `<button type="button" data-page="${x}" class="${x === S.page ? 'is-active' : ''}"${x === S.page ? ' aria-current="page"' : ''}>${x}</button>`).join('')}
+        <button type="button" data-page="${S.page + 1}" ${S.page === pages ? 'disabled' : ''} aria-label="${c.next}">${VS.I.chevron}</button></div>`;
+    }
+    writeUrl();
+  }
+  function renderAll() { renderStatic(); renderCats(); renderFilters(); renderResults(); }
+  function update({ resetPage = true } = {}) { if (resetPage) S.page = 1; renderCats(); renderFilters(); renderResults(); }
+
+  /* ---------------- events ---------------- */
+  $('#cats').addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; S.cat = b.dataset.cat; S.type.clear(); S.w.clear(); S.finish.clear(); update(); });
+  function onFilterChange(e) {
+    const i = e.target.closest('input[data-f]'); if (!i) return;
+    const set = S[i.dataset.f]; i.checked ? set.add(i.value) : set.delete(i.value); update();
+  }
+  function onFilterClick(e) {
+    if (!e.target.closest('[data-price-apply]')) return;
+    const root = e.currentTarget;
+    S.min = Math.max(0, Number(root.querySelector('[data-price="min"]').value) || 0);
+    S.max = Math.max(0, Number(root.querySelector('[data-price="max"]').value) || 0);
+    if (S.min && S.max && S.min > S.max) [S.min, S.max] = [S.max, S.min];
+    update();
+  }
+  ['#filterBody', '#drawerBody'].forEach(s => { $(s).addEventListener('change', onFilterChange); $(s).addEventListener('click', onFilterClick); $(s).addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('[data-price]')) { e.preventDefault(); e.target.closest('.fg__body').querySelector('[data-price-apply]').click(); } }); });
+  function clearAll() { S.type.clear(); S.w.clear(); S.finish.clear(); S.min = S.max = 0; S.q = ''; const hs = document.querySelector('.search-box input'); if (hs) hs.value = ''; update(); }
+  $('#clearAll').addEventListener('click', clearAll); $('#drawerClear').addEventListener('click', clearAll); $('#emptyClear').addEventListener('click', clearAll);
+  $('#activeF').addEventListener('click', e => {
+    const b = e.target.closest('[data-rm]'); if (!b) return; const k = b.dataset.rm;
+    if (k === 'all') return clearAll();
+    if (k === 'q') { S.q = ''; const hs = document.querySelector('.search-box input'); if (hs) hs.value = ''; }
+    else if (k === 'price') S.min = S.max = 0;
+    else S[k].delete(b.dataset.v);
+    update();
+  });
+  $('#sort').addEventListener('change', e => { S.sort = e.target.value; update(); });
+  $$('.view button').forEach(b => b.addEventListener('click', () => { S.view = b.dataset.view; localStorage.setItem('vs.plp.view', S.view); renderResults(); }));
+  $('#pager').addEventListener('click', e => { const b = e.target.closest('[data-page]'); if (!b || b.disabled) return; S.page = Number(b.dataset.page); renderResults(); $('#main').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $('#grid').addEventListener('click', e => {
+    const add = e.target.closest('[data-add]'); if (add) { const p = ALL.find(x => x.sku === add.dataset.add); if (p) addToCart(p); return; }
+    const sv = e.target.closest('[data-save]'); if (sv) toggleSaved(sv.dataset.save, sv);
+  });
+  /* mobile drawer */
+  $('#filtersOpen').addEventListener('click', () => { $('#drawerBody').innerHTML = filterHtml(); $('#drawer').classList.remove('hidden'); });
+  $('#drawer').addEventListener('click', e => { if (e.target.closest('[data-close]') || e.target === $('#drawer')) $('#drawer').classList.add('hidden'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#drawer').classList.add('hidden'); });
+  $('#dealerChange').addEventListener('click', e => { e.preventDefault(); VS.toast(L() ? 'Le choix du détaillant se fait dans l’en-tête (Dealer) — prototype' : 'Dealer is chosen from the header (Dealer menu) — prototype'); });
+
+  /* header search filters this page instead of leaving it */
+  function bindHeaderSearch() {
+    const f = document.querySelector('.search-box'); if (!f) return;
+    const i = f.querySelector('input'); i.value = S.q;
+    f.addEventListener('submit', e => { e.preventDefault(); S.q = i.value.trim(); update(); $('#main').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    let tm; i.addEventListener('input', () => { clearTimeout(tm); tm = setTimeout(() => { if (i.value.trim() !== S.q) { S.q = i.value.trim(); update(); } }, 250); });
+  }
+  /* header language toggle */
+  document.addEventListener('click', e => { const b = e.target.closest('button[data-lang]'); if (!b) return; lang = b.dataset.lang === 'fr' ? 'fr' : 'en'; document.documentElement.lang = L() ? 'fr-CA' : 'en-CA'; renderAll(); });
+
+  readUrl();
+  document.documentElement.lang = L() ? 'fr-CA' : 'en-CA';
+  renderAll();
+  bindHeaderSearch();
+})();
+</script>
+</body>
+</html>

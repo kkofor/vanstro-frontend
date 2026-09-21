@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    command:
+      - postgres
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=test ! -f /backups/wal/%f && cp %p /backups/wal/%f
+      - -c
+      - archive_timeout=1800
+      - -c
+      - wal_level=replica
+    env_file: ${VANSTRO_PRODUCTION_ENV_FILE:-.env.production}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vanstro_production}
+      POSTGRES_USER: ${POSTGRES_USER:-vanstro}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+      - production_postgres_backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "127.0.0.1:15434:5432"
+
+  migrate:
+    image: vanstro-production-backend:latest
+    command: ["node", "packages/db/dist/migrate-production.js"]
+    env_file: ${VANSTRO_PRODUCTION_ENV_FILE:-.env.production}
+    environment:
+      VANSTRO_RUNTIME_MODE: deployment
+      ALLOW_PRODUCTION_MIGRATION: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    image: vanstro-production-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    command: ["node", "apps/api/dist/index.js"]
+    env_file: ${VANSTRO_PRODUCTION_ENV_FILE:-.env.production}
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 30s
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:4000:4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/health/ready').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  worker:
+    image: vanstro-production-backend:latest
+    command: ["node", "apps/worker/dist/index.js"]
+    env_file: ${VANSTRO_PRODUCTION_ENV_FILE:-.env.production}
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  production_postgres_data:
+  production_postgres_backups:

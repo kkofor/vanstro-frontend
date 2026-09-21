@@ -1,0 +1,3396 @@
+{
+  "schemaVersion": 2,
+  "suiteId": "vanstro.dashboard.authenticated-desktop-journey.v1",
+  "testedCommit": "7352a8d58c20642878bccc141d22ed9b21a34403",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "definitionSha256": "38843d040aa7d372fae087346ade0e7a329dc98ccbc74040c433a03d427df55a",
+  "fixtureSha256": "47ffc82773167e467b68bcc56465288c5efa38fb24bf763721bb84cd9d5fc015",
+  "harnessSha256": "e983af179492ffac9e2ddf892ed1fe125c4165fe547bce9cfcf2db5ee0b09f1e",
+  "runnerSha256": "a021536b3fc58490d5aa7737a5eb0c0f3c2e5d39055ab3a3e6493d21ca25c6ee",
+  "counts": {
+    "pass": 11,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "DESK-A01",
+      "name": "Login establishes the fixture session",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/account/",
+      "interactions": [
+        "navigate account login",
+        "fill email/password",
+        "click Sign in"
+      ],
+      "visibleAssertions": [
+        "login route redirected to authenticated account",
+        "login response 200",
+        "post-login session projection 200"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.991775625,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992213,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992535916,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.075343916,
+          "method": "POST",
+          "url": "http://127.0.0.1:4491/api/v1/auth/login",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.088230375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.0884445,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.088579583,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.536093916,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.537188166,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/addresses",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.537453875,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/orders?page=1&pageSize=3",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.538334166,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.538605791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/addresses",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251683.538842791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/orders?page=1&pageSize=3",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.991897,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992329375,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992603833,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "expectedConsoleErrors": [
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.991897,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/cart",
+          "status": 401,
+          "reasonCode": "anonymous-bootstrap"
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992329375,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/account/favorites",
+          "status": 401,
+          "reasonCode": "anonymous-bootstrap"
+        },
+        {
+          "caseId": "DESK-A01",
+          "generation": 1,
+          "observedAtMonotonic": 251682.992603833,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/auth/me",
+          "status": 401,
+          "reasonCode": "anonymous-bootstrap"
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [],
+      "expectedFailedRequests": [],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A01.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A02",
+      "name": "Foundation renders Shell actor and modules",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard",
+      "interactions": [
+        "navigate Dashboard root"
+      ],
+      "visibleAssertions": [
+        "Shell visible",
+        "actor Cross F1 QA visible",
+        "module navigation visible"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.184513875,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.185566625,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.185941291,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.186206208,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.186794791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.227150708,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251685.227788875,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251684.669624,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A02",
+          "generation": 2,
+          "observedAtMonotonic": 251684.669624,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "next-dev-hot-update-superseded"
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A02.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A03",
+      "name": "Authorization loads without contract failure",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard",
+      "interactions": [
+        "reload authenticated Dashboard"
+      ],
+      "visibleAssertions": [
+        "authorization response 200",
+        "no authorization contract error"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.866136041,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.866999083,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.867290958,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.867501916,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.867873375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.894600333,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A03",
+          "generation": 3,
+          "observedAtMonotonic": 251685.895092958,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [],
+      "expectedFailedRequests": [],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A03.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A04",
+      "name": "Operations and Readiness load successful responses",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/runtime?view=readiness",
+      "interactions": [
+        "navigate Operations Readiness"
+      ],
+      "visibleAssertions": [
+        "Readiness panel visible",
+        "system ready state visible",
+        "detail endpoint 200"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.973904166,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.974339416,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.974569833,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.974798333,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.975088416,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251687.007910458,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.471739208,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/2734ee77c1e363b5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251687.007307666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251686.471739208,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/2734ee77c1e363b5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "next-dev-hot-update-superseded"
+        },
+        {
+          "caseId": "DESK-A04",
+          "generation": 4,
+          "observedAtMonotonic": 251687.007307666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-request-superseded",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+            "status": 200,
+            "generation": 4
+          }
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A04.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A05",
+      "name": "Jobs list and detail load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=jobs",
+      "interactions": [
+        "navigate Jobs list",
+        "click first 查看",
+        "close Job detail"
+      ],
+      "visibleAssertions": [
+        "Job ID visible",
+        "type visible",
+        "status visible",
+        "detail endpoint 200",
+        "list remains usable"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.596707416,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.597113041,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.597403791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.597632375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.598111583,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.63527125,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.63596,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.636572375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.726220791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/123e4567-e89b-42d3-a456-426614174010?queryVersion=common-query.v1",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.634944583,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A05",
+          "generation": 5,
+          "observedAtMonotonic": 251688.634944583,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-request-superseded",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+            "status": 200,
+            "generation": 5
+          }
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A05.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A06",
+      "name": "Work Queue list loads",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=work-queue",
+      "interactions": [
+        "navigate Work Queue"
+      ],
+      "visibleAssertions": [
+        "fixture item visible",
+        "list/adapters 200",
+        "no mutation executed"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.446679458,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.447212125,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.447541958,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.447894083,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.448370958,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.492115,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.492599291,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.493454291,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A06",
+          "generation": 6,
+          "observedAtMonotonic": 251689.494580458,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [],
+      "expectedFailedRequests": [],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A06.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A07",
+      "name": "Notifications list loads",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=notifications",
+      "interactions": [
+        "navigate Notifications"
+      ],
+      "visibleAssertions": [
+        "fixture notification visible",
+        "list endpoint 200",
+        "no mark-read mutation"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.130939666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.131319541,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.13158475,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.131827958,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.132133291,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.162841,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A07",
+          "generation": 7,
+          "observedAtMonotonic": 251690.163166,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [],
+      "expectedFailedRequests": [],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A07.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A08",
+      "name": "Media list and safe detail path load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/media",
+      "interactions": [
+        "navigate Media list",
+        "click fixture Asset detail",
+        "close Media detail"
+      ],
+      "visibleAssertions": [
+        "safe display name visible",
+        "Asset ID visible",
+        "global scope visible",
+        "detail endpoint 200",
+        "no storage/provider mutation",
+        "no secret/storage path"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.471809833,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.472613791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.472937166,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.47322675,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.4735075,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.514485416,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.514631791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.515061083,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.515861791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.585187625,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.598107041,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030/usages",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.598429666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030/usages",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251690.974259541,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/3a9722fcac66b400.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.514693791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.51474125,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251690.974259541,
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/3a9722fcac66b400.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "next-dev-hot-update-superseded"
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.514693791,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-request-superseded",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+            "status": 200,
+            "generation": 8
+          }
+        },
+        {
+          "caseId": "DESK-A08",
+          "generation": 8,
+          "observedAtMonotonic": 251691.51474125,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-request-superseded",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+            "status": 200,
+            "generation": 8
+          }
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A08.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A09",
+      "name": "Audit list and detail load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/audit",
+      "interactions": [
+        "navigate Audit list",
+        "click first 查看",
+        "close Audit detail"
+      ],
+      "visibleAssertions": [
+        "event ID visible",
+        "action/resource/result/request ID visible",
+        "detail endpoint 200"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.304143875,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.304534375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.304942541,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.305184916,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.305411916,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.343070125,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.427973,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs/123e4567-e89b-42d3-a456-426614174040?queryVersion=common-query.v1",
+          "status": 200
+        }
+      ],
+      "rawConsoleErrors": [],
+      "expectedConsoleErrors": [],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.339711666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A09",
+          "generation": 9,
+          "observedAtMonotonic": 251692.339711666,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-request-superseded",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+            "status": 200,
+            "generation": 9
+          }
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A09.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A10",
+      "name": "Logout succeeds",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/audit",
+      "interactions": [
+        "POST logout",
+        "dispatch logged-out session event"
+      ],
+      "visibleAssertions": [
+        "logout endpoint 200",
+        "session invalidation event dispatched"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A10",
+          "generation": 10,
+          "observedAtMonotonic": 251692.606897041,
+          "method": "POST",
+          "url": "http://127.0.0.1:4491/api/v1/auth/logout",
+          "status": 200
+        },
+        {
+          "caseId": "DESK-A10",
+          "generation": 10,
+          "observedAtMonotonic": 251692.607936,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 401
+        }
+      ],
+      "rawConsoleErrors": [
+        {
+          "caseId": "DESK-A10",
+          "generation": 10,
+          "observedAtMonotonic": 251692.607998541,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "expectedConsoleErrors": [
+        {
+          "caseId": "DESK-A10",
+          "generation": 10,
+          "observedAtMonotonic": 251692.607998541,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/auth/me",
+          "status": 401,
+          "reasonCode": "logout-session-revalidation"
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [],
+      "expectedFailedRequests": [],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A10.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A11",
+      "name": "Post-logout Dashboard cannot retain authenticated content",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/",
+      "interactions": [
+        "navigate protected Dashboard after logout"
+      ],
+      "visibleAssertions": [
+        "Foundation expected 401",
+        "authenticated actor absent",
+        "no Jobs/Media/Audit success after logout"
+      ],
+      "apiRequestsResponses": [
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.456290041,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474428041,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/cart",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.47479475,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474993083,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.487746375,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 401
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.488131083,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/auth/me",
+          "status": 401
+        }
+      ],
+      "rawConsoleErrors": [
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.456369208,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474487833,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474858041,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.475083375,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.4878775,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.488197166,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "expectedConsoleErrors": [
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.456369208,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/dashboard/foundation",
+          "status": 401,
+          "reasonCode": "post-logout-protected-endpoint"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474487833,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/cart",
+          "status": 401,
+          "reasonCode": "post-logout-optional-account-bootstrap"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.474858041,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/account/favorites",
+          "status": 401,
+          "reasonCode": "post-logout-optional-account-bootstrap"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.475083375,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/auth/me",
+          "status": 401,
+          "reasonCode": "post-logout-session-projection"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.4878775,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/auth/me",
+          "status": 401,
+          "reasonCode": "post-logout-session-projection"
+        },
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.488197166,
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+          "method": "GET",
+          "path": "/api/v1/auth/me",
+          "status": 401,
+          "reasonCode": "post-logout-session-projection"
+        }
+      ],
+      "unexpectedConsoleErrors": [],
+      "rawFailedRequests": [
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.510286833,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "expectedFailedRequests": [
+        {
+          "caseId": "DESK-A11",
+          "generation": 11,
+          "observedAtMonotonic": 251693.510286833,
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "error": "net::ERR_ABORTED",
+          "reasonCode": "same-case-post-logout-terminal-response",
+          "supersededBy": {
+            "method": "GET",
+            "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+            "status": 401,
+            "generation": 11
+          }
+        }
+      ],
+      "unexpectedFailedRequests": [],
+      "screenshot": "evidence-v2/screenshots/DESK-A11.png",
+      "environment": "controlled-local-fixture"
+    }
+  ],
+  "rawEvidence": {
+    "consoleErrors": [
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.991897,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992329375,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992603833,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A10",
+        "generation": 10,
+        "observedAtMonotonic": 251692.607998541,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.456369208,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474487833,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474858041,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.475083375,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.4878775,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.488197166,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      }
+    ],
+    "failedRequests": [
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.669624,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.471739208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/2734ee77c1e363b5.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251687.007307666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.634944583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.974259541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/3a9722fcac66b400.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.514693791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.51474125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.339711666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.510286833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "responses": [
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.369997958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/account/login",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.403564166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/account/login/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.411046208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.411344416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/generated/support-agent-v1-192.webp",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.4115775,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894457353",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.420690375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894457353",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.437137708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.43747325,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.512724,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/account/login/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.513296416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.704376125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894457353",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.991775625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992213,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992535916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.075343916,
+        "method": "POST",
+        "url": "http://127.0.0.1:4491/api/v1/auth/login",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.088230375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.0884445,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.088579583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.435667125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/account/?_rsc=N1yRxwEy46VHE5U_",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.444960166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/df1f3485fa15d923.webpack.hot-update.json",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.447193541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/webpack.df1f3485fa15d923.hot-update.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.460823791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/account/?_rsc=ivGPYOBxIOB8CFz0",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.471312416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894458432",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.488531458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/account/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.536093916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.537188166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/addresses",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.537453875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/orders?page=1&pageSize=3",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.538334166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.538605791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/addresses",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251683.538842791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/orders?page=1&pageSize=3",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.0349115,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.668323,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.681236166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/page.css?v=1785894459521",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.682524375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894459521",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.682768833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.693353666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.693991041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894459521",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.694420958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.769807166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.961429041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894459521",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.184513875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.185566625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.185941291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.186206208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.186794791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.200646583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.227150708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251685.227788875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.34146925,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.360299875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.364733875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/page.css?v=1785894460324",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.365446666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894460324",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.367496625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.367875083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.3681265,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.370902083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/page.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.378584708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894460324",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.6691275,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894460324",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.866136041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.866999083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.867290958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.867501916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.867873375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.894387166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.894600333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A03",
+        "generation": 3,
+        "observedAtMonotonic": 251685.895092958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/overview",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.021853541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/runtime?view=readiness",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.47054325,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/runtime/?view=readiness",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.475612708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/runtime/page.css?v=1785894461332",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.476998458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894461332",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.477381583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.477925166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.478155375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.480829208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894461332",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.562399541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/runtime/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.760087083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894461332",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.973904166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.974339416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.974569833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.974798333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.975088416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.985389208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251687.007910458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251687.130956125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations?view=jobs",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251687.572477041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/aa95f956d364f89b.webpack.hot-update.json",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251687.574431791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/webpack.aa95f956d364f89b.hot-update.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.059054041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations/?view=jobs",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.065836166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/%5Bsection%5D/page.css?v=1785894462911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.06618375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.066700083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.067194375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894462911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.06743575,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.0695445,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894462911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.154950416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/%5Bsection%5D/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.377533208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894462911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.596707416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.597113041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.597403791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.597632375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.598111583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.63462,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.63527125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.63596,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.636572375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.726220791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/123e4567-e89b-42d3-a456-426614174010?queryVersion=common-query.v1",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.924398291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations?view=work-queue",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.950633416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations/?view=work-queue",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.955741708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/%5Bsection%5D/page.css?v=1785894463911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.959682208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894463911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.959972708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.960232125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.960581708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.960878041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/%5Bsection%5D/page.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251688.965376458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894463911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.242774208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894463911",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.446679458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.447212125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.447541958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.447894083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.448370958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.461099916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.492115,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.492599291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.493454291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A06",
+        "generation": 6,
+        "observedAtMonotonic": 251689.494580458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.61473675,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations?view=notifications",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.640242291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/operations/?view=notifications",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.647268208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/%5Bsection%5D/page.css?v=1785894464600",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.647576375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894464600",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.647786791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.647949708,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.648213083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.648542541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/%5Bsection%5D/page.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.650246291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894464600",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251689.934985375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894464600",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.130939666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.131319541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.13158475,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.131827958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.132133291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.139069375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.162841,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A07",
+        "generation": 7,
+        "observedAtMonotonic": 251690.163166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.468222958,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/media",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.973331125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/media/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.980860208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/media/page.css?v=1785894465838",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.9814,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894465838",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.982032583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.982905291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.98390275,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.98693,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894465838",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.063800875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/media/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.254050791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894465838",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.471809833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.472613791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.472937166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.47322675,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.4735075,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.487274,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.514485416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.514631791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.515061083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.515861791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.585187625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.598107041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030/usages",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.598429666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/123e4567-e89b-42d3-a456-426614174030/usages",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.731632083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/audit",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.769088625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/audit/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.774936333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/%5Bsection%5D/page.css?v=1785894466728",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.776101166,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894466728",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.776594333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.7771275,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.777888416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.778827416,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/%5Bsection%5D/page.js",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251691.782250333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894466728",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.10261625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894466728",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.304143875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.304534375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.304942541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.305184916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.305411916,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.312419333,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.343070125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.427973,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs/123e4567-e89b-42d3-a456-426614174040?queryVersion=common-query.v1",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A10",
+        "generation": 10,
+        "observedAtMonotonic": 251692.606897041,
+        "method": "POST",
+        "url": "http://127.0.0.1:4491/api/v1/auth/logout",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A10",
+        "generation": 10,
+        "observedAtMonotonic": 251692.607936,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.9434525,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard",
+        "status": 308
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.989824666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/dashboard/",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.994059666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/dashboard/page.css?v=1785894467952",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.995765125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/css/app/layout.css?v=1785894467952",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.997265833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app-pages-internals.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251692.997644083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/not-found.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.002145291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/webpack.js?v=1785894467952",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.006923458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/layout.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.013040875,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/app/dashboard/page.js",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.266506291,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/chunks/main-app.js?v=1785894467952",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.456290041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474203625,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/vanstro-logo.png",
+        "status": 304
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474428041,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/cart",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.47479475,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/account/favorites",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474993083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.480274458,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/assets/generated/support-agent-v1-192.webp",
+        "status": 200
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.487746375,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 401
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.488131083,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/auth/me",
+        "status": 401
+      }
+    ]
+  },
+  "expectedEvidence": {
+    "consoleErrors": [
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.991897,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/cart",
+        "status": 401,
+        "reasonCode": "anonymous-bootstrap"
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992329375,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/account/favorites",
+        "status": 401,
+        "reasonCode": "anonymous-bootstrap"
+      },
+      {
+        "caseId": "DESK-A01",
+        "generation": 1,
+        "observedAtMonotonic": 251682.992603833,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "status": 401,
+        "reasonCode": "anonymous-bootstrap"
+      },
+      {
+        "caseId": "DESK-A10",
+        "generation": 10,
+        "observedAtMonotonic": 251692.607998541,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "status": 401,
+        "reasonCode": "logout-session-revalidation"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.456369208,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/dashboard/foundation",
+        "status": 401,
+        "reasonCode": "post-logout-protected-endpoint"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474487833,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/cart",
+        "status": 401,
+        "reasonCode": "post-logout-optional-account-bootstrap"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.474858041,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/account/favorites",
+        "status": 401,
+        "reasonCode": "post-logout-optional-account-bootstrap"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.475083375,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "status": 401,
+        "reasonCode": "post-logout-session-projection"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.4878775,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "status": 401,
+        "reasonCode": "post-logout-session-projection"
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.488197166,
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "status": 401,
+        "reasonCode": "post-logout-session-projection"
+      }
+    ],
+    "failedRequests": [
+      {
+        "caseId": "DESK-A02",
+        "generation": 2,
+        "observedAtMonotonic": 251684.669624,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "next-dev-hot-update-superseded"
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251686.471739208,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/2734ee77c1e363b5.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "next-dev-hot-update-superseded"
+      },
+      {
+        "caseId": "DESK-A04",
+        "generation": 4,
+        "observedAtMonotonic": 251687.007307666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-request-superseded",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "status": 200,
+          "generation": 4
+        }
+      },
+      {
+        "caseId": "DESK-A05",
+        "generation": 5,
+        "observedAtMonotonic": 251688.634944583,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-request-superseded",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "status": 200,
+          "generation": 5
+        }
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251690.974259541,
+        "method": "GET",
+        "url": "http://127.0.0.1:4490/_next/static/webpack/3a9722fcac66b400.webpack.hot-update.json",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "next-dev-hot-update-superseded"
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.514693791,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-request-superseded",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200,
+          "generation": 8
+        }
+      },
+      {
+        "caseId": "DESK-A08",
+        "generation": 8,
+        "observedAtMonotonic": 251691.51474125,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-request-superseded",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "status": 200,
+          "generation": 8
+        }
+      },
+      {
+        "caseId": "DESK-A09",
+        "generation": 9,
+        "observedAtMonotonic": 251692.339711666,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-request-superseded",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "status": 200,
+          "generation": 9
+        }
+      },
+      {
+        "caseId": "DESK-A11",
+        "generation": 11,
+        "observedAtMonotonic": 251693.510286833,
+        "method": "GET",
+        "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+        "error": "net::ERR_ABORTED",
+        "reasonCode": "same-case-post-logout-terminal-response",
+        "supersededBy": {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 401,
+          "generation": 11
+        }
+      }
+    ]
+  },
+  "unexpectedEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  },
+  "startStop": {
+    "started": true,
+    "cleanupAttempted": true,
+    "ownedPidsTerminated": true,
+    "portsClosed": true
+  },
+  "cleanup": {
+    "started": true,
+    "cleanupAttempted": true,
+    "ownedPidsTerminated": true,
+    "portsClosed": true
+  },
+  "resultSha256": "918b2f9f99272b6584ca2e1441706df1438244634ef0529747a93fa457fd76b7"
+}

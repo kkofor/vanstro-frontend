@@ -22,14 +22,14 @@ This document maps each visible frontend module to the future backend/dashboard 
 | Catalog listing | `/products` | `productsWithCommerce` | `/products`, `/products/commerce`, `/products/inventory` | Needs backend |
 | PDP detail | `/products/[slug]` | `getProductBySlug` mock wrapper | `/products/{productId}` | Client-ready |
 | PDP variants/media | Gallery, finish selector, SKU/model | `finishOptions` | product detail payload plus assets endpoint | Client-ready |
-| PDP reviews | Reviews and write-review modal | `ProductReviewSection.tsx` | `/products/{productId}/reviews`, moderation endpoint | Reserved |
+| PDP reviews | Reviews and write-review modal | `ProductReviewSection.tsx` | `/products/{productId}/reviews`, moderation endpoint | Implemented (public submit/list; moderation workflow pending) |
 | Cart | Cart page and add-to-cart drawer | `StorefrontProvider` localStorage | `/cart`, `/cart/items` | Reserved |
 | Checkout | `/checkout` | localStorage demo order | `/orders/cart`, `/payments/sessions`, `/inventory/reservations` | Needs backend |
 | Orders | `/orders/[id]` | localStorage and demo order | `/orders/{id}`, dealer assignment | Needs backend |
 | Dealer selector | Header and PDP dealer selection | `mock-data.ts` dealers | `/dealers`, postal-code resolver | Reserved |
 | Dealer program | `/dealer-program` | static page | `/dashboard/modules/dealerProgram` | Reserved |
-| Dealer application | `/dealers/apply` | external form action via `FORM_ENDPOINTS` | `/dealer-applications` | Reserved |
-| Contact/support lead | `/contact` | external form action and support button | `/contact/leads` | Reserved |
+| Dealer application | `/dealers/apply` | `FORM_ENDPOINTS` API submission | `/dealer-applications` | Implemented |
+| Contact/support lead | `/contact` | `FORM_ENDPOINTS` API submission and support button | `/contact/leads` | Implemented |
 | Articles/resources | `/articles`, `/articles/[slug]` | `mock-data.ts` articles | `/home/articles`, `/articles/{id}` | Reserved |
 | Legal/policy pages | `/privacy`, `/terms`, `/return-policy`, etc. | `content/legalPages.ts` | `/dashboard/legal-pages` | Reserved |
 | Footer/social | Global footer | `SiteFooter.tsx` | `/dashboard/footer` | Reserved |
@@ -47,6 +47,11 @@ This document maps each visible frontend module to the future backend/dashboard 
 - Gated Tiledesk third-party script behind functional cookie consent while keeping the custom support widget available.
 - Hardened localStorage reads/writes for cookie and storefront state.
 - Added dashboard contract types and API client methods for future admin/backend work.
+
+## Infrastructure Boundary
+
+- Public submission routes use the application rate-limit middleware where configured. A production-grade distributed limiter is an external infrastructure concern and requires a deployment-provided shared store or gateway policy; this repository intentionally does not invent an in-process Redis dependency.
+- Checkout currently calculates tax as a hard-coded 5% of subtotal and delivery as a hard-coded CAD 15.00 (`apps/api/src/routes/commerce.ts`). These are temporary business-confirmation external boundaries, not approved tax or delivery policy. Replace them only after the business supplies authoritative jurisdiction, tax, dealer, delivery-zone, and pricing rules; this repository intentionally does not invent those rules.
 
 ## Remaining Backend Work
 

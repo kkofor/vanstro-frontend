@@ -1,0 +1,31 @@
+{
+  "suiteId": "vanstro.s09.settings.desktop.v1",
+  "viewport": { "width": 1440, "height": 1000 },
+  "scope": "S09 Auth/RBAC settings desktop acceptance against the frozen S09 contract (descriptor settings.auth-rbac)",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    { "id": "S09-01", "name": "Login establishes an admin session", "expectation": "login succeeds and the S09 settings panel renders" },
+    { "id": "S09-02", "name": "S09 page is available", "expectation": "/dashboard/settings/auth-rbac renders 认证与 RBAC 设置 with the settings.auth-rbac.v1 descriptor" },
+    { "id": "S09-03", "name": "Fresh fixture shows compiled defaults", "expectation": "effective policy shows 12 / 30 / 10080 minutes with compiled_default projection and no publications" },
+    { "id": "S09-04", "name": "Read-only actor sees no write controls", "expectation": "read-only profile renders no 创建草稿 control and no publish capability" },
+    { "id": "S09-05", "name": "Create a structurally valid draft succeeds", "expectation": "a draft with sessionLifetimeMinutes 60 is accepted and listed" },
+    { "id": "S09-06", "name": "Out-of-range value is rejected with a field error", "expectation": "minimumLength 8 shows a field error and no draft is created" },
+    { "id": "S09-07", "name": "Validate the draft as validated", "expectation": "validate reports 验证通过 with no blockers" },
+    { "id": "S09-08", "name": "Safe diff shows the exact public value change", "expectation": "diff lists sessionPolicy.sessionLifetimeMinutes 10080 -> 60 with public sensitivity and zero secrets" },
+    { "id": "S09-09", "name": "Publish executes and returns a generation", "expectation": "publish succeeds with a positive generation and readiness reports the published generation" },
+    { "id": "S09-10", "name": "Published policy is effective and consumer-ready", "expectation": "overview shows projectionState published with sessionLifetimeMinutes 60 and readiness consumerGeneration equals publishedGeneration" },
+    { "id": "S09-11", "name": "History is append-only with original publication facts", "expectation": "published entries keep their original auditEventId" },
+    { "id": "S09-12", "name": "Rollback creates a new draft from the current publication", "expectation": "rollback-draft returns a rollback_draft with rollbackOfPublicationId set" },
+    { "id": "S09-13", "name": "Rollback publish restores the previous S09 value", "expectation": "publishing the rollback draft yields a generation above the superseded one and overview shows the restored value" },
+    { "id": "S09-14", "name": "Stale version yields VERSION_CONFLICT", "expectation": "a stale expectedVersion yields a controlled 409 VERSION_CONFLICT" },
+    { "id": "S09-15", "name": "Illegal state yields SETTINGS_STATE_CONFLICT", "expectation": "publishing an unvalidated draft yields a controlled 409 SETTINGS_STATE_CONFLICT" },
+    { "id": "S09-16", "name": "Malformed UUID yields a controlled 400", "expectation": "a non-UUID draft id returns a stable 400, never a 500" },
+    { "id": "S09-17", "name": "Impact preview allows a non-blocking change", "expectation": "nextStatus active for the last super admin returns wouldBlockLastSuperAdmin false with safeReasonCode allowed" },
+    { "id": "S09-18", "name": "Impact preview blocks suspending the last super admin", "expectation": "nextStatus suspended with superAdminCount 1 returns wouldBlockLastSuperAdmin true with LAST_SUPER_ADMIN_BLOCKED" },
+    { "id": "S09-19", "name": "Impact preview requires a change and validates the target", "expectation": "no change or malformed target yields a controlled 400" },
+    { "id": "S09-20", "name": "Session revoke requires the exact confirmation", "expectation": "a wrong confirmation yields AUTH_RBAC_CONFIRMATION_INVALID and nothing is revoked" },
+    { "id": "S09-21", "name": "Session revoke succeeds with confirmation and reason", "expectation": "REVOKE_SESSIONS + reason revokes the target sessions and reports revokedCount" },
+    { "id": "S09-22", "name": "Audit safe snapshot carries real roles and no value fields", "expectation": "mutation Audit rows carry effectiveRoles/grants and metadata only with descriptorKey; revoke rows carry only targetUserId/reasonCode" },
+    { "id": "S09-23", "name": "Logout and post-logout state are clean", "expectation": "logout returns to login and no protected settings state remains" }
+  ]
+}

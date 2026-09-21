@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.authenticated-desktop-journey.v1",
+  "viewport": { "width": 1440, "height": 1000 },
+  "cases": [
+    {"id":"DESK-A01","name":"Login establishes the fixture session"},
+    {"id":"DESK-A02","name":"Foundation renders Shell actor and modules"},
+    {"id":"DESK-A03","name":"Authorization loads without contract failure"},
+    {"id":"DESK-A04","name":"Operations and Readiness load successful responses"},
+    {"id":"DESK-A05","name":"Jobs list and detail load"},
+    {"id":"DESK-A06","name":"Work Queue list loads"},
+    {"id":"DESK-A07","name":"Notifications list loads"},
+    {"id":"DESK-A08","name":"Media list and safe detail path load"},
+    {"id":"DESK-A09","name":"Audit list and detail load"},
+    {"id":"DESK-A10","name":"Logout succeeds"},
+    {"id":"DESK-A11","name":"Post-logout Dashboard cannot retain authenticated content"}
+  ]
+}

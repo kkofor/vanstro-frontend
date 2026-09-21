@@ -4,7 +4,9 @@ import {
   ProductPricing,
   ProductSummary,
   Promotion
-} from "@/lib/api/api-contract";
+} from "../api/api-contract.ts";
+import { DEFAULT_LOCALE, type SiteLocale } from "../i18n/locale.ts";
+import { formatMoney } from "../i18n/display-format.ts";
 
 export function createCatalogCommerce(product: ProductSummary): ProductCommerce {
   return {
@@ -47,23 +49,26 @@ export function getPrimaryPromotion(product: ProductSummary): Promotion | undefi
   return getPromotionBadges(product)[0];
 }
 
-export function getSavingsLabel(product: ProductSummary) {
+export function getSavingsLabel(product: ProductSummary, locale: SiteLocale = DEFAULT_LOCALE) {
   const pricing = getProductPricing(product);
 
+  const prefix = locale === "fr-CA" ? "Économisez" : "Save";
+
   if (pricing.savingsPercent) {
-    return `Save ${pricing.savingsPercent}%`;
+    const spacing = locale === "fr-CA" ? " " : "";
+    return `${prefix} ${new Intl.NumberFormat(locale).format(pricing.savingsPercent)}${spacing}%`;
   }
 
   if (pricing.savings?.amount) {
-    return `Save ${formatMoney(pricing.savings)}`;
+    return `${prefix} ${formatMoney(pricing.savings, locale)}`;
   }
 
   const compareAtPrice = getCompareAtPrice(product);
   if (compareAtPrice) {
-    return `Save ${formatMoney({
+    return `${prefix} ${formatMoney({
       amount: compareAtPrice.amount - pricing.currentPrice.amount,
       currency: pricing.currentPrice.currency
-    })}`;
+    }, locale)}`;
   }
 
   return "";
@@ -85,9 +90,4 @@ export function withEffectiveProductPrice<T extends ProductSummary>(product: T):
   };
 }
 
-export function formatMoney(money: Money) {
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: money.currency
-  }).format(money.amount);
-}
+export { formatMoney };

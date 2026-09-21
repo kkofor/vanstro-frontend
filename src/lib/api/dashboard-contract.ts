@@ -37,6 +37,7 @@ export type DashboardModuleKey =
   | "dealerProgram"
   | "dealerApplications"
   | "contactLeads"
+  | "crmContacts"
   | "articles"
   | "legalPages"
   | "footer"
@@ -145,6 +146,7 @@ export type ContactLeadInput = {
     | "orders"
     | "dealer-service"
     | "dealer-program"
+    | "careers"
     | "website-support";
   message: string;
   city?: string;
@@ -215,10 +217,39 @@ export const DASHBOARD_API_ENDPOINTS = {
   footer: "/dashboard/footer",
   legalPages: "/dashboard/legal-pages",
   legalPage: (slug: string) => `/dashboard/legal-pages/${slug}`,
+  storefrontConfig: "/dashboard/storefront/config",
+  articles: "/dashboard/articles",
   contactLeads: "/contact/leads",
+  contactLeadsAdmin: "/dashboard/contact-leads",
+  crmContactsAdmin: "/dashboard/crm/contacts",
+  crmContact: (contactId: string) => `/dashboard/crm/contacts/${contactId}`,
+  crmContactPromote: (contactId: string) => `/dashboard/crm/contacts/${contactId}/promote-to-erp`,
+  dealerApplicationsAdmin: "/dashboard/dealer-applications",
+  productReviewsAdmin: "/dashboard/product-reviews",
   supportHandoffs: "/support/handoffs",
-  paymentSessions: "/payments/sessions",
-  dealerAssignment: (orderId: string) => `/orders/${orderId}/dealer-assignment`,
+  supportHandoffsAdmin: "/dashboard/support/handoffs",
+  orders: "/dashboard/orders",
+  order: (orderId: string) => `/dashboard/orders/${orderId}`,
+  paymentSessions: "/dashboard/payment-sessions",
+  erpSyncJobs: "/dashboard/erp-sync-jobs",
+  erpSyncJob: (jobId: string) => `/dashboard/erp-sync-jobs/${jobId}`,
+  catalogSyncFromErp: "/dashboard/catalog/sync-from-erp",
+  catalogSyncLatest: "/dashboard/catalog/sync-runs/latest",
+  refreshErpColors: (productId: string) => `/dashboard/products/${productId}/refresh-erp-colors`,
+  inventorySnapshots: "/dashboard/inventory/snapshots",
+  inventorySnapshot: (snapshotId: string) => `/dashboard/inventory/snapshots/${snapshotId}`,
+  operationAlerts: "/dashboard/operations/alerts",
+  analyticsSummary: "/dashboard/analytics/summary",
+  emailOutbox: "/dashboard/email/outbox",
+  emailTemplates: "/dashboard/email/templates",
+  emailProvider: "/dashboard/email/provider",
+  emailProviderTest: "/dashboard/email/provider/test",
+  paymentSessionMarkPaid: (sessionId: string) => `/dashboard/payment-sessions/${sessionId}/mark-paid`,
+  erpWebhookEvents: "/dashboard/erp-webhook-events",
+  erpConnectionTest: "/dashboard/erp/connection-test",
+  auditLogs: "/dashboard/audit-logs",
+  checkoutSession: "/checkout/session",
+  dealerAssignment: (orderId: string) => `/dashboard/orders/${orderId}/assign-dealer`,
   reviewModeration: (reviewId: string) => `/dashboard/product-reviews/${reviewId}/status`,
   dealerPortalSettings: "/dashboard/dealer-portal/settings",
   cookieConsentLog: "/privacy/consent-events"
@@ -232,8 +263,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/components/layout/SiteHeader.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.navigation,
     dashboardOwner: "content",
-    status: "reserved",
-    notes: "Primary nav, product dropdown, utility links and CTA order should be managed from dashboard."
+    status: "client-ready",
+    notes: "Primary nav managed via PUT /dashboard/navigation (Pattern A CMS)."
   },
   {
     key: "homeHero",
@@ -242,8 +273,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/lib/data/mock-data.ts banners",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.homePage,
     dashboardOwner: "content",
-    status: "mocked",
-    notes: "Hero headline, body, CTA, image and publish state need CMS controls."
+    status: "client-ready",
+    notes: "Hero and banners managed via PUT /dashboard/home-page."
   },
   {
     key: "homeCategories",
@@ -252,8 +283,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/lib/product/catalog-config.ts",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.catalog,
     dashboardOwner: "catalog",
-    status: "reserved",
-    notes: "Category order, visibility, images and coming-soon state should be dashboard-editable."
+    status: "client-ready",
+    notes: "Catalog tiles/filters via PUT /dashboard/catalog."
   },
   {
     key: "homeProducts",
@@ -272,8 +303,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/lib/data/mock-data.ts productsWithCommerce",
     reservedEndpoint: "/products",
     dashboardOwner: "catalog",
-    status: "needs-backend",
-    notes: "Needs paginated products, facets, pricing, promotions and availability by dealer/postal code."
+    status: "client-ready",
+    notes: "Paginated products API with extended product fields (MPN, finishOptions, packageQuantity)."
   },
   {
     key: "productDetail",
@@ -292,8 +323,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/components/product/ProductReviewSection.tsx",
     reservedEndpoint: "/products/{productId}/reviews",
     dashboardOwner: "support",
-    status: "reserved",
-    notes: "Client now stages payloads with ProductReviewSubmissionInput shape; backend moderation endpoint is reserved."
+    status: "client-ready",
+    notes: "Review submission, published-only retrieval, and Dashboard moderation endpoints are implemented."
   },
   {
     key: "cart",
@@ -302,18 +333,18 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/components/storefront/StorefrontProvider.tsx",
     reservedEndpoint: "/cart",
     dashboardOwner: "commerce",
-    status: "reserved",
-    notes: "Demo uses localStorage; API client has cart item endpoints ready for session-backed carts."
+    status: "client-ready",
+    notes: "Session-backed cart via GET/POST/PATCH/DELETE /cart endpoints."
   },
   {
     key: "checkout",
     label: "Checkout and payment handoff",
     routeSurface: "/checkout",
     currentSource: "src/components/checkout/CheckoutClient.tsx",
-    reservedEndpoint: DASHBOARD_API_ENDPOINTS.paymentSessions,
+    reservedEndpoint: DASHBOARD_API_ENDPOINTS.checkoutSession,
     dashboardOwner: "commerce",
-    status: "needs-backend",
-    notes: "Payment session creation, tax, delivery, inventory reservation and dealer assignment remain backend-owned."
+    status: "client-ready",
+    notes: "Checkout session creation, tax, delivery, inventory reservation and dealer assignment via POST /checkout/session."
   },
   {
     key: "dealerSelector",
@@ -322,8 +353,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/lib/data/mock-data.ts dealers",
     reservedEndpoint: "/dealers",
     dashboardOwner: "dealer",
-    status: "reserved",
-    notes: "Dealer coverage, postal-code matching, hours and service capability need dashboard management."
+    status: "client-ready",
+    notes: "Dealer list + postal lookup via GET /dealers/lookup."
   },
   {
     key: "dealerProgram",
@@ -332,28 +363,38 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/app/dealer-program/page.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.moduleConfig("dealerProgram"),
     dashboardOwner: "dealer",
-    status: "reserved",
-    notes: "Program copy, policy links, imagery and CTA can move into dashboard module config."
+    status: "client-ready",
+    notes: "Dealer program content via PUT /dashboard/dealer-portal/settings."
   },
   {
     key: "dealerApplications",
     label: "Dealer application intake",
     routeSurface: "/dealers/apply",
-    currentSource: "static form action",
+    currentSource: "src/components/forms/PublicSubmissionForm.tsx",
     reservedEndpoint: "/dealer-applications",
     dashboardOwner: "dealer",
-    status: "reserved",
-    notes: "Form endpoint exists in API contract; backend should add validation, workflow and status tracking."
+    status: "client-ready",
+    notes: "Validated public intake, persistence, status tracking and internal email outbox are implemented."
   },
   {
     key: "contactLeads",
     label: "Contact and project support leads",
     routeSurface: "/contact",
-    currentSource: "src/app/contact/page.tsx",
+    currentSource: "src/components/forms/PublicSubmissionForm.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.contactLeads,
     dashboardOwner: "support",
-    status: "reserved",
-    notes: "Contact forms should create support/dealer leads with source path and selected dealer context."
+    status: "client-ready",
+    notes: "Validated public intake persists source path, locale and selected dealer context with status tracking."
+  },
+  {
+    key: "crmContacts",
+    label: "Website CRM contacts and funnel",
+    routeSurface: "/dashboard?tab=crmContacts",
+    currentSource: "src/components/dashboard/DashboardPanels.tsx",
+    reservedEndpoint: DASHBOARD_API_ENDPOINTS.crmContactsAdmin,
+    dashboardOwner: "commerce",
+    status: "client-ready",
+    notes: "Registered customers, commerce events, notes, and read-only ERP sync status. External ERP CRM is not edited here."
   },
   {
     key: "legalPages",
@@ -362,8 +403,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/content/legalPages.ts",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.legalPages,
     dashboardOwner: "system",
-    status: "reserved",
-    notes: "Legal copy has a structured content shape and can be admin-managed by slug and locale."
+    status: "client-ready",
+    notes: "Legal pages managed via dashboard CMS by slug/locale."
   },
   {
     key: "footer",
@@ -372,8 +413,8 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/components/layout/SiteFooter.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.footer,
     dashboardOwner: "content",
-    status: "reserved",
-    notes: "Footer groups, social links, legal links and contact metadata should be dashboard managed."
+    status: "client-ready",
+    notes: "Footer managed via PUT /dashboard/footer."
   },
   {
     key: "cookieConsent",
@@ -382,18 +423,18 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "src/lib/privacy/cookie-preferences.ts",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.cookieConsentLog,
     dashboardOwner: "system",
-    status: "reserved",
-    notes: "Preferences are local now; future backend should receive consent audit events where legally required."
+    status: "client-ready",
+    notes: "Consent events are logged via POST /privacy/consent-events."
   },
   {
     key: "supportWidget",
     label: "AI support and human handoff",
     routeSurface: "global floating support",
-    currentSource: "src/components/layout/CustomerSupportWidget.tsx",
+    currentSource: "src/components/layout/FloatingSupportWidget.tsx",
     reservedEndpoint: DASHBOARD_API_ENDPOINTS.supportHandoffs,
     dashboardOwner: "support",
-    status: "third-party-ready",
-    notes: "Tiledesk is env-gated and consent-gated; custom fallback emits handoff events for future support backend."
+    status: "client-ready",
+    notes: "Support handoff intake via POST /support/handoffs and dashboard queue."
   },
   {
     key: "auth",
@@ -402,17 +443,17 @@ export const DASHBOARD_MODULE_READINESS: DashboardModuleReadiness[] = [
     currentSource: "static form action and API contract",
     reservedEndpoint: "/auth/login",
     dashboardOwner: "system",
-    status: "reserved",
-    notes: "API client has auth session types; role-based dashboard permissions still need backend implementation."
+    status: "client-ready",
+    notes: "Customer auth session endpoints implemented; dashboard RBAC enforced on admin routes."
   },
   {
     key: "favorites",
     label: "Favorites and saved products",
     routeSurface: "/favorites and product cards",
     currentSource: "src/components/storefront/StorefrontProvider.tsx",
-    reservedEndpoint: "/favorites",
+    reservedEndpoint: "/account/favorites",
     dashboardOwner: "commerce",
-    status: "reserved",
-    notes: "Demo uses localStorage; API client has favorite endpoints ready for account-backed saves."
+    status: "client-ready",
+    notes: "Account-backed favorites via GET/POST/DELETE /account/favorites."
   }
 ];

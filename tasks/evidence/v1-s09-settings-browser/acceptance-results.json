@@ -1,0 +1,3082 @@
+{
+  "suiteId": "vanstro.s09.settings.desktop.v1",
+  "testedCommit": "8ac3ad08d266498c1b9ecb01bb596425f6b86316",
+  "testedTree": "460ca2a0d3ba584f3d97e26a56d42e159340ffa8",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "definitionSha256": "581af58307a0757d875ddec69993d1c0cf22c53d670f25b63ccfe8f862403ce9",
+  "fixtureSha256": "37bdfa16273ed17be5778952f5ad35becd1ad03a73a2aa88053ed975399462d3",
+  "harnessSha256": "2bf7f3aa662809bac7e35d7e0038fe22b3b90425c09cc2dad10af7e3b051d067",
+  "runnerSha256": "a820802a232782c30874945b1b68ec3855fef8d457d0ecae655e8a1d75fd9303",
+  "counts": {
+    "pass": 23,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "S09-01",
+      "name": "Login establishes an admin session",
+      "expectation": "login succeeds and the S09 settings panel renders",
+      "status": "pass",
+      "observations": [
+        "dashboard shell and S09 panel rendered"
+      ]
+    },
+    {
+      "id": "S09-02",
+      "name": "S09 page is available",
+      "expectation": "/dashboard/settings/auth-rbac renders 认证与 RBAC 设置 with the settings.auth-rbac.v1 descriptor",
+      "status": "pass",
+      "observations": [
+        "S09 page and descriptor visible"
+      ]
+    },
+    {
+      "id": "S09-03",
+      "name": "Fresh fixture shows compiled defaults",
+      "expectation": "effective policy shows 12 / 30 / 10080 minutes with compiled_default projection and no publications",
+      "status": "pass",
+      "observations": [
+        "overview=compiled_default gen=0; form values=['12', '30', '10080']"
+      ]
+    },
+    {
+      "id": "S09-04",
+      "name": "Read-only actor sees no write controls",
+      "expectation": "read-only profile renders no 创建草稿 control and no publish capability",
+      "status": "pass",
+      "observations": [
+        "read-only write actions denied=True; no enabled create/publish controls"
+      ]
+    },
+    {
+      "id": "S09-05",
+      "name": "Create a structurally valid draft succeeds",
+      "expectation": "a draft with sessionLifetimeMinutes 60 is accepted and listed",
+      "status": "pass",
+      "observations": [
+        "draft 46b35000 created with sessionLifetimeMinutes=60"
+      ]
+    },
+    {
+      "id": "S09-06",
+      "name": "Out-of-range value is rejected with a field error",
+      "expectation": "minimumLength 8 shows a field error and no draft is created",
+      "status": "pass",
+      "observations": [
+        "field error shown=True; no extra draft created (count=1)"
+      ]
+    },
+    {
+      "id": "S09-07",
+      "name": "Validate the draft as validated",
+      "expectation": "validate reports 验证通过 with no blockers",
+      "status": "pass",
+      "observations": [
+        "validated with no blockers"
+      ]
+    },
+    {
+      "id": "S09-08",
+      "name": "Safe diff shows the exact public value change",
+      "expectation": "diff lists sessionPolicy.sessionLifetimeMinutes 10080 -> 60 with public sensitivity and zero secrets",
+      "status": "pass",
+      "observations": [
+        "safe diff lists sessionLifetimeMinutes 10080 -> 60"
+      ]
+    },
+    {
+      "id": "S09-09",
+      "name": "Publish executes and returns a generation",
+      "expectation": "publish succeeds with a positive generation and readiness reports the published generation",
+      "status": "pass",
+      "observations": [
+        "publish executed; publishedGeneration=1"
+      ]
+    },
+    {
+      "id": "S09-10",
+      "name": "Published policy is effective and consumer-ready",
+      "expectation": "overview shows projectionState published with sessionLifetimeMinutes 60 and readiness consumerGeneration equals publishedGeneration",
+      "status": "pass",
+      "observations": [
+        "overview published=published effective session TTL=60; readiness=ready"
+      ]
+    },
+    {
+      "id": "S09-11",
+      "name": "History is append-only with original publication facts",
+      "expectation": "published entries keep their original auditEventId",
+      "status": "pass",
+      "observations": [
+        "published=1 with original auditEventId facts"
+      ]
+    },
+    {
+      "id": "S09-12",
+      "name": "Rollback creates a new draft from the current publication",
+      "expectation": "rollback-draft returns a rollback_draft with rollbackOfPublicationId set",
+      "status": "pass",
+      "observations": [
+        "rollback draft 06c8d863-9e9c-4fb5-8329-2f9e9a477bd3 created from 46b35000-6a7e-4d66-b697-bfe074a37a60"
+      ]
+    },
+    {
+      "id": "S09-13",
+      "name": "Rollback publish restores the previous S09 value",
+      "expectation": "publishing the rollback draft yields a generation above the superseded one and overview shows the restored value",
+      "status": "pass",
+      "observations": [
+        "rollback generation=2 (>0); effective restored session TTL=60"
+      ]
+    },
+    {
+      "id": "S09-14",
+      "name": "Stale version yields VERSION_CONFLICT",
+      "expectation": "a stale expectedVersion yields a controlled 409 VERSION_CONFLICT",
+      "status": "pass",
+      "observations": [
+        "stale version validate refused with 409 VERSION_CONFLICT"
+      ]
+    },
+    {
+      "id": "S09-15",
+      "name": "Illegal state yields SETTINGS_STATE_CONFLICT",
+      "expectation": "publishing an unvalidated draft yields a controlled 409 SETTINGS_STATE_CONFLICT",
+      "status": "pass",
+      "observations": [
+        "publish of unvalidated draft refused with 409 SETTINGS_STATE_CONFLICT"
+      ]
+    },
+    {
+      "id": "S09-16",
+      "name": "Malformed UUID yields a controlled 400",
+      "expectation": "a non-UUID draft id returns a stable 400, never a 500",
+      "status": "pass",
+      "observations": [
+        "malformed UUID status 400; valid missing UUID status 404"
+      ]
+    },
+    {
+      "id": "S09-17",
+      "name": "Impact preview allows a non-blocking change",
+      "expectation": "nextStatus active for the last super admin returns wouldBlockLastSuperAdmin false with safeReasonCode allowed",
+      "status": "pass",
+      "observations": [
+        "preview allowed=True reason=allowed"
+      ]
+    },
+    {
+      "id": "S09-18",
+      "name": "Impact preview blocks suspending the last super admin",
+      "expectation": "nextStatus suspended with superAdminCount 1 returns wouldBlockLastSuperAdmin true with LAST_SUPER_ADMIN_BLOCKED",
+      "status": "pass",
+      "observations": [
+        "preview blocked=True reason=LAST_SUPER_ADMIN_BLOCKED"
+      ]
+    },
+    {
+      "id": "S09-19",
+      "name": "Impact preview requires a change and validates the target",
+      "expectation": "no change or malformed target yields a controlled 400",
+      "status": "pass",
+      "observations": [
+        "no-change rejected=True; malformed target status 400"
+      ]
+    },
+    {
+      "id": "S09-20",
+      "name": "Session revoke requires the exact confirmation",
+      "expectation": "a wrong confirmation yields AUTH_RBAC_CONFIRMATION_INVALID and nothing is revoked",
+      "status": "pass",
+      "observations": [
+        "wrong confirmation rejected; nothing revoked (targets=[])"
+      ]
+    },
+    {
+      "id": "S09-21",
+      "name": "Session revoke succeeds with confirmation and reason",
+      "expectation": "REVOKE_SESSIONS + reason revokes the target sessions and reports revokedCount",
+      "status": "pass",
+      "observations": [
+        "revokedCount=2; panel reports success"
+      ]
+    },
+    {
+      "id": "S09-22",
+      "name": "Audit safe snapshot carries real roles and no value fields",
+      "expectation": "mutation Audit rows carry effectiveRoles/grants and metadata only with descriptorKey; revoke rows carry only targetUserId/reasonCode",
+      "status": "pass",
+      "observations": [
+        "audit roles=['super_admin'] grants=['settings.read', 'settings.write', 'sessions.revoke']; metadata={\"descriptorKey\": \"settings.auth-rbac\"}; revoke metadata safe=True"
+      ]
+    },
+    {
+      "id": "S09-23",
+      "name": "Logout and post-logout state are clean",
+      "expectation": "logout returns to login and no protected settings state remains",
+      "status": "pass",
+      "observations": [
+        "post-logout no protected settings state"
+      ]
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14333.396
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14333.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14335.957
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14335.957
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14335.958
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14335.958
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14335.958
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14335.958
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14335.958
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14335.959
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14335.959
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14335.96
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14335.96
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14335.96
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14335.961
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14335.961
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14335.961
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14335.961
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14335.962
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14335.962
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14335.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14335.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14335.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14335.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14335.964
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14335.965
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14335.966
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14335.967
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14335.967
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14335.967
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14336.121
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14336.124
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14336.215
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14336.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14336.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14336.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14336.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14336.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14336.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14336.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14336.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14336.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14336.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14336.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14336.246
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14336.246
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14336.27
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14336.832
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14336.833
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14336.874
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14336.875
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14336.875
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14336.875
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14336.875
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14336.876
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14336.876
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14336.876
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14336.876
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14336.876
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14336.877
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14336.878
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14336.9
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14336.9
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14336.948
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14336.948
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14336.949
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14336.949
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14336.949
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14336.949
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14336.956
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14336.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14336.963
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14336.982
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14336.982
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14336.982
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14336.983
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14336.983
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14336.983
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14338.849
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14338.85
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14338.887
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14338.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14338.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14338.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14338.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14338.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14338.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14338.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14338.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14338.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14338.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14338.892
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14338.892
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14338.892
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14338.892
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14338.892
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14338.902
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14338.902
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14338.941
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14338.941
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14338.941
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14338.942
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14338.942
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14338.942
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14338.949
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14338.956
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14338.956
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14338.957
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14338.957
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14338.974
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14338.974
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14338.974
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14338.975
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14341.149
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/46b35000-6a7e-4d66-b697-bfe074a37a60/validate",
+      "monotonicSeconds": 14342.325
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/46b35000-6a7e-4d66-b697-bfe074a37a60/diff",
+      "monotonicSeconds": 14342.326
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/46b35000-6a7e-4d66-b697-bfe074a37a60/publish",
+      "monotonicSeconds": 14344.564
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness?consumerGeneration=1",
+      "monotonicSeconds": 14344.566
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14344.571
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14344.572
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14344.572
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14344.572
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14345.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14345.591
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14345.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14345.634
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14345.634
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14345.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14345.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14345.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14345.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14345.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14345.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14345.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14345.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14345.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14345.637
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14345.637
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14345.637
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14345.638
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14345.638
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14345.638
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14345.639
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14345.639
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14345.64
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14345.64
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14345.64
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14345.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14345.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14345.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14345.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14345.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14345.647
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14345.648
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14345.687
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14345.688
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14345.688
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14345.689
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14345.689
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14345.69
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14345.696
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14345.701
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14345.702
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14345.702
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14345.719
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14345.72
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14345.72
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14345.72
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14345.72
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history/46b35000-6a7e-4d66-b697-bfe074a37a60/rollback-draft",
+      "monotonicSeconds": 14347.768
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/06c8d863-9e9c-4fb5-8329-2f9e9a477bd3/validate",
+      "monotonicSeconds": 14348.691
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/06c8d863-9e9c-4fb5-8329-2f9e9a477bd3/diff",
+      "monotonicSeconds": 14348.694
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts/06c8d863-9e9c-4fb5-8329-2f9e9a477bd3/publish",
+      "monotonicSeconds": 14348.734
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness?consumerGeneration=3",
+      "monotonicSeconds": 14348.736
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14348.744
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14348.744
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14348.744
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14348.744
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14348.764
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14348.765
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14348.803
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14348.803
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14348.808
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14348.812
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14348.818
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14348.823
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14348.824
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14348.825
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14348.825
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14348.826
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14348.826
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14348.826
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14348.826
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14348.827
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14348.827
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14348.827
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14348.828
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14348.828
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14348.828
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14348.829
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14348.829
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14348.829
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14348.83
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14348.83
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14348.83
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14348.83
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14348.83
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14348.831
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14348.838
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14348.838
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14348.866
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14348.866
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14348.866
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14348.866
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14348.867
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14348.868
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14348.875
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14348.881
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14348.881
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14348.882
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14348.882
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14348.899
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14348.899
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14348.899
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14348.9
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14350.569
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14351.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14351.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14351.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14351.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14351.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14351.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14351.463
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14351.463
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14351.503
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14351.503
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14351.504
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14351.504
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14351.504
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14351.505
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14351.512
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14351.519
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14351.52
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14351.52
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14351.537
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14351.538
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14351.538
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14351.538
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14351.538
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14353.189
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14354.017
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14354.019
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14354.056
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14354.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14354.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14354.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14354.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14354.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14354.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14354.061
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14354.061
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14354.061
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14354.061
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14354.061
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14354.062
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14354.062
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14354.062
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14354.062
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14354.072
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14354.073
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14354.109
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14354.109
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14354.11
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14354.11
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14354.11
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14354.112
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14354.119
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14354.124
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14354.125
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14354.125
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14354.125
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14354.143
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14354.144
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14354.144
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14354.144
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-impact-preview",
+      "monotonicSeconds": 14356.415
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14356.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14356.45
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14356.486
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14356.486
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14356.487
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14356.487
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14356.487
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14356.487
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14356.488
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14356.489
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14356.49
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14356.49
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14356.49
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14356.49
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14356.491
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14356.495
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14356.495
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14356.504
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14356.506
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14356.537
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14356.537
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14356.537
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14356.538
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14356.538
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14356.539
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14356.545
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14356.552
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14356.553
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14356.554
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14356.57
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14356.571
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14356.571
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14356.571
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14356.571
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-impact-preview",
+      "monotonicSeconds": 14359.343
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14359.372
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14359.374
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14359.408
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14359.408
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14359.408
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14359.408
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14359.408
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14359.409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14359.409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14359.409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14359.409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14359.409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14359.41
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14359.41
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14359.41
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14359.41
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14359.41
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14359.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14359.412
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14359.412
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14359.412
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14359.412
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14359.413
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14359.413
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14359.413
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14359.42
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14359.42
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14359.459
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14359.46
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14359.46
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14359.46
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14359.46
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14359.462
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14359.469
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14359.476
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14359.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14359.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14359.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14359.498
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14359.498
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14359.498
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14359.498
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14362.197
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14362.198
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14362.238
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14362.238
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14362.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14362.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14362.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14362.242
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14362.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14362.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14362.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14362.285
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14362.286
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14362.286
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14362.286
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14362.287
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14362.287
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14362.294
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14362.301
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14362.301
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14362.302
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14362.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14362.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14362.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14362.318
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14362.318
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-session-revoke",
+      "monotonicSeconds": 14365.138
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac",
+      "monotonicSeconds": 14365.169
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/dashboard/settings/auth-rbac/",
+      "monotonicSeconds": 14365.169
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14365.208
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1fq1rmq._.css",
+      "monotonicSeconds": 14365.208
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14365.209
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14365.21
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14365.21
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14365.21
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_lib_199x7yv._.js",
+      "monotonicSeconds": 14365.211
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0d_h_integration_src_components_dashboard_AuthRbacSettingsPanel_tsx_1j5b9ge._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_1i2oim4._.js",
+      "monotonicSeconds": 14365.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_components_ui_1ks_-eh._.js",
+      "monotonicSeconds": 14365.213
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_05ap8oc._.js",
+      "monotonicSeconds": 14365.213
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14365.213
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14365.224
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14365.224
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/foundation",
+      "monotonicSeconds": 14365.257
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14365.257
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14365.257
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14365.258
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14365.258
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/authorization",
+      "monotonicSeconds": 14365.259
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14365.266
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14365.272
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14365.272
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14365.272
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14365.273
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-overview",
+      "monotonicSeconds": 14365.29
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-drafts",
+      "monotonicSeconds": 14365.291
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-history",
+      "monotonicSeconds": 14365.291
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/dashboard/settings/s09-readiness",
+      "monotonicSeconds": 14365.291
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/account/login",
+      "monotonicSeconds": 14367.05
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/account/login/",
+      "monotonicSeconds": 14367.052
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/vanstro-logo.png",
+      "monotonicSeconds": 14367.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 14367.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 14367.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 14367.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 14367.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 14367.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 14367.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 14367.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 14367.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 14367.317
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 14367.318
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14367.318
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_1pf4wbi._.js",
+      "monotonicSeconds": 14367.319
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/_claude_worktrees_integration_src_app_account_login_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 14367.319
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 14367.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 14367.347
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4562/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 14367.347
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/cart",
+      "monotonicSeconds": 14367.405
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/account/favorites",
+      "monotonicSeconds": 14367.405
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/storefront/config?locale=en-CA",
+      "monotonicSeconds": 14367.405
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4563/auth/me",
+      "monotonicSeconds": 14367.405
+    }
+  ],
+  "rawEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  },
+  "expectedEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  },
+  "unexpectedEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  }
+}

@@ -1,0 +1,688 @@
+{
+  "schemaVersion": "vanstro.s10.privacy-retention-settings.v1",
+  "status": "IMPLEMENTED_INTEGRATION_CERTIFIED",
+  "package": "S10",
+  "descriptorKey": "settings.privacy-retention",
+  "settingsSchemaVersion": "settings.privacy-retention.v1",
+  "baseline": {
+    "integrationCommit": "1d096b6dcdbcd634a99a9fe942ea5f32eb46cc8d",
+    "integrationTree": "45830174b7f736912bf7be6559480a5acf16a28d",
+    "migrationCount": 76,
+    "latestMigration": "20260806100000_s09_auth_rbac_settings",
+    "noMigration77": true
+  },
+  "authority": {
+    "dependsOn": [
+      "S01",
+      "CG01"
+    ],
+    "externalBaselineDependencies": [
+      "P04",
+      "D17-current-facts"
+    ],
+    "goalSha256": "72cc5c86382c7ae25ea520d7166e5e793261c28889d44d94e09a5ac79a505c40",
+    "port": "cg01.privacy-retention.v1"
+  },
+  "classification": {
+    "valueType": "object",
+    "secret": false,
+    "scope": "global",
+    "mutable": true,
+    "partialPublish": false
+  },
+  "valueSchema": {
+    "consentPolicy": {
+      "anonymousConsentEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "authenticatedConsentEnabled": {
+        "type": "boolean",
+        "default": false,
+        "capability": "future_unavailable"
+      },
+      "consentCategories": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "functional",
+            "analytics",
+            "targeting"
+          ]
+        },
+        "min": 1,
+        "max": 3,
+        "unique": true,
+        "default": [
+          "functional",
+          "analytics",
+          "targeting"
+        ]
+      },
+      "retentionMonths": {
+        "type": "integer",
+        "minimum": 6,
+        "maximum": 120,
+        "default": 24
+      }
+    },
+    "retentionPolicy": {
+      "retentionByObjectFamily": {
+        "type": "array",
+        "min": 0,
+        "max": 7,
+        "uniqueFamily": true,
+        "items": {
+          "objectFamily": {
+            "enum": [
+              "consent_events",
+              "audit_events",
+              "async_jobs",
+              "media_assets",
+              "orders",
+              "payments",
+              "privacy_requests"
+            ]
+          },
+          "retentionDays": {
+            "type": "integer",
+            "minimum": 30,
+            "maximum": 7300
+          },
+          "autoCleanupEnabled": {
+            "type": "boolean"
+          }
+        },
+        "default": []
+      }
+    },
+    "legalHoldPolicy": {
+      "legalHoldEnabled": {
+        "type": "boolean",
+        "default": false
+      },
+      "legalHoldRefs": {
+        "type": "array",
+        "items": {
+          "type": "uuid"
+        },
+        "min": 0,
+        "max": 64,
+        "default": []
+      }
+    },
+    "dsarPolicy": {
+      "accessExportDeleteRules": {
+        "type": "array",
+        "min": 0,
+        "max": 15,
+        "items": {
+          "scope": {
+            "enum": [
+              "all_personal_data",
+              "orders",
+              "payments",
+              "media",
+              "communications"
+            ]
+          },
+          "method": {
+            "enum": [
+              "access",
+              "export",
+              "delete"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "requireAdminApproval": {
+            "type": "boolean",
+            "note": "required true when method=delete"
+          }
+        },
+        "default": []
+      }
+    },
+    "piiDisplayPolicy": {
+      "piiDisplayRules": {
+        "type": "array",
+        "min": 0,
+        "max": 20,
+        "items": {
+          "field": {
+            "type": "identifier",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "displayMode": {
+            "enum": [
+              "plain",
+              "masked",
+              "hidden"
+            ]
+          },
+          "allowedRoles": {
+            "type": "array",
+            "min": 1,
+            "max": 8,
+            "items": {
+              "type": "roleKey"
+            }
+          }
+        },
+        "default": []
+      }
+    },
+    "lowRiskExecution": {
+      "allowlist": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "consent_events",
+            "async_jobs"
+          ]
+        },
+        "min": 0,
+        "max": 2,
+        "unique": true,
+        "default": []
+      },
+      "impactPreviewEnabled": {
+        "type": "boolean",
+        "default": true
+      }
+    }
+  },
+  "compiledDefaults": {
+    "consentPolicy": {
+      "anonymousConsentEnabled": true,
+      "authenticatedConsentEnabled": false,
+      "consentCategories": [
+        "functional",
+        "analytics",
+        "targeting"
+      ],
+      "retentionMonths": 24
+    },
+    "retentionPolicy": {
+      "retentionByObjectFamily": []
+    },
+    "legalHoldPolicy": {
+      "legalHoldEnabled": false,
+      "legalHoldRefs": []
+    },
+    "dsarPolicy": {
+      "accessExportDeleteRules": []
+    },
+    "piiDisplayPolicy": {
+      "piiDisplayRules": []
+    },
+    "lowRiskExecution": {
+      "allowlist": [],
+      "impactPreviewEnabled": true
+    }
+  },
+  "currentFacts": {
+    "anonymousConsent": {
+      "classification": "current_fact",
+      "path": "apps/api/src/routes/privacy.ts",
+      "symbol": "POST /privacy/consent-events",
+      "blobOid": "2cf0002790edab7526d8bfcd0653bf2128fefd08"
+    },
+    "consentRecordRetentionMonths": {
+      "classification": "current_fact",
+      "path": "packages/db/src/privacy-retention.ts",
+      "symbol": "CONSENT_RECORD_RETENTION_MONTHS=24",
+      "blobOid": "4f5d2ccb3a362250c7cf1d32c7692d9297ef9792"
+    },
+    "dataRetentionDays": {
+      "classification": "current_fact",
+      "path": "packages/db/src/data-retention.ts",
+      "symbol": "DATA_RETENTION_DAYS",
+      "blobOid": "4c5cabcc30db6dc9b8bcffff87f1b1c713ea4115",
+      "values": {
+        "pageViews": 90,
+        "loginEvents": 365,
+        "completedEmailPayloads": 90,
+        "completedErpAttempts": 180,
+        "processedWebhookPayloads": 180,
+        "expiredPaymentSessions": 90,
+        "rateLimitBuckets": 2
+      }
+    },
+    "auditRetention": {
+      "classification": "current_fact",
+      "path": "apps/api/src/audit/foundation.ts",
+      "symbol": "audit-retention.v1 expiresAt=occurredAt+2555d",
+      "blobOid": "af8be646c83264ad41be3f4e925501c72a94654e"
+    },
+    "mediaLegalHold": {
+      "classification": "current_fact",
+      "path": "packages/db/prisma/schema.prisma",
+      "symbol": "legalHold Boolean @default(false)",
+      "blobOid": "7078a1344490c29a564f5ba5c3f10b60b4770ab0"
+    },
+    "workerRetentionJob": {
+      "classification": "current_fact",
+      "path": "apps/worker/src/index.ts",
+      "symbol": "apply-data-retention",
+      "blobOid": "d0e5f9792eaf922c7a9435129230e8e6568c68b8"
+    },
+    "cleanupConsumer": {
+      "classification": "implementation_decision_required",
+      "note": "Audit/async-job expiry has no cleanup consumer or planned job type; S10 readiness stays degraded"
+    }
+  },
+  "capabilityLayering": {
+    "anonymousConsent": "current_fact",
+    "authenticatedConsent": "future_unavailable",
+    "privacySubjectPurge": "future_unavailable",
+    "legalHold": "read_only_fact_and_policy_reference",
+    "dsar": "rules_only_no_execution",
+    "lowRiskAllowlist": "future_families_only_no_execution",
+    "impactPreview": "read_only_aggregate_no_pii"
+  },
+  "lifecycle": {
+    "reuse": "S01/S01B append-only lifecycle with S02/S09 descriptor isolation",
+    "states": [
+      "draft",
+      "invalid",
+      "validated",
+      "activation_failed",
+      "published",
+      "superseded"
+    ],
+    "draftCas": "resource-local settingsRevision",
+    "expectedPublishedVersion": "descriptor-scoped publicationSequence via current projection",
+    "idempotency": "exact replay or conflict (s10 independent operation family)",
+    "history": "append-only s01_settings_publication_event, descriptorKey partitioned",
+    "rollback": "new draft + new publication; never claims to restore deleted/anonymized data",
+    "atomicBoundary": "publish + Audit + ledger + history atomic; partialPublish=false"
+  },
+  "draftValidation": {
+    "structure": "exact keys, integer bounds, enums, JSON depth/size, reject PII values/consent payload/secret/token/cookie/hash fields",
+    "businessBlockers": [
+      "retentionMonths <6 or >120",
+      "retentionDays <30 or >7300",
+      "autoCleanupEnabled=true for high-risk family (audit_events/media_assets/orders/payments/privacy_requests)",
+      "legalHoldEnabled=true with any autoCleanupEnabled=true (hold conflict)",
+      "legalHoldEnabled=true with empty legalHoldRefs",
+      "legalHoldRefs non-uuid or >64",
+      "lowRiskExecution.allowlist contains non-candidate family (only consent_events/async_jobs)",
+      "retentionByObjectFamily duplicate or unknown family",
+      "DSAR method=delete with requireAdminApproval=false",
+      "piiDisplayRules.allowedRoles empty or >8 or unknown role key",
+      "consentCategories empty/duplicate/unknown"
+    ],
+    "warnings": [
+      "authenticatedConsentEnabled=true (not executable)",
+      "any autoCleanupEnabled=true (requires separate authorization)",
+      "retentionDays below current worker constant for the family (where applicable)"
+    ],
+    "unknownFields": "reject",
+    "errorFamilies": [
+      "SETTINGS_VALIDATION_FAILED",
+      "SETTINGS_STATE_CONFLICT",
+      "VERSION_CONFLICT",
+      "IDEMPOTENCY_CONFLICT",
+      "LEGAL_HOLD_CONFLICT"
+    ]
+  },
+  "publishAdapter": {
+    "targetSemantics": "activate policy version only; no delete/anonymize/archive/purge execution",
+    "atomicBoundary": "publish/audit/ledger/history atomic",
+    "consumerDirection": "S10 -> B09 (future consumer); S10 does not wait for B09",
+    "forbiddenSideEffects": [
+      "no delete/anonymize/archive/purge on publish/rollback/validate/preview",
+      "no legal-hold instance change",
+      "no PrivacyRequest state change",
+      "no Worker job creation or scheduling",
+      "no pseudo-rollback of deleted/anonymized data"
+    ],
+    "rollback": "policy version rollback never restores deleted/anonymized data; real delete/purge requires separate user authorization"
+  },
+  "readinessAdapter": {
+    "sideEffectFree": true,
+    "consumerGenerationMatch": "inherits S01 exact-match reporting as a field",
+    "state": "degraded always while cleanup consumer missing",
+    "degradedReasons": [
+      "cleanup_consumer_unavailable",
+      "hold_conflict",
+      "p04_dependency_unavailable"
+    ],
+    "neverFakeReady": true,
+    "note": "degraded is an honest normal product state; does not block draft/publish/history; future low-risk cleanup Job requires separate authorization with object allowlist, dry-run, hold checks and rollback boundaries"
+  },
+  "impactPreview": {
+    "route": [
+      "POST",
+      "/dashboard/settings/s10-impact-preview",
+      "settings.read"
+    ],
+    "request": {
+      "candidateRetentionEntries": "array 0..7 of {objectFamily, retentionDays, autoCleanupEnabled}",
+      "candidateAllowlist": "array 0..2"
+    },
+    "response": [
+      "wouldEnableAutoCleanup",
+      "wouldConflictWithLegalHold",
+      "blockedHighRiskFamilies",
+      "affectedFamilies",
+      "contextRevision"
+    ],
+    "implementation": "transactional read-only validation reusing real hold/high-risk/allowlist invariants; aggregate impact only",
+    "forbidden": [
+      "no business/Audit/job writes",
+      "no PrivacyRequest/consent/Audit/Media state change",
+      "no PII",
+      "no per-row targets",
+      "no count details"
+    ]
+  },
+  "routes": {
+    "settingsLifecycle": [
+      [
+        "GET",
+        "/dashboard/settings/s10-overview",
+        "settings.read"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s10-drafts",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s10-drafts",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s10-drafts/:id",
+        "settings.read"
+      ],
+      [
+        "PATCH",
+        "/dashboard/settings/s10-drafts/:id",
+        "settings.write"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s10-drafts/:id/validate",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s10-drafts/:id/diff",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s10-drafts/:id/publish",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s10-history",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s10-history/:publicationId/rollback-draft",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s10-readiness",
+        "settings.read"
+      ]
+    ],
+    "preview": [
+      "POST",
+      "/dashboard/settings/s10-impact-preview",
+      "settings.read"
+    ],
+    "errorFamilies": {
+      "400": [
+        "SETTINGS_VALIDATION_FAILED"
+      ],
+      "401": [
+        "AUTH_REQUIRED"
+      ],
+      "403": [
+        "DASHBOARD_FORBIDDEN"
+      ],
+      "404": [
+        "SETTINGS_DESCRIPTOR_UNAVAILABLE"
+      ],
+      "409": [
+        "VERSION_CONFLICT",
+        "IDEMPOTENCY_CONFLICT",
+        "SETTINGS_STATE_CONFLICT",
+        "LEGAL_HOLD_CONFLICT"
+      ]
+    }
+  },
+  "auditDescriptor": {
+    "operationFamily": "settings.publish/rollback (S10)",
+    "resourceFamily": "settings.privacy-retention",
+    "requiredPermission": "settings.write (existing; no new permission)",
+    "p02Snapshot": "real P02 occurrence-time context",
+    "safeMetadata": [
+      "descriptorKey",
+      "schemaVersion",
+      "publicationSequence",
+      "changeReason"
+    ],
+    "secretDenylist": [
+      "PII values",
+      "consent payloads",
+      "deletion/anonymization targets",
+      "cookie secret",
+      "session token/hash",
+      "Authorization header",
+      "database credential",
+      "encryption key",
+      "password/hash/salt",
+      "reset token"
+    ],
+    "retention": "inherits P04 audit-retention.v1 (expiresAt occurredAt+2555d)"
+  },
+  "migration77": {
+    "owner": "Backend/S10",
+    "path": "packages/db/prisma/migrations/20260807000000_s10_privacy_retention_settings/migration.sql",
+    "allowed": [
+      "s10_* controlled functions",
+      "settings.privacy-retention independent lock domain",
+      "settings_command_operation_check forward extension (append s10_* five operations)",
+      "settings_core_shape_check forward extension",
+      "runtime_config_registry descriptor allowlist forward extension",
+      "policy/current projection, impact preview, readiness",
+      "safe GRANT/REVOKE",
+      "trailing post-assertions",
+      "explicit gen_random_uuid() on all INSERTs"
+    ],
+    "forbidden": [
+      "modify migrations 1-76",
+      "CREATE OR REPLACE s01_*/s02_*/s09_* functions",
+      "rewrite auth session state machine",
+      "create duplicate privacy/Audit fact tables",
+      "implement S11/S12/B09",
+      "store PII/secret/deletion target",
+      "any delete/anonymize/archive/purge data operation"
+    ],
+    "coordination": "update scripts/s02-migration75-static.test.mjs and scripts/s09-migration76-static.test.mjs count assertions to 77/no-78"
+  },
+  "sharedFileLeases": {
+    "integrationFreeze": [
+      "this contract MD/JSON"
+    ],
+    "backendS10": [
+      "apps/api/src/dashboard/access.ts",
+      "apps/api/src/dashboard/s10-settings.ts",
+      "apps/api/src/routes/dashboard.ts",
+      "apps/api/src/public-errors.ts",
+      "packages/db/src/s10-settings-controlled.ts",
+      "packages/db/src/index.ts",
+      "migration77",
+      "scripts/test-api-regular-pg16.sh"
+    ],
+    "frontendS10": [
+      "src/lib/api/api-contract.ts",
+      "src/lib/api/runtime-validation.ts",
+      "src/lib/dashboard/s10-settings.ts",
+      "s10-settings-transport.ts",
+      "s10-settings-readiness-consumer.ts",
+      "PrivacyRetentionSettingsPanel.tsx",
+      "DashboardF0Shell.tsx",
+      "DashboardF0ReadOnlyContent.tsx",
+      "EN/FR [view]/page.tsx",
+      "src/lib/i18n/routes.ts",
+      "UI-0 allowlist extension"
+    ],
+    "p04AuditWrite": "S10 read-only consumer",
+    "migration77": "S10 exclusive"
+  },
+  "acceptanceMatrix": {
+    "normal": [
+      "compiled defaults projection with future_unavailable annotations",
+      "create/update/validate/diff/publish",
+      "impact preview read-only aggregate",
+      "readiness always degraded cleanup_consumer_unavailable",
+      "history and rollback-as-new-publication",
+      "six typed field families"
+    ],
+    "failure": [
+      "invalid retention / hold conflict / high-risk auto-cleanup / DSAR without approval / unknown family -> blocker",
+      "malformed UUID",
+      "stale version 409",
+      "idempotency conflict",
+      "401/403/404/409/400",
+      "consumer generation mismatch reported",
+      "secret/PII denylist"
+    ],
+    "zeroSideEffect": [
+      "Orders/Payments/Audit/Media/consent/privacy request tables unchanged by publish/rollback/validate/preview",
+      "no job creation"
+    ],
+    "browser": [
+      "current/future capability projection",
+      "typed editing",
+      "safe diff and preview without PII/per-row targets",
+      "publish activates policy only",
+      "Audit/history present with safe metadata",
+      "degraded never fake-ready",
+      "authenticated consent/purge future unavailable",
+      "rollback never claims data restoration",
+      "keyboard/focus/loading/error/empty",
+      "logout/post-logout",
+      "0 unexpected console/request"
+    ]
+  },
+  "scope": {
+    "in": [
+      "Privacy/Retention/Audit Settings lifecycle",
+      "future policy consumer declaration (B09)",
+      "read-only impact preview",
+      "desktop Settings page (EN/fr static routes)",
+      "honest degraded state while cleanup consumer missing"
+    ],
+    "out": [
+      "automatic delete/anonymize/archive/purge",
+      "real DSAR deletion",
+      "automatic cleanup of Orders/Payments/Audit/Media legal-hold objects",
+      "new cleanup Job or scheduler",
+      "pretending authenticated consent/purge is executable",
+      "mutating PrivacyRequest/consent/Audit/Media instance state",
+      "P04 provenance/ACL security governance",
+      "secret or PII echo",
+      "modifying S09 RBAC contract",
+      "fixing existing v2 items",
+      "S11/S12/B09",
+      "Main, production, external side effects"
+    ]
+  },
+  "claims": {
+    "frozen": true,
+    "implemented": true,
+    "integrated": true,
+    "certified": true
+  },
+  "finalIdentity": {
+    "contractFreezeCommit": "87682ba01894f90271718f3f83d4cc3f50c9aa44",
+    "backendCommits": [
+      "9a4a983bc0adfc6ee18d7b847002cabd073d0bb7",
+      "ff79840275a3c2844f5ae6bc7cbdd5890a99b2a2"
+    ],
+    "frontendCommits": [
+      "219a50b28d80b7b3b545d33a4e74cd6a98f73155",
+      "d972d21b895c4aaea1f52ecbe48200524e69af1d"
+    ],
+    "mergeChain": [
+      {
+        "commit": "87af4685b623c8f34092d71fdb8b0e14ef8fbdc6",
+        "parents": [
+          "87682ba01894f90271718f3f83d4cc3f50c9aa44",
+          "ff79840275a3c2844f5ae6bc7cbdd5890a99b2a2"
+        ]
+      },
+      {
+        "commit": "352e1214a179a5d229387b33488d12ab0cd6e59f",
+        "parents": [
+          "87af4685b623c8f34092d71fdb8b0e14ef8fbdc6",
+          "d972d21b895c4aaea1f52ecbe48200524e69af1d"
+        ]
+      }
+    ],
+    "followUpCommits": [
+      "897e1e8b0b3f89e756b1acedb522c1383c419e7f",
+      "dad4ef63b1c6a15d39dcfa703e324a5d60a35242"
+    ],
+    "migration77": {
+      "path": "packages/db/prisma/migrations/20260807000000_s10_privacy_retention_settings/migration.sql",
+      "migrationCount": 77,
+      "latestMigration": "20260807000000_s10_privacy_retention_settings",
+      "noMigration78": true,
+      "owner": "Backend/S10 exclusive; migrations 1-76 immutable"
+    },
+    "testedCommit": "dad4ef63b1c6a15d39dcfa703e324a5d60a35242",
+    "testedTree": "4a78bcfbee157be13c37d820a94163ac37062991",
+    "gates": {
+      "typecheck": "4/4 (web, db, api, worker)",
+      "libTests": "10/10 (S10 9 + S09 readiness restored 1)",
+      "ui0Contracts": "24/24",
+      "packageContracts": "271/271",
+      "migrationStatic": "13/13 (s01/s02/s09/s10)",
+      "pg16": "299 tests, 285 pass; 2 pre-existing baseline failures disclosed (auth-cookie password reset, cart merge overflow)",
+      "dbTests": "50/0",
+      "workerTests": "31/0",
+      "s10Browser": "23/23, 0 unexpected console/requests",
+      "s09Browser": "23/23, 0 unexpected",
+      "s02Browser": "23/23, 0 unexpected",
+      "s01bBrowser": "25/25, 15 historical /storefront/config 404 console errors disclosed (v2 register #26)",
+      "frRoute": "200 with FR metadata (Tableau de bord — Paramètres)"
+    },
+    "browserEvidence": {
+      "suiteId": "vanstro.s10.privacy-retention.settings.desktop.v1",
+      "path": "tasks/evidence/v1-s10-settings-browser/acceptance-results.json",
+      "sha256": "ecd323b8de15755a39fa",
+      "testedCommit": "dad4ef63b1c6a15d39dcfa703e324a5d60a35242",
+      "testedTree": "4a78bcfbee157be13c37d820a94163ac37062991",
+      "counts": {
+        "pass": 23,
+        "fail": 0,
+        "intentional-skip": 0,
+        "not-executed": 0
+      },
+      "unexpected": {
+        "consoleErrors": 0,
+        "requests": 0
+      }
+    },
+    "v2RegisterItems": [
+      "S10 final certification: Integration 897e1e8 + dad4ef6, migration77 20260807000000_s10_privacy_retention_settings, S10 delta 39 files +5006 -22, PG16 285/2 (2 pre-existing baseline failures), S10/S09/S02 browser 23/23 each, S01B 25/25 (15 historical 404s)",
+      "S10 closure: authority/evidence commit on Integration, contract final status IMPLEMENTED_INTEGRATION_CERTIFIED, forward s10 static test, read-only reviewer re-verification"
+    ]
+  }
+}

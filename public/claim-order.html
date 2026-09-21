@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claim order · VANSTRO</title>
+  <link rel="stylesheet" href="/account/assets/vi.css">
+</head>
+<body>
+<main style="max-width:560px;margin:12vh auto;padding:32px;text-align:center;font-family:system-ui">
+  <p style="margin:0 0 24px"><a id="homeLink" class="js-home" href="/" aria-label="Vanstro home"><img src="/account/assets/brand/logo-navy.png" alt="VANSTRO" width="160" height="32" style="display:inline-block"></a></p>
+  <p style="margin:0 0 24px"><a class="auth__back" href="/">Back to vanstro.ca</a></p>
+  <h1 id="claimH">Claim this order</h1>
+  <p id="status">Checking your confirmation link…</p>
+  <a class="js-account" id="continue" href="/account#orders" hidden>Go to your orders</a>
+</main>
+<script src="/account/assets/session.js"></script>
+<script>
+(async function () {
+  const status = document.getElementById('status');
+  const link = document.getElementById('continue');
+  const h = document.getElementById('claimH');
+  const fr = /^\/fr(\/|$)/.test(location.pathname);
+  if (fr) {
+    document.documentElement.lang = 'fr-CA';
+    document.title = 'Associer la commande · VANSTRO';
+    h.textContent = 'Associer cette commande';
+    status.textContent = 'Vérification du lien…';
+    link.textContent = 'Voir vos commandes';
+    link.href = '/fr/account#orders';
+    document.getElementById('homeLink').href = '/fr/';
+  }
+  if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(fr);
+  const token = new URLSearchParams(location.search).get('token');
+  if (!token) {
+    status.textContent = fr ? 'Ce lien est manquant ou invalide.' : 'This confirmation link is missing or invalid.';
+    return;
+  }
+  try {
+    const res = await fetch('/api/orders/claim-confirm', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      status.textContent = fr
+        ? 'Ce lien est invalide, déjà utilisé ou expiré.'
+        : 'This confirmation link is invalid, already used, or expired.';
+      return;
+    }
+    status.textContent = fr
+      ? 'La commande est maintenant associée à votre compte.'
+      : 'This order is now attached to your account.';
+    link.hidden = false;
+    history.replaceState(null, '', fr ? '/fr/claim-order' : '/claim-order');
+    void body;
+  } catch {
+    status.textContent = fr
+      ? 'Le service est temporairement indisponible. Réessayez.'
+      : 'The account service is temporarily unavailable. Please try again.';
+  }
+})();
+</script>
+</body>
+</html>

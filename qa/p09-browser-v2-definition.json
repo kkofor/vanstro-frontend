@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 2,
+  "suiteId": "vanstro.dashboard.p09.authenticated-browser.v2",
+  "contractSha256": "0732de4d3333d809d174a5b9f0efb809ebc09a3553b04bfd3c2f90133cfef4de",
+  "cleanReset": "new localhost fixture; synthetic actor/config/flag/readiness state; empty request ledger",
+  "cases": [
+    {"id":"P09-A01","name":"authorized Config registry list and detail"},
+    {"id":"P09-A02","name":"typed validation and unknown key/schema denial"},
+    {"id":"P09-A03","name":"proposal changes desired but not effective"},
+    {"id":"P09-A04","name":"activation success changes effective generation"},
+    {"id":"P09-A05","name":"activation failure preserves desired and prior effective"},
+    {"id":"P09-A06","name":"explicit retry recovers activation"},
+    {"id":"P09-A07","name":"stale version conflict no auto replay"},
+    {"id":"P09-A08","name":"rollback creates new version"},
+    {"id":"P09-A09","name":"Global Dealer Location source precedence"},
+    {"id":"P09-A10","name":"flag enable disable and authorization independence"},
+    {"id":"P09-A11","name":"independent kill confirmation and fallback"},
+    {"id":"P09-A12","name":"permission and cross-scope fail closed"},
+    {"id":"P09-A13","name":"actor context scope generation fencing"},
+    {"id":"P09-A14","name":"API Worker readiness ready degraded stale zero capacity"},
+    {"id":"P09-A15","name":"secret redaction and public health minimization"},
+    {"id":"P09-A16","name":"keyboard focus live region and 320 390 reflow"},
+    {"id":"P09-A17","name":"exact transport arbitrary key URL denial localhost-only network"}
+  ]
+}

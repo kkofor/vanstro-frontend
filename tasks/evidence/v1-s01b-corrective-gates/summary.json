@@ -1,0 +1,25 @@
+{
+  "candidateCommit": "99e18141d20a7e0f694a8267d10bba96dcc4e3f7",
+  "browserTestedCommit": "cc2161aca75105b4c3a9df8edcfd8f4f7c651f8f",
+  "browserTestedTree": "dc16f52776af418871e96595a6b3ee0aa6f522f2",
+  "gates": [
+    { "name": "corrective-contract", "command": "pnpm --dir apps/api exec tsx --test ../../qa/s01b-corrective-contract.test.ts", "exitCode": 0, "pass": 4, "fail": 0 },
+    { "name": "frontend-corrective-focused", "command": "node --experimental-strip-types --test qa/package-a-contracts.test.ts src/lib/dashboard/s01-settings-readiness-consumer.test.ts src/components/dashboard/SettingsFoundationPanel.test.ts", "exitCode": 0, "pass": 47, "fail": 0 },
+    { "name": "package-contracts", "command": "pnpm test:package-contracts", "exitCode": 0, "pass": 247, "fail": 0, "log": "package-contracts.log", "sha256": "10e9d57c666a9574dba67a5cccf7c6db6a922a3d272343322a85678360363b78" },
+    { "name": "regular-api-pg16", "command": "PATH=/opt/homebrew/opt/node@22/bin:$PATH pnpm test:api", "exitCode": 0, "pass": 245, "fail": 0, "skip": 12, "total": 257, "log": "api-pg16.log", "sha256": "89de70b00bb15f7a097c73497189a0cce6184f880bec5f5278d9c44a8b4a740f" },
+    { "name": "db", "command": "pnpm test:db", "exitCode": 0, "pass": 50, "fail": 0, "skip": 36 },
+    { "name": "worker", "command": "pnpm test:worker", "exitCode": 0, "pass": 31, "fail": 0, "skip": 1 },
+    { "name": "typecheck-and-backend-build", "command": "pnpm typecheck && pnpm build:backend", "exitCode": 0 },
+    { "name": "prisma-generate", "command": "pnpm db:generate", "exitCode": 0 },
+    { "name": "prisma-validate", "command": "DATABASE_URL=postgresql://placeholder:placeholder@127.0.0.1:5432/placeholder pnpm --filter @vanstro/db exec prisma validate --schema prisma/schema.prisma", "exitCode": 0 },
+    { "name": "static-build", "command": "Node22 VANSTRO_STATIC_EXPORT=true NEXT_PUBLIC_SITE_URL=https://vanstro.ca VANSTRO_WEBSITE_API_BASE_URL=https://vanstro.ca/api/v1 pnpm build:pages", "exitCode": 0, "pages": 412, "frenchHtml": 203, "execution": "isolated copy using committed next.config.mjs because protected working-tree config is externally modified" },
+    { "name": "seo-artifacts", "command": "pnpm qa:artifacts", "exitCode": 0, "applicationRoutes": 406, "indexableUrls": 308, "pdpPerLocale": 140, "catalogSkus": 300, "chromiumPass": 40, "chromiumFail": 0 },
+    { "name": "browser-corrective", "command": "qa/v1-s01-settings-browser/run-s01b.sh", "exitCode": 0, "pass": 25, "fail": 0, "unexpectedConsole": 0, "unexpectedRequests": 0, "result": "../v1-s01b-settings-browser/acceptance-results.json", "resultSha256": "d1313ea4c8a1df2a60d514469d040cb686dbef741740d47c8dde2ed8bdff4b7f" },
+    { "name": "migration-immutability", "command": "compare pre-run migration SHA inventory", "exitCode": 0, "sourceMigrationCount": 74, "migration75": false }
+  ],
+  "nonPassingAttempts": [
+    { "gate": "prisma-validate", "reason": "first invocation omitted DATABASE_URL; rerun with non-connecting placeholder passed" },
+    { "gate": "regular-api-pg16", "reason": "first invocation used host Node25 and was rejected by harness; Node22 rerun passed" },
+    { "gate": "static-build", "reason": "protected working-tree next.config.mjs is externally modified and omits static export; isolated committed-config rerun passed" }
+  ]
+}

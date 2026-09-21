@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { DEFAULT_LOCALE, FRENCH_LOCALE, localeFromPathname, type SiteLocale } from "@/lib/i18n/locale";
+import { getLocaleRoutePair } from "@/lib/i18n/routes";
 import { getSiteBaseUrl, publicAssetUrl, publicUrl } from "@/lib/seo/site";
 
 type PageMetadataInput = {
@@ -6,10 +8,31 @@ type PageMetadataInput = {
   description: string;
   path: string;
   image?: string;
-  locale?: "en_CA" | "zh_CN";
+  locale?: "en_CA" | "fr_CA";
   noIndex?: boolean;
   languages?: Record<string, string>;
 };
+
+const OPEN_GRAPH_LOCALE_BY_SITE_LOCALE = {
+  "en-CA": "en_CA",
+  "fr-CA": "fr_CA"
+} as const satisfies Record<SiteLocale, "en_CA" | "fr_CA">;
+
+function localeMetadataForPath(path: string) {
+  const siteLocale = localeFromPathname(path);
+  const routePair = getLocaleRoutePair(path);
+
+  return {
+    locale: OPEN_GRAPH_LOCALE_BY_SITE_LOCALE[siteLocale],
+    languages: routePair
+      ? {
+          "en-CA": routePair.en,
+          ...(routePair.frAvailable === false ? {} : { "fr-CA": routePair.fr }),
+          "x-default": routePair.en
+        }
+      : undefined
+  };
+}
 
 const defaultSocialImage = "/assets/home-hero-kitchen.png";
 
@@ -18,7 +41,7 @@ export function buildPageMetadata({
   description,
   path,
   image = defaultSocialImage,
-  locale = "en_CA",
+  locale,
   noIndex = false,
   languages
 }: PageMetadataInput): Metadata {
@@ -26,9 +49,12 @@ export function buildPageMetadata({
   const canonical = publicUrl(path);
   const socialImage = publicAssetUrl(image);
   const shouldIndex = Boolean(siteBaseUrl) && !noIndex;
-  const languageAlternates = languages
+  const localeMetadata = localeMetadataForPath(path);
+  const resolvedLocale = locale ?? localeMetadata.locale;
+  const resolvedLanguages = languages ?? localeMetadata.languages;
+  const languageAlternates = resolvedLanguages
     ? Object.fromEntries(
-        Object.entries(languages).flatMap(([language, languagePath]) => {
+        Object.entries(resolvedLanguages).flatMap(([language, languagePath]) => {
           const url = publicUrl(languagePath);
           return url ? [[language, url]] : [];
         })
@@ -54,7 +80,7 @@ export function buildPageMetadata({
       description,
       ...(canonical ? { url: canonical } : {}),
       siteName: "VanStro Global Supply",
-      locale,
+      locale: resolvedLocale,
       type: "website",
       ...(socialImage ? { images: [{ url: socialImage, alt: title }] } : {})
     },
@@ -65,7 +91,7 @@ export function buildPageMetadata({
       ...(socialImage ? { images: [socialImage] } : {})
     },
     other: {
-      "content-language": locale === "zh_CN" ? "zh-CN" : "en-CA"
+      "content-language": resolvedLocale === "fr_CA" ? "fr-CA" : "en-CA"
     }
   };
 }

@@ -1,34 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, CheckCircle2, Headphones, MapPin, Send, X } from "lucide-react";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Marker, MarkerContent } from "@/components/ui/marker";
+import { Message, MessageContent } from "@/components/ui/message";
+import {
+  MessageScroller,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerProvider,
+  MessageScrollerViewport,
+} from "@/components/ui/message-scroller";
+import { Headphones, MapPin, MessageCircle, Send, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
-import { assetPath } from "@/lib/assets";
+import { vanstroApi } from "@/lib/api/api-client";
+import { localeHref } from "@/lib/i18n/routes";
+import { isCanonicalCatalogHref, openCanonicalCatalog } from "@/lib/i18n/canonical-catalog";
 import { useModalFocus } from "@/lib/accessibility/useModalFocus";
+import { useLocale } from "@/components/i18n/LocaleProvider";
 import {
-  AI_SUPPORT_PROMPTS,
   SupportChannel,
+  getAiSupportPrompts,
   SupportMessage,
   createOpeningMessage,
   makeSupportMessage,
-  resolveAiSupportReply
+  resolveAiSupportApiReply
 } from "@/lib/support/ai-support";
 
 export function FloatingSupportWidget() {
+  const { copy, locale } = useLocale();
+  const supportCopy = copy.supportWidget;
+  const prompts = getAiSupportPrompts(locale);
   const widgetRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const latestAssistantRef = useRef<HTMLDivElement>(null);
-  const messageEndRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const { cartCount, selectedDealerName } = useStorefront();
+  const { cartCount, selectedDealerName, selectedDealerId } = useStorefront();
   const [open, setOpen] = useState(false);
   const [openedFromPage, setOpenedFromPage] = useState(false);
-  const [status, setStatus] = useState("Ready to help");
+  const [status, setStatus] = useState(supportCopy.ready);
   const [handoffRequested, setHandoffRequested] = useState(false);
   const [messages, setMessages] = useState<SupportMessage[]>([]);
   const [draft, setDraft] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const supportContext = useMemo(
     () => ({
@@ -61,67 +78,142 @@ export function FloatingSupportWidget() {
     (source: "widget" | "page" = "widget") => {
       setOpen(true);
       setOpenedFromPage(source === "page");
-      setStatus("Ready to help");
+      setStatus(supportCopy.ready);
       setMessages((current) =>
-        current.length > 0 ? current : [createOpeningMessage(supportContext)]
+        current.length > 0 ? current : [createOpeningMessage(supportContext, locale)]
       );
     },
-    [supportContext]
+    [locale, supportContext, supportCopy.ready]
   );
 
   const sendPrompt = useCallback(
-    (prompt: string) => {
+    async (prompt: string) => {
       const cleanPrompt = prompt.trim();
       if (!cleanPrompt) return;
 
       const userMessage = makeSupportMessage("user", cleanPrompt);
-      const assistantMessage = resolveAiSupportReply(cleanPrompt, supportContext);
+      const openingMessage = createOpeningMessage(supportContext, locale);
+      const currentMessages = messages.length > 0 ? messages : [openingMessage];
 
       setOpen(true);
-      setStatus(assistantMessage.handoff ? "May need a teammate" : "Answer ready");
       setHandoffRequested(false);
+      setIsGenerating(true);
+      setDraft("");
       setMessages((current) => [
-        ...(current.length > 0 ? current : [createOpeningMessage(supportContext)]),
-        userMessage,
+        ...(current.length > 0 ? current : [openingMessage]),
+        userMessage
+      ]);
+      setStatus(supportCopy.ready);
+
+      let assistantMessage: SupportMessage | undefined;
+      try {
+        const response = await vanstroApi.supportAiChat({
+          message: cleanPrompt,
+          locale,
+          pathname: supportContext.pathname,
+          selectedDealerName: supportContext.selectedDealerName,
+          cartCount: supportContext.cartCount
+        });
+        assistantMessage = resolveAiSupportApiReply(response.data, locale);
+      } catch {
+        // The API failure is rendered explicitly below; never imitate an AI reply locally.
+      }
+
+      const unavailableMessage = makeSupportMessage(
+        "assistant",
+        supportCopy.cannotConnectAssistant,
+        supportCopy.cannotConnectAssistantMeta,
+        {
+          handoff: true,
+          actions: [
+            {
+              label: supportCopy.replies.contactPage,
+              href: localeHref("/contact", locale),
+              description: supportCopy.replies.contactDescription,
+              tone: "primary"
+            }
+          ]
+        }
+      );
+      assistantMessage ??= unavailableMessage;
+      setIsGenerating(false);
+      setStatus(assistantMessage.handoff ? supportCopy.mayNeedTeammate : supportCopy.answerReady);
+      setMessages((current) => [
+        ...(current.length > 0 ? current : currentMessages),
         assistantMessage
       ]);
-      setDraft("");
     },
-    [supportContext]
+    [locale, messages, supportContext, supportCopy.answerReady, supportCopy.mayNeedTeammate, supportCopy.ready]
   );
 
-  const requestHumanHandoff = () => {
-    const handoffMessage = makeSupportMessage(
-      "assistant",
-      "I can route this to a VanStro support teammate. Please leave your name, email, order number if available, and the product or dealer location involved.",
-      "Handoff prepared",
-      {
-        actions: [
-          {
-            label: "Open contact form",
-            href: "/contact",
-            description: "Use this for files, project details or email follow-up."
-          }
-        ]
-      }
-    );
+  const [handoffSubmitting, setHandoffSubmitting] = useState(false);
 
-    window.dispatchEvent(
-      new CustomEvent("vanstro:human-support-request", {
-        detail: {
-          context: supportContext,
-          messages
+  const requestHumanHandoff = async () => {
+    if (handoffSubmitting) return;
+
+    setHandoffSubmitting(true);
+    setStatus(supportCopy.handoffPrepared);
+
+    try {
+      const transcript = messages.map((message) => ({
+        role: message.role,
+        message: message.text,
+        createdAt: new Date().toISOString()
+      }));
+
+      await vanstroApi.requestSupportHandoff({
+        channel: "human",
+        sourcePath: pathname,
+        dealerId: selectedDealerId,
+        transcript:
+          transcript.length > 0
+            ? transcript
+            : [
+                {
+                  role: "user" as const,
+                  message: supportCopy.handoffTitle,
+                  createdAt: new Date().toISOString()
+                }
+              ]
+      });
+
+      const handoffMessage = makeSupportMessage(
+        "assistant",
+        supportCopy.handoffMessage,
+        supportCopy.handoffPrepared,
+        {
+          actions: [
+            {
+              label: supportCopy.handoffContactLabel,
+              href: localeHref("/contact", locale),
+              description: supportCopy.handoffContactDescription
+            }
+          ]
         }
-      })
-    );
+      );
 
-    setHandoffRequested(true);
-    setStatus("Handoff prepared");
-    setMessages((current) => [...current, handoffMessage]);
+      window.dispatchEvent(
+        new CustomEvent("vanstro:human-support-request", {
+          detail: {
+            context: supportContext,
+            messages
+          }
+        })
+      );
+
+      setHandoffRequested(true);
+      setMessages((current) => [...current, handoffMessage]);
+    } catch {
+      setStatus(supportCopy.mayNeedTeammate);
+      setHandoffRequested(false);
+    } finally {
+      setHandoffSubmitting(false);
+    }
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!draft.trim()) return;
     sendPrompt(draft);
   };
 
@@ -133,11 +225,11 @@ export function FloatingSupportWidget() {
 
       if (detail?.channel === "live") {
         setMessages((current) => [
-          ...(current.length > 0 ? current : [createOpeningMessage(supportContext)]),
+          ...(current.length > 0 ? current : [createOpeningMessage(supportContext, locale)]),
           makeSupportMessage(
             "assistant",
-            "I will start here. If this needs a support teammate, I can prepare the handoff after collecting the key details.",
-            "AI first"
+            supportCopy.liveIntro,
+            supportCopy.liveIntroMeta
           )
         ]);
       }
@@ -145,7 +237,7 @@ export function FloatingSupportWidget() {
 
     window.addEventListener("vanstro:support-request", handleSupportRequest);
     return () => window.removeEventListener("vanstro:support-request", handleSupportRequest);
-  }, [openSupport, supportContext]);
+  }, [locale, openSupport, supportContext, supportCopy.liveIntro, supportCopy.liveIntroMeta]);
 
   useEffect(() => {
     if (!open) return;
@@ -163,155 +255,154 @@ export function FloatingSupportWidget() {
     };
   }, [closeSupport, open]);
 
-  useEffect(() => {
-    if (open) {
-      if (latestAssistantRef.current) {
-        latestAssistantRef.current.scrollIntoView({ block: "start" });
-        return;
-      }
-
-      messageEndRef.current?.scrollIntoView({ block: "end" });
-    }
-  }, [latestAssistantMessage?.id, open]);
-
   return (
     <aside
-      className={openedFromPage ? "support-widget is-page-open" : "support-widget"}
+      className={openedFromPage ? "support-root is-page-open" : "support-root"}
       ref={widgetRef}
-      aria-label="VanStro AI customer support"
+      aria-label={supportCopy.customerSupportLabel}
     >
       {open ? (
         <div
           ref={panelRef}
-          className="support-panel"
+          className="support-card"
           role="dialog"
           aria-modal="true"
-          aria-label="VanStro assistant"
+          aria-label={supportCopy.assistantLabel}
           tabIndex={-1}
         >
-          <div className="support-panel-head">
-            <span>
-              <Bot size={18} strokeWidth={2.2} />
+          <div className="support-accent" aria-hidden="true" />
+          <header className="support-card-header">
+            <span className="support-avatar" aria-hidden="true">
+              <MessageCircle size={20} strokeWidth={1.7} />
             </span>
-            <div>
-              <strong>VanStro assistant</strong>
-              <small aria-live="polite" aria-atomic="true">{status}</small>
+            <div className="support-head-copy">
+              <strong>{supportCopy.assistantLabel}</strong>
+              <span><i className="support-live-dot" />{supportCopy.ready}</span>
             </div>
-            <button type="button" aria-label="Close support panel" onClick={closeSupport}>
-              <X size={18} strokeWidth={2.2} />
-            </button>
-          </div>
+            <Button className="support-close" type="button" variant="ghost" size="icon" aria-label={supportCopy.closeLabel} onClick={closeSupport}>
+              <X size={15} strokeWidth={1.7} />
+            </Button>
+          </header>
 
-          <div className="support-context-strip" aria-label="Support context">
-            <span>
-              <MapPin size={14} strokeWidth={2.2} />
-              {supportContext.selectedDealerName}
-            </span>
-            <span>
-              <CheckCircle2 size={14} strokeWidth={2.2} />
-              AI first, human handoff when needed
-            </span>
-          </div>
+          <Marker className="support-dealer-marker" aria-label={supportCopy.contextLabel}>
+            <MapPin size={14} strokeWidth={2.2} aria-hidden="true" />
+            <MarkerContent>{supportContext.selectedDealerName}</MarkerContent>
+          </Marker>
 
-          <div className="support-chat">
-            <div
-              className="support-messages"
-              role="log"
-              aria-live="polite"
-              aria-relevant="additions text"
-            >
-              {messages.map((message) => (
-                <div
-                  className={`support-message ${message.role}`}
-                  key={message.id}
-                  ref={message.id === latestAssistantMessage?.id ? latestAssistantRef : undefined}
-                >
-                  <div className="support-message-bubble">
-                    <p>{message.text}</p>
-                    {message.meta ? <small>{message.meta}</small> : null}
-                    {message.actions?.length ? (
-                      <div className="support-message-actions">
-                        {message.actions.map((action) => (
-                          <Link
-                            className={action.tone === "primary" ? "support-action-link primary" : "support-action-link"}
-                            href={action.href}
-                            key={`${message.id}-${action.href}-${action.label}`}
-                            onClick={closeSupport}
-                          >
-                            <strong>{action.label}</strong>
-                            {action.description ? <span>{action.description}</span> : null}
-                          </Link>
-                        ))}
-                      </div>
+          <section className="support-chat">
+            <MessageScrollerProvider autoScroll defaultScrollPosition="end">
+              <MessageScroller className="support-messages">
+                <MessageScrollerViewport aria-label={supportCopy.assistantLabel} role="log" aria-live="polite" aria-relevant="additions text">
+                  <MessageScrollerContent>
+                    {messages.map((message) => (
+                      <MessageScrollerItem className="support-message-item" key={message.id} messageId={message.id} scrollAnchor={message.id === latestAssistantMessage?.id}>
+                        <Message align={message.role === "user" ? "end" : "start"} className={`support-message ${message.role}`}>
+                          <MessageContent>
+                            <Bubble align={message.role === "user" ? "end" : "start"} variant={message.role === "user" ? "default" : "muted"}>
+                              <BubbleContent className="support-bubble-content">
+                                <p>{message.text}</p>
+                                {message.meta ? <small>{message.meta}</small> : null}
+                                {message.actions?.length ? (
+                                  <div className="support-message-actions">
+                                    {message.actions.map((action) => (
+                                      <Link
+                                        className={action.tone === "primary" ? "support-action-link primary" : "support-action-link"}
+                                        href={action.href}
+                                        key={`${message.id}-${action.href}-${action.label}`}
+                                        onClick={(event) => {
+                                          closeSupport();
+                                          if (isCanonicalCatalogHref(action.href)) {
+                                            event.preventDefault();
+                                            openCanonicalCatalog(locale);
+                                          }
+                                        }}
+                                      >
+                                        <strong>{action.label}</strong>
+                                        {action.description ? <span>{action.description}</span> : null}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                ) : null}
+                              </BubbleContent>
+                            </Bubble>
+                          </MessageContent>
+                        </Message>
+                      </MessageScrollerItem>
+                    ))}
+                    <div className="support-prompt-chips" aria-label={supportCopy.suggestedQuestionsLabel}>
+                      {prompts.map((item) => (
+                        <Button
+                          data-ai-support-intent={item.id}
+                          key={item.id}
+                          type="button"
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => sendPrompt(item.prompt)}
+                        >
+                          {item.label}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {isGenerating || status !== supportCopy.ready ? (
+                      <MessageScrollerItem className="support-status-item" messageId="support-status">
+                        <Marker className={isGenerating ? "support-status generating" : "support-status"} role="status" aria-live="polite">
+                          {isGenerating ? (
+                            <>
+                              <span className="support-typing-bubble" aria-hidden="true"><i /><i /><i /></span>
+                              <MarkerContent>Assistant is typing</MarkerContent>
+                            </>
+                          ) : <MarkerContent>{status}</MarkerContent>}
+                        </Marker>
+                      </MessageScrollerItem>
                     ) : null}
-                  </div>
-                </div>
-              ))}
-              <div ref={messageEndRef} />
-            </div>
-
-            <div className="support-prompt-grid" aria-label="Suggested questions">
-              {AI_SUPPORT_PROMPTS.map((item) => (
-                <button
-                  data-ai-support-intent={item.id}
-                  key={item.id}
-                  type="button"
-                  onClick={() => sendPrompt(item.prompt)}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
+                  </MessageScrollerContent>
+                </MessageScrollerViewport>
+              </MessageScroller>
+            </MessageScrollerProvider>
 
             {showHandoffPrompt ? (
               <div className="support-handoff-prompt" role="status">
                 <Headphones size={18} strokeWidth={2.2} />
                 <span>
-                  <strong>AI can prepare a teammate handoff</strong>
-                  <em>It will pass the dealer, page context and conversation summary.</em>
+                  <strong>{supportCopy.handoffTitle}</strong>
+                  <em>{supportCopy.handoffDescription}</em>
                 </span>
-                <button type="button" onClick={requestHumanHandoff}>
-                  Transfer with context
-                </button>
+                <Button type="button" variant="primary" size="sm" onClick={() => void requestHumanHandoff()} loading={handoffSubmitting}>
+                  {supportCopy.handoffAction}
+                </Button>
               </div>
             ) : null}
 
             <form className="support-chat-form" onSubmit={handleSubmit}>
-              <input
-                aria-label="Ask VanStro assistant"
+              <Input
+                aria-label={supportCopy.inputLabel}
                 autoComplete="off"
                 value={draft}
-                placeholder="Ask about products, pickup, orders..."
+                placeholder={supportCopy.inputPlaceholder}
                 onChange={(event) => setDraft(event.target.value)}
               />
-              <button type="submit" aria-label="Send message" disabled={!draft.trim()}>
+              <Button type="submit" variant="primary" size="icon" aria-label={supportCopy.sendLabel} aria-disabled={!draft.trim()}>
                 <Send size={17} strokeWidth={2.3} />
-              </button>
+              </Button>
             </form>
-            <p className="support-disclaimer">AI starts the conversation. A teammate can take over when needed.</p>
-          </div>
+            <p className="support-disclaimer">{supportCopy.disclaimer}</p>
+          </section>
         </div>
       ) : null}
 
-      <button
-        className="support-launcher"
+      {!open ? <Button
+        className="support-trigger"
         type="button"
+        variant="primary"
+        size="icon"
+        aria-label={supportCopy.customerSupportLabel}
         aria-expanded={open}
         onClick={() => openSupport()}
       >
-        <img
-          src={assetPath("/assets/generated/support-agent-v1-192.webp")}
-          alt="VanStro AI support"
-          width={192}
-          height={192}
-          loading="eager"
-          decoding="async"
-        />
-        <span>
-          <strong>AI support</strong>
-          <small>Ask VanStro</small>
-        </span>
-      </button>
+        <span className="support-trigger-dot" aria-hidden="true" />
+        <MessageCircle size={27} strokeWidth={1.7} aria-hidden="true" />
+      </Button> : null}
     </aside>
   );
 }

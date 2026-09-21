@@ -1,0 +1,106 @@
+{
+  "suiteId": "vanstro.s08.api-service-accounts.settings.desktop.v1",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "scope": "S08 API/Service Account Settings desktop acceptance against the frozen S08 contract and implemented backend (descriptor settings.api-service-account)",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    {
+      "id": "S08-01",
+      "name": "Four-family panel renders with compiled defaults",
+      "expectation": "token lifecycle / machine scope / rate limit / audit-invocation policies and 编译默认值 projection render"
+    },
+    {
+      "id": "S08-02",
+      "name": "Empty validation, history, account and invocation views",
+      "expectation": "尚未验证当前草稿 / 尚无发布历史 shown; safe account and invocation views render"
+    },
+    {
+      "id": "S08-03",
+      "name": "Consumer readiness matrix (5 ready + 1 future obligation)",
+      "expectation": "matrix renders implemented_ready consumers and the ERP Product API machine future obligation"
+    },
+    {
+      "id": "S08-04",
+      "name": "Create draft",
+      "expectation": "typed draft with tokenLifecyclePolicy.defaultTtlDays 120 created"
+    },
+    {
+      "id": "S08-05",
+      "name": "Unknown role key validation blocker",
+      "expectation": "server rejects ROGUE_ROLE with S08_ROLE_UNKNOWN; draft invalid"
+    },
+    {
+      "id": "S08-06",
+      "name": "Validate draft after fix",
+      "expectation": "validated with no blockers"
+    },
+    {
+      "id": "S08-07",
+      "name": "Safe diff",
+      "expectation": "public policy field diff visible"
+    },
+    {
+      "id": "S08-08",
+      "name": "Publish with zero side effects",
+      "expectation": "generation increments, businessWrites/providerCalls/jobs stay 0"
+    },
+    {
+      "id": "S08-09",
+      "name": "Exact-generation readiness (5 ready / 1 future obligation)",
+      "expectation": "degraded with exactly 5 implemented_ready at exact generation and erp-product-api-machine future_obligation"
+    },
+    {
+      "id": "S08-10",
+      "name": "Read-only impact preview",
+      "expectation": "aggregate policy only; zero business/provider/job effects; no plaintext/tokenHash material"
+    },
+    {
+      "id": "S08-11",
+      "name": "Rollback draft",
+      "expectation": "rollback_draft created from current publication"
+    },
+    {
+      "id": "S08-12",
+      "name": "Token create one-time reveal",
+      "expectation": "plaintext revealed exactly once; second read and list never return plaintext"
+    },
+    {
+      "id": "S08-13",
+      "name": "Rotate overlap + idempotent replay no plaintext",
+      "expectation": "predecessor rotated with narrowed expiry; replay returns plaintextAvailable=false and no second token"
+    },
+    {
+      "id": "S08-14",
+      "name": "Revoke",
+      "expectation": "token revoked with revokedAt; never restored"
+    },
+    {
+      "id": "S08-15",
+      "name": "Invocation safe view",
+      "expectation": "only id/serviceAccount/toolKey/status/createdAt/errorClass; never input/output/error"
+    },
+    {
+      "id": "S08-16",
+      "name": "FR static route",
+      "expectation": "/fr/dashboard/settings/api-service-accounts renders the same panel"
+    },
+    {
+      "id": "S08-17",
+      "name": "A11y landmarks",
+      "expectation": "named region and tables present"
+    },
+    {
+      "id": "S08-18",
+      "name": "Zero unexpected console errors",
+      "expectation": "no console error entries"
+    },
+    {
+      "id": "S08-19",
+      "name": "Zero unexpected requests",
+      "expectation": "no requests outside WEB/API/data/blob origins"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { staleDependency } from "./readiness.js";
+
+test("P09 stale readiness never remains fresh ready",()=>{const value={key:"database",required:true,state:"ready" as const,reasonCode:"connected",safeSummary:"safe",observedAt:"2026-08-03T00:00:00.000Z",staleAfter:"2026-08-03T00:00:15.000Z",source:"postgresql",sourceVersion:"v16"};assert.equal(staleDependency(value,new Date("2026-08-03T00:00:14.999Z")).state,"ready");const stale=staleDependency(value,new Date("2026-08-03T00:00:15.000Z"));assert.equal(stale.state,"stale");assert.equal(stale.reasonCode,"observation_stale")});
+test("P09 readiness dependency has safe required fields",()=>{const value={key:"worker",required:false,state:"ready" as const,reasonCode:"heartbeat_fresh",safeSummary:"Worker heartbeat is fresh.",observedAt:"2026-08-03T00:00:00.000Z",staleAfter:"2026-08-03T00:02:00.000Z",source:"worker_heartbeats",sourceVersion:"worker-heartbeat.v1"};assert.deepEqual(Object.keys(value).sort(),["key","observedAt","reasonCode","required","safeSummary","source","sourceVersion","staleAfter","state"].sort());assert.doesNotMatch(JSON.stringify(value),/postgresql:\/\/|password|token|hostname|filesystem|stack|sql/i)});

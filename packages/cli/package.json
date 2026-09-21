@@ -9,7 +9,12 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/**/*.test.ts",
+    "kb:import": "tsx src/index.ts kb:import"
+  },
+  "dependencies": {
+    "@vanstro/db": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",

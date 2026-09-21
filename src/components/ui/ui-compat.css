@@ -1,0 +1,1042 @@
+/*
+ * Unlayered compatibility rules for the UI-0 primitives.
+ * Every selector is locally anchored to one vs-ui class so legacy element
+ * rules cannot leak into, or win over, the component color contract.
+ */
+
+.vs-ui-button {
+  border-color: transparent;
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  text-decoration-color: currentColor;
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+  transition-duration: 160ms;
+}
+
+.vs-ui-button-spinner {
+  border-style: solid;
+  border-width: 2px;
+  border-color: currentColor;
+  border-right-color: transparent;
+  border-radius: 9999px;
+  color: inherit;
+  animation: vs-ui-button-spin 700ms linear infinite;
+}
+
+.vs-ui-button:hover {
+  background: var(--ui-primary-hover);
+}
+
+.vs-ui-button:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-ui-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-ui-button[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.vs-ui-button[data-loading="true"] {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.vs-ui-button-primary {
+  border-color: transparent;
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+}
+
+.vs-ui-button-primary:hover {
+  background: var(--ui-primary-hover);
+}
+
+.vs-ui-button-secondary {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+}
+
+.vs-ui-button-secondary:hover {
+  border-color: var(--ui-primary);
+  background: var(--ui-surface-muted);
+  color: var(--ui-primary);
+}
+
+.vs-ui-button-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ui-foreground);
+}
+
+.vs-ui-button-ghost:hover {
+  background: var(--ui-surface-muted);
+  color: var(--ui-primary);
+}
+
+.vs-ui-button-destructive {
+  border-color: var(--ui-error);
+  background: var(--ui-error);
+  color: var(--ui-primary-foreground);
+}
+
+.vs-ui-button-destructive:hover {
+  background: var(--ui-error-surface);
+  border-color: var(--ui-error);
+  color: var(--ui-error);
+}
+
+.vs-ui-button-link {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ui-primary);
+  text-decoration-line: underline;
+  text-underline-offset: 0.2em;
+}
+
+.vs-ui-button-link:hover {
+  color: var(--ui-primary-hover);
+}
+
+.vs-ui-input {
+  border-color: var(--ui-border);
+  border-width: 1px;
+  border-style: solid;
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  caret-color: var(--ui-primary);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+  transition-duration: 160ms;
+}
+
+.vs-ui-input::placeholder {
+  color: var(--ui-muted-foreground);
+  opacity: 1;
+}
+
+.vs-ui-input:hover {
+  border-color: var(--ui-primary);
+}
+
+.vs-ui-input:focus-visible {
+  border-color: var(--ui-focus);
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 1px;
+}
+
+.vs-ui-input:disabled {
+  cursor: not-allowed;
+  background: var(--ui-surface-muted);
+  color: var(--ui-muted-foreground);
+  opacity: 0.7;
+}
+
+.vs-ui-input[aria-invalid="true"] {
+  border-color: var(--ui-error);
+  background: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-textarea {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  caret-color: var(--ui-primary);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+  transition-duration: 160ms;
+}
+
+.vs-ui-textarea::placeholder {
+  color: var(--ui-muted-foreground);
+  opacity: 1;
+}
+
+.vs-ui-textarea:hover {
+  border-color: var(--ui-primary);
+}
+
+.vs-ui-textarea:focus-visible {
+  border-color: var(--ui-focus);
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 1px;
+}
+
+.vs-ui-textarea:disabled {
+  cursor: not-allowed;
+  background: var(--ui-surface-muted);
+  color: var(--ui-muted-foreground);
+  opacity: 0.7;
+}
+
+.vs-ui-textarea[aria-invalid="true"] {
+  border-color: var(--ui-error);
+  background: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-select {
+  border-color: var(--ui-border);
+  background-color: var(--ui-surface);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+  transition-duration: 160ms;
+}
+
+.vs-ui-select:hover {
+  border-color: var(--ui-primary);
+}
+
+.vs-ui-select:focus-visible {
+  border-color: var(--ui-focus);
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 1px;
+}
+
+.vs-ui-select:disabled {
+  cursor: not-allowed;
+  background-color: var(--ui-surface-muted);
+  color: var(--ui-muted-foreground);
+  opacity: 0.7;
+}
+
+.vs-ui-select[aria-invalid="true"] {
+  border-color: var(--ui-error);
+  background-color: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-checkbox {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-primary-foreground);
+  accent-color: var(--ui-primary);
+  transition-property: background-color, border-color, color, opacity, box-shadow;
+  transition-duration: 160ms;
+}
+
+.vs-ui-checkbox:hover {
+  border-color: var(--ui-primary);
+}
+
+.vs-ui-checkbox:checked {
+  border-color: var(--ui-primary);
+  background: var(--ui-primary);
+}
+
+.vs-ui-checkbox:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-checkbox:disabled {
+  cursor: not-allowed;
+  background: var(--ui-surface-muted);
+  opacity: 0.55;
+}
+
+.vs-ui-checkbox[aria-invalid="true"] {
+  border-color: var(--ui-error);
+  background: var(--ui-error-surface);
+}
+
+.vs-ui-field {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-field[data-invalid="true"] {
+  color: var(--ui-error);
+}
+
+.vs-ui-field-label {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+}
+
+.vs-ui-field-required {
+  color: var(--ui-error);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-field-description {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.2rem;
+}
+
+.vs-ui-field-error {
+  color: var(--ui-error);
+  font-family: var(--ui-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+}
+
+.vs-ui-badge {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.vs-ui-badge-neutral {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+}
+
+.vs-ui-badge-success {
+  border-color: var(--ui-success);
+  background: color-mix(in srgb, var(--ui-success) 10%, var(--ui-surface));
+  color: var(--ui-success);
+}
+
+.vs-ui-badge-warning {
+  border-color: var(--ui-warning);
+  background: color-mix(in srgb, var(--ui-warning) 12%, var(--ui-surface));
+  color: var(--ui-warning);
+}
+
+.vs-ui-badge-error {
+  border-color: var(--ui-error);
+  background: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-badge-info {
+  border-color: var(--ui-primary);
+  background: color-mix(in srgb, var(--ui-primary) 9%, var(--ui-surface));
+  color: var(--ui-primary);
+}
+
+.vs-ui-badge-readiness {
+  border-color: var(--ui-accent);
+  background: color-mix(in srgb, var(--ui-accent) 12%, var(--ui-surface));
+  color: var(--ui-accent-foreground);
+}
+
+.vs-ui-card {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  box-shadow: var(--ui-shadow-panel);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-card-header {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-card-title {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-weight: 700;
+}
+
+.vs-ui-card-description {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-card-content {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-card-footer {
+  border-color: var(--ui-border);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-section {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-section-header {
+  border-color: var(--ui-border);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-section-title {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-weight: 700;
+}
+
+.vs-ui-section-description {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-section-content {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-section-actions {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-progress {
+  background: var(--ui-surface-muted);
+}
+
+.vs-ui-progress-indicator {
+  background: var(--ui-primary);
+  transition-property: transform;
+  transition-duration: 300ms;
+}
+
+.vs-ui-separator {
+  border-color: var(--ui-border);
+  background: var(--ui-border);
+  color: var(--ui-border);
+}
+
+.vs-ui-skeleton {
+  background: var(--ui-surface-muted);
+  color: transparent;
+  animation: vs-ui-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.vs-ui-empty-state {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-empty-state-icon {
+  color: var(--ui-primary);
+}
+
+.vs-ui-empty-state-title {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-weight: 700;
+}
+
+.vs-ui-empty-state-description {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-empty-state-actions {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-status-message {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-status-message[data-variant="success"] {
+  border-color: var(--ui-success);
+  background: color-mix(in srgb, var(--ui-success) 9%, var(--ui-surface));
+  color: var(--ui-success);
+}
+
+.vs-ui-status-message[data-variant="warning"] {
+  border-color: var(--ui-warning);
+  background: color-mix(in srgb, var(--ui-warning) 10%, var(--ui-surface));
+  color: var(--ui-warning);
+}
+
+.vs-ui-status-message[data-variant="error"] {
+  border-color: var(--ui-error);
+  background: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-status-message[data-variant="info"] {
+  border-color: var(--ui-primary);
+  background: color-mix(in srgb, var(--ui-primary) 8%, var(--ui-surface));
+  color: var(--ui-primary);
+}
+
+.vs-ui-status-message-title {
+  color: inherit;
+  font-family: var(--ui-font-sans);
+  font-weight: 700;
+}
+
+.vs-ui-status-message-content {
+  color: inherit;
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-status-message-actions {
+  color: inherit;
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-live-region {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-table-region {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-table-region:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-table {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.vs-ui-table-header {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+}
+
+.vs-ui-table-body {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+}
+
+.vs-ui-table-footer {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+  font-weight: 700;
+}
+
+.vs-ui-table-row {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  transition-property: background-color, border-color, color;
+  transition-duration: 140ms;
+}
+
+.vs-ui-table-row:hover {
+  background: var(--ui-surface-muted);
+}
+
+.vs-ui-table-row[data-state="selected"] {
+  background: color-mix(in srgb, var(--ui-primary) 8%, var(--ui-surface));
+}
+
+.vs-ui-table-row[data-selected="true"] {
+  background: color-mix(in srgb, var(--ui-primary) 8%, var(--ui-surface));
+}
+
+.vs-ui-table-head {
+  border-color: var(--ui-border);
+  background: var(--ui-surface-muted);
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+}
+
+.vs-ui-table-cell {
+  border-color: var(--ui-border);
+  background: transparent;
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-table-caption {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.8125rem;
+}
+
+.vs-ui-table-empty {
+  background: var(--ui-surface);
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-pagination {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-pagination-status {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.8125rem;
+}
+
+.vs-ui-pagination-actions {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-pagination-button {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 140ms;
+}
+
+.vs-ui-pagination-button:hover {
+  border-color: var(--ui-primary);
+  background: var(--ui-surface-muted);
+  color: var(--ui-primary);
+}
+
+.vs-ui-pagination-button:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-pagination-button:disabled {
+  cursor: not-allowed;
+  background: var(--ui-surface-muted);
+  color: var(--ui-muted-foreground);
+  opacity: 0.55;
+}
+
+.vs-ui-pagination-button[aria-current="page"] {
+  border-color: var(--ui-primary);
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+}
+
+.vs-ui-dialog-overlay {
+  background: color-mix(in srgb, var(--ui-foreground) 58%, transparent);
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+}
+
+.vs-ui-dialog-overlay[data-state="closed"] {
+  animation-duration: 140ms;
+  animation-timing-function: ease-in;
+}
+
+.vs-ui-dialog-content {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+  color: var(--ui-foreground);
+  box-shadow: var(--ui-shadow-floating);
+  font-family: var(--ui-font-sans);
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+}
+
+.vs-ui-dialog-content:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-dialog-content[data-state="closed"] {
+  animation-duration: 140ms;
+  animation-timing-function: ease-in;
+}
+
+.vs-ui-dialog-header {
+  border-color: var(--ui-border);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-dialog-footer {
+  border-color: var(--ui-border);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-dialog-title {
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-sans);
+  font-weight: 700;
+}
+
+.vs-ui-dialog-description {
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+}
+
+.vs-ui-dialog-close {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ui-muted-foreground);
+  font-family: var(--ui-font-sans);
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 140ms;
+}
+
+.vs-ui-dialog-close:hover {
+  background: var(--ui-surface-muted);
+  color: var(--ui-foreground);
+}
+
+.vs-ui-dialog-close:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-dialog-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-ui-dialog-action {
+  border-color: transparent;
+  background: var(--ui-primary);
+  color: var(--ui-primary-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 140ms;
+}
+
+.vs-ui-dialog-action:hover {
+  background: var(--ui-primary-hover);
+}
+
+.vs-ui-dialog-action:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-dialog-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-ui-dialog-action[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+.vs-ui-dialog-action-destructive {
+  border-color: var(--ui-error);
+  background: var(--ui-error);
+  color: var(--ui-primary-foreground);
+  font-family: var(--ui-font-sans);
+  font-size: 0.875rem;
+  font-weight: 700;
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 140ms;
+}
+
+.vs-ui-dialog-action-destructive:hover {
+  background: var(--ui-error-surface);
+  color: var(--ui-error);
+}
+
+.vs-ui-dialog-action-destructive:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+
+.vs-ui-dialog-action-destructive:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-ui-dialog-action-destructive[aria-busy="true"] {
+  cursor: progress;
+  opacity: 0.72;
+}
+
+@keyframes vs-ui-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vs-ui-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-ui-button {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-button-spinner {
+    animation: none;
+  }
+
+  .vs-ui-input {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-textarea {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-select {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-checkbox {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-skeleton {
+    animation: none;
+  }
+
+  .vs-ui-table-row {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-pagination-button {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-progress-indicator {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-dialog-overlay {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-dialog-content {
+    animation-duration: 0.01ms;
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-dialog-close {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-dialog-action {
+    transition-duration: 0.01ms;
+  }
+
+  .vs-ui-dialog-action-destructive {
+    transition-duration: 0.01ms;
+  }
+}
+
+@media (forced-colors: active) {
+  .vs-ui-button {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-button:focus-visible {
+    outline-color: Highlight;
+  }
+
+  .vs-ui-button-destructive {
+    border-color: LinkText;
+    background: ButtonFace;
+    color: LinkText;
+  }
+
+  .vs-ui-input {
+    border-color: FieldText;
+    background: Field;
+    color: FieldText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-textarea {
+    border-color: FieldText;
+    background: Field;
+    color: FieldText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-select {
+    border-color: FieldText;
+    background: Field;
+    color: FieldText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-checkbox {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-field-error {
+    color: LinkText;
+  }
+
+  .vs-ui-badge {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-card {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-section {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-separator {
+    border-color: CanvasText;
+    background: CanvasText;
+    color: CanvasText;
+  }
+
+  .vs-ui-skeleton {
+    background: GrayText;
+    color: Canvas;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-empty-state {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-status-message {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-table-region {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-table-row {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .vs-ui-table-head {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .vs-ui-pagination-button {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-dialog-overlay {
+    background: CanvasText;
+    opacity: 0.65;
+    forced-color-adjust: none;
+  }
+
+  .vs-ui-dialog-content {
+    border-style: solid;
+    border-width: 1px;
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-dialog-close {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+  }
+
+  .vs-ui-dialog-action {
+    border-color: ButtonText;
+    background: ButtonFace;
+    color: ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  .vs-ui-dialog-action-destructive {
+    border-color: LinkText;
+    background: ButtonFace;
+    color: LinkText;
+    forced-color-adjust: auto;
+  }
+}

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>交互流程图 · VANSTRO 账户体系</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  .doc { max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; }
+  .doc__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+  .doc__nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .doc__nav a { padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--vs-grey-100); font-size: 13px; font-weight: 700; color: var(--vs-text-2); }
+  .doc__nav a:hover { border-color: var(--vs-navy); color: var(--vs-navy); text-decoration: none; }
+  .fig { margin-bottom: 36px; }
+  .fig__head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .fig__head .no { font-size: 12px; font-weight: 700; color: var(--vs-green); letter-spacing: .1em; }
+  .fig__head p { color: var(--vs-text-3); font-size: 13px; }
+  .fig .card__body { overflow: auto; }
+  .mermaid { display: flex; justify-content: center; }
+  .mermaid svg { max-width: 100%; height: auto; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--vs-text-3); margin-top: 10px; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; }
+  @media print { .doc__nav, .doc__head .btn { display: none; } .fig { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="doc">
+  <div class="doc__head">
+    <div class="row" style="gap:18px"><img class="vs-logo" src="/account/assets/brand/logo-navy.png" alt="VANSTRO"><div><h2 style="font-size:22px">账户体系 · 交互流程图</h2><p class="muted small">vanstro.ca · 加拿大商城用户 · 登录 / 注册 / 忘记密码 / 个人中心 / 结算</p></div></div>
+    <a class="btn btn--secondary btn--sm" href="index.html">← 返回目录</a>
+  </div>
+  <nav class="doc__nav">
+    <a href="#f1">1 登录总流程</a><a href="#f2">2 登录状态机</a><a href="#f3">3 Google / Apple 登录</a><a href="#f4">4 忘记密码</a><a href="#f5">5 个人中心 · 信息架构</a><a href="#f6">6 修改资料 / 头像</a><a href="#f7">7 修改登录密码</a><a href="#f8">8 变更邮箱 / 手机</a><a href="#f9">9 结算总流程</a><a href="#f10">10 Moneris 支付时序</a><a href="#f11">11 税费 / 回执 / 合规</a><a href="#f12">12 通讯偏好 · CASL</a><a href="#f13">13 数据权利 · PIPEDA / Law 25</a><a href="#f14">14 注册 · 邮箱 / 社交 / Guest</a>
+  </nav>
+
+  <section class="fig" id="f1">
+    <div class="fig__head"><span class="no">FIG 01</span><h3>用户登录 · 总流程</h3><p>入口 → 校验 → 服务端鉴权 → 结果分支 → 跳转</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A([用户进入 /login<br/>可携带 ?redirect=/checkout]) --> B{已登录?}
+  B -- 是 --> Z1[/302 → redirect 或 /account/]
+  B -- 否 --> C[显示登录页<br/>邮箱 / 手机 / 用户名 + 密码<br/>创建账号 · 忘记密码 · Google · Apple]
+  C --> D{选择方式}
+  D -- 账号密码 --> E[输入标识符<br/>实时识别类型：Email / CA 手机 / 用户名]
+  E --> F[输入密码<br/>👁 明文/密文切换 · Caps Lock 提示]
+  F --> H[点击 Sign in<br/>成功后统一 30 天持久会话]
+  H --> I{前端校验}
+  I -- 失败 --> I1[字段级红色提示<br/>焦点移到首个错误] --> E
+  I -- 通过 --> J[按钮 Loading · 禁用重复提交]
+  J --> K[[POST /api/auth/login<br/>identifier · password · remember · captcha?]]
+  K --> L{服务端结果}
+  L -- 200 成功 --> M[写入会话 Cookie<br/>remember → 30 天持久 Cookie]
+  M --> N[成功态：Signed in<br/>2.4s 自动跳转 · reduced-motion 0.8s<br/>redirect 白名单，外域降级 /account]
+  N --> Z1
+  M -. 新设备 / 新 IP 段 .-> M1[发送“新设备登录”通知邮件<br/>个人中心 Devices 可单独登出]
+  L -- 401 凭证错误 --> O[通用错误横幅：<br/>Incorrect email/mobile or password<br/>剩余 ≤3 次时显示计数<br/>清空密码框]
+  O --> O1{失败 ≥ 3 次?}
+  O1 -- 是 --> O2[密码框下出现 CAPTCHA<br/>文字图 · 音频替代 · 换一张] --> F
+  O1 -- 否 --> F
+  L -- 423 已锁定 --> P[警告横幅 + 15:00 倒计时<br/>禁用 Sign in · 推荐重置密码 / 社交登录]
+  P -. 倒计时结束 .-> C
+  L -- 403 邮箱未验证 --> Q[提示验证邮箱<br/>Resend link · Change email]
+  Q --> C
+  L -- 409 仅社交账号 --> R[信息横幅：该邮箱使用 Google 登录<br/>引导 Continue with Google 或设置密码]
+  R --> D
+  D -- Google / Apple --> S[见 FIG 03]
+  D -- 忘记密码 --> T[/forgot-password 见 FIG 04/]
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  class M,N,Z1 ok; class O,I1 err; class P,Q,O2 warn; class K,R,M1 sys;
+</pre>
+      <div class="legend"><span><i style="background:#deefe9;border:1px solid #0d8968"></i>成功 / 跳转</span><span><i style="background:#f8e2e0;border:1px solid #b3261e"></i>错误</span><span><i style="background:#fdefdb;border:1px solid #8a5a0b"></i>警告 / 受限</span><span><i style="background:#e0ebe9;border:1px solid #004744"></i>系统 / 服务端</span></div>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f2">
+    <div class="fig__head"><span class="no">FIG 02</span><h3>登录页 · 状态机</h3><p>页面级状态与迁移条件（对应原型右下角“Force state”）</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Typing: 输入标识符 / 密码
+  Typing --> Validation_Error: 提交且前端校验失败
+  Validation_Error --> Typing: 修正输入
+  Typing --> Loading: 提交且校验通过
+  Loading --> Success: 200
+  Loading --> Auth_Failed: 401, attempts+1
+  Auth_Failed --> Captcha_Required: attempts >= 3
+  Captcha_Required --> Loading: 提交含 captcha
+  Loading --> Unverified: 403 邮箱未验证
+  Loading --> Social_Only: 409 仅社交登录
+  Auth_Failed --> Typing: 重新输入密码
+  Auth_Failed --> Locked: attempts >= 5
+  Locked --> Idle: 15 分钟后自动解锁
+  Locked --> ForgotPassword: 点击 Reset password
+  Unverified --> Idle: Resend link / Change email
+  Social_Only --> Social_Popup: Continue with Google
+  Idle --> Social_Popup: 点击 Google / Apple
+  Social_Popup --> Success: 已有账号
+  Social_Popup --> Finish_Profile: 首次登录，自动建号
+  Social_Popup --> Idle: 用户取消弹窗
+  Finish_Profile --> Success: Continue / Skip
+  Success --> [*]: 302 redirect
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f3">
+    <div class="fig__head"><span class="no">FIG 03</span><h3>Google / Apple 登录（OAuth 2.0 / OIDC）</h3><p>含首次登录自动注册、账号合并、CASL 营销同意、Apple Hide My Email</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  actor U as 用户
+  participant W as vanstro.ca 前端
+  participant P as Google / Apple
+  participant S as Vanstro 后端
+  U->>W: 点击 Continue with Google / Apple
+  W->>P: 打开授权弹窗（state + nonce + PKCE）
+  P-->>U: 账号选择 / Face ID / Hide My Email
+  alt 用户取消
+    P-->>W: error=access_denied
+    W-->>U: 信息横幅“sign-in was cancelled”
+  else 授权成功
+    P-->>W: authorization code
+    W->>S: POST /api/auth/social {provider, code, state}
+    S->>P: 交换 token · 校验 id_token 签名 / nonce / aud
+    S->>S: 查找 provider_id 或 已验证邮箱
+    alt 已关联账号
+      S-->>W: 200 + 会话 Cookie
+      W-->>U: Signed in → redirect
+    else 邮箱已存在但未关联（已验证邮箱）
+      S-->>W: 200 自动合并 + 会话
+      W-->>U: 提示“已将 Google 关联到现有账号”
+    else 新用户
+      S-->>W: 201 创建账号（无密码）
+      W-->>U: “One last step”：手机号（可选）+ CASL 营销同意（默认不勾选）
+      U->>W: Continue / Skip
+      W-->>U: Signed in → redirect
+    end
+  end
+  Note over S: Apple 仅首次返回姓名/邮箱，需持久化；<br/>Hide My Email 中继地址需支持邮件发送域校验
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f4">
+    <div class="fig__head"><span class="no">FIG 04</span><h3>忘记密码 · 完整流程</h3><p>输入邮箱 → 一次性重置链接（15 分钟）→ 设置新密码 → 成功反馈；含限流、链接过期；不提供短信验证码</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A([/forgot-password 入口<br/>来自登录页“Forgot password?”或锁定提示]) --> C[Step 1 · 输入账号邮箱]
+  C --> D{前端格式校验}
+  D -- 失败 --> D1[字段级错误] --> C
+  D -- 通过 --> E[[POST /api/auth/forgot<br/>email]]
+  E --> F{服务端}
+  F -- 限流 >3 次/小时 --> F1[警告：Too many links requested] --> C
+  F -- 仅社交账号 --> F2[信息：该账号使用 Google 登录<br/>可继续为其添加密码] --> E
+  F -- 账号不存在 --> G[同样进入 Step 2<br/>防枚举：不透露账号是否存在]
+  F -- 发送成功 --> G
+  G --> H[Step 2 · Check your email<br/>掩码显示 g•••••n@gmail.com<br/>链接 15 分钟一次性 · 52s 后可重发]
+  H -- 重发 --> H2[新链接作废旧链接<br/>计入 3 次/小时] --> H
+  H -- 点开邮件链接 --> I{校验 token}
+  I -- 有效 --> J[Step 3 · 设置新密码<br/>强度条 + 4 条规则 · 确认密码 · 👁 切换<br/>默认勾选“登出其他设备”<br/>卡头 token 倒计时]
+  I -- 已过期 / 已使用 --> I3[Link expired · 回到 Step 1 重新请求] --> C
+  J --> K{新密码校验}
+  K -- 不满足规则 / 泄露 / 重用 --> K1[字段级错误] --> J
+  K -- 两次不一致 --> K2[Passwords don’t match] --> J
+  K -- 与旧密码相同 --> K3[横幅：must be different] --> J
+  K -- 通过 --> L[[POST /api/auth/reset<br/>reset_token · new_password · sign_out_others]]
+  L --> M[Step 4 · Password reset ✓<br/>时间戳 · 已发确认邮件<br/>其他设备已登出 · 社交关联不变<br/>Not you? Freeze account]
+  M --> N[Continue to sign in 5s 倒计时<br/>本设备自动登录 → redirect]
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  class M,N ok; class D1,K1,K2,K3 err; class F1,I3 warn; class E,L,F2,G,H2 sys;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f5">
+    <div class="fig__head"><span class="no">FIG 05</span><h3>个人中心 · 信息架构</h3><p>左侧导航 + 右侧内容区；本次设计范围为 Overview / Profile / Security / Addresses / Payment methods / Communications</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart LR
+  A["/account"] --> O["Overview<br/>订单/报价/清单概览<br/>资料完善度 60%"]
+  A --> P[Profile]
+  A --> S[Sign-in & security]
+  A --> X[Orders & quotes]
+  A --> Y[Addresses]
+  A --> Z[Payment methods]
+  A --> N[Communications]
+  A --> L[Sign out]
+  P --> P1[头像：上传 / 拖放 / 裁剪 / 移除]
+  P --> P2[基本信息：昵称 · 姓 · 名 · 性别 · 生日 · 语言 EN/FR · 省份]
+  P --> P3[联系与登录：邮箱 ✓ · 手机 未验证 · 营销邮件 CASL]
+  S --> S1[修改密码]
+  S --> S2[关联账号：Google · Apple]
+  S --> S3[两步验证 需已验证手机]
+  S --> S4[已登录设备 · 登出其他设备]
+  S --> S5[隐私与数据：数据清单 · 导出 JSON+CSV · 自动化决策复核 见 FIG 13]
+  S --> S6[删除账号 危险区 · 保留订单与同意记录]
+  Y --> Y1[地址卡片：默认收货 / 默认账单 · Edit · Remove]
+  Y --> Y2[添加 / 编辑：Canada Post 格式 · 邮编 A1A 1A1 + 省份交叉校验 · PO Box 拦截]
+  Z --> Z1[已保存卡：Visa / MC / Amex · Default · Expires soon · Expired]
+  Z --> Z2[添加：品牌识别 + Luhn · MM/YY · CVV · 账单地址 · 银行拒绝态]
+  Z --> Z3[编辑：卡号只读 · 改持卡人 / 到期 / 账单地址]
+  N --> N1[营销：Email · SMS · Push 各自同意 · 频率 见 FIG 12]
+  N --> N2[交易类始终发送 · Consent status 记录]
+  classDef dim fill:#f1f4f3,stroke:#d2dad8,color:#6d7c79;
+  class X dim;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f6">
+    <div class="fig__head"><span class="no">FIG 06</span><h3>修改基本信息 &amp; 上传 / 更换头像</h3><p>只读视图 → Edit → 脏数据检测 → 保存条 → 校验 → 保存；头像三重校验 → 裁剪 → 生成 512px</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  subgraph 基本信息
+    A0[只读视图 · 标签 / 值<br/>右上角 Edit] --> A1[编辑模式：输入框 + Cancel / Save]
+    A1 --> A[编辑任意字段] --> B{与初始值不同?}
+    B -- 是 --> C[底部浮出 Unsaved changes 保存条<br/>Discard · Save changes]
+    B -- 否 --> C0[隐藏保存条]
+    A1 -- Cancel --> A0
+    C --> D{实时校验<br/>昵称 2–20 · 姓名必填 · 生日 ≥16 岁}
+    D -- 失败 --> D1[字段级错误 · Save 时 toast 提示] --> A
+    D -- 通过 --> E[[PATCH /api/me]]
+    E --> F[Toast: Profile saved<br/>侧栏昵称/首字母同步刷新 · 回到只读视图]
+    C -- Discard --> G[恢复初始值]
+  end
+  subgraph 头像
+    H[点击相机 / Upload photo / 拖放文件] --> I{类型 JPG/PNG/WebP?}
+    I -- 否 --> I1[Unsupported file]
+    I -- 是 --> J{≤ 5 MB?}
+    J -- 否 --> J1[That file is 7.8 MB — limit 5 MB]
+    J -- 是 --> K{≥ 200×200 px?}
+    K -- 否 --> K1[Image too small]
+    K -- 是 --> L[裁剪弹窗：圆形取景框<br/>拖动定位 · 滚轮/滑块缩放 1–3×]
+    L -- Cancel --> H
+    L -- Save photo --> M[Canvas 导出 512×512 JPEG]
+    M --> N[[POST /api/me/avatar]]
+    N --> O[全站头像即时更新<br/>完善度 60% → 80% · Toast]
+    O --> P[出现 Remove 按钮 → 恢复首字母头像]
+  end
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  class D1,I1,J1,K1 err; class F,O ok;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f7">
+    <div class="fig__head"><span class="no">FIG 07</span><h3>修改登录密码（已登录态）</h3><p>需当前密码二次确认；成功后可登出其他设备并邮件通知</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A[Security → Change password] --> B[输入当前密码<br/>下方链接：Forgot your password?]
+  B --> C[输入新密码：强度条 + 规则勾选]
+  C --> D[确认新密码：实时 match 提示]
+  D --> E[勾选“登出其他设备”默认开]
+  E --> F[Update password]
+  F --> G{前端校验}
+  G -- 缺当前密码 / 规则不满足 / 不一致 --> G1[字段级错误] --> B
+  G -- 通过 --> H[[POST /api/me/password]]
+  H --> I{服务端}
+  I -- 当前密码错误 --> I1[字段错误 + 横幅<br/>Try again or reset by email] --> B
+  I -- 新旧相同 --> I2[横幅：must be different] --> C
+  I -- 成功 --> J[成功横幅 · 清空表单<br/>发送确认邮件 · 撤销其他会话]
+  J --> K[Toast: Password changed]
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  class G1,I1,I2 err; class J,K ok; class H sys;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f8">
+    <div class="fig__head"><span class="no">FIG 08</span><h3>变更邮箱 / 手机号 &amp; 关联账号</h3><p>敏感操作需密码 + 新地址 OTP 双重确认；不可解绑最后一种登录方式</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  subgraph 变更邮箱或手机
+    A[点击 Change] --> B[弹窗：新邮箱/手机 + 当前密码]
+    B --> C{格式 & 密码}
+    C -- 失败 --> C1[字段级错误] --> B
+    C -- 通过 --> D[[发送 OTP 到新地址]]
+    D --> E[输入 6 位码] --> F{正确?}
+    F -- 否 --> E
+    F -- 是 --> G[更新并标记 Verified<br/>旧地址收到变更通知邮件]
+  end
+  subgraph 关联账号
+    H[Google / Apple · Connect] --> I[OAuth 弹窗授权] --> J[标记 Connected]
+    K[Disconnect] --> L{仍有密码或另一个提供方?}
+    L -- 否 --> L1[Toast: 请先设置密码或关联另一提供方]
+    L -- 是 --> M[解除关联 · Toast]
+  end
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  class C1,L1 err; class G,J,M ok;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f9">
+    <div class="fig__head"><span class="no">FIG 09</span><h3>结算 · 总流程</h3><p>Shipping（含本地经销商指派与职责披露）→ Review（Terms + 经销商确认）→ Payment（Moneris）→ 回执 · 三步，购买承诺前先核对总额与卖方 / 经销商边界</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A([Cart · Checkout]) --> B{已登录?}
+  B -- 否 --> B1[login.html?redirect=/checkout] --> A
+  B -- 是 --> C[预填邮箱 / 地址簿 / 默认卡]
+  C --> D[Step 1 Shipping<br/>联系人 · 送达地址]
+  D --> D1[[按送达省指派本地经销商<br/>Seller = Vanstro · 经销商 = 自提 / 配送协调 / 退货首联<br/>Dealer Services 不在总额内]]
+  D1 --> D2{该省有经销商?}
+  D2 -- 否 --> D3[Vanstro 直接履约<br/>自提不可用] --> D4
+  D2 -- 是 --> D4[配送方式<br/>LTL · 白手套 · 经销商自提]
+  D4 --> E{校验<br/>邮箱 · 手机 · 邮编 FSA↔省 · 禁 PO Box}
+  E -- 失败 --> E1[字段级错误 + 摘要] --> D
+  E -- 通过 --> F[[按送达省 quote 税<br/>右栏税行即时更新]]
+  F --> G[Step 2 Review<br/>总额 · 送达预估 · Seller + 退货首联 · 经销商行]
+  G --> H{Terms + Privacy 已勾?<br/>经销商职责已确认?}
+  H -- 否 --> H1[Consent required /<br/>Dealer role acknowledgment required] --> G
+  H -- 是 --> I[Step 3 Payment<br/>账单地址 · 已存卡 CVV 或新卡]
+  I --> J[[Moneris Hosted Tokenization iframe<br/>PAN / CVV 不经 Vanstro → 临时 token]]
+  J --> K[[POST /orders 服务端重算税 + 促销码<br/>总额不一致 → 停止]]
+  K --> M[[POST /checkout/moneris/pay {token}<br/>服务端 POST /payments · SUCCEEDED 才算成功]]
+  M --> L{结果}
+  L -- 拒绝 050 / 051 / 076 --> L1[未扣款 · 换卡 · 新 token] --> I
+  L -- 3-D Secure --> L2[发卡行挑战] --> M
+  L -- 会话 30 min 过期 --> L3[重新加载支付] --> I
+  L -- 批准 --> N
+  N[落库 · 记录 dealer_role 同意 · 通知经销商 · 入队交易邮件 / SMS]
+  N --> O[Confirmation<br/>订单号 · 经销商联系卡 · 税票 Seller + Dealer 栏 · 存储透明卡]
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  class O,N ok; class E1,H1,L1 err; class L2,L3,D3 warn; class F,J,K,M,D1 sys;
+</pre>
+      <div class="legend"><span><i style="background:#deefe9;border:1px solid #0d8968"></i>成功</span><span><i style="background:#f8e2e0;border:1px solid #b3261e"></i>错误</span><span><i style="background:#fdefdb;border:1px solid #8a5a0b"></i>挑战 / 过期 / 无经销商</span><span><i style="background:#e0ebe9;border:1px solid #004744"></i>服务端 / Moneris</span></div>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f10">
+    <div class="fig__head"><span class="no">FIG 10</span><h3>Moneris Hosted Tokenization + REST /payments · 支付时序</h3><p>托管 iframe 出临时 token → POST /orders 重算 → 服务端 POST /payments 为准 · 浏览器永不决定「已付款」</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+sequenceDiagram
+  participant U as 用户
+  participant V as checkout.html
+  participant API as Vanstro API
+  participant M as Moneris
+  participant B as 发卡行
+  participant Mail as 回执
+  U->>V: 进入 Step 3
+  V->>API: GET /checkout/payment-config
+  API-->>V: {ht: {url, profileId}} 或 mock
+  V->>M: 加载 Hosted Tokenization iframe（profileId 绑定页面 origin）
+  U->>M: 卡号 / 到期 / CVV（iframe 内，PAN 不经 Vanstro）
+  U->>V: Pay
+  V->>M: postMessage tokenize
+  M-->>V: {responseCode 001, dataKey}（临时 token · 单次 · 15 min）
+  V->>API: POST /orders {cart, shipping, billing, consent, promo}
+  API->>API: 目录重算单价 · 促销折扣 · 税；总额≠页面 → 409 停止
+  API-->>V: {orderNo, quote}
+  V->>API: POST /checkout/moneris/pay {orderNo, temporaryToken}
+  API->>M: POST /payments {orderId-attempt, idempotencyKey, TEMPORARY_TOKEN, amount}
+  M->>B: 授权（+ 3-D Secure 风险判定）
+  B-->>M: 结果
+  M-->>API: paymentStatus SUCCEEDED · authorizationCode · lastFour
+  API->>API: markPaid · 记录 attempt · 生成税票
+  API->>Mail: 交易邮件 + 可选 SMS + 经销商单
+  API-->>V: {ok, order, notifications}
+  V-->>U: Order confirmed · Receipt sent
+  Note over V,API: 拒绝 DECLINED / 400 DECLINED_ERROR → 402 + 响应码 · 未扣款 · 换卡出新 token（新 orderId 后缀 + 新 key）
+  Note over V,API: PROCESSING → 202 payment_pending（不可重试）· Moneris 不可达 → 502 payment_unavailable
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f11">
+    <div class="fig__head"><span class="no">FIG 11</span><h3>税费计算 · 回执发送 · 合规检查点</h3><p>目的地计税 · 分整数运算 · PIPEDA / Law 25 / CASL / PCI SAQ A / CRA</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart LR
+  subgraph 税
+    A[应税额 = 商品 + 应税运费] --> B{送达省}
+    B -- ON --> H13[HST 13%]
+    B -- NS --> H14[HST 14%]
+    B -- NB NL PE --> H15[HST 15%]
+    B -- AB NT NU YT --> G5[GST 5%]
+    B -- BC --> BC[GST 5% + PST 7%]
+    B -- MB --> MB[GST 5% + RST 7%]
+    B -- SK --> SK[GST 5% + PST 6%]
+    B -- QC --> QC[GST 5% + QST 9.975%<br/>QST 不叠加 GST]
+    H13 & H14 & H15 & G5 & BC & MB & SK --> Z[税票印 GST/HST BN]
+    QC --> ZQ[税票印 BN + QST 号<br/>法文标签 · Law 25 通知]
+  end
+  subgraph 回执
+    R0[receipt result=a] --> R1["邮件即时发送<br/>receipts#64;vanstro.ca"]
+    R0 --> R2{SMS 已选?}
+    R2 -- 是 --> R3[短信送达状态]
+    R1 --> R4[Resend / Print / 改邮箱]
+  end
+  subgraph 合规检查点
+    C1[PIPEDA 明示同意<br/>Step 2 必勾]
+    C2[Law 25 QC 隐私官 · 法文]
+    C3[CASL 营销默认关<br/>回执为交易邮件]
+    C4[PCI SAQ A<br/>PAN 仅在 iframe]
+    C5[CRA 发票要素<br/>BN · 税行 · 留存 6 年]
+  end
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  class Z,ZQ,R0 sys; class R1,R3,R4 ok; class C1,C2,C3,C4,C5 warn;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f12">
+    <div class="fig__head"><span class="no">FIG 12</span><h3>通讯偏好 · CASL 同意与撤回</h3><p>按渠道独立同意 · 撤回即时生效、系统内 10 个工作日 · 交易类消息不受影响 · 每次变更落库留痕</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A[Communications 页] --> B{切换哪个渠道?}
+  B -- Email 营销 --> C{当前状态}
+  C -- 开 → 关 --> C1[[POST /api/consents<br/>channel=email · method=withdrawn]]
+  C1 --> C2[行内状态：Withdrawn 时间 · 10 个工作日内停发<br/>Consent status 芯片 → Withdrawn]
+  C -- 关 → 开 --> C3[[POST /api/consents<br/>method=express · source_url · terms_version]]
+  C3 --> C4[行内状态：Consent given 时间 · express]
+  B -- SMS 营销 --> D{手机已验证?}
+  D -- 否 --> D1[开关回弹 · 行内错误<br/>Verify your mobile number first → Profile]
+  D -- 是 --> D2[[POST /api/consents channel=sms]] --> D3[状态：express · 号码 · STOP / ARRÊT 提示]
+  B -- Push --> E[[PATCH /api/me/notifications]] --> E1[状态文案更新]
+  B -- 频率 --> F[[PATCH frequency]] --> F1[Toast: Saved · weekly digest]
+  C2 & C4 & D3 & E1 & F1 --> T[Toast 确认 · 不需要 Save 按钮]
+  subgraph 不可关闭
+    X1[订单确认 / 发货] --- X2[回执 / 税票] --- X3[报价回复] --- X4[密码 / 登录 / 安全告警]
+  end
+  subgraph 留痕字段
+    L[consent_id · principal · channel · method<br/>granted_at / withdrawn_at · source_url · terms_version · ip / ua]
+  end
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef dim fill:#f1f4f3,stroke:#d2dad8,color:#6d7c79;
+  class C1,C3,D2,E,F sys; class C4,D3,T ok; class D1 err; class X1,X2,X3,X4,L dim;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f13">
+    <div class="fig__head"><span class="no">FIG 13</span><h3>数据权利 · 导出与删除</h3><p>PIPEDA 查阅权 · Law 25 可携权与自动化决策告知 · 删除保留税务与同意记录</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart LR
+  A[Privacy &amp; your data 卡] --> B[Request my data]
+  B --> B1[[POST /api/me/export]] --> B2{24 小时内已请求?}
+  B2 -- 是 --> B3[429 · 按钮保持 Requested]
+  B2 -- 否 --> B4[后台生成 JSON + CSV<br/>≤ 30 天，通常当日] --> B5[邮件送达下载链接<br/>7 天有效 · 需重新登录]
+  A --> C[Delete my account] --> C1[输入 DELETE 确认] --> C2[[POST /api/me/delete]]
+  C2 --> C3[邮件确认链接 24h] --> C4[14 天冷静期<br/>登录即取消]
+  C4 --> C5[删除：资料 · 地址 · 列表 · 卡 token]
+  C4 --> C6[保留：订单 / 发票 6 年 CRA<br/>同意记录 CASL 举证]
+  A --> D[自动化决策告知<br/>Request a review] --> D1[人工复核工单 · Law 25]
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  class B1,C2 sys; class B5,D1 ok; class C6,B3 warn; class C5 err;
+</pre>
+    </div></div>
+  </section>
+
+  <section class="fig" id="f14">
+    <div class="fig__head"><span class="no">FIG 14</span><h3>注册 · 邮箱 / Google / Apple / Guest 转账号</h3><p>入口 → 表单与同意 → 建号 → 邮箱验证 → 欢迎 → 跳转（register.html）</p></div>
+    <div class="card"><div class="card__body">
+<pre class="mermaid">
+flowchart TD
+  A([入口]) --> A1[顶栏 Create an account]
+  A --> A2[Guest 结算完成页<br/>Save my details ?from=checkout]
+  A --> A3[登录页 Google / Apple 首次]
+  A1 --> B[注册页<br/>Google · Apple 置顶<br/>姓名 · 邮箱 · 密码 · Terms · CASL]
+  A2 --> B2[预填姓名 / 邮箱 / 地址<br/>只需密码 + Terms] --> E
+  A3 --> S[One last step 面板<br/>手机可选 · CASL 默认关] --> W
+  B --> C{方式}
+  C -- Apple 且 relay 地址 --> C1[Hide My Email 说明<br/>relay 接收订单邮件 · 建议备用邮箱<br/>隐藏密码字段] --> E
+  C -- Google --> C2[[OIDC + PKCE]] --> W
+  C -- 邮箱 --> D[密码策略 12+ · 泄露库 · 无符号规则<br/>强度条 4 段 + 提示文案]
+  D --> E{前端校验}
+  E -- Terms 未勾 / 姓名空 / 邮箱格式 / 密码弱 --> E1[字段级错误<br/>焦点到首个错误] --> B
+  E -- 通过 --> F[[POST /api/auth/register<br/>+ consent_events terms / marketing_email]]
+  F --> G{服务端}
+  G -- 409 邮箱已存在<br/>仅提交后告知，防枚举 --> G1[字段错误 + Sign in instead / Reset password] --> B
+  G -- 429 同网络过多 --> G2[警告横幅 · Retry-After] --> B
+  G -- 201 pending_verification --> H[Check your email<br/>掩码地址 · Resend 60s · Wrong address? Edit]
+  H --> H1{24h 内点击链接?}
+  H1 -- 否 · 7 天 --> H2[自动清理未验证账号<br/>含同意记录]
+  H1 -- 是 --> W[Verified · Welcome, first<br/>欢迎优惠仅当勾选营销]
+  W --> Z[/2.4s 自动跳转 → redirect 或 /account/]
+  H -. 未验证登录 .-> H3[/login 403 分支 见 FIG 01/]
+  classDef ok fill:#deefe9,stroke:#0d8968,color:#0b5d48;
+  classDef err fill:#f8e2e0,stroke:#b3261e,color:#8c1d17;
+  classDef warn fill:#fdefdb,stroke:#8a5a0b,color:#8a5a0b;
+  classDef sys fill:#e0ebe9,stroke:#004744,color:#004744;
+  class W,Z ok; class E1,G1 err; class G2,H,H2,C1 warn; class F,C2 sys;
+</pre>
+      <div class="legend"><span><i style="background:#deefe9;border:1px solid #0d8968"></i>成功 / 跳转</span><span><i style="background:#f8e2e0;border:1px solid #b3261e"></i>错误</span><span><i style="background:#fdefdb;border:1px solid #8a5a0b"></i>警告 / 说明</span><span><i style="background:#e0ebe9;border:1px solid #004744"></i>系统 / 服务端</span></div>
+    </div></div>
+  </section>
+</div>
+
+<script src="/account/assets/vendor/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true, securityLevel: 'loose', theme: 'base', fontFamily: 'HarmonyOS Sans, Inter, -apple-system, PingFang SC, sans-serif',
+    themeVariables: {
+      primaryColor: '#ffffff', primaryTextColor: '#0a1614', primaryBorderColor: '#004744', lineColor: '#9ba8a2',
+      secondaryColor: '#e0ebe9', tertiaryColor: '#f1f4f3', clusterBkg: '#f1f4f3', clusterBorder: '#d2dad8',
+      actorBkg: '#004744', actorTextColor: '#ffffff', actorBorder: '#004744', signalColor: '#0a1614', signalTextColor: '#0a1614',
+      labelBoxBkgColor: '#deefe9', labelBoxBorderColor: '#0d8968', noteBkgColor: '#fdefdb', noteBorderColor: '#f5a93f', noteTextColor: '#8a5a0b',
+      activationBkgColor: '#e0ebe9', activationBorderColor: '#004744', fontSize: '13px'
+    },
+    flowchart: { curve: 'basis', htmlLabels: true, padding: 12, nodeSpacing: 40, rankSpacing: 46 },
+    sequence: { actorMargin: 60, messageMargin: 38, mirrorActors: false }
+  });
+</script>
+</body>
+</html>

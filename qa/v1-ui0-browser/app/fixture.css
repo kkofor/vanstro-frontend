@@ -1,0 +1,12 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "../../../src/app/globals.css";
+@import "../../../src/components/ui/ui-compat.css";
+
+:root { color-scheme: light; }
+body { margin: 0; min-height: 200vh; }
+.fixture-shell { padding: 32px; }
+.legacy-sentinel { color: rgb(1, 2, 3); font-size: 19px; font-weight: 400; }
+@media (forced-colors: active) {
+  .forced-colors-sentinel { border: 2px solid CanvasText; }
+}

@@ -1,185 +1,141 @@
 "use client";
 
-import type React from "react";
 import { useEffect, useMemo, useState } from "react";
 import type { ImageAsset, ProductFinishOption } from "@/lib/api/api-contract";
 import { useProductVariant } from "@/components/product/ProductVariantContext";
+import type { SiteLocale } from "@/lib/i18n/locale";
+import { findFinishOptionByIdentity, finishOptionIdentity, inferFinishColorName } from "@/lib/product/product-finish-options";
 
 type ProductImageGalleryProps = {
   images: ImageAsset[];
   finishOptions?: ProductFinishOption[];
+  locale?: SiteLocale;
 };
 
-const MAX_COLLAPSED_THUMBNAILS = 7;
-const COLLAPSED_IMAGE_COUNT = MAX_COLLAPSED_THUMBNAILS - 1;
-
-export function ProductImageGallery({ images, finishOptions = [] }: ProductImageGalleryProps) {
+export function ProductImageGallery({ images, finishOptions = [], locale = "en-CA" }: ProductImageGalleryProps) {
+  const french = locale === "fr-CA";
   const productVariant = useProductVariant();
-  const selectedFinish = finishOptions.find(
-    (option) => option.name === productVariant?.selectedFinishName
+  const selectedFinish = findFinishOptionByIdentity(
+    finishOptions,
+    productVariant?.selectedFinishName
   ) ?? finishOptions.find((option) => option.active);
   const selectedImages = selectedFinish?.images?.length ? selectedFinish.images : images;
-  const finishImageByName = useMemo(
+  const finishImageByIdentity = useMemo(
     () =>
       new Map(
         finishOptions
           .filter((option) => option.image?.url)
-          .map((option) => [option.name, option.image?.url])
+          .map((option) => [finishOptionIdentity(option), option.image?.url])
       ),
     [finishOptions]
   );
   const initialActiveIndex = useMemo(() => {
     const initialFinishName =
       productVariant?.selectedFinishName ??
-      finishOptions.find((option) => option.active)?.name;
+      (finishOptions.find((option) => option.active)
+        ? finishOptionIdentity(finishOptions.find((option) => option.active)!)
+        : undefined);
     const initialImageUrl = initialFinishName
-      ? finishImageByName.get(initialFinishName)
+      ? finishImageByIdentity.get(initialFinishName)
       : undefined;
     const nextIndex = initialImageUrl
       ? selectedImages.findIndex((image) => image.url === initialImageUrl)
       : -1;
 
     return nextIndex >= 0 ? nextIndex : 0;
-  }, [finishImageByName, finishOptions, productVariant?.selectedFinishName, selectedImages]);
+  }, [finishImageByIdentity, finishOptions, productVariant?.selectedFinishName, selectedImages]);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
-  const [galleryExpanded, setGalleryExpanded] = useState(false);
-  const [zoomed, setZoomed] = useState(false);
-  const [zoomOrigin, setZoomOrigin] = useState({ x: 50, y: 50 });
   const activeImage = selectedImages[activeIndex] ?? selectedImages[0];
-  const finishNameByImageUrl = useMemo(
+  const finishIdentityByImageUrl = useMemo(
     () =>
       new Map(
         finishOptions
           .filter((option) => option.image?.url)
-          .map((option) => [option.image?.url, option.name])
+          .map((option) => [option.image?.url, finishOptionIdentity(option)])
       ),
     [finishOptions]
   );
-  const hasOverflowImages = selectedImages.length > MAX_COLLAPSED_THUMBNAILS;
-  const visibleImages = hasOverflowImages && !galleryExpanded
-    ? selectedImages.slice(0, COLLAPSED_IMAGE_COUNT)
-    : selectedImages;
-  const hiddenImageCount = selectedImages.length - COLLAPSED_IMAGE_COUNT;
+  const finishLabelByImageUrl = useMemo(
+    () =>
+      new Map(
+        finishOptions
+          .filter((option) => option.image?.url)
+          .map((option) => [option.image?.url, inferFinishColorName(option)])
+      ),
+    [finishOptions]
+  );
 
   useEffect(() => {
     const selectedFinishName = productVariant?.selectedFinishName;
     if (!selectedFinishName) return;
 
-    const selectedImageUrl = finishImageByName.get(selectedFinishName);
+    const selectedImageUrl = finishImageByIdentity.get(selectedFinishName);
     if (!selectedImageUrl) return;
 
     const nextIndex = selectedImages.findIndex((image) => image.url === selectedImageUrl);
     setActiveIndex(nextIndex >= 0 ? nextIndex : 0);
-    setGalleryExpanded(false);
-    setZoomed(false);
-  }, [finishImageByName, productVariant?.selectedFinishName, selectedImages]);
+  }, [finishImageByIdentity, productVariant?.selectedFinishName, selectedImages]);
 
   if (!activeImage) return null;
 
   function handleThumbClick(image: ImageAsset, index: number) {
     setActiveIndex(index);
-    setZoomed(false);
 
-    const finishName = finishNameByImageUrl.get(image.url);
-    if (finishName) {
-      productVariant?.setSelectedFinishName(finishName);
+    const finishIdentity = finishIdentityByImageUrl.get(image.url);
+    if (finishIdentity) {
+      productVariant?.setSelectedFinishName(finishIdentity);
     }
   }
 
-  function handleZoomMove(event: React.PointerEvent<HTMLDivElement>) {
-    if (event.pointerType !== "mouse") return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    setZoomOrigin({
-      x: ((event.clientX - rect.left) / rect.width) * 100,
-      y: ((event.clientY - rect.top) / rect.height) * 100
-    });
-  }
-
   return (
-    <div className="pdp-gallery-column">
+    <div className="gal">
       <div
-        className={zoomed ? "pdp-gallery-frame zoomed" : "pdp-gallery-frame"}
-        onPointerEnter={(event) => {
-          if (event.pointerType === "mouse") setZoomed(true);
-        }}
-        onPointerLeave={() => setZoomed(false)}
-        onPointerMove={handleZoomMove}
-        style={{
-          "--pdp-zoom-x": `${zoomOrigin.x}%`,
-          "--pdp-zoom-y": `${zoomOrigin.y}%`
-        } as React.CSSProperties}
+        className="gal__thumbs"
+        role="tablist"
+        aria-label={french ? "Images du produit" : "Product images"}
       >
+        {selectedImages.map((image, index) => (
+          <button
+            aria-label={french
+              ? finishLabelByImageUrl.get(image.url)
+                ? `Afficher l’image ${finishLabelByImageUrl.get(image.url)}`
+                : index === 0 ? "Afficher l’image principale" : `Afficher la vue ${index + 1} du produit`
+              : finishLabelByImageUrl.get(image.url)
+                ? `Show ${finishLabelByImageUrl.get(image.url)} image`
+                : index === 0 ? "Show primary image" : `Show product view ${index + 1}`}
+            aria-selected={activeIndex === index}
+            className={activeIndex === index ? "is-active" : ""}
+            onClick={() => handleThumbClick(image, index)}
+            role="tab"
+            type="button"
+            key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${index}:${image.url}`}
+          >
+            <img
+              src={image.url}
+              alt=""
+              width={image.width}
+              height={image.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
+        ))}
+      </div>
+      <div className="gal__main">
         <img
           key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${activeIndex}:${activeImage.url}`}
           src={activeImage.url}
-          alt={activeImage.alt}
+          alt={activeImage.alt?.trim() || (french ? "Image du produit" : "Product image")}
           width={activeImage.width}
           height={activeImage.height}
           loading="eager"
           fetchPriority="high"
           decoding="async"
         />
-        <span className="pdp-zoom-hint" aria-hidden="true">Hover to zoom</span>
-      </div>
-      <div
-        className="pdp-thumb-row"
-        aria-label="Product images"
-        key={selectedFinish?.sku ?? selectedFinish?.name ?? "default-gallery"}
-      >
-        {visibleImages.map((image, index) => (
-          <button
-            aria-label={`Show ${finishNameByImageUrl.get(image.url) ?? (index === 0 ? "primary" : `view ${index + 1}`)} image`}
-            aria-pressed={activeIndex === index}
-            className={activeIndex === index ? "pdp-thumb active" : "pdp-thumb"}
-            onClick={() => handleThumbClick(image, index)}
-            type="button"
-            key={`${selectedFinish?.sku ?? selectedFinish?.name ?? "default"}:${index}:${image.url}`}
-          >
-            <img
-              src={image.url}
-              alt={image.alt || `${finishNameByImageUrl.get(image.url) ?? `View ${index + 1}`} thumbnail`}
-              width={image.width}
-              height={image.height}
-              loading="lazy"
-              decoding="async"
-            />
-            <span>{finishNameByImageUrl.get(image.url) ?? (index === 0 ? "Primary" : `View ${index + 1}`)}</span>
-          </button>
-        ))}
-        {hasOverflowImages && !galleryExpanded ? (
-          <button
-            aria-label={`Show ${hiddenImageCount} more product images`}
-            aria-pressed={activeIndex >= COLLAPSED_IMAGE_COUNT}
-            className={activeIndex >= COLLAPSED_IMAGE_COUNT ? "pdp-thumb pdp-thumb-more active" : "pdp-thumb pdp-thumb-more"}
-            onClick={() => setGalleryExpanded(true)}
-            type="button"
-          >
-            <span className="pdp-thumb-more-image" aria-hidden="true">
-              <img
-                src={selectedImages[COLLAPSED_IMAGE_COUNT].url}
-                alt=""
-                width={selectedImages[COLLAPSED_IMAGE_COUNT].width}
-                height={selectedImages[COLLAPSED_IMAGE_COUNT].height}
-                loading="lazy"
-                decoding="async"
-              />
-              <strong>+{hiddenImageCount}</strong>
-            </span>
-            <span>View all</span>
-          </button>
-        ) : null}
-        {hasOverflowImages && galleryExpanded ? (
-          <button
-            aria-label="Collapse product images"
-            className="pdp-thumb pdp-thumb-collapse"
-            onClick={() => setGalleryExpanded(false)}
-            type="button"
-          >
-            <strong aria-hidden="true">−</strong>
-            <span>Show less</span>
-          </button>
-        ) : null}
+        <span className="pdp-zoom-hint" aria-hidden="true">{french ? "Survolez pour agrandir" : "Hover to zoom"}</span>
+        <span className="gal__count">
+          {activeIndex + 1} / {selectedImages.length}
+        </span>
       </div>
     </div>
   );

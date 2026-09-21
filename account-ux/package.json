@@ -1,0 +1,30 @@
+{
+  "name": "vanstro-account-ux",
+  "version": "1.0.0",
+  "description": "面向 **vanstro.ca**（加拿大商城用户）的账户与结账流程设计交付：交互流程图 + 高保真可交互 UI 原型 + 交互说明文档。视觉严格遵循《万拓品牌视觉白皮书》（Vanstro Global Supply Inc.），支持 Google / Apple 登录与 **Moneris** 信用卡支付（GST/HST、PIPEDA）。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "tsx scripts/dev-server.mts",
+    "start": "tsx scripts/dev-server.mts",
+    "samples:mail": "tsx scripts/send-samples.mts",
+    "generate:dealers": "tsx scripts/generate-dealers.mts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@azure/communication-email": "^1.1.0",
+    "dotenv": "^17.4.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,34 @@
+.panel { display: grid; gap: 1rem; }
+.header, .tabs, .toolbar, .actions, .summary, .registryHeader { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.header { justify-content: space-between; }
+.header h2, .header p, .registryHeader h3 { margin: 0; }
+.tabs { border-bottom: 1px solid #c9d3cc; }
+.tabs button, .button { min-height: 2.75rem; padding: .58rem .9rem; border: 1px solid #365946; border-radius: .4rem; color: #173e2b; background: #fff; font: inherit; font-weight: 650; }
+.tabs button[aria-pressed="true"], .primary { color: #fff; background: #23623f; }
+.button:disabled, .tabs button:disabled { opacity: .55; cursor: not-allowed; }
+.summary { align-items: stretch; }
+.summary > div { flex: 1 1 11rem; border: 1px solid #d5ddd7; border-radius: .55rem; padding: .75rem; background: #fff; }
+.summary dt { color: #536258; font-size: .8rem; }
+.summary dd { margin: .25rem 0 0; font-weight: 700; }
+.section, .registry, .future { border: 1px solid #d5ddd7; border-radius: .6rem; padding: 1rem; background: #fff; }
+.registryHeader { justify-content: space-between; }
+.search, .field { display: grid; gap: .35rem; }
+.search input, .field input, .field textarea, .field select { width: 100%; min-height: 2.75rem; padding: .55rem .65rem; border: 1px solid #87998e; border-radius: .35rem; color: inherit; background: #fff; font: inherit; }
+.field textarea { min-height: 5.5rem; resize: vertical; }
+.registryList, .historyList, .issues { display: grid; gap: .65rem; margin: .75rem 0 0; padding: 0; list-style: none; }
+.registryList li, .historyList li { border-top: 1px solid #d5ddd7; padding-top: .7rem; }
+.registryList h4, .registryList p, .historyList p { margin: .15rem 0; }
+.badge { display: inline-block; border: 1px solid #83958a; border-radius: 999px; padding: .2rem .55rem; font-size: .78rem; }
+.ready { border-color: #43815c; color: #205735; background: #eef7f1; }
+.degraded { border-color: #9a6a1f; color: #70460b; background: #fff8eb; }
+.status { margin: 0; padding: .7rem .85rem; border: 1px solid #b8c7be; border-radius: .45rem; background: #eef3ef; }
+.error { border-color: #b86b4d; color: #6f250b; background: #fff2ec; }
+.diff { width: 100%; border-collapse: collapse; }
+.diff th, .diff td { border-bottom: 1px solid #d5ddd7; padding: .6rem; text-align: left; }
+.modalRoot { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; padding: 1.5rem; background: rgb(0 0 0 / .52); }
+.dialog { width: min(34rem, 100%); max-height: calc(100dvh - 3rem); overflow: auto; border-radius: .65rem; padding: 1.25rem; color: #17211c; background: #fff; box-shadow: 0 1rem 3rem rgb(0 0 0 / .25); }
+.dialog h3 { margin-top: 0; }
+.dialog .actions { justify-content: flex-end; }
+.button:focus-visible, .tabs button:focus-visible, .search input:focus-visible, .field :focus-visible, .dialog:focus-visible { outline: 3px solid #b55400; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .panel * { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+@media (forced-colors: active) { .section, .registry, .future, .summary > div, .tabs button, .button, .dialog, .status { border: 2px solid CanvasText; } .tabs button[aria-pressed="true"], .primary { color: HighlightText; background: Highlight; } }

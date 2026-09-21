@@ -1,7 +1,10 @@
 export const COOKIE_PREFERENCES_KEY = "vs_consent_v1";
 export const LEGACY_COOKIE_CHOICE_KEY = "vanstro-cookie-choice";
 const CONSENT_ANONYMOUS_ID_KEY = "vs_consent_id_v1";
-const FUNCTIONAL_STORAGE_KEYS = ["vanstro-location-request-v1"];
+export const FUNCTIONAL_STORAGE_KEYS = [
+  "vanstro-location-request-v1",
+  "vanstro-storefront-v1"
+] as const;
 export const COOKIE_PREFERENCES_OPEN_EVENT = "vanstro:open-cookie-preferences";
 export const COOKIE_PREFERENCES_SAVED_EVENT = "vanstro:cookie-preferences-saved";
 
@@ -66,6 +69,15 @@ export function hasCookiePreferenceRecord() {
   }
 }
 
+export function isCurrentCookiePreferences(preferences: CookiePreferences) {
+  const current = readCookiePreferences();
+  return current?.updatedAt === preferences.updatedAt;
+}
+
+export function isCookiePreferencesStorageEvent(event: StorageEvent) {
+  return event.storageArea === window.localStorage && event.key === COOKIE_PREFERENCES_KEY;
+}
+
 export function writeCookiePreferences(preferences: CookiePreferences) {
   if (typeof window === "undefined") return;
   const value = encodeURIComponent(JSON.stringify(preferences));
@@ -75,8 +87,27 @@ export function writeCookiePreferences(preferences: CookiePreferences) {
   try {
     window.localStorage.setItem(COOKIE_PREFERENCES_KEY, JSON.stringify(preferences));
     window.localStorage.removeItem(LEGACY_COOKIE_CHOICE_KEY);
-    if (!preferences.functional) clearFunctionalStorage();
   } catch {}
+  if (!preferences.functional) clearFunctionalStorage();
+}
+
+export type ConsentEventRecorder = (input: {
+  anonymousId: string;
+  source: CookiePreferences["source"];
+  preferences: CookiePreferences;
+}) => Promise<unknown>;
+
+export async function recordCookiePreferences(
+  preferences: CookiePreferences,
+  recordConsentEvent: ConsentEventRecorder
+) {
+  if (typeof window === "undefined") return;
+
+  await recordConsentEvent({
+    anonymousId: getConsentAnonymousId(),
+    source: preferences.source,
+    preferences
+  });
 }
 
 export function clearFunctionalStorage() {

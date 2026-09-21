@@ -6,11 +6,12 @@ import {
   type MachineEnv,
   writeMachineAudit
 } from "../auth/service-account-access.js";
+import { rateLimitServiceAccount } from "../middleware/rate-limit-sa.js";
 
 export function createCliRoutes() {
   const routes = new Hono<MachineEnv>();
 
-  routes.get("/cli/erp-sync-jobs", requireMachineAccess("cli.access"), async (context) => {
+  routes.get("/cli/erp-sync-jobs", requireMachineAccess("cli.access"), rateLimitServiceAccount, async (context) => {
     const denied = requireMachinePermission(context, "erp.sync.read");
     if (denied) return denied;
 
@@ -24,7 +25,7 @@ export function createCliRoutes() {
     return context.json({ data: jobs });
   });
 
-  routes.post("/cli/erp-sync-jobs/:id/retry", requireMachineAccess("cli.access"), async (context) => {
+  routes.post("/cli/erp-sync-jobs/:id/retry", requireMachineAccess("cli.access"), rateLimitServiceAccount, async (context) => {
     const denied = requireMachinePermission(context, "erp.sync.retry");
     if (denied) return denied;
 
@@ -35,16 +36,18 @@ export function createCliRoutes() {
       return context.json({ error: "Only failed, cancelled or waiting ERP jobs can be retried." }, 409);
     }
 
-    const updatedJob = await prisma.erpSyncJob.update({
-      where: { id: job.id },
+    const retried = await prisma.erpSyncJob.updateMany({
+      where: { id: job.id, status: { in: ["retry_wait", "failed", "cancelled"] } },
       data: { status: "pending", nextRunAt: null, lastError: null, lockedAt: null, lockedBy: null }
     });
+    if (retried.count !== 1) return context.json({ error: "ERP sync status changed concurrently." }, 409);
+    const updatedJob = await prisma.erpSyncJob.findUniqueOrThrow({ where: { id: job.id } });
     await writeMachineAudit(context, "cli.erp_sync_jobs.retry", "erp_sync_job", job.id);
 
     return context.json({ data: updatedJob });
   });
 
-  routes.get("/cli/email/outbox", requireMachineAccess("cli.access"), async (context) => {
+  routes.get("/cli/email/outbox", requireMachineAccess("cli.access"), rateLimitServiceAccount, async (context) => {
     const denied = requireMachinePermission(context, "email.outbox.read");
     if (denied) return denied;
 
@@ -61,7 +64,7 @@ export function createCliRoutes() {
     return context.json({ data: items });
   });
 
-  routes.post("/cli/email/outbox/:id/retry", requireMachineAccess("cli.access"), async (context) => {
+  routes.post("/cli/email/outbox/:id/retry", requireMachineAccess("cli.access"), rateLimitServiceAccount, async (context) => {
     const denied = requireMachinePermission(context, "email.outbox.retry");
     if (denied) return denied;
 
@@ -72,10 +75,12 @@ export function createCliRoutes() {
       return context.json({ error: "Only failed, cancelled or waiting emails can be retried." }, 409);
     }
 
-    const updatedItem = await prisma.emailOutbox.update({
-      where: { id: item.id },
+    const retried = await prisma.emailOutbox.updateMany({
+      where: { id: item.id, status: { in: ["retry_wait", "failed", "cancelled"] } },
       data: { status: "pending", nextRunAt: null, lastError: null, lockedBy: null, lockedAt: null }
     });
+    if (retried.count !== 1) return context.json({ error: "Email status changed concurrently." }, 409);
+    const updatedItem = await prisma.emailOutbox.findUniqueOrThrow({ where: { id: item.id } });
     await writeMachineAudit(context, "cli.email_outbox.retry", "email_outbox", item.id);
 
     return context.json({ data: updatedItem });

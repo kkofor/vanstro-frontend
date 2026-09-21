@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16.9-bookworm@sha256:6cf6142afacfa89fb28b8943e1764d446f772ab6d5390303e2544c6021613b9b
+    environment:
+      POSTGRES_USER: vanstro
+      POSTGRES_PASSWORD: media_test_only
+      POSTGRES_DB: vanstro_media_disposable
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vanstro -d vanstro_media_disposable"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+  media-parser-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.media-parser-test
+    network_mode: none
+    read_only: true
+    user: "10001:10001"
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 32
+    mem_limit: 512m
+    cpus: 1
+    ulimits:
+      core: 0
+      nofile: 32
+    tmpfs:
+      - /work:rw,noexec,nosuid,nodev,size=96m,mode=700,uid=10001,gid=10001,nr_inodes=128
+    command: ["image", "/work/input", "/work/output"]
+  api-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: runtime
+    command: ["node", "apps/api/dist/index.js"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql://vanstro:media_test_only@postgres:5432/vanstro_media_disposable
+      VANSTRO_RUNTIME_MODE: test
+      PORT: "4000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=32m"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+  worker-test:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: runtime
+    command: ["node", "apps/worker/dist/index.js", "--once"]
+    depends_on:
+      api-test: { condition: service_healthy }
+    environment:
+      DATABASE_URL: postgresql://vanstro:media_test_only@postgres:5432/vanstro_media_disposable
+      VANSTRO_RUNTIME_MODE: test
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=32m"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]

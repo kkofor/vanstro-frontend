@@ -1,0 +1,31 @@
+{
+  "suiteId": "vanstro.s02.settings.desktop.v1",
+  "viewport": { "width": 1440, "height": 1000 },
+  "scope": "S02 General/Brand/Storefront/Localization settings desktop acceptance against the frozen S02 contract (descriptor settings.general-storefront)",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    { "id": "S02-01", "name": "Login establishes an admin session", "expectation": "login succeeds and the S02 settings panel renders" },
+    { "id": "S02-02", "name": "S02 page is available", "expectation": "/dashboard/settings/general-storefront renders 通用店面设置 with the settings.general-storefront.v1 descriptor badge" },
+    { "id": "S02-03", "name": "Read-only actor sees no write controls", "expectation": "read-only profile renders 只读模式 with no 创建草稿 control and no publish capability" },
+    { "id": "S02-04", "name": "Create a structurally valid business-invalid draft succeeds", "expectation": "a logoMediaRef pointing at a missing media id is accepted as a draft (no client pre-rejection)" },
+    { "id": "S02-05", "name": "Server blocker persists the draft as invalid", "expectation": "validate reports 验证未通过 with a blocker and the draft status becomes invalid" },
+    { "id": "S02-06", "name": "PATCH corrects the invalid draft", "expectation": "clearing the missing media ref saves the draft with a bumped version" },
+    { "id": "S02-07", "name": "Revalidate the corrected draft as validated", "expectation": "validate reports 验证通过 with no blockers" },
+    { "id": "S02-08", "name": "Safe diff shows the exact public value change", "expectation": "diff table lists field-path changes with public sensitivity and zero secrets" },
+    { "id": "S02-09", "name": "Publish executes and returns a generation", "expectation": "publish succeeds with a positive generation and the draft leaves the open list" },
+    { "id": "S02-10", "name": "Public Storefront shows the published changes", "expectation": "/storefront/config returns the published siteDisplayName and announcement, and the SiteHeader displays them" },
+    { "id": "S02-11", "name": "EN and fr locales with fallback", "expectation": "en-CA and fr-CA projections serve; unsupported locales fall back to en-CA" },
+    { "id": "S02-12", "name": "Media/CMS/Dealer references resolve in the public projection", "expectation": "published logoMediaRef, CMS refs and dealer/location refs resolve to public-safe objects" },
+    { "id": "S02-13", "name": "Missing references degrade without breaking the public site", "expectation": "a missing media ref yields degraded projection state while the storefront still renders" },
+    { "id": "S02-14", "name": "Stale version yields VERSION_CONFLICT", "expectation": "a stale expectedVersion yields a controlled 409 VERSION_CONFLICT" },
+    { "id": "S02-15", "name": "Illegal state yields SETTINGS_STATE_CONFLICT", "expectation": "publishing an unvalidated draft yields a controlled 409 SETTINGS_STATE_CONFLICT" },
+    { "id": "S02-16", "name": "Malformed UUID yields a controlled 400", "expectation": "a non-UUID draft id returns a stable 400, never a 500" },
+    { "id": "S02-17", "name": "History is append-only with original publication facts", "expectation": "published entries keep their original auditEventId and gains a superseded entry" },
+    { "id": "S02-18", "name": "Rollback creates a new draft from the current publication", "expectation": "rollback-draft returns a rollback_draft with rollbackOfPublicationId set" },
+    { "id": "S02-19", "name": "Rollback publish restores the previous S02 version on the Storefront", "expectation": "publishing the rollback draft yields a generation above the superseded one and the storefront shows the restored value (not generation 0)" },
+    { "id": "S02-20", "name": "Fresh fixture serves compiled_default generation 0 and public fallback", "expectation": "no S02 publication yields compiled_default generation 0 and the public site shows the compiled siteDisplayName" },
+    { "id": "S02-21", "name": "Static export serves fallback then hydrates the published value", "expectation": "a static server-mode load shows the compiled fallback first then the published value via the public API; an unavailable API keeps the fallback" },
+    { "id": "S02-22", "name": "Audit safe snapshot carries real roles and no field values", "expectation": "mutation Audit rows carry effectiveRoles/grants and metadata only with descriptorKey (no siteDisplayName/email values)" },
+    { "id": "S02-23", "name": "Logout and post-logout state are clean", "expectation": "logout returns to login and no protected settings state remains" }
+  ]
+}

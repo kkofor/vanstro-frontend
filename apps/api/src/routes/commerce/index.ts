@@ -1,0 +1,1960 @@
+import { prisma, Prisma } from "@vanstro/db";
+import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { Hono, type Context } from "hono";
+import { getSessionFromRequest } from "../../auth/session.js";
+import {
+  markCustomerOnPaidOrder,
+  recordCartAddForUser,
+  recordFavoriteAddForUser,
+  syncContactProfile,
+  upsertContactFromGuestCheckout
+} from "../../crm/service.js";
+import {
+  consumeInventoryReservation,
+  enqueueInventoryRelease,
+  restockCancelledOrderItems
+} from "../../integrations/erp-sync/inventory.js";
+import { loadApiConfig, type ApiConfig } from "../../config.js";
+import { queueCustomerEmail } from "../../email/queue.js";
+import { isMonerisConfigured, resolvePaymentProvider } from "../../payments/index.js";
+import { createCanadaPostClient, normalizeCanadianPostalCode } from "../../integrations/canada-post/address-complete.js";
+import {
+  CUSTOMER_ADDRESS_INVALID_MESSAGE,
+  CUSTOMER_ADDRESS_REQUIRED_FIELDS,
+  CUSTOMER_ADDRESS_REQUIRED_MESSAGE,
+  parseCustomerAddressCreate,
+  parseCustomerAddressPatch
+} from "../../customer-address-validation.js";
+import { finalizeConfirmedPayment, markPaymentForReconciliation as markPersistedPaymentForReconciliation } from "../../payments/finalize.js";
+import { orderSnapshotData } from "../../payments/order-snapshot.js";
+import { publicError } from "../../public-errors.js";
+import { assertCommerceQuoteAllowed, commerceOrderTransitionAllowed, resolveCommercePolicy } from "./s03-policy.js";
+
+type CheckoutItem = {
+  skuId: string;
+  skuCode: string;
+  productName: string;
+  quantity: number;
+  unitPriceCents: number;
+  lineTotalCents: number;
+  currency: string;
+};
+
+const MAX_BULK_INVENTORY_PRODUCTS = 100;
+const MAX_CART_ITEM_QUANTITY = 999;
+const PAYMENT_SESSION_TTL_MS = 30 * 60 * 1000;
+const STOREFRONT_CURRENCY = "CAD";
+
+export class CommerceInvariantError extends Error {}
+
+class InventoryConflictError extends Error {
+  constructor(
+    message: string,
+    readonly code: "INVENTORY_REFRESHING" | "INVENTORY_INSUFFICIENT"
+  ) {
+    super(message);
+  }
+}
+
+const activePriceWhere = () => {
+  const now = new Date();
+  return {
+    status: "active" as const,
+    AND: [
+      { OR: [{ effectiveFrom: null }, { effectiveFrom: { lte: now } }] },
+      { OR: [{ effectiveUntil: null }, { effectiveUntil: { gt: now } }] }
+    ]
+  };
+};
+
+const cartInclude = (currency: string) => ({
+  items: {
+    include: {
+      sku: {
+        include: {
+          product: {
+            include: {
+              assets: { orderBy: { sortOrder: "asc" as const } },
+              specifications: { orderBy: { sortOrder: "asc" as const } }
+            }
+          },
+          prices: { where: { ...activePriceWhere(), currency }, orderBy: { effectiveFrom: { sort: "desc" as const, nulls: "last" as const } } },
+          inventorySnapshots: true
+        }
+      }
+    }
+  }
+});
+
+type CartRecord = Prisma.CartGetPayload<{ include: ReturnType<typeof cartInclude> }>;
+
+const favoriteInclude = () => ({
+  product: {
+    include: {
+      category: true,
+      assets: { orderBy: { sortOrder: "asc" as const } },
+      specifications: { orderBy: { sortOrder: "asc" as const } },
+      skus: {
+        where: { status: "active" as const },
+        orderBy: { sortOrder: "asc" as const },
+        include: {
+          prices: { where: activePriceWhere(), orderBy: { effectiveFrom: { sort: "desc" as const, nulls: "last" as const } } },
+          inventorySnapshots: true
+        }
+      }
+    }
+  }
+} satisfies Prisma.FavoriteInclude);
+
+type FavoriteWithProduct = Prisma.FavoriteGetPayload<{ include: ReturnType<typeof favoriteInclude> }>;
+
+export function availableQuantity(snapshots: Array<{ quantityOnHand: number; quantityReserved: number }>) {
+  return snapshots.reduce((total, snapshot) => total + Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved), 0);
+}
+
+/** Compute tax and shipping cents from subtotal, combined tax rate, and fulfillment. */
+export function computeCheckoutTotals(
+  subtotalCents: number,
+  combinedTaxRate: number,
+  fulfillment: "pickup" | "delivery",
+  deliveryFlatFeeCents: number
+) {
+  const taxCents = Math.round(subtotalCents * combinedTaxRate);
+  const shippingCents = fulfillment === "delivery" ? deliveryFlatFeeCents : 0;
+  return {
+    taxCents,
+    shippingCents,
+    totalCents: subtotalCents + taxCents + shippingCents
+  };
+}
+
+// Resolve the combined sales-tax rate (decimal of subtotal) for a province code.
+// Rates are DB-managed (tax_rates). Checkout fails closed when no current rate exists.
+async function resolveCombinedTaxRate(province: string | null | undefined) {
+  if (!province) return undefined;
+  const rate = await prisma.taxRate.findFirst({
+    where: { province, isActive: true, effectiveFrom: { lte: new Date() } },
+    orderBy: { effectiveFrom: "desc" }
+  });
+  if (!rate) return undefined;
+  return Number(rate.combinedRate);
+}
+
+function money(amountCents: number, currency: string) {
+  return { amount: amountCents / 100, amountCents, currency };
+}
+
+function optionalString(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function formatCustomerAccount(customer: {
+  id: string;
+  email: string;
+  customerProfile?: {
+    firstName: string | null;
+    lastName: string | null;
+    phone: string | null;
+  } | null;
+}) {
+  return {
+    id: customer.id,
+    email: customer.email,
+    firstName: customer.customerProfile?.firstName ?? undefined,
+    lastName: customer.customerProfile?.lastName ?? undefined,
+    phone: customer.customerProfile?.phone ?? undefined
+  };
+}
+
+type ErpOrderStatus = "processing" | "fulfilled" | "cancelled";
+
+const ERP_ORDER_TRANSITIONS: Record<string, ReadonlySet<ErpOrderStatus>> = {
+  paid: new Set(["processing", "fulfilled", "cancelled"]),
+  processing: new Set(["fulfilled", "cancelled"]),
+  fulfilled: new Set(),
+  cancelled: new Set()
+};
+type ErpOrderStatusPayload = {
+  orderId: string;
+  status: ErpOrderStatus;
+  externalId: string;
+  erpSystem: string;
+};
+
+type CommerceDatabase = Pick<typeof prisma, "erpWebhookEvent" | "order" | "productSkuErpMapping" | "$transaction">;
+
+type DealerFulfillmentAvailability = {
+  status: "active" | "inactive";
+  pickupAvailable: boolean;
+  deliveryAvailable: boolean;
+  dealer: { status: "active" | "inactive" };
+};
+
+export function dealerSupportsFulfillment(
+  dealerLocation: { pickupAvailable: boolean; deliveryAvailable: boolean },
+  fulfillment: "pickup" | "delivery"
+) {
+  return fulfillment === "pickup"
+    ? dealerLocation.pickupAvailable
+    : dealerLocation.deliveryAvailable;
+}
+
+const loadDealerFulfillmentAvailability = (dealerLocationId: string) =>
+  prisma.dealerLocation.findUnique({
+    where: { id: dealerLocationId },
+    select: {
+      status: true,
+      pickupAvailable: true,
+      deliveryAvailable: true,
+      dealer: { select: { status: true } }
+    }
+  });
+
+function erpOrderStatusPayload(input: {
+  orderId: string;
+  status: ErpOrderStatus;
+  externalId: string;
+  erpSystem: string;
+}): ErpOrderStatusPayload {
+  return {
+    orderId: input.orderId,
+    status: input.status,
+    externalId: input.externalId,
+    erpSystem: input.erpSystem
+  };
+}
+
+const markPaymentForReconciliation = markPersistedPaymentForReconciliation;
+
+function isProviderTransactionConflict(error: unknown) {
+  if (!(error instanceof Prisma.PrismaClientKnownRequestError) || error.code !== "P2002") return false;
+  const target = error.meta?.target;
+  const fields = Array.isArray(target)
+    ? target.filter((field): field is string => typeof field === "string")
+    : typeof target === "string"
+      ? [target]
+      : [];
+  return fields.some((field) => field.includes("providerPaymentId"));
+}
+
+function isDuplicateErpWebhookEventConflict(error: unknown) {
+  if (!error || typeof error !== "object" || !("code" in error) || error.code !== "P2002") return false;
+
+  const meta = "meta" in error && error.meta && typeof error.meta === "object"
+    ? error.meta as { modelName?: unknown; target?: unknown }
+    : undefined;
+  if (meta?.modelName !== undefined && meta.modelName !== "ErpWebhookEvent") return false;
+
+  const target = meta?.target;
+  const targetFields = Array.isArray(target)
+    ? target.filter((field): field is string => typeof field === "string")
+    : typeof target === "string"
+      ? [target]
+      : [];
+  return ["erpSystem", "eventType", "externalId"].every((field) =>
+    targetFields.some((targetField) => targetField.includes(field))
+  );
+}
+
+async function requireCustomer(context: Context) {
+  const session = await getSessionFromRequest(context);
+
+  if (!session || session.user.kind !== "customer") {
+    return undefined;
+  }
+
+  return session;
+}
+
+async function resolveCartIdentity(context: Context) {
+  const session = await getSessionFromRequest(context);
+  const requestedToken = context.req.header("x-cart-token");
+
+  if (session?.user.kind === "customer") {
+    const cart = await prisma.$transaction(async (transaction) => {
+      const customerCart = await transaction.cart.upsert({
+        where: { userId: session.user.id },
+        update: {},
+        create: { userId: session.user.id, currency: STOREFRONT_CURRENCY }
+      });
+
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${customerCart.id}, 0))`;
+      if (customerCart.currency !== STOREFRONT_CURRENCY) {
+        throw new CommerceInvariantError("Cart currency must be CAD.");
+      }
+
+      if (requestedToken) {
+        const guestIdentity = await transaction.cart.findUnique({
+          where: { guestToken: requestedToken },
+          select: { id: true }
+        });
+
+        if (guestIdentity && guestIdentity.id !== customerCart.id) {
+          await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${guestIdentity.id}, 0))`;
+          const guestCart = await transaction.cart.findUnique({
+            where: { id: guestIdentity.id },
+            include: { items: true }
+          });
+          if (!guestCart) return customerCart;
+          if (guestCart.currency !== customerCart.currency) {
+            throw new CommerceInvariantError("Cart currencies do not match.");
+          }
+          const customerItems = await transaction.cartItem.findMany({
+            where: { cartId: customerCart.id }
+          });
+          const customerQuantities = new Map(customerItems.map((item) => [item.skuId, item.quantity]));
+          for (const item of guestCart.items) {
+            const finalQuantity = (customerQuantities.get(item.skuId) ?? 0) + item.quantity;
+            if (finalQuantity > MAX_CART_ITEM_QUANTITY) {
+              throw new CommerceInvariantError("Cart item quantity cannot exceed 999.");
+            }
+            customerQuantities.set(item.skuId, finalQuantity);
+          }
+          for (const item of guestCart.items) {
+            await transaction.cartItem.upsert({
+              where: { cartId_skuId: { cartId: customerCart.id, skuId: item.skuId } },
+              update: { quantity: customerQuantities.get(item.skuId)! },
+              create: { cartId: customerCart.id, skuId: item.skuId, quantity: item.quantity }
+            });
+          }
+          await transaction.cart.delete({ where: { id: guestCart.id } });
+        }
+      }
+
+      return customerCart;
+    });
+
+    return { cart, cartToken: undefined, userId: session.user.id };
+  }
+
+  const cartToken = requestedToken || randomBytes(24).toString("base64url");
+  const cart = await prisma.cart.upsert({
+    where: { guestToken: cartToken },
+    update: {},
+    create: { guestToken: cartToken, currency: STOREFRONT_CURRENCY }
+  });
+  if (cart.currency !== STOREFRONT_CURRENCY) {
+    throw new CommerceInvariantError("Cart currency must be CAD.");
+  }
+
+  return { cart, cartToken, userId: undefined };
+}
+
+function loadCart(cart: { id: string; currency: string }) {
+  return prisma.cart.findUniqueOrThrow({ where: { id: cart.id }, include: cartInclude(cart.currency) });
+}
+
+function formatCart(cart: CartRecord) {
+  if (cart.currency !== STOREFRONT_CURRENCY) {
+    throw new CommerceInvariantError("Unsupported Cart currency.");
+  }
+  const items = cart.items.map((item) => {
+    const price = item.sku.prices[0];
+    if (!price || price.currency !== cart.currency) {
+      throw new CommerceInvariantError("No active price matches the cart currency.");
+    }
+    if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > MAX_CART_ITEM_QUANTITY) {
+      throw new CommerceInvariantError("Cart item quantity is outside the supported range.");
+    }
+
+    return {
+      id: item.id,
+      skuId: item.skuId,
+      quantity: item.quantity,
+      product: {
+        id: item.sku.product.id,
+        slug: item.sku.product.slug,
+        name: item.sku.product.name,
+        sku: item.sku.skuCode,
+        images: item.sku.product.assets.map((asset) => ({ url: asset.url, alt: asset.altText ?? item.sku.product.name })),
+        dimensions: item.sku.product.specifications.find((specification) => specification.key === "Width")?.value ?? "",
+        unit: "each",
+        inStock: availableQuantity(item.sku.inventorySnapshots) >= item.quantity
+      },
+      unitPrice: money(price.amountCents, price.currency),
+      lineTotal: money(price.amountCents * item.quantity, price.currency)
+    };
+  });
+  const subtotalCents = items.reduce((total, item) => total + item.lineTotal.amountCents, 0);
+
+  return { id: cart.id, items, subtotal: money(subtotalCents, cart.currency) };
+}
+
+function formatFavorite(favorite: FavoriteWithProduct) {
+  const sku = favorite.product.skus[0];
+  const price = sku?.prices[0];
+
+  if (!sku || !price) return undefined;
+
+  return {
+    id: favorite.id,
+    product: {
+      id: favorite.product.id,
+      slug: favorite.product.slug,
+      name: favorite.product.name,
+      sku: sku.skuCode,
+      category: favorite.product.category?.name ?? "Uncategorized",
+      price: money(price.amountCents, price.currency),
+      unit: "each",
+      dimensions: favorite.product.specifications.find((specification) => specification.key === "Width")?.value ?? "",
+      images: favorite.product.assets.map((asset) => ({ url: asset.url, alt: asset.altText ?? favorite.product.name })),
+      inStock: availableQuantity(sku.inventorySnapshots) > 0
+    }
+  };
+}
+
+async function findSku(productId: string, skuCode?: string) {
+  return prisma.platformSku.findFirst({
+    where: {
+      status: "active",
+      ...(skuCode ? { skuCode } : {}),
+      product: { status: "active", OR: [{ id: productId }, { slug: productId }] }
+    },
+    include: { prices: { where: activePriceWhere(), orderBy: { effectiveFrom: { sort: "desc", nulls: "last" } } } }
+  });
+}
+
+async function findCartSku(productId: string, skuCode: string | undefined, currency: string) {
+  return prisma.platformSku.findFirst({
+    where: {
+      status: "active",
+      ...(skuCode ? { skuCode } : {}),
+      product: { status: "active", OR: [{ id: productId }, { slug: productId }] },
+      prices: { some: { ...activePriceWhere(), currency } }
+    },
+    include: {
+      prices: {
+        where: { ...activePriceWhere(), currency },
+        orderBy: { effectiveFrom: { sort: "desc", nulls: "last" } }
+      }
+    }
+  });
+}
+
+function cartCheckoutItems(cart: CartRecord): CheckoutItem[] {
+  if (cart.items.length === 0) return [];
+  if (cart.currency !== STOREFRONT_CURRENCY) {
+    throw new CommerceInvariantError("Cart currency must be CAD.");
+  }
+
+  const items: CheckoutItem[] = [];
+  for (const item of cart.items) {
+    const price = item.sku.prices[0];
+    if (!price || price.currency !== cart.currency || item.sku.status !== "active" || item.sku.product.status !== "active") {
+      throw new CommerceInvariantError("No active price matches the cart currency.");
+    }
+    if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > MAX_CART_ITEM_QUANTITY) {
+      throw new CommerceInvariantError("Cart item quantity is outside the supported range.");
+    }
+    items.push({
+      skuId: item.skuId,
+      skuCode: item.sku.skuCode,
+      productName: item.sku.product.name,
+      quantity: item.quantity,
+      unitPriceCents: price.amountCents,
+      lineTotalCents: price.amountCents * item.quantity,
+      currency: price.currency
+    });
+  }
+
+  return items;
+}
+
+function checkoutItemsKey(items: CheckoutItem[]) {
+  return JSON.stringify(items.map((item) => ({
+    skuId: item.skuId,
+    quantity: item.quantity,
+    unitPriceCents: item.unitPriceCents,
+    lineTotalCents: item.lineTotalCents,
+    currency: item.currency
+  })));
+}
+
+function signaturesMatch(expected: string | undefined, actual: string | undefined) {
+  if (!expected || !actual || expected.length !== actual.length) return false;
+  return timingSafeEqual(Buffer.from(expected), Buffer.from(actual));
+}
+
+function formatShippingAddress(record: {
+  shippingAddressLine1?: string | null;
+  shippingAddressLine2?: string | null;
+  shippingCity?: string | null;
+  shippingProvince?: string | null;
+  shippingPostalCode?: string | null;
+  shippingCountry?: string | null;
+}) {
+  if (!record.shippingAddressLine1 || !record.shippingCity || !record.shippingProvince || !record.shippingPostalCode) {
+    return undefined;
+  }
+  return {
+    addressLine1: record.shippingAddressLine1,
+    ...(record.shippingAddressLine2 ? { addressLine2: record.shippingAddressLine2 } : {}),
+    city: record.shippingCity,
+    province: record.shippingProvince,
+    postalCode: record.shippingPostalCode,
+    country: record.shippingCountry ?? "CA"
+  };
+}
+
+function parseCheckoutPaymentMethod(value: unknown): "card" | "pos" | "cash" | undefined {
+  if (value === "card" || value === "pos" || value === "cash") return value;
+  return undefined;
+}
+
+const CANADIAN_PROVINCES = new Set([
+  "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT"
+]);
+
+function parseShippingInput(
+  body: Record<string, unknown> | null,
+  fulfillment: "pickup" | "delivery"
+) {
+  if (fulfillment === "pickup") return null;
+  const addressLine1 = optionalString(body?.shippingAddressLine1);
+  const city = optionalString(body?.shippingCity);
+  const province = optionalString(body?.shippingProvince)?.toUpperCase();
+  const postalCode = optionalString(body?.shippingPostalCode);
+  const country = optionalString(body?.shippingCountry)?.toUpperCase() ?? "CA";
+  const normalizedPostal = postalCode ? normalizeCanadianPostalCode(postalCode) : undefined;
+  if (
+    !addressLine1 ||
+    !city ||
+    !province ||
+    !CANADIAN_PROVINCES.has(province) ||
+    country !== "CA" ||
+    !normalizedPostal
+  ) return undefined;
+  return {
+    shippingAddressLine1: addressLine1,
+    shippingAddressLine2: optionalString(body?.shippingAddressLine2),
+    shippingCity: city,
+    shippingProvince: province,
+    shippingPostalCode: normalizedPostal,
+    shippingCountry: country
+  };
+}
+
+function formatPaymentSession(session: {
+  id: string;
+  status: string;
+  fulfillment: string;
+  paymentMethod: string;
+  subtotalCents: number;
+  taxCents: number;
+  shippingCents: number;
+  totalCents: number;
+  currency: string;
+  expiresAt: Date;
+  guestOrderToken: string;
+  shippingAddressLine1?: string | null;
+  shippingAddressLine2?: string | null;
+  shippingCity?: string | null;
+  shippingProvince?: string | null;
+  shippingPostalCode?: string | null;
+  shippingCountry?: string | null;
+  order?: { id: string } | null;
+}) {
+  return {
+    id: session.id,
+    status: session.status,
+    fulfillment: session.fulfillment,
+    paymentMethod: session.paymentMethod,
+    subtotal: money(session.subtotalCents, session.currency),
+    tax: money(session.taxCents, session.currency),
+    shipping: money(session.shippingCents, session.currency),
+    total: money(session.totalCents, session.currency),
+    expiresAt: session.expiresAt.toISOString(),
+    guestOrderToken: session.guestOrderToken,
+    ...(session.order ? { orderId: session.order.id } : {}),
+    ...(formatShippingAddress(session) ? { shippingAddress: formatShippingAddress(session) } : {})
+  };
+}
+
+function formatStatusEvents(
+  events?: Array<{ id: string; status: string; source: string; payload: unknown; createdAt: Date }>
+) {
+  return (events ?? []).map((event) => {
+    const payload = event.payload && typeof event.payload === "object"
+      ? event.payload as Record<string, unknown>
+      : undefined;
+    const publicPayload = payload && event.source.includes("shipment")
+      ? {
+          ...(typeof payload.shipmentId === "string" ? { shipmentId: payload.shipmentId } : {}),
+          ...(typeof payload.trackingNumber === "string" ? { trackingNumber: payload.trackingNumber } : {}),
+          ...(typeof payload.status === "string" ? { status: payload.status } : {})
+        }
+      : undefined;
+    return {
+      id: event.id,
+      status: event.status,
+      source: event.source.startsWith("erp:") ? "erp" : event.source,
+      ...(publicPayload && Object.keys(publicPayload).length ? { payload: publicPayload } : {}),
+      createdAt: event.createdAt.toISOString()
+    };
+  });
+}
+
+function extractShipment(
+  events?: Array<{ status: string; source: string; payload: unknown; createdAt: Date }>
+) {
+  const orderedEvents = [...(events ?? [])].sort(
+    (left, right) => right.createdAt.getTime() - left.createdAt.getTime()
+  );
+  for (const event of orderedEvents) {
+    if (!event.source.includes("shipment")) continue;
+    const payload = event.payload && typeof event.payload === "object" ? (event.payload as Record<string, unknown>) : {};
+    const trackingNumber = typeof payload.trackingNumber === "string" ? payload.trackingNumber : undefined;
+    const shipmentId = typeof payload.shipmentId === "string" ? payload.shipmentId : undefined;
+    const shipmentStatus = typeof payload.status === "string" ? payload.status : event.status;
+    return {
+      shipmentId,
+      trackingNumber,
+      status: shipmentStatus,
+      updatedAt: event.createdAt.toISOString()
+    };
+  }
+  return undefined;
+}
+
+function formatOrder(order: {
+  id: string; status: string; fulfillment: string; paymentMethod?: string; firstName?: string; lastName?: string; phone?: string; notes?: string | null;
+  subtotalCents: number; taxCents: number; shippingCents: number; totalCents: number; currency: string; createdAt: Date;
+  shippingAddressLine1?: string | null; shippingAddressLine2?: string | null; shippingCity?: string | null; shippingProvince?: string | null; shippingPostalCode?: string | null; shippingCountry?: string | null;
+  items: Array<{ skuCode: string; productName: string; quantity: number; unitPriceCents: number; lineTotalCents: number }>;
+  statusEvents?: Array<{ id: string; status: string; source: string; payload: unknown; createdAt: Date }>;
+}) {
+  const statusEvents = formatStatusEvents(order.statusEvents);
+  const shipment = extractShipment(order.statusEvents);
+  return {
+    id: order.id,
+    status: order.status,
+    fulfillment: order.fulfillment,
+    ...(order.paymentMethod ? { paymentMethod: order.paymentMethod } : {}),
+    ...(order.firstName ? { firstName: order.firstName } : {}),
+    ...(order.lastName ? { lastName: order.lastName } : {}),
+    ...(order.phone ? { phone: order.phone } : {}),
+    ...(order.notes ? { notes: order.notes } : {}),
+    subtotal: money(order.subtotalCents, order.currency),
+    tax: money(order.taxCents, order.currency),
+    shipping: money(order.shippingCents, order.currency),
+    total: money(order.totalCents, order.currency),
+    createdAt: order.createdAt.toISOString(),
+    ...(formatShippingAddress(order) ? { shippingAddress: formatShippingAddress(order) } : {}),
+    ...(shipment ? { shipment } : {}),
+    statusEvents,
+    items: order.items.map((item) => ({ ...item, unitPrice: money(item.unitPriceCents, order.currency), lineTotal: money(item.lineTotalCents, order.currency) }))
+  };
+}
+
+export function createCommerceRoutes(
+  database: CommerceDatabase = prisma,
+  config: ApiConfig = loadApiConfig(),
+  findDealerFulfillmentAvailability: (dealerLocationId: string) => Promise<DealerFulfillmentAvailability | null> = loadDealerFulfillmentAvailability,
+  beforeCheckoutCreation: () => Promise<void> = async () => {}
+) {
+  const routes = new Hono();
+
+  routes.get("/cart", async (context) => {
+    const resolved = await resolveCartIdentity(context);
+    const cart = await loadCart(resolved.cart);
+    return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
+  });
+
+  routes.post("/cart/items", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { productId?: unknown; skuCode?: unknown; quantity?: unknown; dealerLocationId?: unknown } | null;
+    const productId = optionalString(body?.productId);
+    const skuCode = optionalString(body?.skuCode);
+    const dealerLocationId = optionalString(body?.dealerLocationId);
+    const quantity = typeof body?.quantity === "number" ? body.quantity : Number.NaN;
+    if (!productId || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_CART_ITEM_QUANTITY) return publicError(context, 400, "COMMERCE_INVALID", "productId and a quantity between 1 and 999 are required.");
+
+    const resolved = await resolveCartIdentity(context);
+    const sku = await findCartSku(productId, skuCode, resolved.cart.currency);
+    if (!sku?.prices[0]) {
+      return publicError(context, 409, "COMMERCE_INVALID", "No active price matches the cart currency.");
+    }
+    if (dealerLocationId) {
+      const location = await prisma.dealerLocation.findUnique({ where: { id: dealerLocationId }, include: { dealer: true } });
+      if (!location || location.status !== "active" || location.dealer.status !== "active") {
+        return publicError(context, 409, "COMMERCE_INVALID", "The selected dealer location is not available.");
+      }
+      const snapshot = await prisma.inventorySnapshot.findFirst({ where: { skuId: sku.id, dealerLocationId } });
+      const available = snapshot ? Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved) : 0;
+      if (available < quantity) {
+        return publicError(context, 409, "INVENTORY_INSUFFICIENT", `Insufficient inventory for ${sku.skuCode}.`);
+      }
+    }
+    const cart = await prisma.$transaction(async (transaction) => {
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+      const lockedCart = await transaction.cart.findUnique({
+        where: { id: resolved.cart.id },
+        select: { id: true, currency: true }
+      });
+      if (!lockedCart || lockedCart.currency !== resolved.cart.currency) {
+        throw new CommerceInvariantError("Cart identity changed while the item was being added. Please try again.");
+      }
+      const existing = await transaction.cartItem.findUnique({
+        where: { cartId_skuId: { cartId: lockedCart.id, skuId: sku.id } }
+      });
+      const finalQuantity = (existing?.quantity ?? 0) + quantity;
+      if (finalQuantity > MAX_CART_ITEM_QUANTITY) {
+        throw new CommerceInvariantError("Cart item quantity cannot exceed 999.");
+      }
+      await transaction.cartItem.upsert({
+        where: { cartId_skuId: { cartId: lockedCart.id, skuId: sku.id } },
+        update: { quantity: finalQuantity },
+        create: { cartId: lockedCart.id, skuId: sku.id, quantity }
+      });
+      if (resolved.userId) {
+        await recordCartAddForUser(transaction, {
+          userId: resolved.userId,
+          productId: sku.productId,
+          skuId: sku.id,
+          quantity
+        });
+      }
+      return transaction.cart.findUniqueOrThrow({
+        where: { id: lockedCart.id },
+        include: cartInclude(lockedCart.currency)
+      });
+    });
+    return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined }, 201);
+  });
+
+  routes.patch("/cart/items/:itemId", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { quantity?: unknown } | null;
+    const quantity = typeof body?.quantity === "number" ? body.quantity : Number.NaN;
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_CART_ITEM_QUANTITY) return publicError(context, 400, "COMMERCE_INVALID", "quantity must be between 1 and 999.");
+    const resolved = await resolveCartIdentity(context);
+    const updated = await prisma.$transaction(async (transaction) => {
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+      const item = await transaction.cartItem.findFirst({ where: { id: context.req.param("itemId"), cartId: resolved.cart.id } });
+      if (!item) return false;
+      await transaction.cartItem.update({ where: { id: item.id }, data: { quantity } });
+      return true;
+    });
+    if (!updated) return publicError(context, 404, "CART_ITEM_NOT_FOUND", "Cart item not found.");
+    const cart = await loadCart(resolved.cart);
+    return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
+  });
+
+  routes.delete("/cart/items/:itemId", async (context) => {
+    const resolved = await resolveCartIdentity(context);
+    await prisma.$transaction(async (transaction) => {
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+      await transaction.cartItem.deleteMany({ where: { id: context.req.param("itemId"), cartId: resolved.cart.id } });
+    });
+    const cart = await loadCart(resolved.cart);
+    return context.json({ data: formatCart(cart), meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
+  });
+
+  routes.delete("/cart", async (context) => {
+    const resolved = await resolveCartIdentity(context);
+    await prisma.$transaction(async (transaction) => {
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+      await transaction.cartItem.deleteMany({ where: { cartId: resolved.cart.id } });
+    });
+    return context.json({ data: { ok: true }, meta: resolved.cartToken ? { cartToken: resolved.cartToken } : undefined });
+  });
+
+  routes.post("/checkout/session", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      firstName?: unknown; lastName?: unknown; email?: unknown; phone?: unknown; fulfillment?: unknown;
+      paymentMethod?: unknown; notes?: unknown; dealerLocationId?: unknown;
+      shippingAddressLine1?: unknown; shippingAddressLine2?: unknown; shippingCity?: unknown;
+      shippingProvince?: unknown; shippingPostalCode?: unknown; shippingCountry?: unknown; couponCode?: unknown;
+    } | null;
+    const commercePolicy = await resolveCommercePolicy();
+    const firstName = optionalString(body?.firstName);
+    const lastName = optionalString(body?.lastName);
+    const email = optionalString(body?.email)?.toLowerCase();
+    const phone = optionalString(body?.phone);
+    const fulfillment = body?.fulfillment === "delivery" ? "delivery" : body?.fulfillment === "pickup" ? "pickup" : undefined;
+    const paymentMethod = parseCheckoutPaymentMethod(body?.paymentMethod);
+    const notes = optionalString(body?.notes);
+    const idempotencyKey = context.req.header("idempotency-key")?.trim();
+    if (!idempotencyKey || idempotencyKey.length > 128) {
+      return publicError(context, 400, "CHECKOUT_INVALID", "A valid Idempotency-Key header is required.");
+    }
+    const requestHash = createHash("sha256").update(JSON.stringify(body ?? {})).digest("hex");
+    if (!firstName || !lastName || !email || !phone || !fulfillment || !paymentMethod) {
+      return publicError(context, 400, "CHECKOUT_INVALID", "firstName, lastName, email, phone, fulfillment and paymentMethod are required.");
+    }
+    if (paymentMethod === "card" && !isMonerisConfigured()) {
+      return publicError(context, 502, "COMMERCE_INVALID", "Online card payments are not configured.");
+    }
+    const shipping = parseShippingInput(body, fulfillment);
+    if (fulfillment === "delivery" && !shipping) {
+      return publicError(context, 400, "CHECKOUT_INVALID", "A complete Canadian shipping address is required for delivery.");
+    }
+    const resolved = await resolveCartIdentity(context);
+    const replaySession = await prisma.paymentSession.findUnique({ where: { idempotencyKey } });
+    if (replaySession) {
+      if (replaySession.requestHash !== requestHash || replaySession.cartId !== resolved.cart.id) {
+        return publicError(context, 409, "CHECKOUT_INVALID", "Idempotency-Key was already used for a different checkout.");
+      }
+      if (replaySession.paymentMethod === "card" && !replaySession.paymentInit) {
+        if (replaySession.status !== "pending" || replaySession.expiresAt <= new Date()) {
+          return publicError(context, 409, "CHECKOUT_INVALID", "The previous payment initialization failed or expired. Start a new checkout intent.");
+        }
+        return context.json({
+          data: formatPaymentSession(replaySession),
+          meta: { replayed: true, paymentInitializing: true }
+        }, 202);
+      }
+      return context.json({
+        data: formatPaymentSession(replaySession),
+        meta: {
+          replayed: true,
+          ...(replaySession.paymentInit && typeof replaySession.paymentInit === "object"
+            ? { payment: replaySession.paymentInit }
+            : {})
+        }
+      });
+    }
+    const cart = await loadCart(resolved.cart);
+    const items = cartCheckoutItems(cart);
+    if (items.length === 0) return publicError(context, 400, "CART_EMPTY", "Cart has no purchasable items.");
+    // Fast-deny gate before any pending-session side effects: non-tax policy
+    // rejections must never supersede an existing valid session. The tax
+    // check runs later once the real fulfillment province is resolved.
+    const earlyDenied = assertCommerceQuoteAllowed(commercePolicy, { guest: !resolved.userId, subtotalCents: items.reduce((sum, item) => sum + item.lineTotalCents, 0), province: "", fulfillment }, { skipTax: true });
+    if (earlyDenied) return publicError(context, 409, "CHECKOUT_INVALID", earlyDenied);
+    const itemsKey = checkoutItemsKey(items);
+    const pendingResolution = await prisma.$transaction(async (transaction) => {
+      await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+      const existing = await transaction.paymentSession.findFirst({
+        where: { cartId: resolved.cart.id, status: "pending", expiresAt: { gt: new Date() } },
+        include: {
+          inventoryReservations: { where: { status: "active" } },
+          paymentEvents: { where: { type: "provider_confirmed" }, take: 1 }
+        },
+        orderBy: { createdAt: "desc" }
+      });
+      if (!existing) return { status: "none" as const };
+      if (existing.requestHash === requestHash) {
+        return { status: "replay" as const, session: existing };
+      }
+      if (existing.paymentEvents.length > 0) {
+        return { status: "confirmed" as const };
+      }
+      if (existing.paymentMethod === "card") {
+        return { status: "card_pending" as const, session: existing };
+      }
+
+      const expired = await transaction.paymentSession.updateMany({
+        where: { id: existing.id, status: "pending" },
+        data: { status: "expired" }
+      });
+      if (expired.count !== 1) return { status: "contended" as const };
+      const expiredOrder = await transaction.order.findFirst({
+        where: { paymentSessionId: existing.id, status: "pending_payment" }
+      });
+      if (expiredOrder) {
+        await transaction.order.update({
+          where: { id: expiredOrder.id },
+          data: { status: "payment_expired" }
+        });
+        await transaction.orderStatusEvent.create({
+          data: { orderId: expiredOrder.id, status: "payment_expired", source: "checkout_supersede" }
+        });
+      }
+      for (const reservation of existing.inventoryReservations) {
+        const released = await transaction.inventoryReservation.updateMany({
+          where: { id: reservation.id, status: "active" },
+          data: { status: "released" }
+        });
+        if (released.count !== 1) continue;
+        const snapshotUpdated = await transaction.$executeRaw`
+          UPDATE "inventory_snapshots"
+          SET "quantityReserved" = "quantityReserved" - ${reservation.quantity},
+              "updatedAt" = NOW()
+          WHERE "skuId" = ${reservation.skuId}
+            AND "dealerLocationId" IS NOT DISTINCT FROM ${reservation.dealerLocationId}
+            AND "quantityReserved" >= ${reservation.quantity}
+        `;
+        if (snapshotUpdated !== 1) {
+          throw new Error(`Failed to supersede inventory reservation ${reservation.id}.`);
+        }
+        await enqueueInventoryRelease(transaction, {
+          reservationId: reservation.id,
+          skuId: reservation.skuId,
+          dealerLocationId: reservation.dealerLocationId,
+          quantity: reservation.quantity,
+          reason: "reservation_expired"
+        });
+      }
+      return { status: "superseded" as const };
+    });
+    if (pendingResolution.status === "replay") {
+      const existing = pendingResolution.session;
+      return context.json({
+        data: formatPaymentSession(existing),
+        meta: {
+          replayed: true,
+          ...(existing.paymentInit && typeof existing.paymentInit === "object"
+            ? { payment: existing.paymentInit }
+            : {})
+        }
+      });
+    }
+    if (pendingResolution.status === "confirmed") {
+      return publicError(context, 409, "CHECKOUT_INVALID", "Payment confirmation is already being processed for this cart.");
+    }
+    if (pendingResolution.status === "card_pending") {
+      const existing = pendingResolution.session;
+      return context.json({
+        data: formatPaymentSession(existing),
+        meta: {
+          replayed: true,
+          ...(existing.paymentInit && typeof existing.paymentInit === "object"
+            ? { payment: existing.paymentInit }
+            : {})
+        }
+      });
+    }
+    if (pendingResolution.status === "contended") {
+      return publicError(context, 409, "CHECKOUT_INVALID", "Checkout state changed while the request was being processed. Please try again.");
+    }
+    const requestedDealerLocationId = optionalString(body?.dealerLocationId);
+    if (requestedDealerLocationId) {
+      const dealerLocation = await findDealerFulfillmentAvailability(requestedDealerLocationId);
+      if (
+        !dealerLocation ||
+        dealerLocation.status !== "active" ||
+        dealerLocation.dealer.status !== "active" ||
+        !dealerSupportsFulfillment(dealerLocation, fulfillment)
+      ) {
+        return publicError(context, 409, "CHECKOUT_FULFILLMENT_UNAVAILABLE", "The selected dealer location does not support the requested fulfillment method.");
+      }
+    }
+    const availableSnapshots = await prisma.inventorySnapshot.findMany({
+      where: {
+        skuId: { in: items.map((item) => item.skuId) },
+        dealerLocation: { status: "active", dealer: { status: "active" } },
+        ...(requestedDealerLocationId ? { dealerLocationId: requestedDealerLocationId } : {})
+      }
+    });
+    const dealerLocationId = requestedDealerLocationId ?? availableSnapshots.find((snapshot) =>
+      items.every((item) => availableSnapshots.some((candidate) => candidate.skuId === item.skuId && candidate.dealerLocationId === snapshot.dealerLocationId && candidate.quantityOnHand - candidate.quantityReserved >= item.quantity))
+    )?.dealerLocationId;
+    if (!dealerLocationId) return publicError(context, 409, "INVENTORY_NO_DEALER", "No single dealer location can fulfill this cart.");
+    const snapshots = availableSnapshots.filter((snapshot) => snapshot.dealerLocationId === dealerLocationId);
+    const oldestAllowedSnapshot = new Date(Date.now() - commercePolicy.value.inventoryPolicy.staleAfterSeconds * 1000);
+    if (
+      commercePolicy.value.inventoryPolicy.availabilityMode === "erp" &&
+      commercePolicy.value.inventoryPolicy.staleBehavior === "degraded-reject" &&
+      snapshots.some((snapshot) => snapshot.updatedAt < oldestAllowedSnapshot)
+    ) {
+      return publicError(context, 409, "INVENTORY_REFRESHING", "Inventory availability is being refreshed. Please try again shortly.");
+    }
+    for (const item of items) {
+      const snapshot = snapshots.find((candidate) => candidate.skuId === item.skuId);
+      if (!snapshot || snapshot.quantityOnHand - snapshot.quantityReserved < item.quantity) return publicError(context, 409, "INVENTORY_INSUFFICIENT", `Insufficient inventory for ${item.skuCode}.`);
+    }
+    const fulfillingLocation = await prisma.dealerLocation.findUnique({
+      where: { id: dealerLocationId },
+      select: {
+        status: true,
+        province: true,
+        pickupAvailable: true,
+        deliveryAvailable: true,
+        dealer: { select: { status: true } }
+      }
+    });
+    if (
+      !fulfillingLocation ||
+      fulfillingLocation.status !== "active" ||
+      fulfillingLocation.dealer.status !== "active" ||
+      !dealerSupportsFulfillment(fulfillingLocation, fulfillment)
+    ) {
+      return publicError(context, 409, "CHECKOUT_FULFILLMENT_UNAVAILABLE", "The selected dealer location does not support the requested fulfillment method.");
+    }
+    const currencies = new Set(items.map((item) => item.currency));
+    if (currencies.size !== 1 || !currencies.has("CAD")) {
+      return publicError(context, 409, "COMMERCE_INVALID", "Checkout requires all items to use CAD.");
+    }
+    const taxProvince = fulfillment === "delivery" ? shipping?.shippingProvince : fulfillingLocation.province;
+    if (!taxProvince) {
+      return publicError(context, 409, "CHECKOUT_INVALID", "A fulfillment province is required for tax calculation.");
+    }
+    // Policy gate runs here, once, with the real fulfillment province so a
+    // pickup checkout is judged against the dealer location (matching the
+    // tax resolution below) instead of an empty province.
+    const policyDenied = assertCommerceQuoteAllowed(commercePolicy, { guest: !resolved.userId, subtotalCents: items.reduce((sum, item) => sum + item.lineTotalCents, 0), province: taxProvince, fulfillment });
+    if (policyDenied) return publicError(context, 409, "CHECKOUT_INVALID", policyDenied);
+    const combinedTaxRate = commercePolicy.value.taxPolicy.calculationMode === "disabled" ? 0 : await resolveCombinedTaxRate(taxProvince);
+    if (combinedTaxRate === undefined || (commercePolicy.value.taxPolicy.calculationMode !== "disabled" && commercePolicy.value.taxPolicy.enabledProvinceCodes.length > 0 && !commercePolicy.value.taxPolicy.enabledProvinceCodes.includes(taxProvince))) {
+      return publicError(context, 409, "CHECKOUT_INVALID", "A current tax rate is not configured for this fulfillment province.");
+    }
+    const subtotalCents = items.reduce((total, item) => total + item.lineTotalCents, 0);
+    const couponCode = optionalString(body?.couponCode)?.toLowerCase();
+    const now = new Date();
+    const promotion = couponCode
+      ? await prisma.promotion.findFirst({
+          where: {
+            key: couponCode,
+            status: "active",
+            discountPercent: { not: null },
+            AND: [
+              { OR: [{ startsAt: null }, { startsAt: { lte: now } }] },
+              { OR: [{ endsAt: null }, { endsAt: { gt: now } }] },
+              { OR: [{ minimumSubtotalCents: null }, { minimumSubtotalCents: { lte: subtotalCents } }] }
+            ]
+          }
+        })
+      : null;
+    if (couponCode && !promotion) return publicError(context, 400, "CHECKOUT_INVALID", "Coupon is invalid or not applicable.");
+    const discountCents = promotion?.discountPercent
+      ? Math.min(subtotalCents, Math.round(subtotalCents * promotion.discountPercent / 100))
+      : 0;
+    await beforeCheckoutCreation();
+    const taxableSubtotalCents = subtotalCents - discountCents;
+    const { taxCents, shippingCents } = computeCheckoutTotals(
+      taxableSubtotalCents,
+      combinedTaxRate,
+      fulfillment,
+      commercePolicy.value.shippingPolicy.deliveryFlatFeeCents
+    );
+    let session;
+    try {
+      const creation = await prisma.$transaction(async (transaction) => {
+        await transaction.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${resolved.cart.id}, 0))`;
+        const concurrentSession = await transaction.paymentSession.findFirst({
+          where: { cartId: resolved.cart.id, status: "pending", expiresAt: { gt: new Date() } },
+          orderBy: { createdAt: "desc" }
+        });
+        if (concurrentSession) {
+          return concurrentSession.requestHash === requestHash
+            ? { status: "replay" as const, session: concurrentSession }
+            : { status: "conflict" as const };
+        }
+        const lockedCart = await transaction.cart.findUniqueOrThrow({
+          where: { id: resolved.cart.id },
+          include: cartInclude(resolved.cart.currency)
+        });
+        const lockedItems = cartCheckoutItems(lockedCart);
+        const lockedSubtotalCents = lockedItems.reduce((total, item) => total + item.lineTotalCents, 0);
+        if (
+          lockedItems.length === 0 ||
+          checkoutItemsKey(lockedItems) !== itemsKey ||
+          lockedSubtotalCents !== subtotalCents
+        ) {
+          return { status: "cart_changed" as const };
+        }
+
+        await upsertContactFromGuestCheckout(transaction, {
+          email,
+          firstName,
+          lastName,
+          phone,
+          userId: resolved.userId
+        });
+        const paymentSession = await transaction.paymentSession.create({
+          data: {
+            userId: resolved.userId,
+            cartId: resolved.cart.id,
+            guestEmail: email,
+            guestFirstName: firstName,
+            guestLastName: lastName,
+            guestPhone: phone,
+            guestOrderToken: randomBytes(24).toString("base64url"),
+            idempotencyKey,
+            requestHash,
+            fulfillment,
+            paymentMethod,
+            notes,
+            ...(shipping ?? {}),
+            dealerLocationId,
+            items: lockedItems,
+            subtotalCents: lockedSubtotalCents,
+            discountCents,
+            promotionKey: promotion?.key,
+            taxCents,
+            shippingCents,
+            totalCents: taxableSubtotalCents + taxCents + shippingCents,
+            currency: lockedCart.currency,
+            expiresAt: new Date(Date.now() + PAYMENT_SESSION_TTL_MS)
+          }
+        });
+        const pendingOrder = await transaction.order.create({
+          data: orderSnapshotData(paymentSession, lockedItems, "pending_payment")
+        });
+        await transaction.orderStatusEvent.create({
+          data: { orderId: pendingOrder.id, status: "pending_payment", source: "checkout" }
+        });
+        for (const item of lockedItems) {
+        const snapshot = snapshots.find((candidate) => candidate.skuId === item.skuId);
+        if (!snapshot) throw new InventoryConflictError("Inventory snapshot disappeared during checkout.", "INVENTORY_REFRESHING");
+        const reserved = await transaction.$executeRaw`
+          UPDATE "inventory_snapshots"
+          SET "quantityReserved" = "quantityReserved" + ${item.quantity}
+          WHERE "id" = ${snapshot.id}
+            AND "quantityOnHand" - "quantityReserved" >= ${item.quantity}
+        `;
+        if (reserved !== 1) throw new InventoryConflictError(`Insufficient inventory for ${item.skuCode}.`, "INVENTORY_INSUFFICIENT");
+          await transaction.inventoryReservation.create({ data: { skuId: item.skuId, dealerLocationId, paymentSessionId: paymentSession.id, quantity: item.quantity, expiresAt: paymentSession.expiresAt } });
+        }
+        return { status: "created" as const, session: paymentSession };
+      });
+      if (creation.status === "conflict") {
+        return publicError(context, 409, "CHECKOUT_INVALID", "A different checkout is already active for this cart.");
+      }
+      if (creation.status === "cart_changed") {
+        return publicError(context, 409, "CHECKOUT_INVALID", "Cart contents changed while checkout was being created. Please review the cart and try again.");
+      }
+      if (creation.status === "replay") {
+        const concurrentSession = creation.session;
+        return context.json({
+          data: formatPaymentSession(concurrentSession),
+          meta: {
+            replayed: true,
+            ...(concurrentSession.paymentInit && typeof concurrentSession.paymentInit === "object"
+              ? { payment: concurrentSession.paymentInit }
+              : {})
+          }
+        });
+      }
+      session = creation.session;
+    } catch (error) {
+      if (error instanceof InventoryConflictError) {
+        return publicError(context, 409, error.code, error.message);
+      }
+      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+        const winner = await prisma.paymentSession.findUnique({ where: { idempotencyKey } });
+        if (winner && winner.cartId === resolved.cart.id && winner.requestHash === requestHash) {
+          if (winner.paymentMethod === "card" && !winner.paymentInit) {
+            return context.json({ data: formatPaymentSession(winner), meta: { replayed: true, paymentInitializing: true } }, 202);
+          }
+          return context.json({
+            data: formatPaymentSession(winner),
+            meta: {
+              replayed: true,
+              ...(winner.paymentInit && typeof winner.paymentInit === "object" ? { payment: winner.paymentInit } : {})
+            }
+          });
+        }
+      }
+      throw error;
+    }
+    let payment;
+    try {
+      payment = await resolvePaymentProvider(paymentMethod).initiate({
+        paymentSessionId: session.id,
+        amountCents: session.totalCents,
+        currency: session.currency,
+        email
+      });
+    } catch (error) {
+      await prisma.$transaction(async (transaction) => {
+        await transaction.paymentSession.update({ where: { id: session.id }, data: { status: "failed" } });
+        const activeReservations = await transaction.inventoryReservation.findMany({
+          where: { paymentSessionId: session.id, status: "active" }
+        });
+        for (const reservation of activeReservations) {
+          await transaction.inventoryReservation.update({ where: { id: reservation.id }, data: { status: "released" } });
+          const snapshot = await transaction.inventorySnapshot.findFirst({
+            where: { skuId: reservation.skuId, dealerLocationId: reservation.dealerLocationId }
+          });
+          if (snapshot) {
+            await transaction.inventorySnapshot.update({
+              where: { id: snapshot.id },
+              data: { quantityReserved: { decrement: reservation.quantity } }
+            });
+          }
+        }
+      });
+      const message = error instanceof Error ? error.message : "Payment provider is unavailable.";
+      return publicError(context, 502, "COMMERCE_INVALID", message);
+    }
+    await prisma.paymentSession.update({
+      where: { id: session.id },
+      data: { paymentInit: payment as Prisma.InputJsonValue }
+    });
+    return context.json(
+      {
+        data: formatPaymentSession(session),
+        meta: { ...(resolved.cartToken ? { cartToken: resolved.cartToken } : {}), payment }
+      },
+      201
+    );
+  });
+
+  routes.get("/address/autocomplete", async (context) => {
+    const client = createCanadaPostClient();
+    if (!client) {
+      return publicError(context, 502, "COMMERCE_INVALID", "Canadian address autocomplete is not configured.");
+    }
+    const id = optionalString(context.req.query("id"));
+    const query = optionalString(context.req.query("query"));
+    try {
+      if (id) {
+        const address = await client.retrieve(id);
+        if (!address) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Address suggestion was not found.");
+        return context.json({ data: { address } });
+      }
+      if (!query) return publicError(context, 400, "COMMERCE_INVALID", "query or id is required.");
+      const suggestions = await client.find(query);
+      return context.json({ data: { suggestions } });
+    } catch {
+      return publicError(context, 502, "COMMERCE_INVALID", "Address lookup failed. Please enter your address manually.");
+    }
+  });
+
+  routes.get("/payments/sessions/:id", async (context) => {
+    const session = await prisma.paymentSession.findUnique({
+      where: { id: context.req.param("id") },
+      include: { order: { select: { id: true, guestTokenRevokedAt: true } } }
+    });
+    if (!session) return publicError(context, 404, "PAYMENT_SESSION_NOT_FOUND", "Payment session not found.");
+    const customer = await getSessionFromRequest(context);
+    const tokenMatches = signaturesMatch(session.guestOrderToken, context.req.query("token"));
+    if (
+      session.expiresAt <= new Date() ||
+      (tokenMatches && session.order?.guestTokenRevokedAt != null) ||
+      (customer?.user.id !== session.userId && !tokenMatches)
+    ) {
+      return publicError(context, 403, "PAYMENT_SESSION_DENIED", "Payment session access is denied.");
+    }
+    return context.json({ data: formatPaymentSession(session) });
+  });
+
+  routes.post("/orders/:id/guest-token/revoke", async (context) => {
+    const order = await prisma.order.findUnique({
+      where: { id: context.req.param("id") },
+      select: {
+        id: true,
+        userId: true,
+        guestOrderToken: true,
+        guestTokenExpiresAt: true,
+        guestTokenRevokedAt: true
+      }
+    });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+
+    const customer = await getSessionFromRequest(context);
+    const queryToken = context.req.query("token");
+    const body = queryToken
+      ? null
+      : (await context.req.json().catch(() => null)) as { token?: unknown } | null;
+    const presentedToken = queryToken || optionalString(body?.token);
+    const ownerMatches = customer?.user.id === order.userId;
+    const tokenMatches = signaturesMatch(order.guestOrderToken, presentedToken);
+    const guestTokenUsable = tokenMatches && (
+      order.guestTokenRevokedAt !== null ||
+      (order.guestTokenExpiresAt !== null && order.guestTokenExpiresAt > new Date())
+    );
+    if (!ownerMatches && !guestTokenUsable) {
+      return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
+    }
+
+    if (order.guestTokenRevokedAt === null) {
+      await prisma.order.updateMany({
+        where: { id: order.id, guestTokenRevokedAt: null },
+        data: { guestTokenRevokedAt: new Date() }
+      });
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.post("/payments/simulate", async (context) => {
+    if (config.runtimeMode === "deployment" || !config.enablePaymentSimulation) {
+      return publicError(context, 404, "COMMERCE_NOT_FOUND", "Not found.");
+    }
+    const body = (await context.req.json().catch(() => null)) as { sessionId?: unknown } | null;
+    const sessionId = optionalString(body?.sessionId);
+    if (!sessionId) return publicError(context, 400, "COMMERCE_INVALID", "sessionId is required.");
+    const paymentSession = await prisma.paymentSession.findUnique({ where: { id: sessionId } });
+    if (!paymentSession) return publicError(context, 404, "PAYMENT_SESSION_NOT_FOUND", "Payment session not found.");
+    const paymentMethod = parseCheckoutPaymentMethod(paymentSession.paymentMethod);
+    if (!paymentMethod || paymentMethod === "card") {
+      return publicError(context, 400, "COMMERCE_INVALID", "Only in-store payment sessions can be simulated.");
+    }
+    const providerPaymentId = `simulate-${randomBytes(8).toString("hex")}`;
+    const signature = createHmac("sha256", config.paymentCallbackSecret)
+      .update(`${sessionId}:${providerPaymentId}`)
+      .digest("hex");
+    return context.json({ data: { sessionId, providerPaymentId, signature } });
+  });
+
+  routes.post("/payments/callback", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { sessionId?: unknown; providerPaymentId?: unknown; ticket?: unknown; status?: unknown } | null;
+    const sessionId = optionalString(body?.sessionId);
+    const providerPaymentId = optionalString(body?.providerPaymentId);
+    const ticket = optionalString(body?.ticket);
+    if (!sessionId || body?.status !== "paid") {
+      return publicError(context, 400, "COMMERCE_INVALID", "paid sessionId is required.");
+    }
+    const paymentSession = await prisma.paymentSession.findUnique({ where: { id: sessionId } });
+    if (!paymentSession) return publicError(context, 404, "PAYMENT_SESSION_NOT_FOUND", "Payment session not found.");
+    const paymentMethod = parseCheckoutPaymentMethod(paymentSession.paymentMethod);
+    if (!paymentMethod) return publicError(context, 400, "COMMERCE_INVALID", "Payment session has an unsupported payment method.");
+    const provider = resolvePaymentProvider(paymentMethod);
+    if (provider.name === "manual" && !providerPaymentId) {
+      return publicError(context, 400, "COMMERCE_INVALID", "providerPaymentId is required for in-store payments.");
+    }
+    if (provider.name === "moneris" && !ticket) {
+      return publicError(context, 400, "COMMERCE_INVALID", "ticket is required for card payments.");
+    }
+    const verification = await provider.verify({
+      paymentSessionId: sessionId,
+      amountCents: paymentSession.totalCents,
+      currency: paymentSession.currency,
+      providerPaymentId,
+      ticket,
+      signature: context.req.header("x-payment-signature")
+    });
+    if (!verification.ok) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "Payment signature is invalid.");
+    const confirmedProviderPaymentId = verification.providerPaymentId;
+    if (!confirmedProviderPaymentId) {
+      return publicError(context, 502, "COMMERCE_INVALID", "Payment provider confirmation is missing a transaction identifier.");
+    }
+    await prisma.paymentEvent.upsert({
+      where: {
+        paymentSessionId_type_providerEventId: {
+          paymentSessionId: paymentSession.id,
+          type: "provider_confirmed",
+          providerEventId: confirmedProviderPaymentId
+        }
+      },
+      update: {},
+      create: {
+        paymentSessionId: paymentSession.id,
+        type: "provider_confirmed",
+        providerEventId: confirmedProviderPaymentId,
+        amountCents: paymentSession.totalCents,
+        currency: paymentSession.currency
+      }
+    });
+    try {
+      const finalized = await finalizeConfirmedPayment(sessionId, confirmedProviderPaymentId);
+      if (finalized.status === "missing") return publicError(context, 404, "PAYMENT_SESSION_NOT_FOUND", "Payment session not found.");
+      if (finalized.status === "not_payable") {
+        await markPaymentForReconciliation({
+          paymentSession,
+          providerPaymentId: confirmedProviderPaymentId,
+          payload: { reason: "payment_session_not_payable" }
+        });
+        return publicError(context, 409, "COMMERCE_INVALID", "Payment was confirmed but the order requires reconciliation.");
+      }
+      if (finalized.status === "contended") return context.json({ data: { accepted: true, status: "processing" } }, 202);
+      if (finalized.status === "duplicate_transaction") {
+        return publicError(context, 409, "COMMERCE_INVALID", "Payment was confirmed but the order requires reconciliation.");
+      }
+      try {
+        const paidOrder = await prisma.order.findUnique({
+          where: { id: finalized.order.id },
+          include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } }
+        });
+        return context.json({ data: formatOrder(paidOrder ?? finalized.order) });
+      } catch {
+        return publicError(context, 502, "INTERNAL_ERROR", "Payment completed; order details are temporarily unavailable.");
+      }
+    } catch (error) {
+      await markPaymentForReconciliation({
+        paymentSession,
+        providerPaymentId: confirmedProviderPaymentId,
+        payload: {
+          reason: isProviderTransactionConflict(error)
+            ? "provider_transaction_reused_by_another_session"
+            : "order_finalization_failed"
+        }
+      });
+      return publicError(context, 409, "COMMERCE_INVALID", "Payment was confirmed but the order requires reconciliation.");
+    }
+  });
+
+  routes.get("/orders/:id/status", async (context) => {
+    const order = await prisma.order.findUnique({
+      where: { id: context.req.param("id") },
+      include: { statusEvents: { orderBy: { createdAt: "desc" }, take: 20 } }
+    });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    const session = await getSessionFromRequest(context);
+    if (
+      session?.user.id !== order.userId &&
+      (
+        context.req.query("token") !== order.guestOrderToken ||
+        order.guestTokenRevokedAt !== null ||
+        !order.guestTokenExpiresAt ||
+        order.guestTokenExpiresAt <= new Date()
+      )
+    ) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
+    const shipment = extractShipment(order.statusEvents);
+    return context.json({
+      data: {
+        id: order.id,
+        status: order.status,
+        createdAt: order.createdAt.toISOString(),
+        lastEventAt: order.statusEvents[0]?.createdAt.toISOString() ?? order.updatedAt.toISOString(),
+        ...(shipment?.trackingNumber ? { trackingNumber: shipment.trackingNumber } : {}),
+        ...(shipment ? { shipment } : {})
+      }
+    });
+  });
+
+  routes.get("/orders/:id", async (context) => {
+    const order = await prisma.order.findUnique({
+      where: { id: context.req.param("id") },
+      include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } }
+    });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    const session = await getSessionFromRequest(context);
+    if (
+      session?.user.id !== order.userId &&
+      (
+        context.req.query("token") !== order.guestOrderToken ||
+        order.guestTokenRevokedAt !== null ||
+        !order.guestTokenExpiresAt ||
+        order.guestTokenExpiresAt <= new Date()
+      )
+    ) return publicError(context, 403, "COMMERCE_ACCESS_DENIED", "Order access is denied.");
+    return context.json({ data: formatOrder(order) });
+  });
+
+  routes.post("/inventory/reservations", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { productId?: unknown; quantity?: unknown; dealerLocationId?: unknown } | null;
+    const sku = await findSku(optionalString(body?.productId) ?? "");
+    const quantity = Number(body?.quantity);
+    if (!sku || !Number.isInteger(quantity) || quantity < 1 || quantity > 25) return publicError(context, 400, "COMMERCE_INVALID", "productId and quantity between 1 and 25 are required.");
+    const dealerLocationId = optionalString(body?.dealerLocationId);
+    if (!dealerLocationId) return publicError(context, 400, "COMMERCE_INVALID", "dealerLocationId is required.");
+    const snapshot = await prisma.inventorySnapshot.findFirst({ where: { skuId: sku.id, dealerLocationId } });
+    if (!snapshot || snapshot.quantityOnHand - snapshot.quantityReserved < quantity) return publicError(context, 409, "INVENTORY_INSUFFICIENT", "Insufficient inventory.");
+    const ownerToken = randomBytes(24).toString("base64url");
+    let reservation;
+    try {
+      reservation = await prisma.$transaction(async (transaction) => {
+        const reserved = await transaction.$executeRaw`
+          UPDATE "inventory_snapshots"
+          SET "quantityReserved" = "quantityReserved" + ${quantity}
+          WHERE "id" = ${snapshot.id}
+            AND "quantityOnHand" - "quantityReserved" >= ${quantity}
+        `;
+        if (reserved !== 1) throw new InventoryConflictError("Inventory is no longer available.", "INVENTORY_INSUFFICIENT");
+        return transaction.inventoryReservation.create({ data: { skuId: sku.id, dealerLocationId, ownerToken, quantity, expiresAt: new Date(Date.now() + 30 * 60 * 1000) } });
+      });
+    } catch (error) {
+      if (error instanceof InventoryConflictError) {
+        return publicError(context, 409, error.code, error.message);
+      }
+      throw error;
+    }
+    return context.json({ data: { reservationId: reservation.id, reservationToken: ownerToken, expiresAt: reservation.expiresAt.toISOString() } }, 201);
+  });
+
+  routes.delete("/inventory/reservations/:id", async (context) => {
+    const reservation = await prisma.inventoryReservation.findUnique({ where: { id: context.req.param("id") } });
+    if (!reservation || reservation.status !== "active" || !reservation.ownerToken || context.req.header("x-reservation-token") !== reservation.ownerToken) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Active reservation not found.");
+    const released = await prisma.$transaction(async (transaction) => {
+      const claimed = await transaction.inventoryReservation.updateMany({
+        where: { id: reservation.id, status: "active", ownerToken: reservation.ownerToken },
+        data: { status: "released" }
+      });
+      if (claimed.count === 0) return false;
+      const snapshotUpdated = await transaction.$executeRaw`
+        UPDATE "inventory_snapshots"
+        SET "quantityReserved" = "quantityReserved" - ${reservation.quantity},
+            "updatedAt" = NOW()
+        WHERE "skuId" = ${reservation.skuId}
+          AND "dealerLocationId" IS NOT DISTINCT FROM ${reservation.dealerLocationId}
+          AND "quantityReserved" >= ${reservation.quantity}
+      `;
+      if (snapshotUpdated !== 1) {
+        throw new Error(`Failed to release inventory reservation ${reservation.id}.`);
+      }
+      return true;
+    });
+    if (!released) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Active reservation not found.");
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.get("/products/:identifier/inventory", async (context) => {
+    const skuCode = optionalString(context.req.query("skuCode"));
+    const sku = await findSku(context.req.param("identifier"), skuCode);
+    if (!sku) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Product not found.");
+    const snapshots = await prisma.inventorySnapshot.findMany({ where: { skuId: sku.id }, include: { dealerLocation: { include: { dealer: true } } } });
+    const locations = snapshots.map((snapshot) => ({ dealerLocationId: snapshot.dealerLocationId, dealerId: snapshot.dealerLocation?.dealerId, dealerName: snapshot.dealerLocation?.dealer.name, quantityOnHand: snapshot.quantityOnHand, quantityReserved: snapshot.quantityReserved, quantityAvailable: Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved), updatedAt: snapshot.updatedAt.toISOString() }));
+    return context.json({ data: { productId: sku.productId, sku: sku.skuCode, locations, totalAvailable: locations.reduce((total, location) => total + location.quantityAvailable, 0) } });
+  });
+
+  routes.post("/products/inventory", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { productIds?: unknown } | null;
+    const productIds = Array.isArray(body?.productIds) ? body.productIds.filter((id): id is string => typeof id === "string") : [];
+    if (productIds.length > MAX_BULK_INVENTORY_PRODUCTS) {
+      return publicError(context, 400, "COMMERCE_INVALID", `productIds cannot contain more than ${MAX_BULK_INVENTORY_PRODUCTS} items.`);
+    }
+    const identifiers = [...new Set(productIds)];
+    const skus = identifiers.length === 0
+      ? []
+      : await prisma.platformSku.findMany({
+          where: {
+            status: "active",
+            product: {
+              status: "active",
+              OR: [{ id: { in: identifiers } }, { slug: { in: identifiers } }]
+            }
+          },
+          include: {
+            product: { select: { id: true, slug: true } },
+            inventorySnapshots: true
+          },
+          orderBy: { sortOrder: "asc" }
+        });
+    const skuByIdentifier = new Map<string, (typeof skus)[number]>();
+    for (const sku of skus) {
+      if (!skuByIdentifier.has(sku.product.id)) skuByIdentifier.set(sku.product.id, sku);
+      if (!skuByIdentifier.has(sku.product.slug)) skuByIdentifier.set(sku.product.slug, sku);
+    }
+    const products = productIds.map((identifier) => {
+      const sku = skuByIdentifier.get(identifier);
+      if (!sku) return undefined;
+      return {
+        productId: sku.productId,
+        sku: sku.skuCode,
+        totalAvailable: sku.inventorySnapshots.reduce((total, snapshot) => total + Math.max(0, snapshot.quantityOnHand - snapshot.quantityReserved), 0),
+        updatedAt: sku.inventorySnapshots[0]?.updatedAt.toISOString() ?? null
+      };
+    });
+    return context.json({ data: products.filter(Boolean) });
+  });
+
+  routes.get("/account/me", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const customer = await prisma.user.findUniqueOrThrow({ where: { id: session.user.id }, include: { customerProfile: true } });
+    return context.json({ data: formatCustomerAccount(customer) });
+  });
+
+  routes.patch("/account/me", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const body = (await context.req.json().catch(() => null)) as { firstName?: unknown; lastName?: unknown; phone?: unknown } | null;
+    const customer = await prisma.$transaction(async (transaction) => {
+      const profile = await transaction.customerProfile.upsert({
+        where: { userId: session.user.id },
+        update: { firstName: optionalString(body?.firstName), lastName: optionalString(body?.lastName), phone: optionalString(body?.phone) },
+        create: { userId: session.user.id, firstName: optionalString(body?.firstName), lastName: optionalString(body?.lastName), phone: optionalString(body?.phone) }
+      });
+      await syncContactProfile(transaction, {
+        userId: session.user.id,
+        email: session.user.email,
+        firstName: profile.firstName ?? undefined,
+        lastName: profile.lastName ?? undefined,
+        phone: profile.phone ?? undefined
+      });
+      return { ...session.user, customerProfile: profile };
+    });
+    return context.json({ data: formatCustomerAccount(customer) });
+  });
+
+  routes.get("/account/addresses", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    return context.json({ data: await prisma.customerAddress.findMany({ where: { userId: session.user.id }, orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }] }) });
+  });
+
+  routes.post("/account/addresses", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const body = (await context.req.json().catch(() => null)) as Record<string, unknown> | null;
+    const parsed = parseCustomerAddressCreate(body);
+    if (!parsed) {
+      const message = CUSTOMER_ADDRESS_REQUIRED_FIELDS.some((key) => !optionalString(body?.[key])?.trim())
+        ? CUSTOMER_ADDRESS_REQUIRED_MESSAGE
+        : CUSTOMER_ADDRESS_INVALID_MESSAGE;
+      return publicError(context, 400, "COMMERCE_INVALID", message);
+    }
+    const address = await prisma.$transaction(async (transaction) => {
+      if (parsed.isDefault) {
+        await transaction.customerAddress.updateMany({ where: { userId: session.user.id, isDefault: true }, data: { isDefault: false } });
+      }
+      return transaction.customerAddress.create({ data: { userId: session.user.id, ...parsed } });
+    });
+    return context.json({ data: address }, 201);
+  });
+
+  routes.patch("/account/addresses/:id", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const address = await prisma.customerAddress.findFirst({ where: { id: context.req.param("id"), userId: session.user.id } });
+    if (!address) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Address not found.");
+    const body = (await context.req.json().catch(() => null)) as Record<string, unknown> | null;
+    const parsed = parseCustomerAddressPatch(body);
+    if (!parsed) return publicError(context, 400, "COMMERCE_INVALID", CUSTOMER_ADDRESS_INVALID_MESSAGE);
+    const updated = await prisma.$transaction(async (transaction) => {
+      if (parsed.isDefault === true) {
+        await transaction.customerAddress.updateMany({ where: { userId: session.user.id, isDefault: true, id: { not: address.id } }, data: { isDefault: false } });
+      }
+      return transaction.customerAddress.update({ where: { id: address.id }, data: parsed });
+    });
+    return context.json({ data: updated });
+  });
+
+  routes.delete("/account/addresses/:id", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    await prisma.customerAddress.deleteMany({ where: { id: context.req.param("id"), userId: session.user.id } });
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.get("/account/favorites", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const favorites = await prisma.favorite.findMany({
+      where: { userId: session.user.id },
+      include: favoriteInclude(),
+      orderBy: { createdAt: "desc" }
+    });
+    return context.json({ data: favorites.flatMap((favorite) => {
+      const formatted = formatFavorite(favorite);
+      return formatted ? [formatted] : [];
+    }) });
+  });
+
+  routes.post("/account/favorites", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const body = (await context.req.json().catch(() => null)) as { productId?: unknown } | null;
+    const productId = optionalString(body?.productId);
+    if (!productId || !await prisma.product.findFirst({ where: { id: productId, status: "active" } })) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Active product not found.");
+    const favorite = await prisma.$transaction(async (transaction) => {
+      const record = await transaction.favorite.upsert({
+        where: { userId_productId: { userId: session.user.id, productId } },
+        update: {},
+        create: { userId: session.user.id, productId },
+        include: favoriteInclude()
+      });
+      await recordFavoriteAddForUser(transaction, { userId: session.user.id, productId });
+      return record;
+    });
+    const formatted = formatFavorite(favorite);
+    if (!formatted) return publicError(context, 409, "COMMERCE_NOT_FOUND", "Active product pricing was not found.");
+    return context.json({ data: formatted }, 201);
+  });
+
+  routes.delete("/account/favorites/:productId", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    await prisma.favorite.deleteMany({ where: { userId: session.user.id, productId: context.req.param("productId") } });
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.get("/account/export", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const [
+      user,
+      addresses,
+      favorites,
+      orders,
+      crmContact,
+      loginEvents,
+      emailOutbox,
+      contactLeads,
+      dealerApplications,
+      productReviews,
+      emailSuppressions,
+      erpCustomerLinks,
+      privacyRequests
+    ] = await Promise.all([
+      prisma.user.findUnique({ where: { id: session.user.id }, include: { customerProfile: true } }),
+      prisma.customerAddress.findMany({ where: { userId: session.user.id } }),
+      prisma.favorite.findMany({ where: { userId: session.user.id }, select: { productId: true, createdAt: true } }),
+      prisma.order.findMany({ where: { userId: session.user.id }, include: { items: true, statusEvents: true } }),
+      prisma.crmContact.findFirst({ where: { OR: [{ userId: session.user.id }, { email: session.user.email }] }, include: { events: true, notes: true } }),
+      prisma.loginEvent.findMany({ where: { OR: [{ userId: session.user.id }, { email: session.user.email }] }, orderBy: { createdAt: "desc" } }),
+      prisma.emailOutbox.findMany({ where: { toEmail: session.user.email }, include: { attempts: true, events: true } }),
+      prisma.contactLead.findMany({ where: { email: session.user.email }, include: { notes: true } }),
+      prisma.dealerApplication.findMany({ where: { email: session.user.email }, include: { notes: true } }),
+      prisma.productReview.findMany({ where: { email: session.user.email }, include: { notes: true } }),
+      prisma.emailSuppressionList.findMany({ where: { email: session.user.email } }),
+      prisma.erpCustomerLink.findMany({ where: { OR: [{ customerUserId: session.user.id }, { websiteEmail: session.user.email }] } }),
+      prisma.privacyRequest.findMany({ where: { OR: [{ userId: session.user.id }, { email: session.user.email }] } })
+    ]);
+    const paymentSessions = await prisma.paymentSession.findMany({
+      where: { OR: [{ userId: session.user.id }, { guestEmail: session.user.email }] },
+      include: { paymentEvents: true }
+    });
+    const erpJobs = await prisma.erpSyncJob.findMany({
+      where: {
+        OR: [
+          { payload: { path: ["userId"], equals: session.user.id } },
+          { payload: { path: ["email"], equals: session.user.email } }
+        ]
+      },
+      include: { attempts: true }
+    });
+    const auditLogs = await prisma.auditLog.findMany({ where: { actorUserId: session.user.id } });
+    return context.json({
+      data: {
+        exportedAt: new Date().toISOString(),
+        manifestVersion: 1,
+        user,
+        addresses,
+        favorites,
+        orders,
+        paymentSessions,
+        crmContact,
+        loginEvents,
+        emailOutbox,
+        contactLeads,
+        dealerApplications,
+        productReviews,
+        emailSuppressions,
+        erpCustomerLinks,
+        privacyRequests,
+        erpJobs,
+        auditLogs
+      }
+    });
+  });
+
+  routes.post("/account/deletion-request", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const request = await prisma.privacyRequest.create({
+      data: { userId: session.user.id, email: session.user.email, type: "account_deletion" }
+    });
+    await prisma.refreshSession.updateMany({ where: { userId: session.user.id, revokedAt: null }, data: { revokedAt: new Date() } });
+    return context.json({ data: { requestId: request.id, status: request.status, createdAt: request.requestedAt.toISOString() } }, 202);
+  });
+
+  routes.get("/account/orders", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const page = Math.max(1, Number.parseInt(context.req.query("page") ?? "1", 10) || 1);
+    const pageSize = Math.min(50, Math.max(1, Number.parseInt(context.req.query("pageSize") ?? "20", 10) || 20));
+    const [orders, total] = await Promise.all([
+      prisma.order.findMany({
+        where: { userId: session.user.id },
+        include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        skip: (page - 1) * pageSize,
+        take: pageSize
+      }),
+      prisma.order.count({ where: { userId: session.user.id } })
+    ]);
+    return context.json({ data: orders.map(formatOrder), meta: { page, pageSize, total, totalPages: Math.max(1, Math.ceil(total / pageSize)) } });
+  });
+
+  routes.get("/account/orders/:id", async (context) => {
+    const session = await requireCustomer(context);
+    if (!session) return publicError(context, 401, "AUTH_REQUIRED", "Customer authentication is required.");
+    const order = await prisma.order.findFirst({
+      where: { id: context.req.param("id"), userId: session.user.id },
+      include: { items: true, statusEvents: { orderBy: { createdAt: "asc" } } }
+    });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    return context.json({ data: formatOrder(order) });
+  });
+
+  routes.post("/integrations/erp/webhooks/inventory", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      erpSystem?: unknown; externalId?: unknown; erpSkuKey?: unknown; dealerLocationId?: unknown; quantityOnHand?: unknown;
+    } | null;
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const externalId = optionalString(body?.externalId);
+    const erpSkuKey = optionalString(body?.erpSkuKey);
+    const dealerLocationId = optionalString(body?.dealerLocationId);
+    const quantityOnHand = Number(body?.quantityOnHand);
+    const secret = config.erpWebhookSecret;
+    const expected = externalId && erpSkuKey && dealerLocationId && Number.isInteger(quantityOnHand)
+      ? createHmac("sha256", secret ?? "").update(`${erpSystem}:${externalId}:${erpSkuKey}:${dealerLocationId}:${quantityOnHand}`).digest("hex")
+      : undefined;
+    if (!secret || !signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    if (!externalId || !erpSkuKey || !dealerLocationId || !Number.isInteger(quantityOnHand) || quantityOnHand < 0) return publicError(context, 400, "COMMERCE_INVALID", "Valid inventory fields are required.");
+    const mapping = await database.productSkuErpMapping.findUnique({ where: { erpSystem_erpSkuKey: { erpSystem, erpSkuKey } } });
+    if (!mapping) return publicError(context, 404, "ERP_MAPPING_INCOMPLETE", "ERP SKU mapping was not found.");
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "inventory", externalId, payload: { erpSkuKey, dealerLocationId, quantityOnHand }, processedAt: new Date() } });
+        const existing = await transaction.inventorySnapshot.findFirst({ where: { skuId: mapping.skuId, dealerLocationId } });
+        if (existing && existing.quantityReserved > quantityOnHand) throw new Error("ERP inventory is below currently reserved quantity.");
+        await transaction.inventorySnapshot.upsert({
+          where: { skuId_dealerLocationId: { skuId: mapping.skuId, dealerLocationId } },
+          update: { quantityOnHand, updatedAt: new Date() },
+          create: { skuId: mapping.skuId, dealerLocationId, quantityOnHand, quantityReserved: 0 }
+        });
+      });
+    } catch (error) {
+      if (isDuplicateErpWebhookEventConflict(error)) return context.json({ data: { ok: true, duplicate: true } });
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.post("/integrations/erp/webhooks/customer-update", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      erpSystem?: unknown; externalId?: unknown; email?: unknown; firstName?: unknown; lastName?: unknown; phone?: unknown;
+    } | null;
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const externalId = optionalString(body?.externalId);
+    const email = optionalString(body?.email)?.toLowerCase();
+    const firstName = optionalString(body?.firstName);
+    const lastName = optionalString(body?.lastName);
+    const phone = optionalString(body?.phone);
+    const secret = config.erpWebhookSecret;
+    const expected = externalId && email
+      ? createHmac("sha256", secret ?? "").update(`${erpSystem}:${externalId}:${email}:${firstName ?? ""}:${lastName ?? ""}:${phone ?? ""}`).digest("hex")
+      : undefined;
+    if (!secret || !signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    if (!externalId || !email) return publicError(context, 400, "COMMERCE_INVALID", "externalId and email are required.");
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "customer-update", externalId, payload: { email, firstName, lastName, phone }, processedAt: new Date() } });
+        await transaction.crmContact.upsert({
+          where: { email },
+          update: { firstName, lastName, phone, erpSyncStatus: "synced", lastActivityAt: new Date() },
+          create: { email, firstName, lastName, phone, source: "registration", stage: "registered", erpSyncStatus: "synced" }
+        });
+      });
+    } catch (error) {
+      if (isDuplicateErpWebhookEventConflict(error)) return context.json({ data: { ok: true, duplicate: true } });
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.post("/integrations/erp/webhooks/order-status", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as { orderId?: unknown; status?: unknown; externalId?: unknown; erpSystem?: unknown } | null;
+    const orderId = optionalString(body?.orderId);
+    const status = body?.status;
+    const externalId = optionalString(body?.externalId);
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const secret = config.erpWebhookSecret;
+    // Fail closed: without a configured secret we cannot verify authenticity, so
+    // never process the webhook (including in development) rather than trusting it.
+    if (!secret) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    const expected = orderId && externalId
+      ? createHmac("sha256", secret).update(`${erpSystem}:${orderId}:${externalId}:${status}`).digest("hex")
+      : undefined;
+    if (!signaturesMatch(expected, context.req.header("x-erp-signature"))) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    if (!orderId || !["processing", "fulfilled", "cancelled"].includes(String(status))) return publicError(context, 400, "COMMERCE_INVALID", "Valid orderId and order status are required.");
+    const normalizedStatus = status as ErpOrderStatus;
+    const payload = erpOrderStatusPayload({ orderId, status: normalizedStatus, externalId: externalId!, erpSystem });
+    const existingEvent = await database.erpWebhookEvent.findFirst({ where: { erpSystem, eventType: "order-status", externalId } });
+    if (existingEvent) return context.json({ data: { ok: true, duplicate: true } });
+    const order = await database.order.findUnique({ where: { id: orderId } });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    const commercePolicy = await resolveCommercePolicy();
+    if (!commerceOrderTransitionAllowed(commercePolicy, order.status as never, normalizedStatus)) {
+      return publicError(context, 409, "COMMERCE_INVALID", `Cannot transition order from ${order.status} to ${normalizedStatus}.`);
+    }
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({ data: { erpSystem, eventType: "order-status", externalId, payload, processedAt: new Date() } });
+        const claimed = await transaction.order.updateMany({
+          where: { id: order.id, status: order.status },
+          data: { status: normalizedStatus }
+        });
+        if (claimed.count !== 1) {
+          throw new Error(`Order ${order.id} status changed concurrently.`);
+        }
+        await transaction.orderStatusEvent.create({ data: { orderId: order.id, status: normalizedStatus, source: `erp:${erpSystem}`, payload } });
+        if (normalizedStatus === "cancelled") {
+          const orderWithItems = await transaction.order.findUniqueOrThrow({
+            where: { id: order.id },
+            include: { items: true }
+          });
+          await restockCancelledOrderItems(transaction, orderWithItems);
+        }
+      });
+    } catch (error) {
+      // The unique key is the transaction-safe idempotency authority. A concurrent
+      // delivery can pass the preflight read but lose the insert race; only that
+      // exact conflict is normalized to duplicate success.
+      if (isDuplicateErpWebhookEventConflict(error)) {
+        return context.json({ data: { ok: true, duplicate: true } });
+      }
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  routes.post("/integrations/erp/webhooks/shipment", async (context) => {
+    const body = (await context.req.json().catch(() => null)) as {
+      orderId?: unknown;
+      shipmentId?: unknown;
+      status?: unknown;
+      trackingNumber?: unknown;
+      erpSystem?: unknown;
+    } | null;
+    const orderId = optionalString(body?.orderId);
+    const shipmentId = optionalString(body?.shipmentId);
+    const status = optionalString(body?.status);
+    const trackingNumber = optionalString(body?.trackingNumber);
+    const erpSystem = optionalString(body?.erpSystem) ?? "erp";
+    const secret = config.erpWebhookSecret;
+    if (!secret) return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    const expected = orderId && shipmentId
+      ? createHmac("sha256", secret)
+          .update(`${erpSystem}:${orderId}:${shipmentId}:${status ?? ""}:${trackingNumber ?? ""}`)
+          .digest("hex")
+      : undefined;
+    if (!signaturesMatch(expected, context.req.header("x-erp-signature"))) {
+      return publicError(context, 401, "COMMERCE_ACCESS_DENIED", "ERP webhook signature is invalid.");
+    }
+    if (!orderId || !shipmentId || !status || !["shipped", "delivered"].includes(status)) {
+      return publicError(context, 400, "COMMERCE_INVALID", "orderId, shipmentId and a valid shipment status are required.");
+    }
+    const externalId = `${shipmentId}:${status}`;
+    const existingEvent = await database.erpWebhookEvent.findFirst({
+      where: { erpSystem, eventType: "shipment", externalId }
+    });
+    if (existingEvent) return context.json({ data: { ok: true, duplicate: true } });
+    const order = await database.order.findUnique({ where: { id: orderId } });
+    if (!order) return publicError(context, 404, "COMMERCE_NOT_FOUND", "Order not found.");
+    const targetOrderStatus: ErpOrderStatus = status === "delivered" ? "fulfilled" : "processing";
+    const commercePolicy = await resolveCommercePolicy();
+    if (order.status !== targetOrderStatus && !commerceOrderTransitionAllowed(commercePolicy, order.status as never, targetOrderStatus)) {
+      return publicError(context, 409, "COMMERCE_INVALID", `Cannot transition order from ${order.status} to ${targetOrderStatus}.`);
+    }
+    const payload = { orderId, shipmentId, status, trackingNumber, erpSystem };
+    try {
+      await database.$transaction(async (transaction) => {
+        await transaction.erpWebhookEvent.create({
+          data: { erpSystem, eventType: "shipment", externalId, payload, processedAt: new Date() }
+        });
+        if (status === "shipped" || status === "delivered") {
+          if (order.status !== targetOrderStatus) {
+            const claimed = await transaction.order.updateMany({
+              where: { id: order.id, status: order.status },
+              data: { status: targetOrderStatus }
+            });
+            if (claimed.count !== 1) {
+              throw new Error(`Order ${order.id} status changed concurrently.`);
+            }
+          }
+          await transaction.orderStatusEvent.create({
+            data: {
+              orderId: order.id,
+              status: status === "delivered" ? "fulfilled" : "processing",
+              source: `erp:${erpSystem}:shipment`,
+              payload
+            }
+          });
+          await queueCustomerEmail(transaction, {
+            templateKey: status === "delivered" ? "order_delivered" : "shipment_notification",
+            toEmail: order.email,
+            payload: {
+              orderId: order.id,
+              firstName: order.firstName,
+              trackingNumber: trackingNumber ?? "",
+              shipmentStatus: status,
+              shipmentId
+            }
+          });
+        }
+      });
+    } catch (error) {
+      if (isDuplicateErpWebhookEventConflict(error)) {
+        return context.json({ data: { ok: true, duplicate: true } });
+      }
+      throw error;
+    }
+    return context.json({ data: { ok: true } });
+  });
+
+  return routes;
+}

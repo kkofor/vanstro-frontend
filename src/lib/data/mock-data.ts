@@ -18,13 +18,14 @@ import {
 import { formatProductSize } from "@/lib/product/product-display";
 export { dealers } from "@/lib/data/dealers";
 import { dealers } from "@/lib/data/dealers";
+import { guideBodiesEn } from "@/lib/data/guide-bodies";
 
 export const banners: Banner[] = [
   {
     id: "home-kitchen-cabinets",
-    title: "Kitchen cabinets, vanities and home materials delivered across Canada",
+    title: "Kitchen cabinets, vanities and home materials available in participating service areas",
     subtitle:
-      "Shop ready-to-order cabinets, vanities, trim and home improvement supplies online. VanStro coordinates nationwide delivery and local dealer service for pickup, delivery and project support.",
+      "Shop ready-to-order cabinets, vanities, trim and home improvement supplies online. Product availability, local dealer coverage, pickup and delivery options vary by postal code.",
     href: "/products",
     image: {
       url: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
@@ -38,7 +39,7 @@ const WHITE_CABINET_CATEGORY_LABELS: Record<string, { colorName: string; colorHe
   "Bathroom Vanities": { colorName: "White", colorHex: "#f8f7f3" }
 };
 
-const ACTIVE_DEALER_ID = "winnipeg";
+const ACTIVE_DEALER_ID = "MB-YUAN";
 
 function normalizeCabinetColor<T extends ProductSummary>(product: T): T {
   const cabinetColor = WHITE_CABINET_CATEGORY_LABELS[product.category];
@@ -69,7 +70,10 @@ function normalizeDealerStock<T extends ProductSummary>(product: T): T {
 export const products: ProductSummary[] = mb01Products
   .map((product) => ({
     ...product,
-    subCategory: mb01ProductMetadataById[product.id]?.sourceCategory
+    subCategory:
+      product.category === "Handle series"
+        ? undefined
+        : mb01ProductMetadataById[product.id]?.sourceCategory
   }))
   .map(normalizeCabinetColor)
   .map(normalizeDealerStock);
@@ -271,7 +275,7 @@ const detailCopyById: Record<
       {
         label: "Specification sheet",
         type: "specification",
-        href: "/articles/how-to-measure-for-cabinets"
+        href: "/guides/how-to-measure-for-cabinets"
       },
       {
         label: "Warranty summary",
@@ -281,14 +285,14 @@ const detailCopyById: Record<
       {
         label: "Installation planning",
         type: "installation",
-        href: "/articles/pickup-and-delivery-options"
+        href: "/guides/pickup-and-delivery-options"
       }
     ],
     supportLinks: [
       {
         label: "Measure for cabinets",
         description: "Confirm widths, clearances and fillers before ordering.",
-        href: "/articles/how-to-measure-for-cabinets"
+        href: "/guides/how-to-measure-for-cabinets"
       },
       {
         label: "View kitchen cabinets",
@@ -340,7 +344,7 @@ const detailCopyById: Record<
       {
         label: "Vanity specification sheet",
         type: "specification",
-        href: "/articles/how-to-measure-for-cabinets"
+        href: "/guides/how-to-measure-for-cabinets"
       },
       {
         label: "Warranty summary",
@@ -350,7 +354,7 @@ const detailCopyById: Record<
       {
         label: "Care and finish guide",
         type: "care",
-        href: "/articles/what-finishes-are-available"
+        href: "/guides/what-finishes-are-available"
       }
     ],
     supportLinks: [
@@ -362,7 +366,7 @@ const detailCopyById: Record<
       {
         label: "Finish options",
         description: "Review painted and primed finish guidance.",
-        href: "/articles/what-finishes-are-available"
+        href: "/guides/what-finishes-are-available"
       }
     ],
     specifications: {
@@ -401,13 +405,13 @@ const detailCopyById: Record<
       "Full-height cabinet for pantry, utility or appliance-adjacent storage.",
       "24 inch width and 96 inch height support tall kitchen layouts.",
       "MDF + PVC white finish aligns with the stocked cabinet program.",
-      "Dealer fulfillment helps protect large-format product handling."
+      "Local dealer fulfillment helps protect large-format product handling."
     ],
     documents: [
       {
         label: "Tall cabinet specification",
         type: "specification",
-        href: "/articles/how-to-measure-for-cabinets"
+        href: "/guides/how-to-measure-for-cabinets"
       },
       {
         label: "Warranty summary",
@@ -417,7 +421,7 @@ const detailCopyById: Record<
       {
         label: "Pickup and delivery guide",
         type: "installation",
-        href: "/articles/pickup-and-delivery-options"
+        href: "/guides/pickup-and-delivery-options"
       }
     ],
     supportLinks: [
@@ -429,7 +433,7 @@ const detailCopyById: Record<
       {
         label: "Pickup and delivery",
         description: "Plan fulfillment for larger cabinet orders.",
-        href: "/articles/pickup-and-delivery-options"
+        href: "/guides/pickup-and-delivery-options"
       }
     ],
     specifications: {
@@ -462,12 +466,12 @@ const detailCopyById: Record<
       {
         label: "Baseboard specification",
         type: "specification",
-        href: "/articles/how-to-measure-for-cabinets"
+        href: "/guides/how-to-measure-for-cabinets"
       },
       {
         label: "Finish guidance",
         type: "care",
-        href: "/articles/what-finishes-are-available"
+        href: "/guides/what-finishes-are-available"
       },
       {
         label: "Warranty summary",
@@ -484,7 +488,7 @@ const detailCopyById: Record<
       {
         label: "Finish options",
         description: "Plan paint-ready trim finishing.",
-        href: "/articles/what-finishes-are-available"
+        href: "/guides/what-finishes-are-available"
       }
     ],
     specifications: {
@@ -509,7 +513,7 @@ export const productDetails: ProductDetail[] = products.map((product) => {
     brand: "VanStro",
     manufacturerPartNumber:
       product.manufacturerPartNumber ?? detailCopy?.manufacturerPartNumber ?? `VS-${product.sku}`,
-    packageQuantity: detailCopy?.packageQuantity ?? {
+    packageQuantity: product.packageQuantity ?? detailCopy?.packageQuantity ?? {
       each: 1,
       innerPack: 1
     },
@@ -539,7 +543,7 @@ export const productDetails: ProductDetail[] = products.map((product) => {
         {
           label: "Specification sheet",
           type: "specification",
-          href: "/articles/how-to-measure-for-cabinets"
+          href: "/guides/how-to-measure-for-cabinets"
         },
         {
           label: "Warranty summary",
@@ -575,42 +579,74 @@ export const articles: ArticleSummary[] = [
   {
     id: "measure-cabinets",
     slug: "how-to-measure-for-cabinets",
-    title: "How do I measure for cabinets?",
-    excerpt: "A practical guide for planning cabinet widths, heights, clearances and filler pieces.",
+    title: "Measuring for cabinets",
+    excerpt: "Cabinet widths, heights, clearances and fillers.",
     publishedAt: "2026-06-10T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/articles/cabinet-measuring-guide.gif"),
+      url: assetPath("/assets/dealers/kitchen-scene.webp"),
       alt: "Kitchen storage and cabinet planning"
     }
   },
   {
     id: "finish-options",
     slug: "what-finishes-are-available",
-    title: "White cabinet and primed trim finishes",
-    excerpt: "Review white cabinet finishes, primed trim materials and care notes before starting your order.",
+    title: "What finishes are available",
+    excerpt: "White and Light Grey cabinet finishes, primed trim materials and care notes.",
     publishedAt: "2026-06-11T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/articles/cabinet-finishes-guide.gif"),
+      url: assetPath("/assets/dealers/trim-scene.jpg"),
       alt: "Cabinet finish materials"
     }
   },
   {
     id: "pickup-delivery",
     slug: "pickup-and-delivery-options",
-    title: "Nationwide delivery and dealer pickup",
-    excerpt: "Understand delivery coverage, local dealer pickup and order handoff after checkout.",
+    title: "Delivery and local dealer pickup options",
+    excerpt: "Availability, pickup and delivery depend on your dealer and postal code.",
     publishedAt: "2026-06-12T12:00:00.000Z",
     image: {
-      url: assetPath("/assets/articles/dealer-pickup-delivery-guide.gif"),
+      url: assetPath("/assets/dealers/kitchen-life.jpg"),
       alt: "Home materials prepared for pickup"
     }
   }
 ];
 
-export const articleDetails: ArticleDetail[] = articles.map((article) => ({
+export const extraGuides: ArticleSummary[] = [
+  {
+    id: "cabinet-care",
+    slug: "cabinet-care",
+    title: "Cabinet care",
+    excerpt: "How to clean PVC soft-touch doors, melamine boxes and paint-ready trim without treating them like wood furniture.",
+    publishedAt: "2026-09-10T12:00:00.000Z",
+    image: {
+      url: assetPath("/assets/dealers/vanity-scene.jpg"),
+      alt: "Cabinet door finish and care"
+    }
+  },
+  {
+    id: "cabinet-adjustment",
+    slug: "cabinet-adjustment",
+    title: "Cabinet adjustment",
+    excerpt: "When to adjust a door or drawer, what to check first, and when to contact your local dealer.",
+    publishedAt: "2026-09-10T12:00:00.000Z",
+    image: {
+      url: assetPath("/assets/dealers/hardware-scene.webp"),
+      alt: "Cabinet door and drawer alignment"
+    }
+  }
+];
+export const guideArticles: ArticleSummary[] = [...articles, ...extraGuides];
+
+// Static article copy is the storefront fallback until the CMS-backed detail API is
+// connected. Keep the original three slugs aligned with /articles/{articleId}.
+const articleContentBySlug: Record<string, string> = {
+  "what-finishes-are-available":
+    "Review the colour, material and finish listed for the exact Model # before ordering. Product images can appear different because of lighting, screen settings and normal manufacturing variation.\n\nOrder or inspect a physical sample when an exact colour match matters. Ask your local dealer about care instructions, paint preparation and compatibility with nearby cabinets, trim and hardware.",
+  ...guideBodiesEn
+};
+export const articleDetails: ArticleDetail[] = guideArticles.map((article) => ({
   ...article,
-  content:
-    "This guide is a placeholder for the rebuilt content system. It keeps the page structure ready for the backend article detail API while preserving SEO-friendly rendering."
+  content: articleContentBySlug[article.slug]
 }));
 
 export const mockCart: Cart = {
@@ -618,6 +654,7 @@ export const mockCart: Cart = {
   items: [
     {
       id: "cart-item-1",
+      skuId: "sku-demo-1",
       product: productsWithCommerce[0],
       quantity: 2,
       unitPrice: productsWithCommerce[0].price,
@@ -625,6 +662,7 @@ export const mockCart: Cart = {
     },
     {
       id: "cart-item-2",
+      skuId: "sku-demo-2",
       product: productsWithCommerce[3],
       quantity: 10,
       unitPrice: productsWithCommerce[3].price,

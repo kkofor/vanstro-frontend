@@ -1,0 +1,25 @@
+.shell { min-height: 100dvh; color: #17211c; background: #f4f6f3; font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; overflow-wrap: anywhere; }
+.skipLink { position: fixed; z-index: 60; top: .5rem; left: .5rem; transform: translateY(-200%); padding: .75rem 1rem; color: #fff; background: #173e2b; }
+.skipLink:focus { transform: translateY(0); }
+.main { display: flex; align-items: center; justify-content: center; min-height: 100dvh; padding: 2rem 1rem; }
+.main:focus { outline: none; }
+.main:focus-visible, .submit:focus-visible, .retry:focus-visible, .backLink:focus-visible, .help a:focus-visible, .skipLink:focus-visible { outline: 3px solid #b55400; outline-offset: 3px; }
+.loginCard, .stateCard { width: min(24rem, 100%); border: 1px solid #d5ddd7; border-radius: .75rem; padding: 2rem 1.75rem; background: #fff; box-shadow: 0 .25rem 1rem rgb(0 0 0 / .06); }
+.stateCard { text-align: center; }
+.stateCard h1, .loginCard h1 { margin: 0 0 .5rem; color: #173e2b; font-size: 1.5rem; }
+.stateCard p, .subtitle { margin: 0 0 1.25rem; color: #536258; }
+.subtitle { max-width: 38ch; }
+.form { display: grid; gap: 1rem; }
+.field { display: grid; gap: .35rem; }
+.field label { color: #17211c; font-weight: 700; }
+.field input { min-height: 2.75rem; border: 1px solid #9db3a5; border-radius: .45rem; padding: .6rem .75rem; color: #17211c; background: #fff; font: inherit; }
+.field input:focus-visible { outline: 3px solid #b55400; outline-offset: 1px; }
+.error { margin: 0; color: #a3261d; font-weight: 700; }
+.status { margin: 0; color: #536258; }
+.submit, .retry { min-height: 2.75rem; border: 0; border-radius: .45rem; padding: .65rem 1rem; color: #fff; background: #23623f; font: inherit; font-weight: 700; }
+.submit:disabled, .retry:disabled { opacity: .65; cursor: not-allowed; }
+.help { display: flex; justify-content: space-between; gap: 1rem; margin: 1.25rem 0 0; }
+.help a, .backLink { color: #23623f; }
+.backLink { display: inline-block; margin-top: 1rem; }
+@media (max-width: 390px) { .main { padding: 1rem; } .loginCard, .stateCard { padding: 1.5rem 1.25rem; } }
+@media (forced-colors: active) { .loginCard, .stateCard { border: 2px solid CanvasText; } .submit, .retry { color: CanvasText; background: Canvas; border: 2px solid Highlight; } .main:focus-visible, .submit:focus-visible, .retry:focus-visible, .backLink:focus-visible, .help a:focus-visible, .skipLink:focus-visible { outline-color: Highlight; } }

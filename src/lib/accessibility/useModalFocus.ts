@@ -67,13 +67,15 @@ type UseModalFocusOptions = {
   containerRef: RefObject<HTMLElement | null>;
   modalRootRef?: RefObject<HTMLElement | null>;
   onEscape: () => void;
+  resolveReturnFocus?: (trigger: HTMLElement | null) => HTMLElement | null;
 };
 
 export function useModalFocus({
   active,
   containerRef,
   modalRootRef,
-  onEscape
+  onEscape,
+  resolveReturnFocus
 }: UseModalFocusOptions) {
   useEffect(() => {
     if (!active) return;
@@ -135,9 +137,10 @@ export function useModalFocus({
       if (stackIndex >= 0) modalStack.splice(stackIndex, 1);
       releaseInert();
 
-      if (modalStack.length === 0 && returnFocus?.isConnected) {
-        window.requestAnimationFrame(() => returnFocus.focus());
+      if (modalStack.length === 0) {
+        const focusTarget = resolveReturnFocus?.(returnFocus) ?? returnFocus;
+        if (focusTarget?.isConnected) window.requestAnimationFrame(() => focusTarget.focus());
       }
     };
-  }, [active, containerRef, modalRootRef, onEscape]);
+  }, [active, containerRef, modalRootRef, onEscape, resolveReturnFocus]);
 }

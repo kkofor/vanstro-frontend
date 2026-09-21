@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package", "parentAuthority", "p09ReadAuthority", "readinessTruthTable",
+    "p10AuditAuthority", "p02ResolverAuthority", "workerHeartbeats", "workerLogin",
+    "uniqueRepresentation", "frontendReplacement", "old68RuntimeSurface",
+    "sqlFunctionBodies", "wireDtos", "aclDelta", "ddlNodes", "migration69Order",
+    "migration70Order", "constraintActions", "tests", "parentSupersedes",
+    "p10InheritedAuthority", "httpContracts", "attestation", "migration69AdditionsSql", "migration69PostSql", "migration70Sql", "migrationExecution", "workerPermissions", "generatedRegistries", "tableAcl", "cryptoAssertions", "sourceMigrationChecksums", "oldP10Compatibility", "oldCallAuditProtocol", "workerDispatcherAuthority", "privacyRetention", "baselineEvidence", "externalCryptoEvidence", "securityCapabilities", "securityPrincipals", "telemetryAuthority", "dsarAuthority", "provisioningHandoff", "reviewClosureCycle", "bootstrapAuthority", "bootstrapSql", "concurrentSql", "signerLifecycle", "rotationAuthority", "executionPhases", "p02VocabularySupersedes"
+  ],
+  "properties": {
+    "package": { "$ref": "#/$defs/package" },
+    "parentAuthority": { "$ref": "#/$defs/object" },
+    "p09ReadAuthority": { "$ref": "#/$defs/object" },
+    "readinessTruthTable": { "$ref": "#/$defs/object" },
+    "p10AuditAuthority": { "$ref": "#/$defs/object" },
+    "p02ResolverAuthority": { "$ref": "#/$defs/object" },
+    "workerHeartbeats": { "$ref": "#/$defs/object" },
+    "workerLogin": { "$ref": "#/$defs/object" },
+    "uniqueRepresentation": { "$ref": "#/$defs/object" },
+    "frontendReplacement": { "$ref": "#/$defs/object" },
+    "old68RuntimeSurface": { "type": "array", "minItems": 31, "uniqueItems": true, "items": { "$ref": "#/$defs/oldFunction" } },
+    "sqlFunctionBodies": { "type": "array", "minItems": 12, "uniqueItems": true, "items": { "$ref": "#/$defs/sqlBody" } },
+    "wireDtos": { "type": "array", "minItems": 4, "uniqueItems": true, "items": { "$ref": "#/$defs/idObject" } },
+    "aclDelta": { "type": "array", "minItems": 3, "uniqueItems": true, "items": { "$ref": "#/$defs/idObject" } },
+    "ddlNodes": { "type": "array", "minItems": 20, "uniqueItems": true, "items": { "$ref": "#/$defs/ddlNode" } },
+    "migration69Order": { "$ref": "#/$defs/idArray" },
+    "migration70Order": { "$ref": "#/$defs/idArray" },
+    "constraintActions": { "type": "array", "minItems": 6, "uniqueItems": true, "items": { "$ref": "#/$defs/constraintAction" } },
+    "tests": { "type": "array", "minItems": 15, "uniqueItems": true, "items": { "$ref": "#/$defs/idObject" } },
+    "parentSupersedes": { "type": "array", "minItems": 6, "uniqueItems": true, "items": { "$ref": "#/$defs/idObject" } },
+    "p10InheritedAuthority": { "$ref": "#/$defs/object" },
+    "httpContracts": { "type": "array", "minItems": 8, "uniqueItems": true, "items": { "$ref": "#/$defs/idObject" } },
+    "attestation": { "$ref": "#/$defs/idObject" },
+    "migration69AdditionsSql": { "type": "string", "pattern": "CREATE TABLE public\\.f1_p02_resolver_registry" },
+    "migration69PostSql": { "type": "string", "pattern": "WORKER_LOGIN_PRECONDITION_FAILED" },
+    "migration70Sql": { "type": "string", "pattern": "f1_assert_no_old_instances_v1" },
+    "migrationExecution": { "$ref": "#/$defs/object" },
+    "workerPermissions": { "$ref": "#/$defs/object" },
+    "generatedRegistries": { "$ref": "#/$defs/object" },
+    "tableAcl": { "type": "array", "minItems": 8, "items": { "$ref": "#/$defs/idObject" } },
+    "cryptoAssertions": { "$ref": "#/$defs/object" },
+    "sourceMigrationChecksums": { "type": "array", "minItems": 68, "maxItems": 68, "items": { "type": "object" } },
+    "oldP10Compatibility": { "$ref": "#/$defs/object" },
+    "oldCallAuditProtocol": { "$ref": "#/$defs/object" },
+    "workerDispatcherAuthority": { "$ref": "#/$defs/object" },
+    "privacyRetention": { "$ref": "#/$defs/object" },
+    "baselineEvidence": { "$ref": "#/$defs/object" },
+    "externalCryptoEvidence": { "$ref": "#/$defs/object" },
+    "securityCapabilities": { "$ref": "#/$defs/object" },
+    "securityPrincipals": { "$ref": "#/$defs/object" },
+    "telemetryAuthority": { "$ref": "#/$defs/object" },
+    "dsarAuthority": { "$ref": "#/$defs/object" },
+    "provisioningHandoff": { "$ref": "#/$defs/object" },
+    "reviewClosureCycle": { "$ref": "#/$defs/idObject" },
+    "bootstrapAuthority": { "$ref": "#/$defs/object" },
+    "bootstrapSql": { "type": "string", "pattern": "f1_authority_bootstrap_audit" },
+    "concurrentSql": { "type": "string", "pattern": "CREATE INDEX CONCURRENTLY" },
+    "signerLifecycle": { "$ref": "#/$defs/object" },
+    "rotationAuthority": { "$ref": "#/$defs/object" },
+    "executionPhases": { "type": "array", "minItems": 4, "items": { "type": "object" } },
+    "p02VocabularySupersedes": { "$ref": "#/$defs/object" }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "id": { "type": "string", "pattern": "^[a-z0-9_.-]+$" },
+    "idArray": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+    "object": { "type": "object" },
+    "idObject": { "type": "object", "required": ["id", "reason"], "properties": { "id": { "$ref": "#/$defs/id" }, "reason": { "const": "implementation_audit_missing_authority" } } },
+    "package": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "version", "status", "reason", "staticMembers", "rejectedCandidates", "freezeReviews", "acceptedFollowups"],
+      "properties": {
+        "name": { "const": "F1 v1.5 Implementation Authority Clarification" },
+        "version": { "const": "1.0" },
+        "status": { "const": "FROZEN" },
+        "reason": { "const": "implementation_audit_missing_authority" },
+        "staticMembers": { "type": "array", "minItems": 8, "uniqueItems": true, "items": { "type": "string" } },
+        "rejectedCandidates": { "type": "array", "minItems": 1, "items": { "type": "object" } },
+        "freezeReviews": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reviewedCandidateManifestSha256", "contract", "security"],
+          "properties": {
+            "reviewedCandidateManifestSha256": { "const": "df0b5188f69f114a5c5eaa0cfc7fba71b659982acebbcdf17e9f3f44ebefd34a" },
+            "contract": { "type": "object" },
+            "security": { "type": "object" }
+          }
+        },
+        "acceptedFollowups": { "type": "array", "minItems": 1, "items": { "type": "object" } }
+      }
+    },
+    "oldFunction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "schema", "name", "identityArguments", "identitySignature", "owner", "securityDefiner", "searchPath", "source", "preserveThrough69", "disposition", "effectiveExecuteAuthority", "reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "schema": { "const": "public" }, "name": { "type": "string" },
+        "identityArguments": { "type": "string" }, "identitySignature": { "type": "string" }, "owner": { "type": "string" },
+        "securityDefiner": { "type": "boolean" }, "searchPath": { "type": "array", "items": { "type": "string" } },
+        "source": { "const": "observed_owned_pg16" }, "preserveThrough69": { "const": true },
+        "disposition": { "enum": ["revoke_in_70", "permanent"] },
+        "effectiveExecuteAuthority": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "sourceMigration": { "type": "string" }, "probeIdentityMatch": { "const": true },
+        "preserve69Acl": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "revoke70Acl": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "reason": { "const": "implementation_audit_missing_authority" }
+      }
+    },
+    "sqlBody": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "identitySignature", "owner", "callers", "securityDefiner", "searchPath", "requires", "canonicalSql", "canonicalSqlSha256", "reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "name": { "type": "string" }, "identitySignature": { "type": "string" },
+        "owner": { "type": "string" }, "callers": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "securityDefiner": { "const": true }, "searchPath": { "const": "pg_catalog, public" },
+        "requires": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "canonicalSql": { "type": "string" }, "canonicalSqlSha256": { "$ref": "#/$defs/sha" },
+        "reason": { "const": "implementation_audit_missing_authority" }
+      }
+    },
+    "ddlNode": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "migration", "operation", "dependsOn", "reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "migration": { "enum": [69, 70] }, "operation": { "type": "string" },
+        "dependsOn": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/id" } },
+        "objectRefs": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+        "sqlStatements": { "type": "array", "items": { "type": "string" } },
+        "reason": { "const": "implementation_audit_missing_authority" }
+      }
+    },
+    "constraintAction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "action", "precheck", "addNotValid", "validateImmediately", "predicate", "historyRewrite", "reason"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" }, "name": { "type": "string" },
+        "action": { "enum": ["add_in_69", "replace_in_69", "add_in_70", "assert_only"] },
+        "precheck": { "type": "boolean" }, "addNotValid": { "type": "boolean" }, "validateImmediately": { "type": "boolean" },
+        "predicate": { "type": "string" }, "backingIndexName": { "type": "string" }, "historyRewrite": { "const": false },
+        "table": { "type": "string" }, "foreignKeyAction": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+        "reason": { "const": "implementation_audit_missing_authority" }
+      }
+    }
+  }
+}

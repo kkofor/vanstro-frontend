@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "v11-attestation-policy-1",
+  "allowUntracked": [
+    "tasks/evidence/**",
+    "docs/erp-api-reference.md",
+    "releases/**",
+    "qa/**/evidence/**",
+    "qa/**/evidence-*/**",
+    "qa/**/logs/**",
+    "qa/v11-auth-browser/__pycache__/**"
+  ],
+  "derivedIgnoredRoots": [
+    "node_modules/**",
+    "**/node_modules/**",
+    ".next/**",
+    "out/**",
+    "**/dist/**",
+    "**/*.tsbuildinfo",
+    "*.tsbuildinfo",
+    ".DS_Store",
+    "**/.DS_Store",
+    "tmp/**",
+    ".impeccable/**"
+  ],
+  "runtimeReject": [
+    "src/**",
+    "apps/**",
+    "packages/**",
+    "scripts/**",
+    "qa/**",
+    "public/**",
+    ".env",
+    ".env.*",
+    "*.local",
+    "*.config.*",
+    "tsconfig*.json",
+    ".npmrc",
+    ".nvmrc",
+    ".node-version",
+    "**/__pycache__/**",
+    "**/*.pyc"
+  ],
+  "blobBindings": [
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "next.config.mjs",
+    "packages/db/prisma/schema.prisma",
+    "qa/v11-auth-browser/run-v11-total-gate.py",
+    "qa/v11-auth-browser/run-v11-token-resume.sh",
+    "qa/v11-auth-browser/merge-acceptance.py",
+    "qa/v11-auth-browser/v11-cross-system-acceptance.py",
+    "qa/v11-auth-browser/v11-token-resume-acceptance.py",
+    "qa/v11-auth-browser/v11-lifecycle-gate.py",
+    "qa/v11-auth-browser/v11-build-gate.py",
+    "qa/v11-auth-browser/v11-workspace-attest.py",
+    "qa/v11-auth-browser/attestation-policy.json",
+    "qa/v11-auth-browser/seed-v11-auth.mts",
+    "scripts/s01-function-layer.mjs"
+  ]
+}

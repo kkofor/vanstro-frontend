@@ -1,0 +1,514 @@
+{
+  "header": {
+    "generated": "GENERATED — DO NOT EDIT",
+    "generatorSha256": "f19cee679a0c112b62e5cc19465ffce409adfd4a32b97a2101bd6013e7627301",
+    "modelSha256": "7376e74962984bf4a73733edcfdf308b979d62a0fc34a8ee9c11e9e013a181a8",
+    "packageVersion": "1.0.1",
+    "parentFrozenManifestSha256": "e6c3cb275b3ecee17022418586613f6739757802b705bd17444b5c95be5a6e8f",
+    "schemaSha256": "b40af890b5a81e3aacde2d2715c6b10fe0a64f930d0c3c5eb97c147e5ae56f2b",
+    "status": "FROZEN"
+  },
+  "wireDtos": [
+    {
+      "apiFields": [
+        [
+          "configKey",
+          "string",
+          false
+        ],
+        [
+          "schemaVersion",
+          "string",
+          false
+        ],
+        [
+          "activeVersion",
+          "integer",
+          true
+        ],
+        [
+          "safeValue",
+          "object",
+          true
+        ],
+        [
+          "updatedAt",
+          "string",
+          true
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p09.config.list.v2",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "config_key",
+          "text",
+          false
+        ],
+        [
+          "schema_version",
+          "text",
+          false
+        ],
+        [
+          "active_version",
+          "integer",
+          true
+        ],
+        [
+          "safe_value",
+          "jsonb",
+          true
+        ],
+        [
+          "updated_at",
+          "timestamptz",
+          true
+        ]
+      ],
+      "sqlFunction": "p09_config_list_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "flagKey",
+          "string",
+          false
+        ],
+        [
+          "schemaVersion",
+          "string",
+          false
+        ],
+        [
+          "activeState",
+          "string",
+          true
+        ],
+        [
+          "version",
+          "integer",
+          false
+        ],
+        [
+          "updatedAt",
+          "string",
+          true
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p09.flag.list.v2",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "flag_key",
+          "text",
+          false
+        ],
+        [
+          "schema_version",
+          "text",
+          false
+        ],
+        [
+          "active_state",
+          "text",
+          true
+        ],
+        [
+          "version",
+          "integer",
+          false
+        ],
+        [
+          "updated_at",
+          "timestamptz",
+          true
+        ]
+      ],
+      "sqlFunction": "p09_flag_list_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "readinessState",
+          "string",
+          false
+        ],
+        [
+          "reasonCode",
+          "string",
+          false
+        ],
+        [
+          "activeCount",
+          "bigint",
+          false
+        ],
+        [
+          "staleCount",
+          "bigint",
+          false
+        ],
+        [
+          "totalCapacity",
+          "bigint",
+          false
+        ],
+        [
+          "observedAt",
+          "string",
+          false
+        ]
+      ],
+      "closed": true,
+      "forbidden": [
+        "instance_id",
+        "host",
+        "pid",
+        "database",
+        "provider_account",
+        "path",
+        "credential"
+      ],
+      "id": "wire.p09.readiness.summary.v2",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "readiness_state",
+          "text",
+          false
+        ],
+        [
+          "reason_code",
+          "text",
+          false
+        ],
+        [
+          "active_count",
+          "bigint",
+          false
+        ],
+        [
+          "stale_count",
+          "bigint",
+          false
+        ],
+        [
+          "total_capacity",
+          "bigint",
+          false
+        ],
+        [
+          "observed_at",
+          "timestamptz",
+          false
+        ]
+      ],
+      "sqlFunction": "p09_readiness_summary_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "readinessState",
+          "string",
+          false
+        ],
+        [
+          "reasonCode",
+          "string",
+          false
+        ],
+        [
+          "activeCount",
+          "bigint",
+          false
+        ],
+        [
+          "staleCount",
+          "bigint",
+          false
+        ],
+        [
+          "totalCapacity",
+          "bigint",
+          false
+        ],
+        [
+          "observedAt",
+          "string",
+          false
+        ],
+        [
+          "secondaryReasons",
+          "array",
+          false
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p09.readiness.detail.v2",
+      "permission": "readiness.read_detail",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "readiness_state",
+          "text",
+          false
+        ],
+        [
+          "reason_code",
+          "text",
+          false
+        ],
+        [
+          "active_count",
+          "bigint",
+          false
+        ],
+        [
+          "stale_count",
+          "bigint",
+          false
+        ],
+        [
+          "total_capacity",
+          "bigint",
+          false
+        ],
+        [
+          "observed_at",
+          "timestamptz",
+          false
+        ],
+        [
+          "secondary_reasons",
+          "text[]",
+          false
+        ]
+      ],
+      "sqlFunction": "p09_readiness_detail_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "configKey",
+          "string",
+          false
+        ],
+        [
+          "schemaVersion",
+          "string",
+          false
+        ],
+        [
+          "activeVersion",
+          "integer",
+          true
+        ],
+        [
+          "safeValue",
+          "object",
+          true
+        ],
+        [
+          "updatedAt",
+          "string",
+          true
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p09.config.detail.v2",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "config_key",
+          "text",
+          false
+        ],
+        [
+          "schema_version",
+          "text",
+          false
+        ],
+        [
+          "active_version",
+          "integer",
+          true
+        ],
+        [
+          "safe_value",
+          "jsonb",
+          true
+        ],
+        [
+          "updated_at",
+          "timestamptz",
+          true
+        ]
+      ],
+      "sqlFunction": "p09_config_list_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "flagKey",
+          "string",
+          false
+        ],
+        [
+          "schemaVersion",
+          "string",
+          false
+        ],
+        [
+          "activeState",
+          "string",
+          true
+        ],
+        [
+          "version",
+          "integer",
+          false
+        ],
+        [
+          "updatedAt",
+          "string",
+          true
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p09.flag.detail.v2",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "flag_key",
+          "text",
+          false
+        ],
+        [
+          "schema_version",
+          "text",
+          false
+        ],
+        [
+          "active_state",
+          "text",
+          true
+        ],
+        [
+          "version",
+          "integer",
+          false
+        ],
+        [
+          "updated_at",
+          "timestamptz",
+          true
+        ]
+      ],
+      "sqlFunction": "p09_flag_list_v2"
+    },
+    {
+      "apiFields": [
+        [
+          "factId",
+          "string",
+          false
+        ],
+        [
+          "successAuditEventId",
+          "string",
+          false
+        ],
+        [
+          "outcome",
+          "string",
+          false
+        ]
+      ],
+      "closed": true,
+      "errors": [
+        "DASHBOARD_NOT_FOUND",
+        "ANALYTICS_CONSENT_REQUIRED",
+        "IDEMPOTENCY_CONFLICT"
+      ],
+      "httpStatus": [
+        200,
+        201
+      ],
+      "id": "wire.p10.ingest.v3",
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "fact_id",
+          "uuid",
+          false
+        ],
+        [
+          "success_audit_event_id",
+          "uuid",
+          false
+        ],
+        [
+          "outcome",
+          "text",
+          false
+        ]
+      ],
+      "sqlFunction": "p10_ingest_event_v5"
+    },
+    {
+      "apiFields": [
+        [
+          "releaseDayOut",
+          "string",
+          false
+        ],
+        [
+          "status",
+          "text",
+          false
+        ],
+        [
+          "completeness",
+          "text",
+          false
+        ],
+        [
+          "cells",
+          "object",
+          false
+        ]
+      ],
+      "closed": true,
+      "id": "wire.p10.sealed.release.v1",
+      "rawEventsForbidden": true,
+      "reason": "implementation_audit_missing_authority",
+      "sqlFields": [
+        [
+          "release_day_out",
+          "date",
+          false
+        ],
+        [
+          "status",
+          "text",
+          false
+        ],
+        [
+          "completeness",
+          "text",
+          false
+        ],
+        [
+          "cells",
+          "jsonb",
+          false
+        ]
+      ],
+      "sqlFunction": "p10_get_release_day_v2",
+      "suppressedNumericFieldsNull": true
+    }
+  ]
+}

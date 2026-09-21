@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  .id-chip { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .control--id input { padding-right: 104px; }
+  .redirect {
+    position: fixed; inset: 0; background: #fff; display: flex; align-items: center; justify-content: center; z-index: 700; text-align: center; padding: 24px;
+  }
+  .redirect__card { max-width: 380px; }
+  .redirect__ring { width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px; background: var(--vs-green-50); color: var(--vs-green); display: flex; align-items: center; justify-content: center; }
+  .redirect__ring svg { width: 36px; height: 36px; }
+  .redirect__bar { height: 4px; background: var(--vs-grey-100); border-radius: 2px; overflow: hidden; margin: 20px 0 14px; }
+  .redirect__bar i { display: block; height: 100%; width: 100%; background: var(--vs-navy); transform: scaleX(0); transform-origin: left; transition: transform 2.4s linear; }
+  .redirect__bar i.is-run { transform: scaleX(1); }
+  .lockout { font-variant-numeric: tabular-nums; }
+  .social-chooser { display: grid; gap: 8px; }
+  .social-chooser button { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); background: #fff; cursor: pointer; text-align: left; }
+  .social-chooser button:hover { border-color: var(--vs-navy); background: var(--vs-grey-50); }
+  .avatar-sm { width: 34px; height: 34px; border-radius: 50%; background: var(--vs-navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+  .caps { font-size: 12px; color: var(--vs-orange-ink); display: none; align-items: center; gap: 6px; }
+  .caps.is-on { display: inline-flex; }
+  /* Captcha (appears after 3 failed attempts; must ship with an audio alternative — WCAG 1.1.1 / AODA) */
+  .captcha { display: grid; grid-template-columns: 132px 1fr; gap: 12px; align-items: start; }
+  .captcha__img { height: 48px; border-radius: var(--vs-r-md); border: 1px solid var(--vs-grey-100); background: repeating-linear-gradient(135deg, var(--vs-grey-50) 0 6px, #fff 6px 12px); display: flex; align-items: center; justify-content: center; font-family: var(--vs-mono); font-size: 20px; letter-spacing: .28em; color: var(--vs-navy); font-weight: 600; user-select: none; }
+  .captcha__alt { display: flex; gap: 12px; font-size: 12px; margin-top: 6px; }
+  .captcha__alt button { background: none; border: 0; padding: 0; color: var(--vs-navy); font-weight: 700; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
+  .dest__icon { width: 36px; height: 36px; border-radius: 50%; background: var(--vs-navy-50); color: var(--vs-navy); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+  .dest__icon svg { width: 18px; height: 18px; }
+  [hidden] { display: none !important; }
+  .auth__foot-sep { color: var(--vs-text-on-dark-2); }
+  a.js-home { color: inherit; text-decoration: none; display: inline-flex; align-items: center; }
+</style>
+</head>
+<body>
+
+<div class="auth">
+  <!-- ============ Brand panel (VI: 深色底 + 反白稿 + 辅助图形) ============ -->
+  <aside class="auth__brand">
+    <img class="mark" src="/account/assets/brand/mark-white.png" alt="">
+    <div>
+      <a class="js-home" href="/" aria-label="Vanstro home"><img class="vs-logo vs-logo--lg" src="/account/assets/brand/logo-reverse.png" alt="VANSTRO Global Supply"></a>
+      <p class="vs-slogan" style="margin-top:14px;color:var(--vs-green-100)" data-i18n="slogan">Your Global Supply Platform</p>
+    </div>
+    <div>
+      <p class="auth__tag" data-i18n="brandTag">Kitchen Cabinets · Wall Panels · Building Supply — Canada</p>
+      <h2 class="auth__headline" style="color:#fff" data-i18n="brandHead">Welcome Back To Your Supply Platform.</h2>
+      <p class="auth__sub" data-i18n="brandSub">Track orders, manage quotes and save your project lists across every device.</p>
+      <ul class="auth__points">
+        <li><span data-icon="truck"></span> <span data-i18n="p1">Shipping across Canada · prices in CAD</span></li>
+        <li><span data-icon="shield"></span> <span data-i18n="p2">Secure sign-in, protected under PIPEDA</span></li>
+        <li><span data-icon="globe"></span> <span data-i18n="p3">English &amp; Français</span></li>
+      </ul>
+    </div>
+    <div class="auth__foot">
+      <span>© 2026 Vanstro Global Supply Inc.</span>
+      <a class="js-privacy" href="/privacy" data-i18n="fPriv">Privacy</a><span class="auth__foot-sep" aria-hidden="true">·</span><a class="js-terms" href="/terms-and-conditions" data-i18n="fTerms">Terms</a><span class="auth__foot-sep" aria-hidden="true">·</span><a class="js-help" href="/contact" data-i18n="fHelp">Help</a>
+    </div>
+  </aside>
+
+  <!-- ============ Form panel ============ -->
+  <main class="auth__main">
+    <header class="auth__topbar">
+      <div class="auth__topbar-left">
+        <a class="js-home" href="/" aria-label="Vanstro home"><img class="vs-logo" src="/account/assets/brand/logo-navy.png" alt="VANSTRO"></a>
+        <a class="auth__back" href="/">Back to vanstro.ca</a>
+      </div>
+      <span></span>
+      <div class="lang" role="group" aria-label="Language"><button class="is-active" data-lang="en" type="button">EN</button><button data-lang="fr" type="button">FR</button></div>
+    </header>
+
+    <div class="auth__content">
+      <form class="auth__panel" id="loginForm" method="post" novalidate>
+        <h1 data-i18n="title">Sign in</h1>
+        <p class="lead" data-i18n="lead">Use your email, mobile number or username.</p>
+
+        <!-- Alerts (server-side outcomes) -->
+        <div id="alertHost"></div>
+
+        <!-- Identifier -->
+        <div class="field" id="fId">
+          <label class="field__label" for="identifier">Email, mobile or username</label>
+          <div class="control control--id">
+            <span class="control__prefix" id="idIcon" data-icon="user"></span>
+            <input id="identifier" name="identifier" type="text" inputmode="email" autocomplete="username" placeholder="name@example.com" autocapitalize="off" spellcheck="false">
+            <span class="id-chip" id="idChip"></span>
+          </div>
+          <div class="field__hint" id="idHint"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="field" id="fPw">
+          <label class="field__label" for="password">Password <span class="caps" id="caps"><span data-icon="warn" style="width:14px;height:14px;display:inline-flex"></span> Caps Lock is on</span></label>
+          <div class="control">
+            <span class="control__prefix" data-icon="lock"></span>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password">
+            <span class="control__suffix"><button type="button" class="icon-btn" data-toggle-password="password" aria-label="Show password"></button></span>
+          </div>
+          <div class="field__hint" id="pwHint"></div>
+        </div>
+
+        <!-- Captcha tier: inserted by the server (CAPTCHA_REQUIRED) after 3 failures on the same account or IP -->
+        <div class="field" id="fCaptcha" hidden>
+          <label class="field__label" for="captcha">Security check</label>
+          <div class="captcha">
+            <div class="captcha__img" id="captchaImg" aria-hidden="true">7K2P</div>
+            <div>
+              <div class="control"><input id="captcha" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Type the 4 characters" maxlength="4" aria-describedby="captchaHelp"></div>
+              <div class="captcha__alt" id="captchaHelp"><button type="button" id="captchaAudio">Play audio instead</button><span class="muted">·</span><button type="button" id="captchaNew">New image</button></div>
+            </div>
+          </div>
+          <div class="field__hint" id="captchaHint"></div>
+        </div>
+
+        <div class="row row--between small" style="margin:-4px 0 22px">
+          <span><span class="muted" data-i18n="newTo">New to Vanstro? </span><a class="js-register" href="/account/register" style="font-weight:700" data-i18n="createAcct">Create an account</a></span>
+          <a class="js-forgot" href="/account/forgot-password" style="font-weight:700" data-i18n="forgotPw">Forgot password?</a>
+        </div>
+
+        <button class="btn btn--primary btn--block" id="submitBtn" type="submit" data-i18n="signIn">Sign in</button>
+
+        <div class="divider">or continue with</div>
+
+        <div class="grid-2" style="gap:12px">
+          <button class="btn btn--google" type="button" id="googleBtn"><span class="btn__icon" data-icon="google"></span> Google</button>
+          <button class="btn btn--apple" type="button" id="appleBtn"><span class="btn__icon" data-icon="apple"></span> Apple</button>
+        </div>
+
+        <p class="auth__legal">
+          <span data-i18n="legalA">By signing in you agree to Vanstro’s</span> <a class="js-terms" href="/terms-and-conditions" data-i18n="tos">Terms of Service</a> <span data-i18n="legalB">and acknowledge our</span> <a class="js-privacy" href="/privacy" data-i18n="pp">Privacy Policy</a>.
+          <span data-i18n="legalC">Your information is handled in accordance with Canada’s PIPEDA and Québec Law 25.</span>
+        </p>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<!-- ============ Success / redirect overlay ============ -->
+<div class="redirect hidden" id="redirect">
+  <div class="redirect__card">
+    <div class="redirect__ring"><span data-icon="checkCircle"></span></div>
+    <h2>Signed in</h2>
+    <p class="muted" style="margin-top:6px">Welcome back, <strong id="rdName">Guannan</strong>. Taking you to <strong id="rdTarget">your account</strong>…</p>
+    <div class="redirect__bar"><i id="rdBar"></i></div>
+    <a class="btn btn--secondary btn--sm js-account" id="rdLink" href="/account">Continue now</a>
+  </div>
+</div>
+
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  VS.icons(); VS.bindPasswordToggles();
+
+  // Open-redirect guard: only same-origin whitelisted paths survive; anything else (absolute URLs, //host, unknown paths) falls back to /account.
+  const REDIRECT_WHITELIST = ['/account', '/checkout', '/orders', '/wishlist'];
+  function safeRedirect(raw) {
+    if (!raw) return '/account';
+    const path = raw.replace(/^\/(en|fr)(?=\/)/, ''); // language prefix is validated separately
+    return /^\/[^\/]/.test(path) && REDIRECT_WHITELIST.some(w => path === w || path.startsWith(w + '/') || path.startsWith(w + '?')) ? path : '/account';
+  }
+  const state = { attempts: 0, redirect: safeRedirect(new URLSearchParams(location.search).get('redirect')), lockTimer: null, captcha: '7K2P', captchaOn: false };
+  const fId = $('#fId'), fPw = $('#fPw'), idInput = $('#identifier'), pwInput = $('#password');
+  const idHint = $('#idHint'), pwHint = $('#pwHint'), idChip = $('#idChip'), idIcon = $('#idIcon');
+  const alertHost = $('#alertHost'), submitBtn = $('#submitBtn');
+
+  /* ---- identifier live detection ---- */
+  idInput.addEventListener('input', () => {
+    const d = VS.detectIdentifier(idInput.value);
+    fId.classList.remove('is-error', 'is-success'); idHint.textContent = '';
+    if (!d.type) { idChip.innerHTML = ''; idIcon.innerHTML = VS.I.user; idInput.inputMode = 'email'; return; }
+    const label = { email: 'Email', phone: 'Mobile · CA', username: 'Username' }[d.type];
+    idChip.innerHTML = `<span class="chip ${d.valid ? 'chip--green' : ''}">${label}</span>`;
+    idIcon.innerHTML = VS.I[d.type === 'email' ? 'mail' : d.type === 'phone' ? 'phone' : 'user'];
+    idInput.inputMode = d.type === 'phone' ? 'tel' : 'email';
+    if (d.type === 'phone' && d.valid) idHint.textContent = `Will sign in as ${d.pretty}`;
+  });
+
+  /* ---- caps lock detection ---- */
+  pwInput.addEventListener('keyup', e => $('#caps').classList.toggle('is-on', e.getModifierState && e.getModifierState('CapsLock')));
+  pwInput.addEventListener('blur', () => $('#caps').classList.remove('is-on'));
+
+  function setError(field, hintEl, msg) {
+    field.classList.add('is-error'); hintEl.innerHTML = VS.I.alert + '<span></span>'; hintEl.querySelector('span').textContent = msg;
+  }
+  function clearErrors() {
+    [fId, fPw].forEach(f => f.classList.remove('is-error'));
+    idHint.textContent = ''; pwHint.textContent = ''; alertHost.innerHTML = '';
+    $('#fCaptcha').classList.remove('is-error'); $('#captchaHint').textContent = '';
+  }
+  function alert(type, title, html) {
+    alertHost.innerHTML = `<div class="alert alert--${type}" role="alert"><span>${type === 'success' ? VS.I.checkCircle : type === 'warning' ? VS.I.warn : VS.I.alert}</span><div><strong>${title}</strong>${html}</div></div>`;
+  }
+
+  /* ---- client validation ---- */
+  function validate() {
+    clearErrors(); let ok = true;
+    const d = VS.detectIdentifier(idInput.value);
+    if (!d.type) { setError(fId, idHint, 'Enter your email, mobile number or username.'); ok = false; }
+    else if (!d.valid) {
+      setError(fId, idHint, d.type === 'email' ? 'That email address doesn’t look right.' : d.type === 'phone' ? 'Enter a 10-digit Canadian mobile number, e.g. (204) 555-0142.' : 'Usernames are 3–30 letters, numbers, dots or underscores.');
+      ok = false;
+    }
+    if (!pwInput.value) { setError(fPw, pwHint, 'Enter your password.'); ok = false; }
+    if (state.captchaOn && $('#captcha').value.trim().toUpperCase() !== state.captcha) { setError($('#fCaptcha'), $('#captchaHint'), 'That code isn’t right — try again.'); ok = false; newCaptcha(); }
+    if (!ok) (fId.classList.contains('is-error') ? idInput : fPw.classList.contains('is-error') ? pwInput : $('#captcha')).focus();
+    return ok;
+  }
+
+  async function serverLogin(id, pw) {
+    const res = await fetch('/api/auth/login', { method: 'POST', credentials: 'include', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identifier: id, password: pw, remember: true }) });
+    return { res, body: await res.json().catch(() => ({})) };
+  }
+
+  function showState(code, extra) {
+    clearErrors();
+    switch (code) {
+      case 'INVALID': {
+        state.attempts = extra && extra.attempts != null ? extra.attempts : state.attempts;
+        const left = 5 - state.attempts;
+        const captcha = state.attempts >= 3;
+        alert('error', 'Incorrect email/mobile or password.',
+          `Check your details and try again. <a href="${forgotUrl()}">Reset your password</a>${left <= 3 ? ` · <span class="muted">${left} attempt${left === 1 ? '' : 's'} left before a 15-minute lock</span>` : ''}${captcha ? '<br><span class="muted">To protect your account, complete the security check below.</span>' : ''}`);
+        fId.classList.add('is-error'); fPw.classList.add('is-error'); pwInput.value = ''; pwInput.focus();
+        setCaptcha(captcha);
+        break;
+      }
+      case 'LOCKED': {
+        let secs = 15 * 60;
+        const render = () => alert('warning', 'Too many attempts — account temporarily locked.',
+          `For your security, sign-in is paused for <span class="lockout">${String(Math.floor(secs / 60)).padStart(2, '0')}:${String(secs % 60).padStart(2, '0')}</span>. You can <a href="${forgotUrl()}">reset your password</a> now, or use Google / Apple if linked.`);
+        render(); clearInterval(state.lockTimer);
+        state.lockTimer = setInterval(() => { secs--; if (secs <= 0) { clearInterval(state.lockTimer); state.attempts = 0; clearErrors(); submitBtn.disabled = false; return; } render(); }, 1000);
+        submitBtn.disabled = true;
+        break;
+      }
+      case 'UNVERIFIED':
+        alert('warning', 'Please verify your email first.', `We sent a verification link to <strong>${idInput.value || 'your inbox'}</strong>. <a href="#" id="resendV">Resend link</a> · <a href="#">Change email</a>`);
+        $('#resendV').addEventListener('click', e => { e.preventDefault(); VS.toast('Verification email sent'); });
+        break;
+      case 'SOCIAL_ONLY':
+        alert('info', `This email is linked to ${extra && extra.provider || 'Google'} sign-in.`, `Continue with <strong>${extra && extra.provider || 'Google'}</strong> below, or <a href="${forgotUrl()}">set a password</a> for this account.`);
+        break;
+      case 'OK':
+        success(extra && extra.name || 'Guannan');
+        break;
+    }
+  }
+
+  /* ---- captcha tier (server-driven: CAPTCHA_REQUIRED) ---- */
+  function newCaptcha() { const A = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; state.captcha = Array.from({ length: 4 }, () => A[Math.floor(Math.random() * A.length)]).join(''); $('#captchaImg').textContent = state.captcha; $('#captcha').value = ''; }
+  function setCaptcha(on) { state.captchaOn = on; $('#fCaptcha').hidden = !on; if (on && !$('#captcha').value) newCaptcha(); }
+  $('#captchaNew').addEventListener('click', () => { newCaptcha(); $('#captcha').focus(); });
+  $('#captchaAudio').addEventListener('click', () => { VS.toast('Audio challenge would play: ' + state.captcha.split('').join(' … ')); });
+
+  function success(name) {
+    $('#rdName').textContent = name || 'your account';
+    const target = state.redirect;
+    $('#rdTarget').textContent = target.startsWith('/checkout') ? 'checkout' : target.startsWith('/orders') ? 'your orders' : 'your account';
+    $('#rdLink').href = target.startsWith('/checkout') ? '/checkout' : target.startsWith('/orders') ? '/account#orders' : '/account';
+    $('#redirect').classList.remove('hidden');
+    requestAnimationFrame(() => { $('#rdBar').classList.add('is-run'); });
+    // Auto-redirect when the 2.4s bar completes; "Continue now" is only a shortcut.
+    // Skipped in export mode so screenshots can capture this state.
+    clearTimeout(state.rdTimer);
+    if (new URLSearchParams(location.search).get('export') !== '1') {
+      const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 600 : 2400;
+      state.rdTimer = setTimeout(() => { location.href = $('#rdLink').href; }, delay);
+    }
+    // In production: server sets session cookie (Remember me → 30-day persistent), returns 302 to the sanitized `redirect` (same-origin only).
+  }
+
+  /* ---- submit ---- */
+  $('#loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+    if (!validate()) return;
+    submitBtn.classList.add('is-loading'); submitBtn.disabled = true;
+    try {
+      const { res, body } = await serverLogin(idInput.value, pwInput.value);
+      if (res.ok) { state.attempts = 0; setCaptcha(false); return showState('OK', { name: body.user && body.user.displayName }); }
+      if (res.status === 403) return showState('UNVERIFIED');
+      if (res.status === 423) return showState('LOCKED');
+      if (res.status === 409) return showState('SOCIAL_ONLY', body);
+      state.attempts = body.attemptsLeft != null ? 5 - body.attemptsLeft : state.attempts + 1;
+      if (res.status === 401) { setCaptcha(!!body.captchaRequired); return showState('INVALID', body); }
+      showState('INVALID', body);
+    } catch (err) {
+      console.error('login submit', err);
+      const network = err instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(String(err && err.message || err));
+      alert('error', network ? 'Sign-in unavailable' : 'Something went wrong while signing in', 'Try again in a moment.');
+    }
+    finally { submitBtn.classList.remove('is-loading'); submitBtn.disabled = false; }
+  });
+
+  /* ---- social sign-in (not enabled) ---- */
+  function openSocial(p) { alert('info', `${p} sign-in unavailable`, 'Google and Apple sign-in are not enabled yet. Use your email and password.'); }
+  $('#googleBtn').addEventListener('click', () => openSocial('Google'));
+  $('#appleBtn').addEventListener('click', () => openSocial('Apple'));
+
+  const FR = {
+    slogan: 'Votre plateforme d’approvisionnement mondiale', brandTag: 'Armoires de cuisine · Panneaux muraux · Matériaux — Canada',
+    brandHead: 'Bon retour sur votre plateforme d’approvisionnement.', brandSub: 'Suivez vos commandes, gérez vos devis et retrouvez vos listes de projet sur tous vos appareils.',
+    p1: 'Livraison partout au Canada · prix en CAD', p2: 'Connexion sécurisée, protégée par la LPRPDE', p3: 'English & Français',
+    title: 'Connexion', lead: 'Utilisez votre courriel, numéro de mobile ou nom d’utilisateur.', signIn: 'Connexion',
+    fPriv: 'Confidentialité', fTerms: 'Conditions', fHelp: 'Aide',
+    newTo: 'Nouveau chez Vanstro ? ', createAcct: 'Créer un compte', forgotPw: 'Mot de passe oublié ?',
+    legalA: 'En vous connectant, vous acceptez les', tos: 'Conditions d’utilisation', legalB: 'de Vanstro et reconnaissez notre', pp: 'Politique de confidentialité', legalC: 'Vos renseignements sont traités conformément à la LPRPDE et à la Loi 25 du Québec.'
+  };
+  const EN = {}; document.querySelectorAll('[data-i18n]').forEach(el => { EN[el.dataset.i18n] = el.innerHTML; });
+  function authHrefs(l) {
+    if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(l === 'fr');
+  }
+  function forgotUrl() { return document.documentElement.lang === 'fr-CA' ? '/fr/account/forgot-password' : '/account/forgot-password'; }
+  function setLang(l) {
+    document.documentElement.lang = l === 'fr' ? 'fr-CA' : 'en-CA';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.dataset.i18n; el.innerHTML = l === 'fr' ? (FR[k] || EN[k]) : EN[k];
+    });
+    document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('is-active', b.dataset.lang === l));
+    document.title = (l === 'fr' ? 'Connexion' : 'Sign in') + ' · VANSTRO';
+    authHrefs(l);
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  if (/^\/fr(\/|$)/.test(location.pathname) || new URLSearchParams(location.search).get('lang') === 'fr') setLang('fr');
+
+  /* ---- deep links for review / export: ?state=locked&export=1 ---- */
+  const q = new URLSearchParams(location.search);
+  if (q.get('state')) { const b = document.querySelector(`[data-state="${q.get('state')}"]`); if (b) { b.click(); if (q.get('state') === 'failed' || q.get('state') === 'captcha') pwInput.value = '••••••••'; } }
+  // one-shot: drop demo/state params so a refresh doesn't replay them (keep export/from/redirect + hash)
+  { const keep = new URLSearchParams(); for (const k of ['export', 'from', 'redirect']) if (q.has(k)) keep.set(k, q.get(k)); const qs = keep.toString(); history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); }
+})();
+</script>
+</body>
+</html>

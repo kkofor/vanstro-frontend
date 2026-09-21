@@ -1,0 +1,99 @@
+name: backend-ci
+
+on:
+  push:
+    paths:
+      - "apps/api/**"
+      - "apps/worker/**"
+      - "packages/db/**"
+      - "packages/cli/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "tsconfig.json"
+      - ".node-version"
+      - ".env.example"
+      - "scripts/**"
+      - "Dockerfile.backend"
+      - "docker-compose.production.yml"
+      - ".dockerignore"
+      - ".github/workflows/backend-ci.yml"
+  pull_request:
+    paths:
+      - "apps/api/**"
+      - "apps/worker/**"
+      - "packages/db/**"
+      - "packages/cli/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "tsconfig.json"
+      - ".node-version"
+      - ".env.example"
+      - "scripts/**"
+      - "Dockerfile.backend"
+      - "docker-compose.production.yml"
+      - ".dockerignore"
+      - ".github/workflows/backend-ci.yml"
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: vanstro
+          POSTGRES_PASSWORD: vanstro
+          POSTGRES_DB: vanstro_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U vanstro -d vanstro_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://vanstro:vanstro@localhost:5432/vanstro_test
+      PAYMENT_CALLBACK_SECRET: ci-payment-secret
+      ERP_WEBHOOK_SECRET: ci-erp-webhook-secret
+      VANSTRO_RUNTIME_MODE: test
+      SUPER_ADMIN_EMAIL: admin@vanstro.test
+      SUPER_ADMIN_PASSWORD: ci-only-super-admin-password
+      ALLOW_DEMO_SEED: "true"
+      ALLOW_DESTRUCTIVE_SMOKE: "true"
+      EMAIL_SETTINGS_ENCRYPTION_KEY: "Y2ktb25seS0zMi1ieXRlLWVuY3J5cHRpb24ta2V5ISE="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.13.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm --filter @vanstro/db exec prisma migrate deploy --schema prisma/schema.prisma
+      - run: pnpm db:seed
+      - run: pnpm build:backend
+      - run: pnpm qa:backend
+      - run: docker build -f Dockerfile.backend -t vanstro-backend-ci .
+      - name: Smoke production backend image
+        run: |
+          docker run -d --name vanstro-api-ci --network host \
+            -e DATABASE_URL="$DATABASE_URL" \
+            -e VANSTRO_RUNTIME_MODE=test \
+            -e PAYMENT_CALLBACK_SECRET="$PAYMENT_CALLBACK_SECRET" \
+            vanstro-backend-ci
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4000/health/ready; then break; fi
+            if [ "$attempt" = 30 ]; then docker logs vanstro-api-ci; exit 1; fi
+            sleep 1
+          done
+          docker rm --force vanstro-api-ci
+          docker run --rm --network host \
+            -e DATABASE_URL="$DATABASE_URL" \
+            -e VANSTRO_RUNTIME_MODE=test \
+            -e EMAIL_SETTINGS_ENCRYPTION_KEY="$EMAIL_SETTINGS_ENCRYPTION_KEY" \
+            vanstro-backend-ci node apps/worker/dist/index.js --once

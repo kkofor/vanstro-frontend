@@ -1,0 +1,91 @@
+import { DemoCardPaymentProvider } from "./demo.js";
+import { ManualPaymentProvider } from "./manual.js";
+import { MonerisPaymentProvider, type MonerisConfig } from "./moneris.js";
+import type { PaymentProvider } from "./types.js";
+
+export * from "./types.js";
+export { ManualPaymentProvider } from "./manual.js";
+export { MonerisPaymentProvider } from "./moneris.js";
+
+export type CheckoutPaymentMethod = "card" | "pos" | "cash";
+
+function readMonerisConfig(env: NodeJS.ProcessEnv): MonerisConfig | undefined {
+  const rawEnvironment = env.MONERIS_ENVIRONMENT?.trim().toLowerCase();
+  if (rawEnvironment && rawEnvironment !== "qa" && rawEnvironment !== "prod") {
+    throw new Error("MONERIS_ENVIRONMENT must be qa or prod.");
+  }
+  const environment = rawEnvironment ?? "qa";
+  const credentials = {
+    storeId: env.MONERIS_STORE_ID?.trim(),
+    apiToken: env.MONERIS_API_TOKEN?.trim(),
+    checkoutId: env.MONERIS_CHECKOUT_ID?.trim()
+  };
+  const configured = Object.values(credentials).filter(Boolean).length;
+  if (configured === 0) return undefined;
+  if (configured !== 3) throw new Error("Moneris credentials must be fully configured or fully omitted.");
+  if (Object.values(credentials).some((value) => /replace|example|changeme/i.test(value!))) {
+    throw new Error("Moneris credentials must not contain placeholders.");
+  }
+  return { environment, ...credentials } as MonerisConfig;
+}
+
+let cachedDemo: DemoCardPaymentProvider | undefined;
+let cachedManual: ManualPaymentProvider | undefined;
+let cachedMoneris: MonerisPaymentProvider | undefined;
+
+function demoIntegrationsEnabled(env: NodeJS.ProcessEnv) {
+  return env.VANSTRO_RUNTIME_MODE !== "deployment" && env.ENABLE_DEMO_INTEGRATIONS?.trim().toLowerCase() === "true";
+}
+
+function getDemoProvider() {
+  cachedDemo ??= new DemoCardPaymentProvider();
+  return cachedDemo;
+}
+
+function getManualProvider(env: NodeJS.ProcessEnv = process.env): ManualPaymentProvider {
+  if (cachedManual) return cachedManual;
+  const secret = env.PAYMENT_CALLBACK_SECRET?.trim();
+  if (!secret) throw new Error("PAYMENT_CALLBACK_SECRET is required for the manual payment provider.");
+  cachedManual = new ManualPaymentProvider(secret);
+  return cachedManual;
+}
+
+function getMonerisProvider(env: NodeJS.ProcessEnv = process.env): MonerisPaymentProvider {
+  if (cachedMoneris) return cachedMoneris;
+  const config = readMonerisConfig(env);
+  if (!config) {
+    throw new Error("Moneris credentials are not configured.");
+  }
+  cachedMoneris = new MonerisPaymentProvider(config);
+  return cachedMoneris;
+}
+
+export function isMonerisConfigured(env: NodeJS.ProcessEnv = process.env) {
+  return Boolean(readMonerisConfig(env)) || demoIntegrationsEnabled(env);
+}
+
+/** Resolve the payment provider for a checkout session payment method. */
+export function resolvePaymentProvider(
+  paymentMethod: CheckoutPaymentMethod,
+  env: NodeJS.ProcessEnv = process.env
+): PaymentProvider {
+  if (paymentMethod === "card") return demoIntegrationsEnabled(env) ? getDemoProvider() : getMonerisProvider(env);
+  return getManualProvider(env);
+}
+
+/**
+ * @deprecated Use resolvePaymentProvider for checkout flows.
+ * Kept for backward compatibility in environments that still set PAYMENT_PROVIDER.
+ */
+export function getPaymentProvider(env: NodeJS.ProcessEnv = process.env): PaymentProvider {
+  const raw = env.PAYMENT_PROVIDER?.trim().toLowerCase();
+  if (raw === "moneris") return getMonerisProvider(env);
+  return getManualProvider(env);
+}
+
+/** Test helper to reset cached providers between cases. */
+export function resetPaymentProviderCache() {
+  cachedDemo = undefined;
+  cachedManual = undefined;
+  cachedMoneris = undefined;
+}

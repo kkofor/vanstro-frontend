@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NEXT_TELEMETRY_DISABLED: "1"
+      VANSTRO_STATIC_EXPORT: "true"
+      VANSTRO_ALLOW_FIXTURE_CATALOG: "true"
+      NEXT_PUBLIC_DEMO_READ_ONLY: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -57,17 +60,14 @@ jobs:
       - name: Generate Prisma client
         run: pnpm run db:generate
 
-      - name: Typecheck
-        run: pnpm run typecheck
-
-      - name: SEO and security checks
-        run: pnpm run qa:seo-security
+      - name: Run source QA
+        run: pnpm run qa:source
 
       - name: Build static site
         run: pnpm run build:pages
 
-      - name: Verify SEO artifacts
-        run: pnpm run qa:seo-artifacts
+      - name: Run artifact and browser QA
+        run: pnpm run qa:artifacts
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3

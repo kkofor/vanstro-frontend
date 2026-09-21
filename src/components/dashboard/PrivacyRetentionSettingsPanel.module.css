@@ -1,0 +1,192 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  max-width: 960px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+
+.header p {
+  margin: 0;
+  color: var(--vanstro-text-secondary, #5b6472);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding: 1rem;
+  border: 1px solid var(--vanstro-border, #d9dee7);
+  border-radius: 0.5rem;
+  background: var(--vanstro-surface, #ffffff);
+}
+
+.section h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.section h4 {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.section p {
+  margin: 0;
+  color: var(--vanstro-text-secondary, #5b6472);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.form input,
+.form select,
+.form textarea {
+  font: inherit;
+  padding: 0.375rem 0.5rem;
+  border: 1px solid var(--vanstro-border, #c9d0da);
+  border-radius: 0.375rem;
+  background: var(--vanstro-input, #ffffff);
+}
+
+.form textarea {
+  min-height: 4rem;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.error {
+  color: var(--vanstro-danger, #b42318);
+  font-size: 0.75rem;
+}
+
+.modalRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(15 23 42 / 0.45);
+}
+
+.dialog {
+  width: min(560px, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--vanstro-surface, #ffffff);
+  box-shadow: 0 18px 50px rgb(15 23 42 / 0.25);
+}
+
+.dialog h3 {
+  margin: 0;
+}
+
+.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.checkGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  font-size: 0.8125rem;
+  align-items: center;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table th,
+.table td {
+  padding: 0.375rem 0.5rem;
+  border-bottom: 1px solid var(--vanstro-border, #d9dee7);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table input,
+.table select {
+  font: inherit;
+  padding: 0.25rem 0.375rem;
+  border: 1px solid var(--vanstro-border, #c9d0da);
+  border-radius: 0.375rem;
+  background: var(--vanstro-input, #ffffff);
+  width: 100%;
+  min-width: 6rem;
+}
+
+.table th[scope="col"] {
+  font-weight: 600;
+  color: var(--vanstro-text-secondary, #5b6472);
+}
+
+.section fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid var(--vanstro-border, #d9dee7);
+  border-radius: 0.375rem;
+  margin: 0;
+}
+
+.section fieldset legend {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0 0.25rem;
+}

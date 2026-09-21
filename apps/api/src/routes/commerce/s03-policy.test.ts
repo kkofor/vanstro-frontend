@@ -1,0 +1,6 @@
+import assert from "node:assert/strict";import test from "node:test";
+import { S03_COMPILED_VALUE } from "../../dashboard/s03-settings.js";
+import { assertCommerceQuoteAllowed, commerceInventoryProjection, commerceOrderTransitionAllowed, quoteCommerceSandbox } from "./s03-policy.js";
+const resolved={value:S03_COMPILED_VALUE,generation:7,projectionState:"published" as const};
+test("S03 sandbox quote is policy-backed and aggregate-only",()=>{assert.deepEqual(quoteCommerceSandbox(resolved,{subtotalCents:10000,combinedTaxRate:.13,province:"ON",fulfillment:"delivery",guest:true}),{ok:true,generation:7,taxCents:1300,shippingCents:1500,totalCents:12800});});
+test("S03 checkout minimum and consumer projections use exact generation",()=>{const value={...S03_COMPILED_VALUE,commercePolicy:{...S03_COMPILED_VALUE.commercePolicy,minimumOrderAmountCents:5000}};assert.equal(assertCommerceQuoteAllowed({...resolved,value},{subtotalCents:4999,province:"ON",fulfillment:"pickup",guest:false}),"MINIMUM_ORDER_NOT_MET");assert.equal(commerceInventoryProjection(resolved).generation,7);assert.equal(commerceOrderTransitionAllowed(resolved,"paid","fulfilled"),true);assert.equal(commerceOrderTransitionAllowed(resolved,"fulfilled","paid"),false);});

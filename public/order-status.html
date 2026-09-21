@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Track your order · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<link rel="stylesheet" href="/account/assets/storefront-chrome.css">
+<style>
+  .site { background: var(--vs-bg-page); min-height: 100vh; }
+
+  /* Same shell as cart.html: content left, 360px summary right. */
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 24px 80px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; column-gap: 32px; row-gap: 14px; align-items: start; }
+  .page-title { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 0 2px 0; flex-wrap: wrap; }
+  .page-title h2 { font-size: 26px; line-height: 1.15; letter-spacing: -0.01em; }
+  .page-title p { color: var(--vs-text-3); font-size: 14px; margin-top: 4px; }
+  .page-title a { font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 4px; }
+  .os__main { display: grid; gap: 14px; min-width: 0; }
+  .os__side { position: sticky; top: calc(var(--header-h, 72px) + 20px); display: grid; gap: 12px; align-self: start; }
+  .card { border-radius: 12px; }
+  .os__main .card__head { padding: 18px 22px 0; }
+  .os__main .card__body { padding: 14px 22px 20px; }
+  .os__main .card__foot { padding: 14px 22px; }
+  .os__side .card__head { padding: 16px 18px 0; }
+  .os__side .card__body { padding: 14px 18px 16px; }
+  .card__head h3 { font-size: 17px; letter-spacing: -0.005em; }
+  .card__head .sub { color: var(--vs-text-3); font-size: 13px; margin-top: 3px; }
+  .field { margin-bottom: 0; }
+  .control { border-color: var(--vs-border-strong); }
+  .link-btn { background: none; border: 0; cursor: pointer; font: inherit; font-size: 13.5px; font-weight: 700; color: var(--vs-navy); text-decoration: underline; }
+
+  /* ---- lookup form ---- */
+  .lookup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+  .lookup__acts { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .lookup__acts .muted { max-width: 520px; }
+
+  /* ---- timeline ---- */
+  .tl { display: grid; gap: 0; margin-top: 4px; }
+  .tl__step { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; position: relative; padding-bottom: 18px; }
+  .tl__step:last-child { padding-bottom: 0; }
+  .tl__step::before { content: ""; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--vs-grey-100); }
+  .tl__step:last-child::before { display: none; }
+  .tl__step.is-done::before { background: var(--vs-green); }
+  .tl__dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--vs-grey-100); background: #fff; display: flex; align-items: center; justify-content: center; color: transparent; }
+  .tl__dot svg { width: 14px; height: 14px; }
+  .tl__step.is-done .tl__dot { background: var(--vs-green); border-color: var(--vs-green); color: #fff; }
+  .tl__step.is-cur .tl__dot { border-color: var(--vs-navy); box-shadow: 0 0 0 4px var(--vs-navy-50, rgba(15, 42, 68, .12)); }
+  .tl__step.is-cur .tl__dot::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--vs-navy); }
+  .tl__body { display: grid; gap: 2px; padding-top: 3px; }
+  .tl__body strong { font-size: 14.5px; }
+  .tl__body span { font-size: 13px; color: var(--vs-text-3); }
+  .tl__step.is-cur .tl__body strong { color: var(--vs-navy); }
+
+  /* ---- items ---- */
+  .it { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 14px; padding: 12px 0; border-top: 1px solid var(--vs-grey-100); align-items: center; }
+  .it:first-child { border-top: 0; padding-top: 4px; }
+  .it__img { width: 56px; height: 56px; border-radius: 8px; border: 1px solid var(--vs-grey-100); background: var(--vs-grey-50); display: flex; align-items: center; justify-content: center; color: var(--vs-text-3); }
+  .it__img svg { width: 22px; height: 22px; }
+  .it__meta { display: grid; gap: 2px; min-width: 0; }
+  .it__meta strong { font-size: 14px; line-height: 1.3; }
+  .it__meta span { font-size: 12.5px; color: var(--vs-text-3); }
+  .it__price { font-weight: 700; font-size: 14px; white-space: nowrap; }
+
+  .kv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; }
+  .kv h5 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--vs-text-3); margin: 0 0 6px; font-weight: 700; }
+  .kv div { font-size: 14px; line-height: 1.5; color: var(--vs-text-2); }
+  .kv b { color: var(--vs-text); }
+
+  .sum__lines .line { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; color: var(--vs-text-2); }
+  .sum__lines .line .v { font-weight: 600; color: var(--vs-text); }
+  .sum__total { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--vs-grey-100); margin-top: 8px; padding-top: 12px; }
+  .sum__total .k { font-weight: 700; }
+  .sum__total .v { font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+  .sum__total .cur { font-size: 12px; color: var(--vs-text-3); margin-left: 6px; }
+
+  .help { display: grid; gap: 8px; font-size: 13.5px; color: var(--vs-text-2); }
+  .help a { font-weight: 700; }
+
+  @media (max-width: 960px) {
+    .wrap { grid-template-columns: 1fr; }
+    .os__side { position: static; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 14px 14px 72px; }
+    .lookup { grid-template-columns: 1fr; }
+    .kv { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="site account-workspace">
+
+<header class="site-header" data-site-header></header>
+
+<div class="wrap">
+  <div class="page-title">
+    <div><h2 id="ttl">Track your order</h2><p id="sub">Enter your order number and the email you used at checkout.</p></div>
+    <a href="https://www.vanstro.ca/products/" id="shopLink">Continue shopping</a>
+  </div>
+
+  <main class="os__main">
+    <div id="alerts"></div>
+
+    <!-- ===== Lookup ===== -->
+    <section class="card" id="lookupCard">
+      <div class="card__head"><h3>Find your order</h3><p class="sub">Guest orders are not tied to an account — the confirmation email has a direct link, or look it up here.</p></div>
+      <div class="card__body">
+        <form class="lookup" id="lookupForm" novalidate>
+          <div class="field" id="fNo">
+            <label class="field__label" for="orderNo">Order number</label>
+            <div class="control"><span class="control__prefix" data-icon="search"></span><input id="orderNo" placeholder="VS-2026-004821-A3F9" autocomplete="off" spellcheck="false" autocapitalize="characters"></div>
+            <div class="field__hint" id="hNo">On your confirmation email and receipt.</div>
+          </div>
+          <div class="field" id="fEmail">
+            <label class="field__label" for="email">Email used at checkout</label>
+            <div class="control"><span class="control__prefix" data-icon="mail"></span><input id="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+            <div class="field__hint" id="hEmail"></div>
+          </div>
+          <div class="lookup__acts">
+            <p class="muted small">Have an account? <a class="js-login" data-redirect="/account#orders" href="/account/login" id="signInLink">Sign in</a> to see every order in one place.</p>
+            <button class="btn btn--primary" type="submit" id="lookupBtn"><span id="lookupLabel">Find order</span><span class="btn__icon" data-icon="arrowRight"></span></button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Order ===== -->
+    <section class="card hidden" id="statusCard">
+      <div class="card__head row row--between">
+        <div><h3 id="stTitle">Order VS-2026-004821</h3><p class="sub" id="stSub"></p></div>
+        <span class="chip" id="stChip"></span>
+      </div>
+      <div class="card__body">
+        <div class="tl" id="timeline"></div>
+      </div>
+      <div class="card__foot card__foot--split">
+        <button type="button" class="link-btn" id="lookupAgain" style="padding:0">Look up another order</button>
+        <div class="row" style="gap:8px;flex-wrap:wrap">
+          <button class="btn btn--secondary btn--sm" id="resendBtn"><span class="btn__icon" data-icon="mail"></span>Resend receipt</button>
+          <button class="btn btn--primary btn--sm" id="pdfBtn"><span class="btn__icon" data-icon="fileText"></span>Download invoice (PDF)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card hidden" id="itemsCard">
+      <div class="card__head row row--between"><h3>Items</h3><span class="muted small" id="itemsCount"></span></div>
+      <div class="card__body"><div id="items"></div></div>
+    </section>
+
+    <section class="card hidden" id="detailCard">
+      <div class="card__head"><h3>Delivery &amp; contact</h3></div>
+      <div class="card__body">
+        <div class="kv">
+          <div><h5 id="kShipH">Ship to</h5><div id="kShip"></div></div>
+          <div><h5>Delivery</h5><div id="kDeliv"></div></div>
+          <div><h5 id="kDealerH">Local dealer</h5><div id="kDealer"></div></div>
+          <div><h5>Payment</h5><div id="kPay"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guest → account (R7 entry point from the status page too) -->
+    <section class="card hidden" id="accountCard">
+      <div class="card__head row row--between"><h3>Keep this order in an account</h3><span class="chip chip--navy">Optional</span></div>
+      <div class="card__body"><p class="muted" style="margin:0">Create a password for <b id="acEmail"></b> and this order, its tax invoice and your address move into your account. Reorder in one click next time.</p></div>
+      <div class="card__foot" style="justify-content:flex-end"><a class="btn btn--primary btn--sm js-register" id="acCreate" href="/account/register"><span class="btn__icon" data-icon="user"></span>Create account</a></div>
+    </section>
+  </main>
+
+  <aside class="os__side">
+    <div class="card hidden" id="sumCard">
+      <div class="card__head row row--between"><h3>Order total</h3><span class="muted small" id="sumWhen"></span></div>
+      <div class="card__body">
+        <div class="sum__lines" id="sumLines"></div>
+        <div class="sum__total"><span class="k" id="lblTotal">Total paid</span><span><span class="v" id="sumTotal"></span><span class="cur">CAD</span></span></div>
+        <p class="muted small" id="sumInv" style="margin-top:10px"></p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card__head"><h3>Need help?</h3></div>
+      <div class="card__body help">
+        <div id="helpDealer">Pickup, delivery, returns and after-sales: contact your local dealer first — their details appear with your order.</div>
+        <div>Product or policy questions: <a href="mailto:support@vanstro.ca">support@vanstro.ca</a> · <a href="tel:+12042212288">204 221 2288</a></div>
+        <div class="muted small">Quote your order number so we can find it quickly.</div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer class="site-footer" data-site-footer></footer>
+
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script src="/account/assets/site-header.js"></script>
+<script src="/account/assets/site-footer.js"></script>
+<script src="/account/assets/moneris-client.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
+  const FR = /^\/fr(\/|$)/.test(location.pathname);
+  const COPY = FR
+    ? { docTitle: 'Suivre votre commande · VANSTRO', ttl: 'Suivre votre commande', sub: 'Entrez votre numéro de commande et le courriel utilisé à la caisse.' }
+    : { docTitle: 'Track your order · VANSTRO', ttl: 'Track your order', sub: 'Enter your order number and the email you used at checkout.' };
+  document.documentElement.lang = FR ? 'fr-CA' : 'en-CA';
+  document.title = COPY.docTitle;
+  VS.icons();
+  if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(FR);
+  const q = new URLSearchParams(location.search);
+  const setErr = (f, h, m) => { f.classList.add('is-error'); h.innerHTML = VS.I.alert + '<span></span>'; h.querySelector('span').textContent = m; };
+  const clr = (f, h, def) => { f.classList.remove('is-error'); h.textContent = def || ''; };
+  const cad = c => new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(c / 100);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const when = iso => new Date(iso).toLocaleString('en-CA', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Winnipeg' }) + ' CT';
+  const DELIV = { freight: ['Curbside freight', '7–10 days'], white: ['White-glove delivery', '10–14 days'], pickup: ['Dealer pickup', 'Ready in 2 days'] };
+  let order = null;
+
+  function alertBox(type, title, body) {
+    const ic = type === 'error' ? 'alert' : type === 'warning' ? 'warn' : 'checkCircle';
+    $('#alerts').innerHTML = `<div class="alert alert--${type}" role="alert"><span data-icon="${ic}"></span><div><strong>${title}</strong>${body}</div></div>`; VS.icons($('#alerts'));
+  }
+  const clearAlerts = () => { $('#alerts').innerHTML = ''; };
+
+  /* ---------------- render ---------------- */
+  function chipFor(s) {
+    return { paid: ['chip--green', 'Paid'], pending_payment: ['chip--orange', 'Awaiting payment'], declined: ['chip--error', 'Payment declined'], expired: ['', 'Expired'], cancelled: ['', 'Cancelled'] }[s] || ['', s];
+  }
+  function timeline(o) {
+    const paid = o.status === 'paid';
+    const pickup = o.deliveryMethod === 'pickup';
+    const d = o.dealer;
+    const steps = [
+      { k: 'placed', t: 'Order placed', s: when(o.createdAt), done: true },
+      { k: 'paid', t: paid ? 'Payment approved' : 'Payment', s: paid ? `${esc(o.payment.brand)} •••• ${esc(o.payment.last4)} · ${when(o.payment.paidAt)}` : chipFor(o.status)[1], done: paid },
+      { k: 'prep', t: d ? `${esc(d.name)} is preparing your order` : 'Vanstro is preparing your order', s: paid ? (pickup ? 'You’ll get an email when it’s ready at the counter.' : 'Freight is booked once everything is packed.') : 'Starts after payment.', done: false, cur: paid },
+      pickup
+        ? { k: 'ready', t: 'Ready for pickup', s: d ? `${esc(d.street)}, ${esc(d.city)} ${esc(d.province)} · ${esc(d.hoursEn)}` : '', done: false }
+        : { k: 'ship', t: 'Shipped', s: 'Tracking link arrives by email.', done: false },
+      { k: 'done', t: pickup ? 'Picked up' : 'Delivered', s: DELIV[o.deliveryMethod] ? `Estimated ${DELIV[o.deliveryMethod][1]}` : '', done: false },
+    ];
+    $('#timeline').innerHTML = steps.map(s => `<div class="tl__step${s.done ? ' is-done' : ''}${s.cur ? ' is-cur' : ''}"><span class="tl__dot">${s.done ? VS.I.check : ''}</span><div class="tl__body"><strong>${s.t}</strong><span>${s.s}</span></div></div>`).join('');
+  }
+  const addr = a => `<b>${esc(a.name)}</b>${a.company ? '<br>' + esc(a.company) : ''}<br>${esc(a.street)}${a.unit ? ', ' + esc(a.unit) : ''}<br>${esc(a.city)} ${esc(a.province)}&nbsp; ${esc(a.postalCode)}`;
+  function render(o) {
+    order = o;
+    const [cls, label] = chipFor(o.status);
+    $('#stTitle').textContent = 'Order ' + o.orderNo;
+    $('#stSub').textContent = `Placed ${when(o.createdAt)} · receipts to ${VS.maskEmail(o.email)}`;
+    $('#stChip').className = 'chip ' + cls; $('#stChip').textContent = label;
+    timeline(o);
+    $('#items').innerHTML = o.items.map(i => `<div class="it"><div class="it__img"><span data-icon="box"></span></div><div class="it__meta"><strong>${esc(i.name)}</strong><span>${esc(i.sku)}${i.variant ? ' · ' + esc(i.variant) : ''} · Qty ${esc(i.qty)}</span></div><span class="it__price">${cad(i.unitCents * i.qty)}</span></div>`).join('');
+    $('#itemsCount').textContent = o.items.reduce((s, i) => s + i.qty, 0) + ' items';
+    const pickup = o.deliveryMethod === 'pickup';
+    $('#kShipH').textContent = pickup ? 'Pick up at' : 'Ship to';
+    $('#kShip').innerHTML = pickup && o.dealer ? `<b>${esc(o.dealer.name)}</b><br>${esc(o.dealer.street)}<br>${esc(o.dealer.city)} ${esc(o.dealer.province)} ${esc(o.dealer.postalCode)}` : addr(o.shipping);
+    const dl = DELIV[o.deliveryMethod] || [esc(o.deliveryMethod), ''];
+    $('#kDeliv').innerHTML = `<b>${esc(dl[0])}</b><br>${esc(dl[1])}${o.quote.freightCents ? '<br>' + cad(o.quote.freightCents) : '<br>Free'}`;
+    $('#kDealerH').textContent = o.dealer ? 'Local dealer' : 'Fulfilled by';
+    $('#kDealer').innerHTML = o.dealer
+      ? `<b>${esc(o.dealer.name)}</b> <span class="chip chip--orange" style="vertical-align:middle">Independent dealer</span><br><a href="tel:+1${String(o.dealer.phone).replace(/\D/g, '')}">${esc(o.dealer.phone)}</a> · <a href="mailto:${encodeURIComponent(o.dealer.email)}?subject=${encodeURIComponent('Vanstro order ' + o.orderNo)}">${esc(o.dealer.email)}</a><br><span class="muted small">${esc(o.dealer.hoursEn)}</span>`
+      : `<b>Vanstro Global Supply Inc.</b><br>856 Century Street, Winnipeg MB R3H 0M5<br><a href="mailto:support@vanstro.ca">support@vanstro.ca</a>`;
+    $('#kPay').innerHTML = o.payment
+      ? `<b>${o.payment.wallet ? esc(o.payment.wallet) + ' · ' : ''}${esc(o.payment.brand)} •••• ${esc(o.payment.last4)}</b><br>Auth ${esc(o.payment.authCode || '—')} · Moneris ref. ${esc(o.payment.referenceNo || '—')}<br><span class="muted small">Seller: Vanstro Global Supply Inc.</span>`
+      : `<b>${esc(label)}</b><br><span class="muted small">Nothing has been charged.</span>`;
+    $('#helpDealer').innerHTML = o.dealer
+      ? `Pickup, delivery, returns and after-sales: contact <b>${esc(o.dealer.name)}</b> first at <a href="tel:+1${String(o.dealer.phone).replace(/\D/g, '')}">${esc(o.dealer.phone)}</a>.`
+      : 'Pickup, delivery, returns and after-sales for this order are handled directly by Vanstro.';
+    /* summary */
+    const qt = o.quote; let lines = `<div class="line"><span class="k">Subtotal</span><span class="v">${cad(qt.subtotalCents)}</span></div>`;
+    if (qt.discountCents) lines += `<div class="line"><span class="k">Discount${qt.promo ? ' · ' + esc(qt.promo.code) : ''}</span><span class="v" style="color:var(--vs-green)">− ${cad(qt.discountCents)}</span></div>`;
+    lines += `<div class="line"><span class="k">Delivery</span><span class="v">${qt.freightCents ? cad(qt.freightCents) : 'Free'}</span></div>`;
+    qt.tax.lines.forEach(t => { lines += `<div class="line"><span class="k">${t.labelEn}</span><span class="v">${cad(t.cents)}</span></div>`; });
+    $('#sumLines').innerHTML = lines;
+    $('#lblTotal').textContent = o.status === 'paid' ? 'Total paid' : 'Total';
+    $('#sumTotal').textContent = cad(qt.totalCents);
+    $('#sumWhen').textContent = o.status === 'paid' && o.payment ? when(o.payment.paidAt) : '';
+    $('#sumInv').textContent = o.invoiceNo ? `Tax invoice ${o.invoiceNo} · GST/HST ${qt.tax.gstHstBn}` : (o.status === 'paid' ? 'Tax invoice pending' : 'Invoice is issued once payment is approved.');
+    $('#resendBtn').disabled = o.status !== 'paid'; $('#pdfBtn').disabled = !o.invoiceNo;
+    /* guest → account */
+    $('#accountCard').classList.toggle('hidden', !o.guest || (window.VSSession && VSSession.isSignedIn()));
+    $('#acEmail').textContent = o.email;
+    const tok = (window.VSSession && VSSession.orderToken(o.orderNo)) || q.get('t');
+    $('#acCreate').setAttribute('data-query', '?order=' + encodeURIComponent(o.orderNo) + '&email=' + encodeURIComponent(o.email) + '&from=status' + (tok ? '&t=' + encodeURIComponent(tok) : ''));
+    if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(FR);
+
+    $('#ttl').textContent = 'Your order'; $('#sub').textContent = 'Live status from Vanstro. Bookmark this page — the link in your confirmation email opens it directly.';
+    $('#lookupCard').classList.add('hidden');
+    ['#statusCard', '#itemsCard', '#detailCard', '#sumCard'].forEach(s => $(s).classList.remove('hidden'));
+    VS.icons();
+    window.scrollTo({ top: 0 });
+  }
+  function showLookup() {
+    order = null;
+    $('#ttl').textContent = COPY.ttl; $('#sub').textContent = COPY.sub;
+    $('#lookupCard').classList.remove('hidden');
+    ['#statusCard', '#itemsCard', '#detailCard', '#sumCard', '#accountCard'].forEach(s => $(s).classList.add('hidden'));
+  }
+
+  /* ---------------- actions ---------------- */
+  async function open(orderNo) {
+    try { render(await VSMoneris.getOrder(orderNo)); return true; }
+    catch (e) { return false; }
+  }
+  $('#lookupForm').addEventListener('submit', async e => {
+    e.preventDefault(); clearAlerts();
+    const no = $('#orderNo').value.trim().toUpperCase(); const em = VS.detectIdentifier($('#email').value);
+    let ok = true;
+    if (!/^VS-\d{4}-\d{6}(?:-[A-F0-9]{4})?$/.test(no)) { setErr($('#fNo'), $('#hNo'), 'Order numbers look like VS-2026-004821-A3F9.'); ok = false; }
+    if (!(em.type === 'email' && em.valid)) { setErr($('#fEmail'), $('#hEmail'), 'Enter the email you used at checkout.'); ok = false; }
+    if (!ok) return;
+    $('#lookupBtn').classList.add('is-loading'); $('#lookupBtn').disabled = true;
+    try { const r = await VSMoneris.lookupOrder(no, em.normalized); render(r.order); }
+    catch (err) {
+      if (err.status === 404) alertBox('error', 'We couldn’t find that order', 'Check the order number and make sure the email is the one you used at checkout. Both must match.');
+      else if (err.status === 429) alertBox('warning', 'Too many attempts', 'Please wait a few minutes before trying again.');
+      else alertBox('error', 'Something went wrong', (err.body && (err.body.message || err.body.error)) || err.message || 'Please try again.');
+    }
+    finally { $('#lookupBtn').classList.remove('is-loading'); $('#lookupBtn').disabled = false; }
+  });
+  $('#orderNo').addEventListener('input', () => clr($('#fNo'), $('#hNo'), 'On your confirmation email and receipt.'));
+  $('#email').addEventListener('input', () => clr($('#fEmail'), $('#hEmail')));
+  $('#lookupAgain').addEventListener('click', () => { showLookup(); history.replaceState(null, '', location.pathname); $('#orderNo').focus(); });
+  $('#resendBtn').addEventListener('click', async () => {
+    if (!order) return; $('#resendBtn').disabled = true;
+    try { const r = await VSMoneris.resendReceipt(order.orderNo, { kind: 'invoice' }); VS.toast('Tax invoice re-sent to ' + VS.maskEmail(r.to)); }
+    catch (e) { VS.toast(e.status === 429 ? 'Resend limit reached (3 per hour). Try later.' : 'Resend failed: ' + ((e.body && e.body.error) || e.message), 'error'); }
+    finally { $('#resendBtn').disabled = false; }
+  });
+  $('#pdfBtn').addEventListener('click', async () => {
+    if (!order) return; const btn = $('#pdfBtn'); btn.disabled = true;
+    try {
+      const r = await fetch(VSMoneris.invoicePdfUrl(order.orderNo), { credentials: 'same-origin', headers: (window.VSSession && VSSession.headers(order.orderNo)) || {} });
+      if (!r.ok) { const body = await r.json().catch(() => ({})); throw new Error(body.error || r.statusText); }
+      const blob = await r.blob(); const cd = r.headers.get('content-disposition') || ''; const m = cd.match(/filename="?([^";]+)"?/i);
+      const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = (m && m[1]) || ('Vanstro-' + order.orderNo + '.pdf'); document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    } catch (e) { VS.toast('Could not download invoice: ' + e.message, 'error'); }
+    finally { btn.disabled = false; }
+  });
+
+  /* ---------------- boot ----------------
+     ?o=VS-…&t=<token>  signed link from the confirmation email / page → remember the token, open the order.
+     ?o=VS-…            signed-in owner, or a guest whose token is already in localStorage.
+     otherwise          the lookup form; last guest order pre-filled. */
+  (async () => {
+    const o = (q.get('o') || '').toUpperCase(); const t = q.get('t');
+    if (o && t && window.VSSession) VSSession.setOrderToken(o, t);
+    if (o) {
+      if (await open(o)) { if (t) history.replaceState(null, '', location.pathname + '?o=' + encodeURIComponent(o)); return; }
+      $('#orderNo').value = o;
+      alertBox('warning', 'Please confirm it’s you', 'Enter the email you used at checkout to open this order.');
+    }
+    try {
+      const last = JSON.parse(localStorage.getItem('vs.lastOrder') || 'null');
+      if (last && !$('#orderNo').value) { $('#orderNo').value = last.orderNo; $('#email').value = last.email; }
+      else if (last && last.orderNo === $('#orderNo').value) $('#email').value = last.email;
+    } catch (e) {}
+    showLookup();
+  })();
+})();
+</script>
+</body>
+</html>

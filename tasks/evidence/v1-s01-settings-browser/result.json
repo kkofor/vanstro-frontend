@@ -1,0 +1,1658 @@
+{
+  "suiteId": "vanstro.s01.settings.desktop.v1",
+  "testedCommit": "5aa513af1d25c8495471eb4df00f110b4013cfba",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "counts": {
+    "pass": 15,
+    "fail": 0
+  },
+  "cases": [
+    {
+      "id": "S01-B01",
+      "name": "Login",
+      "status": "pass",
+      "evidence": "session established"
+    },
+    {
+      "id": "S01-B02",
+      "name": "Settings overview",
+      "status": "pass",
+      "evidence": "Settings module rendered"
+    },
+    {
+      "id": "S01-B03",
+      "name": "Registry search",
+      "status": "pass",
+      "evidence": "core descriptor found"
+    },
+    {
+      "id": "S01-B04",
+      "name": "Invalid draft blocked",
+      "status": "pass",
+      "evidence": "field blockers; no publish"
+    },
+    {
+      "id": "S01-B05",
+      "name": "Create draft",
+      "status": "pass",
+      "evidence": "draft created and selected"
+    },
+    {
+      "id": "S01-B06",
+      "name": "Validate and safe diff",
+      "status": "pass",
+      "evidence": "validated; redacted diff"
+    },
+    {
+      "id": "S01-B07",
+      "name": "Atomic publish",
+      "status": "pass",
+      "evidence": "publication visible"
+    },
+    {
+      "id": "S01-B08",
+      "name": "Effective overview update",
+      "status": "pass",
+      "evidence": "effective publication version updated"
+    },
+    {
+      "id": "S01-B09",
+      "name": "Rollback draft",
+      "status": "pass",
+      "evidence": "rollback creates draft, no history rewrite"
+    },
+    {
+      "id": "S01-B10",
+      "name": "Publish rollback",
+      "status": "pass",
+      "evidence": "rollback publication appended"
+    },
+    {
+      "id": "S01-B11",
+      "name": "CAS conflict",
+      "status": "pass",
+      "evidence": "409 shown; mutation stopped"
+    },
+    {
+      "id": "S01-B12",
+      "name": "Forbidden profile",
+      "status": "pass",
+      "evidence": "protected mutation controls absent"
+    },
+    {
+      "id": "S01-B13",
+      "name": "Degraded readiness",
+      "status": "pass",
+      "evidence": "degraded rendered"
+    },
+    {
+      "id": "S01-B14",
+      "name": "Audit/redaction",
+      "status": "pass",
+      "evidence": "Audit integrated by contract; no secrets"
+    },
+    {
+      "id": "S01-B15",
+      "name": "Post logout",
+      "status": "pass",
+      "evidence": "authenticated Settings absent"
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/login"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/login/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/generated/support-agent-v1-192.webp"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903387712"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903387712"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903387712"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/account/login/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/?_rsc=N1yRxwEy46VHE5U_"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/36971c680c391013.webpack.hot-update.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/webpack.36971c680c391013.hot-update.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/09f7be7385d100b6.webpack.hot-update.json"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/account/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/webpack.09f7be7385d100b6.hot-update.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/?_rsc=ivGPYOBxIOB8CFz0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903389952"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/addresses"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/orders?page=1&pageSize=3"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/addresses"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/orders?page=1&pageSize=3"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903390295"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903390295"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903390295"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903390295"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/validate"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/diff"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/publish"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history/publication-001/rollback-draft"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/validate"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/diff"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/publish"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903394900"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903394900"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903394900"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903394900"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903395821"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903395821"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903395821"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903395821"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/authorization"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903396725"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903396725"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903396725"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903396725"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/generated/support-agent-v1-192.webp"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me"
+    }
+  ],
+  "responses": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/login",
+      "status": 308
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/login/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/generated/support-agent-v1-192.webp",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903387712",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903387712",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/account/login/page.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903387712",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview",
+      "status": 308
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/36971c680c391013.webpack.hot-update.json",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/webpack.36971c680c391013.hot-update.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/?_rsc=N1yRxwEy46VHE5U_",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/09f7be7385d100b6.webpack.hot-update.json",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/webpack/webpack.09f7be7385d100b6.hot-update.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/account/?_rsc=ivGPYOBxIOB8CFz0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903389952",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/account/page.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/addresses",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/orders?page=1&pageSize=3",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/addresses",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/orders?page=1&pageSize=3",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903390295",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903390295",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903390295",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903390295",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/authorization",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/validate",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/diff",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-001/publish",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history/publication-001/rollback-draft",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/validate",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/diff",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts/draft-002/publish",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+      "status": 409
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview",
+      "status": 308
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903394900",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903394900",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903394900",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903394900",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903395821",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903395821",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903395821",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903395821",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/authorization",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview",
+      "status": 308
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/dashboard/settings/overview/",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app-pages-internals.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/layout.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/dashboard/settings/%5Bview%5D/page.css?v=1785903396725",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/css/app/layout.css?v=1785903396725",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/not-found.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/app/dashboard/settings/%5Bview%5D/page.js",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/webpack.js?v=1785903396725",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/_next/static/chunks/main-app.js?v=1785903396725",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/vanstro-logo.png",
+      "status": 304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/cart",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/account/favorites",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4510/assets/generated/support-agent-v1-192.webp",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4511/api/v1/auth/me",
+      "status": 401
+    }
+  ],
+  "rawEvidence": {
+    "consoleErrors": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 409 (Conflict)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      }
+    ],
+    "failedRequests": [
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+        "failure": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  "expectedEvidence": {
+    "consoleErrors": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 409 (Conflict)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+      }
+    ],
+    "failedRequests": [
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/drafts",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/history",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/overview",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/registry",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/settings/readiness",
+        "failure": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4511/api/v1/dashboard/foundation",
+        "failure": "net::ERR_ABORTED"
+      }
+    ]
+  },
+  "unexpectedEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  }
+}

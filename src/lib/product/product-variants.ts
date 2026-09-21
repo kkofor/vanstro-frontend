@@ -1,11 +1,12 @@
-import type { ProductSummary } from "@/lib/api/api-contract";
+import type { ProductSummary } from "../api/api-contract.ts";
+import { findFinishOptionByIdentity, inferFinishColorName } from "./product-finish-options.ts";
 
 export function resolveProductVariant<T extends ProductSummary>(
   product: T,
   selectedFinishName?: string
 ): T {
   const selectedFinish =
-    product.finishOptions?.find((option) => option.name === selectedFinishName) ??
+    findFinishOptionByIdentity(product.finishOptions ?? [], selectedFinishName) ??
     product.finishOptions?.find((option) => option.active);
 
   if (!selectedFinish) return product;
@@ -17,17 +18,29 @@ export function resolveProductVariant<T extends ProductSummary>(
       ? [selectedImage, ...product.images.filter((image) => image.url !== selectedImage.url)]
       : product.images;
   const sku = selectedFinish.sku ?? product.sku;
+  const colorName = inferFinishColorName(selectedFinish);
+  const variantPrice = selectedFinish.price ?? product.price;
+  const commerce = product.commerce && selectedFinish.price
+    ? {
+        ...product.commerce,
+        pricing: {
+          ...product.commerce.pricing,
+          basePrice: variantPrice,
+          currentPrice: variantPrice
+        }
+      }
+    : product.commerce;
 
   return {
     ...product,
     id: sku === product.sku ? product.id : `${product.id}-${sku}`,
     sku,
-    manufacturerPartNumber:
-      selectedFinish.manufacturerPartNumber ?? product.manufacturerPartNumber,
-    finish: selectedFinish.name,
-    colorName: selectedFinish.name,
+    manufacturerPartNumber: selectedFinish.manufacturerPartNumber ?? product.manufacturerPartNumber,
+    finish: colorName,
+    colorName,
     colorHex: selectedFinish.colorHex ?? product.colorHex,
-    price: selectedFinish.price ?? product.price,
+    price: variantPrice,
+    ...(commerce ? { commerce } : {}),
     dimensions: selectedFinish.dimensions ?? product.dimensions,
     images: variantImages,
     ...(selectedFinish.description ? { description: selectedFinish.description } : {}),

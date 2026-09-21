@@ -1,0 +1,10 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+const panel = readFileSync(new URL("./AnalyticsFoundationPanel.tsx", import.meta.url), "utf8"), contract = readFileSync(new URL("../../lib/dashboard/p10-analytics.ts", import.meta.url), "utf8"), shell = readFileSync(new URL("./DashboardF0Shell.tsx", import.meta.url), "utf8"), content = readFileSync(new URL("./DashboardF0ReadOnlyContent.tsx", import.meta.url), "utf8");
+
+test("P10 mounts release route with explicit invalid state", () => { assert.match(shell, /analyticsLocation\.kind === "invalid"/); assert.match(content, /if \(analyticsLocation\) return <AnalyticsFoundationPanel/); assert.match(panel, /DASHBOARD_F1_PHASE_B_ROUTES\.analyticsReleasePrefix/); assert.match(panel, /analytics\.release\.read/); });
+test("P10 removes raw-event and request-time metric consumers", () => { assert.doesNotMatch(panel, /\/events|validateMetric|foundation\.events\.count|request-time/); assert.doesNotMatch(contract, /"events"|"metrics"|validateMetric|window|category/); assert.match(panel, /原始事件浏览和请求时即时Metric已经移除/); });
+test("P10 fences actor changes and denied profiles before request", () => { assert.match(panel, /if \(!canReadRelease \|\| !location\.releaseDay\)/); assert.match(panel, /actorRef\.current !== actor/); assert.match(panel, /AbortController/); assert.match(panel, /response\.status === 401/); });
+test("P10 validates and renders multiple families with disabled ingestion", () => { assert.match(panel, /validateReleaseFamilies/); assert.match(panel, /families\.map/); assert.match(panel, /family\.metricDefinitionVersion/); assert.match(panel, /DASHBOARD_ANALYTICS_INGESTION_STATE/); assert.match(panel, /Ingestion 当前明确禁用/); });
+test("P10 presents empty suppressed published and completeness states distinctly", () => { for (const text of ["当前发布family为空", "受隐私阈值抑制", "受隐私保护", "无贡献", "已发布", "迟到事件不计入", "尚未完整"]) assert.match(panel, new RegExp(text)); assert.match(contract, /suppressed/); assert.match(contract, /publishedValue !== null/); });

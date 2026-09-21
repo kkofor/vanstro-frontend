@@ -1,0 +1,42 @@
+V11-R1 P7 — migration70 blocker extract (path: fresh)
+schemaVersion: v11-r1-p7-run-1
+runId: 20260811T164305Z-1006d85c
+generatedAt: 2026-08-11T16:43:06Z
+testedCandidateKind: working-tree
+testedCommit: f9520ecef495b7c13210bd17aa26508ea2aee406
+testedTree: 31f85bdba8870c0942c2e5468a33709827794e04
+baseHead: f9520ecef495b7c13210bd17aa26508ea2aee406
+baseTree: 31f85bdba8870c0942c2e5468a33709827794e04
+migration69Sha: 07c2591b57b27f08573348e3601601c2dc0ecc74e61f8ba27d29d3258231d051
+migration70Sha: 5789b68576b375bc94adec6373b6c02a976c3e5a3813697c5bbadf266977713b
+candidateManifestSha: 382946cfc2ae27f4a7974288ee31f0d67c970e69ddcbeda5a12429b7fd10ef6c
+harnessSha: db21322c31068d3817b4700a2b29edc452a259bdbea15e9f0c08957226292581
+conformanceSha: 9121bc6bc09c8d08cb333cc4045b99103ff440e628a75c01a3295861f979d479
+postgresImage: postgres:16-bookworm
+postgresImageId: 92620daddcd947f8d5ab5ba66e848702fe443d87fed30c4cea8e389fd78dfc55
+prismaVersion: Prisma schema loaded from prisma/schema.prisma
+runnerRoleAttributes: vanstro_migrator:LOGIN,NOINHERIT,NOSUPERUSER,NOCREATEDB,NOCREATEROLE,NOREPLICATION,NOBYPASSRLS;cap-role memberships WITH ADMIN OPTION;owner of database+public schema;runner=prisma migrate deploy over 127.0.0.1 TCP
+migration: 20260804110000_f1_v15_phase_b
+applied: 69
+failedMigration: 20260804110000_f1_v15_phase_b
+pass2 first error: sqlState=P0001 signature=PL/pgSQL function f1_consume_no_old_instances_v2(...) message=ATTESTATION_EXPECTED_SET_EMPTY
+pass2 first error query:
+pass2 first error context: PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE
+pass3 first error: sqlState=P0001 signature=PL/pgSQL function f1_consume_no_old_instances_v2(...) message=ATTESTATION_EXPECTED_SET_EMPTY
+pass3 first error query:
+pass3 first error context: PL/pgSQL function f1_consume_no_old_instances_v2(text,text,text) line 1 at RAISE
+ledger: applied=69 failed=[20260804110000_f1_v15_phase_b] rolledBack=[20260804100000_f1_v15_expand,20260804110000_f1_v15_phase_b]
+resolveRationale: EXPECTED_BLOCKER_REPRODUCED: pass3 deploy stopped at migration 70 with applied=69; fixture intentionally absent; no resolve performed after pass3 (final evidence state)
+--- bounded deploy-pass3 log tail (sanitized) ---
+Prisma schema loaded from prisma/schema.prisma
+Datasource "db": PostgreSQL database "vanstro_p7_drill_fresh", schema "public" at "127.0.0.1:52300"
+
+81 migrations found in prisma/migrations
+
+Applying migration `20260804110000_f1_v15_phase_b`
+Error: ERROR: current transaction is aborted, commands ignored until end of transaction block
+   0: schema_commands::commands::apply_migrations::Applying migration
+           with migration_name="20260804110000_f1_v15_phase_b"
+             at schema-engine/commands/src/commands/apply_migrations.rs:95
+   1: schema_core::state::ApplyMigrations
+             at schema-engine/core/src/state.rs:260

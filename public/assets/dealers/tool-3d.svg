@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" fill="none">
+  <title>Abstract isometric cube suggesting three-dimensional space</title>
+  <rect width="480" height="320" fill="#f1f4f3"/>
+  <g stroke="#0d4544" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M240 70 L340 128 L340 228 L240 286 L140 228 L140 128 Z"/>
+    <path d="M240 70 L240 170"/>
+    <path d="M140 128 L240 170 L340 128"/>
+    <path d="M240 170 L240 286"/>
+    <path d="M190 149 L240 178 L290 149" stroke="#2a4d51"/>
+  </g>
+</svg>

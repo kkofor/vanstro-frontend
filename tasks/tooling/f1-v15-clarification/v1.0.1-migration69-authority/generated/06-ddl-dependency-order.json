@@ -1,0 +1,361 @@
+{
+  "ddlNodes": [
+    {
+      "dependsOn": [],
+      "id": "ddl69.assert_baseline_hashes_and_external_roles",
+      "migration": 69,
+      "objectRefs": [
+        "migrations1-68 checksums",
+        "vanstro_worker_runtime attributes"
+      ],
+      "operation": "assert_baseline_hashes_and_external_roles",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "DO $$BEGIN IF to_regclass('public.f1_source_migration_manifest') IS NULL OR (SELECT count(*) FROM public.f1_source_migration_manifest)<>68 OR EXISTS(SELECT name,checksum FROM (VALUES ('20260708223336_init','f7515d31fe92caa17043e65292677ff86666a17ecb135fa4121708e1a4ff1987'),('20260708224802_p0_hardening_p1a_catalog','a7dc51f9f98e7ea2636eabe565d03fee0db36f487c909c57595755614d76a6af'),('20260708232835_p1b_submissions_reviews','b42956d55a3c35018b03a76fced32fde5e49dcaf9a08b77bee3b8047c94dbed6'),('20260714100000_p2_commerce','d3d14dcbcadf1c83dca1033f1672c709bf5e6aad164a72136d820d29476a405f'),('20260714101000_p2_order_status_events','ad98e09f0665c150fc570dcac67e8a50806e485e11509f7521d51676c8a366db'),('20260714110000_p2_audit_hardening','b62f59748d6e7e5ee458c2844a1465b082e688849b1141d87c7776334f3241bc'),('20260714183000_p3_mcp_invocations','54a20861b3a8c0f89c6ae1cecb43ee7a0a7cf3d4a85249728ccec3e1928c769a'),('20260714190000_p3_privacy_consent','43a1da58a4d0269f67fe6dd7cc76cab479c25290e101247ff8b041b8527317b2'),('20260725090000_checkout_contact_payment','f931552fda6f50fab8b309c35e1318f0adb115ee6771cc3e753a6f7a5426dd62'),('20260725120000_privacy_consent_retention_index','3f7d6526e3ad1232c8fc0196d03fbf0106393093cf856a267a70a31fede6eb0d'),('20260725130000_privacy_consent_action','f621d655c988f8f828efe9ad90f39adb38a012ddd085293a14b284e453b8028e'),('20260725143000_contact_lead_locale','5fa4303b37f2e62a307f6d6ce4ce561d403bd0a9bc2873aecc2567d0c6ea845a'),('20260726034112_tax_rates','05354fa19c7c29bbabb810947bae9d956cca0e47dd0730fe0ec9f18861bedf92'),('20260726035744_cms_content','6c444ba14971f8510799d1cb49786f563164f6e50adc5c9f30fe24960ed46d3f'),('20260726054147_dashboard_product_fields','d89f507d377f0d43dc2b950a21d661a71c044ada8a562bb8addb53ef439ad71e'),('20260726120000_erp_product_mapping_ids','933b7953fe80bf5a973c4e50b3995fa358c0a39ac73c411fa5534f432e922913'),('20260726140000_commerce_inventory_hardening','6d45f4b407cba6cf09c48eabc22e59ed2c92e38242861e280f09c5ec5aa9e5e3'),('20260727000000_query_performance_indexes','7bb2cc44363baeb8334dd5fbf430e739bdb1bf101277e7d4ebc0d3fd1e8a6682'),('20260727120000_pg_trgm_search','458b4a38d8b622db0bbbd4dfefacff3b9713d937295dbc1f7656e9685f4f9726'),('20260728120000_website_crm','e6967065ce52761c152dbc49d044c82c897187fed3fa74c9f6d727541eb344d3'),('20260729120000_checkout_shipping_address','945b466b042d9cad04473578941e2c71098c1430789616ea3ce478fdf2a002b8'),('20260729180000_ops_pageviews_catalog_sync','9231cf2207ffbc5bffadedd480b6237dba1c5220cea5683266f8544a2a0317dc'),('20260730100000_inventory_nonnegative_constraints','70b8887743ada91b6f2a22882c02d769887b8fb28a96b9f5be8b49ed2349c57e'),('20260730110000_checkout_idempotency','db0c04d64c735c415f45b80cbc21e0250f1661e2afdcd498c2492e3b77afda70'),('20260730120000_payment_reconciliation','32cb0bc565e4e21d13f92cf7a095445befc838a7ebe506996882de0ff844dbff'),('20260730130000_checkout_payment_init','8bc9a5a57d485c75dd61e62a94f999965a87bdc047ab0f836e1bdbf97adb2425'),('20260730135000_catalog_sync_cleanup','71ab3ef8cf2927b09f3342784bf06c6c9b86fe230409cc94c744a92837f7be1a'),('20260730140000_catalog_sync_singleton','611152fa42e034ef0594ef1ce53291e342e41f1f2b880b8e29a5fbd1c4cbaf6f'),('20260730160000_distributed_rate_limits','209d4ea74684110a2e42b36a2465ac0b03f1da4c5dfb1550332a2fede581f19a'),('20260730170000_relational_indexes','a01c6133caad22230e1199fde9809fba1aaead274ff20424896187e68a3d720f'),('20260730180000_tax_price_effectivity','7161720672c8b593d8d55f802151dced2cc0402508808aea9a89d3b087658544'),('20260730190000_guest_token_expiry','152a324a42a104f4f14fe0cb9628abb3f5a9e9d130010c8fd86ea88ce0c41b39'),('20260730210000_privacy_requests','0b6933437ab019d2e5914a66eba73da64bdce7f9114f705d05e111caf5542376'),('20260730220000_checkout_promotions','ce4481a20e43dc45c89265adc1a1ecba7152637dda1196b7cf00811fdf46500d'),('20260730230000_financial_invariants','e16ffa18ed349e813725f231676e74e92ba5868100aefb77fcea82c7d1850c4a'),('20260730240000_crm_ownership_tasks','22739d71fe6847e17bb482ce44741037025ab564649158d868ca48d289edb99e'),('20260730250000_catalog_sync_global_singleton','6920b9c80c7f802bee3792b5394e0b1b95797431d64902a3497c70300908b5f6'),('20260730260000_production_rbac_bootstrap','f765271d3926d426afdc9f6168e5a4fcc0e7e06dd22a75a62a8090652331286e'),('20260730270000_provider_refund_processing','41cc58dec2c17572c12fcd9f360ba7f99bd6eb1ced3da44634bde7bf04cc6885'),('20260730280000_worker_heartbeat','35ad2c812127c20f0245c6fe78b58c9e7cbac49f96a4681565e462f216491a85'),('20260730290000_password_reset_tokens','4d0efbf4c9003c0ce7aea332545e4cf14f571c88739663c805ba0d2040c3f77e'),('20260731310000_dashboard_p02_identity_scope','16bddca6798c27eb943209fa85d0ef75c9141bba2baa9bdb16eee4698f6134ff'),('20260802120000_dashboard_p04_audit_foundation','eca3143f7d3198da5186885355054a0543929545ce1a7b9dbc0278804b9a1c91'),('20260802130000_dashboard_p05_async_job_foundation','a6e7dac74fb05dc3b5fa7579d8aee2222b7631f241bcf1fee38b3bd80dd7d0f5'),('20260802131000_dashboard_p05_audit_resource_compatibility','07daf7ffca34a5c39bd469201dc18de55a2f596c326a9c0b99578cc8f3b3219c'),('20260802132000_dashboard_p05_attempt_fencing','eece9393f6e1729dac19e9b1e6ad3f5d15a3b9da538137ce8bab33917458d49c'),('20260802140000_dashboard_p06_work_queue_notifications','0d0eab8aec56386465ccda3fe12fb55307d8434642e13ac8d017ee8e4ce84679'),('20260802141000_dashboard_p06_identity_guards','ad3b03b04b9fe61f0f91c9448e8704dcea2ddd3e0453fbdcc388acdf9f14eab5'),('20260802142000_dashboard_p06_typed_transition_guards','b75170b6be4c68f6617f2933e2cce27ef7e67b994d11c63ada43d46d1656dee4'),('20260802143000_dashboard_p06_exact_transition_families','c775915c597047e11f2c780eddf2f6cc8e08cb50151397b6d5bb59d18728d9c5'),('20260802144000_dashboard_p06_observation_guard','02996ae2b25e4ae4b4e81b9b93b23577f84669764e14e2de5cf05d8e06ed15a7'),('20260802145000_dashboard_p06_action_guards','723ff4960c1e8f699729ac2d97126c097893e3c8d85d9933652ff85e876ffdc9'),('20260802146000_dashboard_p06_reopen_assignment_guard','9de8aa14b707c31cc9726362ec40ab64416c73d328674bbaae194a096cf3a687'),('20260802147000_dashboard_p06_reason_registry_guards','64539e67329683c2c651b8d183129898b52444cffb61d9df63288235417b3b6f'),('20260802148000_dashboard_p06_expiry_policy_guard','0d0b3ee77699a93489d3645cfb97acb7f4149a2cf6a27d8cbf922712db55de8d'),('20260802150000_dashboard_p07_media_library_foundation','3319634df960a24c23f64bd26c4bef0169438cf3626dda32dcfa079c2106e413'),('20260802151000_dashboard_p07_p05_p06_registry_extensions','14ef85ea337145b07333046f04c15f91a6271e2c07f997939fedf3e3c29c2c6b'),('20260802152000_dashboard_p07_consolidated_guards','2670324b81c180ad70d42df726d92871546fdbc45374833c19ca327eefd7fe38'),('20260802153000_dashboard_p07_media_role_boundary','3cb2a3248f3f6d625cb1522dedeac12cfced4625cb572a6021ae18ca584d1f77'),('20260802154000_dashboard_p07_retry_retention','e21c71a427413675719fa25c22f64cdbd65d4b400624ce8a9a10937b5120f2c3'),('20260802155000_dashboard_p07_source_operation_binding','3662535ddce270f4a251c784d55deb8e7373ba3eae8b04fdd6e00ccb44e77af3'),('20260802156000_dashboard_p07_source_binding_audit_metadata','ed56e2d7e919dcca6d12913bb4c502bffd2e53a60cdae40d0c8975b4ac51e3a1'),('20260803100000_dashboard_p08_import_export_foundation','be8770e4eee6ed6889ab520b98cea2d87924c9a419b45cf0687233d20053b4d4'),('20260803110000_dashboard_p08_runtime_permission_boundary','d6ead56d787ff59cbffe0b12dd7172194ec4f94a27c6df4a3afd78fa6a8e426a'),('20260803120000_dashboard_p09_runtime_foundation','c8071f3e549633c1126a988d36d3de5d612734bc11999a18fb0140aed34039fa'),('20260803130000_dashboard_p09_worker_lifecycle_authority','a5a7ded9ac25d9d592b7c0f7791f803be63ecbdb4653ec2ed35c2150207a8dd5'),('20260803140000_dashboard_p10_analytics_foundation','9f44f2b7bb0a8301a53a09835bb66bbb40fd78d46cae2f2c4ce5891462dd010b'),('20260803150000_dashboard_p10_audit_atomicity','2cf72cadb5c560d221acfdcf7b85fd2a616d915ada54311ca10572fa8b12dbe4')) v(name,checksum) EXCEPT SELECT name,checksum FROM public.f1_source_migration_manifest) OR EXISTS(SELECT name,checksum FROM public.f1_source_migration_manifest EXCEPT SELECT name,checksum FROM (VALUES ('20260708223336_init','f7515d31fe92caa17043e65292677ff86666a17ecb135fa4121708e1a4ff1987'),('20260708224802_p0_hardening_p1a_catalog','a7dc51f9f98e7ea2636eabe565d03fee0db36f487c909c57595755614d76a6af'),('20260708232835_p1b_submissions_reviews','b42956d55a3c35018b03a76fced32fde5e49dcaf9a08b77bee3b8047c94dbed6'),('20260714100000_p2_commerce','d3d14dcbcadf1c83dca1033f1672c709bf5e6aad164a72136d820d29476a405f'),('20260714101000_p2_order_status_events','ad98e09f0665c150fc570dcac67e8a50806e485e11509f7521d51676c8a366db'),('20260714110000_p2_audit_hardening','b62f59748d6e7e5ee458c2844a1465b082e688849b1141d87c7776334f3241bc'),('20260714183000_p3_mcp_invocations','54a20861b3a8c0f89c6ae1cecb43ee7a0a7cf3d4a85249728ccec3e1928c769a'),('20260714190000_p3_privacy_consent','43a1da58a4d0269f67fe6dd7cc76cab479c25290e101247ff8b041b8527317b2'),('20260725090000_checkout_contact_payment','f931552fda6f50fab8b309c35e1318f0adb115ee6771cc3e753a6f7a5426dd62'),('20260725120000_privacy_consent_retention_index','3f7d6526e3ad1232c8fc0196d03fbf0106393093cf856a267a70a31fede6eb0d'),('20260725130000_privacy_consent_action','f621d655c988f8f828efe9ad90f39adb38a012ddd085293a14b284e453b8028e'),('20260725143000_contact_lead_locale','5fa4303b37f2e62a307f6d6ce4ce561d403bd0a9bc2873aecc2567d0c6ea845a'),('20260726034112_tax_rates','05354fa19c7c29bbabb810947bae9d956cca0e47dd0730fe0ec9f18861bedf92'),('20260726035744_cms_content','6c444ba14971f8510799d1cb49786f563164f6e50adc5c9f30fe24960ed46d3f'),('20260726054147_dashboard_product_fields','d89f507d377f0d43dc2b950a21d661a71c044ada8a562bb8addb53ef439ad71e'),('20260726120000_erp_product_mapping_ids','933b7953fe80bf5a973c4e50b3995fa358c0a39ac73c411fa5534f432e922913'),('20260726140000_commerce_inventory_hardening','6d45f4b407cba6cf09c48eabc22e59ed2c92e38242861e280f09c5ec5aa9e5e3'),('20260727000000_query_performance_indexes','7bb2cc44363baeb8334dd5fbf430e739bdb1bf101277e7d4ebc0d3fd1e8a6682'),('20260727120000_pg_trgm_search','458b4a38d8b622db0bbbd4dfefacff3b9713d937295dbc1f7656e9685f4f9726'),('20260728120000_website_crm','e6967065ce52761c152dbc49d044c82c897187fed3fa74c9f6d727541eb344d3'),('20260729120000_checkout_shipping_address','945b466b042d9cad04473578941e2c71098c1430789616ea3ce478fdf2a002b8'),('20260729180000_ops_pageviews_catalog_sync','9231cf2207ffbc5bffadedd480b6237dba1c5220cea5683266f8544a2a0317dc'),('20260730100000_inventory_nonnegative_constraints','70b8887743ada91b6f2a22882c02d769887b8fb28a96b9f5be8b49ed2349c57e'),('20260730110000_checkout_idempotency','db0c04d64c735c415f45b80cbc21e0250f1661e2afdcd498c2492e3b77afda70'),('20260730120000_payment_reconciliation','32cb0bc565e4e21d13f92cf7a095445befc838a7ebe506996882de0ff844dbff'),('20260730130000_checkout_payment_init','8bc9a5a57d485c75dd61e62a94f999965a87bdc047ab0f836e1bdbf97adb2425'),('20260730135000_catalog_sync_cleanup','71ab3ef8cf2927b09f3342784bf06c6c9b86fe230409cc94c744a92837f7be1a'),('20260730140000_catalog_sync_singleton','611152fa42e034ef0594ef1ce53291e342e41f1f2b880b8e29a5fbd1c4cbaf6f'),('20260730160000_distributed_rate_limits','209d4ea74684110a2e42b36a2465ac0b03f1da4c5dfb1550332a2fede581f19a'),('20260730170000_relational_indexes','a01c6133caad22230e1199fde9809fba1aaead274ff20424896187e68a3d720f'),('20260730180000_tax_price_effectivity','7161720672c8b593d8d55f802151dced2cc0402508808aea9a89d3b087658544'),('20260730190000_guest_token_expiry','152a324a42a104f4f14fe0cb9628abb3f5a9e9d130010c8fd86ea88ce0c41b39'),('20260730210000_privacy_requests','0b6933437ab019d2e5914a66eba73da64bdce7f9114f705d05e111caf5542376'),('20260730220000_checkout_promotions','ce4481a20e43dc45c89265adc1a1ecba7152637dda1196b7cf00811fdf46500d'),('20260730230000_financial_invariants','e16ffa18ed349e813725f231676e74e92ba5868100aefb77fcea82c7d1850c4a'),('20260730240000_crm_ownership_tasks','22739d71fe6847e17bb482ce44741037025ab564649158d868ca48d289edb99e'),('20260730250000_catalog_sync_global_singleton','6920b9c80c7f802bee3792b5394e0b1b95797431d64902a3497c70300908b5f6'),('20260730260000_production_rbac_bootstrap','f765271d3926d426afdc9f6168e5a4fcc0e7e06dd22a75a62a8090652331286e'),('20260730270000_provider_refund_processing','41cc58dec2c17572c12fcd9f360ba7f99bd6eb1ced3da44634bde7bf04cc6885'),('20260730280000_worker_heartbeat','35ad2c812127c20f0245c6fe78b58c9e7cbac49f96a4681565e462f216491a85'),('20260730290000_password_reset_tokens','4d0efbf4c9003c0ce7aea332545e4cf14f571c88739663c805ba0d2040c3f77e'),('20260731310000_dashboard_p02_identity_scope','16bddca6798c27eb943209fa85d0ef75c9141bba2baa9bdb16eee4698f6134ff'),('20260802120000_dashboard_p04_audit_foundation','eca3143f7d3198da5186885355054a0543929545ce1a7b9dbc0278804b9a1c91'),('20260802130000_dashboard_p05_async_job_foundation','a6e7dac74fb05dc3b5fa7579d8aee2222b7631f241bcf1fee38b3bd80dd7d0f5'),('20260802131000_dashboard_p05_audit_resource_compatibility','07daf7ffca34a5c39bd469201dc18de55a2f596c326a9c0b99578cc8f3b3219c'),('20260802132000_dashboard_p05_attempt_fencing','eece9393f6e1729dac19e9b1e6ad3f5d15a3b9da538137ce8bab33917458d49c'),('20260802140000_dashboard_p06_work_queue_notifications','0d0eab8aec56386465ccda3fe12fb55307d8434642e13ac8d017ee8e4ce84679'),('20260802141000_dashboard_p06_identity_guards','ad3b03b04b9fe61f0f91c9448e8704dcea2ddd3e0453fbdcc388acdf9f14eab5'),('20260802142000_dashboard_p06_typed_transition_guards','b75170b6be4c68f6617f2933e2cce27ef7e67b994d11c63ada43d46d1656dee4'),('20260802143000_dashboard_p06_exact_transition_families','c775915c597047e11f2c780eddf2f6cc8e08cb50151397b6d5bb59d18728d9c5'),('20260802144000_dashboard_p06_observation_guard','02996ae2b25e4ae4b4e81b9b93b23577f84669764e14e2de5cf05d8e06ed15a7'),('20260802145000_dashboard_p06_action_guards','723ff4960c1e8f699729ac2d97126c097893e3c8d85d9933652ff85e876ffdc9'),('20260802146000_dashboard_p06_reopen_assignment_guard','9de8aa14b707c31cc9726362ec40ab64416c73d328674bbaae194a096cf3a687'),('20260802147000_dashboard_p06_reason_registry_guards','64539e67329683c2c651b8d183129898b52444cffb61d9df63288235417b3b6f'),('20260802148000_dashboard_p06_expiry_policy_guard','0d0b3ee77699a93489d3645cfb97acb7f4149a2cf6a27d8cbf922712db55de8d'),('20260802150000_dashboard_p07_media_library_foundation','3319634df960a24c23f64bd26c4bef0169438cf3626dda32dcfa079c2106e413'),('20260802151000_dashboard_p07_p05_p06_registry_extensions','14ef85ea337145b07333046f04c15f91a6271e2c07f997939fedf3e3c29c2c6b'),('20260802152000_dashboard_p07_consolidated_guards','2670324b81c180ad70d42df726d92871546fdbc45374833c19ca327eefd7fe38'),('20260802153000_dashboard_p07_media_role_boundary','3cb2a3248f3f6d625cb1522dedeac12cfced4625cb572a6021ae18ca584d1f77'),('20260802154000_dashboard_p07_retry_retention','e21c71a427413675719fa25c22f64cdbd65d4b400624ce8a9a10937b5120f2c3'),('20260802155000_dashboard_p07_source_operation_binding','3662535ddce270f4a251c784d55deb8e7373ba3eae8b04fdd6e00ccb44e77af3'),('20260802156000_dashboard_p07_source_binding_audit_metadata','ed56e2d7e919dcca6d12913bb4c502bffd2e53a60cdae40d0c8975b4ac51e3a1'),('20260803100000_dashboard_p08_import_export_foundation','be8770e4eee6ed6889ab520b98cea2d87924c9a419b45cf0687233d20053b4d4'),('20260803110000_dashboard_p08_runtime_permission_boundary','d6ead56d787ff59cbffe0b12dd7172194ec4f94a27c6df4a3afd78fa6a8e426a'),('20260803120000_dashboard_p09_runtime_foundation','c8071f3e549633c1126a988d36d3de5d612734bc11999a18fb0140aed34039fa'),('20260803130000_dashboard_p09_worker_lifecycle_authority','a5a7ded9ac25d9d592b7c0f7791f803be63ecbdb4653ec2ed35c2150207a8dd5'),('20260803140000_dashboard_p10_analytics_foundation','9f44f2b7bb0a8301a53a09835bb66bbb40fd78d46cae2f2c4ce5891462dd010b'),('20260803150000_dashboard_p10_audit_atomicity','2cf72cadb5c560d221acfdcf7b85fd2a616d915ada54311ca10572fa8b12dbe4')) v(name,checksum)) THEN RAISE EXCEPTION 'MIGRATION68_SOURCE_MANIFEST_MISMATCH';END IF;END$$;",
+        "DO $role$ DECLARE r record;BEGIN SELECT * INTO r FROM pg_roles WHERE rolname='vanstro_migrator';IF NOT FOUND OR r.rolsuper THEN RAISE EXCEPTION 'MIGRATOR_PRECONDITION_FAILED';END IF;SELECT * INTO r FROM pg_roles WHERE rolname='vanstro_worker_runtime';IF NOT FOUND OR NOT r.rolcanlogin OR r.rolinherit OR r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolreplication OR r.rolbypassrls THEN RAISE EXCEPTION 'WORKER_LOGIN_PRECONDITION_FAILED';END IF;END $role$;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.assert_baseline_hashes_and_external_roles"
+      ],
+      "id": "ddl69.create_no_login_roles",
+      "migration": 69,
+      "objectRefs": [
+        "vanstro_worker_lifecycle_cap"
+      ],
+      "operation": "create_no_login_roles",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "DO $$BEGIN IF (SELECT count(*) FROM pg_roles WHERE rolname IN('vanstro_p10_release_cap','vanstro_p10_signer_admin_cap','vanstro_p10_kms_rotation_cap','vanstro_p10_dsar_cap'))<>4 THEN RAISE EXCEPTION 'BOOTSTRAP_ROLES_REQUIRED';END IF;END$$;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_no_login_roles"
+      ],
+      "id": "ddl69.revoke_public_create_and_defaults",
+      "migration": 69,
+      "objectRefs": [
+        "database",
+        "schema public",
+        "default function EXECUTE"
+      ],
+      "operation": "revoke_public_create_and_defaults",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "REVOKE CREATE ON SCHEMA public FROM PUBLIC,vanstro_runtime,vanstro_worker_runtime;ALTER DEFAULT PRIVILEGES FOR ROLE vanstro_migrator IN SCHEMA public REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.revoke_public_create_and_defaults"
+      ],
+      "id": "ddl69.add_compatible_columns",
+      "migration": 69,
+      "objectRefs": [
+        "runtime_config_version",
+        "feature_flag_version",
+        "analytics_foundation_event",
+        "privacy_consent_events"
+      ],
+      "operation": "add_compatible_columns",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.add_compatible_columns"
+      ],
+      "id": "ddl69.create_dependency_tables",
+      "migration": 69,
+      "objectRefs": [
+        "f1_p02_resolver_registry",
+        "analytics_foundation_release",
+        "analytics_foundation_release_cell",
+        "f1_deployment_instance_attestation"
+      ],
+      "operation": "create_dependency_tables",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "CREATE TABLE public.f1_trusted_ed25519_signer (\"signerId\" text PRIMARY KEY,\"publicKey\" bytea NOT NULL,\"purpose\" text NOT NULL,\"active\" boolean NOT NULL,\"notBefore\" timestamptz NOT NULL,\"notAfter\" timestamptz NOT NULL,\"createdAt\" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT \"f1_signer_key_check\" CHECK(octet_length(\"publicKey\")=32),CONSTRAINT \"f1_signer_purpose_check\" CHECK(\"purpose\" IN('kms_hmac_subject_assertion','deployment_attestation','old_call_telemetry')),CONSTRAINT \"f1_signer_window_check\" CHECK(\"notAfter\">\"notBefore\"));CREATE TABLE public.f1_verified_nonce (\"purpose\" text NOT NULL,\"nonce\" text NOT NULL,\"operation\" text NOT NULL,\"idempotencyHash\" text NOT NULL,\"intentHash\" text NOT NULL,\"subjectDigest\" bytea,\"resultId\" uuid,\"expiresAt\" timestamptz NOT NULL,\"consumedAt\" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(\"purpose\",\"nonce\"),UNIQUE(\"operation\",\"idempotencyHash\",\"intentHash\"));CREATE TABLE public.f1_kms_provider_allowlist(\"providerPrefix\" text PRIMARY KEY,\"purpose\" text NOT NULL,\"active\" boolean NOT NULL,\"notBefore\" timestamptz NOT NULL,\"notAfter\" timestamptz NOT NULL,CONSTRAINT \"f1_kms_window_check\" CHECK(\"notAfter\">\"notBefore\"));CREATE TABLE public.f1_readiness_health_source(\"sourceKey\" text PRIMARY KEY,\"healthy\" boolean NOT NULL,\"observedAt\" timestamptz NOT NULL,\"detailCode\" text NOT NULL,CONSTRAINT \"f1_readiness_source_key_check\" CHECK(\"sourceKey\" IN('migration','database','storage','parser','optional_provider')));CREATE TABLE public.f1_subject_erasure_tombstone(\"erasureToken\" bytea NOT NULL,\"retentionCutoff\" timestamptz NOT NULL,\"intentHash\" text NOT NULL,\"jobId\" uuid NOT NULL,\"requestId\" text NOT NULL,\"purgedRows\" integer NOT NULL,\"auditEventId\" uuid NOT NULL REFERENCES public.audit_events(id) ON DELETE RESTRICT,\"erasedAt\" timestamptz NOT NULL,PRIMARY KEY(\"erasureToken\",\"retentionCutoff\"),CONSTRAINT f1_erasure_intent_hash_check CHECK(\"intentHash\"~'^[0-9a-f]{64}$'));CREATE FUNCTION public.f1_reject_erasure_tombstone_mutation_v1() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN RAISE EXCEPTION 'ERASURE_TOMBSTONE_IMMUTABLE';END $fn$;CREATE TRIGGER f1_erasure_tombstone_immutable BEFORE UPDATE OR DELETE ON public.f1_subject_erasure_tombstone FOR EACH ROW EXECUTE FUNCTION public.f1_reject_erasure_tombstone_mutation_v1();CREATE TABLE public.f1_p10_subject_key_provider (\"kid\" text PRIMARY KEY,\"providerKeyRef\" text NOT NULL,\"epoch\" text NOT NULL,\"status\" text NOT NULL,\"activatedAt\" timestamptz,\"retiredAt\" timestamptz,\"createdAt\" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT \"f1_p10_provider_ref_check\" CHECK(\"providerKeyRef\"~'^kms://[A-Za-z0-9/_:.-]{8,240}$'),CONSTRAINT \"f1_p10_key_epoch_check\" CHECK(\"epoch\"='vanstro.analytics.subject-epoch.v1:'||\"kid\"),CONSTRAINT \"f1_p10_key_status_check\" CHECK((\"status\"='active' AND \"activatedAt\" IS NOT NULL AND \"retiredAt\" IS NULL) OR (\"status\"='retired_verification' AND \"activatedAt\" IS NOT NULL AND \"retiredAt\" IS NOT NULL)));CREATE UNIQUE INDEX \"f1_p10_one_active_key\" ON public.f1_p10_subject_key_provider((\"status\")) WHERE \"status\"='active';CREATE TABLE public.f1_p10_idempotency (\"operation\" text NOT NULL,\"idempotencyHash\" text NOT NULL,\"intentHash\" text NOT NULL,\"subjectDigest\" bytea,\"resultId\" uuid,\"auditEventId\" uuid,\"state\" text NOT NULL DEFAULT 'claimed',\"expiresAt\" timestamptz NOT NULL,\"createdAt\" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY(\"operation\",\"idempotencyHash\"),CONSTRAINT \"f1_p10_idem_hash_check\" CHECK(\"idempotencyHash\"~'^[0-9a-f]{64}$' AND \"intentHash\"~'^[0-9a-f]{64}$'),CONSTRAINT \"f1_p10_idem_state_check\" CHECK((\"state\"='claimed' AND \"resultId\" IS NULL AND \"auditEventId\" IS NULL) OR (\"state\"='completed' AND \"subjectDigest\" IS NOT NULL AND \"resultId\" IS NOT NULL AND \"auditEventId\" IS NOT NULL)));CREATE TABLE public.f1_p10_consent_command (\"id\" uuid PRIMARY KEY,\"subjectDigest\" bytea NOT NULL,\"kid\" text NOT NULL,\"epoch\" text NOT NULL,\"action\" text NOT NULL,\"idempotencyHash\" text NOT NULL UNIQUE,\"intentHash\" text NOT NULL,\"expiresAt\" timestamptz NOT NULL,\"successAuditEventId\" uuid NOT NULL REFERENCES public.audit_events(\"id\") ON DELETE RESTRICT,CONSTRAINT \"f1_p10_consent_action_check\" CHECK(\"action\" IN('granted','updated','withdrawn')));CREATE TABLE public.f1_p02_resolver_registry (\"resourceType\" text PRIMARY KEY,\"resolverId\" text NOT NULL UNIQUE,\"tableName\" text NOT NULL,\"idSemantics\" text NOT NULL,\"operationKey\" text NOT NULL,\"permissionKey\" text NOT NULL,CONSTRAINT \"f1_p02_resolver_registry_closed_check\" CHECK ((\"resourceType\",\"resolverId\",\"tableName\",\"idSemantics\",\"operationKey\",\"permissionKey\") IN (('p08_import','resolver.p08_import','dashboard_import_batch','uuid','read','dashboard.import.foundation_sample.read'),('p08_export','resolver.p08_export','dashboard_export_request','uuid','read','dashboard.export.foundation_sample.read'),('p09_config','resolver.p09_config','runtime_config_version','row_uuid','read','config.read'),('p09_flag','resolver.p09_flag','feature_flag_version','row_uuid','read','flags.read'),('p09_readiness_summary','resolver.p09_readiness_summary','worker_heartbeats','literal:worker-fleet','read','readiness.read_summary'),('p09_readiness_detail','resolver.p09_readiness_detail','worker_heartbeats','literal:worker-fleet','read','readiness.read_detail'),('p10_analytics_ingestion','resolver.p10_analytics_ingestion','foundation_sample','uuid','ingest','analytics.ingest'),('p10_release_family','resolver.p10_release_family','analytics_foundation_release','six-field-family','read','analytics.release.read'))));INSERT INTO public.f1_p02_resolver_registry VALUES ('p08_import','resolver.p08_import','dashboard_import_batch','uuid','read','dashboard.import.foundation_sample.read'),('p08_export','resolver.p08_export','dashboard_export_request','uuid','read','dashboard.export.foundation_sample.read'),('p09_config','resolver.p09_config','runtime_config_version','row_uuid','read','config.read'),('p09_flag','resolver.p09_flag','feature_flag_version','row_uuid','read','flags.read'),('p09_readiness_summary','resolver.p09_readiness_summary','worker_heartbeats','literal:worker-fleet','read','readiness.read_summary'),('p09_readiness_detail','resolver.p09_readiness_detail','worker_heartbeats','literal:worker-fleet','read','readiness.read_detail'),('p10_analytics_ingestion','resolver.p10_analytics_ingestion','foundation_sample','uuid','ingest','analytics.ingest'),('p10_release_family','resolver.p10_release_family','analytics_foundation_release','six-field-family','read','analytics.release.read');ALTER TABLE public.runtime_config_version ADD COLUMN \"authorityVersion\" smallint NOT NULL DEFAULT 1, ADD COLUMN \"successAuditEventId\" uuid;\nALTER TABLE public.feature_flag_version ADD COLUMN \"authorityVersion\" smallint NOT NULL DEFAULT 1, ADD COLUMN \"successAuditEventId\" uuid;\nALTER TABLE public.foundation_sample ADD COLUMN \"contextRevision\" text NOT NULL DEFAULT 'foundation-context.v1', ADD COLUMN \"version\" integer NOT NULL DEFAULT 0;ALTER TABLE public.analytics_foundation_event ADD COLUMN \"authenticatedSubjectDigest\" bytea, ADD COLUMN \"subjectKeyVersion\" text, ADD COLUMN \"identityEpoch\" text, ADD COLUMN \"authorityVersion\" smallint NOT NULL DEFAULT 1, ADD COLUMN \"successAuditEventId\" uuid, ADD COLUMN \"postSealLate\" boolean NOT NULL DEFAULT false;\nALTER TABLE public.privacy_consent_events ADD COLUMN \"authenticatedSubjectDigest\" bytea, ADD COLUMN \"subjectKeyVersion\" text, ADD COLUMN \"identityRealmVersion\" text, ADD COLUMN \"identityEpoch\" text, ADD COLUMN \"consentSchemaVersion\" text, ADD COLUMN \"authorityVersion\" smallint NOT NULL DEFAULT 1;\nALTER TABLE public.runtime_config_version ADD CONSTRAINT \"runtime_config_version_success_audit_event_fkey\" FOREIGN KEY (\"successAuditEventId\") REFERENCES public.audit_events(\"id\") ON DELETE RESTRICT ON UPDATE CASCADE, ADD CONSTRAINT \"runtime_config_version_success_audit_event_key\" UNIQUE (\"successAuditEventId\");\nALTER TABLE public.feature_flag_version ADD CONSTRAINT \"feature_flag_version_success_audit_event_fkey\" FOREIGN KEY (\"successAuditEventId\") REFERENCES public.audit_events(\"id\") ON DELETE RESTRICT ON UPDATE CASCADE, ADD CONSTRAINT \"feature_flag_version_success_audit_event_key\" UNIQUE (\"successAuditEventId\");\nALTER TABLE public.analytics_foundation_event ADD CONSTRAINT \"analytics_foundation_event_success_audit_event_fkey\" FOREIGN KEY (\"successAuditEventId\") REFERENCES public.audit_events(\"id\") ON DELETE RESTRICT ON UPDATE CASCADE, ADD CONSTRAINT \"analytics_foundation_event_success_audit_event_key\" UNIQUE (\"successAuditEventId\"), ADD CONSTRAINT \"analytics_foundation_event_authenticated_tuple_check\" CHECK ((\"authorityVersion\"<2 AND \"authenticatedSubjectDigest\" IS NULL AND \"subjectKeyVersion\" IS NULL AND \"identityEpoch\" IS NULL) OR (\"authorityVersion\"=2 AND \"authenticatedSubjectDigest\" IS NOT NULL AND \"subjectKeyVersion\" IS NOT NULL AND \"identityEpoch\" IS NOT NULL AND octet_length(\"authenticatedSubjectDigest\")=32 AND \"subjectKeyVersion\"~'^[a-z0-9][a-z0-9._-]{0,31}$' AND \"identityEpoch\"='vanstro.analytics.subject-epoch.v1:'||\"subjectKeyVersion\"));\nALTER TABLE public.privacy_consent_events ADD CONSTRAINT \"privacy_consent_events_authenticated_tuple_check\" CHECK ((\"authorityVersion\"<2 AND \"authenticatedSubjectDigest\" IS NULL AND \"subjectKeyVersion\" IS NULL AND \"identityRealmVersion\" IS NULL AND \"identityEpoch\" IS NULL AND \"consentSchemaVersion\" IS NULL) OR (\"authorityVersion\"=2 AND \"authenticatedSubjectDigest\" IS NOT NULL AND \"subjectKeyVersion\" IS NOT NULL AND \"identityRealmVersion\" IS NOT NULL AND \"identityEpoch\" IS NOT NULL AND \"consentSchemaVersion\" IS NOT NULL AND octet_length(\"authenticatedSubjectDigest\")=32 AND \"identityRealmVersion\"='vanstro.authenticated-user.v1' AND \"consentSchemaVersion\"='vanstro.analytics.authenticated-consent.v1' AND \"identityEpoch\"='vanstro.analytics.subject-epoch.v1:'||\"subjectKeyVersion\"));\n\nCREATE TABLE public.analytics_foundation_release (\n \"id\" uuid PRIMARY KEY,\"scopeFingerprint\" text NOT NULL,\"releaseDay\" date NOT NULL,\"metricDefinitionVersion\" text NOT NULL,\"identityEpoch\" text NOT NULL,\"suppressionPolicyVersion\" text NOT NULL,\"fieldVisibilityProfile\" text NOT NULL,\"authorizationScopeKind\" text NOT NULL DEFAULT 'global',\"status\" text NOT NULL,\"completeness\" text NOT NULL,\"sourceCutoff\" timestamptz NOT NULL,\"sealedAt\" timestamptz NOT NULL,\"lateExcludedCount\" bigint NOT NULL DEFAULT 0,\"authorityVersion\" smallint NOT NULL DEFAULT 2,\"successAuditEventId\" uuid NOT NULL,\n CONSTRAINT \"analytics_foundation_release_success_audit_event_fkey\" FOREIGN KEY (\"successAuditEventId\") REFERENCES public.audit_events(\"id\") ON DELETE RESTRICT ON UPDATE CASCADE,\n CONSTRAINT \"analytics_foundation_release_success_audit_event_key\" UNIQUE (\"successAuditEventId\"),\n CONSTRAINT \"analytics_foundation_release_family_key\" UNIQUE (\"scopeFingerprint\",\"releaseDay\",\"metricDefinitionVersion\",\"identityEpoch\",\"suppressionPolicyVersion\",\"fieldVisibilityProfile\"),\n CONSTRAINT \"analytics_foundation_release_state_check\" CHECK (\"authorizationScopeKind\"='global' AND \"status\" IN ('empty','suppressed','published') AND \"completeness\" IN ('sealed','late_excluded') AND \"authorityVersion\"=2 AND \"sourceCutoff\"=(\"releaseDay\"::timestamp AT TIME ZONE 'UTC')+interval '1 day 10 minutes' AND \"sealedAt\">=\"sourceCutoff\" AND \"lateExcludedCount\">=0)\n);\nCREATE TABLE public.analytics_foundation_release_event(\"releaseId\" uuid NOT NULL REFERENCES public.analytics_foundation_release(id) ON DELETE RESTRICT,\"eventId\" uuid NOT NULL REFERENCES public.analytics_foundation_event(id) ON DELETE RESTRICT,PRIMARY KEY(\"releaseId\",\"eventId\"));CREATE TABLE public.analytics_foundation_release_cell (\n \"id\" uuid PRIMARY KEY,\"releaseId\" uuid NOT NULL,\"cellKey\" text NOT NULL,\"state\" text NOT NULL,\"valueKind\" text NOT NULL,\"denominatorDistinct\" bigint,\"numeratorDistinct\" bigint,\"complementDistinct\" bigint,\"publishedValue\" numeric,\"completeness\" text NOT NULL,\n CONSTRAINT \"analytics_foundation_release_cell_release_fkey\" FOREIGN KEY (\"releaseId\") REFERENCES public.analytics_foundation_release(\"id\") ON DELETE RESTRICT ON UPDATE CASCADE,\n CONSTRAINT \"analytics_foundation_release_cell_key\" UNIQUE (\"releaseId\",\"cellKey\"),\n CONSTRAINT \"analytics_foundation_release_cell_privacy_state_check\" CHECK ((\"state\"='empty' AND \"denominatorDistinct\"=0 AND \"numeratorDistinct\"=0 AND \"complementDistinct\"=0 AND \"publishedValue\" IS NULL) OR (\"state\"='suppressed' AND \"denominatorDistinct\" IS NULL AND \"numeratorDistinct\" IS NULL AND \"complementDistinct\" IS NULL AND \"publishedValue\" IS NULL) OR (\"state\"='published' AND (\"denominatorDistinct\"=0 OR \"denominatorDistinct\">=3) AND (\"numeratorDistinct\"=0 OR \"numeratorDistinct\">=3) AND (\"complementDistinct\"=0 OR \"complementDistinct\">=3) AND \"numeratorDistinct\"+\"complementDistinct\"=\"denominatorDistinct\" AND \"publishedValue\">=0))\n);\nCREATE TABLE public.f1_old_function_registry(\"functionOid\" oid PRIMARY KEY,\"identitySignature\" text NOT NULL UNIQUE);INSERT INTO public.f1_old_function_registry VALUES (to_regprocedure('public.p08_canonical_text_array(text[])')::oid,'public.p08_canonical_text_array(value text[])'),(to_regprocedure('public.p08_authorized_binding(text,text,text,text,text[],text[])')::oid,'public.p08_authorized_binding(session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[])'),(to_regprocedure('public.p08_commit_sample(uuid,text,integer,uuid,integer,integer,integer,text,text,text,integer,date,text)')::oid,'public.p08_commit_sample(job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_batch_version integer, row_number integer, expected_target_version integer, external_key text, label text, sample_state text, quantity integer, effective_date date, note text)'),(to_regprocedure('public.p08_create_export(text,text,text,text,text,text,text[],text[],uuid,jsonb,uuid)')::oid,'public.p08_create_export(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], export_id uuid, query_snapshot jsonb, job_id uuid)'),(to_regprocedure('public.p08_create_import(text,text,text,text,text,text,text[],text[],uuid,text,text,bigint,text,timestamp with time zone,text,text,text,text,text)')::oid,'public.p08_create_import(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], import_id uuid, filename text, content_type text, declared_bytes bigint, token_hash text, token_expires_at timestamp with time zone, intent_hash text, registry_version text, schema_version text, parser_version text, security_policy_version text)'),(to_regprocedure('public.p08_export_detail(text,text,uuid,text,text,text,text)')::oid,'public.p08_export_detail(session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text)'),(to_regprocedure('public.p08_export_list(text,text,text,text,text,text,text[],text[],text[],integer)')::oid,'public.p08_export_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer)'),(to_regprocedure('public.p08_export_samples(uuid,text,integer,uuid,integer,integer)')::oid,'public.p08_export_samples(job_id uuid, lease_owner text, lease_revision integer, export_id uuid, expected_version integer, row_limit integer)'),(to_regprocedure('public.p08_import_list(text,text,text,text,text,text,text[],text[],text[],integer)')::oid,'public.p08_import_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], status_filter text[], row_limit integer)'),(to_regprocedure('public.p08_purge_row_payloads(uuid,text,integer,uuid,integer)')::oid,'public.p08_purge_row_payloads(job_id uuid, lease_owner text, lease_revision integer, import_id uuid, expected_version integer)'),(to_regprocedure('public.p08_transition_export(text,text,uuid,text,text,text,text,integer,text,text)')::oid,'public.p08_transition_export(session_token_hash text, permission_key text, export_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text)'),(to_regprocedure('public.p08_transition_import(text,text,uuid,text,text,text,text,integer,text,text,uuid)')::oid,'public.p08_transition_import(session_token_hash text, permission_key text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer, operation text, target_status text, source_artifact_id uuid)'),(to_regprocedure('public.p08_import_detail(text,text,uuid,text,text,text,text)')::oid,'public.p08_import_detail(session_token_hash text, permission_key text, import_id uuid, expected_actor_id text, expected_context_revision text, expected_scope_fingerprint text, expected_field_visibility_fingerprint text)'),(to_regprocedure('public.p08_import_finalize_context(text,uuid,text,text,text,text,integer)')::oid,'public.p08_import_finalize_context(session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, expected_version integer)'),(to_regprocedure('public.p08_import_rows(text,uuid,text,text,text,text,integer,integer)')::oid,'public.p08_import_rows(session_token_hash text, import_id uuid, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, after_row integer, row_limit integer)'),(to_regprocedure('public.p09_config_list(text,text,text,text,text,text,text[],text[])')::oid,'public.p09_config_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[])'),(to_regprocedure('public.p09_authorized_binding(text,text,text,text,text[],text[])')::oid,'public.p09_authorized_binding(session_token_hash text, permission_key text, expected_actor_id text, expected_scope_kind text, expected_dealer_ids text[], expected_location_ids text[])'),(to_regprocedure('public.p09_validate_config(text,jsonb,text)')::oid,'public.p09_validate_config(config_key text, desired_value jsonb, scope_kind text)'),(to_regprocedure('public.p09_write_audit(text,text,text,text[],text[],text,text,text,text,text,text,jsonb)')::oid,'public.p09_write_audit(actor_id text, permission_key text, scope_kind text, dealer_ids text[], location_ids text[], context_revision text, action_resource text, resource_id text, result_value text, reason_value text, request_id text, metadata_value jsonb)'),(to_regprocedure('public.p09_config_propose(text,text,text,text,text,text,text[],text[],text,text,jsonb,integer,text,text,text)')::oid,'public.p09_config_propose(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, schema_version text, desired_value jsonb, expected_version integer, idempotency_hash text, request_hash text, request_id text)'),(to_regprocedure('public.p09_config_activate(text,text,text,text,text,text,text[],text[],text,integer,text,text,text,boolean)')::oid,'public.p09_config_activate(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, idempotency_hash text, request_hash text, request_id text, simulate_failure boolean)'),(to_regprocedure('public.p09_config_rollback(text,text,text,text,text,text,text[],text[],text,integer,integer,text,text,text)')::oid,'public.p09_config_rollback(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], config_key text, expected_version integer, rollback_version integer, idempotency_hash text, request_hash text, request_id text)'),(to_regprocedure('public.p09_flag_list(text,text,text,text,text,text,text[],text[])')::oid,'public.p09_flag_list(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[])'),(to_regprocedure('public.p09_flag_propose(text,text,text,text,text,text,text[],text[],text,text,integer,text,text,text)')::oid,'public.p09_flag_propose(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, desired_state text, expected_version integer, idempotency_hash text, request_hash text, request_id text)'),(to_regprocedure('public.p09_flag_activate(text,text,text,text,text,text,text[],text[],text,integer,boolean,text,text)')::oid,'public.p09_flag_activate(session_token_hash text, actor_id text, context_revision text, scope_fingerprint text, field_visibility_fingerprint text, scope_kind text, dealer_ids text[], location_ids text[], flag_key text, expected_version integer, kill_switch boolean, confirmation text, request_id text)'),(to_regprocedure('public.p09_worker_startup(text,text,text,text[],integer,timestamp with time zone)')::oid,'public.p09_worker_startup(instance_id text, registry_version text, registry_fingerprint text, supported_job_types text[], declared_capacity integer, observed_at timestamp with time zone)'),(to_regprocedure('public.p09_worker_heartbeat(text,bigint,integer,integer,timestamp with time zone)')::oid,'public.p09_worker_heartbeat(instance_id text, expected_generation bigint, expected_version integer, effective_capacity integer, observed_at timestamp with time zone)'),(to_regprocedure('public.p09_worker_transition(text,bigint,integer,text,timestamp with time zone)')::oid,'public.p09_worker_transition(instance_id text, expected_generation bigint, expected_version integer, target_state text, observed_at timestamp with time zone)'),(to_regprocedure('public.p10_ingest_event(text,text,text,text,text[],text[],text,text,uuid,text,text,text,timestamp with time zone,timestamp with time zone,text,text,jsonb,text,text,text,integer,text,text)')::oid,'public.p10_ingest_event(session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text)'),(to_regprocedure('public.p10_audit(text,text,text,text[],text[],text,text,text,text,text,text,text,text)')::oid,'public.p10_audit(actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], event_name text, schema_fingerprint text, scope_fingerprint text, resource_id text, idempotency_hash text, request_id text, result_value text, reason_value text)'),(to_regprocedure('public.p10_ingest_event_v2(text,text,text,text,text[],text[],text,text,uuid,text,text,text,timestamp with time zone,timestamp with time zone,text,text,jsonb,text,text,text,integer,text,text,text)')::oid,'public.p10_ingest_event_v2(session_hash text, actor_id text, context_revision text, scope_kind text, dealer_ids text[], location_ids text[], scope_fingerprint text, field_fingerprint text, event_id uuid, event_name text, event_version text, schema_fingerprint text, occurred_at timestamp with time zone, observed_at timestamp with time zone, subject_digest text, resource_id text, dimensions jsonb, idempotency_hash text, intent_hash text, occurrence_identity text, sequence_value integer, consent_id text, consent_version text, request_id text)');CREATE TABLE public.f1_old_call_report(\"reportId\" uuid PRIMARY KEY,\"rolloutId\" text NOT NULL,\"environment\" text NOT NULL,\"manifestDigest\" text NOT NULL,\"windowStartedAt\" timestamptz NOT NULL,\"windowEndedAt\" timestamptz NOT NULL,\"collectorNonce\" text NOT NULL,\"collectorSignerId\" text NOT NULL,\"reportDigest\" bytea NOT NULL,\"signature\" bytea NOT NULL,\"consumedAt\" timestamptz,UNIQUE(\"rolloutId\"));CREATE TABLE public.f1_old_function_call_telemetry(\"reportId\" uuid NOT NULL REFERENCES public.f1_old_call_report(\"reportId\") ON DELETE RESTRICT,\"rolloutId\" text NOT NULL,\"functionOid\" oid NOT NULL,\"identitySignature\" text NOT NULL,\"callCount\" bigint NOT NULL,\"lastCalledAt\" timestamptz,PRIMARY KEY(\"reportId\",\"functionOid\"),CONSTRAINT \"f1_old_call_count_check\" CHECK(\"callCount\">=0));CREATE TABLE public.f1_deployment_expected_instance (\"rolloutId\" text NOT NULL,\"environment\" text NOT NULL,\"instanceId\" text NOT NULL,\"expectedCodeVersion\" text NOT NULL,\"expectedSchemaCompatibility\" integer NOT NULL,\"expectedManifestDigest\" text NOT NULL,PRIMARY KEY(\"rolloutId\",\"instanceId\"));CREATE TABLE public.f1_deployment_attestation_consumption (\"rolloutId\" text PRIMARY KEY,\"environment\" text NOT NULL,\"manifestDigest\" text NOT NULL,\"consumedAt\" timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,\"instanceCount\" integer NOT NULL);CREATE TABLE public.f1_deployment_instance_attestation (\"rolloutId\" text NOT NULL,\"environment\" text NOT NULL,\"instanceId\" text NOT NULL,\"codeVersion\" text NOT NULL,\"schemaCompatibility\" integer NOT NULL,\"observedAt\" timestamptz NOT NULL,\"draining\" boolean NOT NULL,\"attestationDigest\" text NOT NULL,\"nonce\" text NOT NULL,\"signature\" bytea NOT NULL,\"signerId\" text NOT NULL,\"attestedBy\" text NOT NULL,PRIMARY KEY(\"rolloutId\",\"instanceId\",\"observedAt\"),CONSTRAINT \"f1_attestation_digest_check\" CHECK(\"attestationDigest\"~'^[0-9a-f]{64}$' AND octet_length(\"signature\")=64 AND \"nonce\"~'^[A-Za-z0-9_-]{22,128}$'));CREATE FUNCTION public.f1_reject_old_function_registry_mutation_v1() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN RAISE EXCEPTION 'OLD_FUNCTION_REGISTRY_IMMUTABLE';END $fn$;CREATE TRIGGER f1_old_function_registry_immutable BEFORE INSERT OR UPDATE OR DELETE ON public.f1_old_function_registry FOR EACH ROW EXECUTE FUNCTION public.f1_reject_old_function_registry_mutation_v1();CREATE TABLE public.f1_readiness_principal_job_capacity(\"principalRole\" text NOT NULL,\"poolInstance\" text NOT NULL,\"incarnationId\" text NOT NULL,\"supportedJobTypes\" text[] NOT NULL,\"registryVersion\" text NOT NULL,\"registryFingerprint\" text NOT NULL,\"capacity\" integer NOT NULL,\"claimEnabled\" boolean NOT NULL,\"observedAt\" timestamptz NOT NULL,\"generation\" bigint NOT NULL,PRIMARY KEY(\"principalRole\",\"poolInstance\"),CONSTRAINT f1_readiness_principal_pool_check CHECK((\"principalRole\"='vanstro_worker_runtime' AND \"supportedJobTypes\"=ARRAY['analytics.release.seal','analytics.source.cleanup']) OR (\"principalRole\"='vanstro_signer_admin_runtime' AND \"supportedJobTypes\"=ARRAY['security.signer.manage']) OR (\"principalRole\"='vanstro_kms_rotation_runtime' AND \"supportedJobTypes\"=ARRAY['analytics.subject-key.rotate']) OR (\"principalRole\"='vanstro_dsar_runtime' AND \"supportedJobTypes\"=ARRAY['privacy.subject.purge'])),CONSTRAINT f1_readiness_pool_capacity_check CHECK(\"capacity\">=0 AND \"generation\">0 AND cardinality(\"supportedJobTypes\")>0));"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_dependency_tables"
+      ],
+      "id": "ddl69.add_or_replace_constraints",
+      "migration": 69,
+      "objectRefs": [
+        "f1_p02_resolver_registry_closed_check",
+        "runtime_config_version_success_audit_event_fkey",
+        "runtime_config_version_success_audit_event_key",
+        "feature_flag_version_success_audit_event_fkey",
+        "feature_flag_version_success_audit_event_key",
+        "analytics_foundation_event_success_audit_event_fkey",
+        "analytics_foundation_event_success_audit_event_key",
+        "analytics_foundation_event_authenticated_tuple_check",
+        "privacy_consent_events_authenticated_tuple_check",
+        "analytics_foundation_release_success_audit_event_fkey",
+        "analytics_foundation_release_success_audit_event_key",
+        "analytics_foundation_release_family_key",
+        "analytics_foundation_release_state_check",
+        "analytics_foundation_release_cell_release_fkey",
+        "analytics_foundation_release_cell_key",
+        "analytics_foundation_release_cell_privacy_state_check",
+        "f1_attestation_digest_check"
+      ],
+      "operation": "add_or_replace_constraints",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "ALTER TABLE public.async_jobs DROP CONSTRAINT async_job_registry_check;ALTER TABLE public.async_jobs ADD CONSTRAINT async_job_registry_check CHECK (\"contractVersion\"='async-job.v1' AND \"schemaVersion\"='async-job-schema.v1' AND ((\"jobType\",\"jobTypeVersion\",\"payloadSchemaVersion\",\"resultSchemaVersion\") IN (('foundation.probe','foundation.probe.v1','foundation-probe-input.v1','foundation-probe-result.v1'),('media.process','media.process.v1','media-process-input.v1','media-process-result.v1'),('media.cleanup','media.cleanup.v1','media-cleanup-input.v1','media-cleanup-result.v1'),('dashboard.import.parse','dashboard.import.parse.v1','dashboard-import-parse-input.v1','dashboard-import-parse-result.v1'),('dashboard.import.commit','dashboard.import.commit.v1','dashboard-import-commit-input.v1','dashboard-import-commit-result.v1'),('dashboard.export.generate','dashboard.export.generate.v1','dashboard-export-generate-input.v1','dashboard-export-generate-result.v1'),('dashboard.artifact.expire','dashboard.artifact.expire.v1','dashboard-artifact-expire-input.v1','dashboard-artifact-expire-result.v1'),('analytics.release.seal','analytics.release.seal.v1','analytics-release-seal-input.v1','analytics-release-seal-result.v1'),('analytics.source.cleanup','analytics.source.cleanup.v1','analytics-source-cleanup-input.v1','analytics-source-cleanup-result.v1'),('analytics.subject-key.rotate','analytics.subject-key.rotate.v1','analytics-subject-key-rotate-input.v1','analytics-subject-key-rotate-result.v1'),('security.signer.manage','security.signer.manage.v1','security-signer-manage-input.v1','security-signer-manage-result.v1'),('privacy.subject.purge','privacy.subject.purge.v1','privacy-subject-purge-input.v1','privacy-subject-purge-result.v1'))));",
+        "ALTER TABLE public.audit_events DROP CONSTRAINT audit_events_resource_type_check;ALTER TABLE public.audit_events ADD CONSTRAINT audit_events_resource_type_check CHECK (\"resourceType\" IN ('user','role','permission','dealer','dealer_location','membership','product','category','inventory','price','promotion','order','shipment','checkout_session','payment_session','refund','customer','content','review','lead','support','email','erp_job','runtime_config','feature_flag','audit_event','analytics_event','analytics_release','privacy_consent'));",
+        "ALTER TABLE public.analytics_foundation_release_cell ADD CONSTRAINT analytics_release_cell_kind_check CHECK ((\"cellKey\"='rate' AND \"valueKind\"='rate') OR (\"cellKey\" IN('view','engage','denominator','numerator','complement') AND \"valueKind\"='count'));",
+        "ALTER TABLE public.worker_heartbeats DROP CONSTRAINT worker_heartbeat_registry_check;ALTER TABLE public.worker_heartbeats ADD CONSTRAINT worker_heartbeat_registry_check CHECK ((\"registryVersion\" IS NULL AND \"registryFingerprint\" IS NULL) OR (\"registryVersion\" IN('async-job-registry.v1','async-job-registry.v2') AND \"registryFingerprint\"~'^[0-9a-f]{64}$'));"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.add_or_replace_constraints"
+      ],
+      "id": "ddl69.create_ordinary_indexes",
+      "migration": 69,
+      "objectRefs": [
+        "privacy_consent_authenticated_latest_idx"
+      ],
+      "operation": "create_ordinary_indexes",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_ordinary_indexes"
+      ],
+      "id": "ddl69.create_internal_helpers",
+      "migration": 69,
+      "objectRefs": [
+        "p02_resolve_persisted_authority_v2",
+        "p04_write_forward_audit_v3",
+        "p09_observe_readiness_internal_v2",
+        "p10_authenticated_subject_digest_v1",
+        "p10_has_authenticated_consent_v1",
+        "p10_reject_*"
+      ],
+      "operation": "create_internal_helpers",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_internal_helpers"
+      ],
+      "id": "ddl69.create_application_wrappers",
+      "migration": 69,
+      "objectRefs": [
+        "p09_*_v2",
+        "p10_ingest_event_v3",
+        "p10_seal_release_day_v1",
+        "p10_get_release_day_v1",
+        "p10_cleanup_source_events_v1"
+      ],
+      "operation": "create_application_wrappers",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_application_wrappers"
+      ],
+      "id": "ddl69.create_and_enable_triggers",
+      "migration": 69,
+      "objectRefs": [
+        "analytics immutable triggers"
+      ],
+      "operation": "create_and_enable_triggers",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "CREATE TRIGGER analytics_foundation_event_immutable_v2 BEFORE UPDATE OR DELETE ON public.analytics_foundation_event FOR EACH ROW EXECUTE FUNCTION public.p10_reject_event_mutation_v1();CREATE TRIGGER analytics_foundation_release_immutable_v1 BEFORE UPDATE OR DELETE ON public.analytics_foundation_release FOR EACH ROW EXECUTE FUNCTION public.p10_reject_release_mutation_v1();CREATE TRIGGER analytics_foundation_release_cell_immutable_v1 BEFORE UPDATE OR DELETE ON public.analytics_foundation_release_cell FOR EACH ROW EXECUTE FUNCTION public.p10_reject_release_cell_mutation_v1();"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.create_and_enable_triggers"
+      ],
+      "id": "ddl69.set_function_owners",
+      "migration": 69,
+      "objectRefs": [
+        "P02/P04/P09/P10 guard owners"
+      ],
+      "operation": "set_function_owners",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.set_function_owners"
+      ],
+      "id": "ddl69.grant_owner_table_sequence",
+      "migration": 69,
+      "objectRefs": [
+        "exact table ACL ledger"
+      ],
+      "operation": "grant_owner_table_sequence",
+      "reason": "implementation_audit_missing_authority"
+    },
+    {
+      "dependsOn": [
+        "ddl69.grant_owner_table_sequence"
+      ],
+      "id": "ddl69.grant_execute_and_worker_membership",
+      "migration": 69,
+      "objectRefs": [
+        "exact function ACL ledger",
+        "NOINHERIT membership"
+      ],
+      "operation": "grant_execute_and_worker_membership",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "GRANT vanstro_worker_lifecycle_cap,vanstro_p10_release_cap TO vanstro_worker_runtime;GRANT vanstro_p10_signer_admin_cap TO vanstro_signer_admin_runtime;GRANT vanstro_p10_kms_rotation_cap TO vanstro_kms_rotation_runtime;GRANT vanstro_p10_dsar_cap TO vanstro_dsar_runtime;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl69.grant_execute_and_worker_membership"
+      ],
+      "id": "ddl69.post_assertions_acl_probes",
+      "migration": 69,
+      "objectRefs": [
+        "31 overload equality",
+        "direct/effective privileges"
+      ],
+      "operation": "post_assertions_acl_probes",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "DO $$BEGIN IF has_table_privilege('vanstro_runtime','public.analytics_foundation_event','SELECT') OR has_table_privilege('vanstro_worker_runtime','public.analytics_foundation_event','SELECT') THEN RAISE EXCEPTION 'P10_DIRECT_PRIVILEGE';END IF;END$$;"
+      ]
+    },
+    {
+      "dependsOn": [],
+      "id": "ddl70.attest_no_old_instances",
+      "migration": 70,
+      "objectRefs": [
+        "attest_no_old_instances"
+      ],
+      "operation": "attest_no_old_instances",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "SELECT public.f1_consume_no_old_instances_v2(current_setting('vanstro.rollout_id'),current_setting('vanstro.environment'),current_setting('vanstro.manifest_digest'));"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl70.attest_no_old_instances"
+      ],
+      "id": "ddl70.precheck_constraints",
+      "migration": 70,
+      "objectRefs": [
+        "precheck_constraints"
+      ],
+      "operation": "precheck_constraints",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "DO $$BEGIN IF EXISTS(SELECT 1 FROM public.runtime_config_version WHERE \"authorityVersion\">=2 AND \"successAuditEventId\" IS NULL) THEN RAISE EXCEPTION 'CONFIG_AUDIT_PRECHECK';END IF;END$$;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl70.precheck_constraints"
+      ],
+      "id": "ddl70.add_validate_authority_constraints",
+      "migration": 70,
+      "objectRefs": [
+        "add_validate_authority_constraints"
+      ],
+      "operation": "add_validate_authority_constraints",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "ALTER TABLE public.runtime_config_version ADD CONSTRAINT runtime_config_version_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+        "ALTER TABLE public.runtime_config_version VALIDATE CONSTRAINT runtime_config_version_authority2_audit_required;",
+        "ALTER TABLE public.feature_flag_version ADD CONSTRAINT feature_flag_version_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+        "ALTER TABLE public.feature_flag_version VALIDATE CONSTRAINT feature_flag_version_authority2_audit_required;",
+        "ALTER TABLE public.analytics_foundation_event ADD CONSTRAINT analytics_foundation_event_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+        "ALTER TABLE public.analytics_foundation_event VALIDATE CONSTRAINT analytics_foundation_event_authority2_audit_required;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl70.add_validate_authority_constraints"
+      ],
+      "id": "ddl70.revoke_exact_old_signatures",
+      "migration": 70,
+      "objectRefs": [
+        "revoke_exact_old_signatures"
+      ],
+      "operation": "revoke_exact_old_signatures",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "REVOKE EXECUTE ON FUNCTION public.p08_create_import(text,text,text,text,text,text,text[],text[],uuid,text,text,bigint,text,timestamptz,text,text,text,text,text),public.p08_transition_import(text,text,uuid,text,text,text,text,integer,text,text,uuid) FROM vanstro_runtime,PUBLIC;",
+        "REVOKE EXECUTE ON FUNCTION public.p09_config_list(text,text,text,text,text,text,text[],text[]),public.p09_worker_startup(text,text,text,text[],integer,timestamptz),public.p09_worker_heartbeat(text,bigint,integer,integer,timestamptz),public.p09_worker_transition(text,bigint,integer,text,timestamptz),public.p10_ingest_event_v2(text,text,text,text,text[],text[],text,text,uuid,text,text,text,timestamptz,timestamptz,text,text,jsonb,text,text,text,integer,text,text,text) FROM vanstro_runtime,PUBLIC;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl70.revoke_exact_old_signatures"
+      ],
+      "id": "ddl70.tighten_default_privileges",
+      "migration": 70,
+      "objectRefs": [
+        "tighten_default_privileges"
+      ],
+      "operation": "tighten_default_privileges",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "ALTER DEFAULT PRIVILEGES FOR ROLE vanstro_migrator IN SCHEMA public REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;"
+      ]
+    },
+    {
+      "dependsOn": [
+        "ddl70.tighten_default_privileges"
+      ],
+      "id": "ddl70.post_assertions",
+      "migration": 70,
+      "objectRefs": [
+        "post_assertions"
+      ],
+      "operation": "post_assertions",
+      "reason": "implementation_audit_missing_authority",
+      "sqlStatements": [
+        "DO $$BEGIN IF EXISTS(SELECT 1 FROM public.f1_deployment_instance_attestation WHERE \"rolloutId\"=current_setting('vanstro.rollout_id')) OR NOT EXISTS(SELECT 1 FROM public.f1_deployment_attestation_consumption WHERE \"rolloutId\"=current_setting('vanstro.rollout_id')) THEN RAISE EXCEPTION 'ATTESTATION_CONSUME_POSTASSERT';END IF;IF has_function_privilege('vanstro_runtime','public.p09_worker_startup(text,text,text,text[],integer,timestamptz)','EXECUTE') THEN RAISE EXCEPTION 'OLD_EXECUTE_REMAINS';END IF;END$$;"
+      ]
+    }
+  ],
+  "header": {
+    "generated": "GENERATED — DO NOT EDIT",
+    "generatorSha256": "f19cee679a0c112b62e5cc19465ffce409adfd4a32b97a2101bd6013e7627301",
+    "modelSha256": "7376e74962984bf4a73733edcfdf308b979d62a0fc34a8ee9c11e9e013a181a8",
+    "packageVersion": "1.0.1",
+    "parentFrozenManifestSha256": "e6c3cb275b3ecee17022418586613f6739757802b705bd17444b5c95be5a6e8f",
+    "schemaSha256": "b40af890b5a81e3aacde2d2715c6b10fe0a64f930d0c3c5eb97c147e5ae56f2b",
+    "status": "FROZEN"
+  },
+  "migration69Order": [
+    "ddl69.assert_baseline_hashes_and_external_roles",
+    "ddl69.create_no_login_roles",
+    "ddl69.revoke_public_create_and_defaults",
+    "ddl69.add_compatible_columns",
+    "ddl69.create_dependency_tables",
+    "ddl69.add_or_replace_constraints",
+    "ddl69.create_ordinary_indexes",
+    "ddl69.create_internal_helpers",
+    "ddl69.create_application_wrappers",
+    "ddl69.create_and_enable_triggers",
+    "ddl69.set_function_owners",
+    "ddl69.grant_owner_table_sequence",
+    "ddl69.grant_execute_and_worker_membership",
+    "ddl69.post_assertions_acl_probes"
+  ],
+  "migration70Order": [
+    "ddl70.attest_no_old_instances",
+    "ddl70.precheck_constraints",
+    "ddl70.add_validate_authority_constraints",
+    "ddl70.revoke_exact_old_signatures",
+    "ddl70.tighten_default_privileges",
+    "ddl70.post_assertions"
+  ]
+}

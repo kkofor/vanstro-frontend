@@ -1,0 +1,16 @@
+[Unit]
+Description=Vanstro Next.js storefront (127.0.0.1:8793)
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/www/wwwroot/vanstro.ca-next
+ExecStart=/usr/local/lib/nodejs/node-v22.23.2-linux-x64/bin/node /www/wwwroot/vanstro.ca-next/deploy/start-8793.cjs
+Restart=always
+RestartSec=3
+StandardOutput=append:/www/wwwroot/vanstro.ca-next/logs/next-8793.log
+StandardError=append:/www/wwwroot/vanstro.ca-next/logs/next-8793.log
+
+[Install]
+WantedBy=multi-user.target

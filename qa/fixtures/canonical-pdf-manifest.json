@@ -1,0 +1,62 @@
+{
+  "verifiedAt": "2026-07-28",
+  "historicalGitCommit": "4d88f35a1ad85fb9bd51af7c1eeeef3fb8cd5862",
+  "productionBaseUrl": "https://vanstro.ca/resources/",
+  "files": {
+    "vanstro-cabinet-product-catalog-spring-2026.pdf": {
+      "bytes": 17189404,
+      "pages": 40,
+      "sha256": "4e28dcfb2784eb48f8726f3c342c4dc23e248188baec7b983d0408e5b9813eb8"
+    },
+    "vanstro-cabinet-vanity-warranty-2026-en-fr.pdf": {
+      "bytes": 112885,
+      "pages": 6,
+      "sha256": "fa868df8b9441573ef80efd54f5389a1d9a7524fd4a699d028bf1130c49dcce5"
+    },
+    "vanstro-trim-moulding-catalog-spring-2026.pdf": {
+      "bytes": 1468793,
+      "pages": 2,
+      "sha256": "1b3738403ed2ca63c2b8434976a93849862eb390ef128409031677dea0feaa09"
+    },
+    "vanstro-vanity-installation-guide-v3021stdl.pdf": {
+      "bytes": 2813570,
+      "pages": 18,
+      "sha256": "bb1a3a8cc586bb3a02e128ead1ef83ffb48dc960283ba78eeb9f3e50b8eba336"
+    },
+    "vanstro-vanity-installation-guide-v3021stdr.pdf": {
+      "bytes": 2820198,
+      "pages": 18,
+      "sha256": "a770e08f5c2ee082417dc25bf76f56eba948827a71db57f47e4077fdd81b9813"
+    },
+    "vanstro-vanity-installation-guide-v3021tdl-v3621tdl.pdf": {
+      "bytes": 2827483,
+      "pages": 18,
+      "sha256": "89a42eb73c79d51200817edf2832ca2dfdae393651801023c0e5d2c6ba770285"
+    },
+    "vanstro-vanity-installation-guide-v3021tdr-v3621tdr.pdf": {
+      "bytes": 3002423,
+      "pages": 18,
+      "sha256": "a0913092a8f0a7826c22dac426d21dd0b7fa68724950b5ee4656dd6df9655bbb"
+    },
+    "vanstro-vanity-installation-guide-v4221-v4821.pdf": {
+      "bytes": 2964283,
+      "pages": 17,
+      "sha256": "a7bc073818751376ad9160fe3ffe3bee8a6b7fea59ff6d6427c73a71b7dd8f15"
+    },
+    "vanstro-vanity-installation-guide-v6621.pdf": {
+      "bytes": 3845672,
+      "pages": 22,
+      "sha256": "f0929faa947606e465713ceb984ab79e7e9023922e45fdb002b6377b25bc280a"
+    },
+    "vanstro-vanity-installation-guide-vs24-vs27-vs30.pdf": {
+      "bytes": 2188666,
+      "pages": 12,
+      "sha256": "0071516594f8931416cdc978c4b13e3f828665bbdf0d19b9b481f070d079b912"
+    },
+    "vanstro-vanity-installation-guide-vs36.pdf": {
+      "bytes": 2188813,
+      "pages": 12,
+      "sha256": "dec60e8bb61d040dca65bccceca096afa16c26e75a6c10ee6484e7bb99104694"
+    }
+  }
+}

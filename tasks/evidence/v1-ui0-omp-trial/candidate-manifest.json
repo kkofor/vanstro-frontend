@@ -1,0 +1,557 @@
+{
+  "allCandidateFiles": [
+    ".gitignore",
+    "components.json",
+    "package.json",
+    "pnpm-lock.yaml",
+    "postcss.config.mjs",
+    "qa/v1-ui0-browser/acceptance.py",
+    "qa/v1-ui0-browser/app/fixture-client.tsx",
+    "qa/v1-ui0-browser/app/fixture.css",
+    "qa/v1-ui0-browser/app/icon.svg",
+    "qa/v1-ui0-browser/app/layout.tsx",
+    "qa/v1-ui0-browser/app/page.tsx",
+    "qa/v1-ui0-browser/definition.json",
+    "qa/v1-ui0-browser/next-env.d.ts",
+    "qa/v1-ui0-browser/next.config.mjs",
+    "qa/v1-ui0-browser/package.json",
+    "qa/v1-ui0-browser/postcss.config.mjs",
+    "qa/v1-ui0-browser/run.py",
+    "qa/v1-ui0-browser/tsconfig.json",
+    "qa/v1-ui0-contracts/contract-helpers.mjs",
+    "qa/v1-ui0-contracts/no-direct-ui-dependencies.test.mjs",
+    "qa/v1-ui0-contracts/ui-css-collision.test.mjs",
+    "qa/v1-ui0-contracts/ui-dependency-allowlist.test.mjs",
+    "qa/v1-ui0-contracts/ui-public-api.test.mjs",
+    "qa/v1-ui0-contracts/ui-token-contract.test.mjs",
+    "src/app/globals.css",
+    "src/components/ui/badge-variants.ts",
+    "src/components/ui/badge.tsx",
+    "src/components/ui/button-variants.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/card.tsx",
+    "src/components/ui/checkbox.tsx",
+    "src/components/ui/cn.ts",
+    "src/components/ui/dialog.tsx",
+    "src/components/ui/empty-state.tsx",
+    "src/components/ui/field.tsx",
+    "src/components/ui/index.ts",
+    "src/components/ui/input.tsx",
+    "src/components/ui/live-region.tsx",
+    "src/components/ui/pagination.tsx",
+    "src/components/ui/section.tsx",
+    "src/components/ui/select.tsx",
+    "src/components/ui/separator.tsx",
+    "src/components/ui/skeleton.tsx",
+    "src/components/ui/status-message.tsx",
+    "src/components/ui/table.tsx",
+    "src/components/ui/textarea.tsx",
+    "src/components/ui/ui-compat.css",
+    "tasks/contracts/v1-ui-library-foundation.v1.json",
+    "tasks/contracts/v1-ui-library-foundation.v1.md",
+    "tasks/evidence/v1-ui0-omp-trial/browser/acceptance-results.json",
+    "tasks/evidence/v1-ui0-omp-trial/browser/server.log",
+    "tasks/evidence/v1-ui0-omp-trial/candidate-manifest.json"
+  ],
+  "browserEvidence": {
+    "bytes": 18229,
+    "cases": "17/17",
+    "lines": 634,
+    "path": "tasks/evidence/v1-ui0-omp-trial/browser/acceptance-results.json",
+    "sha256": "75780d52bea7a4a4ba3bdbd2b7bf416d0db1e07a017755aa2b819b01a937f9f0",
+    "unexpectedConsole": 0,
+    "unexpectedRequests": 0
+  },
+  "cleanup": {
+    "ownedBuildOutputsRemoved": [
+      "qa/v1-ui0-browser/.next"
+    ],
+    "portsOpen": [],
+    "processesRemaining": []
+  },
+  "commands": [
+    {
+      "command": "pnpm run typecheck:web",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run test:ui0-contracts",
+      "exitCode": 0,
+      "note": "23/23",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run test:package-contracts",
+      "exitCode": 0,
+      "note": "270/270",
+      "result": "pass"
+    },
+    {
+      "command": "pnpm install --frozen-lockfile",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    {
+      "command": "pnpm run test:ui0-browser final",
+      "exitCode": 0,
+      "note": "17/17; unexpected console 0; unexpected requests 0",
+      "result": "pass"
+    },
+    {
+      "command": "candidate high-confidence credential regex scan",
+      "exitCode": 0,
+      "note": "51 files; 0 hits",
+      "result": "pass"
+    },
+    {
+      "command": "git secrets --scan -",
+      "exitCode": 1,
+      "note": "git-secrets not installed",
+      "result": "not-run"
+    },
+    {
+      "command": "gitleaks detect",
+      "exitCode": 127,
+      "note": "gitleaks not installed",
+      "result": "not-run"
+    },
+    {
+      "command": "git ignore/classification consistency",
+      "exitCode": 0,
+      "note": "4 modified; 47 Git-visible untracked; 0 ignored candidate source; 1 ignored runtime artifact",
+      "result": "pass"
+    }
+  ],
+  "delivery": {
+    "candidateManifest": "tasks/evidence/v1-ui0-omp-trial/candidate-manifest.json",
+    "candidateReport": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/reports/2026-08-06-v1-ui0-omp-trial-candidate-report-v2.md",
+    "finalReport": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/reports/2026-08-06-v1-ui0-l3-l4-formalization-integration-final-report-v2.md",
+    "integrationCheckpoint": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/checkpoints/v1-ui0-l3-l4-formalization-integration-certified.md"
+  },
+  "endHead": "e933defca7f101fc17813f729b0a9a6ef0254af9",
+  "endTree": "8f3e911e5c97a6461d9091af3d73a2cd26be8c58",
+  "executor": "OMP",
+  "files": [
+    {
+      "bytes": 891,
+      "lines": 42,
+      "path": ".gitignore",
+      "sha256": "20404e03ff28ef4dd1655d4943c5a14aad3aa6377d8413604294ba9c132ecaab"
+    },
+    {
+      "bytes": 438,
+      "lines": 21,
+      "path": "components.json",
+      "sha256": "0ebdbcd3eebd0043794747378cbf85ee461d9f13704984bf6816ff7903677806"
+    },
+    {
+      "bytes": 8542,
+      "lines": 92,
+      "path": "package.json",
+      "sha256": "dba1f073e68992f3e9ba59b3d812c06b0e36ae0ef0f609b602f80da84439c677"
+    },
+    {
+      "bytes": 75587,
+      "lines": 2279,
+      "path": "pnpm-lock.yaml",
+      "sha256": "d5730ea59805bb45af6b317b2319f4352d4331b803816f396f4323951d140461"
+    },
+    {
+      "bytes": 70,
+      "lines": 5,
+      "path": "postcss.config.mjs",
+      "sha256": "5b0bc4c78be977cd81f947fb5563aaa7cc6d451e6f1c53a3260b7656a7144d20"
+    },
+    {
+      "bytes": 13595,
+      "lines": 227,
+      "path": "qa/v1-ui0-browser/acceptance.py",
+      "sha256": "726e7b08800a2efe3a16540a898cbebdbb67197ce34ebef5137380c42475becb"
+    },
+    {
+      "bytes": 2987,
+      "lines": 70,
+      "path": "qa/v1-ui0-browser/app/fixture-client.tsx",
+      "sha256": "4bbb8eff6d07d9507c136017da34f73ed556296f9fc8eeb07261a0e132097ecf"
+    },
+    {
+      "bytes": 469,
+      "lines": 12,
+      "path": "qa/v1-ui0-browser/app/fixture.css",
+      "sha256": "c4e44d5b7debf3a843ef3bf84d2bd3194c5752599eceba2178dc97b1c8eceb3a"
+    },
+    {
+      "bytes": 162,
+      "lines": 1,
+      "path": "qa/v1-ui0-browser/app/icon.svg",
+      "sha256": "98c4c56765e2ae1d60fc151f4d56c666a3df87e77c14b399a261a5f8ea25487d"
+    },
+    {
+      "bytes": 235,
+      "lines": 10,
+      "path": "qa/v1-ui0-browser/app/layout.tsx",
+      "sha256": "0bd972c635d4f77acb767e7795496d014944d3e17a0451e451652c66d8542a86"
+    },
+    {
+      "bytes": 114,
+      "lines": 5,
+      "path": "qa/v1-ui0-browser/app/page.tsx",
+      "sha256": "9899cfeb9964631f8809d8d90ebde649e43a9e938efc187d23f5db36ac89f358"
+    },
+    {
+      "bytes": 1569,
+      "lines": 25,
+      "path": "qa/v1-ui0-browser/definition.json",
+      "sha256": "7786665a75a87de04acc78d8a4b8625e078b5005b657906ba145cd4f03fe3de4"
+    },
+    {
+      "bytes": 251,
+      "lines": 6,
+      "path": "qa/v1-ui0-browser/next-env.d.ts",
+      "sha256": "7ad303e40d4fddf44f156129e397511953a71481c5cfd86b1862649aaaf240cc"
+    },
+    {
+      "bytes": 210,
+      "lines": 10,
+      "path": "qa/v1-ui0-browser/next.config.mjs",
+      "sha256": "259451c548dec2b603d8d89a9e2882ef27ab1f94bf00b511e926c2d88743d2fe"
+    },
+    {
+      "bytes": 105,
+      "lines": 7,
+      "path": "qa/v1-ui0-browser/package.json",
+      "sha256": "aacae5a35be31faeaf418d3b4a509ecf6d86b9ad2c482d98ef575c5555d4ae99"
+    },
+    {
+      "bytes": 68,
+      "lines": 5,
+      "path": "qa/v1-ui0-browser/postcss.config.mjs",
+      "sha256": "65572d5fde836180cba54e1ac6ff1ec309ef6aa925662e9cd04b32b53c5bee35"
+    },
+    {
+      "bytes": 3336,
+      "lines": 117,
+      "path": "qa/v1-ui0-browser/run.py",
+      "sha256": "d39c0f7fb497d087151d79d12a6207532c7b757a346823088883b0d457c9a074"
+    },
+    {
+      "bytes": 714,
+      "lines": 41,
+      "path": "qa/v1-ui0-browser/tsconfig.json",
+      "sha256": "2ff036b1653959e7172e1d1905a1c891a895e6b01b8999c8752732ee23053372"
+    },
+    {
+      "bytes": 3392,
+      "lines": 81,
+      "path": "qa/v1-ui0-contracts/contract-helpers.mjs",
+      "sha256": "4c7390c5dfd0ac7b375ed6bddc030b9741f00e16e6cb368719ab3859043db275"
+    },
+    {
+      "bytes": 2108,
+      "lines": 52,
+      "path": "qa/v1-ui0-contracts/no-direct-ui-dependencies.test.mjs",
+      "sha256": "2bc681bfa7dcedd11d8a847cfa2d3ea32c343592095a63d21a4ed0673d3082a9"
+    },
+    {
+      "bytes": 4068,
+      "lines": 68,
+      "path": "qa/v1-ui0-contracts/ui-css-collision.test.mjs",
+      "sha256": "d24a2b805e98e6367b5262a7a6680c8f32fef02e73b821e7401dd17180d94ce2"
+    },
+    {
+      "bytes": 5033,
+      "lines": 91,
+      "path": "qa/v1-ui0-contracts/ui-dependency-allowlist.test.mjs",
+      "sha256": "98e88c3658bf5e7c741345832202d13bbb497faf4466594e033fe821e42e4cab"
+    },
+    {
+      "bytes": 4749,
+      "lines": 78,
+      "path": "qa/v1-ui0-contracts/ui-public-api.test.mjs",
+      "sha256": "f60ff395084ef1ebea8fde5b3c5276eca65e87f2496659422cfff6d4b32ccf8b"
+    },
+    {
+      "bytes": 3039,
+      "lines": 62,
+      "path": "qa/v1-ui0-contracts/ui-token-contract.test.mjs",
+      "sha256": "027f413bacaf0fb3f13db40519bf79db049caf45dbcdbf86ac5a5110c1f70217"
+    },
+    {
+      "bytes": 310121,
+      "lines": 16847,
+      "path": "src/app/globals.css",
+      "sha256": "bf5b99863f2f0097fd4dc2b9c69db2a4c7fe5d804edcf8f7278ff77e58f40052"
+    },
+    {
+      "bytes": 629,
+      "lines": 22,
+      "path": "src/components/ui/badge-variants.ts",
+      "sha256": "cae352bf8e07a135f26e7f7a582cfc7a6ae8ce25975780f2aa3d8618b826de17"
+    },
+    {
+      "bytes": 628,
+      "lines": 25,
+      "path": "src/components/ui/badge.tsx",
+      "sha256": "9542a1c038d3b69257338046f5acdf72d08ae5db51e6b52c151b5474fecdfe5f"
+    },
+    {
+      "bytes": 839,
+      "lines": 29,
+      "path": "src/components/ui/button-variants.ts",
+      "sha256": "917467df76ae59b216a4f44f271b5533d2a3cc93d7807269259feb357be47f0d"
+    },
+    {
+      "bytes": 1899,
+      "lines": 78,
+      "path": "src/components/ui/button.tsx",
+      "sha256": "234c3714c5dcb8fa20a08c81f49869537df8bcfa9d33c8fd015b01a8c6191102"
+    },
+    {
+      "bytes": 1794,
+      "lines": 75,
+      "path": "src/components/ui/card.tsx",
+      "sha256": "92e14ea4c4007aebc91607557b68d8add27fe4cdbcb125c343d4f555d52cee40"
+    },
+    {
+      "bytes": 864,
+      "lines": 29,
+      "path": "src/components/ui/checkbox.tsx",
+      "sha256": "aa676b637583ed60ce17a659ab14b7ea49f23e0c63d785aa19fe945bf25de2f9"
+    },
+    {
+      "bytes": 177,
+      "lines": 6,
+      "path": "src/components/ui/cn.ts",
+      "sha256": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68"
+    },
+    {
+      "bytes": 9530,
+      "lines": 323,
+      "path": "src/components/ui/dialog.tsx",
+      "sha256": "5e410fb8136a3429e9e0a0b6b0166990a81509591aec5b7f76e5b5650c1968af"
+    },
+    {
+      "bytes": 1822,
+      "lines": 67,
+      "path": "src/components/ui/empty-state.tsx",
+      "sha256": "277cf72362e95092c4df4ea58f8cec860a928bbe17eb4c364439f3d9e4628a0a"
+    },
+    {
+      "bytes": 4696,
+      "lines": 171,
+      "path": "src/components/ui/field.tsx",
+      "sha256": "7e00e8cb3650a6ed407e5f7ed5220cc2f858d91d63107e2f82cd1ec64b63c419"
+    },
+    {
+      "bytes": 3333,
+      "lines": 154,
+      "path": "src/components/ui/index.ts",
+      "sha256": "9167556f81a961fe8a569a133dbb0d6f489a1b5b5eaad08a7f404c19b8038b07"
+    },
+    {
+      "bytes": 710,
+      "lines": 25,
+      "path": "src/components/ui/input.tsx",
+      "sha256": "a437064efef845bf6fd85d4e11061c13db9833e6e23a5cb471a8f8e54bf7fec3"
+    },
+    {
+      "bytes": 840,
+      "lines": 34,
+      "path": "src/components/ui/live-region.tsx",
+      "sha256": "4f77dbd59646d2e088f5b8a230c49776fce16467e6a658ee0bc9345b2208b837"
+    },
+    {
+      "bytes": 2429,
+      "lines": 90,
+      "path": "src/components/ui/pagination.tsx",
+      "sha256": "c20b1f0863db2b080cb30cdb5768b11db6763501aeca036ef3c1240fa963add8"
+    },
+    {
+      "bytes": 1891,
+      "lines": 75,
+      "path": "src/components/ui/section.tsx",
+      "sha256": "ca1c96c819461501737a5ca9b67de288e04239e6d7bb73fa64e17e6f14c3e028"
+    },
+    {
+      "bytes": 721,
+      "lines": 25,
+      "path": "src/components/ui/select.tsx",
+      "sha256": "83652939dcda472b86fe1d9e8f87e9b7bdcef5b39c328976f30aff012bca9d60"
+    },
+    {
+      "bytes": 895,
+      "lines": 36,
+      "path": "src/components/ui/separator.tsx",
+      "sha256": "8f7385c69e0f0ace58b6f3f2ceb7f4839ab73543788c9c56c4877b3baa83513d"
+    },
+    {
+      "bytes": 640,
+      "lines": 27,
+      "path": "src/components/ui/skeleton.tsx",
+      "sha256": "39202aca73a9acc6c421171d2ec0be2b403b1e551e81e476d604d097a5b9fc16"
+    },
+    {
+      "bytes": 1953,
+      "lines": 73,
+      "path": "src/components/ui/status-message.tsx",
+      "sha256": "4532c7b690a02eafd23341b42ddec0769aa09814373daa76a9ccbfa27ac3de38"
+    },
+    {
+      "bytes": 4309,
+      "lines": 170,
+      "path": "src/components/ui/table.tsx",
+      "sha256": "0edef60bf1ce4bd509fb8001d586fe11e49c591dd4d3ce74df9c4b4b128bd692"
+    },
+    {
+      "bytes": 754,
+      "lines": 25,
+      "path": "src/components/ui/textarea.tsx",
+      "sha256": "c253fdba7fc7d19e4a52459b21ac21967231749eb296095a54ca23ddb52dfc87"
+    },
+    {
+      "bytes": 21658,
+      "lines": 1026,
+      "path": "src/components/ui/ui-compat.css",
+      "sha256": "fdca839497525d1d107dad3c7103b0f1acc482460a0ee7431a39375651e08f03"
+    },
+    {
+      "bytes": 15569,
+      "lines": 166,
+      "path": "tasks/contracts/v1-ui-library-foundation.v1.json",
+      "sha256": "6f88abb8f2965a178ed096a50916e52b609640586c1d0aa9cb9123a7ca1751eb"
+    },
+    {
+      "bytes": 13643,
+      "lines": 191,
+      "path": "tasks/contracts/v1-ui-library-foundation.v1.md",
+      "sha256": "d6ccd78eb599f86fde478124854f4116197c868fa6da848776905869003c772f"
+    },
+    {
+      "bytes": 18229,
+      "lines": 634,
+      "path": "tasks/evidence/v1-ui0-omp-trial/browser/acceptance-results.json",
+      "sha256": "75780d52bea7a4a4ba3bdbd2b7bf416d0db1e07a017755aa2b819b01a937f9f0"
+    },
+    {
+      "bytes": 703,
+      "lines": 15,
+      "path": "tasks/evidence/v1-ui0-omp-trial/browser/server.log",
+      "sha256": "3655aaf64e6a997bba235f648f543fe0fac268d417529edcf594330f8c9cbc7a"
+    },
+    {
+      "bytes": 17675,
+      "lines": 527,
+      "path": "tasks/evidence/v1-ui0-omp-trial/candidate-manifest.json",
+      "sha256": "9d6fad081fdd88587b33f4408960330ee7edd5b1a160ae512ea89a0257eb48c1"
+    }
+  ],
+  "fingerprintAlgorithm": "sha256(startHead NUL sorted(path NUL sha256)); excludes candidate manifest self-reference",
+  "frontendFinalCommit": {
+    "commit": "e933defca7f101fc17813f729b0a9a6ef0254af9",
+    "parent": "45a2999558f849912467694badc1a241e452acc4",
+    "tree": "8f3e911e5c97a6461d9091af3d73a2cd26be8c58"
+  },
+  "headUnchanged": false,
+  "headUnchangedNote": "Trial-era flag: the uncommitted trial had startHead == endHead. The formalized state advanced the Frontend head from 1cd3b850 to e933defc (then the closure commit); headUnchanged is therefore false.",
+  "ignoredCandidateSourceFiles": [],
+  "ignoredRuntimeArtifacts": [
+    "tasks/evidence/v1-ui0-omp-trial/browser/server.log"
+  ],
+  "integrationCertification": {
+    "commit": "c3b81aa0500817acf69db5ea539d5f3bfaef2023",
+    "gates": {
+      "frozenInstall": "pass",
+      "migrations": "75, no 76, 73-75 SHA unchanged",
+      "packageContracts": "271/271",
+      "qaSource": "pass with 1 historical out-of-scope failure (v2-27)",
+      "s01b": "25/25 functional, 15 unexpected console 404 (fixture gap, v2-26)",
+      "s02": "23/23",
+      "secretScan": "0 hits on merge diff",
+      "typecheckWeb": "pass",
+      "ui0Browser": "17/17",
+      "ui0Contracts": "24/24"
+    },
+    "node": "v22.22.2",
+    "parents": [
+      "135d1b1e52dabffa652b4fea7cf236988476dd4f",
+      "e933defca7f101fc17813f729b0a9a6ef0254af9"
+    ],
+    "tree": "c25a877a1e0b13b7954cfd72133c25a653fb7046"
+  },
+  "knownFailuresLimitations": [
+    "v2-25: Field composed-path (FieldDescription/FieldError as direct children) does not register presence/ids into context; aria-describedby/aria-invalid missing for that pattern. Medium, UI-0 scope, open.",
+    "v2-26: S01B fixture API missing /storefront/config endpoint -> 15 unexpected console 404 per run; 25/25 functional cases pass. Historical out-of-scope (S02 fixture gap), open.",
+    "v2-27: apps/api/src/dashboard/settings.test.ts freezes 12 S01 routes while API registers 22 (S02 routes); zero change f111bb74..HEAD. Historical out-of-scope, open.",
+    "v2-28: Reproducible S02/existing-page screenshot baseline comparison not yet committed; byte-identity guards are the current visual-freeze evidence. Low, UI-0 scope evidence item, open.",
+    "v2-29: git-secrets and gitleaks binaries unavailable; bounded high-confidence scans found 0 hits. Tooling disclosure, open."
+  ],
+  "l3Formalization": {
+    "frontendCommit": "e933defca7f101fc17813f729b0a9a6ef0254af9",
+    "frozenInstall": "pass",
+    "gitDiffCheck": "pass",
+    "independentGate": "0 Blocker / 0 High; UI-0 scope open: 1 Medium (v2-25) + 1 Low (v2-28); historical out-of-scope: v2-26, v2-27; tooling disclosure: v2-29",
+    "migrationsUnchanged": true,
+    "node": "v22.22.2",
+    "packageContracts": "271/271",
+    "qaSource": "pass with 1 historical out-of-scope failure (settings.test.ts route drift, v2-27)",
+    "secretScan": "pass(0 hits; git-secrets/gitleaks unavailable, v2-29)",
+    "typecheckWeb": "pass",
+    "ui0Browser": "17/17",
+    "ui0Contracts": "24/24",
+    "visualFreeze": "pass (byte-identity guards vs 1cd3b850/f111bb74 baselines; screenshot baseline deferred, v2-28)"
+  },
+  "manifestPass1Sha256": "9ccdf6fe39186b35cf5b55eea845836872b180e6f9fd7d44c74735a23f677dcd",
+  "manifestSelfReferenceNote": "This manifest records its pass-1 SHA; the committed manifest SHA is recorded by the -v2 final report, not by this file, to avoid a self-referential hash claim.",
+  "modifiedFiles": [
+    "tasks/contracts/v1-ui-library-foundation.v1.json",
+    "tasks/contracts/v1-ui-library-foundation.v1.md"
+  ],
+  "report": {
+    "bytes": 9191,
+    "lines": 162,
+    "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/reports/2026-08-06-v1-ui0-omp-trial-candidate-report-v2.md",
+    "sha256": "a3443d9ad4d79cc3dbe3ee9f78b114382c3ca12861cc96a4a7a32306fd30b81f"
+  },
+  "revisionAuthority": {
+    "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-ui0-omp-trial-revision-1.md",
+    "sha256": "5e275a11be4e0b6b938a243ea1a5a3fe130b297389eaa299f73ace3d4bab8443"
+  },
+  "revisionFindings": {
+    "F1": {
+      "evidence": "QA source directories are Git-visible; server.log remains ignored",
+      "status": "closed"
+    },
+    "F2": {
+      "evidence": "classifications match git status/check-ignore; self-reference disclosed",
+      "status": "closed"
+    },
+    "F3": {
+      "evidence": "ui-compat 1153 to 1026 lines; 22 duplicate attribute visual selectors removed; forced-colors Dialog boundary retained",
+      "status": "closed"
+    },
+    "F4": {
+      "evidence": "DialogPortal sole data-slot exemption; Overlay/Content slots retained; no wrapper",
+      "status": "closed"
+    },
+    "F5": {
+      "evidence": "local mergeClassNames removed; cn imported and used",
+      "status": "closed"
+    }
+  },
+  "schemaVersion": "vanstro.ui0.omp-final-formalization-manifest.v1",
+  "selfReferenceExclusions": [
+    "tasks/evidence/v1-ui0-omp-trial/candidate-manifest.json"
+  ],
+  "stagedCount": 0,
+  "startHead": "1cd3b850a36051d1306334cde38a62cc995bfa5d",
+  "startTree": "d4d39f3cf856799d07008e65dac0d97106ff533c",
+  "status": "FORMALIZED_INTEGRATION_CERTIFIED",
+  "testedWorkingTreeFingerprint": "c9a248aeca0b4b823240d95dd4a547f7491ae723851ca8b97573b84615038359",
+  "untrackedFiles": []
+}

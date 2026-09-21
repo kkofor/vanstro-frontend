@@ -57,6 +57,24 @@ async function main() {
   const password = process.env.SUPER_ADMIN_PASSWORD;
   const paymentCallbackSecret = process.env.PAYMENT_CALLBACK_SECRET;
   const smokeStartedAt = new Date();
+  const databaseUrl = process.env.DATABASE_URL ?? "";
+  const databaseName = (() => {
+    try {
+      return new URL(databaseUrl).pathname.replace(/^\//, "");
+    } catch {
+      return "";
+    }
+  })();
+
+  if (
+    process.env.VANSTRO_RUNTIME_MODE !== "test" ||
+    process.env.ALLOW_DESTRUCTIVE_SMOKE?.trim().toLowerCase() !== "true" ||
+    !/(^|[_-])(test|smoke)([_-]|$)/i.test(databaseName)
+  ) {
+    throw new Error(
+      "Destructive API smoke requires VANSTRO_RUNTIME_MODE=test, ALLOW_DESTRUCTIVE_SMOKE=true, and a database name containing test or smoke."
+    );
+  }
 
   if (!email || !password || !paymentCallbackSecret) {
     throw new Error("SUPER_ADMIN_EMAIL, SUPER_ADMIN_PASSWORD and PAYMENT_CALLBACK_SECRET are required.");
@@ -97,6 +115,14 @@ async function main() {
   });
   await prisma.paymentSession.deleteMany({
     where: { guestEmail: { startsWith: "smoke-customer-" } }
+  });
+  await prisma.crmContact.deleteMany({
+    where: {
+      OR: [
+        { email: { startsWith: "smoke-customer-" } },
+        { email: { startsWith: "smoke-delivery-" } }
+      ]
+    }
   });
   await prisma.user.deleteMany({
     where: { email: { startsWith: "smoke-customer-" } }
@@ -308,7 +334,7 @@ async function main() {
     }
   );
   const serviceAccountToken = await requestJson<{
-    data: { id: string; token: string };
+    data: { id: string; plaintext: string };
   }>(
     "create mcp service account token",
     `/api/v1/dashboard/mcp/service-accounts/${serviceAccount.data.id}/tokens`,
@@ -322,7 +348,7 @@ async function main() {
   const mcpTools = await requestJson<{ data: Array<{ key: string }> }>(
     "mcp tool registry",
     "/api/v1/mcp/tools",
-    { token: serviceAccountToken.data.token }
+    { token: serviceAccountToken.data.plaintext }
   );
 
   if (!mcpTools.data.some((tool) => tool.key === "operations.alerts")) {
@@ -332,7 +358,7 @@ async function main() {
     "execute mcp tool",
     "/api/v1/mcp",
     {
-      token: serviceAccountToken.data.token,
+      token: serviceAccountToken.data.plaintext,
       method: "POST",
       body: { tool: "platform.health" }
     }
@@ -341,7 +367,7 @@ async function main() {
     "execute operations alerts mcp tool",
     "/api/v1/mcp",
     {
-      token: serviceAccountToken.data.token,
+      token: serviceAccountToken.data.plaintext,
       method: "POST",
       body: { tool: "operations.alerts" }
     }
@@ -349,12 +375,12 @@ async function main() {
   await requestJson<{ data: unknown[] }>(
     "cli erp sync jobs with service account",
     "/api/v1/cli/erp-sync-jobs",
-    { token: serviceAccountToken.data.token }
+    { token: serviceAccountToken.data.plaintext }
   );
   await requestJson<{ data: unknown[] }>(
     "cli email outbox with service account",
     "/api/v1/cli/email/outbox",
-    { token: serviceAccountToken.data.token }
+    { token: serviceAccountToken.data.plaintext }
   );
   const invocations = await requestJson<{ data: Array<{ toolKey: string; status: string }> }>(
     "dashboard mcp invocations",
@@ -369,17 +395,17 @@ async function main() {
   await requestJson<{ data: { revoked: boolean } }>(
     "revoke mcp service account token",
     `/api/v1/dashboard/mcp/service-accounts/${serviceAccount.data.id}/tokens/${serviceAccountToken.data.id}`,
-    { token, method: "DELETE" }
+    { token, method: "DELETE", body: { reason: "Smoke test token revocation.", idempotencyKey: `smoke-revoke-${suffix}-0000000` } }
   );
   await expectStatus(
     "revoked mcp token",
     await app.request("/api/v1/mcp/tools", {
-      headers: { authorization: `Bearer ${serviceAccountToken.data.token}` }
+      headers: { authorization: `Bearer ${serviceAccountToken.data.plaintext}` }
     }),
     401
   );
   const lifecycleServiceAccountToken = await requestJson<{
-    data: { id: string; token: string };
+    data: { id: string; plaintext: string };
   }>(
     "create service account lifecycle token",
     `/api/v1/dashboard/mcp/service-accounts/${serviceAccount.data.id}/tokens`,
@@ -391,7 +417,7 @@ async function main() {
     }
   );
   const lifecycleServiceAccountTokenTwo = await requestJson<{
-    data: { id: string; token: string };
+    data: { id: string; plaintext: string };
   }>(
     "create second service account lifecycle token",
     `/api/v1/dashboard/mcp/service-accounts/${serviceAccount.data.id}/tokens`,
@@ -406,7 +432,7 @@ async function main() {
     await expectStatus(
       "service account lifecycle token is active before disable",
       await app.request("/api/v1/mcp/tools", {
-        headers: { authorization: `Bearer ${lifecycleToken.data.token}` }
+        headers: { authorization: `Bearer ${lifecycleToken.data.plaintext}` }
       }),
       200
     );
@@ -730,7 +756,7 @@ async function main() {
     await expectStatus(
       "disabled service account token",
       await app.request("/api/v1/mcp/tools", {
-        headers: { authorization: `Bearer ${lifecycleToken.data.token}` }
+        headers: { authorization: `Bearer ${lifecycleToken.data.plaintext}` }
       }),
       401
     );
@@ -930,9 +956,10 @@ async function main() {
       body: {
         name: `Smoke Lead ${suffix}`,
         email: `smoke-lead-${suffix}@vanstro.local`,
-        topic: "smoke-topic",
+        topic: "careers",
         city: "Winnipeg, MB",
-        message: "Smoke contact lead"
+        message: "Smoke contact lead",
+        locale: "en-CA"
       }
     }
   );
@@ -1093,6 +1120,34 @@ async function main() {
     throw new Error("published review response leaked private reviewer fields.");
   }
 
+  const supportHandoff = await requestJson<{ data: { id: string; status: "new" } }>(
+    "submit support handoff",
+    "/api/v1/support/handoffs",
+    {
+      method: "POST",
+      status: 201,
+      body: {
+        channel: "human",
+        sourcePath: "/products",
+        transcript: [{ role: "user", message: "Smoke handoff request", createdAt: new Date().toISOString() }]
+      }
+    }
+  );
+  await requestJson<{ data: unknown[] }>(
+    "dashboard support handoffs",
+    "/api/v1/dashboard/support/handoffs",
+    { token }
+  );
+  await requestJson<{ data: { id: string } }>(
+    "patch support handoff status",
+    `/api/v1/dashboard/support/handoffs/${supportHandoff.data.id}/status`,
+    {
+      token,
+      method: "PATCH",
+      body: { status: "in_progress" }
+    }
+  );
+
   await requestJson<{ data: unknown[] }>(
     "dashboard email outbox",
     "/api/v1/dashboard/email/outbox",
@@ -1110,15 +1165,18 @@ async function main() {
       templateKey: {
         in: [
           "contact_lead_received",
+          "contact_lead_ack",
           "dealer_application_received",
-          "product_review_pending"
+          "dealer_application_ack",
+          "product_review_pending",
+          "support_handoff_received"
         ]
       }
     }
   });
 
-  if (p1bEmailCount !== 3) {
-    throw new Error("P1b submissions did not create three pending email outbox items.");
+  if (p1bEmailCount !== 6) {
+    throw new Error("P1b submissions did not create six pending email outbox items.");
   }
 
   const retryableEmail = await prisma.emailOutbox.findFirstOrThrow({
@@ -1171,6 +1229,14 @@ async function main() {
   await requestJson<{ data: { email: string } }>("read customer account", "/api/v1/account/me", {
     token: customer.data.accessToken
   });
+  const crmAfterRegister = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterRegister || crmAfterRegister.stage !== "registered") {
+    throw new Error("customer registration did not create a CRM contact in registered stage.");
+  }
+  const registeredEvent = await prisma.crmContactEvent.findFirst({
+    where: { contactId: crmAfterRegister.id, type: "registered" }
+  });
+  if (!registeredEvent) throw new Error("customer registration did not write a CRM registered event.");
 
   const seededSku = await prisma.platformSku.findFirstOrThrow({
     where: { skuCode: "011090130" },
@@ -1204,6 +1270,9 @@ async function main() {
     where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } },
     update: { quantityOnHand: 100, quantityReserved: 0, updatedAt: new Date() },
     create: { skuId: seededSku.id, dealerLocationId: location.id, quantityOnHand: 100 }
+  });
+  const inventoryBeforeCheckout = await prisma.inventorySnapshot.findUniqueOrThrow({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } }
   });
 
   const guestCart = await requestJson<{ data: { id: string }; meta?: { cartToken?: string } }>(
@@ -1247,11 +1316,40 @@ async function main() {
       body: { productIds: Array.from({ length: 101 }, () => seededSku.product.id) }
     }
   );
-  const checkout = await requestJson<{ data: { id: string; guestOrderToken: string } }>(
+  await requestJson(
+    "reject delivery checkout without shipping address",
+    "/api/v1/checkout/session",
+    {
+      method: "POST",
+      status: 400,
+      headers: { "x-cart-token": cartToken, "idempotency-key": `smoke-invalid-delivery-${suffix}` },
+      body: {
+        firstName: "Smoke",
+        lastName: "Customer",
+        email: customerEmail,
+        phone: "204-555-0199",
+        fulfillment: "delivery",
+        paymentMethod: "cash",
+        dealerLocationId: location.id
+      }
+    }
+  );
+  const checkout = await requestJson<{ data: { id: string; guestOrderToken: string; paymentMethod: string; fulfillment: string } }>(
     "create checkout session",
     "/api/v1/checkout/session",
-    { method: "POST", status: 201, headers: { "x-cart-token": cartToken }, body: { email: customerEmail, fulfillment: "pickup", dealerLocationId: location.id } }
+    { method: "POST", status: 201, headers: { "x-cart-token": cartToken, "idempotency-key": `smoke-checkout-${suffix}` }, body: { firstName: "Smoke", lastName: "Customer", email: customerEmail, phone: "204-555-0199", fulfillment: "pickup", paymentMethod: "cash", notes: "Call on arrival", dealerLocationId: location.id } }
   );
+  const checkoutSnapshot = await prisma.paymentSession.findUniqueOrThrow({ where: { id: checkout.data.id } });
+  if (checkoutSnapshot.guestFirstName !== "Smoke" || checkoutSnapshot.guestLastName !== "Customer" || checkoutSnapshot.guestPhone !== "204-555-0199" || checkoutSnapshot.paymentMethod !== "cash" || checkoutSnapshot.notes !== "Call on arrival") {
+    throw new Error("checkout session did not persist customer, payment, and notes fields.");
+  }
+  if (checkout.data.paymentMethod !== "cash" || checkout.data.fulfillment !== "pickup") {
+    throw new Error("checkout session response did not include payment and fulfillment metadata.");
+  }
+  const crmAfterCheckout = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterCheckout || crmAfterCheckout.stage !== "checkout_started") {
+    throw new Error("checkout session did not advance CRM contact to checkout_started.");
+  }
   const ordersBeforePayment = await prisma.order.count({ where: { email: customerEmail } });
   if (ordersBeforePayment !== 0) throw new Error("pending payment session created an order.");
   await expectStatus(
@@ -1273,6 +1371,10 @@ async function main() {
     { method: "POST", headers: { "x-payment-signature": paymentSignature }, body: { sessionId: checkout.data.id, providerPaymentId, status: "paid" } }
   );
   if (paidOrder.data.status !== "paid") throw new Error("paid callback did not create a paid order.");
+  const paidOrderSnapshot = await prisma.order.findUniqueOrThrow({ where: { id: paidOrder.data.id } });
+  if (paidOrderSnapshot.firstName !== "Smoke" || paidOrderSnapshot.lastName !== "Customer" || paidOrderSnapshot.phone !== "204-555-0199" || paidOrderSnapshot.paymentMethod !== "cash" || paidOrderSnapshot.notes !== "Call on arrival") {
+    throw new Error("paid order did not preserve checkout customer, payment, and notes fields.");
+  }
   await requestJson("get guest order", `/api/v1/orders/${paidOrder.data.id}?token=${checkout.data.guestOrderToken}`);
   await requestJson("read guest order status", `/api/v1/orders/${paidOrder.data.id}/status?token=${checkout.data.guestOrderToken}`);
   await requestJson(
@@ -1285,6 +1387,194 @@ async function main() {
     prisma.erpSyncJob.count({ where: { payload: { path: ["orderId"], equals: paidOrder.data.id } } })
   ]);
   if (paidOrderCount !== 1 || erpJobCount !== 1) throw new Error("payment callback was not idempotent for order or ERP sync job creation.");
+  const inventoryAfterPaid = await prisma.inventorySnapshot.findUniqueOrThrow({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } }
+  });
+  if (inventoryAfterPaid.quantityOnHand !== inventoryBeforeCheckout.quantityOnHand - 2) {
+    throw new Error("paid order did not decrement inventory on hand.");
+  }
+  const erpOrderJob = await prisma.erpSyncJob.findFirst({
+    where: { type: "order_create", payload: { path: ["orderId"], equals: paidOrder.data.id } }
+  });
+  if (!erpOrderJob) throw new Error("paid order did not enqueue order_create ERP job.");
+  const crmAfterPaid = await prisma.crmContact.findUnique({ where: { email: customerEmail } });
+  if (!crmAfterPaid || crmAfterPaid.stage !== "customer") {
+    throw new Error("paid order did not mark CRM contact as customer.");
+  }
+  const orderPaidEvent = await prisma.crmContactEvent.findFirst({
+    where: { contactId: crmAfterPaid.id, type: "order_paid" }
+  });
+  if (!orderPaidEvent) throw new Error("paid order did not write a CRM order_paid event.");
+  const orderConfirmationCount = await prisma.emailOutbox.count({
+    where: {
+      createdAt: { gte: smokeStartedAt },
+      templateKey: "order_confirmation",
+      toEmail: customerEmail
+    }
+  });
+  if (orderConfirmationCount !== 1) {
+    throw new Error("payment callback did not enqueue an order confirmation email.");
+  }
+
+  // --- Extended local-backend coverage: consent, addresses, reservation, CMS, delivery tax ---
+  await requestJson<{ data: { id: string } }>(
+    "record privacy consent event",
+    "/api/v1/privacy/consent-events",
+    {
+      method: "POST",
+      status: 201,
+      body: {
+        anonymousId: `smoke-anon-${suffix}`,
+        source: "accept-all",
+        preferences: { strictlyNecessary: true, functional: true, analytics: true, targeting: true }
+      }
+    }
+  );
+  const address = await requestJson<{ data: { id: string; province: string } }>(
+    "create customer address",
+    "/api/v1/account/addresses",
+    {
+      token: customer.data.accessToken,
+      method: "POST",
+      status: 201,
+      body: {
+        firstName: "Smoke",
+        lastName: "Customer",
+        addressLine1: "100 Main St",
+        city: "Winnipeg",
+        province: "MB",
+        postalCode: "R3C 1A1",
+        country: "CA"
+      }
+    }
+  );
+  if (address.data.province !== "MB") throw new Error("customer address province was not persisted.");
+  await requestJson<{ data: Array<{ id: string }> }>("list customer addresses", "/api/v1/account/addresses", {
+    token: customer.data.accessToken
+  });
+
+  const reservation = await requestJson<{ data: { reservationId: string; reservationToken: string } }>(
+    "create inventory reservation",
+    "/api/v1/inventory/reservations",
+    {
+      method: "POST",
+      status: 201,
+      body: { productId: seededSku.product.id, quantity: 1, dealerLocationId: location.id }
+    }
+  );
+  await requestJson(
+    "release inventory reservation",
+    `/api/v1/inventory/reservations/${reservation.data.reservationId}`,
+    {
+      method: "DELETE",
+      headers: { "x-reservation-token": reservation.data.reservationToken }
+    }
+  );
+
+  const banners = await requestJson<{ data: Array<{ id: string }> }>("read CMS home banners", "/api/v1/home/banners?locale=en-CA");
+  if (!Array.isArray(banners.data) || banners.data.length === 0) throw new Error("CMS home banners were empty.");
+  const navigation = await requestJson<{ data: { primaryItems: unknown[] }; meta: { locale: string } }>(
+    "read CMS navigation fr-CA",
+    "/api/v1/navigation?locale=fr-CA"
+  );
+  if (navigation.meta.locale !== "fr-CA" || !Array.isArray(navigation.data.primaryItems)) {
+    throw new Error("CMS navigation did not return fr-CA primary items.");
+  }
+  await requestJson("read CMS legal page", "/api/v1/legal-pages/privacy?locale=en-CA");
+  await requestJson<{ data: Array<{ slug: string }> }>("read CMS articles", "/api/v1/articles?locale=en-CA");
+
+  // Delivery checkout should apply MB 12% tax + flat delivery fee from TaxRate + DELIVERY_FLAT_FEE_CENTS.
+  await prisma.inventorySnapshot.update({
+    where: { skuId_dealerLocationId: { skuId: seededSku.id, dealerLocationId: location.id } },
+    data: { quantityOnHand: 100, quantityReserved: 0, updatedAt: new Date() }
+  });
+  const deliveryCart = await requestJson<{ meta?: { cartToken?: string } }>("create delivery cart", "/api/v1/cart");
+  const deliveryCartToken = deliveryCart.meta?.cartToken;
+  if (!deliveryCartToken) throw new Error("delivery cart did not return a cart token.");
+  await requestJson("add delivery cart item", "/api/v1/cart/items", {
+    method: "POST",
+    status: 201,
+    headers: { "x-cart-token": deliveryCartToken },
+    body: { productId: seededSku.product.id, quantity: 1 }
+  });
+  const deliveryCheckout = await requestJson<{ data: { id: string; total: { amount: number } }; meta?: { payment?: { provider: string } } }>(
+    "create delivery checkout session",
+    "/api/v1/checkout/session",
+    {
+      method: "POST",
+      status: 201,
+      headers: { "x-cart-token": deliveryCartToken, "idempotency-key": `smoke-delivery-${suffix}` },
+      body: {
+        firstName: "Smoke",
+        lastName: "Delivery",
+        email: `smoke-delivery-${suffix}@vanstro.local`,
+        phone: "204-555-0198",
+        fulfillment: "delivery",
+        paymentMethod: "pos",
+        dealerLocationId: location.id,
+        shippingAddressLine1: "100 Main Street",
+        shippingCity: "Winnipeg",
+        shippingProvince: "MB",
+        shippingPostalCode: "R3C 1A1",
+        shippingCountry: "CA"
+      }
+    }
+  );
+  const deliverySession = await prisma.paymentSession.findUniqueOrThrow({ where: { id: deliveryCheckout.data.id } });
+  const expectedDeliveryShipping = Number(process.env.DELIVERY_FLAT_FEE_CENTS ?? "1500");
+  if (deliverySession.shippingCents !== expectedDeliveryShipping) {
+    throw new Error(`delivery shipping expected ${expectedDeliveryShipping}, got ${deliverySession.shippingCents}.`);
+  }
+  if (deliverySession.taxCents <= 0) throw new Error("delivery checkout did not apply provincial tax.");
+  if (deliveryCheckout.meta?.payment?.provider !== "manual") {
+    throw new Error("checkout did not advertise the manual payment provider.");
+  }
+  // Release unused delivery reservations and expire the session so smoke leaves no holds.
+  const deliveryReservations = await prisma.inventoryReservation.findMany({
+    where: { paymentSessionId: deliverySession.id, status: "active" }
+  });
+  for (const held of deliveryReservations) {
+    await prisma.$transaction(async (transaction) => {
+      await transaction.inventoryReservation.update({ where: { id: held.id }, data: { status: "released" } });
+      const snapshot = await transaction.inventorySnapshot.findFirst({
+        where: { skuId: held.skuId, dealerLocationId: held.dealerLocationId }
+      });
+      if (snapshot) {
+        await transaction.inventorySnapshot.update({
+          where: { id: snapshot.id },
+          data: { quantityReserved: { decrement: held.quantity } }
+        });
+      }
+    });
+  }
+  await prisma.paymentSession.update({ where: { id: deliverySession.id }, data: { status: "expired" } });
+
+  // ERP inbound webhook (signed) against the paid order.
+  const erpExternalId = `smoke-erp-${suffix}`;
+  const erpSignature = createHmac("sha256", process.env.ERP_WEBHOOK_SECRET ?? "")
+    .update(`configured-erp:${paidOrder.data.id}:${erpExternalId}:fulfilled`)
+    .digest("hex");
+  await requestJson("accept signed ERP order-status webhook", "/api/v1/integrations/erp/webhooks/order-status", {
+    method: "POST",
+    headers: { "x-erp-signature": erpSignature },
+    body: { orderId: paidOrder.data.id, status: "fulfilled", externalId: erpExternalId, erpSystem: "configured-erp" }
+  });
+  const fulfilledOrder = await prisma.order.findUniqueOrThrow({ where: { id: paidOrder.data.id } });
+  if (fulfilledOrder.status !== "fulfilled") throw new Error("ERP webhook did not update order status to fulfilled.");
+  await requestJson(
+    "reject ERP webhook without signature",
+    "/api/v1/integrations/erp/webhooks/order-status",
+    {
+      method: "POST",
+      status: 401,
+      body: { orderId: paidOrder.data.id, status: "cancelled", externalId: `smoke-erp-bad-${suffix}`, erpSystem: "configured-erp" }
+    }
+  );
+
+  await prisma.privacyConsentEvent.deleteMany({ where: { anonymousId: `smoke-anon-${suffix}` } });
+  await prisma.customerAddress.deleteMany({ where: { id: address.data.id } });
+  await prisma.paymentSession.deleteMany({ where: { guestEmail: `smoke-delivery-${suffix}@vanstro.local` } });
+  await prisma.erpWebhookEvent.deleteMany({ where: { externalId: erpExternalId } });
 
   await prisma.product.update({
     where: { id: product.data.id },
@@ -1295,14 +1585,19 @@ async function main() {
   await prisma.dealerApplication.delete({
     where: { id: dealerApplication.data.applicationId }
   });
+  await prisma.supportHandoff.delete({ where: { id: supportHandoff.data.id } });
   await prisma.emailOutbox.deleteMany({
     where: {
       createdAt: { gte: smokeStartedAt },
       templateKey: {
         in: [
           "contact_lead_received",
+          "contact_lead_ack",
           "dealer_application_received",
-          "product_review_pending"
+          "dealer_application_ack",
+          "product_review_pending",
+          "support_handoff_received",
+          "order_confirmation"
         ]
       }
     }

@@ -1,12 +1,19 @@
-import { prisma, type Prisma, verifyPassword } from "@vanstro/db";
+import { authAdminRevokeUserSessions, authAuthenticateCreateSession, authPasswordChallenge, authRevokeAllSelfSessions, authRevokeSelfSession, authRotateSession, authSessionProjection, derivePasswordHash, prisma, type Prisma } from "@vanstro/db";
 import { getConnInfo } from "@hono/node-server/conninfo";
 import { createHash, randomBytes } from "node:crypto";
 import type { Context } from "hono";
 import { trustProxyHeaders } from "../config.js";
+import { resolveEffectiveAuthPolicy } from "./policy.js";
 
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7;
+export const DEPLOYMENT_SESSION_COOKIE_NAME = "__Host-vanstro-session";
+export const DEVELOPMENT_SESSION_COOKIE_NAME = "vanstro-session";
 
-type SessionDatabase = Pick<Prisma.TransactionClient, "refreshSession">;
+export function sessionCookieName() {
+  return process.env.VANSTRO_RUNTIME_MODE === "deployment"
+    ? DEPLOYMENT_SESSION_COOKIE_NAME
+    : DEVELOPMENT_SESSION_COOKIE_NAME;
+}
 
 export type SessionUser = {
   id: string;
@@ -17,15 +24,8 @@ export type SessionUser = {
   permissions: string[];
 };
 
-function hashToken(token: string) {
+export function hashSessionToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
-}
-
-async function lockUserSessionLifecycle(
-  transaction: Prisma.TransactionClient,
-  userId: string
-) {
-  await transaction.$queryRaw`SELECT "id" FROM "users" WHERE "id" = ${userId} FOR UPDATE`;
 }
 
 export function extractBearerToken(context: Context) {
@@ -36,6 +36,26 @@ export function extractBearerToken(context: Context) {
   }
 
   return authorization.slice("Bearer ".length).trim();
+}
+
+function extractCookieToken(context: Context) {
+  const cookie = context.req.header("cookie");
+  if (!cookie) return undefined;
+  for (const part of cookie.split(";")) {
+    const [name, ...value] = part.trim().split("=");
+    if (name === sessionCookieName()) {
+      try {
+        return decodeURIComponent(value.join("="));
+      } catch {
+        return undefined;
+      }
+    }
+  }
+  return undefined;
+}
+
+export function extractSessionToken(context: Context) {
+  return extractBearerToken(context) ?? extractCookieToken(context);
 }
 
 export function getRequestIp(context: Context) {
@@ -110,209 +130,25 @@ export async function getSessionUserById(userId: string) {
   return formatUser(user);
 }
 
-async function createSessionWithDatabase(
-  database: SessionDatabase,
-  userId: string,
-  options: { userAgent?: string; ipAddress?: string } = {}
-) {
-  const token = randomBytes(32).toString("base64url");
-  const expiresAt = new Date(Date.now() + SESSION_TTL_MS);
-
-  await database.refreshSession.create({
-    data: {
-      userId,
-      tokenHash: hashToken(token),
-      userAgent: options.userAgent,
-      ipAddress: options.ipAddress,
-      expiresAt
-    }
-  });
-
-  return {
-    accessToken: token,
-    tokenType: "Bearer" as const,
-    expiresAt
-  };
+export async function authenticateAndCreateSession(email:string,password:string,options:{userAgent?:string;ipAddress?:string}={}){
+ const challenge=await authPasswordChallenge(prisma,email);if(!challenge)return{authenticated:false as const};const candidateHash=derivePasswordHash(password,{algorithm:challenge.algorithm,passwordSalt:challenge.password_salt,iterations:challenge.iterations}),token=randomBytes(32).toString("base64url"),policy=await resolveEffectiveAuthPolicy(),expiresAt=new Date(Date.now()+policy.sessionPolicy.sessionLifetimeMinutes*60_000),userId=await authAuthenticateCreateSession(prisma,{email,candidateHash,tokenHash:hashSessionToken(token),userAgent:options.userAgent,ipAddress:options.ipAddress,expiresAt});if(!userId)return{authenticated:false as const,userId:challenge.user_id};const projected=await authSessionProjection(prisma,hashSessionToken(token));if(!projected)return{authenticated:false as const};return{authenticated:true as const,session:{accessToken:token,tokenType:"Bearer" as const,expiresAt},user:{id:projected.user_id,email:projected.email,kind:projected.kind,status:projected.status,roles:projected.roles,permissions:projected.permissions}}
 }
 
-export async function authenticateAndCreateSession(
-  email: string,
-  password: string,
-  options: { userAgent?: string; ipAddress?: string } = {}
-) {
-  return prisma.$transaction(async (transaction) => {
-    const lockedUsers = await transaction.$queryRaw<Array<{ id: string }>>`
-      SELECT "id" FROM "users" WHERE "email" = ${email} FOR UPDATE
-    `;
-    const lockedUser = lockedUsers[0];
+export async function createSession(userId:string,options:{userAgent?:string;ipAddress?:string}={}){const setupUrl=process.env.VANSTRO_TEST_SETUP_DATABASE_URL;if(!setupUrl||!/(test|smoke|disposable|fixture)/i.test(new URL(setupUrl).pathname))throw new Error("AUTH_TEST_SESSION_FORBIDDEN");const {PrismaClient}=await import("@vanstro/db");const setup=new PrismaClient({datasources:{db:{url:setupUrl}}});try{const token=randomBytes(32).toString("base64url"),expiresAt=new Date(Date.now()+SESSION_TTL_MS);await setup.refreshSession.create({data:{userId,tokenHash:hashSessionToken(token),userAgent:options.userAgent,ipAddress:options.ipAddress,expiresAt}});return{accessToken:token,tokenType:"Bearer" as const,expiresAt}}finally{await setup.$disconnect()}}
 
-    if (!lockedUser) return { authenticated: false as const };
+export async function rotateSession(token:string,options:{userAgent?:string;ipAddress?:string}={}){const nextToken=randomBytes(32).toString("base64url"),nextTokenHash=hashSessionToken(nextToken),policy=await resolveEffectiveAuthPolicy(),expiresAt=new Date(Date.now()+policy.sessionPolicy.sessionLifetimeMinutes*60_000),userId=await authRotateSession(prisma,{oldTokenHash:hashSessionToken(token),newTokenHash:nextTokenHash,userAgent:options.userAgent,ipAddress:options.ipAddress,expiresAt});if(!userId)return undefined;const projected=await authSessionProjection(prisma,nextTokenHash);if(!projected)return undefined;return{accessToken:nextToken,tokenType:"Bearer" as const,expiresAt,user:{id:projected.user_id,email:projected.email,kind:projected.kind,status:projected.status,roles:projected.roles,permissions:projected.permissions}}}
 
-    const user = await transaction.user.findUnique({
-      where: { id: lockedUser.id },
-      include: {
-        passwordCredential: true,
-        userRoles: {
-          include: {
-            role: {
-              include: {
-                rolePermissions: {
-                  include: { permission: true }
-                }
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (!user || user.status !== "active" || !user.passwordCredential) {
-      return { authenticated: false as const };
-    }
-
-    const passwordMatches = verifyPassword(password, {
-      algorithm: user.passwordCredential.algorithm,
-      passwordHash: user.passwordCredential.passwordHash,
-      passwordSalt: user.passwordCredential.passwordSalt,
-      iterations: user.passwordCredential.iterations
-    });
-
-    if (!passwordMatches) {
-      return { authenticated: false as const, userId: user.id };
-    }
-
-    const session = await createSessionWithDatabase(transaction, user.id, options);
-
-    return {
-      authenticated: true as const,
-      session,
-      user: formatUser(user)
-    };
-  });
-}
-
-export async function createSession(
-  userId: string,
-  options: { userAgent?: string; ipAddress?: string } = {}
-) {
-  return createSessionWithDatabase(prisma, userId, options);
-}
-
-export async function rotateSession(
-  token: string,
-  options: { userAgent?: string; ipAddress?: string } = {}
-) {
-  const tokenHash = hashToken(token);
-  const revokedAt = new Date();
-
-  return prisma.$transaction(async (transaction) => {
-    const existingSession = await transaction.refreshSession.findUnique({
-      where: { tokenHash },
-      select: { userId: true }
-    });
-
-    if (!existingSession) return undefined;
-
-    await lockUserSessionLifecycle(transaction, existingSession.userId);
-
-    const claim = await transaction.refreshSession.updateMany({
-      where: {
-        tokenHash,
-        revokedAt: null,
-        expiresAt: { gt: revokedAt }
-      },
-      data: { revokedAt }
-    });
-
-    if (claim.count !== 1) return undefined;
-
-    const user = await transaction.user.findUnique({
-      where: { id: existingSession.userId },
-      include: {
-        userRoles: {
-          include: {
-            role: {
-              include: {
-                rolePermissions: {
-                  include: { permission: true }
-                }
-              }
-            }
-          }
-        }
-      }
-    });
-
-    if (!user || user.status !== "active") return undefined;
-
-    const nextSession = await createSessionWithDatabase(transaction, user.id, options);
-
-    return {
-      ...nextSession,
-      user: formatUser(user)
-    };
-  });
-}
-
-export async function revokeUserSessions(
-  transaction: Prisma.TransactionClient,
-  userId: string
-) {
-  await lockUserSessionLifecycle(transaction, userId);
-
-  await transaction.refreshSession.updateMany({
-    where: {
-      userId,
-      revokedAt: null
-    },
-    data: { revokedAt: new Date() }
-  });
-}
+export async function revokeUserSessions(transaction:Prisma.TransactionClient,userId:string,authorization:{sessionTokenHash:string;actorId:string}){await authAdminRevokeUserSessions(transaction,{...authorization,targetUserId:userId})}
+export async function revokeAllSelfSessions(token:string){await authRevokeAllSelfSessions(prisma,hashSessionToken(token))}
 
 export async function getSessionFromRequest(context: Context) {
-  const token = extractBearerToken(context);
+  const token = extractSessionToken(context);
 
   if (!token) return undefined;
 
-  const session = await prisma.refreshSession.findFirst({
-    where: {
-      tokenHash: hashToken(token),
-      revokedAt: null,
-      expiresAt: { gt: new Date() }
-    },
-    include: {
-      user: {
-        include: {
-          userRoles: {
-            include: {
-              role: {
-                include: {
-                  rolePermissions: {
-                    include: { permission: true }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  });
-
-  if (!session || session.user.status !== "active") return undefined;
-
-  return {
-    sessionId: session.id,
-    user: formatUser(session.user)
-  };
+  const projected=await authSessionProjection(prisma,hashSessionToken(token));if(!projected)return undefined;return{sessionId:projected.session_id,sessionTokenHash:projected.session_token_hash,user:{id:projected.user_id,email:projected.email,kind:projected.kind,status:projected.status,roles:projected.roles,permissions:projected.permissions}};
 }
 
 export async function revokeToken(token: string) {
-  await prisma.refreshSession.updateMany({
-    where: {
-      tokenHash: hashToken(token),
-      revokedAt: null
-    },
-    data: { revokedAt: new Date() }
-  });
+  await authRevokeSelfSession(prisma,hashSessionToken(token));
 }

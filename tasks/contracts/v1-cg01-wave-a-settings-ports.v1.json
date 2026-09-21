@@ -1,0 +1,2095 @@
+{
+  "schemaVersion": "vanstro.cg01.settings-ports.v1",
+  "status": "FROZEN_CONTRACT_ONLY — S08 NOT STARTED",
+  "gate": "CG01",
+  "batch": "wave-a-plus-wave-b-commerce-plus-wave-c-api-service-account",
+  "baselineCommit": "b3d59b31b7149c3458033dc0b072a0164dd7b7c7",
+  "baselineTree": "6a52e53a00c9b02a75a05a67cbf21efd3f9edbca",
+  "baselineVerification": {
+    "method": "git rev-parse HEAD / HEAD^{tree} on integration/fullstack worktree",
+    "observedHead": "b3d59b31b7149c3458033dc0b072a0164dd7b7c7",
+    "observedTree": "6a52e53a00c9b02a75a05a67cbf21efd3f9edbca",
+    "matchesPromptReported": true
+  },
+  "s01ContractReferences": [
+    {
+      "path": "apps/api/src/dashboard/settings.ts",
+      "symbol": "createDashboardSettingsRoutes/readiness",
+      "blobOid": "0800afc8f83a0de35aae5b11a4e389a443026fba"
+    },
+    {
+      "path": "src/lib/api/api-contract.ts",
+      "symbol": "SettingsReadiness/SettingsCenterCapability",
+      "blobOid": "1f0d43445b5d50173c6fb86e98c4bfb84cb9aa05"
+    },
+    {
+      "path": "src/lib/api/runtime-validation.ts",
+      "symbol": "validateSettingsReadiness",
+      "blobOid": "2503292b2537f55864a65f87a92663226cb24d7d"
+    },
+    {
+      "path": "src/lib/dashboard/s01-settings.ts",
+      "symbol": "settingsCenterHref/canTransitionSettingsLifecycle",
+      "blobOid": "1bccf3d90c2444f26a9a59032ff3d5ffd0e76d09"
+    },
+    {
+      "path": "src/lib/dashboard/s01-settings-readiness-consumer.ts",
+      "symbol": "createSettingsReadinessConsumer",
+      "blobOid": "84a9fce90e066a7e5577fe12cebd95e30c5bde1f"
+    },
+    {
+      "path": "packages/db/prisma/migrations/20260805100000_s01_settings_core/migration.sql",
+      "symbol": "s01_settings_core",
+      "blobOid": "f49524722ace1d0d1b0acd3738d46bef8acb3d20"
+    },
+    {
+      "path": "packages/db/prisma/migrations/20260805110000_s01_settings_contract_closure/migration.sql",
+      "symbol": "s01_settings_contract_closure",
+      "blobOid": "f453ff7d953e21005ee5f744587635d4537acf62"
+    }
+  ],
+  "ports": [
+    {
+      "id": "cg01.general-storefront.v1",
+      "consumerPackage": "S02",
+      "domainOwners": [
+        "CMS/D11",
+        "Media/P07",
+        "Dealer/Location/D10",
+        "Storefront Runtime Config/D16",
+        "P09"
+      ],
+      "contract": {
+        "schema": {
+          "scope": "future S02 settings rules, policy or domain object references; no storage implementation",
+          "fieldFamilies": {
+            "generalIdentity": {
+              "fields": [
+                "siteDisplayName",
+                "legalName",
+                "canonicalUrl",
+                "contactEmail",
+                "contactPhone",
+                "contactAddress",
+                "defaultTimezone"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "compiled_default",
+              "secret": false
+            },
+            "brand": {
+              "fields": [
+                "brandName",
+                "brandDescription",
+                "logoMediaRef",
+                "faviconMediaRef",
+                "emailLogoMediaRef",
+                "socialShareMediaRef",
+                "baseColors",
+                "fontFamily"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "compiled_default",
+              "secret": false
+            },
+            "storefront": {
+              "fields": [
+                "homeContentRef",
+                "navigationRef",
+                "footerRef",
+                "defaultProductSort",
+                "outOfStockDisplay",
+                "dealerSelectionEnabled",
+                "cartCheckoutEnabled",
+                "announcementRule",
+                "maintenanceBannerRule",
+                "storefrontConfigRef",
+                "enFrRoutesEnabled"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact_or_future",
+              "secret": false
+            },
+            "localization": {
+              "fields": [
+                "defaultLocale",
+                "supportedLocales",
+                "dashboardLocale",
+                "currency",
+                "timezone",
+                "dateFormat",
+                "phoneFormat",
+                "addressFormat",
+                "weightUnits",
+                "dimensionUnits",
+                "translationFallback",
+                "provinceServiceMapping"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "compiled_default",
+              "secret": false
+            },
+            "defaultDealerLocation": {
+              "fields": [
+                "defaultDealerRef",
+                "defaultLocationRef"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact_or_future",
+              "secret": false
+            }
+          },
+          "referenceRules": {
+            "mediaRefs": "P07 Media Asset id references only; Settings never copies Asset/Variant/Usage bytes",
+            "cmsRefs": "SiteContentModule/LegalPage/Article id references only; Settings never copies CMS content",
+            "dealerRefs": "Dealer/Location id references only; Settings never copies entities"
+          },
+          "missingReferenceBehavior": "degraded/fallback at consumer; never creates second source of truth"
+        },
+        "currentProjection": {
+          "facts": [
+            {
+              "path": "apps/api/src/dashboard/cms.ts",
+              "symbol": "single-instance modules navigation/home-page/footer + articles routes",
+              "blobOid": "72301128d3e241968333a98e66b7abd7269eed7c",
+              "classification": "current_fact",
+              "readers": "Dashboard CMS routes (content.read/content.write)",
+              "owner": "CMS/D11"
+            },
+            {
+              "path": "apps/api/src/dashboard/media.ts",
+              "symbol": "media asset list/detail/usage routes",
+              "blobOid": "e13b9d9f566d14d336882807b4aaca91ae370ba6",
+              "classification": "current_fact",
+              "readers": "Dashboard Media routes (media.read)",
+              "owner": "Media/P07"
+            },
+            {
+              "path": "apps/api/src/dashboard/dealers.ts",
+              "symbol": "dealer/location routes",
+              "blobOid": "3b3f634cc6ec17352c20293f3b18a1952f6002d7",
+              "classification": "current_fact",
+              "readers": "Dashboard Dealer routes",
+              "owner": "Dealer/Location/D10"
+            },
+            {
+              "path": "apps/api/src/dashboard/foundation.ts",
+              "symbol": "Dashboard Shell/Foundation: DASHBOARD_FOUNDATION_MODULES / dashboardShellConfig / DASHBOARD_SHELL_FLAG_KEY (dashboard.shell.v2) / projectDashboardModules",
+              "blobOid": "c2695bdd9945c92a8b89d715851b43e4995ba2f5",
+              "classification": "current_fact",
+              "readers": "Dashboard Foundation/Shell routes",
+              "owner": "Dashboard Shell/Foundation"
+            },
+            {
+              "path": "src/lib/seo/site.ts",
+              "symbol": "NEXT_PUBLIC_SITE_URL publicUrl",
+              "blobOid": "962c4ee2bfee8ee83a58e3072af2d67ffe1d577c",
+              "classification": "compiled_default",
+              "readers": "SEO metadata",
+              "owner": "Storefront"
+            },
+            {
+              "path": "src/lib/i18n/locale.ts",
+              "symbol": "SiteLocale en-CA/fr-CA (zh-CN is the separate api-contract Locale type)",
+              "blobOid": "3ed51d3e2122858453b6e2c360e4342d87642fb1",
+              "classification": "compiled_default",
+              "readers": "i18n",
+              "owner": "Localization"
+            },
+            {
+              "path": "apps/api/src/dashboard/modules.ts",
+              "symbol": "module readiness: /dashboard/modules/readiness with MODULE_KEY_MAP",
+              "blobOid": "2d3003ab75f3e1c10e8a31e5e76ca70016ef72d1",
+              "classification": "current_fact",
+              "readers": "Dashboard readiness",
+              "owner": "Dashboard modules readiness"
+            },
+            {
+              "path": "apps/api/src/dashboard/modules.ts",
+              "symbol": "storefront config current projection: storefront_config moduleKey + /dashboard/storefront/config read/write adapter over SiteContentModule (Pattern B raw JSON; S02 parity pending)",
+              "blobOid": "2d3003ab75f3e1c10e8a31e5e76ca70016ef72d1",
+              "classification": "current_fact",
+              "readers": "Storefront Runtime Config read/write adapter",
+              "owner": "Storefront Runtime Config/D16",
+              "caveat": "current source is raw JSON CMS (SiteContentModule) Pattern B; S02 parity and Settings strong lifecycle wiring not yet implemented"
+            }
+          ],
+          "notSingleSource": [
+            "site display/legal/contact identity has no single source of truth"
+          ],
+          "gap": "default Dealer/Location current facts unavailable; current storefront mock/current-source difference"
+        },
+        "draftValidator": {
+          "structure": "reuse S01 structural vs business invalid layering; no new runtime validator code",
+          "businessRules": [
+            "locale in supported list",
+            "media ref exists",
+            "CMS ref exists",
+            "dealer/location ref exists"
+          ],
+          "warningBlocker": "missing reference → blocker; locale missing → warning",
+          "unknownFields": "reject",
+          "errorFamilies": [
+            "SETTINGS_VALIDATION_FAILED",
+            "SETTINGS_STATE_CONFLICT",
+            "VERSION_CONFLICT"
+          ]
+        },
+        "publishAdapter": {
+          "targetSemantics": "activate policy/scalar/id-reference version only",
+          "atomicBoundary": "publish/audit/ledger/history atomic; no partial publish",
+          "consumerDirection": "Storefront reads published settings and resolves references",
+          "forbiddenSideEffects": [
+            "no CMS upsert",
+            "no Media write",
+            "no Dealer/Location write",
+            "no copy into second source"
+          ],
+          "rollback": "new draft/new publication; old CMS payload retained until S02 parity"
+        },
+        "readinessAdapter": {
+          "sideEffectFree": true,
+          "consumerGenerationMatch": "inherits S01 exact-match-ready, missing/mismatch degraded",
+          "degradedReasons": [
+            "missing media/CMS/dealer reference",
+            "locale missing",
+            "domain dependency unavailable"
+          ],
+          "neverFakeReady": true
+        },
+        "auditDescriptor": {
+          "operationFamily": "settings.publish/rollback (S02)",
+          "resourceFamily": "settings.core / settings.general-storefront",
+          "requiredPermission": "settings.write (existing global permission; no new permission)",
+          "p02Snapshot": "real P02 occurrence-time context; no caller-supplied roles",
+          "safeMetadata": [
+            "descriptorKey",
+            "version/sequence",
+            "reference ids",
+            "changeReason"
+          ],
+          "secretDenylist": [
+            "media bytes",
+            "CMS content",
+            "Dealer/Location PII"
+          ],
+          "retention": "inherits P04 Audit retention class"
+        }
+      },
+      "sourceFactsManifest": [
+        {
+          "path": "apps/api/src/dashboard/cms.ts",
+          "symbol": "SiteContentModule/navigation/home-page/footer/articles",
+          "blobOid": "72301128d3e241968333a98e66b7abd7269eed7c",
+          "classification": "current_fact",
+          "readers": "Dashboard CMS routes",
+          "writer": "Dashboard CMS routes",
+          "owner": "CMS/D11",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/api/src/dashboard/media.ts",
+          "symbol": "media asset/variant/usage",
+          "blobOid": "e13b9d9f566d14d336882807b4aaca91ae370ba6",
+          "classification": "current_fact",
+          "readers": "Dashboard Media routes",
+          "writer": "Dashboard Media routes",
+          "owner": "Media/P07",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/api/src/dashboard/dealers.ts",
+          "symbol": "dealer/location",
+          "blobOid": "3b3f634cc6ec17352c20293f3b18a1952f6002d7",
+          "classification": "current_fact",
+          "readers": "Dashboard Dealer routes",
+          "writer": "Dashboard Dealer routes",
+          "owner": "Dealer/Location/D10",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/api/src/dashboard/foundation.ts",
+          "symbol": "Dashboard Shell/Foundation: DASHBOARD_FOUNDATION_MODULES / dashboardShellConfig / DASHBOARD_SHELL_FLAG_KEY (dashboard.shell.v2) / projectDashboardModules",
+          "blobOid": "c2695bdd9945c92a8b89d715851b43e4995ba2f5",
+          "classification": "current_fact",
+          "readers": "Dashboard Foundation/Shell routes",
+          "writer": "Dashboard Foundation/Shell routes",
+          "owner": "Dashboard Shell/Foundation",
+          "conflict": "none",
+          "notStorefrontConfigSource": "foundation.ts is the Dashboard Shell/Foundation fact, not the Port A storefront currentProjection fact source"
+        },
+        {
+          "path": "apps/api/src/dashboard/modules.ts",
+          "symbol": "storefront_config moduleKey + /dashboard/storefront/config read/write adapter over SiteContentModule (Pattern B raw JSON; S02 parity pending)",
+          "blobOid": "2d3003ab75f3e1c10e8a31e5e76ca70016ef72d1",
+          "classification": "current_fact",
+          "readers": "Storefront Runtime Config read/write adapter",
+          "writer": "Dashboard modules routes",
+          "owner": "Storefront Runtime Config/D16",
+          "conflict": "current source is raw JSON CMS (SiteContentModule) Pattern B; S02 parity and Settings strong lifecycle wiring not yet implemented"
+        }
+      ],
+      "currentGaps": [
+        "site identity no single source of truth",
+        "default Dealer/Location no current facts",
+        "storefront mock/current-source difference",
+        "en-CA fallback for fr-CA read is compiled not configured"
+      ],
+      "futureImplementationObligations": [
+        "S02 must freeze single source for site identity",
+        "S02 must resolve default Dealer/Location facts",
+        "S02 must define storefront mock/current-source parity exit condition"
+      ],
+      "notInScope": [
+        "CMS structured publication (B08)",
+        "Media/storage provider (S11/v3)",
+        "Dealer management (B06)",
+        "multi-site/multi-currency (v3)",
+        "UI/route/descriptor/migration"
+      ],
+      "sharedResourceLeases": [
+        "Storefront/CMS contract write lease → S02",
+        "P09/S01 facts read-only for CG01"
+      ],
+      "normalPathAcceptanceOutline": [
+        "draft EN/fr config → validate refs → publish → Storefront reads → rollback; missing ref/locale degraded"
+      ],
+      "failurePathAcceptanceOutline": [
+        "missing Asset/locale → degraded/fallback",
+        "invalid ref → blocker",
+        "unknown field → 400",
+        "version/state conflict → 409"
+      ]
+    },
+    {
+      "id": "cg01.auth-rbac.v1",
+      "consumerPackage": "S09",
+      "domainOwners": [
+        "Auth/A05",
+        "P02 RBAC",
+        "Sessions"
+      ],
+      "contract": {
+        "schema": {
+          "scope": "future S09 settings policy only; never User/Role/Permission instances",
+          "fieldFamilies": {
+            "passwordPolicy": {
+              "fields": [
+                "minLength",
+                "hashAlgorithm",
+                "iterations",
+                "reusePolicy"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "compiled_default",
+              "secret": false
+            },
+            "sessionPolicy": {
+              "fields": [
+                "accessTokenTtl",
+                "refreshTtl",
+                "revokePolicy",
+                "rotateOnRefresh"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact",
+              "secret": false
+            },
+            "deploymentImmutable": {
+              "fields": [
+                "cookieName",
+                "cookieFlags",
+                "cookieSecretStatus"
+              ],
+              "classification": "immutable_projection",
+              "defaultsFrom": "deployment",
+              "secret": true
+            },
+            "rolePermissionImpactPreview": {
+              "fields": [
+                "previewEnabled",
+                "scope",
+                "lastAdminGuard"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "future",
+              "secret": false
+            }
+          },
+          "referenceRules": {
+            "rolesPermissions": "impact preview only; never stores Role/Permission instances as settings values"
+          }
+        },
+        "currentProjection": {
+          "facts": [
+            {
+              "path": "apps/api/src/auth/session.ts",
+              "symbol": "SESSION_TTL_MS = 7 days; cookie names",
+              "blobOid": "fee78dbf199baaf94e738cca210c1ff78edac288",
+              "classification": "current_fact",
+              "readers": "Auth routes",
+              "owner": "Auth/A05"
+            },
+            {
+              "path": "packages/db/src/password.ts",
+              "symbol": "pbkdf2_sha256, 310000 iterations, 32-byte hash",
+              "blobOid": "eea424a216b1dd324ac1485397980c66dd599b74",
+              "classification": "current_fact",
+              "readers": "Auth register/login/reset",
+              "owner": "Auth/A05"
+            },
+            {
+              "path": "apps/api/src/dashboard/access.ts",
+              "symbol": "DASHBOARD_PERMISSION_RULES settings.read/settings.write/sessions.revoke",
+              "blobOid": "0efd8e8d2cdd8dfc7d21e415de41f88ffba1957c",
+              "classification": "current_fact",
+              "readers": "Dashboard authorization",
+              "owner": "P02 RBAC"
+            },
+            {
+              "path": "apps/api/src/dashboard/authorization.ts",
+              "symbol": "p02 context / permission ceiling",
+              "blobOid": "1d15351e3593b5f02512426f299ac9a58f1b435e",
+              "classification": "current_fact",
+              "readers": "Dashboard authorization",
+              "owner": "P02 RBAC"
+            },
+            {
+              "path": "apps/api/src/audit/query.ts",
+              "symbol": "audit retention cursor/readiness",
+              "blobOid": "af8be646c83264ad41be3f4e925501c72a94654e",
+              "classification": "current_fact",
+              "readers": "Audit routes",
+              "owner": "P04"
+            }
+          ],
+          "inconsistencies": [
+            "TTL sources are inconsistent across code paths; must be recorded, not fixed in CG01"
+          ]
+        },
+        "draftValidator": {
+          "structure": "reuse S01 structural vs business invalid layering",
+          "businessRules": [
+            "minLength >= current minimum",
+            "TTL within safe bounds",
+            "lastAdmin guard required for role preview"
+          ],
+          "warningBlocker": "TTL inconsistent → blocker; minLength below current → blocker",
+          "unknownFields": "reject",
+          "errorFamilies": [
+            "SETTINGS_VALIDATION_FAILED",
+            "SETTINGS_STATE_CONFLICT",
+            "VERSION_CONFLICT"
+          ]
+        },
+        "publishAdapter": {
+          "targetSemantics": "activate policy version only; no session creation/revocation; no Role/Permission mutation",
+          "atomicBoundary": "publish/audit/ledger/history atomic",
+          "consumerDirection": "new login/refresh applies policy; existing sessions not retroactively affected (default, unless current fact proves otherwise)",
+          "forbiddenSideEffects": [
+            "no session create/forge",
+            "no Role/Permission auto-change",
+            "no revocation via settings rollback"
+          ],
+          "rollback": "policy version rollback; session revoke remains an explicit business action"
+        },
+        "readinessAdapter": {
+          "sideEffectFree": true,
+          "consumerGenerationMatch": "inherits S01 exact-match-ready",
+          "degradedReasons": [
+            "P02 context unavailable",
+            "TTL source conflict",
+            "dependency unavailable"
+          ],
+          "neverFakeReady": true
+        },
+        "auditDescriptor": {
+          "operationFamily": "settings.publish/rollback (S09)",
+          "resourceFamily": "settings.core / settings.auth-rbac",
+          "requiredPermission": "settings.write (existing; no new permission)",
+          "p02Snapshot": "real P02 occurrence-time context",
+          "safeMetadata": [
+            "policy version",
+            "descriptorKey",
+            "changeReason"
+          ],
+          "secretDenylist": [
+            "cookie secret",
+            "DB credential",
+            "encryption key",
+            "password hashes"
+          ],
+          "retention": "inherits P04 Audit retention class"
+        }
+      },
+      "sourceFactsManifest": [
+        {
+          "path": "apps/api/src/auth/session.ts",
+          "symbol": "SESSION_TTL_MS/cookie names",
+          "blobOid": "fee78dbf199baaf94e738cca210c1ff78edac288",
+          "classification": "current_fact",
+          "readers": "Auth routes",
+          "writer": "Auth routes",
+          "owner": "Auth/A05",
+          "conflict": "TTL source inconsistent across code paths"
+        },
+        {
+          "path": "packages/db/src/password.ts",
+          "symbol": "pbkdf2_sha256/310000/32",
+          "blobOid": "eea424a216b1dd324ac1485397980c66dd599b74",
+          "classification": "current_fact",
+          "readers": "Auth register/login/reset",
+          "writer": "Auth register/reset",
+          "owner": "Auth/A05",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/api/src/dashboard/access.ts",
+          "symbol": "settings.read/settings.write/sessions.revoke",
+          "blobOid": "0efd8e8d2cdd8dfc7d21e415de41f88ffba1957c",
+          "classification": "current_fact",
+          "readers": "Dashboard authorization",
+          "writer": "RBAC bootstrap",
+          "owner": "P02 RBAC",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/api/src/dashboard/authorization.ts",
+          "symbol": "p02 context/permission ceiling",
+          "blobOid": "1d15351e3593b5f02512426f299ac9a58f1b435e",
+          "classification": "current_fact",
+          "readers": "Dashboard authorization",
+          "writer": "none",
+          "owner": "P02 RBAC",
+          "conflict": "none"
+        }
+      ],
+      "currentGaps": [
+        "role impact preview does not exist",
+        "TTL source inconsistency",
+        "deployment cookie status is env/immutable, not a settings value"
+      ],
+      "futureImplementationObligations": [
+        "S09 must unify TTL authority and record precedence",
+        "S09 must implement impact preview without creating sessions"
+      ],
+      "notInScope": [
+        "MFA/SSO/passkey/WebAuthn/SCIM",
+        "Auth/ACL/provenance v2 governance",
+        "password hash algorithm migration",
+        "new permission/descriptor/route/migration/session action"
+      ],
+      "sharedResourceLeases": [
+        "RBAC shared-contract write lease → S09 only",
+        "S02/S10 must not modify RBAC contract"
+      ],
+      "normalPathAcceptanceOutline": [
+        "edit local session policy draft → validate → publish → new login applies; role preview without session creation"
+      ],
+      "failurePathAcceptanceOutline": [
+        "last-admin guard → blocker",
+        "invalid TTL → blocker",
+        "session revoke remains explicit; unknown field → 400"
+      ]
+    },
+    {
+      "id": "cg01.privacy-retention.v1",
+      "consumerPackage": "S10",
+      "domainOwners": [
+        "Privacy/Consent/D17",
+        "P04 Audit",
+        "Retention",
+        "DSAR",
+        "Legal Hold"
+      ],
+      "contract": {
+        "schema": {
+          "scope": "future S10 privacy/retention/legal-hold/DSAR/PII-display/low-risk policy; no execution of delete/anonymize",
+          "fieldFamilies": {
+            "consentPolicy": {
+              "fields": [
+                "anonymousConsentEnabled",
+                "authenticatedConsentEnabled",
+                "consentCategories",
+                "retentionMonths"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact",
+              "secret": false
+            },
+            "retentionPolicy": {
+              "fields": [
+                "retentionByObjectFamily"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact",
+              "secret": false
+            },
+            "legalHoldPolicy": {
+              "fields": [
+                "legalHoldEnabled",
+                "legalHoldRefs"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact",
+              "secret": false
+            },
+            "dsarPolicy": {
+              "fields": [
+                "accessExportDeleteRules"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "future",
+              "secret": false
+            },
+            "piiDisplayPolicy": {
+              "fields": [
+                "piiDisplayRules"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "future",
+              "secret": false
+            },
+            "lowRiskExecution": {
+              "fields": [
+                "allowlist",
+                "impactPreviewEnabled"
+              ],
+              "classification": "future_setting",
+              "defaultsFrom": "future",
+              "secret": false
+            }
+          },
+          "authorityLayering": {
+            "anonymousConsent": "current_fact",
+            "authenticatedConsent": "authority_object=current_fact, ts_producer/consumer/worker_path=absent, product_execution=future_unavailable",
+            "privacySubjectPurge": "authority_object=current_fact, ts_create/claim/report=absent, product_execution=future_unavailable"
+          }
+        },
+        "currentProjection": {
+          "facts": [
+            {
+              "path": "apps/api/src/routes/privacy.ts",
+              "symbol": "POST /privacy/consent-events anonymous consent",
+              "blobOid": "2cf0002790edab7526d8bfcd0653bf2128fefd08",
+              "classification": "current_fact",
+              "readers": "Storefront consent",
+              "writer": "Storefront consent POST",
+              "owner": "Privacy/Consent/D17"
+            },
+            {
+              "path": "packages/db/src/privacy-retention.ts",
+              "symbol": "CONSENT_RECORD_RETENTION_MONTHS=24; deleteExpiredConsentEvents",
+              "blobOid": "4f5d2ccb3a362250c7cf1d32c7692d9297ef9792",
+              "classification": "current_fact",
+              "readers": "Worker apply-data-retention",
+              "writer": "Worker",
+              "owner": "Retention"
+            },
+            {
+              "path": "packages/db/src/data-retention.ts",
+              "symbol": "DATA_RETENTION_DAYS / applyDataRetention",
+              "blobOid": "4c5cabcc30db6dc9b8bcffff87f1b1c713ea4115",
+              "classification": "current_fact",
+              "readers": "Worker apply-data-retention",
+              "writer": "Worker",
+              "owner": "Retention"
+            },
+            {
+              "path": "apps/api/src/audit/query.ts",
+              "symbol": "audit retentionPolicyVersion audit-retention.v1 / expiresAt",
+              "blobOid": "af8be646c83264ad41be3f4e925501c72a94654e",
+              "classification": "current_fact",
+              "readers": "Audit routes",
+              "writer": "Audit recorder",
+              "owner": "P04"
+            },
+            {
+              "path": "packages/db/prisma/schema.prisma",
+              "symbol": "privacy_consent_events anonymousId/preferences; media legalHold boolean",
+              "blobOid": "7078a1344490c29a564f5ba5c3f10b60b4770ab0",
+              "classification": "current_fact",
+              "readers": "Storefront consent/Media",
+              "writer": "consent POST / no management writer for hold",
+              "owner": "Privacy/Consent/D17"
+            },
+            {
+              "path": "apps/worker/src/index.ts",
+              "symbol": "apply-data-retention job type",
+              "blobOid": "d0e5f9792eaf922c7a9435129230e8e6568c68b8",
+              "classification": "current_fact",
+              "readers": "Worker scheduler",
+              "writer": "Worker",
+              "owner": "Retention"
+            }
+          ],
+          "gap": "Audit/async-job expiry has no cleanup consumer or planned job type; must stay currentGap"
+        },
+        "draftValidator": {
+          "structure": "reuse S01 structural vs business invalid layering",
+          "businessRules": [
+            "retention durations within bounds",
+            "legal-hold refs exist",
+            "low-risk allowlist only for explicitly listed objects"
+          ],
+          "warningBlocker": "hold conflict → blocker; Job unavailable → blocker; consumer missing → blocker",
+          "unknownFields": "reject",
+          "errorFamilies": [
+            "SETTINGS_VALIDATION_FAILED",
+            "SETTINGS_STATE_CONFLICT",
+            "VERSION_CONFLICT"
+          ]
+        },
+        "publishAdapter": {
+          "targetSemantics": "activate policy version only; no delete/anonymize/archive/purge execution",
+          "atomicBoundary": "publish/audit/ledger/history atomic",
+          "consumerDirection": "S10→B09: B09 consumes published policy; S10 does not wait for B09",
+          "forbiddenSideEffects": [
+            "no delete/anonymize/archive/purge on publish",
+            "no high-risk auto-delete (Orders/Payment/Audit/Media legal-hold)",
+            "no pseudo-rollback of deleted/anonymized data"
+          ],
+          "rollback": "policy version rollback never restores deleted/anonymized data; real delete/purge requires separate user authorization"
+        },
+        "readinessAdapter": {
+          "sideEffectFree": true,
+          "consumerGenerationMatch": "inherits S01 exact-match-ready",
+          "degradedReasons": [
+            "hold conflict",
+            "Job unavailable",
+            "consumer missing",
+            "P04 dependency unavailable"
+          ],
+          "neverFakeReady": true
+        },
+        "auditDescriptor": {
+          "operationFamily": "settings.publish/rollback (S10)",
+          "resourceFamily": "settings.core / settings.privacy-retention",
+          "requiredPermission": "settings.write (existing; no new permission)",
+          "p02Snapshot": "real P02 occurrence-time context",
+          "safeMetadata": [
+            "policy version",
+            "descriptorKey",
+            "changeReason"
+          ],
+          "secretDenylist": [
+            "PII values",
+            "consent payloads",
+            "deletion/anonymization targets"
+          ],
+          "retention": "inherits P04 Audit retention class; irreversibility of policy publish recorded"
+        }
+      },
+      "sourceFactsManifest": [
+        {
+          "path": "apps/api/src/routes/privacy.ts",
+          "symbol": "consent-events anonymous write/enforcement",
+          "blobOid": "2cf0002790edab7526d8bfcd0653bf2128fefd08",
+          "classification": "current_fact",
+          "readers": "Storefront consent",
+          "writer": "Storefront consent POST",
+          "owner": "Privacy/Consent/D17",
+          "conflict": "none"
+        },
+        {
+          "path": "packages/db/src/privacy-retention.ts",
+          "symbol": "CONSENT_RECORD_RETENTION_MONTHS=24",
+          "blobOid": "4f5d2ccb3a362250c7cf1d32c7692d9297ef9792",
+          "classification": "current_fact",
+          "readers": "Worker",
+          "writer": "Worker",
+          "owner": "Retention",
+          "conflict": "none"
+        },
+        {
+          "path": "packages/db/src/data-retention.ts",
+          "symbol": "DATA_RETENTION_DAYS",
+          "blobOid": "4c5cabcc30db6dc9b8bcffff87f1b1c713ea4115",
+          "classification": "current_fact",
+          "readers": "Worker",
+          "writer": "Worker",
+          "owner": "Retention",
+          "conflict": "none"
+        },
+        {
+          "path": "apps/worker/src/index.ts",
+          "symbol": "apply-data-retention",
+          "blobOid": "d0e5f9792eaf922c7a9435129230e8e6568c68b8",
+          "classification": "current_fact",
+          "readers": "Worker scheduler",
+          "writer": "Worker",
+          "owner": "Retention",
+          "conflict": "none"
+        },
+        {
+          "path": "packages/db/prisma/schema.prisma",
+          "symbol": "privacy_consent_events/media legalHold",
+          "blobOid": "7078a1344490c29a564f5ba5c3f10b60b4770ab0",
+          "classification": "current_fact",
+          "readers": "Storefront consent/Media",
+          "writer": "consent POST / none for hold",
+          "owner": "Privacy/Consent/D17",
+          "conflict": "legal hold has no management writer"
+        },
+        {
+          "path": "apps/api/src/audit/query.ts",
+          "symbol": "audit-retention.v1/expiresAt",
+          "blobOid": "af8be646c83264ad41be3f4e925501c72a94654e",
+          "classification": "current_fact",
+          "readers": "Audit routes",
+          "writer": "Audit recorder",
+          "owner": "P04",
+          "conflict": "expiry cleanup absent"
+        }
+      ],
+      "currentGaps": [
+        "Audit/async-job expiry has no cleanup consumer or planned job type",
+        "authenticated consent/purge/principal-capacity TS paths absent",
+        "low-risk execution registry absent",
+        "impact preview absent",
+        "privacy job/readiness absent",
+        "legal hold no management writer"
+      ],
+      "futureImplementationObligations": [
+        "S10/B09 must implement TS create/claim/report for authenticated purge",
+        "S10 must implement low-risk allowlist + impact preview",
+        "S10 implementation_decision_required: Audit/async-job cleanup consumer design before S10 starts"
+      ],
+      "notInScope": [
+        "S10/B09 implementation",
+        "automatic high-risk deletion",
+        "P04 provenance and ACL security governance",
+        "privacy_consent frontend Audit filter",
+        "expiresAt cleanup quality fix",
+        "new job/descriptor/route/migration"
+      ],
+      "sharedResourceLeases": [
+        "Privacy/Audit shared-contract write lease → S10 only",
+        "S02/S09 must not modify Privacy/Audit contract"
+      ],
+      "normalPathAcceptanceOutline": [
+        "draft retention → impact preview → publish → Audit detail; hold conflict/Job degraded"
+      ],
+      "failurePathAcceptanceOutline": [
+        "hold conflict → blocked/degraded",
+        "Job unavailable → degraded",
+        "unknown field → 400",
+        "version/state conflict → 409"
+      ]
+    },
+    {
+      "id": "cg01.commerce.v1",
+      "consumerPackage": "S03",
+      "domainOwners": [
+        "Commerce",
+        "Tax",
+        "Shipping/Fulfillment",
+        "Inventory",
+        "Orders"
+      ],
+      "factBaseline": {
+        "commit": "ba32e25d385e1ed882c329f247aadd7e8754338b",
+        "tree": "496fae7345db2641e78d8477e072a63de81965a8",
+        "verification": "git rev-parse HEAD / HEAD^{tree} after S08 consumption; Commerce facts for S08-consumed files re-bound, Wave A historical OIDs retained"
+      },
+      "erpCompatibilityAuthority": {
+        "priorityOverlay": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-erp-product-api-priority-overlay.md",
+          "sha256": "a8ca3113984b7e4f76b675009b64f8e22c705095873e4b315d6613bc7c7d2f89"
+        },
+        "compatibilityContractMd": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.md",
+          "sha256": "d2dbe952b60d5fa76ef5b50ef742fa859e1ecf8ca87d582370879f8c874ed18d"
+        },
+        "compatibilityContractJson": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.json",
+          "sha256": "3998fdf8c3a4ea4ba738da885ad2ae7a9840fadfb3eab5da16ac0c7c5717cffa"
+        },
+        "compatibilityManifest": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-manifest.json",
+          "sha256": "bad24bbf6e30e97e40c19de4e4718422fe624321399712b3e0b06c17cdfb1dcb"
+        },
+        "manifestRequiredState": {
+          "planningFrozen": true,
+          "productContractFrozen": false,
+          "currentProgressContribution": 0
+        },
+        "fieldOwnership": {
+          "erp": [
+            "erpProductId",
+            "erpSkuOrVariantExternalId",
+            "baseProductName",
+            "sourceCategoryCode",
+            "inventory",
+            "cost",
+            "basePrice"
+          ],
+          "vanstro": [
+            "media",
+            "seo",
+            "marketingCopy",
+            "storefrontPublicationStatus",
+            "marketingDiscount"
+          ],
+          "composed": [
+            "sellableStatus"
+          ]
+        },
+        "transportBoundary": "erp-push and vanstro-pull must share one canonical ingest, mapping, idempotency ledger, per-item receipt, version/replay/conflict and loop prevention",
+        "compatibility": "ERP API v1 additive-compatible only; bounded read/incremental/batch create-update-unlist; physical delete forbidden",
+        "historicalConflict": {
+          "paths": [
+            "docs/erp-adapter-contract.md",
+            "docs/erp-catalog-sku-api.md"
+          ],
+          "blobOids": [
+            "c60e55f2e318b68db38d073d4e552717a0b80921",
+            "00832e5a165dd93308b9d18aca2b90a67647a60d"
+          ],
+          "resolution": "old VanStro-product-master and website-price ownership assumptions are superseded and are not current ownership authority"
+        }
+      },
+      "contract": {
+        "schema": {
+          "scope": "future S03 typed Settings policy only; never copies Cart/Order/Payment/Inventory/ERP business instances",
+          "exactTopLevelFamilies": [
+            "commercePolicy",
+            "taxPolicy",
+            "shippingPolicy",
+            "inventoryPolicy",
+            "orderPolicy"
+          ],
+          "fieldFamilies": {
+            "commercePolicy": {
+              "fields": [
+                "minimumOrderAmountCents",
+                "guestCheckoutEnabled",
+                "checkoutEnabled"
+              ],
+              "types": {
+                "minimumOrderAmountCents": "nonnegative safe integer CAD cents",
+                "guestCheckoutEnabled": "boolean",
+                "checkoutEnabled": "boolean"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "current_fact_or_compiled_default",
+              "secret": false
+            },
+            "taxPolicy": {
+              "fields": [
+                "enabledProvinceCodes",
+                "calculationMode",
+                "roundingMode"
+              ],
+              "types": {
+                "enabledProvinceCodes": "unique Canadian province code array",
+                "calculationMode": "current-tax-rate-table | disabled",
+                "roundingMode": "nearest-cent"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "TaxRate current facts",
+              "secret": false
+            },
+            "shippingPolicy": {
+              "fields": [
+                "pickupEnabled",
+                "deliveryEnabled",
+                "deliveryFlatFeeCents",
+                "serviceZoneMode",
+                "fallbackMode"
+              ],
+              "types": {
+                "pickupEnabled": "boolean",
+                "deliveryEnabled": "boolean",
+                "deliveryFlatFeeCents": "nonnegative safe integer CAD cents",
+                "serviceZoneMode": "dealer-location-only | postal-prefix",
+                "fallbackMode": "reject | pickup-only"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "DealerLocation/config current facts",
+              "secret": false
+            },
+            "inventoryPolicy": {
+              "fields": [
+                "reservationEnabled",
+                "reservationTtlMinutes",
+                "availabilityMode",
+                "staleAfterSeconds",
+                "staleBehavior"
+              ],
+              "types": {
+                "reservationEnabled": "boolean",
+                "reservationTtlMinutes": "bounded positive integer",
+                "availabilityMode": "manual | erp",
+                "staleAfterSeconds": "bounded positive integer",
+                "staleBehavior": "degraded-reject | manual-fallback"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "Inventory/config current facts",
+              "secret": false
+            },
+            "orderPolicy": {
+              "fields": [
+                "allowedLifecycleTransitions",
+                "guestLookupEnabled",
+                "cancellationMode"
+              ],
+              "types": {
+                "allowedLifecycleTransitions": "exact map over paid/processing/fulfilled/cancelled",
+                "guestLookupEnabled": "boolean",
+                "cancellationMode": "erp-confirmed-only | disabled"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "OrderStatus current facts",
+              "secret": false
+            }
+          },
+          "unknownFields": "reject",
+          "universalJson": false,
+          "erpConsumerBoundary": "references erp-product-api.v1 compatibility authority; does not redefine field ownership"
+        },
+        "currentProjection": {
+          "facts": [
+            {
+              "path": "apps/api/src/routes/commerce/index.ts",
+              "symbol": "createCommerceRoutes: cart/checkout/tax/fulfillment/reservation/inventory/order and ERP webhook boundaries",
+              "blobOid": "7197f9d88ca261588b35a3fa752c0200cf36f4bb",
+              "classification": "current_fact",
+              "readers": "Storefront/API clients and ERP webhooks",
+              "writer": "Commerce API transactions",
+              "owner": "Commerce/Checkout",
+              "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809",
+              "notes": "S03 Commerce Settings consumption"
+            },
+            {
+              "path": "apps/api/src/config.ts",
+              "symbol": "inventorySourceMode; inventorySnapshotTtlMs=5m default; deliveryFlatFeeCents=1500 default",
+              "blobOid": "96bb8ca04406635e39f40a39d8e1e5567b390ec0",
+              "classification": "compiled_default",
+              "readers": "Commerce API",
+              "writer": "deployment configuration",
+              "owner": "Commerce runtime configuration",
+              "conflict": "not a versioned Settings policy"
+            },
+            {
+              "path": "packages/db/prisma/schema.prisma",
+              "symbol": "Cart/PaymentSession/Order/TaxRate/InventorySnapshot/InventoryReservation/ProductSkuErpMapping/ErpSyncJob/ErpWebhookEvent/DealerLocation",
+              "blobOid": "bd2ec2ce26c3ebc8ee2c18d3aad423487b9b87c7",
+              "classification": "current_fact",
+              "readers": "API/Worker/Prisma clients",
+              "writer": "existing Commerce/ERP transactions",
+              "owner": "DB/Commerce domains",
+              "conflict": "instances are domain facts, never Settings values (S08 implementation consumption; freeze OID retained at d223303) (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "src/lib/api/api-contract.ts",
+              "symbol": "FulfillmentType/CheckoutSessionInput/CheckoutSession/CommerceOrder/ProductInventory",
+              "blobOid": "4c5759637fa336eb10c51a3dda3f70c5c6e3c594",
+              "classification": "current_fact",
+              "readers": "Storefront and API client",
+              "writer": "Integration shared-contract lease",
+              "owner": "Shared API contract",
+              "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809 (S08 implementation consumption; freeze OID retained at d223303)",
+              "notes": "S03 Commerce Settings consumption"
+            },
+            {
+              "path": "src/lib/api/runtime-validation.ts",
+              "symbol": "validateCheckoutSession and Commerce DTO validators",
+              "blobOid": "2420eeaeabccbe6e9447ed3cf3c26d728be8566a",
+              "classification": "current_fact",
+              "readers": "Storefront API client",
+              "writer": "Integration shared-contract lease",
+              "owner": "Shared runtime validation",
+              "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809 (S08 implementation consumption; freeze OID retained at d223303)",
+              "notes": "S03 Commerce Settings consumption"
+            },
+            {
+              "path": "apps/worker/src/index.ts",
+              "symbol": "releaseExpiredReservations; recover/push ERP handlers; WORKER_HANDLERS",
+              "blobOid": "d0e5f9792eaf922c7a9435129230e8e6568c68b8",
+              "classification": "current_fact",
+              "readers": "Worker scheduler",
+              "writer": "Inventory reservation/ERP job state",
+              "owner": "Worker/Commerce ERP",
+              "conflict": "existing business consumers are not S03 policy consumers"
+            },
+            {
+              "path": "apps/api/src/routes/erp-integration.ts",
+              "symbol": "catalog/skus; upstream proxy; catalog/sync; machine audit and permissions",
+              "blobOid": "516ba77ce6785137411950d226d8c11296e02308",
+              "classification": "current_fact",
+              "readers": "ERP machine clients",
+              "writer": "existing catalog sync path",
+              "owner": "ERP integration",
+              "conflict": "bounded batch write/dry-run/canonical push-pull ingest obligations incomplete (S08 implementation consumption; freeze OID retained at d223303) (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "apps/api/src/routes/catalog.ts",
+              "symbol": "dealer lookup/service-area projection and promotion facts",
+              "blobOid": "517ec83303497256151860b1fa971aaa9f2825d2",
+              "classification": "current_fact",
+              "readers": "Storefront catalog/dealer lookup",
+              "writer": "Catalog/Dashboard domain",
+              "owner": "Catalog/Dealer service area",
+              "conflict": "service zone is not enforced by checkout"
+            },
+            {
+              "path": "apps/api/src/payments/finalize.ts",
+              "symbol": "finalizeConfirmedPayment creates order, consumes reservations and queues ERP/email effects",
+              "blobOid": "281a3628172b9bd85c3ef2e438063266cf840491",
+              "classification": "current_fact",
+              "readers": "payment callback/recovery",
+              "writer": "Payment/Order/Inventory/ERP business state",
+              "owner": "Payments",
+              "conflict": "reference-only non-scope; S03 preview/publish/rollback must never invoke it"
+            },
+            {
+              "path": "apps/api/src/integrations/erp-sync/inventory.ts",
+              "symbol": "reservation consume/release/restock and ERP inventory-release enqueue",
+              "blobOid": "213c0a2ee1739c8a88dfa77c05bbec806cec6019",
+              "classification": "current_fact",
+              "readers": "payment finalization/worker",
+              "writer": "Inventory/ERP business state",
+              "owner": "Inventory ERP sync",
+              "conflict": "business execution, not Settings publish"
+            },
+            {
+              "path": "apps/api/src/integrations/erp-catalog-sync/service.ts",
+              "symbol": "current ERP catalog pull/upsert path",
+              "blobOid": "ee8722ee98b069bddcf11a26728c8bc91910888a",
+              "classification": "current_fact",
+              "readers": "ERP catalog sync route/worker",
+              "writer": "Product/SKU/Category/Price domain state",
+              "owner": "ERP catalog sync",
+              "conflict": "does not yet share P08/P05 canonical ingest/idempotency/per-item receipts"
+            },
+            {
+              "path": "apps/api/src/routes/checkout-totals.test.ts",
+              "symbol": "availableQuantity and MB/ON tax + pickup/delivery total invariants",
+              "blobOid": "d8b523aed222e917604b0dd6fc028e5a08a309f3",
+              "classification": "current_fact",
+              "readers": "test-only fact evidence",
+              "writer": "none",
+              "owner": "Commerce tests",
+              "conflict": "test evidence only, not runtime policy"
+            }
+          ],
+          "precedence": [
+            "published S03 policy (future)",
+            "current domain facts",
+            "compiled defaults"
+          ],
+          "gaps": [
+            "minimum order policy absent",
+            "checkout does not enforce DealerServiceArea service zone",
+            "S03 runtime descriptor/routes/DTO/validator/UI/consumer absent",
+            "no shared canonical ERP push/pull ingest with mapping/idempotency/per-item receipts",
+            "ERP old-client fixture gate empty",
+            "ERP webhook timestamp/replay-window contract gap"
+          ],
+          "nonSettingsFacts": [
+            "Cart/PaymentSession/Order/InventoryReservation/TaxRate/ERP mapping/job/webhook rows remain domain-owned instances"
+          ]
+        },
+        "draftValidator": {
+          "structure": "exact typed keys; unknown field reject; structural and business invalid separated",
+          "blockers": [
+            "negative/unsafe minimum order or fee",
+            "unknown/duplicate province",
+            "invalid tax mode or rate-table dependency",
+            "delivery enabled without legal fulfillment/service-zone mode",
+            "illegal order lifecycle transition",
+            "invalid reservation TTL or stale policy",
+            "ERP field ownership violation"
+          ],
+          "warnings": [
+            "ERP inventory stale",
+            "ERP/Tax/Shipping dependency unavailable",
+            "missing future consumer"
+          ],
+          "errorFamilies": [
+            "SETTINGS_VALIDATION_FAILED",
+            "SETTINGS_STATE_CONFLICT",
+            "VERSION_CONFLICT",
+            "COMMERCE_INVALID",
+            "INVENTORY_REFRESHING",
+            "ERP_MAPPING_INCOMPLETE"
+          ]
+        },
+        "publishAdapter": {
+          "targetSemantics": "activate typed Commerce policy version only",
+          "atomicBoundary": "publish/Audit/ledger/history atomic; partialPublish=false",
+          "consumerDirection": "future checkout/tax/shipping/inventory/order consumers read published policy; B02/B04/B05 consume, S03 does not wait on them",
+          "forbiddenSideEffects": [
+            "no cart/order/payment creation or mutation",
+            "no inventory reservation/lock/decrement/release",
+            "no tax settlement/filing/provider call",
+            "no shipment/carrier/Canada Post call",
+            "no ERP sync/job/connector call",
+            "no Product/SKU/Price/Category write"
+          ],
+          "rollback": "new policy draft/publication only; never reverses order, payment, tax, shipment or inventory business effects"
+        },
+        "readinessAdapter": {
+          "sideEffectFree": true,
+          "consumerGenerationMatch": "exact published/consumer generation required for ready",
+          "degradedReasons": [
+            "missing S03 consumer",
+            "ERP stale/unavailable",
+            "tax table unavailable",
+            "shipping/service-zone dependency unavailable",
+            "inventory dependency unavailable",
+            "consumer generation missing/mismatch"
+          ],
+          "neverFakeReady": true
+        },
+        "auditDescriptor": {
+          "operationFamily": "settings.publish/rollback (S03 future)",
+          "resourceFamily": "settings.core / settings.commerce",
+          "requiredPermission": "settings.write (existing global permission; no new permission)",
+          "p02Snapshot": "real P02 occurrence-time context; no caller-supplied roles",
+          "safeMetadata": [
+            "descriptorKey",
+            "policy version/sequence",
+            "changeReason",
+            "safe rule-family identifiers"
+          ],
+          "secretDenylist": [
+            "customer/PII/contact/address",
+            "payment material/provider payload",
+            "order sensitive values/items",
+            "inventory quantities/detail",
+            "ERP credentials/token/full payload",
+            "tax filing data"
+          ],
+          "retention": "inherits P04 Audit retention class"
+        }
+      },
+      "sourceFactsManifest": [
+        {
+          "path": "apps/api/src/routes/commerce/index.ts",
+          "symbol": "createCommerceRoutes: cart/checkout/tax/fulfillment/reservation/inventory/order and ERP webhook boundaries",
+          "blobOid": "7197f9d88ca261588b35a3fa752c0200cf36f4bb",
+          "classification": "current_fact",
+          "readers": "Storefront/API clients and ERP webhooks",
+          "writer": "Commerce API transactions",
+          "owner": "Commerce/Checkout",
+          "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809",
+          "notes": "S03 Commerce Settings consumption"
+        },
+        {
+          "path": "apps/api/src/config.ts",
+          "symbol": "inventorySourceMode; inventorySnapshotTtlMs=5m default; deliveryFlatFeeCents=1500 default",
+          "blobOid": "96bb8ca04406635e39f40a39d8e1e5567b390ec0",
+          "classification": "compiled_default",
+          "readers": "Commerce API",
+          "writer": "deployment configuration",
+          "owner": "Commerce runtime configuration",
+          "conflict": "not a versioned Settings policy"
+        },
+        {
+          "path": "packages/db/prisma/schema.prisma",
+          "symbol": "Cart/PaymentSession/Order/TaxRate/InventorySnapshot/InventoryReservation/ProductSkuErpMapping/ErpSyncJob/ErpWebhookEvent/DealerLocation",
+          "blobOid": "bd2ec2ce26c3ebc8ee2c18d3aad423487b9b87c7",
+          "classification": "current_fact",
+          "readers": "API/Worker/Prisma clients",
+          "writer": "existing Commerce/ERP transactions",
+          "owner": "DB/Commerce domains",
+          "conflict": "instances are domain facts, never Settings values (S08 implementation consumption; freeze OID retained at d223303) (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "src/lib/api/api-contract.ts",
+          "symbol": "FulfillmentType/CheckoutSessionInput/CheckoutSession/CommerceOrder/ProductInventory",
+          "blobOid": "4c5759637fa336eb10c51a3dda3f70c5c6e3c594",
+          "classification": "current_fact",
+          "readers": "Storefront and API client",
+          "writer": "Integration shared-contract lease",
+          "owner": "Shared API contract",
+          "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809 (S08 implementation consumption; freeze OID retained at d223303)",
+          "notes": "S03 Commerce Settings consumption"
+        },
+        {
+          "path": "src/lib/api/runtime-validation.ts",
+          "symbol": "validateCheckoutSession and Commerce DTO validators",
+          "blobOid": "2420eeaeabccbe6e9447ed3cf3c26d728be8566a",
+          "classification": "current_fact",
+          "readers": "Storefront API client",
+          "writer": "Integration shared-contract lease",
+          "owner": "Shared runtime validation",
+          "conflict": "superseded by S03 bounded consumption; Wave A historical OID retained at 87bd809 (S08 implementation consumption; freeze OID retained at d223303)",
+          "notes": "S03 Commerce Settings consumption"
+        },
+        {
+          "path": "apps/worker/src/index.ts",
+          "symbol": "releaseExpiredReservations; recover/push ERP handlers; WORKER_HANDLERS",
+          "blobOid": "d0e5f9792eaf922c7a9435129230e8e6568c68b8",
+          "classification": "current_fact",
+          "readers": "Worker scheduler",
+          "writer": "Inventory reservation/ERP job state",
+          "owner": "Worker/Commerce ERP",
+          "conflict": "existing business consumers are not S03 policy consumers"
+        },
+        {
+          "path": "apps/api/src/routes/erp-integration.ts",
+          "symbol": "catalog/skus; upstream proxy; catalog/sync; machine audit and permissions",
+          "blobOid": "516ba77ce6785137411950d226d8c11296e02308",
+          "classification": "current_fact",
+          "readers": "ERP machine clients",
+          "writer": "existing catalog sync path",
+          "owner": "ERP integration",
+          "conflict": "bounded batch write/dry-run/canonical push-pull ingest obligations incomplete (S08 implementation consumption; freeze OID retained at d223303) (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "apps/api/src/routes/catalog.ts",
+          "symbol": "dealer lookup/service-area projection and promotion facts",
+          "blobOid": "517ec83303497256151860b1fa971aaa9f2825d2",
+          "classification": "current_fact",
+          "readers": "Storefront catalog/dealer lookup",
+          "writer": "Catalog/Dashboard domain",
+          "owner": "Catalog/Dealer service area",
+          "conflict": "service zone is not enforced by checkout"
+        },
+        {
+          "path": "apps/api/src/payments/finalize.ts",
+          "symbol": "finalizeConfirmedPayment creates order, consumes reservations and queues ERP/email effects",
+          "blobOid": "281a3628172b9bd85c3ef2e438063266cf840491",
+          "classification": "current_fact",
+          "readers": "payment callback/recovery",
+          "writer": "Payment/Order/Inventory/ERP business state",
+          "owner": "Payments",
+          "conflict": "reference-only non-scope; S03 preview/publish/rollback must never invoke it"
+        },
+        {
+          "path": "apps/api/src/integrations/erp-sync/inventory.ts",
+          "symbol": "reservation consume/release/restock and ERP inventory-release enqueue",
+          "blobOid": "213c0a2ee1739c8a88dfa77c05bbec806cec6019",
+          "classification": "current_fact",
+          "readers": "payment finalization/worker",
+          "writer": "Inventory/ERP business state",
+          "owner": "Inventory ERP sync",
+          "conflict": "business execution, not Settings publish"
+        },
+        {
+          "path": "apps/api/src/integrations/erp-catalog-sync/service.ts",
+          "symbol": "current ERP catalog pull/upsert path",
+          "blobOid": "ee8722ee98b069bddcf11a26728c8bc91910888a",
+          "classification": "current_fact",
+          "readers": "ERP catalog sync route/worker",
+          "writer": "Product/SKU/Category/Price domain state",
+          "owner": "ERP catalog sync",
+          "conflict": "does not yet share P08/P05 canonical ingest/idempotency/per-item receipts"
+        },
+        {
+          "path": "apps/api/src/routes/checkout-totals.test.ts",
+          "symbol": "availableQuantity and MB/ON tax + pickup/delivery total invariants",
+          "blobOid": "d8b523aed222e917604b0dd6fc028e5a08a309f3",
+          "classification": "current_fact",
+          "readers": "test-only fact evidence",
+          "writer": "none",
+          "owner": "Commerce tests",
+          "conflict": "test evidence only, not runtime policy"
+        }
+      ],
+      "currentGaps": [
+        "minimum order absent",
+        "checkout service zone enforcement absent",
+        "S03 descriptor/routes/DTO/validator/UI/consumer absent",
+        "ERP canonical ingest/idempotency/per-item receipt path incomplete",
+        "ERP v1 batch write/dry-run/old-client gate incomplete",
+        "ERP webhook timestamp/replay-window absent"
+      ],
+      "futureImplementationObligations": [
+        "implement typed S03 lifecycle without universal JSON",
+        "bind consumers with exact generation and degraded semantics",
+        "preview calculate/quote/impact read-only with zero product/job writes",
+        "reuse ERP compatibility manifest and additive-compatible v1 boundary",
+        "erp-push and vanstro-pull share canonical ingest/mapping/idempotency ledger/per-item receipt",
+        "same-source same-version replay, same-key different-payload conflict, stale reject and loop prevention",
+        "S08 owns machine credentials; S06 connector/mapping; B01 catalog; F03 low-risk bulk pipeline",
+        "compatibility manifest continuously verified by later packages"
+      ],
+      "notInScope": [
+        "S03 implementation or migration78",
+        "S04/S05/S06/S08/B01/F03 implementation",
+        "payment finalization/capture/refund/reconciliation",
+        "real order/inventory/tax/shipping/ERP/Canada Post action",
+        "new Product/Token/Catalog/Job/idempotency/field-authority architecture",
+        "physical delete or production deployment"
+      ],
+      "sharedResourceLeases": {
+        "Commerce/Tax/Shipping/Inventory/Orders shared contract": "S03 exclusive future implementation lease",
+        "S04": "Payment Settings only; no concurrent Commerce checkout shared-contract modification before S03",
+        "S07/B04/B05": "consume frozen event/rule boundaries only",
+        "ERP compatibility": "single Authority from overlay/contract/manifest; S03 reference-only",
+        "api-contract/runtime validators/Dashboard access/Settings registry": "Integration-coordinated single writer"
+      },
+      "migrationBoundary": {
+        "currentMigrationCount": 78,
+        "latest": "20260807100000_s03_commerce_settings",
+        "migrations1To77": "immutable",
+        "migration78": "owned by S03 (bounded Commerce Settings physical schema); CG01 Wave B freeze reserved it for S03 only"
+      },
+      "normalPathAcceptanceOutline": [
+        "compiled/current projection read",
+        "typed draft validates",
+        "read-only tax/shipping/inventory/order impact preview",
+        "publish activates policy only",
+        "consumer exact generation readiness or honest degraded",
+        "append-only history/Audit safe metadata"
+      ],
+      "failurePathAcceptanceOutline": [
+        "unknown field/invalid rate-zone-transition-reservation blocker",
+        "stale ERP/dependency unavailable degraded",
+        "malformed id/version/state/idempotency conflict",
+        "preview zero writes and no sensitive echo",
+        "missing consumer never ready"
+      ],
+      "rollbackAcceptanceOutline": [
+        "rollback creates new draft/publication",
+        "no business action reversal",
+        "history and original Audit identity preserved"
+      ]
+    },
+    {
+      "id": "cg01.api-service-account.v1",
+      "consumerPackage": "S08",
+      "domainOwners": [
+        "Service Accounts",
+        "Machine Authentication",
+        "P02 RBAC",
+        "P04 Audit",
+        "P09 Runtime/Readiness"
+      ],
+      "factBaseline": {
+        "commit": "ba32e25d385e1ed882c329f247aadd7e8754338b",
+        "tree": "496fae7345db2641e78d8477e072a63de81965a8",
+        "verification": "git rev-parse HEAD / HEAD^{tree} after S08 implementation; S08-consumed files re-bound, pre-existing four Ports deep-equal to d223303"
+      },
+      "erpCompatibilityAuthority": {
+        "priorityOverlay": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-erp-product-api-priority-overlay.md",
+          "sha256": "a8ca3113984b7e4f76b675009b64f8e22c705095873e4b315d6613bc7c7d2f89"
+        },
+        "compatibilityContractMd": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.md",
+          "sha256": "d2dbe952b60d5fa76ef5b50ef742fa859e1ecf8ca87d582370879f8c874ed18d"
+        },
+        "compatibilityContractJson": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.json",
+          "sha256": "3998fdf8c3a4ea4ba738da885ad2ae7a9840fadfb3eab5da16ac0c7c5717cffa"
+        },
+        "compatibilityManifest": {
+          "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-manifest.json",
+          "sha256": "3ca3b014c44b331b6a2a7e74adfe458fdc445b327988700ebc16babdbeb88581"
+        },
+        "manifestRequiredState": {
+          "planningFrozen": true,
+          "productContractFrozen": false,
+          "implementationComplete": false,
+          "currentProgressContribution": 0
+        },
+        "consumerBoundary": "S08 will own machine credential policy only; S06 connector/mapping, B01 Catalog and F03 bulk pipeline remain planned-only; no ERP Product API implementation or real credential issuance",
+        "architectureBoundary": "reuse existing ServiceAccount/ServiceAccountToken, P02 permission ceiling, P04 Audit and one machine-auth middleware; no second token table, authentication middleware, permission system, ERP page, job or idempotency system"
+      },
+      "contract": {
+        "schema": {
+          "scope": "future S08 typed Settings policy only; never stores ServiceAccount, ServiceAccountRole, ServiceAccountToken, Role, Permission or McpToolInvocation instances, tokenHash or plaintext credentials",
+          "exactTopLevelFamilies": [
+            "tokenLifecyclePolicy",
+            "machineScopePolicy",
+            "rateLimitPolicy",
+            "auditInvocationPolicy"
+          ],
+          "fieldFamilies": {
+            "tokenLifecyclePolicy": {
+              "fields": [
+                "defaultTtlDays",
+                "maximumTtlDays",
+                "rotationOverlapMinutes",
+                "maximumActiveTokensPerAccount",
+                "requireExpiry"
+              ],
+              "types": {
+                "defaultTtlDays": "bounded integer days; current fact 90",
+                "maximumTtlDays": "bounded integer days; must not exceed current hard maximum 365",
+                "rotationOverlapMinutes": "bounded nonnegative integer; future obligation, no current operation",
+                "maximumActiveTokensPerAccount": "bounded positive integer; future obligation, no current policy",
+                "requireExpiry": "boolean"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "current token lifecycle facts (90-day default / 365-day hard maximum)",
+              "secret": false
+            },
+            "machineScopePolicy": {
+              "fields": [
+                "allowedRoleKeys",
+                "allowedPermissionFamilies",
+                "environment",
+                "dealerLocationScopeMode",
+                "denySensitivePermissionsByDefault"
+              ],
+              "types": {
+                "allowedRoleKeys": "unique role-key allowlist referencing P02",
+                "allowedPermissionFamilies": "unique permission-family allowlist referencing P02",
+                "environment": "future enum; no current Service Account field",
+                "dealerLocationScopeMode": "future enum; no current Service Account field",
+                "denySensitivePermissionsByDefault": "boolean"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "P02 current facts and future implementation decision",
+              "secret": false
+            },
+            "rateLimitPolicy": {
+              "fields": [
+                "requestsPerMinute",
+                "burst",
+                "mode",
+                "retryAfterSemantics"
+              ],
+              "types": {
+                "requestsPerMinute": "bounded positive integer; future obligation",
+                "burst": "bounded nonnegative integer; future obligation",
+                "mode": "per-token | per-account; future obligation",
+                "retryAfterSemantics": "stable duration/HTTP semantics; future obligation"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "none; no Service Account-specific rate-limit consumer exists",
+              "secret": false
+            },
+            "auditInvocationPolicy": {
+              "fields": [
+                "invocationRetentionDays",
+                "metadataRedactionMode",
+                "lastUsedTrackingEnabled",
+                "failedAuthenticationAuditEnabled"
+              ],
+              "types": {
+                "invocationRetentionDays": "bounded positive integer referencing P04 retention",
+                "metadataRedactionMode": "strict | standard; strict cannot expose denylisted data",
+                "lastUsedTrackingEnabled": "boolean; current authentication updates lastUsedAt",
+                "failedAuthenticationAuditEnabled": "boolean; future obligation"
+              },
+              "classification": "future_setting",
+              "defaultsFrom": "current AuditLog/McpToolInvocation/lastUsedAt facts",
+              "secret": false
+            }
+          },
+          "immutableProjections": {
+            "oneTimeReveal": {
+              "classification": "immutable_projection",
+              "value": "enabled and not configurable",
+              "invariant": "plaintext token may appear only in the successful create response; second and later reads return metadata only and never plaintext"
+            },
+            "apiDiscovery": {
+              "classification": "immutable_projection",
+              "fields": [
+                "apiBaseUrl",
+                "tokenPrefix",
+                "authenticationScheme",
+                "deploymentEnvironmentStatus",
+                "placeholderOnlyCurlTemplate"
+              ],
+              "secret": false
+            }
+          },
+          "unknownFields": "reject",
+          "universalJson": false,
+          "forbiddenSettingsValues": [
+            "ServiceAccount instance",
+            "ServiceAccountRole instance",
+            "ServiceAccountToken instance",
+            "Role instance",
+            "Permission instance",
+            "McpToolInvocation instance",
+            "token",
+            "tokenHash",
+            "Authorization header",
+            "Cookie",
+            "secret",
+            "credential"
+          ]
+        },
+        "currentProjection": {
+          "facts": [
+            {
+              "path": "apps/api/src/auth/service-account.ts",
+              "symbol": "hashToken/createServiceAccountToken/getServiceAccountFromRequest/lockServiceAccountLifecycle: vsa_ random token, SHA-256 hash-only, default 90 days, maximum 365 days, revoked/expiry/active checks, lastUsedAt and row lock",
+              "blobOid": "f4789f6901d6ea2f3ff860e39ba6206e639abb0c",
+              "classification": "current_fact",
+              "readers": "Machine-auth middleware and ERP/CLI machine routes",
+              "writer": "Explicit token create/authenticate lifecycle only",
+              "owner": "Machine Authentication",
+              "conflict": "one-time plaintext is returned only by create; rotate overlap, max-active-token policy, scope/environment and dedicated rate limit do not exist (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "apps/api/src/auth/service-account-access.ts",
+              "symbol": "requireMachineAccess/requireMachinePermission/writeMachineAudit",
+              "blobOid": "72073462301446d86c5eaa30ae007b3d03f5d267",
+              "classification": "current_fact",
+              "readers": "ERP/CLI machine routes",
+              "writer": "Machine authentication and AuditLog writes",
+              "owner": "Machine Access / P04 Audit",
+              "conflict": "permission checks exist; no first-class scope/environment policy consumer (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "packages/db/prisma/schema.prisma",
+              "symbol": "ServiceAccount/ServiceAccountRole/ServiceAccountToken/McpToolInvocation/AuditLog models",
+              "blobOid": "bd2ec2ce26c3ebc8ee2c18d3aad423487b9b87c7",
+              "classification": "current_fact",
+              "readers": "Prisma API and audit/invocation readers",
+              "writer": "Existing Service Account, token and invocation business actions",
+              "owner": "DB / Machine Identity",
+              "conflict": "business instances and tokenHash are domain facts and must never be copied into Settings (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "apps/api/src/dashboard/system.ts",
+              "symbol": "Service Account list/create/update/disable; token create one-time plaintext response; token revoke; invocation list",
+              "blobOid": "3085138925d53c26475d77ae4839252ce0e220b8",
+              "classification": "current_fact",
+              "readers": "Dashboard machine-access administrators",
+              "writer": "Explicit service-account/token business routes",
+              "owner": "Dashboard System / Service Accounts",
+              "conflict": "create/revoke/disable are explicit business actions, never Settings publish or rollback side effects (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "packages/db/src/permissions.ts",
+              "symbol": "service_accounts.manage, cli.access, erp.catalog.read/sync, erp.sync.read/retry, erp.webhooks.read and role manifest",
+              "blobOid": "c70f7404df7c8f28d58a42d2f8e5380176d6e7ba",
+              "classification": "current_fact",
+              "readers": "P02 authorization and machine permission checks",
+              "writer": "P02 permission and role seed authority",
+              "owner": "P02 RBAC",
+              "conflict": "Settings may reference allowlists but must not copy Role/Permission instances or exceed the actor permission ceiling"
+            },
+            {
+              "path": "apps/api/src/dashboard/permission-ceiling.ts",
+              "symbol": "assertAssignableRoles/assertManageableServiceAccounts actor permission ceiling",
+              "blobOid": "525e047b2cbff31d4e415a8f9822a8414eabbaef",
+              "classification": "current_fact",
+              "readers": "Dashboard Service Account management",
+              "writer": "Role assignment/management authorization checks",
+              "owner": "P02 Permission Ceiling",
+              "conflict": "future policy cannot bypass the existing occurrence-time actor ceiling"
+            },
+            {
+              "path": "apps/api/src/dashboard/access.ts",
+              "symbol": "five Service Account management rules use service_accounts.manage; /dashboard/mcp/invocations currently uses settings.write",
+              "blobOid": "fcdfb9a03124fda8f9fbb5d760caf445c66e8c18",
+              "classification": "current_fact",
+              "readers": "Dashboard permission middleware",
+              "writer": "Route authorization only",
+              "owner": "Dashboard Access / P02",
+              "conflict": "invocation route permission is a recorded implementation decision gap; this freeze does not change it (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "apps/api/src/audit/foundation.ts",
+              "symbol": "buildAuditMetadata allowlist/denylist and bounded metadata; token/authorization/cookie/credential payload redaction",
+              "blobOid": "55c27508a391eda71f6e69a89d9d704afed2f962",
+              "classification": "current_fact",
+              "readers": "P04 Audit producers",
+              "writer": "Safe Audit metadata construction",
+              "owner": "P04 Audit",
+              "conflict": "future S08 Audit descriptor must inherit denylist and never record token, Authorization header, secret, payload or PII"
+            },
+            {
+              "path": "apps/api/src/routes/erp-integration.ts",
+              "symbol": "ERP catalog/upstream/payment machine routes use requireMachineAccess, requireMachinePermission and writeMachineAudit",
+              "blobOid": "516ba77ce6785137411950d226d8c11296e02308",
+              "classification": "current_fact",
+              "readers": "Existing ERP machine clients",
+              "writer": "Existing bounded ERP route behavior",
+              "owner": "ERP Integration",
+              "conflict": "ERP Product API v1 capability remains incomplete and planning-only; no real credential is issued by this freeze (S08 implementation consumption; freeze OID retained at d223303)"
+            },
+            {
+              "path": "apps/api/src/middleware/rate-limit.ts",
+              "symbol": "public-write/auth/commerce/analytics IP-keyed rate policies; no Service Account/per-token/per-account policy",
+              "blobOid": "2a91107dd4126eb48cf498eaf64b462a8d64afa9",
+              "classification": "current_fact",
+              "readers": "Public HTTP middleware",
+              "writer": "IP-keyed public request throttling",
+              "owner": "API Middleware",
+              "conflict": "absence evidence: Service Account-specific requests-per-minute/burst consumer does not exist"
+            }
+          ],
+          "precedence": [
+            "immutable one-time-reveal and hash-only security invariants",
+            "current Service Account/machine-auth/P02/P04 facts",
+            "future S08 typed policy only after implementation"
+          ],
+          "gaps": [
+            "no S08 Settings descriptor/API/UI/readiness consumer",
+            "no first-class rotate overlap operation",
+            "no maximum-active-token policy",
+            "no machine scope/environment fields",
+            "no Service Account-specific rate limit",
+            "McpToolInvocation and AuditLog are two current fact surfaces requiring one frozen read model",
+            "/dashboard/mcp/invocations currently uses settings.write and needs an implementation decision",
+            "ERP Product API v1 machine capability is not implemented"
+          ],
+          "nonSettingsFacts": [
+            "ServiceAccount/ServiceAccountRole/ServiceAccountToken/Role/Permission/McpToolInvocation/AuditLog rows remain domain-owned instances",
+            "plaintext token and tokenHash are never Settings projections"
+          ]
+        },
+        "draftValidator": {
+          "structure": "exact typed keys; unknown field reject; immutable projections cannot appear in draft values; token/secret-like keys fail closed",
+          "blockers": [
+            "default TTL invalid or maximum TTL above current 365-day hard ceiling",
+            "oneTimeRevealEnabled or any plaintext token/tokenHash/secret/Authorization/Cookie field appears in Settings payload",
+            "unknown role/permission or assignment outside actor P02 permission ceiling",
+            "ERP machine scope includes Payment, Customer PII or global admin permissions",
+            "attempt to mark rotate overlap, machine scope/environment or dedicated rate limit current-executable before its consumer exists"
+          ],
+          "warnings": [
+            "rotate overlap consumer unavailable",
+            "machine scope/environment consumer unavailable",
+            "Service Account rate-limit consumer unavailable",
+            "ERP Product API machine consumer unavailable",
+            "McpToolInvocation/AuditLog read-model decision unresolved"
+          ],
+          "errorFamilies": [
+            "SETTINGS_VALIDATION_FAILED",
+            "SETTINGS_STATE_CONFLICT",
+            "VERSION_CONFLICT",
+            "IDEMPOTENCY_CONFLICT",
+            "SERVICE_ACCOUNT_POLICY_INVALID",
+            "DEPENDENCY_UNAVAILABLE"
+          ]
+        },
+        "publishAdapter": {
+          "targetSemantics": "activate typed API / Service Account policy version only; token and account lifecycle business actions remain explicit and separate",
+          "atomicBoundary": "future publish/Audit/ledger/history atomic; partialPublish=false",
+          "consumerDirection": "future machine-auth/rate-limit/scope/Audit consumers read published policy; existing Service Account routes are not invoked by Settings publish",
+          "forbiddenSideEffects": [
+            "no Service Account create/disable/update",
+            "no token create/rotate/revoke/expiry mutation",
+            "no ServiceAccountRole, Role or Permission assignment/removal",
+            "no ERP API or external request",
+            "no invocation-log mutation",
+            "no plaintext token, tokenHash, Authorization header, Cookie or secret response"
+          ],
+          "rollback": "new policy draft/publication only; never restores a revoked token, disables/enables an account, rewrites permissions or reverses invocation/Audit facts"
+        },
+        "readinessAdapter": {
+          "sideEffectFree": true,
+          "consumerGenerationMatch": "exact published/consumer generation required for any ready consumer",
+          "degradedReasons": [
+            "S08 descriptor or policy consumer missing",
+            "rotate-overlap consumer unavailable",
+            "machine scope/environment consumer unavailable",
+            "Service Account-specific rate-limit consumer unavailable",
+            "Audit/invocation read-model unresolved",
+            "P02/P04/P09 dependency unavailable",
+            "ERP Product API machine consumer unavailable",
+            "consumer generation missing/mismatch"
+          ],
+          "neverFakeReady": true,
+          "futureConsumers": {
+            "tokenLifecycle": "future_obligation",
+            "machineScopeEnvironment": "future_obligation",
+            "rateLimit": "future_obligation",
+            "erpProductApiMachine": "future_obligation"
+          }
+        },
+        "auditDescriptor": {
+          "operationFamily": "settings.publish/rollback (S08 future)",
+          "resourceFamily": "settings.core / settings.api-service-account",
+          "requiredPermission": "settings.write for policy publication; service_accounts.manage remains required for account/token business actions",
+          "p02Snapshot": "real P02 occurrence-time actor permission ceiling; no caller-supplied roles or permissions",
+          "safeMetadata": [
+            "descriptorKey",
+            "policy version/sequence",
+            "changeReason",
+            "safe policy-family identifier",
+            "safe Service Account id when needed for read-only impact only"
+          ],
+          "secretDenylist": [
+            "service account token",
+            "tokenHash",
+            "Authorization header",
+            "Cookie",
+            "database credential",
+            "secret",
+            "full request/response payload",
+            "McpToolInvocation input/output/error",
+            "email",
+            "phone",
+            "address",
+            "PII"
+          ],
+          "retention": "inherits P04 Audit retention class; does not copy AuditLog or McpToolInvocation instances"
+        }
+      },
+      "sourceFactsManifest": [
+        {
+          "path": "apps/api/src/auth/service-account.ts",
+          "symbol": "hashToken/createServiceAccountToken/getServiceAccountFromRequest/lockServiceAccountLifecycle: vsa_ random token, SHA-256 hash-only, default 90 days, maximum 365 days, revoked/expiry/active checks, lastUsedAt and row lock",
+          "blobOid": "f4789f6901d6ea2f3ff860e39ba6206e639abb0c",
+          "classification": "current_fact",
+          "readers": "Machine-auth middleware and ERP/CLI machine routes",
+          "writer": "Explicit token create/authenticate lifecycle only",
+          "owner": "Machine Authentication",
+          "conflict": "one-time plaintext is returned only by create; rotate overlap, max-active-token policy, scope/environment and dedicated rate limit do not exist (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "apps/api/src/auth/service-account-access.ts",
+          "symbol": "requireMachineAccess/requireMachinePermission/writeMachineAudit",
+          "blobOid": "72073462301446d86c5eaa30ae007b3d03f5d267",
+          "classification": "current_fact",
+          "readers": "ERP/CLI machine routes",
+          "writer": "Machine authentication and AuditLog writes",
+          "owner": "Machine Access / P04 Audit",
+          "conflict": "permission checks exist; no first-class scope/environment policy consumer (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "packages/db/prisma/schema.prisma",
+          "symbol": "ServiceAccount/ServiceAccountRole/ServiceAccountToken/McpToolInvocation/AuditLog models",
+          "blobOid": "bd2ec2ce26c3ebc8ee2c18d3aad423487b9b87c7",
+          "classification": "current_fact",
+          "readers": "Prisma API and audit/invocation readers",
+          "writer": "Existing Service Account, token and invocation business actions",
+          "owner": "DB / Machine Identity",
+          "conflict": "business instances and tokenHash are domain facts and must never be copied into Settings (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "apps/api/src/dashboard/system.ts",
+          "symbol": "Service Account list/create/update/disable; token create one-time plaintext response; token revoke; invocation list",
+          "blobOid": "3085138925d53c26475d77ae4839252ce0e220b8",
+          "classification": "current_fact",
+          "readers": "Dashboard machine-access administrators",
+          "writer": "Explicit service-account/token business routes",
+          "owner": "Dashboard System / Service Accounts",
+          "conflict": "create/revoke/disable are explicit business actions, never Settings publish or rollback side effects (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "packages/db/src/permissions.ts",
+          "symbol": "service_accounts.manage, cli.access, erp.catalog.read/sync, erp.sync.read/retry, erp.webhooks.read and role manifest",
+          "blobOid": "c70f7404df7c8f28d58a42d2f8e5380176d6e7ba",
+          "classification": "current_fact",
+          "readers": "P02 authorization and machine permission checks",
+          "writer": "P02 permission and role seed authority",
+          "owner": "P02 RBAC",
+          "conflict": "Settings may reference allowlists but must not copy Role/Permission instances or exceed the actor permission ceiling"
+        },
+        {
+          "path": "apps/api/src/dashboard/permission-ceiling.ts",
+          "symbol": "assertAssignableRoles/assertManageableServiceAccounts actor permission ceiling",
+          "blobOid": "525e047b2cbff31d4e415a8f9822a8414eabbaef",
+          "classification": "current_fact",
+          "readers": "Dashboard Service Account management",
+          "writer": "Role assignment/management authorization checks",
+          "owner": "P02 Permission Ceiling",
+          "conflict": "future policy cannot bypass the existing occurrence-time actor ceiling"
+        },
+        {
+          "path": "apps/api/src/dashboard/access.ts",
+          "symbol": "five Service Account management rules use service_accounts.manage; /dashboard/mcp/invocations currently uses settings.write",
+          "blobOid": "fcdfb9a03124fda8f9fbb5d760caf445c66e8c18",
+          "classification": "current_fact",
+          "readers": "Dashboard permission middleware",
+          "writer": "Route authorization only",
+          "owner": "Dashboard Access / P02",
+          "conflict": "invocation route permission is a recorded implementation decision gap; this freeze does not change it (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "apps/api/src/audit/foundation.ts",
+          "symbol": "buildAuditMetadata allowlist/denylist and bounded metadata; token/authorization/cookie/credential payload redaction",
+          "blobOid": "55c27508a391eda71f6e69a89d9d704afed2f962",
+          "classification": "current_fact",
+          "readers": "P04 Audit producers",
+          "writer": "Safe Audit metadata construction",
+          "owner": "P04 Audit",
+          "conflict": "future S08 Audit descriptor must inherit denylist and never record token, Authorization header, secret, payload or PII"
+        },
+        {
+          "path": "apps/api/src/routes/erp-integration.ts",
+          "symbol": "ERP catalog/upstream/payment machine routes use requireMachineAccess, requireMachinePermission and writeMachineAudit",
+          "blobOid": "516ba77ce6785137411950d226d8c11296e02308",
+          "classification": "current_fact",
+          "readers": "Existing ERP machine clients",
+          "writer": "Existing bounded ERP route behavior",
+          "owner": "ERP Integration",
+          "conflict": "ERP Product API v1 capability remains incomplete and planning-only; no real credential is issued by this freeze (S08 implementation consumption; freeze OID retained at d223303)"
+        },
+        {
+          "path": "apps/api/src/middleware/rate-limit.ts",
+          "symbol": "public-write/auth/commerce/analytics IP-keyed rate policies; no Service Account/per-token/per-account policy",
+          "blobOid": "2a91107dd4126eb48cf498eaf64b462a8d64afa9",
+          "classification": "current_fact",
+          "readers": "Public HTTP middleware",
+          "writer": "IP-keyed public request throttling",
+          "owner": "API Middleware",
+          "conflict": "absence evidence: Service Account-specific requests-per-minute/burst consumer does not exist"
+        }
+      ],
+      "currentGaps": [
+        "no first-class rotate overlap operation",
+        "no maximum-active-token policy",
+        "no independent machine scope/environment fields",
+        "no Service Account-specific rate limit",
+        "no S08 Settings descriptor/API/UI/readiness",
+        "McpToolInvocation and AuditLog require a single safe display/read-model boundary",
+        "/dashboard/mcp/invocations uses settings.write instead of a resolved service-account/audit permission",
+        "existing token create/revoke/disable are explicit business actions and not Settings consumers",
+        "ERP Product API v1 Service Account capability remains planning-only"
+      ],
+      "futureImplementationObligations": [
+        "implement typed S08 Settings lifecycle without universal JSON or secret fields",
+        "keep one-time token reveal immutable and second-read plaintext impossible",
+        "design explicit rotate overlap and maximum-active-token behavior without changing API paths",
+        "add machine scope/environment policy with P02 permission ceiling and least privilege",
+        "add Service Account-specific per-token/per-account rate limit and stable Retry-After semantics",
+        "freeze one invocation/Audit read model with P04 retention and strict redaction",
+        "bind token/scope/rate-limit/Audit consumers with exact generation and honest degraded reasons",
+        "ERP machine identity uses minimum catalog permissions and never employee Cookie",
+        "continuously verify ERP Compatibility Manifest while S06/S08/B01/F03 remain planned-only"
+      ],
+      "notInScope": [
+        "S08 implementation or migration79",
+        "new runtime descriptor, route, API, UI or Worker",
+        "Service Account/Token/Role/Permission instance mutation",
+        "token create, rotate, revoke or real credential issuance",
+        "plaintext token/tokenHash/secret in Settings",
+        "ERP Product API, connector, canonical ingest, Catalog or bulk pipeline implementation",
+        "new token table, authentication middleware, permission system, ERP page, Job or idempotency architecture",
+        "Main, deployment or production"
+      ],
+      "sharedResourceLeases": {
+        "Service Account/Machine Authentication shared contract": "S08 exclusive future implementation lease",
+        "P02 Role/Permission and permission ceiling": "read-only current facts; no copy or bypass",
+        "P04 Audit/McpToolInvocation": "read-only current facts; retention and redaction inherited",
+        "P09 Runtime/Readiness": "read-only current facts; future exact-generation consumer only",
+        "S06/B01/F03 ERP consumers": "consume future stable S08 machine identity; must not create a second token/auth system",
+        "api-contract/runtime validators/Dashboard access/Settings registry": "Integration-coordinated single writer"
+      },
+      "migrationBoundary": {
+        "currentMigrationCount": 78,
+        "latest": "20260807100000_s03_commerce_settings",
+        "migrations1To78": "immutable",
+        "migration79": "forbidden in CG01; future S08 Goal only if physical schema is proven necessary",
+        "singleNextMigrationOwner": "future S08 Backend lease only after separate Goal and Integration approval"
+      },
+      "normalPathAcceptanceOutline": [
+        "read current immutable/token metadata projection without plaintext",
+        "typed S08 draft validates without business writes",
+        "read-only impact preview checks TTL/role/permission/rate-limit implications",
+        "publish activates policy version only",
+        "consumer exact-generation readiness or honest degraded for missing consumers",
+        "append-only safe Audit/history metadata"
+      ],
+      "failurePathAcceptanceOutline": [
+        "token/secret/Authorization-like Settings field is a blocker",
+        "TTL above 365 days or invalid bounds are blockers",
+        "unknown/sensitive/out-of-ceiling role or permission is a blocker",
+        "rotate/scope/environment/rate-limit consumer missing stays degraded",
+        "version/state/idempotency conflict remains stable",
+        "preview/publish perform zero account/token/permission/ERP writes and echo no plaintext"
+      ],
+      "rollbackAcceptanceOutline": [
+        "rollback creates a new policy draft/publication only",
+        "revoked token remains revoked and plaintext cannot be recovered",
+        "Service Account status and Role/Permission assignments remain unchanged",
+        "history and original Audit identity are preserved"
+      ]
+    }
+  ],
+  "sharedInvariants": [
+    "settings-center.v1 and registry group vocabulary inherited",
+    "S01 nine-state lifecycle inherited",
+    "resource-local draft CAS inherited",
+    "descriptor-level monotonic publication sequence inherited",
+    "append-only history and original publish Audit identity unchanged",
+    "idempotency exact replay/conflict inherited",
+    "not-found/version/state conflict separation inherited",
+    "safe integer/UUID boundaries inherited",
+    "rollback creates new draft/new publication, never rewrites history",
+    "publish/Audit/ledger/history atomic",
+    "real P02 authority snapshot",
+    "consumer-generation readiness, missing/mismatch degraded",
+    "global settings.read/settings.write normal-function permissions",
+    "partialPublish=false",
+    "secrets never echoed",
+    "external side effects default false"
+  ],
+  "sharedFileLeases": {
+    "api-contract.ts": "Integration freeze; S02/S09/S10 serial",
+    "runtime validators": "Integration freeze; S02/S09/S10 serial",
+    "Dashboard access": "Integration freeze; read-only",
+    "Settings registry": "Integration freeze; read-only",
+    "P02/RBAC": "S09 exclusive write lease; others read-only",
+    "P04/Audit": "S10 exclusive write lease; others read-only",
+    "Storefront/CMS": "S02 exclusive write lease; others read-only",
+    "Commerce/Tax/Shipping/Inventory/Orders": "S03 exclusive future implementation lease; CG01 freeze read-only facts",
+    "ERP product API v1": "single Authority in ERP overlay/compatibility contract/manifest; S03 reference-only",
+    "S04 Payment": "Payment Settings only; no concurrent Commerce checkout shared-contract modification before S03",
+    "S06/S08/B01/F03": "consume shared ERP compatibility manifest; no duplicate Token/table/page/Job/idempotency architecture",
+    "Service Account/Machine Authentication": "S08 exclusive future write lease; all other packages read-only and S06/B01/F03 consume the stable boundary"
+  },
+  "migrationBoundary": {
+    "sourceMigrationCount": 79,
+    "latestMigration": "20260808000000_s08_api_service_accounts",
+    "migrations1To77": "immutable",
+    "migration78": "owned by S03 (bounded Commerce Settings physical schema); CG01 Wave B freeze reserved it for S03 only",
+    "singleNextMigrationOwner": "future package after separate Goal and Integration approval",
+    "migrations1To78": "immutable",
+    "migration79": "owned by S08 (bounded API / Service Account Settings physical schema); CG01 freeze reserved it for S08 only"
+  },
+  "deferredV2Register": {
+    "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v2-known-remediation-register.md",
+    "sha256": "275f6fd96efa60edc4c9b9d938b001f6c4101d03eb9786daf38834c0168e6c71",
+    "count": 33,
+    "note": "referenced only; historical and forward entries preserved; not modified or closed by this freeze"
+  },
+  "scopeGuard": {
+    "noImplementation": false,
+    "noRuntimeDescriptorChange": false,
+    "noNewRoute": false,
+    "noNewUi": false,
+    "noNewPermission": true,
+    "noPrismaChange": true,
+    "noMigrationChange": false,
+    "noUniversalJsonSecondSource": true,
+    "noS02S09S10Start": true,
+    "noMainOrProductionAdvance": true,
+    "noS03Start": false,
+    "noErpApiImplementation": true,
+    "noMigration78": false,
+    "noDagCountOrProgressChange": false,
+    "noDuplicateErpArchitecture": true,
+    "noS08Start": false,
+    "noMigration79": false,
+    "noServiceAccountBusinessWrite": false,
+    "noCredentialIssuance": false
+  },
+  "incrementalTranches": [
+    {
+      "id": "wave-a-1",
+      "ports": [
+        "cg01.general-storefront.v1",
+        "cg01.auth-rbac.v1",
+        "cg01.privacy-retention.v1"
+      ],
+      "historicalBaselineCommit": "b3d59b31b7149c3458033dc0b072a0164dd7b7c7",
+      "status": "frozen"
+    },
+    {
+      "id": "wave-b-commerce-1",
+      "ports": [
+        "cg01.commerce.v1"
+      ],
+      "baselineCommit": "87bd80973c1d4ebecd4394cd36ed1bcbdf547f59",
+      "baselineTree": "39712bd73d3d156a453772f252fb6ce99547df00",
+      "status": "FROZEN_CONTRACT_ONLY — S03 NOT STARTED"
+    },
+    {
+      "id": "wave-c-api-service-account-1",
+      "ports": [
+        "cg01.api-service-account.v1"
+      ],
+      "baselineCommit": "d223303c53750db1217eb122f50e204c8d26f88f",
+      "baselineTree": "fe8b3526608621e7ff80d6df4d9552706e4f2692",
+      "status": "FROZEN_CONTRACT_ONLY — S08 NOT STARTED"
+    }
+  ]
+}

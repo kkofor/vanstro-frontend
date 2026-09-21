@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>replica-process</title>
+  <style>
+    body { margin: 40px; font: 16px/1.4 "Segoe UI", sans-serif; color: #10201D; }
+    .eyebrow { color: #FE9437; font-size: 12px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; }
+    h2 { margin: 8px 0 0; color: #004440; font: 700 28px/1.2 "HarmonyOS Sans", "Segoe UI", sans-serif; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .grid.five { grid-template-columns: repeat(5, 1fr); }
+    article { border: 1px solid #DCE3E0; border-radius: 14px; padding: 16px; box-shadow: 0 10px 24px rgba(0,63,63,.08); }
+    .idx { color: #004440; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <p class="eyebrow">Process</p>
+  <h2>How ordering works</h2>
+  <p>Two paths. Same stock, same price.</p>
+  <h3>Path 1 — You order on this site</h3>
+  <div class="grid">
+    <article><span class="idx">01</span><h4>Choose products</h4></article>
+    <article><span class="idx">02</span><h4>Confirm a dealer</h4></article>
+    <article><span class="idx">03</span><h4>See the finish</h4></article>
+    <article><span class="idx">04</span><h4>Pickup or delivery</h4></article>
+  </div>
+  <h3>Path 2 — The dealer runs the project</h3>
+  <div class="grid five">
+    <article><span class="idx">01</span><h4>Contact a dealer</h4></article>
+    <article><span class="idx">02</span><h4>Free measure + 3D</h4></article>
+    <article><span class="idx">03</span><h4>Free quote</h4></article>
+    <article><span class="idx">04</span><h4>Confirm the order</h4></article>
+    <article><span class="idx">05</span><h4>Dealer installs</h4></article>
+  </div>
+</body>
+</html>

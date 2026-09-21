@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANSTRO · UI Slices — shadcn/ui 组件切片</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<style>
+  /* ---- sheet chrome ---- */
+  body { background: var(--vs-grey-50); }
+  .sheet { max-width: 1240px; margin: 0 auto; padding: 32px 24px 96px; }
+  .sheet__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--vs-grey-200); margin-bottom: 28px; }
+  .sheet__head h1 { font-size: 26px; }
+  .sheet__head p { color: var(--vs-text-3); font-size: 13px; margin-top: 6px; }
+  .sheet h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .14em; color: var(--vs-text-3); margin: 40px 0 14px; display: flex; align-items: center; gap: 12px; }
+  .sheet h2::after { content: ""; flex: 1; height: 1px; background: var(--vs-grey-200); }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .slice { grid-column: span 6; background: #fff; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-lg); box-shadow: var(--vs-shadow-sm); display: flex; flex-direction: column; overflow: hidden; }
+  .slice--12 { grid-column: span 12; } .slice--4 { grid-column: span 4; } .slice--3 { grid-column: span 3; } .slice--8 { grid-column: span 8; }
+  .slice__tag { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 10px 14px; border-bottom: 1px dashed var(--vs-grey-200); font-size: 12px; background: #fff; }
+  .slice__tag code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--vs-navy); background: var(--vs-navy-50); padding: 2px 6px; border-radius: 4px; }
+  .slice__tag .kind { margin-left: auto; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; }
+  .kind--ui { background: var(--vs-green-50); color: var(--vs-green); }
+  .kind--ext { background: var(--vs-orange-50); color: var(--vs-orange-ink); }
+  .kind--custom { background: var(--vs-navy); color: #fff; }
+  .slice__body { padding: 20px 18px; display: flex; flex-direction: column; gap: 14px; flex: 1; background:
+    linear-gradient(0deg, rgba(2,24,22,.025) 1px, transparent 1px) 0 0 / 100% 8px; }
+  .slice__body .field { margin-bottom: 0; }
+  .slice__row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .slice__spec { padding: 12px 14px; border-top: 1px solid var(--vs-grey-100); background: var(--vs-grey-50); font-size: 12px; color: var(--vs-text-2); display: grid; grid-template-columns: 76px 1fr; gap: 4px 10px; }
+  .slice__spec dt { color: var(--vs-text-3); font-weight: 700; } .slice__spec dd { margin: 0; }
+  .slice__spec code { font-family: ui-monospace, Menlo, monospace; font-size: 11.5px; }
+  .st { font-size: 10px; font-weight: 700; color: var(--vs-text-3); text-transform: uppercase; letter-spacing: .08em; min-width: 64px; }
+  .dark { background: var(--vs-navy-900); color: #fff; border-radius: var(--vs-r-md); padding: 16px; }
+  /* tokens */
+  .tokens { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .tok { background: #fff; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); overflow: hidden; font-size: 11px; }
+  .tok i { display: block; height: 56px; }
+  .tok div { padding: 8px 10px; line-height: 1.45; }
+  .tok b { display: block; font-size: 12px; color: var(--vs-text); }
+  .tok code { color: var(--vs-navy); font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; }
+  /* copied page-level components (from account.html / auth pages) so the sheet is self-contained */
+  .avatar { border-radius: 50%; background: var(--vs-navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; overflow: hidden; flex: none; }
+  .avatar--sm { width: 34px; height: 34px; font-size: 13px; } .avatar--md { width: 44px; height: 44px; font-size: 16px; } .avatar--xl { width: 104px; height: 104px; font-size: 34px; }
+  .kv { display: grid; grid-template-columns: 120px 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; }
+  .kv:last-child { border-bottom: 0; } .kv .k { color: var(--vs-text-3); font-weight: 600; } .kv .v { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .savebar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px 12px 20px; background: var(--vs-navy-900); color: #fff; border-radius: var(--vs-r-lg); box-shadow: var(--vs-shadow-lg); }
+  .savebar .btn--ghost { color: #fff; } .savebar .btn--primary { background: #4aa8a2; color: var(--vs-navy-900); }
+  .linked { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--vs-grey-100); } .linked:last-child { border-bottom: 0; }
+  .linked__icon { width: 40px; height: 40px; border-radius: var(--vs-r-md); border: 1px solid var(--vs-grey-100); display: inline-flex; align-items: center; justify-content: center; background: #fff; }
+  .linked__icon svg { width: 20px; height: 20px; } .linked__icon.apple { background: #000; color: #fff; border-color: #000; }
+  .linked__meta { flex: 1; } .linked__meta strong { display: block; font-size: 14px; }
+  .session { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; } .session:last-child { border-bottom: 0; }
+  .session svg { width: 20px; height: 20px; color: var(--vs-text-3); } .session__meta { flex: 1; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--vs-green); margin-right: 6px; }
+  .progress { height: 8px; border-radius: 4px; background: var(--vs-grey-100); overflow: hidden; } .progress i { display: block; height: 100%; background: var(--vs-navy); transform-origin: left; }
+  .side-nav { display: grid; gap: 2px; width: 240px; }
+  .side-nav a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--vs-r-md); color: var(--vs-text-2); font-weight: 600; font-size: 14px; }
+  .side-nav a svg { width: 18px; height: 18px; color: var(--vs-text-3); } .side-nav a:hover { background: var(--vs-grey-50); text-decoration: none; }
+  .side-nav a.is-active { background: var(--vs-navy-50); color: var(--vs-navy); } .side-nav a.is-active svg { color: var(--vs-navy); }
+  .side-nav .sep { height: 1px; background: var(--vs-grey-100); margin: 8px 6px; } .side-nav a.danger { color: var(--vs-error); }
+  .addr { display: flex; flex-direction: column; padding: 20px 22px 14px; }
+  .addr.is-default { border-color: var(--vs-navy); box-shadow: 0 0 0 1px var(--vs-navy); }
+  .addr__head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; } .addr__head strong { font-size: 15px; }
+  .addr__body { font-style: normal; font-size: 14px; line-height: 1.55; color: var(--vs-text-2); } .addr__body b { color: var(--vs-text); font-weight: 600; }
+  .addr__notes { margin-top: 10px; padding: 8px 10px; background: var(--vs-grey-50); border-radius: var(--vs-r-sm); display: flex; gap: 8px; align-items: flex-start; font-size: 13px; } .addr__notes svg { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+  .addr__foot { display: flex; align-items: flex-end; gap: 4px; margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--vs-grey-100); }
+  .addr__foot .spacer { flex: 1; } .addr__defaults { display: flex; flex-direction: column; align-items: flex-end; }
+  .link-btn { border: 0; background: none; color: var(--vs-navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 6px 8px; border-radius: 6px; } .link-btn:hover { background: var(--vs-navy-50); }
+  .empty { padding: 32px 24px; text-align: center; }
+  .empty__icon { width: 56px; height: 56px; border-radius: 50%; background: var(--vs-navy-50); color: var(--vs-navy); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; } .empty__icon svg { width: 26px; height: 26px; }
+  .pay { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--vs-grey-100); } .pay:last-child { border-bottom: 0; }
+  .pay__meta { flex: 1; min-width: 0; } .pay__meta strong { font-size: 15px; } .pay__meta .chip { margin-left: 6px; vertical-align: 1px; } .pay__meta .muted { display: block; margin-top: 3px; }
+  .pay__actions { display: flex; gap: 4px; flex: none; } .pay.is-expired .pay__meta strong { color: var(--vs-text-3); }
+  .cbrand { width: 48px; height: 32px; border-radius: 6px; border: 1px solid var(--vs-grey-100); background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; letter-spacing: .02em; flex: none; position: relative; }
+  .cbrand--visa { color: #1a1f71; font-style: italic; font-size: 13px; }
+  .cbrand--mastercard::before, .cbrand--mastercard::after { content: ""; width: 16px; height: 16px; border-radius: 50%; position: absolute; top: 7px; }
+  .cbrand--mastercard::before { background: #eb001b; left: 11px; } .cbrand--mastercard::after { background: #f79e1b; left: 21px; mix-blend-mode: multiply; }
+  .cbrand--amex { background: #016fd0; color: #fff; border-color: #016fd0; font-size: 9px; } .cbrand--unknown { color: var(--vs-text-3); } .cbrand--unknown svg { width: 20px; height: 20px; }
+  .cbrand--sm { width: 38px; height: 26px; font-size: 10px; } .cbrand--sm.cbrand--visa { font-size: 11px; }
+  .cbrand--sm.cbrand--mastercard::before, .cbrand--sm.cbrand--mastercard::after { width: 12px; height: 12px; top: 6px; } .cbrand--sm.cbrand--mastercard::before { left: 8px; } .cbrand--sm.cbrand--mastercard::after { left: 16px; }
+  .masked-card { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px; border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-md); background: var(--vs-grey-50); color: var(--vs-text-2); font-weight: 600; }
+  .secure-note { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--vs-text-3); padding: 12px 14px; background: var(--vs-grey-50); border-radius: var(--vs-r-md); } .secure-note svg { width: 18px; height: 18px; color: var(--vs-green); flex: none; }
+  .flag { width: 22px; height: 15px; border-radius: 2px; background: linear-gradient(90deg, #d52b1e 25%, #fff 25%, #fff 75%, #d52b1e 75%); position: relative; flex: none; } .flag::after { content: "🍁"; position: absolute; inset: 0; font-size: 10px; line-height: 15px; text-align: center; }
+  .drop { border: 1.5px dashed var(--vs-border-strong); border-radius: var(--vs-r-lg); padding: 14px; text-align: center; color: var(--vs-text-3); font-size: 13px; } .drop.is-over { border-color: var(--vs-green); background: var(--vs-green-50); color: var(--vs-navy); }
+  .drop [data-icon] { display: inline-flex; width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px; } .drop svg { width: 16px; height: 16px; }
+  .badge-btn { width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 1px solid var(--vs-grey-100); box-shadow: var(--vs-shadow-sm); display: inline-flex; align-items: center; justify-content: center; color: var(--vs-navy); position: absolute; right: -2px; bottom: -2px; } .badge-btn svg { width: 16px; height: 16px; }
+  .danger-card { border-color: #f1c9c2; }
+  .modal-demo { border: 1px solid var(--vs-grey-100); border-radius: var(--vs-r-xl); box-shadow: var(--vs-shadow-lg); overflow: hidden; background: #fff; }
+  .modal-demo .modal__head { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px 0; } .modal-demo .modal__body { padding: 18px 24px 8px; } .modal-demo .modal__foot { padding: 14px 24px; background: var(--vs-grey-50); display: flex; justify-content: flex-end; gap: 10px; }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; } @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 900px) { .slice, .slice--4, .slice--3, .slice--8 { grid-column: span 12; } .tokens { grid-template-columns: repeat(3, 1fr); } }
+  @media print { .slice { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header class="sheet__head">
+    <div>
+      <img class="vs-logo" src="/account/assets/brand/logo-navy.png" alt="VANSTRO" style="margin-bottom:14px">
+      <h1>UI Slices · shadcn/ui 组件切片</h1>
+      <p>登录 / 忘记密码 / 个人中心中出现的每个组件，按 shadcn 原件（<span class="chip chip--green">ui</span>）、需扩展 variant 的原件（<span class="chip chip--orange">ext</span>）与自定义业务组件（<span class="chip chip--navy">custom</span>）三类切片。规格见 <a href="docs/04-shadcn-ui-slices.md">docs/04</a>，主题见 <a href="shadcn/globals.css">shadcn/globals.css</a>。</p>
+    </div>
+    <div class="lang" role="group" aria-label="Language"><button class="is-active">EN</button><button>FR</button></div>
+  </header>
+
+  <!-- ============================================================ TOKENS -->
+  <h2>0 · Theme tokens（VI → shadcn CSS variables）</h2>
+  <div class="tokens">
+    <div class="tok"><i style="background:#004744"></i><div><b>--primary</b>深藏青 #004744<br><code>hsl(177 100% 14%)</code></div></div>
+    <div class="tok"><i style="background:#004744"></i><div><b>--ring / --sidebar-primary</b>焦点环取主色<br><code>#004744</code></div></div>
+    <div class="tok"><i style="background:#0d8968"></i><div><b>--success</b>青翠绿 #0d8968 · 仅成功语义<br><code>自定义变量，不占 shadcn 槽</code></div></div>
+    <div class="tok"><i style="background:#f5a93f"></i><div><b>--brand-highlight</b>暖阳橙 #f5a93f · 仅图形<br><code>文字用 --warning #8a5a0b</code></div></div>
+    <div class="tok"><i style="background:#9ba8a2"></i><div><b>--brand-grey</b>豆绿灰 #9ba8a2 · 中性色取色源<br><code>占位符原值</code></div></div>
+    <div class="tok"><i style="background:#021816"></i><div><b>--brand-navy-900</b>深色底 #021816<br><code>品牌区 · Toast · 保存条</code></div></div>
+    <div class="tok"><i style="background:#b3261e"></i><div><b>--destructive</b>例外色 #b3261e<br><code>白皮书未定义 · 4.5:1 达标</code></div></div>
+    <div class="tok"><i style="background:#e0ebe9"></i><div><b>--sidebar-accent</b>brand-soft #e0ebe9<br><code>选中导航 · info 横幅</code></div></div>
+    <div class="tok"><i style="background:#f1f4f3;border-bottom:1px solid #e9edeb"></i><div><b>--background</b>ground #f1f4f3<br><code>豆绿灰色相延伸</code></div></div>
+    <div class="tok"><i style="background:#e9edeb"></i><div><b>--accent / --muted / --secondary</b>surface-2 #e9edeb<br><code>hover 底 · 保持中性，别放品牌色</code></div></div>
+    <div class="tok"><i style="background:#d2dad8"></i><div><b>--border</b>line #d2dad8<br><code>--input 取更重的 #b9c3c0</code></div></div>
+    <div class="tok"><i style="background:#0a1614"></i><div><b>--foreground</b>ink #0a1614<br><code>ink-2 #3c4b48</code></div></div>
+    <div class="tok"><i style="background:#6d7c79"></i><div><b>--muted-foreground</b>ink-3 #6d7c79<br><code>白底 4.6:1</code></div></div>
+    <div class="tok"><i style="background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;color:#004744;border-bottom:1px solid #e9edeb">Aa 8 / 12 / 16</i><div><b>--radius 0.5rem</b>HarmonyOS Sans<br><code>md 8 · lg 12 · xl 16</code></div></div>
+  </div>
+
+  <!-- ============================================================ PRIMITIVES -->
+  <h2>1 · Primitives（components/ui）</h2>
+  <div class="grid">
+
+    <div class="slice slice--12">
+      <div class="slice__tag"><code>&lt;Button&gt;</code> variant × size × loading <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="slice__row"><span class="st">variant</span>
+          <button class="btn btn--primary">Sign in</button>
+          <button class="btn btn--secondary">Discard</button>
+          <button class="btn btn--ghost">Edit</button>
+          <button class="btn btn--accent">Save changes</button>
+          <button class="btn btn--danger">Delete account</button>
+          <button class="link-btn" style="font-size:14px">Forgot password?</button>
+        </div>
+        <div class="slice__row"><span class="st">social</span>
+          <button class="btn btn--google"><span class="btn__icon" data-icon="google"></span>Continue with Google</button>
+          <button class="btn btn--apple"><span class="btn__icon" data-icon="apple"></span>Continue with Apple</button>
+        </div>
+        <div class="slice__row"><span class="st">size / state</span>
+          <button class="btn btn--primary">control · 46px</button>
+          <button class="btn btn--primary btn--sm">sm · 36px</button>
+          <button class="icon-btn" aria-label="Edit"><span data-icon="edit"></span></button>
+          <button class="btn btn--primary" aria-busy="true"><span class="spinner"></span></button>
+          <button class="btn btn--primary" disabled>Disabled</button>
+          <button class="btn btn--primary" style="box-shadow:var(--vs-focus)">Focus ring</button>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>button</code> — 新增 variant <code>accent | danger-outline | google | apple</code>，size <code>control</code>(默认 46px) <code>sm</code> <code>icon</code> <code>block</code></dd>
+        <dt>props</dt><dd><code>loading</code> → spinner 替换文字 + <code>aria-busy</code>；<code>asChild</code> 用于 Link</dd>
+        <dt>规则</dt><dd>Google / Apple 按钮遵守各品牌规范，不用 VI 色重着；主按钮 hover = <code>brand-navy-700</code></dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Input&gt;</code> + <code>&lt;Label&gt;</code> + <code>&lt;FormMessage&gt;</code> <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="field"><label class="field__label">Email <span class="opt">default</span></label><div class="control"><input placeholder="name@example.com"></div><div class="field__hint">We’ll never share your email.</div></div>
+        <div class="field"><label class="field__label">Street address <span class="opt">prefix icon · focus</span></label><div class="control" style="border-color:var(--vs-navy);box-shadow:var(--vs-focus)"><span class="control__prefix" data-icon="search"></span><input value="123 Main St"></div></div>
+        <div class="field is-error"><label class="field__label">Postal code <span class="opt">error</span></label><div class="control"><input value="M5J 2J2"></div><div class="field__hint"><span data-icon="alert"></span>This postal code is in Ontario, but you chose Manitoba.</div></div>
+        <div class="field is-success"><label class="field__label">Postal code <span class="opt">success</span></label><div class="control"><input value="R3C 4T3"></div><div class="field__hint"><span data-icon="check"></span>Looks good</div></div>
+        <div class="field"><label class="field__label">Country <span class="opt">disabled</span></label><div class="control"><span class="control__prefix"><span class="flag"></span></span><input value="Canada" disabled></div></div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>input</code> <code>label</code> <code>form</code>（react-hook-form + zod）；高度 <code>h-control</code></dd>
+        <dt>states</dt><dd><code>aria-invalid</code> → <code>border-destructive</code>；<code>data-state=success</code> → <code>border-accent</code>；focus <code>ring-[3px] ring-ring/30</code></dd>
+        <dt>addon</dt><dd>自定义 <code>InputAddon</code>：前缀图标 / <code>+1</code> / 后缀按钮（眼睛、品牌标）</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Select&gt;</code> · <code>&lt;Checkbox&gt;</code> · <code>&lt;Switch&gt;</code> · <code>&lt;RadioGroup&gt;</code> <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="field"><label class="field__label">Province / territory</label><div class="control"><select><option>Manitoba</option><option>Ontario</option></select></div></div>
+        <div class="slice__row">
+          <label class="check"><input type="checkbox" checked><span class="check__box"><span data-icon="check"></span></span>Remember me for 30 days</label>
+          <label class="check"><input type="checkbox"><span class="check__box"><span data-icon="check"></span></span>Set as default billing</label>
+        </div>
+        <div class="slice__row">
+          <label class="switch"><input type="checkbox" checked><span class="switch__track"></span></label><span class="small">Marketing emails (CASL express consent)</span>
+          <label class="switch" style="margin-left:14px"><input type="checkbox"><span class="switch__track"></span></label><span class="small muted">Two-step verification</span>
+        </div>
+        <div class="slice__row"><span class="st">segmented</span>
+          <div class="seg" role="radiogroup"><label><input type="radio" name="ch" checked><span>✉︎&nbsp; Email</span></label><label><input type="radio" name="ch"><span>☏&nbsp; Text message</span></label></div>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>select</code>（h-control，value 两字母省代码）· <code>checkbox</code>（checked <code>bg-primary</code>）· <code>switch</code>（on <code>bg-accent</code>）</dd>
+        <dt>ext</dt><dd><code>radio-group</code> 新增 <code>variant=segmented</code>：等宽卡片、选中 <code>bg-primary text-white</code>，用于忘记密码渠道选择</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;InputOTP&gt;</code> 6 slots <span class="kind kind--ui">ui</span></div>
+      <div class="slice__body">
+        <div class="slice__row"><span class="st">idle</span><div class="otp"><input value="4"><input value="8"><input><input><input><input></div></div>
+        <div class="slice__row"><span class="st">error</span><div class="otp is-error"><input value="1"><input value="2"><input value="3"><input value="4"><input value="5"><input value="6"></div></div>
+        <div class="field is-error" style="margin-top:-6px"><div class="field__hint"><span data-icon="alert"></span>That code isn’t right. 2 attempts left.</div></div>
+        <div class="slice__row"><span class="st">success</span><div class="otp is-success"><input value="4"><input value="8"><input value="2"><input value="9"><input value="1"><input value="6"></div></div>
+        <div class="small muted">Code expires in 9:41 · <a href="#">Resend code</a> (60s)</div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>input-otp</code> <code>maxLength=6 pattern=REGEXP_ONLY_DIGITS</code>，slot 52×58，粘贴自动分配</dd>
+        <dt>wrap</dt><dd>业务组件 <code>OtpField</code>：倒计时 10 min · Resend 60 s · 5 次错误锁定</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Alert&gt;</code> error · warning · success · info <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="alert alert--error" role="alert"><span data-icon="alert"></span><div><strong>We couldn’t sign you in</strong>Check your email / phone and password and try again.</div></div>
+        <div class="alert alert--warning"><span data-icon="warn"></span><div><strong>Account temporarily locked</strong>Too many attempts. Try again in 15 minutes or <a href="#">reset your password</a>.</div></div>
+        <div class="alert alert--success"><span data-icon="checkCircle"></span><div><strong>Password updated</strong>You’ve been signed out on 2 other devices.</div></div>
+        <div class="alert alert--info"><span data-icon="shield"></span><div>For security, we’ll send a 6-digit code to the new email and ask for your password.</div></div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>alert</code> 默认仅 default/destructive → 扩展为 4 个 variant，见 <code>shadcn/components/ui/alert.tsx</code></dd>
+        <dt>a11y</dt><dd>error 用 <code>role=alert</code>，其余 <code>role=status</code>；图标 18px 与品牌色同系</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--4">
+      <div class="slice__tag"><code>&lt;Badge&gt;</code> <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="slice__row"><span class="chip chip--navy">Default</span><span class="chip chip--navy">Email</span><span class="chip chip--navy">Default shipping</span></div>
+        <div class="slice__row"><span class="chip chip--green">Verified</span><span class="chip chip--green">Done</span><span class="chip chip--green">Default billing</span><span class="chip chip--green">This device</span></div>
+        <div class="slice__row"><span class="chip chip--orange">Not verified</span><span class="chip chip--orange">Expires soon</span><span class="chip chip--orange">60%</span></div>
+        <div class="slice__row"><span class="chip chip--error">Expired</span><span class="chip chip--error">Locked</span></div>
+      </div>
+      <dl class="slice__spec"><dt>shadcn</dt><dd><code>badge</code> variant <code>navy | green | orange | error | neutral</code>；11px 700 uppercase</dd></dl>
+    </div>
+
+    <div class="slice slice--4">
+      <div class="slice__tag"><code>&lt;Avatar&gt;</code> · <code>&lt;Progress&gt;</code> <span class="kind kind--ext">ext</span></div>
+      <div class="slice__body">
+        <div class="slice__row"><span class="avatar avatar--sm">GZ</span><span class="avatar avatar--md">GZ</span><span class="avatar avatar--xl"><img src="/account/assets/avatar-demo.jpg" alt="" onerror="this.remove()">GZ</span></div>
+        <div><div class="row row--between small" style="margin-bottom:6px"><span>Profile completeness</span><b>60%</b></div><div class="progress"><i style="transform:scaleX(.6)"></i></div></div>
+        <div><div class="small muted" style="margin-bottom:6px">Password strength · level 3</div><div class="strength" data-level="3"><span></span><span></span><span></span><span></span></div></div>
+      </div>
+      <dl class="slice__spec"><dt>shadcn</dt><dd><code>avatar</code> size <code>sm 34 · md 44 · xl 104</code>，fallback 首字母；<code>progress</code> 用 <code>scaleX</code>；4 段强度条为 <code>PasswordStrength</code> 自绘</dd></dl>
+    </div>
+
+    <div class="slice slice--4">
+      <div class="slice__tag"><code>&lt;Toaster&gt;</code> · <code>&lt;ToggleGroup&gt;</code> · <code>&lt;Separator&gt;</code> <span class="kind kind--ui">ui</span></div>
+      <div class="slice__body">
+        <div class="toast"><span data-icon="checkCircle"></span>Address added</div>
+        <div class="toast toast--error"><span data-icon="alert"></span>Verify your phone first</div>
+        <div class="slice__row"><div class="lang"><button class="is-active">EN</button><button>FR</button></div><span class="small muted">toggle-group · single</span></div>
+        <div class="divider">or continue with</div>
+      </div>
+      <dl class="slice__spec"><dt>shadcn</dt><dd><code>sonner</code> 深色 <code>bg-brand-navy-900</code>，居中底部 3.5 s；<code>toggle-group type=single</code>；<code>separator</code> + 文字</dd></dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Dialog&gt;</code> · <code>&lt;AlertDialog&gt;</code> <span class="kind kind--ui">ui</span></div>
+      <div class="slice__body">
+        <div class="modal-demo">
+          <div class="modal__head"><h3>Delete your account?</h3><button class="icon-btn" aria-label="Close"><span data-icon="close"></span></button></div>
+          <div class="modal__body">
+            <p class="small" style="color:var(--vs-text-2)">Orders and invoices are kept for 6 years as required by the CRA. Type <b>DELETE</b> to receive a confirmation email.</p>
+            <div class="field" style="margin-top:12px"><div class="control"><input placeholder="DELETE"></div></div>
+          </div>
+          <div class="modal__foot"><button class="btn btn--secondary btn--sm">Cancel</button><button class="btn btn--danger btn--sm" disabled>Send confirmation email</button></div>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>shadcn</dt><dd><code>dialog</code>（表单类：补全资料 440 · 改邮箱 460 · 裁剪 460 · 银行卡 560 · 地址 680）· <code>alert-dialog</code>（删除账号 / 地址 / 卡）</dd>
+        <dt>样式</dt><dd><code>rounded-xl</code>，Footer <code>bg-muted</code>；确认删除按钮 <code>variant=danger-outline</code>，需输入 DELETE 才启用</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Sidebar&gt;</code> (AccountNav) · <code>&lt;Breadcrumb&gt;</code> <span class="kind kind--ui">ui</span></div>
+      <div class="slice__body">
+        <div class="small muted">Home › My account › <span style="color:var(--vs-text)">Addresses</span></div>
+        <nav class="side-nav">
+          <a href="#"><span data-icon="home"></span>Overview</a>
+          <a href="#"><span data-icon="user"></span>Profile</a>
+          <a href="#"><span data-icon="lock"></span>Sign-in &amp; security</a>
+          <a href="#" class="is-active"><span data-icon="pin"></span>Addresses</a>
+          <a href="#"><span data-icon="card"></span>Payment methods</a>
+          <div class="sep"></div>
+          <a href="#" class="danger"><span data-icon="logout"></span>Sign out</a>
+        </nav>
+      </div>
+      <dl class="slice__spec"><dt>shadcn</dt><dd><code>sidebar</code> 或轻量 <code>AccountNav</code>：hover <code>bg-muted</code>，active <code>bg-secondary text-primary</code>，Sign out <code>text-destructive</code>；<code>breadcrumb</code> 13px muted</dd></dl>
+    </div>
+  </div>
+
+  <!-- ============================================================ BUSINESS -->
+  <h2>2 · Business components（components/account）</h2>
+  <div class="grid">
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;IdentifierInput&gt;</code> · <code>&lt;PasswordInput&gt;</code> · <code>&lt;PasswordStrength&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="field"><label class="field__label">Email, phone or username</label><div class="control"><span class="control__prefix" data-icon="user"></span><input value="+1 (204) 555-0142"><span class="control__suffix"><span class="chip chip--green">Phone</span></span></div></div>
+        <div class="field"><label class="field__label">Password</label><div class="control"><span class="control__prefix" data-icon="lock"></span><input type="password" value="Vanstro2026!"><span class="control__suffix"><button class="icon-btn" aria-label="Show password"><span data-icon="eye"></span></button></span></div><div class="field__hint" style="color:var(--vs-orange-ink);font-weight:600">Caps Lock is on</div></div>
+        <div class="field"><label class="field__label">New password</label><div class="control" style="border-color:var(--vs-green)"><input type="text" value="Maple-Leaf-2026!"><span class="control__suffix"><button class="icon-btn" aria-pressed="true" aria-label="Hide password"><span data-icon="eyeOff"></span></button></span></div>
+          <div class="strength" data-level="4"><span></span><span></span><span></span><span></span></div>
+          <ul class="rules"><li style="color:var(--vs-green)"><span data-icon="check"></span>At least 8 characters</li><li style="color:var(--vs-green)"><span data-icon="check"></span>Upper &amp; lower case</li><li style="color:var(--vs-green)"><span data-icon="check"></span>A number</li><li style="color:var(--vs-green)"><span data-icon="check"></span>A symbol</li></ul>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>组成</dt><dd>Input + Badge（实时识别 email / phone / username）· Input + Button ghost icon（eye）· 4 段 meter + 规则列表</dd>
+        <dt>源码</dt><dd><code>shadcn/components/account/password-input.tsx</code> · 规则 <code>lib/validators.ts › PASSWORD_RULES</code></dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;Stepper&gt;</code> · <code>&lt;MaskedDestination&gt;</code> · <code>&lt;SocialButtons&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="steps"><div class="step is-done"><span class="step__n">✓</span> Account</div><span class="steps__bar is-done"></span><div class="step is-active"><span class="step__n">2</span> Verify</div><span class="steps__bar"></span><div class="step"><span class="step__n">3</span> New password</div></div>
+        <p class="small" style="color:var(--vs-text-2)">We sent a 6-digit code to <b>g•••n@gmail.com</b> · <a href="#">Change</a></p>
+        <div class="stack" style="gap:10px"><button class="btn btn--google btn--block"><span class="btn__icon" data-icon="google"></span>Continue with Google</button><button class="btn btn--apple btn--block"><span class="btn__icon" data-icon="apple"></span>Continue with Apple</button></div>
+        <p class="small muted">By continuing you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a> (PIPEDA).</p>
+      </div>
+      <dl class="slice__spec">
+        <dt>Stepper</dt><dd>3 步；done 绿勾 · current 实心 navy · upcoming 描边；连线随进度变绿</dd>
+        <dt>Social</dt><dd>2 × <code>Button variant=google|apple size=block</code>；首次登录后弹 <code>Dialog</code> 补手机 + CASL 勾选</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;AvatarUploader&gt;</code> · <code>&lt;SaveBar&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="row" style="gap:20px;align-items:center">
+          <div style="position:relative"><span class="avatar avatar--xl">GZ</span><button class="badge-btn" aria-label="Change photo"><span data-icon="camera"></span></button></div>
+          <div style="flex:1"><div class="drop is-over"><span data-icon="upload"></span> Drop to upload · JPG, PNG or WebP · up to 5 MB</div><div class="row" style="gap:8px;margin-top:10px"><button class="btn btn--secondary btn--sm">Upload photo</button><button class="btn btn--ghost btn--sm" style="color:var(--vs-error)">Remove</button></div></div>
+        </div>
+        <div class="savebar"><span class="small" style="font-weight:600">You have unsaved changes</span><div class="row" style="gap:8px"><button class="btn btn--ghost btn--sm">Discard</button><button class="btn btn--primary btn--sm">Save changes</button></div></div>
+      </div>
+      <dl class="slice__spec">
+        <dt>Uploader</dt><dd>Avatar xl + 相机 Button icon + Dropzone（drag-over 绿虚线）→ <code>AvatarCropDialog</code>（圆形裁剪 + Slider 缩放，输出 512×512）</dd>
+        <dt>SaveBar</dt><dd>sticky bottom，<code>bg-brand-navy-900</code>，dirty 时上滑显示；Save = accent</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;KeyValueRow&gt;</code> · <code>&lt;LinkedAccountRow&gt;</code> · <code>&lt;SessionRow&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div>
+          <div class="kv"><span class="k">Email</span><span class="v"><span>demo@vanstro.ca</span><span class="chip chip--green">Verified</span></span><button class="btn btn--ghost btn--sm">Change</button></div>
+          <div class="kv"><span class="k">Phone</span><span class="v"><span>+1 (204) 555-0142</span><span class="chip chip--orange">Not verified</span></span><button class="btn btn--ghost btn--sm">Verify</button></div>
+        </div>
+        <div>
+          <div class="linked"><span class="linked__icon" data-icon="google"></span><div class="linked__meta"><strong>Google</strong><span class="muted small">Connected · guannan@gmail.com</span></div><button class="btn btn--ghost btn--sm">Disconnect</button></div>
+          <div class="linked"><span class="linked__icon apple" data-icon="apple"></span><div class="linked__meta"><strong>Apple</strong><span class="muted small">Not connected</span></div><button class="btn btn--secondary btn--sm">Connect</button></div>
+        </div>
+        <div>
+          <div class="session"><span data-icon="monitor"></span><div class="session__meta"><strong>Chrome on macOS</strong> <span class="chip chip--green" style="margin-left:6px">This device</span><br><span class="muted small"><span class="dot"></span>Winnipeg, MB · Active now</span></div></div>
+          <div class="session"><span data-icon="smartphone"></span><div class="session__meta"><strong>Safari on iPhone</strong><br><span class="muted small">Winnipeg, MB · 2 days ago · Remembered</span></div><button class="btn btn--ghost btn--sm">Sign out</button></div>
+        </div>
+      </div>
+      <dl class="slice__spec"><dt>组成</dt><dd>3 列 grid（label · value + Badge · action）· provider 图标框 + meta + Button · 设备图标 + meta + Button；最后一种登录方式不可解绑 → Toast</dd></dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;AddressCard&gt;</code> default / normal · <code>&lt;EmptyState&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="card addr is-default">
+          <div class="addr__head"><strong>Home</strong><span class="chip chip--navy">Default shipping</span><span class="chip chip--green">Default billing</span></div>
+          <address class="addr__body"><b>Guannan Zhang</b><br>245 Portage Ave, Unit 1204<br>Winnipeg MB&nbsp; R3B 2A7<br>Canada<br>+1 (204) 555-0142</address>
+          <div class="addr__notes"><span data-icon="truck"></span>Loading dock at the back, buzz #1204.</div>
+          <div class="addr__foot"><button class="btn btn--ghost btn--sm">Edit</button><button class="btn btn--ghost btn--sm" style="color:var(--vs-error)">Remove</button><span class="spacer"></span></div>
+        </div>
+        <div class="card addr">
+          <div class="addr__head"><strong>Job site</strong></div>
+          <address class="addr__body"><b>Vanstro Global Supply Inc.</b><br>1600 Inkster Blvd<br>Winnipeg MB&nbsp; R2X 1R1<br>Canada</address>
+          <div class="addr__foot"><button class="btn btn--ghost btn--sm">Edit</button><button class="btn btn--ghost btn--sm" style="color:var(--vs-error)">Remove</button><span class="spacer"></span><div class="addr__defaults"><button class="link-btn">Set default shipping</button><button class="link-btn">Set default billing</button></div></div>
+        </div>
+        <div class="card empty"><div class="empty__icon"><span data-icon="pin"></span></div><h4>No saved addresses</h4><p class="small muted" style="margin:4px 0 12px">Add one to speed up checkout.</p><button class="btn btn--primary btn--sm"><span class="btn__icon" data-icon="plus"></span>Add your first address</button></div>
+      </div>
+      <dl class="slice__spec">
+        <dt>组成</dt><dd>Card + Badge ×2 + <code>&lt;address&gt;</code>（Canada Post 格式）+ 备注 + Ghost/Link Button；default 卡 <code>border-primary ring-1</code></dd>
+        <dt>源码</dt><dd><code>shadcn/components/account/address-card.tsx</code> · schema <code>addressSchema</code>（邮编 FSA ↔ 省份、PO Box 拦截）</dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;PaymentMethodRow&gt;</code> · <code>&lt;CardBrandBadge&gt;</code> · <code>&lt;CardNumberInput&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="card" style="padding:0 18px">
+          <div class="pay"><span class="cbrand cbrand--visa">VISA</span><div class="pay__meta"><strong>Visa •••• 4242</strong><span class="chip chip--navy">Default</span><span class="muted small">Expires 08/28 · Guannan Zhang · Billing: 245 Portage Ave, Winnipeg MB</span></div><div class="pay__actions"><button class="btn btn--ghost btn--sm">Edit</button><button class="btn btn--ghost btn--sm" style="color:var(--vs-error)">Remove</button></div></div>
+          <div class="pay"><span class="cbrand cbrand--mastercard"></span><div class="pay__meta"><strong>Mastercard •••• 4444</strong><span class="chip chip--orange">Expires soon</span><span class="muted small">Expires 10/26 · Guannan Zhang</span></div><div class="pay__actions"><button class="link-btn">Set default</button><button class="btn btn--ghost btn--sm">Edit</button></div></div>
+          <div class="pay is-expired"><span class="cbrand cbrand--amex">AMEX</span><div class="pay__meta"><strong>Amex •••• 0005</strong><span class="chip chip--error">Expired</span><span class="muted small">Expired 03/26 · <span style="color:var(--vs-error)">address removed — update at checkout</span></span></div><div class="pay__actions"><button class="btn btn--ghost btn--sm" style="color:var(--vs-error)">Remove</button></div></div>
+        </div>
+        <div class="slice__row"><span class="st">brand</span><span class="cbrand cbrand--visa">VISA</span><span class="cbrand cbrand--mastercard"></span><span class="cbrand cbrand--amex">AMEX</span><span class="cbrand cbrand--unknown"><span data-icon="card"></span></span><span class="cbrand cbrand--sm cbrand--visa">VISA</span><span class="cbrand cbrand--sm cbrand--mastercard"></span></div>
+        <div class="field is-success"><label class="field__label">Card number</label><div class="control"><span class="control__prefix" data-icon="card"></span><input value="4242 4242 4242 4242"><span class="control__suffix"><span class="cbrand cbrand--sm cbrand--visa">VISA</span></span></div><div class="field__hint"><span data-icon="check"></span>Valid card number</div></div>
+        <div class="masked-card"><span class="cbrand cbrand--sm cbrand--mastercard"></span>Mastercard •••• 4444<span class="muted small" style="margin-left:auto;font-weight:400">Can’t be edited</span></div>
+        <div class="secure-note"><span data-icon="shield"></span>Card details are tokenized by our PCI DSS Level 1 processor. Vanstro never stores your full card number or CVV.</div>
+      </div>
+      <dl class="slice__spec">
+        <dt>组成</dt><dd>CardBrandBadge（品牌色不可改）+ 名称 + Badge + 次行 + 操作；expired 行文字 muted、无 Set default；CardNumberInput = Input 分组 + 品牌识别 + Luhn</dd>
+        <dt>源码</dt><dd><code>card-brand-badge.tsx</code> · <code>cardSchema / cardEditSchema</code>（编辑时卡号只读 <code>MaskedCard</code>）</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ============================================================ CHECKOUT -->
+  <h2>3 · Checkout components（components/checkout）</h2>
+  <div class="grid">
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;CheckoutStepper&gt;</code> · <code>&lt;TaxLines&gt;</code> <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="steps" style="margin-bottom:0"><div class="step is-done"><span class="step__n">✓</span> Shipping</div><span class="steps__bar is-done"></span><div class="step is-active"><span class="step__n">2</span> Review</div><span class="steps__bar"></span><div class="step"><span class="step__n">3</span> Payment</div></div>
+        <div class="card" style="padding:14px 18px">
+          <div style="display:grid;gap:8px;font-size:14px">
+            <div class="row row--between"><span class="muted">Subtotal</span><span>$7,092.00</span></div>
+            <div class="row row--between"><span class="muted">Delivery</span><span>Quoted by dealer</span></div>
+            <div class="row row--between" style="background:var(--vs-green-50);margin:0 -6px;padding:2px 6px;border-radius:4px"><span class="muted">GST (5%)</span><span>$367.05</span></div>
+            <div class="row row--between" style="background:var(--vs-green-50);margin:0 -6px;padding:2px 6px;border-radius:4px"><span class="muted">RST (7%)</span><span>$513.87</span></div>
+            <div class="row row--between" style="border-top:1px solid var(--vs-grey-100);padding-top:10px;font-weight:700;font-size:16px"><span>Total</span><span>$8,221.92 <span class="muted small" style="font-weight:400">CAD</span></span></div>
+          </div>
+          <p class="small muted" style="margin-top:8px">Tax calculated for <b>Manitoba</b> (shipping destination)</p>
+        </div>
+        <div class="slice__row"><span class="st">QC · FR</span><span class="small">TPS (5 %) · <b>TVQ (9,975 %)</b> · No TVQ <code>1220000000TQ0001</code></span></div>
+      </div>
+      <dl class="slice__spec">
+        <dt>Stepper</dt><dd>3 步 <code>nav[aria-label] &gt; ol</code>；done 可点回退，upcoming <code>disabled</code>；<code>aria-current="step"</code></dd>
+        <dt>TaxLines</dt><dd><code>dl aria-live=polite</code>，行数与标签来自 <code>lib/tax.ts › quoteTax</code>；省份变化时闪烁 <code>bg-brand-green-50</code> 900ms；QC 切法文标签并加印 QST 号</dd>
+        <dt>源码</dt><dd><code>checkout-stepper.tsx</code> · <code>tax-lines.tsx</code> · 报价 <code>POST /api/checkout/quote</code></dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--6">
+      <div class="slice__tag"><code>&lt;ConsentGroup&gt;</code> required ×2 · optional CASL · QC Law 25 <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body">
+        <div class="alert alert--warning"><span data-icon="warn"></span><div><strong>Loi 25 (Québec).</strong> Vos renseignements sont recueillis pour traiter et livrer cette commande. Responsable : privacy@vanstro.ca.</div></div>
+        <div style="display:grid;gap:10px">
+          <label class="card check" style="padding:12px 14px;align-items:flex-start;border-color:var(--vs-error);background:var(--vs-error-50)"><input type="checkbox"><span class="check__box"><span data-icon="check"></span></span><span class="small" style="line-height:1.5">I agree to the <a href="#">Terms of Sale</a>, including the 30‑day return policy. <span style="color:var(--vs-error)">*</span><br><span style="color:var(--vs-error);font-weight:600">Please accept the Terms of Sale to continue.</span></span></label>
+          <label class="card check" style="padding:12px 14px;align-items:flex-start"><input type="checkbox" checked><span class="check__box"><span data-icon="check"></span></span><span class="small" style="line-height:1.5">I understand how Vanstro uses my information as described in the <a href="#">checkout privacy notice</a> (order processing, delivery, tax invoice kept 6 years for the CRA, Moneris for payment). <span style="color:var(--vs-error)">*</span></span></label>
+          <label class="card check" style="padding:12px 14px;align-items:flex-start;opacity:.6"><input type="checkbox" disabled><span class="check__box"><span data-icon="check"></span></span><span class="small" style="line-height:1.5">Also text me a receipt link · <span class="muted">add a mobile number in step 1</span></span></label>
+          <label class="card check" style="padding:12px 14px;align-items:flex-start"><input type="checkbox"><span class="check__box"><span data-icon="check"></span></span><span class="small" style="line-height:1.5">Email me offers and new products (optional, unsubscribe any time). <span class="muted">Vanstro Global Supply Inc., Winnipeg MB · CASL</span></span></label>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>组成</dt><dd>4 × <code>Checkbox</code> 行卡；必勾 <code>aria-required</code>，错误行 <code>border-brand-red bg-brand-red-50</code> + <code>role=alert</code>；SMS 行无手机号时 disabled；CASL 默认不勾</dd>
+        <dt>校验</dt><dd><code>consentSchema</code>：<code>terms / privacy</code> 为 <code>z.literal(true)</code>；服务端在 <code>POST /api/orders</code> 记录时间戳 + IP</dd>
+        <dt>源码</dt><dd><code>consent-group.tsx</code> · <code>lib/checkout.ts</code></dd>
+      </dl>
+    </div>
+
+    <div class="slice slice--12">
+      <div class="slice__tag"><code>&lt;SavedCardPicker&gt;</code> · <code>&lt;MonerisHostedFields&gt;</code> loading / ready / failed <span class="kind kind--custom">custom</span></div>
+      <div class="slice__body" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start">
+        <div style="display:grid;gap:10px">
+          <div class="card" style="padding:12px 14px;border-color:var(--vs-navy);box-shadow:0 0 0 1px var(--vs-navy)">
+            <div class="row" style="gap:12px"><span class="opt__radio" style="border-color:var(--vs-navy);background:radial-gradient(var(--vs-navy) 45%,#fff 50%)"></span><span class="cbrand cbrand--sm cbrand--visa">VISA</span><span class="small">Visa •••• 4242 <span class="muted">08/29</span></span><span class="chip chip--navy" style="margin-left:auto">Default</span></div>
+            <div class="field" style="margin:10px 0 0 30px;max-width:220px"><label class="field__label">Security code <span class="muted">(3 digits)</span></label><div class="control"><input value="•••" style="font-family:ui-monospace,Menlo,monospace;letter-spacing:.3em"></div><div class="field__hint" style="color:var(--vs-error)">Your bank declined the payment (insufficient funds). No charge was made. Try another card.</div></div>
+          </div>
+          <div class="card" style="padding:12px 14px"><div class="row" style="gap:12px"><span class="opt__radio"></span><span class="cbrand cbrand--sm cbrand--mastercard"></span><span class="small">Mastercard •••• 4444 <span class="muted">10/26</span></span><span class="chip chip--orange" style="margin-left:auto">Expires soon</span></div></div>
+          <div class="card" style="padding:12px 14px;opacity:.6"><div class="row" style="gap:12px"><span class="opt__radio"></span><span class="cbrand cbrand--sm cbrand--amex">AMEX</span><span class="small">Amex •••• 0005 <span class="muted">03/26</span></span><span class="chip chip--error" style="margin-left:auto">Expired</span></div></div>
+          <div class="card" style="padding:12px 14px"><div class="row" style="gap:12px"><span class="opt__radio"></span><span class="cbrand cbrand--sm cbrand--unknown" style="border-style:dashed"><span data-icon="plus"></span></span><span class="small">Pay with a new card<br><span class="muted">Entered securely with Moneris</span></span></div></div>
+        </div>
+        <div style="display:grid;gap:10px">
+          <div class="card" style="padding:0;overflow:hidden">
+            <div class="row" style="gap:8px;padding:10px 14px;background:var(--vs-grey-50);border-bottom:1px solid var(--vs-grey-100);font-size:12px;color:var(--vs-text-2)"><span data-icon="lockKey"></span>Card fields hosted by <b>Moneris</b> · Vanstro never sees your card number</div>
+            <div class="row" style="justify-content:center;gap:8px;height:120px;font-size:14px;color:var(--vs-text-2)"><span class="spinner" style="border-color:var(--vs-grey-100);border-top-color:var(--vs-navy)"></span>Loading secure payment form…</div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <div class="row" style="gap:8px;padding:10px 14px;background:var(--vs-grey-50);border-bottom:1px solid var(--vs-grey-100);font-size:12px;color:var(--vs-text-2)"><span data-icon="lockKey"></span>Card fields hosted by <b>Moneris</b></div>
+            <div style="padding:14px"><div class="alert alert--error"><span data-icon="warn"></span><div>The payment form could not be loaded. Reload payment to try again.</div></div></div>
+          </div>
+          <div class="secure-note"><span data-icon="shield"></span>ready 态由 <code>page_loaded</code> 回调触发后显示 <code>#monerisCheckout</code> iframe；Pay 按钮属于 iframe。见 <code>checkout.html?demo=step3New</code></div>
+        </div>
+      </div>
+      <dl class="slice__spec">
+        <dt>SavedCardPicker</dt><dd><code>RadioGroup</code>；选中卡 <code>border-brand-navy ring-1</code> 并展开内嵌 CVV（<code>CVC_LENGTH[brand]</code>）；expired 行 disabled；拒绝文案内联 <code>role=alert</code>；最后一项 “New card” 切到托管 iframe</dd>
+        <dt>MonerisHostedFields</dt><dd>Hosted Tokenization iframe（<code>HPPtoken/index.php?id=profile&amp;pmmsg=true</code>，qa / prod）；<code>tokenize()</code> → postMessage → <code>{responseCode 001, dataKey}</code>；失败码 940–945 映射到字段错误；加载超时 10 s → failed；<code>reset()</code> 换新 iframe 并拒绝在途 promise</dd>
+        <dt>源码</dt><dd><code>saved-card-picker.tsx</code> · <code>moneris-hosted-fields.tsx</code> · server <code>lib/moneris.ts</code> / <code>lib/payments.ts</code> · 路由 <code>app/api/orders</code> · <code>app/api/checkout/moneris/pay</code></dd>
+      </dl>
+    </div>
+  </div>
+</div>
+<script src="/account/assets/vi.js"></script>
+<script>VS.icons(document);</script>
+</body>
+</html>

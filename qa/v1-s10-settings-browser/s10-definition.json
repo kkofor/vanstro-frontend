@@ -1,0 +1,126 @@
+{
+  "suiteId": "vanstro.s10.privacy-retention.settings.desktop.v1",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "scope": "S10 Privacy/Retention/Audit settings desktop acceptance against the frozen S10 contract (descriptor settings.privacy-retention)",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    {
+      "id": "S10-01",
+      "name": "Login establishes an admin session",
+      "expectation": "login succeeds and the S10 settings panel renders"
+    },
+    {
+      "id": "S10-02",
+      "name": "S10 page is available",
+      "expectation": "/dashboard/settings/privacy-retention renders 隐私、留存与审计设置 with the settings.privacy-retention.v1 descriptor"
+    },
+    {
+      "id": "S10-03",
+      "name": "Fresh fixture shows compiled defaults",
+      "expectation": "effective policy shows retentionMonths 24 with compiled_default projection, no publications, and honestly degraded readiness (cleanup_consumer_unavailable)"
+    },
+    {
+      "id": "S10-04",
+      "name": "Read-only actor sees no write controls",
+      "expectation": "read-only profile renders no 创建草稿 control and no publish capability"
+    },
+    {
+      "id": "S10-05",
+      "name": "Future-unavailable surfaces are disabled",
+      "expectation": "authenticated consent checkbox is disabled and the capability layering banner shows current_fact / future_unavailable"
+    },
+    {
+      "id": "S10-06",
+      "name": "Create a structurally valid draft succeeds",
+      "expectation": "a draft with retentionMonths 36 and consent_events 730 days is accepted and listed"
+    },
+    {
+      "id": "S10-07",
+      "name": "Out-of-range value is rejected with a field error",
+      "expectation": "retentionMonths 5 shows a field error and no draft is created"
+    },
+    {
+      "id": "S10-08",
+      "name": "High-risk auto-cleanup is blocked client-side",
+      "expectation": "orders autoCleanupEnabled is rejected at save time with 禁止启用自动清理 and no draft value change"
+    },
+    {
+      "id": "S10-09",
+      "name": "Legal-hold conflict is blocked client-side",
+      "expectation": "legalHoldEnabled with any auto-cleanup is rejected at save time with 不得启用自动清理 and no draft value change"
+    },
+    {
+      "id": "S10-10",
+      "name": "Validate the valid draft as validated",
+      "expectation": "validate reports 验证通过 with no blockers"
+    },
+    {
+      "id": "S10-11",
+      "name": "Safe diff shows the exact public value change",
+      "expectation": "diff lists consentPolicy.retentionMonths 24 -> 36 with public sensitivity and zero secrets"
+    },
+    {
+      "id": "S10-12",
+      "name": "Publish executes and reports honestly degraded readiness",
+      "expectation": "publish succeeds with a positive generation and the panel states the cleanup consumer is unavailable (never fake-ready)"
+    },
+    {
+      "id": "S10-13",
+      "name": "Published policy is effective; readiness stays degraded",
+      "expectation": "overview shows projectionState published with retentionMonths 36 and readiness remains degraded cleanup_consumer_unavailable even with an exact consumer generation"
+    },
+    {
+      "id": "S10-14",
+      "name": "History is append-only with original publication facts",
+      "expectation": "published entries keep their original auditEventId"
+    },
+    {
+      "id": "S10-15",
+      "name": "Rollback creates a draft and republishes at a higher generation",
+      "expectation": "rollback-draft returns a rollback_draft with rollbackOfPublicationId set; publishing it yields a generation above the superseded one and the restored value"
+    },
+    {
+      "id": "S10-16",
+      "name": "Stale version yields VERSION_CONFLICT",
+      "expectation": "a stale expectedVersion yields a controlled 409 VERSION_CONFLICT"
+    },
+    {
+      "id": "S10-17",
+      "name": "Illegal state yields SETTINGS_STATE_CONFLICT",
+      "expectation": "publishing an unvalidated draft yields a controlled 409 SETTINGS_STATE_CONFLICT"
+    },
+    {
+      "id": "S10-18",
+      "name": "Malformed UUID yields a controlled 400",
+      "expectation": "a non-UUID draft id returns a stable 400, never a 500"
+    },
+    {
+      "id": "S10-19",
+      "name": "Impact preview blocks high-risk auto-cleanup",
+      "expectation": "payments autoCleanupEnabled is blocked with blockedHighRiskFamilies [payments] and the panel shows the blocked notice"
+    },
+    {
+      "id": "S10-20",
+      "name": "Impact preview reports legal-hold conflict",
+      "expectation": "with an active legal hold, consent_events autoCleanupEnabled returns wouldConflictWithLegalHold true and the panel shows the conflict"
+    },
+    {
+      "id": "S10-21",
+      "name": "Impact preview requires a candidate change",
+      "expectation": "no candidate change yields a client-side rejection and an empty candidates request yields a controlled 400"
+    },
+    {
+      "id": "S10-22",
+      "name": "Audit safe snapshot carries real roles and no value fields",
+      "expectation": "mutation Audit rows carry effectiveRoles/grants and metadata only with descriptorKey; no consent/retention/legal-hold value fields"
+    },
+    {
+      "id": "S10-23",
+      "name": "Logout and post-logout state are clean",
+      "expectation": "logout returns to login and no protected settings state remains"
+    }
+  ]
+}

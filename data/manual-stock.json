@@ -1,0 +1,20 @@
+{
+  "_comment": "临时兜底、待 ERP 补录。ERP 有记录时手动值必须让位（见 src/lib/stock.ts resolveStock）。",
+  "skus": {
+    "022421013": { "quantity": 10 },
+    "022721013": { "quantity": 10 },
+    "023021013": { "quantity": 10 },
+    "023021213": { "quantity": 10 },
+    "023021313": { "quantity": 10 },
+    "023021413": { "quantity": 10 },
+    "023021513": { "quantity": 10 },
+    "023621013": { "quantity": 10 },
+    "023621413": { "quantity": 10 },
+    "023621513": { "quantity": 10 },
+    "024221613": { "quantity": 10 },
+    "024821613": { "quantity": 10 },
+    "026621713": { "quantity": 10 },
+    "060101111": { "quantity": 10 },
+    "060102411": { "quantity": 10 }
+  }
+}

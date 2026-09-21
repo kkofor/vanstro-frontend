@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "f1-v15-implementation-authority-clarification v1.0.3 functional-first migration70 model",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["package", "historyLinks", "f0Evidence", "migration70"],
+  "properties": {
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "variant", "status", "parentVersion"],
+      "properties": {
+        "version": { "const": "1.0.3" },
+        "variant": { "const": "functional-first-migration70" },
+        "status": { "const": "FROZEN" },
+        "parentVersion": { "const": "1.0.2" },
+        "decision": { "type": "string", "minLength": 1 }
+      }
+    },
+    "historyLinks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originalV1_0", "v1_0_1", "v1_0_2", "aplusArchive"],
+      "properties": {
+        "originalV1_0": { "type": "string", "minLength": 1 },
+        "v1_0_1": { "type": "string", "minLength": 1 },
+        "v1_0_2": { "type": "string", "minLength": 1 },
+        "aplusArchive": { "type": "string", "minLength": 1 }
+      }
+    },
+    "f0Evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schemaVersion", "runnerPath", "evidenceRoot", "expectedTotal", "prodBaseline"],
+      "properties": {
+        "schemaVersion": { "const": "v11-r1-functional-first-run-1" },
+        "runnerPath": { "type": "string", "minLength": 1 },
+        "evidenceRoot": { "type": "string", "minLength": 1 },
+        "expectedTotal": { "const": 81 },
+        "prodBaseline": { "const": 41 }
+      }
+    },
+    "migration70": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "migrationName",
+        "frozenParentModelSha256",
+        "begin",
+        "timeouts",
+        "isolation",
+        "consume",
+        "configAuditPrecheck",
+        "constraints",
+        "attestationConsumeCheck",
+        "sourceLatest",
+        "resolver",
+        "v3Functions",
+        "grants",
+        "postassert"
+      ],
+      "properties": {
+        "migrationName": { "const": "20260804110000_f1_v15_phase_b" },
+        "frozenParentModelSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "begin": { "const": "BEGIN;" },
+        "timeouts": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^SET LOCAL (lock_timeout|statement_timeout)='[0-9]+[sm]';$" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "isolation": { "const": "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;" },
+        "consume": { "type": "string", "minLength": 1 },
+        "configAuditPrecheck": { "type": "string", "minLength": 1 },
+        "constraints": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "attestationConsumeCheck": { "type": "string", "minLength": 1 },
+        "sourceLatest": { "type": "string", "minLength": 1 },
+        "resolver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["comment", "guardRole", "dropConstraint", "addConstraintTuples", "addConstraint", "insertColumns", "insertRows"],
+          "properties": {
+            "comment": { "type": "array", "items": { "type": "string" }, "minItems": 3, "maxItems": 3 },
+            "guardRole": { "const": "vanstro_p02_guard_owner" },
+            "dropConstraint": { "type": "string", "minLength": 1 },
+            "addConstraintTuples": {
+              "type": "array",
+              "minItems": 10,
+              "maxItems": 10,
+              "items": {
+                "type": "array",
+                "minItems": 6,
+                "maxItems": 6,
+                "items": { "type": "string" }
+              }
+            },
+            "addConstraint": { "type": "string", "minLength": 1 },
+            "insertColumns": { "type": "array", "items": { "type": "string" }, "minItems": 6, "maxItems": 6 },
+            "insertRows": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "array",
+                "minItems": 6,
+                "maxItems": 6,
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "v3Functions": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["identity", "sql"],
+            "properties": {
+              "identity": { "type": "string", "minLength": 1 },
+              "sql": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "grants": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "postassert": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["attestation", "resolverRows", "v3Hardening", "runtimeExecute"],
+          "properties": {
+            "attestation": { "type": "string", "minLength": 1 },
+            "resolverRows": { "type": "string", "minLength": 1 },
+            "v3Hardening": { "type": "string", "minLength": 1 },
+            "runtimeExecute": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,639 @@
+{
+  "schemaVersion": "vanstro.s03.commerce-settings.v1",
+  "status": "IMPLEMENTED_INTEGRATION_CERTIFIED",
+  "package": "S03",
+  "descriptorKey": "settings.commerce",
+  "settingsSchemaVersion": "settings.commerce.v1",
+  "baseline": {
+    "integrationCommit": "0d9e0f7a0337f0166acbf2e4af8dd9d6c66d5b75",
+    "integrationTree": "71159d2a102dad92d96b29183b3f53db1317fcfe",
+    "migrationCount": 77,
+    "latestMigration": "20260807000000_s10_privacy_retention_settings",
+    "noMigration78": true
+  },
+  "authority": {
+    "dependsOn": [
+      "S01",
+      "CG01"
+    ],
+    "externalBaselineDependencies": [
+      "Commerce-current-facts",
+      "Tax-current-facts",
+      "Shipping-current-facts",
+      "Inventory-current-facts",
+      "Orders-current-facts"
+    ],
+    "taskSha256": "13bdb6a3bf760552a0b1a0fc1a16122302c20298dcfd6c44c0eb0fb773ec2a94",
+    "port": "cg01.commerce.v1"
+  },
+  "classification": {
+    "valueType": "object",
+    "secret": false,
+    "scope": "global",
+    "mutable": true,
+    "partialPublish": false
+  },
+  "valueSchema": {
+    "exactTopLevelFamilies": [
+      "commercePolicy",
+      "taxPolicy",
+      "shippingPolicy",
+      "inventoryPolicy",
+      "orderPolicy"
+    ],
+    "unknownFields": "reject",
+    "universalJson": false,
+    "commercePolicy": {
+      "minimumOrderAmountCents": {
+        "type": "nonnegative safe integer CAD cents",
+        "minimum": 0,
+        "maximum": 2147483647,
+        "default": 0
+      },
+      "guestCheckoutEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "checkoutEnabled": {
+        "type": "boolean",
+        "default": true
+      }
+    },
+    "taxPolicy": {
+      "enabledProvinceCodes": {
+        "type": "unique array of Canadian province codes",
+        "min": 0,
+        "max": 13,
+        "default": []
+      },
+      "calculationMode": {
+        "type": "enum",
+        "enum": [
+          "current-tax-rate-table",
+          "disabled"
+        ],
+        "default": "current-tax-rate-table"
+      },
+      "roundingMode": {
+        "type": "enum",
+        "enum": [
+          "nearest-cent"
+        ],
+        "default": "nearest-cent"
+      }
+    },
+    "shippingPolicy": {
+      "pickupEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "deliveryEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "deliveryFlatFeeCents": {
+        "type": "nonnegative safe integer CAD cents",
+        "minimum": 0,
+        "maximum": 2147483647,
+        "default": 1500
+      },
+      "serviceZoneMode": {
+        "type": "enum",
+        "enum": [
+          "dealer-location-only",
+          "postal-prefix"
+        ],
+        "default": "dealer-location-only"
+      },
+      "fallbackMode": {
+        "type": "enum",
+        "enum": [
+          "reject",
+          "pickup-only"
+        ],
+        "default": "reject"
+      }
+    },
+    "inventoryPolicy": {
+      "reservationEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "reservationTtlMinutes": {
+        "type": "bounded positive integer",
+        "minimum": 5,
+        "maximum": 1440,
+        "default": 30
+      },
+      "availabilityMode": {
+        "type": "enum",
+        "enum": [
+          "manual",
+          "erp"
+        ],
+        "default": "manual"
+      },
+      "staleAfterSeconds": {
+        "type": "bounded positive integer",
+        "minimum": 30,
+        "maximum": 86400,
+        "default": 300
+      },
+      "staleBehavior": {
+        "type": "enum",
+        "enum": [
+          "degraded-reject",
+          "manual-fallback"
+        ],
+        "default": "degraded-reject"
+      }
+    },
+    "orderPolicy": {
+      "allowedLifecycleTransitions": {
+        "type": "exact map over paid/processing/fulfilled/cancelled",
+        "allowedSourceStates": [
+          "paid",
+          "processing",
+          "fulfilled",
+          "cancelled"
+        ],
+        "default": {
+          "paid": [
+            "processing",
+            "fulfilled",
+            "cancelled"
+          ],
+          "processing": [
+            "fulfilled",
+            "cancelled"
+          ],
+          "fulfilled": [],
+          "cancelled": []
+        }
+      },
+      "guestLookupEnabled": {
+        "type": "boolean",
+        "default": true
+      },
+      "cancellationMode": {
+        "type": "enum",
+        "enum": [
+          "erp-confirmed-only",
+          "disabled"
+        ],
+        "default": "erp-confirmed-only"
+      }
+    },
+    "domainInstanceBoundary": "Cart/PaymentSession/Order/InventoryReservation/TaxRate/ERP mapping/job/webhook rows are domain instances and are never stored as Settings values"
+  },
+  "consumerStateMatrix": {
+    "note": "implemented_ready only counts as S03 completion evidence (4 consumers: checkout-availability, checkout-guest-minimum, tax-totals, order-transitions); implemented_degraded honest degraded for shipping-fee-service-zone and inventory-ttl-stale (coverage_limited: service-zone/fallback and reservation-TTL policy fields are validated but not consumed by runtime paths); overall readiness stays degraded while any consumer is degraded; future_obligation never counts as implemented and applies only to B02/B04/B05/ERP canonical-ingest consumers outside S03",
+    "consumers": [
+      {
+        "id": "checkout-availability",
+        "ownerPackage": "S03",
+        "entry": "apps/api/src/routes/commerce/index.ts POST /checkout/session",
+        "state": "implemented_ready",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "exact_generation"
+      },
+      {
+        "id": "checkout-guest-minimum",
+        "ownerPackage": "S03",
+        "entry": "checkout/session guest identity and totals pre-checks",
+        "state": "implemented_ready",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "exact_generation"
+      },
+      {
+        "id": "tax-totals",
+        "ownerPackage": "S03",
+        "entry": "computeCheckoutTotals/resolveCombinedTaxRate",
+        "state": "implemented_ready",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "exact_generation"
+      },
+      {
+        "id": "shipping-fee-service-zone",
+        "ownerPackage": "S03",
+        "entry": "pickup/delivery capability + deliveryFlatFeeCents + service-zone/fallback",
+        "state": "implemented_degraded",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "coverage_limited"
+      },
+      {
+        "id": "inventory-ttl-stale",
+        "ownerPackage": "S03",
+        "entry": "inventory availability/reservation TTL and stale checks",
+        "state": "implemented_degraded",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "coverage_limited"
+      },
+      {
+        "id": "order-transitions",
+        "ownerPackage": "S03",
+        "entry": "order status transition validation",
+        "state": "implemented_ready",
+        "generation": "exact",
+        "closurePackage": "S03",
+        "reasonCode": "exact_generation"
+      }
+    ],
+    "neverImplementedConsumers": [
+      "B02 order/inventory full behavior",
+      "B04 order workspace",
+      "B05 payment lifecycle",
+      "ERP canonical ingest push/pull"
+    ]
+  },
+  "lifecycle": "reuse S01 nine-state lifecycle, resource-local draft CAS, descriptor-level monotonic publication sequence, append-only events, publish/Audit/ledger/history atomic, exact idempotency replay/conflict, not-found/version/state conflict separation, rollback as new draft/publication",
+  "draftValidation": {
+    "structure": "exact typed keys; structural and business invalid separated; unknown key reject",
+    "blockers": [
+      "negative or unsafe minimum order/fee",
+      "unknown or duplicate province code",
+      "invalid tax calculation mode",
+      "delivery enabled without legal service-zone/fallback",
+      "illegal order lifecycle transition",
+      "invalid reservation TTL or stale policy",
+      "ERP field ownership conflict",
+      "VanStro-authority field overwritten by ERP rule"
+    ],
+    "warnings": [
+      "ERP inventory stale/unavailable",
+      "Tax/Shipping dependency unavailable",
+      "consumer generation missing/mismatch",
+      "unimplemented ERP canonical ingest consumer"
+    ],
+    "errorFamilies": [
+      "SETTINGS_VALIDATION_FAILED",
+      "SETTINGS_STATE_CONFLICT",
+      "VERSION_CONFLICT",
+      "IDEMPOTENCY_CONFLICT",
+      "COMMERCE_INVALID"
+    ]
+  },
+  "publishAdapter": {
+    "targetSemantics": "activate typed Commerce policy version only; zero business side effects",
+    "atomicBoundary": "publish/Audit/ledger/history atomic; partialPublish=false",
+    "consumerDirection": "existing Commerce paths read published policy; B02/B04/B05 consume later; S03 does not wait on them",
+    "forbiddenSideEffects": [
+      "no cart/order/payment creation or mutation",
+      "no inventory reservation/lock/decrement/release",
+      "no tax settlement/filing/provider call",
+      "no shipment/carrier/Canada Post call",
+      "no ERP sync/job/connector call",
+      "no Product/SKU/Price/Category write",
+      "no payments/finalize invocation"
+    ],
+    "rollback": "new policy draft/publication only; never reverses order/payment/tax/shipment/inventory business effects"
+  },
+  "readinessAdapter": {
+    "sideEffectFree": true,
+    "consumerGenerationMatch": "exact published/consumer generation required for ready",
+    "degradedReasons": [
+      "missing S03 consumer",
+      "ERP stale/unavailable",
+      "tax table unavailable",
+      "shipping/service-zone dependency unavailable",
+      "inventory dependency unavailable",
+      "consumer generation missing/mismatch"
+    ],
+    "neverFakeReady": true
+  },
+  "impactPreview": {
+    "readOnly": true,
+    "forbidden": [
+      "create/modify Cart/Order/Payment",
+      "reservation/lock/decrement/release inventory",
+      "tax settlement/filing/provider call",
+      "shipment/carrier/Canada Post call",
+      "ERP sync/job/connector call",
+      "Product/SKU/Price/Category write",
+      "echo PII, payment material, inventory detail or ERP credentials"
+    ]
+  },
+  "auditDescriptor": {
+    "operationFamily": "settings.publish/rollback (S03)",
+    "resourceFamily": "settings.core / settings.commerce",
+    "requiredPermission": "settings.write (existing global permission; no new permission)",
+    "p02Snapshot": "real P02 occurrence-time context; no caller-supplied roles",
+    "safeMetadata": [
+      "descriptorKey",
+      "policy version/sequence",
+      "changeReason",
+      "safe rule-family identifiers"
+    ],
+    "secretDenylist": [
+      "customer/PII/contact/address",
+      "payment material/provider payload",
+      "order sensitive values/items",
+      "inventory quantities/detail",
+      "ERP credentials/token/full payload",
+      "tax filing data"
+    ],
+    "retention": "inherits P04 Audit retention class"
+  },
+  "routes": {
+    "settingsLifecycle": [
+      [
+        "GET",
+        "/dashboard/settings/s03-overview",
+        "settings.read"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s03-drafts",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s03-drafts",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s03-drafts/:id",
+        "settings.read"
+      ],
+      [
+        "PATCH",
+        "/dashboard/settings/s03-drafts/:id",
+        "settings.write"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s03-drafts/:id/validate",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s03-drafts/:id/diff",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s03-drafts/:id/publish",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s03-history",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s03-history/:publicationId/rollback-draft",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s03-readiness",
+        "settings.read"
+      ]
+    ],
+    "impactPreview": [
+      "POST",
+      "/dashboard/settings/s03-impact-preview",
+      "settings.read"
+    ]
+  },
+  "migration78": {
+    "owner": "Backend/S03",
+    "path": "packages/db/prisma/migrations/20260807100000_s03_commerce_settings/migration.sql",
+    "allowed": [
+      "s03_* independent controlled function family",
+      "settings.commerce independent lock domain",
+      "settings_command_operation_check forward extension (append s03_* five operations)",
+      "settings_core_shape_check forward extension",
+      "runtime_config_registry descriptor allowlist forward extension",
+      "current/effective policy projection",
+      "consumer generation/readiness",
+      "safe GRANT/REVOKE",
+      "trailing post-assertions",
+      "explicit gen_random_uuid() on all INSERTs"
+    ],
+    "forbidden": [
+      "modify migrations 1-77",
+      "CREATE OR REPLACE s01_*/s02_*/s09_*/s10_* functions",
+      "create Product/SKU/Category/Cart/Order/Payment/Inventory/ERP fact tables",
+      "implement S04/S05/S06/S08/B01/F03",
+      "store PII, payment material, ERP secret or business instances",
+      "pre-create ERP API temporary tables/Token/Job"
+    ]
+  },
+  "erpCompatibility": {
+    "authority": {
+      "overlay": {
+        "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-erp-product-api-priority-overlay.md",
+        "sha256": "a8ca3113984b7e4f76b675009b64f8e22c705095873e4b315d6613bc7c7d2f89"
+      },
+      "contractMd": {
+        "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.md",
+        "sha256": "d2dbe952b60d5fa76ef5b50ef742fa859e1ecf8ca87d582370879f8c874ed18d"
+      },
+      "contractJson": {
+        "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-contract.json",
+        "sha256": "3998fdf8c3a4ea4ba738da885ad2ae7a9840fadfb3eab5da16ac0c7c5717cffa"
+      },
+      "manifest": {
+        "path": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/contracts/erp-product-api-v1-compatibility-manifest.json",
+        "sha256": "3ca3b014c44b331b6a2a7e74adfe458fdc445b327988700ebc16babdbeb88581"
+      }
+    },
+    "fieldOwnership": {
+      "erp": [
+        "erpProductId",
+        "erpSkuOrVariantExternalId",
+        "baseProductName",
+        "sourceCategoryCode",
+        "inventory",
+        "cost",
+        "basePrice"
+      ],
+      "vanstro": [
+        "media",
+        "seo",
+        "marketingCopy",
+        "storefrontPublicationStatus",
+        "marketingDiscount"
+      ],
+      "composed": [
+        "sellableStatus"
+      ]
+    },
+    "boundary": "S03 only implements Commerce/domain consumption boundary; full ERP API and real ERP sync are NOT in this task; S06 connector/mapping, S08 machine credentials, B01 catalog, F03 low-risk bulk pipeline",
+    "manifestStateAfterS03": "only S03-stage boundary marked implemented; productContractFrozen must not claim complete ERP product contract",
+    "hardProhibitions": [
+      "no real Payment/ERP/Canada Post/carrier/tax provider calls",
+      "no real external side effects",
+      "no pre-created ERP tables/Token/Job"
+    ]
+  },
+  "sandboxAcceptance": {
+    "definition": "controlled local fixture: cart input -> policy-backed tax/shipping quote -> draft validate/publish -> exact-generation consumer projection; quote/validation of implemented consumers only",
+    "forbidden": [
+      "payments/finalize",
+      "real Payment/Order creation",
+      "real reservation consumption",
+      "ERP/email job enqueue",
+      "any external provider"
+    ]
+  },
+  "sharedFileLeases": {
+    "api-contract.ts": "Integration freeze; S03 serial with prior packages",
+    "runtime validators": "Integration freeze; S03 serial",
+    "Dashboard access": "Integration freeze; read-only",
+    "Settings registry": "Integration freeze; read-only",
+    "Commerce/Tax/Shipping/Inventory/Orders": "S03 exclusive implementation lease",
+    "ERP product API v1": "single Authority in ERP overlay/compatibility contract/manifest; S03 reference-only"
+  },
+  "acceptanceMatrix": {
+    "normal": [
+      "compiled/current projection",
+      "typed draft",
+      "read-only tax/shipping/inventory/order impact preview",
+      "publish activates policy only",
+      "exact generation readiness or honest degraded",
+      "append-only history",
+      "sandbox cart->quote->validate/publish->projection"
+    ],
+    "failure": [
+      "invalid rate/zone/transition/reservation/ownership blocker",
+      "stale ERP/dependency unavailable degraded",
+      "malformed id/version/state/idempotency conflict",
+      "preview zero writes and no sensitive echo",
+      "missing consumer never ready"
+    ],
+    "zeroSideEffect": [
+      "no Cart/Order/Payment creation",
+      "no reservation mutation",
+      "no tax/shipping/ERP/carrier call",
+      "no job enqueue",
+      "no Product/SKU/Price/Category write"
+    ],
+    "browser": [
+      "five policy families editing",
+      "current/default/draft/validation/safe diff/preview/publish",
+      "readiness/degraded",
+      "history/rollback",
+      "error/empty/loading/a11y",
+      "0 unexpected console/request"
+    ]
+  },
+  "scope": {
+    "in": [
+      "Commerce/Tax/Shipping/Inventory/Orders Settings lifecycle",
+      "Migration 78",
+      "policy resolver and minimal existing-consumer wiring",
+      "read-only impact preview",
+      "sandbox Commerce normal path",
+      "desktop Settings page EN/fr static routes"
+    ],
+    "out": [
+      "B02/B04/B05 future business workflows",
+      "full ERP API/real ERP sync",
+      "payments/finalize or real Payment/Order",
+      "real reservation consumption",
+      "ERP/email job enqueue",
+      "S04/S05/S06/S08/B01/F03",
+      "second Product/Token/Catalog/Job/idempotency architecture",
+      "Main/production"
+    ]
+  },
+  "progressBounds": {
+    "functionality": "max +3~4pp from 64%–68% (final 67%–72% max)",
+    "integration": "max 98%–99%",
+    "release": "max +1pp only when a release prerequisite is verifiably closed; otherwise unchanged"
+  },
+  "claims": {
+    "frozen": true,
+    "implemented": true,
+    "integrated": true,
+    "certified": true
+  },
+  "finalIdentity": {
+    "contractFreezeCommit": "670c8ad71ddb0243c66314b1ceb21351dddf3c7e",
+    "backendCommits": [
+      "1990049d0f872d54aee6d212fcf0c7dfc5c7dab4",
+      "0882eb7f59625e326385e888518e0e4aff9223da",
+      "c98a1a1b6f30b05cc6cab2b4797f41f6a67e91d6"
+    ],
+    "frontendCommits": [
+      "ef34b1bc901e546573e5d614478070e931efb0c7",
+      "130e549744fdffb7060406030e92811a9248664c",
+      "fb908940a9d6f6090c49b2686e2e5b1a1841be7f"
+    ],
+    "mergeChain": [
+      {
+        "commit": "ff06d283c73de9b33b1b22f49a1651ea87536414",
+        "parents": [
+          "670c8ad71ddb0243c66314b1ceb21351dddf3c7e",
+          "c98a1a1b6f30b05cc6cab2b4797f41f6a67e91d6"
+        ]
+      },
+      {
+        "commit": "f8f1b1b74db9b2ba0d67a015c72f0fc9a1da5fee",
+        "parents": [
+          "ff06d283c73de9b33b1b22f49a1651ea87536414",
+          "fb908940a9d6f6090c49b2686e2e5b1a1841be7f"
+        ]
+      }
+    ],
+    "migration78": {
+      "path": "packages/db/prisma/migrations/20260807100000_s03_commerce_settings/migration.sql",
+      "migrationCount": 78,
+      "latestMigration": "20260807100000_s03_commerce_settings",
+      "noMigration79": true,
+      "migrations1To77Immutable": true,
+      "authorityBaseline": "87bd80973c1d4ebecd4394cd36ed1bcbdf547f59"
+    },
+    "testedCommit": "f8f1b1b74db9b2ba0d67a015c72f0fc9a1da5fee",
+    "testedTree": "f8e68c6ab58af7c6c957be082ee00830e7e58ae1",
+    "gates": {
+      "typecheck": "4/4 (web, db, api, worker)",
+      "migrationStatic": "15/15 (s02 5 + s03 2 + s09 4 + s10 4)",
+      "contractsStatic": "CG01 19/19 + S03 10/10 = 29/29",
+      "pg16": "313 discovered / 299 pass / 2 fail (baseline-reproduced: password reset 242, cart merge overflow 253) / 12 skip / exit 1",
+      "browser": "S03 15/15, S01B 25/25, S02 23/23, S09 23/23, S10 23/23; zero business/provider/job side effects",
+      "secretPiiPaymentScan": "clean",
+      "protectedDirtyExcluded": "confirmed: next-env.d.ts (M), next.config.mjs (M), tmp-old-gate-test.mjs (untracked), evidence results v1-s01b/v1-s02/v1-s09/v1-s10/v1-ui0-omp-trial acceptance-results.json (M) plus v1-s02-settings-browser/fixture-web.log (M, S02 certification run collateral); none entered commits 7f7a74b/1c32c31 (v1-ui0-omp-trial was dirty before the S03 chain began)"
+    },
+    "browserEvidence": {
+      "suiteId": "vanstro.s03.commerce.settings.desktop.v1",
+      "path": "tasks/evidence/v1-s03-settings-browser/acceptance-results.json",
+      "sha256": "9c96db2c1a250e2c88e988bf9c72243db13f889d2bce1a7f11656e8a07cf0e87",
+      "testedCommit": "f8f1b1b74db9b2ba0d67a015c72f0fc9a1da5fee",
+      "testedTree": "f8e68c6ab58af7c6c957be082ee00830e7e58ae1",
+      "counts": {
+        "pass": 15,
+        "fail": 0,
+        "notExecuted": 0
+      },
+      "fixtureSafety": {
+        "businessWrites": 0,
+        "providerCalls": 0,
+        "jobs": 0
+      }
+    },
+    "v2RegisterItems": [
+      "S03 final certification: integration f8f1b1b (parents ff06d28+fb90894) + follow-up 7f7a74b, migration78 20260807100000_s03_commerce_settings, S03 delta 44 files +2276 -37, PG16 313/299 (2 pre-existing baseline failures 242/253, 12 skip), browser 5 suites clean; S03 progress +3~4pp functionality per frozen roadmap"
+    ],
+    "testedProductCommit": "f8f1b1b74db9b2ba0d67a015c72f0fc9a1da5fee",
+    "testedProductTree": "f8e68c6ab58af7c6c957be082ee00830e7e58ae1",
+    "preClosureHygieneCommits": [
+      "7f7a74b4ead8c27e0071b37765b54e00e57c2f67"
+    ],
+    "priorAuthorityCommits": [
+      "1c32c31c948f464c30b5a6182f066d3e2163ae0c",
+      "c9eae4fd9c703d2615ed0a9dc8a65522a99226c7",
+      "bfcbe8b0740c0eaa8f58126ac13a235e0f385937"
+    ],
+    "authorityCorrectionBasis": "This artifact cannot self-reference the commit that contains it. The authority correction commit is recorded by the correction checkpoint, handoff v11, protection manifest v10 and the -v2 report basis; no follow-up commit is created to write back this artifact's own SHA. Tested product basis stays f8f1b1b/f8e68c6a; current integration head at closure is recorded by the manifest/report, not here."
+  }
+}

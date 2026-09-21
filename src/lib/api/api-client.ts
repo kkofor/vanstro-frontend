@@ -1,18 +1,25 @@
-import {
-  API_ENDPOINTS,
+import { API_ENDPOINTS, PUBLIC_API_ERROR_CODES } from "./api-contract.ts";
+import type {
+  AiSupportChatInput,
+  AiSupportChatResponse,
   ApiResult,
   ArticleDetail,
   ArticleSummary,
   AuthSession,
+  AccountOrder,
   Banner,
   Cart,
   CategorySummary,
-  CartOrderInput,
   CheckoutSession,
   CheckoutSessionInput,
-  Dealer,
+  CommerceOrder,
+  CustomerAccount,
+  CustomerAccountUpdateInput,
+  CustomerAddress,
+  PaymentCallbackInput,
+  PaymentCallbackResult,
+  StorefrontDealerSummary,
   DealerApplicationInput,
-  DirectOrderInput,
   FavoriteItem,
   Locale,
   LoginInput,
@@ -27,12 +34,25 @@ import {
   ProductReviewSubmissionInput,
   ProductSummary,
   ProductUpsertInput,
+  PublicApiErrorCode,
   RegisterInput,
-  WebsiteApiProduct
-} from "./api-contract";
-import {
+  ShippingAddress,
+  WebsiteApiProduct,
+  WebsiteProductCommerce,
+  WebsiteProductInventorySummary,
+  S02CreateDraftRequest,
+  S02Draft,
+  S02HistoryEntry,
+  S02Publication,
+  S02Readiness,
+  S02SafeDiff,
+  S02UpdateDraftRequest,
+  S02ValidationResult,
+  StorefrontConfigProjection
+} from "./api-contract.ts";
+import { DASHBOARD_API_ENDPOINTS } from "./dashboard-contract.ts";
+import type {
   ContactLeadInput,
-  DASHBOARD_API_ENDPOINTS,
   DashboardModuleConfig,
   DashboardModuleKey,
   DashboardModuleReadiness,
@@ -42,53 +62,150 @@ import {
   HomePageModuleInput,
   LegalPageUpsertInput,
   NavigationConfig,
-  PaymentSession,
-  PaymentSessionInput,
   ProductReviewModerationInput,
   SupportHandoffInput
-} from "./dashboard-contract";
+} from "./dashboard-contract.ts";
 import {
   arrayOf,
-  RuntimeValidator,
+  validateAccountOrder,
   validateApiResult,
   validateAuthSession,
   validateCart,
   validateCheckoutSession,
   validateContactLeadResult,
-  validateDealer,
+  validateCustomerAccount,
+  validateCustomerAddress,
+  validateStorefrontDealerSummary,
   validateDealerApplicationResult,
   validateFavoriteItem,
   validateOk,
-  validateWebsiteApiProduct
-} from "./runtime-validation";
-import { canonicalProductIdFor, cartProductIdentityFor } from "./product-identity";
+  validateWebsiteApiProduct,
+  validateS02CreateDraftRequest,
+  validateS02Draft,
+  validateS02HistoryEntry,
+  validateS02Publication,
+  validateS02Readiness,
+  validateS02SafeDiff,
+  validateS02UpdateDraftRequest,
+  validateS02ValidationResult,
+  validateStorefrontConfigProjection
+} from "./runtime-validation.ts";
+import type { RuntimeValidator } from "./runtime-validation.ts";
+import { canonicalProductIdFor, cartProductIdentityFor } from "./product-identity.ts";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "https://api.vanstro.ca/api/v1";
+const DEMO_READ_ONLY = process.env.NEXT_PUBLIC_DEMO_READ_ONLY === "true";
 const CART_TOKEN_KEY = "vanstro-cart-token";
-const ACCESS_TOKEN_KEY = "vanstro-access-token";
+const publicApiErrorCodes = new Set<string>(PUBLIC_API_ERROR_CODES);
+let volatileCartToken: string | undefined;
+
+function resolveApiBaseUrl() {
+  const configuredBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ?? "";
+  if (configuredBaseUrl) return configuredBaseUrl;
+  if (typeof globalThis.window !== "undefined") return `${globalThis.window.location.origin}/api/v1`;
+  return "";
+}
+
+function isPublicApiErrorCode(value: unknown): value is PublicApiErrorCode {
+  return typeof value === "string" && publicApiErrorCodes.has(value);
+}
 
 function browserStorage() {
-  return typeof window === "undefined" ? undefined : window.sessionStorage;
+  if (typeof window === "undefined") return undefined;
+  try {
+    return window.sessionStorage;
+  } catch {
+    return undefined;
+  }
+}
+
+function readCartToken() {
+  try {
+    return browserStorage()?.getItem(CART_TOKEN_KEY) ?? volatileCartToken;
+  } catch {
+    return volatileCartToken;
+  }
+}
+
+function writeCartToken(token: string) {
+  volatileCartToken = token;
+  try {
+    browserStorage()?.setItem(CART_TOKEN_KEY, token);
+  } catch {
+    // Keep the guest cart identity in memory when storage is unavailable.
+  }
+}
+
+function clearCartToken() {
+  volatileCartToken = undefined;
+  try {
+    browserStorage()?.removeItem(CART_TOKEN_KEY);
+  } catch {
+    // The in-memory identity is still retired when storage is unavailable.
+  }
+}
+
+export function dispatchBrowserEvent(name: string) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new window.Event(name));
 }
 
 export class VanstroApiError extends Error {
-  code: string;
+  code: PublicApiErrorCode | "API_ERROR";
   status: number;
-  fields?: Record<string, string>;
 
   constructor(input: {
     message: string;
-    code: string;
+    code: PublicApiErrorCode | "API_ERROR";
     status: number;
-    fields?: Record<string, string>;
   }) {
     super(input.message);
     this.name = "VanstroApiError";
     this.code = input.code;
     this.status = input.status;
-    this.fields = input.fields;
   }
+}
+
+export function parseApiErrorResponse(payload: unknown, status: number) {
+  const errorPayload = payload && typeof payload === "object"
+    ? (payload as { code?: unknown; error?: unknown; fields?: unknown })
+    : undefined;
+  const nestedError = errorPayload?.error && typeof errorPayload.error === "object"
+    ? (errorPayload.error as { code?: unknown; message?: unknown; fields?: unknown })
+    : undefined;
+  const responseCode = errorPayload?.code ?? nestedError?.code;
+  const publicCode = isPublicApiErrorCode(responseCode) && responseCode !== "INTERNAL_ERROR"
+    ? responseCode
+    : undefined;
+
+  if (!publicCode) {
+    return new VanstroApiError({
+      status,
+      code: "API_ERROR",
+      message: `Request failed with status ${status}.`
+    });
+  }
+
+  const message = typeof errorPayload?.error === "string"
+    ? errorPayload.error
+    : typeof nestedError?.message === "string"
+      ? nestedError.message
+      : `Request failed with status ${status}.`;
+  return new VanstroApiError({
+    status,
+    code: publicCode,
+    message
+  });
+}
+
+function cartQuantity(value: number) {
+  if (!Number.isInteger(value) || value < 1 || value > 999) {
+    throw new VanstroApiError({
+      status: 400,
+      code: "COMMERCE_INVALID",
+      message: "quantity must be between 1 and 999."
+    });
+  }
+  return value;
 }
 
 function withQuery(
@@ -108,17 +225,29 @@ async function apiFetch<T>(
   init: RequestInit = {},
   validateData?: RuntimeValidator<T>
 ): Promise<ApiResult<T>> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const method = (init.method ?? "GET").toUpperCase();
+  if (DEMO_READ_ONLY && method !== "GET" && method !== "HEAD") {
+    throw new VanstroApiError({
+      status: 503,
+      code: "API_ERROR",
+      message: "This static demo is read-only."
+    });
+  }
+  const apiBaseUrl = resolveApiBaseUrl();
+  if (!apiBaseUrl) {
+    throw new VanstroApiError({
+      status: 503,
+      code: "API_ERROR",
+      message: "The API base URL is not configured."
+    });
+  }
+  const cartToken = readCartToken();
+  const response = await fetch(`${apiBaseUrl}${path}`, {
     ...init,
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      ...(browserStorage()?.getItem(ACCESS_TOKEN_KEY)
-        ? { Authorization: `Bearer ${browserStorage()?.getItem(ACCESS_TOKEN_KEY)}` }
-        : {}),
-      ...(browserStorage()?.getItem(CART_TOKEN_KEY)
-        ? { "X-Cart-Token": browserStorage()?.getItem(CART_TOKEN_KEY)! }
-        : {}),
+      ...(cartToken ? { "X-Cart-Token": cartToken } : {}),
       ...init.headers
     },
     credentials: "include"
@@ -127,34 +256,19 @@ async function apiFetch<T>(
   const payload = await response.json().catch(() => null);
 
   if (!response.ok) {
-    const errorPayload = payload && typeof payload === "object"
-      ? (payload as { error?: unknown })
-      : undefined;
-    const nestedError = errorPayload?.error && typeof errorPayload.error === "object"
-      ? (errorPayload.error as { code?: unknown; message?: unknown; fields?: unknown })
-      : undefined;
-    throw new VanstroApiError({
-      status: response.status,
-      code: typeof nestedError?.code === "string" ? nestedError.code : "API_ERROR",
-      message:
-        typeof errorPayload?.error === "string"
-          ? errorPayload.error
-          : typeof nestedError?.message === "string"
-            ? nestedError.message
-            : `Request failed with status ${response.status}.`,
-      fields:
-        nestedError?.fields && typeof nestedError.fields === "object"
-          ? (nestedError.fields as Record<string, string>)
-          : undefined
-    });
+    throw parseApiErrorResponse(payload, response.status);
   }
 
   const validated = validateApiResult(
     payload,
     validateData ?? ((value) => value as T)
   );
-  const cartToken = (validated.meta as { cartToken?: unknown } | undefined)?.cartToken;
-  if (typeof cartToken === "string") browserStorage()?.setItem(CART_TOKEN_KEY, cartToken);
+  const responseCartToken = validated.meta?.cartToken;
+  if (responseCartToken) {
+    writeCartToken(responseCartToken);
+  } else if (path === API_ENDPOINTS.cart || path.startsWith(`${API_ENDPOINTS.cart}/`)) {
+    clearCartToken();
+  }
 
   return validated;
 }
@@ -173,11 +287,11 @@ function putJson<T>(path: string, body: unknown) {
   });
 }
 
-function patchJson<T>(path: string, body: unknown) {
+function patchJson<T>(path: string, body: unknown, validateData?: RuntimeValidator<T>) {
   return apiFetch<T>(path, {
     method: "PATCH",
     body: JSON.stringify(body)
-  });
+  }, validateData);
 }
 
 const canonicalProductIds = new Map<string, string>();
@@ -217,6 +331,9 @@ async function resolveCanonicalProductId(
 
 export const vanstroApi = {
   resolveCanonicalProductId,
+  supportAiChat(input: AiSupportChatInput) {
+    return postJson<AiSupportChatResponse>(API_ENDPOINTS.supportAiChat, input);
+  },
   getHomeProducts(input?: { locale?: Locale; limit?: number }) {
     return apiFetch<ProductSummary[]>(
       withQuery(API_ENDPOINTS.homeProducts, input)
@@ -267,24 +384,18 @@ export const vanstroApi = {
     );
   },
   getProductCommerce(input: ProductCommerceQuery) {
-    return postJson<Record<string, ProductCommerce>>(
-      API_ENDPOINTS.productCommerce,
-      input
-    );
+    return postJson<WebsiteProductCommerce[]>(API_ENDPOINTS.productCommerce, input);
   },
   getProductCommerceDetail(
     productId: string,
     input?: Omit<ProductCommerceQuery, "productIds">
   ) {
-    return apiFetch<ProductCommerce>(
+    return apiFetch<WebsiteProductCommerce>(
       withQuery(API_ENDPOINTS.productCommerceDetail(productId), input)
     );
   },
   getProductInventory(input: ProductInventoryQuery) {
-    return postJson<Record<string, ProductInventory>>(
-      API_ENDPOINTS.productInventory,
-      input
-    );
+    return postJson<WebsiteProductInventorySummary[]>(API_ENDPOINTS.productInventory, input);
   },
   getProductInventoryDetail(
     productId: string,
@@ -295,26 +406,27 @@ export const vanstroApi = {
     );
   },
   reserveInventory(input: InventoryReservationInput) {
-    return postJson<{ reservationId: string; expiresAt: string }>(
+    return postJson<{ reservationId: string; reservationToken: string; expiresAt: string }>(
       API_ENDPOINTS.inventoryReservations,
       input
     );
   },
-  async addCartProduct(product: ProductSummary, quantity: number) {
+  async addCartProduct(product: ProductSummary, quantity: number, dealerLocationId?: string) {
     return postJson<Cart>(
       API_ENDPOINTS.cartItems,
-      { ...cartProductIdentityFor(product), quantity },
+      { ...cartProductIdentityFor(product), quantity: cartQuantity(quantity), ...(dealerLocationId ? { dealerLocationId } : {}) },
       validateCart
     );
-  },
-  addCartItem(input: { productId: string; quantity: number }) {
-    return postJson<Cart>(API_ENDPOINTS.cartItems, input, validateCart);
   },
   getCart() {
     return apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
   },
-  createCheckoutSession(input: CheckoutSessionInput) {
-    return postJson<CheckoutSession>(API_ENDPOINTS.checkoutSession, input, validateCheckoutSession);
+  createCheckoutSession(input: CheckoutSessionInput, idempotencyKey: string) {
+    return apiFetch<CheckoutSession>(API_ENDPOINTS.checkoutSession, {
+      method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
+      body: JSON.stringify(input)
+    }, validateCheckoutSession);
   },
   getPaymentSession(sessionId: string, token: string) {
     return apiFetch<CheckoutSession>(
@@ -323,27 +435,59 @@ export const vanstroApi = {
       validateCheckoutSession
     );
   },
+  addressAutocomplete(query: string) {
+    return apiFetch<{ suggestions: Array<{ id: string; label: string }> }>(
+      withQuery(API_ENDPOINTS.addressAutocomplete, { query })
+    );
+  },
+  addressRetrieve(id: string) {
+    return apiFetch<{ address: ShippingAddress }>(
+      withQuery(API_ENDPOINTS.addressAutocomplete, { id })
+    );
+  },
+  simulatePayment(sessionId: string) {
+    return postJson<{ sessionId: string; providerPaymentId: string; signature: string }>(
+      API_ENDPOINTS.paymentSimulate,
+      { sessionId }
+    );
+  },
+  confirmPayment(input: PaymentCallbackInput, options?: { signature?: string }) {
+    return apiFetch<PaymentCallbackResult>(
+      API_ENDPOINTS.paymentCallback,
+      {
+        method: "POST",
+        body: JSON.stringify(input),
+        headers: options?.signature ? { "X-Payment-Signature": options.signature } : undefined
+      },
+      (value) => value as PaymentCallbackResult
+    );
+  },
+  getOrder(orderId: string, token?: string) {
+    return apiFetch<CommerceOrder>(
+      withQuery(API_ENDPOINTS.order(encodeURIComponent(orderId)), token ? { token } : undefined),
+      {},
+      (value) => value as CommerceOrder
+    );
+  },
+  getOrderStatus(orderId: string, token?: string) {
+    return apiFetch<{ id: string; status: string; createdAt: string }>(
+      withQuery(API_ENDPOINTS.orderStatus(encodeURIComponent(orderId)), token ? { token } : undefined)
+    );
+  },
   removeCartItem(cartItemId: string) {
     return apiFetch<Cart>(API_ENDPOINTS.cartItem(cartItemId), {
       method: "DELETE"
-    });
+    }, validateCart);
   },
   clearCart() {
     return apiFetch<{ ok: true }>(API_ENDPOINTS.cart, { method: "DELETE" }, validateOk);
   },
-  async setCartProductQuantity(productId: string, quantity: number) {
-    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
-    const item = cart.data.items.find((candidate) => candidate.product.id === productId);
-    if (!item) throw new VanstroApiError({ status: 404, code: "CART_ITEM_NOT_FOUND", message: "Cart item not found." });
-    return patchJson<Cart>(API_ENDPOINTS.cartItem(item.id), { quantity }).then((result) =>
-      validateApiResult(result, validateCart)
+  setCartItemQuantity(cartItemId: string, quantity: number) {
+    return patchJson<Cart>(
+      API_ENDPOINTS.cartItem(cartItemId),
+      { quantity: cartQuantity(quantity) },
+      validateCart
     );
-  },
-  async removeCartProduct(productId: string) {
-    const cart = await apiFetch<Cart>(API_ENDPOINTS.cart, {}, validateCart);
-    const item = cart.data.items.find((candidate) => candidate.product.id === productId);
-    if (!item) return cart;
-    return apiFetch<Cart>(API_ENDPOINTS.cartItem(item.id), { method: "DELETE" }, validateCart);
   },
   async addFavoriteProduct(product: ProductSummary) {
     const productId = await resolveCanonicalProductId(product);
@@ -373,27 +517,73 @@ export const vanstroApi = {
     return { productId };
   },
   getDealers(input?: { province?: string; postalCode?: string }) {
-    return apiFetch<Dealer[]>(withQuery(API_ENDPOINTS.dealers, input), {}, arrayOf(validateDealer));
-  },
-  createDirectOrder(input: DirectOrderInput) {
-    return postJson<Order>(API_ENDPOINTS.directOrder, input);
-  },
-  createCartOrder(input: CartOrderInput) {
-    return postJson<Order>(API_ENDPOINTS.cartOrder, input);
+    return apiFetch<StorefrontDealerSummary[]>(
+      withQuery(API_ENDPOINTS.dealers, input),
+      {},
+      arrayOf(validateStorefrontDealerSummary)
+    );
   },
   login(input: LoginInput) {
     return postJson<AuthSession>(API_ENDPOINTS.login, input, validateAuthSession).then((result) => {
-      if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
-      window.dispatchEvent(new Event("vanstro-authenticated"));
+      dispatchBrowserEvent("vanstro-authenticated");
       return result;
     });
   },
   register(input: RegisterInput) {
     return postJson<AuthSession>(API_ENDPOINTS.register, input, validateAuthSession).then((result) => {
-      if (result.data.accessToken) browserStorage()?.setItem(ACCESS_TOKEN_KEY, result.data.accessToken);
-      window.dispatchEvent(new Event("vanstro-authenticated"));
+      dispatchBrowserEvent("vanstro-authenticated");
       return result;
     });
+  },
+  forgotPassword(email: string, locale: "en-CA" | "fr-CA") {
+    return postJson<{ ok: true; message: string }>(API_ENDPOINTS.forgotPassword, { email, locale });
+  },
+  resetPassword(token: string, password: string) {
+    return postJson<{ ok: true }>(API_ENDPOINTS.resetPassword, { token, password }, validateOk);
+  },
+  getCurrentSession() {
+    return apiFetch<AuthSession>(API_ENDPOINTS.currentSession, {}, validateAuthSession);
+  },
+  getAccountMe() {
+    return apiFetch<CustomerAccount>(API_ENDPOINTS.accountMe, {}, validateCustomerAccount);
+  },
+  updateAccountMe(input: CustomerAccountUpdateInput) {
+    return apiFetch<CustomerAccount>(API_ENDPOINTS.accountMe, {
+      method: "PATCH",
+      body: JSON.stringify(input)
+    }, validateCustomerAccount);
+  },
+  getAccountAddresses() {
+    return apiFetch<CustomerAddress[]>(API_ENDPOINTS.accountAddresses, {}, arrayOf(validateCustomerAddress));
+  },
+  createAccountAddress(input: Omit<CustomerAddress, "id">) {
+    return postJson<CustomerAddress>(API_ENDPOINTS.accountAddresses, input, validateCustomerAddress);
+  },
+  updateAccountAddress(addressId: string, input: Partial<Omit<CustomerAddress, "id">>) {
+    return apiFetch<CustomerAddress>(API_ENDPOINTS.accountAddress(addressId), {
+      method: "PATCH",
+      body: JSON.stringify(input)
+    }, validateCustomerAddress);
+  },
+  deleteAccountAddress(addressId: string) {
+    return apiFetch<{ ok: true }>(API_ENDPOINTS.accountAddress(addressId), { method: "DELETE" }, validateOk);
+  },
+  getAccountOrders(query?: { page?: number; pageSize?: number }) {
+    return apiFetch<AccountOrder[]>(
+      withQuery(API_ENDPOINTS.accountOrders, query),
+      {},
+      arrayOf(validateAccountOrder)
+    );
+  },
+  getAccountOrder(orderId: string) {
+    return apiFetch<AccountOrder>(API_ENDPOINTS.accountOrder(orderId), {}, validateAccountOrder);
+  },
+  async logout() {
+    try {
+      return await postJson<{ ok: true }>(API_ENDPOINTS.logout, {});
+    } finally {
+      dispatchBrowserEvent("vanstro-logged-out");
+    }
   },
   submitDealerApplication(input: DealerApplicationInput) {
     return postJson<{ applicationId: string; status: "submitted" | "under_review" }>(
@@ -408,6 +598,19 @@ export const vanstroApi = {
     preferences: { strictlyNecessary: true; functional: boolean; analytics: boolean; targeting: boolean };
   }) {
     return postJson<{ id: string; createdAt: string }>("/privacy/consent-events", input);
+  },
+  trackPageView(input: {
+    path: string;
+    sessionId: string;
+    consentAnalytics: true;
+    consentAnonymousId: string;
+    referrer?: string;
+    locale?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
+  }) {
+    return postJson<{ id: string; createdAt: string }>(API_ENDPOINTS.analyticsPageviews, input);
   },
   getDashboardModuleReadiness() {
     return apiFetch<DashboardModuleReadiness[]>(DASHBOARD_API_ENDPOINTS.moduleReadiness);
@@ -447,16 +650,13 @@ export const vanstroApi = {
     );
   },
   requestSupportHandoff(input: SupportHandoffInput) {
-    return postJson<{ handoffId: string; status: "queued" | "assigned" }>(
+    return postJson<{ id: string; status: string }>(
       DASHBOARD_API_ENDPOINTS.supportHandoffs,
       input
     );
   },
-  createPaymentSession(input: PaymentSessionInput) {
-    return postJson<PaymentSession>(DASHBOARD_API_ENDPOINTS.paymentSessions, input);
-  },
   assignOrderDealer(orderId: string, input: DealerAssignmentInput) {
-    return putJson<Order>(
+    return postJson<Order>(
       DASHBOARD_API_ENDPOINTS.dealerAssignment(orderId),
       input
     );
@@ -465,6 +665,47 @@ export const vanstroApi = {
     return patchJson<{ id: string; status: "pending" | "published" | "rejected" | "archived" }>(
       DASHBOARD_API_ENDPOINTS.reviewModeration(reviewId),
       input
+    );
+  },
+  getStorefrontConfig(locale: "en-CA" | "fr-CA") {
+    return apiFetch<StorefrontConfigProjection>(
+      withQuery(API_ENDPOINTS.storefrontConfig, { locale }),
+      {},
+      validateStorefrontConfigProjection
+    );
+  },
+  createS02SettingsDraft(input: S02CreateDraftRequest) {
+    return postJson<S02Draft>(API_ENDPOINTS.dashboardS02SettingsDrafts, input, validateS02Draft);
+  },
+  getS02SettingsDrafts() {
+    return apiFetch<S02Draft[]>(API_ENDPOINTS.dashboardS02SettingsDrafts, {}, arrayOf(validateS02Draft));
+  },
+  getS02SettingsDraft(draftId: string) {
+    return apiFetch<S02Draft>(API_ENDPOINTS.dashboardS02SettingsDraft(draftId), {}, validateS02Draft);
+  },
+  updateS02SettingsDraft(draftId: string, input: S02UpdateDraftRequest) {
+    return patchJson<S02Draft>(API_ENDPOINTS.dashboardS02SettingsDraft(draftId), input, validateS02Draft);
+  },
+  validateS02SettingsDraft(draftId: string, input: { expectedVersion: number; idempotencyKey: string }) {
+    return postJson<S02ValidationResult>(API_ENDPOINTS.dashboardS02SettingsDraftValidate(draftId), input, validateS02ValidationResult);
+  },
+  getS02SettingsDraftDiff(draftId: string) {
+    return apiFetch<S02SafeDiff>(API_ENDPOINTS.dashboardS02SettingsDraftDiff(draftId), {}, validateS02SafeDiff);
+  },
+  publishS02SettingsDraft(draftId: string, input: { expectedVersion: number; idempotencyKey: string }) {
+    return postJson<S02Publication>(API_ENDPOINTS.dashboardS02SettingsDraftPublish(draftId), input, validateS02Publication);
+  },
+  getS02SettingsHistory() {
+    return apiFetch<S02HistoryEntry[]>(API_ENDPOINTS.dashboardS02SettingsHistory, {}, arrayOf(validateS02HistoryEntry));
+  },
+  createS02SettingsRollbackDraft(publicationId: string, input: { expectedPublishedVersion: number; changeReason: string; idempotencyKey: string }) {
+    return postJson<S02Draft>(API_ENDPOINTS.dashboardS02SettingsRollbackDraft(publicationId), input, validateS02Draft);
+  },
+  getS02SettingsReadiness(consumerGeneration?: number) {
+    return apiFetch<S02Readiness>(
+      withQuery(API_ENDPOINTS.dashboardS02SettingsReadiness, consumerGeneration === undefined ? {} : { consumerGeneration }),
+      {},
+      validateS02Readiness
     );
   }
 };

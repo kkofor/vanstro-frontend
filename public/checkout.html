@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secure checkout · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<link rel="stylesheet" href="/account/assets/storefront-chrome.css">
+<style>
+  .site { background: var(--vs-bg-page); min-height: 100vh; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 24px 80px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; column-gap: 32px; row-gap: 14px; align-items: start; }
+  .co__main { display: grid; gap: 14px; min-width: 0; }
+  /* the storefront header is sticky too (site-header.js publishes --header-h); keep the summary below it */
+  .co__side { position: sticky; top: calc(var(--header-h, 128px) + 20px); display: grid; gap: 12px; align-self: start; }
+  .field, .card { scroll-margin-top: calc(var(--header-h, 128px) + 16px); }
+  .co__main .card, .co__side .card { border-radius: 12px; }
+  .co__main .card__head { padding: 18px 22px 0; }
+  .co__main .card__body { padding: 14px 22px 20px; }
+  .co__main .card__foot { padding: 14px 22px; }
+  .co__main .field { margin-bottom: 12px; }
+  .co__main .control { border-color: var(--vs-border-strong); }
+  .co__side .card__head { padding: 16px 18px 0; }
+  .co__side .card__body { padding: 14px 18px 16px; }
+
+  /* ---- Stepper ---- */
+  .steps, .page-title { grid-column: 1 / -1; }
+  /* #payAlert is a live-injected error/notice slot; when empty (the normal case since the
+     tech-strip debug line was removed) it must not reserve a grid row/gap, or the left
+     column's first card starts lower than the right column's Order summary card. */
+  #payAlert:empty { display: none; }
+  .steps { display: flex; align-items: center; gap: 12px; margin: 0; }
+  .steps .step { font-size: 13.5px; font-weight: 700; letter-spacing: .01em; color: var(--vs-text-3); }
+  .steps .step button { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; padding: 4px 10px 4px 4px; border-radius: 999px; transition: background .12s, color .12s; }
+  .steps .step button:disabled { cursor: default; }
+  .steps .step button:not(:disabled):hover { background: var(--vs-navy-50); color: var(--vs-navy); }
+  .steps .step button:focus-visible { box-shadow: var(--vs-focus); }
+  .steps .step__n { width: 28px; height: 28px; border: 1.5px solid var(--vs-grey-300); background: #fff; color: var(--vs-text-3); font-size: 12.5px; font-weight: 700; transition: background .15s, border-color .15s, box-shadow .15s; }
+  .steps .step.is-active { color: var(--vs-navy); }
+  .steps .step.is-active .step__n { background: var(--vs-navy); border-color: var(--vs-navy); color: #fff; box-shadow: 0 0 0 4px var(--vs-navy-50); }
+  .steps .step.is-done { color: var(--vs-text-2); }
+  .steps .step.is-done .step__n { background: var(--vs-green); border-color: var(--vs-green); color: transparent; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 14px; }
+  .steps .steps__bar { flex: 1; height: 2px; border-radius: 2px; background: var(--vs-grey-200); transition: background .2s; }
+  .steps .steps__bar.is-done { background: var(--vs-green); }
+
+  .section { display: none; }
+  .section.is-active { display: grid; gap: 16px; }
+  .page-title { display: grid; gap: 4px; padding: 0 2px 2px; }
+  .page-title h2 { font-size: 26px; line-height: 1.15; letter-spacing: -0.01em; }
+  .page-title p { color: var(--vs-text-3); font-size: 14px; }
+  .card__head h3 { font-size: 17px; letter-spacing: -0.005em; }
+  .card__head .sub { color: var(--vs-text-3); font-size: 13px; margin-top: 3px; }
+  .card__foot--split { justify-content: space-between; }
+  .brands { display: inline-flex; gap: 2px; }
+  .brands .cbrand { transform: scale(.78); margin: -4px -5px; }
+
+  /* option rows (saved addresses, delivery, payment methods) — do not use .opt; that is the field-label hint in vi.css */
+  .pick-list { display: grid; gap: 8px; }
+  .pick { position: relative; display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--vs-grey-200); border-radius: 10px; background: #fff; cursor: pointer; transition: border-color .12s, background .12s; }
+  .pick:hover { background: var(--vs-grey-100); border-color: var(--vs-grey-200); }
+  .pick > input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pick__radio { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--vs-border-strong); flex: none; margin-top: 3px; position: relative; background: #fff; }
+  .pick > input:checked ~ .pick__radio { border-color: var(--vs-navy); }
+  .pick > input:checked ~ .pick__radio::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--vs-navy); }
+  .pick > input:focus-visible ~ .pick__radio { box-shadow: var(--vs-focus); }
+  .pick.is-on { border-color: var(--vs-navy); background: var(--vs-navy-50); }
+  .pick.is-on:hover { background: var(--vs-navy-50); }
+  .pick.is-disabled { opacity: .55; cursor: not-allowed; }
+  .pick > input:disabled { cursor: not-allowed; }
+  .pick__body { flex: 1; min-width: 0; font-size: 14px; }
+  .pick__body strong { font-size: 15px; }
+  .pick__body .muted { display: block; margin-top: 2px; }
+  .pick__body address { font-style: normal; color: var(--vs-text-2); line-height: 1.5; margin-top: 4px; }
+  .pick__price { font-weight: 700; color: var(--vs-navy); white-space: nowrap; }
+  .pick__price.free { color: var(--vs-green); }
+  .pick .chip { vertical-align: 2px; margin-left: 6px; }
+  .pick__more { grid-column: 1 / -1; border: 1px solid var(--vs-grey-200); border-radius: 10px; background: #fff; }
+  .pick__more > summary { cursor: pointer; list-style: none; padding: 12px 14px; font-size: 14px; font-weight: 700; color: var(--vs-navy); display: flex; align-items: center; gap: 8px; }
+  .pick__more > summary::-webkit-details-marker, .pick__more > summary::marker { display: none; content: none; }
+  .pick__more > summary:focus-visible { box-shadow: var(--vs-focus); border-radius: 10px; }
+  .pick__more > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); margin-left: auto; }
+  .pick__more[open] > summary { border-bottom: 1px solid var(--vs-grey-100); }
+  .pick__more[open] > summary::after { transform: rotate(225deg); margin-top: 4px; }
+  .pick-more-list { display: grid; gap: 8px; padding: 8px; }
+  .dealer-group { margin: 14px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--vs-text-3); }
+  .dealer-group:first-child { margin-top: 0; }
+
+  .cbrand { width: 48px; height: 32px; border-radius: 6px; border: 1px solid var(--vs-grey-100); background: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; letter-spacing: .02em; flex: none; position: relative; }
+  .cbrand--visa { color: #1a1f71; font-style: italic; font-size: 13px; }
+  .cbrand--mastercard::before, .cbrand--mastercard::after { content: ""; width: 16px; height: 16px; border-radius: 50%; position: absolute; top: 7px; }
+  .cbrand--mastercard::before { background: #eb001b; left: 11px; }
+  .cbrand--mastercard::after { background: #f79e1b; left: 21px; mix-blend-mode: multiply; }
+  .cbrand--amex { background: #016fd0; color: #fff; border-color: #016fd0; font-size: 9px; }
+  .cbrand--new { color: var(--vs-navy); }
+  .cbrand--new svg { width: 20px; height: 20px; }
+
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 14px; }
+  .grid-3 > .field, .grid-2 > .field { min-width: 0; }
+  .grid-3 .control input, .grid-3 .control select, .grid-2 .control input, .grid-2 .control select { min-width: 0; width: 100%; }
+  .flag { width: 22px; height: 15px; border-radius: 2px; background: linear-gradient(90deg, #d52b1e 25%, #fff 25%, #fff 75%, #d52b1e 75%); position: relative; flex: none; }
+  .flag::after { content: "🍁"; position: absolute; inset: 0; font-size: 10px; line-height: 15px; text-align: center; }
+  .hint-row { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--vs-text-3); }
+  .hint-row svg { width: 14px; height: 14px; flex: none; color: var(--vs-navy); }
+
+  /* ---- Order summary ---- */
+  .sum__items { display: grid; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--vs-grey-100); }
+  .item { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; font-size: 14px; }
+  .item__img { width: 56px; height: 56px; border-radius: var(--vs-r-md); background: linear-gradient(135deg, var(--vs-navy-50), var(--vs-grey-100)); border: 1px solid var(--vs-grey-100); display: flex; align-items: center; justify-content: center; color: var(--vs-navy); position: relative; }
+  .item__img svg { width: 24px; height: 24px; }
+  .item__qty { position: absolute; top: -7px; right: -7px; min-width: 20px; height: 20px; border-radius: 10px; background: var(--vs-navy); color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; padding: 0 5px; }
+  .item__meta strong { display: block; font-size: 14px; line-height: 1.3; }
+  .item__meta .muted { font-size: 12px; }
+  .item__price { font-weight: 600; white-space: nowrap; }
+  .sum__lines { display: grid; gap: 8px; padding: 14px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; }
+  .line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .line .k { color: var(--vs-text-2); display: flex; align-items: center; gap: 6px; }
+  .line .k .tip { width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--vs-border-strong); font-size: 10px; display: inline-flex; align-items: center; justify-content: center; color: var(--vs-text-3); cursor: help; }
+  .line .v { font-variant-numeric: tabular-nums; }
+  .line.sub { font-size: 12px; color: var(--vs-text-3); margin-top: -4px; padding-left: 14px; }
+  .sum__total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; }
+  .sum__total .k { font-weight: 700; font-size: 15px; }
+  .sum__total .v { font-weight: 700; font-size: 22px; color: var(--vs-navy); font-variant-numeric: tabular-nums; }
+  .sum__total .cur { font-size: 12px; font-weight: 700; color: var(--vs-text-3); margin-left: 4px; }
+  .tax-note { font-size: 12px; color: var(--vs-text-3); line-height: 1.5; }
+  .tax-note b { color: var(--vs-text-2); }
+
+  /* ---- Security & privacy panel ---- */
+  .trust { padding: 14px 16px; display: grid; gap: 8px; background: var(--vs-navy-50); color: var(--vs-text); border-radius: 10px; }
+  .trust h4 { font-size: 13px; display: flex; align-items: center; gap: 6px; }
+  .trust h4 svg { width: 16px; height: 16px; color: var(--vs-navy); }
+  .trust p { font-size: 13px; color: var(--vs-text-2); line-height: 1.45; }
+  .trust ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; color: var(--vs-text-2); }
+  .trust li { display: flex; gap: 6px; align-items: flex-start; }
+  .trust li svg { width: 13px; height: 13px; color: var(--vs-navy); flex: none; margin-top: 2px; }
+  .trust a, .trust .link-btn { color: var(--vs-navy); font-weight: 700; font-size: 12px; padding: 0; }
+  .trust__foot { display: flex; gap: 6px; flex-wrap: wrap; }
+  .trust__badge { font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 3px 7px; border-radius: 4px; background: #fff; color: var(--vs-text-2); }
+
+  /* ---- Moneris hosted frame stand-in ---- */
+  /* Card box: our own bordered control that hosts the Moneris Hosted Tokenization iframe (or the
+     mock inputs). The iframe is 44px tall and holds number · MM/YY · CVV in one row; the inputs are
+     styled via query-string CSS in assets/moneris-client.js to match .control input. */
+  .card-box { position: relative; display: flex; align-items: center; height: var(--vs-control-h); border: 1px solid var(--vs-border); border-radius: var(--vs-r-md); background: #fff; transition: border-color .15s, box-shadow .15s; }
+  .card-box:hover { border-color: var(--vs-border-strong); }
+  .card-box:focus-within, .card-box.is-focus { border-color: var(--vs-navy); box-shadow: var(--vs-focus); }
+  .field.is-error .card-box { border-color: var(--vs-error); }
+  .field.is-error .card-box:focus-within, .field.is-error .card-box.is-focus { box-shadow: var(--vs-focus-error); }
+  .card-box.is-busy { opacity: .6; pointer-events: none; }
+  .card-box__frame { flex: 1; min-width: 0; height: 44px; }
+  .card-box__frame:empty { background: linear-gradient(90deg, var(--vs-grey-50), #fff, var(--vs-grey-50)); border-radius: var(--vs-r-md); }
+  .card-row { display: flex; height: 44px; }
+  .card-row input { border: 0; outline: 0; background: transparent; height: 100%; min-width: 0; font: inherit; font-size: 15px; color: var(--vs-text); padding: 0 14px; }
+  .card-row input:nth-child(1) { flex: 0 0 52%; }
+  .card-row input:nth-child(2) { flex: 0 0 26%; padding-left: 8px; }
+  .card-row input:nth-child(3) { flex: 0 0 22%; padding-left: 8px; }
+  .card-row input::placeholder { color: var(--vs-grey); }
+  .card-box__brands { display: flex; gap: 4px; padding-right: 10px; }
+  .card-box__brands i { font-style: normal; font-size: 9px; font-weight: 800; letter-spacing: .02em; border: 1px solid var(--vs-grey-200); border-radius: 3px; padding: 1px 5px; color: var(--vs-text-3); transition: color .15s, border-color .15s, opacity .15s; }
+  .card-box__brands.has-brand i { opacity: .35; }
+  .card-box__brands i.is-on { opacity: 1; border-color: var(--vs-navy); color: var(--vs-navy); }
+  .card-secure { display: inline-flex; align-items: center; gap: 4px; font-weight: 400; color: var(--vs-text-3); font-size: 12px; }
+  .card-secure svg { width: 12px; height: 12px; }
+  .frame-note { font-size: 12px; color: var(--vs-text-3); margin-top: 8px; line-height: 1.45; }
+
+  /* ---- Digital wallets (Apple / Google brand buttons: black, 48px, r8 — not recoloured) ---- */
+  .wallets { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wallet-btn { height: 48px; border-radius: 8px; border: 0; background: #000; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, var(--vs-font); font-size: 19px; font-weight: 500; letter-spacing: -0.01em; transition: background .15s, transform .05s; }
+  .wallet-btn:hover { background: #1d1d1f; }
+  .wallet-btn:active { transform: translateY(1px); }
+  .wallet-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--vs-navy); }
+  .wallet-btn svg { display: block; height: 20px; width: auto; }
+  .wallet-btn--apple svg { height: 21px; margin-top: -2px; }
+  .wallet-btn--google svg { height: 22px; margin-right: 1px; }
+  .wallets__note { margin-top: 10px; text-align: center; font-size: 12.5px; color: var(--vs-text-3); }
+  .or-split { display: flex; align-items: center; gap: 12px; margin: 18px 0 14px; color: var(--vs-text-3); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+  .or-split::before, .or-split::after { content: ""; flex: 1; height: 1px; background: var(--vs-grey-200); }
+
+  /* Wallet payment sheet (simulated OS sheet) */
+  #walletModal { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .wallet-sheet { width: 100%; max-width: 400px; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 70px -20px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.06); color: #111; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, var(--vs-font); animation: vs-sheet-in .22s cubic-bezier(.2,.8,.2,1); }
+  @keyframes vs-sheet-in { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+  .wallet-sheet__bar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 14px 16px 12px; }
+  .wallet-sheet__bar button { grid-column: 3; justify-self: end; border: 0; background: transparent; cursor: pointer; font: inherit; font-size: 15px; color: #0a84ff; padding: 4px 2px; }
+  .wallet-sheet__logo { grid-column: 2; display: inline-flex; align-items: center; gap: 3px; font-size: 19px; font-weight: 500; letter-spacing: -0.02em; }
+  .wallet-sheet__logo svg { display: block; height: 21px; width: auto; }
+  .wallet-sheet__logo .g { display: none; }
+  .wallet-sheet--google .wallet-sheet__logo .g { display: block; }
+  .wallet-sheet--google .wallet-sheet__logo .a { display: none; }
+  .wallet-sheet__body { padding: 4px 16px 16px; }
+  .wallet-sheet__list { border-radius: 12px; background: #f2f2f7; overflow: hidden; }
+  .wallet-sheet--google .wallet-sheet__list { background: #fff; border: 1px solid #dadce0; }
+  .wallet-sheet__row { display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 12px; padding: 11px 14px; font-size: 14px; border-top: 1px solid rgba(60,60,67,.14); }
+  .wallet-sheet__row:first-child { border-top: 0; }
+  .wallet-sheet__row > span { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #6e6e73; }
+  .wallet-sheet__row > b { font-weight: 500; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .wallet-sheet__row > b small { color: #6e6e73; font-weight: 400; font-size: 13px; }
+  .wallet-sheet__row > i { color: #c7c7cc; font-style: normal; font-size: 18px; line-height: 1; }
+  .wallet-sheet__cardart { width: 36px; height: 24px; border-radius: 4px; flex: none; background: linear-gradient(135deg, #1a1f71 0%, #3b5bdb 100%); position: relative; }
+  .wallet-sheet__cardart::after { content: ""; position: absolute; left: 5px; bottom: 5px; width: 9px; height: 7px; border-radius: 2px; background: rgba(255,255,255,.55); }
+  .wallet-sheet--google .wallet-sheet__cardart { background: linear-gradient(135deg, #e0492c 0%, #f79e1b 100%); }
+  .wallet-sheet__total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 14px 4px; }
+  .wallet-sheet__total span { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #6e6e73; line-height: 1.35; max-width: 140px; }
+  .wallet-sheet__total b { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .wallet-sheet__foot { padding: 6px 16px 18px; display: grid; gap: 10px; justify-items: center; }
+  .wallet-sheet__pay { width: 100%; height: 50px; border: 0; border-radius: 12px; background: #000; color: #fff; font: inherit; font-size: 17px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; position: relative; transition: background .15s; }
+  .wallet-sheet__pay:hover { background: #1d1d1f; }
+  .wallet-sheet__pay svg { width: 22px; height: 22px; }
+  .wallet-sheet--google .wallet-sheet__pay { background: #1a73e8; border-radius: 8px; }
+  .wallet-sheet--google .wallet-sheet__pay:hover { background: #1765cc; }
+  .wallet-sheet--google .wallet-sheet__pay svg { display: none; }
+  .wallet-sheet__pay.is-busy { color: transparent; pointer-events: none; }
+  .wallet-sheet__pay.is-busy svg { visibility: hidden; }
+  .wallet-sheet__pay.is-busy::after { content: ""; position: absolute; width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: vs-spin .7s linear infinite; }
+  .wallet-sheet__fine { font-size: 11.5px; color: #8e8e93; text-align: center; line-height: 1.4; }
+  .wallet-sheet__fine b { color: #6e6e73; font-weight: 600; }
+
+  /* ---- Local dealer ---- */
+  .dealer-role { margin-top: 12px; padding: 12px 14px; border-radius: 8px; background: var(--vs-grey-50); border: 1px solid var(--vs-grey-100); font-size: 13px; line-height: 1.5; color: var(--vs-text-2); }
+  .dealer-role b { color: var(--vs-text); }
+  .dealer-role a { color: var(--vs-navy); font-weight: 700; }
+  .svc { display: inline-flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .svc i { font-style: normal; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #fff; border: 1px solid var(--vs-grey-200); color: var(--vs-text-2); }
+  .dealer-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; font-size: 14px; line-height: 1.55; }
+  .dealer-contact .k { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-text-3); margin-bottom: 4px; }
+  .dealer-contact a { color: var(--vs-navy); font-weight: 600; }
+  @media (max-width: 720px) { .dealer-contact { grid-template-columns: 1fr; } }
+
+  /* ---- Review ---- */
+  .review { display: grid; grid-template-columns: 110px 1fr auto; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; align-items: start; }
+  .review:last-child { border-bottom: 0; }
+  .review .k { color: var(--vs-text-3); font-weight: 700; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; padding-top: 3px; }
+  .review .v { color: var(--vs-text-2); line-height: 1.5; }
+  .review .v b { color: var(--vs-text); font-weight: 600; }
+  .review .link-btn { border: 0; background: none; color: var(--vs-navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .review .link-btn:hover { background: var(--vs-navy-50); }
+  .consent { display: grid; gap: 14px; }
+  .consent .check { align-items: flex-start; line-height: 1.5; }
+  .consent .check__box { margin-top: 2px; }
+  .consent .check span:last-child { font-size: 14px; }
+  .consent.is-error .req .check__box { border-color: var(--vs-error); }
+  .notice { font-size: 12.5px; color: var(--vs-text-2); line-height: 1.55; padding: 12px 14px; background: var(--vs-grey-50); border: 1px solid var(--vs-grey-100); border-radius: 8px; }
+  .notice .check { display: flex; margin-top: 10px !important; }
+  .disclose { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .disclose div { padding: 10px 12px; background: var(--vs-grey-50); border-radius: 8px; font-size: 13px; }
+  .disclose div span { display: block; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--vs-text-3); margin-bottom: 4px; }
+
+  /* ---- Confirmation / receipt ---- */
+  .done-head { display: grid; grid-template-columns: 64px 1fr; gap: 18px; align-items: center; }
+  .done-head .ok { width: 64px; height: 64px; border-radius: 50%; background: var(--vs-green-50); color: var(--vs-green); display: inline-flex; align-items: center; justify-content: center; }
+  .done-head .ok svg { width: 34px; height: 34px; }
+  .done-head h2 { font-size: 26px; }
+  .done-head p { color: var(--vs-text-2); margin-top: 4px; }
+  .done-head code { font-weight: 700; color: var(--vs-navy); background: var(--vs-navy-50); padding: 2px 8px; border-radius: 6px; font-size: 14px; }
+  .deliv { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; }
+  .deliv:last-child { border-bottom: 0; }
+  .deliv svg { width: 20px; height: 20px; color: var(--vs-text-3); flex: none; }
+  .deliv__meta { flex: 1; min-width: 0; }
+  .deliv__meta strong { display: block; }
+  .deliv .chip { flex: none; }
+  .deliv .link-btn { border: 0; background: none; color: var(--vs-navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .deliv .link-btn:hover { background: var(--vs-navy-50); }
+  .receipt { padding: 26px 28px; }
+  .receipt__top { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid var(--vs-grey-100); }
+  .receipt__co { font-size: 12.5px; color: var(--vs-text-2); line-height: 1.55; margin-top: 10px; }
+  .receipt__co b { color: var(--vs-text); }
+  .receipt__no { text-align: right; font-size: 13px; color: var(--vs-text-2); line-height: 1.6; }
+  .receipt__no strong { display: block; font-size: 18px; color: var(--vs-navy); }
+  .receipt__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--vs-grey-100); font-size: 13px; color: var(--vs-text-2); line-height: 1.55; }
+  .receipt__grid h5 { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--vs-text-3); margin: 0 0 6px; }
+  .receipt__grid b { color: var(--vs-text); }
+  .receipt table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 12px; }
+  .receipt th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--vs-text-3); padding: 8px 0; border-bottom: 1px solid var(--vs-grey-100); }
+  .receipt td { padding: 10px 0; border-bottom: 1px solid var(--vs-grey-100); vertical-align: top; }
+  .receipt td.n, .receipt th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .receipt .sku { font-size: 12px; color: var(--vs-text-3); display: block; }
+  .receipt__totals { margin-left: auto; width: 320px; display: grid; gap: 6px; padding-top: 12px; font-size: 14px; }
+  .receipt__totals .line.total { border-top: 1px solid var(--vs-grey-200); padding-top: 8px; margin-top: 4px; font-weight: 700; font-size: 16px; }
+  .receipt__actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .receipt__legal { font-size: 11.5px; color: var(--vs-text-3); line-height: 1.6; margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--vs-grey-200); }
+  .stored { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stored ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--vs-text-2); line-height: 1.6; }
+  .stored h4 { font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .stored h4 svg { width: 16px; height: 16px; }
+  .stored .no h4 svg { color: var(--vs-error); }
+  .stored .yes h4 svg { color: var(--vs-green); }
+
+  .link-btn { border: 0; background: none; color: var(--vs-navy); font-weight: 700; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .link-btn:hover { background: var(--vs-navy-50); }
+  .placing { display: grid; place-items: center; gap: 14px; padding: 46px 20px; text-align: center; }
+  .spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--vs-grey-100); border-top-color: var(--vs-navy); animation: vs-spin .8s linear infinite; }
+  .placing ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 13px; color: var(--vs-text-3); text-align: left; }
+  .placing li { display: flex; gap: 8px; align-items: center; }
+  .placing li svg { width: 16px; height: 16px; }
+  .placing li.ok { color: var(--vs-green); }
+  .placing li.ok svg { color: var(--vs-green); }
+  .placing li.cur { color: var(--vs-navy); font-weight: 700; }
+
+  /* 3-D Secure challenge (issuer-hosted) */
+  .acs { font-family: Arial, Helvetica, sans-serif; color: #222; }
+  .acs__bank { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #0b2a4a; color: #fff; font-weight: 700; font-size: 14px; }
+  .acs__bank small { font-weight: 400; opacity: .8; }
+  .acs__body { padding: 20px 22px; font-size: 14px; line-height: 1.55; display: grid; gap: 12px; }
+  .acs__body dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 13px; }
+  .acs__body dt { color: #555; } .acs__body dd { margin: 0; font-weight: 700; }
+  .acs__code { display: flex; gap: 8px; }
+  .acs__code input { flex: 1; height: 44px; border: 1px solid #bbb; border-radius: 4px; padding: 0 12px; font-size: 18px; letter-spacing: .3em; text-align: center; }
+  .acs__foot { display: flex; justify-content: space-between; gap: 8px; padding: 14px 22px; background: #f3f4f6; border-top: 1px solid #e5e7eb; font-size: 12px; color: #666; align-items: center; }
+  .acs__foot button { font: inherit; font-weight: 700; padding: 10px 16px; border-radius: 4px; border: 1px solid #0b2a4a; background: #0b2a4a; color: #fff; cursor: pointer; }
+  .acs__foot button.ghost { background: #fff; color: #0b2a4a; }
+
+  @media (max-width: 980px) { .wrap { grid-template-columns: 1fr; } .co__side { position: static; order: -1; } .review { grid-template-columns: 1fr; gap: 4px; } .receipt__grid { grid-template-columns: 1fr; } .disclose, .stored { grid-template-columns: 1fr; } .grid-3 { grid-template-columns: 1fr; } .receipt__totals { width: 100%; } }
+  @media (max-width: 520px) { .wallets { grid-template-columns: 1fr; } .steps { gap: 8px; } .steps .step { font-size: 12.5px; } .steps .step button { gap: 7px; padding-right: 6px; } .line { flex-wrap: wrap; } .line .k { flex: 1 1 100%; } .line .v { flex: 0 0 auto; margin-left: auto; } }
+  @media print {
+    .site-header, .site-footer, .co__side, .proto, .steps, .receipt__actions, .done-head, #deliveryCard, #dealerDone, #storedCard, #nextCard, .toast-host, #walletModal { display: none !important; }
+    .wrap { display: block; padding: 0; } .card { border: 0; box-shadow: none; } body { background: #fff; }
+  }
+</style>
+</head>
+<body class="site account-workspace">
+
+<header class="site-header" data-site-header></header>
+
+<div class="wrap">
+  <div class="steps" id="steps">
+    <div class="step is-active" data-step="1"><button type="button"><span class="step__n">1</span> Shipping</button></div><span class="steps__bar"></span>
+    <div class="step" data-step="2"><button type="button" disabled><span class="step__n">2</span> Review</button></div><span class="steps__bar"></span>
+    <div class="step" data-step="3"><button type="button" disabled><span class="step__n">3</span> Payment</button></div>
+  </div>
+  <div class="page-title" id="pageTitle"><h2>Shipping</h2><p>Taxes follow the destination province.</p></div>
+
+  <main class="co__main">
+
+    <!-- ================= STEP 1 · SHIPPING ================= -->
+    <section class="section is-active" id="s-shipping">
+
+      <div class="card">
+        <div class="card__head"><h3>Contact</h3><p class="sub" id="contactSub">Signed in as <b>Guannan Zhang</b> · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Not you?</a></p></div>
+        <div class="card__body">
+          <div class="grid-2">
+            <div class="field" id="fEmail">
+              <label class="field__label" for="email" id="emailLbl">Email</label>
+              <div class="control"><span class="control__prefix" data-icon="mail"></span><input id="email" type="email" value="demo@vanstro.ca" autocomplete="email" placeholder="you@example.com"></div>
+              <div class="field__hint" id="hEmail"></div>
+            </div>
+            <div class="field" id="fPhone">
+              <label class="field__label" for="phone">Mobile <span class="opt">optional</span></label>
+              <div class="control"><span class="control__prefix">+1</span><input id="phone" type="tel" inputmode="tel" value="(204) 555-0142" autocomplete="tel-national" placeholder="(204) 555-0142"></div>
+              <div class="field__hint" id="hPhone"></div>
+            </div>
+          </div>
+          <p class="muted small hidden" id="guestNote" style="margin:2px 0 0">Your receipt, tax invoice and a tracking link go to this email. No account is needed — you can create one after checkout to keep your order history.</p>
+          <p class="muted small hidden" id="dealerCustNote" style="margin:2px 0 0">Receipt and tax invoice go to this customer. The order stays on your dealer account so you can send it to your Vanstro POS.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__head row row--between"><h3 id="addrTitle">Shipping address</h3><a class="link-btn" href="/account#addresses" id="addrBookLink">Address book</a></div>
+        <div class="card__body">
+          <div class="pick-list" id="addrList"></div>
+          <form id="addrForm" class="hidden" style="margin-top:14px" novalidate>
+            <div class="grid-2">
+              <div class="field" id="fAName"><label class="field__label" for="aName">Full name</label><div class="control"><input id="aName" autocomplete="name" placeholder="Recipient’s full name"></div><div class="field__hint" id="hAName"></div></div>
+              <div class="field"><label class="field__label" for="aCompany">Company <span class="opt">optional</span></label><div class="control"><input id="aCompany" autocomplete="organization"></div><div class="field__hint"></div></div>
+            </div>
+            <div class="field" id="fAStreet"><label class="field__label" for="aStreet">Street address</label><div class="control"><span class="control__prefix" data-icon="search"></span><input id="aStreet" autocomplete="address-line1" placeholder="Start typing your address…"></div><div class="field__hint" id="hAStreet"></div></div>
+            <div class="grid-3">
+              <div class="field"><label class="field__label" for="aUnit">Unit <span class="opt">optional</span></label><div class="control"><input id="aUnit" autocomplete="address-line2"></div><div class="field__hint"></div></div>
+              <div class="field" id="fACity"><label class="field__label" for="aCity">City</label><div class="control"><input id="aCity" autocomplete="address-level2"></div><div class="field__hint" id="hACity"></div></div>
+              <div class="field" id="fAProv"><label class="field__label" for="aProv">Province</label><div class="control"><select id="aProv" autocomplete="address-level1"><option value="">Select…</option></select></div><div class="field__hint" id="hAProv"></div></div>
+            </div>
+            <div class="grid-2">
+              <div class="field" id="fAPostal"><label class="field__label" for="aPostal">Postal code</label><div class="control"><input id="aPostal" autocomplete="postal-code" placeholder="A1A 1A1" maxlength="7" autocapitalize="characters" spellcheck="false"></div><div class="field__hint" id="hAPostal"></div></div>
+              <div class="field"><label class="field__label" for="aCountry">Country</label><div class="control"><span class="control__prefix"><span class="flag" aria-hidden="true"></span></span><input id="aCountry" value="Canada" disabled></div><div class="field__hint"></div></div>
+            </div>
+            <label class="check" id="aSaveRow"><input type="checkbox" id="aSave" checked><span class="check__box"><span data-icon="check"></span></span><span>Save to my address book</span></label>
+          </form>
+        </div>
+      </div>
+
+      <div class="card" id="dealerCard">
+        <div class="card__head row row--between"><div><h3>Your local dealer</h3><p class="sub" id="dealerSub">Suggested from your shipping address. You can pick any participating dealer.</p></div><a class="link-btn" href="https://www.vanstro.ca/dealers/map/" target="_blank" rel="noopener">Dealer map</a></div>
+        <div class="card__body">
+          <div class="pick-list" id="dealerList"></div>
+          <div class="dealer-role" id="dealerRole"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__head"><h3>Delivery</h3><p class="sub" id="delivSub"></p></div>
+        <div class="card__body">
+          <p class="muted small" style="margin:0 0 10px;padding:8px 10px;background:var(--vs-bg-2,#f4f6f6);border-radius:8px" id="delivDealerNote">Delivery is quoted and billed separately by your local dealer after checkout — it is not included in this order's total.</p>
+          <div class="pick-list" id="shipList"></div>
+          <div class="field" style="margin:12px 0 0"><label class="field__label" for="notes">Delivery notes <span class="opt"><span id="notesCount">0</span>/140</span></label><div class="control"><input id="notes" maxlength="140" placeholder="Buzzer, dock hours…"></div><div class="field__hint"></div></div>
+        </div>
+        <div class="card__foot card__foot--split">
+          <button type="button" class="link-btn" data-open="privacy" style="padding:0">How we use your data</button>
+          <button class="btn btn--primary" id="toReview">Continue <span class="btn__icon" data-icon="arrowRight"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STEP 2 · REVIEW & CONSENT ================= -->
+    <section class="section" id="s-review">
+
+      <div class="card">
+        <div class="card__body" style="padding-top:8px">
+          <div class="review"><span class="k">Contact</span><div class="v" id="rvContact"></div><button class="link-btn" data-goto="1">Edit</button></div>
+          <div class="review"><span class="k">Ship to</span><div class="v" id="rvAddr"></div><button class="link-btn" data-goto="1">Edit</button></div>
+          <div class="review"><span class="k">Local dealer</span><div class="v" id="rvDealer"></div><button class="link-btn" data-goto="1">Edit</button></div>
+          <div class="review"><span class="k">Delivery</span><div class="v" id="rvShip"></div><button class="link-btn" data-goto="1">Edit</button></div>
+          <div class="review"><span class="k">Items</span><div class="v" id="rvItems"></div><a class="link-btn" href="cart.html" id="editCart">Edit cart</a></div>
+                  </div>
+                </div>
+
+      <div class="card">
+        <div class="card__head"><h3>Before you pay</h3></div>
+        <div class="card__body">
+          <div class="disclose">
+            <div><span>Total</span><b id="dcTotal"></b> CAD, tax &amp; delivery included</div>
+            <div><span>Delivery</span><b id="dcEta"></b></div>
+            <div><span>Seller</span><b>Vanstro Global Supply Inc.</b> · returns 7 days after delivery via <b id="dcReturnsVia" style="font-weight:600">your dealer</b></div>
+                </div>
+          <div class="consent" id="consent" style="margin-top:14px">
+            <label class="check req"><input type="checkbox" id="cTerms"><span class="check__box"><span data-icon="check"></span></span><span>I agree to the <a href="#">Terms of Sale</a> and <a href="#">Privacy Policy</a>. <b style="color:var(--vs-error)">*</b></span></label>
+            <label class="check req" id="cDealerRow"><input type="checkbox" id="cDealer"><span class="check__box"><span data-icon="check"></span></span><span id="cDealerText"></span></label>
+            <label class="check"><input type="checkbox" id="cMarketing"><span class="check__box"><span data-icon="check"></span></span><span>Email me offers. <span class="muted">Optional — unsubscribe any time</span></span></label>
+            <div class="field__hint" id="hConsent"></div>
+          </div>
+          <div class="notice" style="margin-top:12px">
+            Confirmation goes to <b id="ntEmail"></b><span id="ntSms"></span>. That’s a transactional email — you get it whether or not you opt into marketing.
+            <label class="check" style="margin-top:8px"><input type="checkbox" id="rcSms"><span class="check__box"><span data-icon="check"></span></span><span class="small">Also text a receipt link</span></label>
+          </div>
+        </div>
+        <div class="card__foot card__foot--split">
+          <button class="btn btn--ghost" data-goto="1"><span class="btn__icon" data-icon="arrowLeft"></span> Back</button>
+          <button class="btn btn--primary" id="toPayment">Continue to payment <span class="btn__icon" data-icon="arrowRight"></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STEP 3 · PAYMENT ================= -->
+    <section class="section" id="s-payment">
+
+      <div id="payAlert"></div>
+
+      <div class="card">
+        <div class="card__head row row--between"><h3>Pay with</h3><span class="brands" aria-label="Visa, Mastercard and American Express accepted"><i class="cbrand cbrand--visa">VISA</i><i class="cbrand cbrand--mastercard"></i><i class="cbrand cbrand--amex">AMEX</i></span></div>
+        <div class="card__body">
+          <div id="htPayBlock">
+          <div class="wallets">
+            <button type="button" class="wallet-btn wallet-btn--apple" id="applePay" aria-label="Pay with Apple Pay">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1.9-4 2.4-1.7 3-.4 7.3 1.2 9.7.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.2-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.6-3.8zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.8-1.4z"/></svg>
+              <span>Pay</span>
+            </button>
+            <button type="button" class="wallet-btn wallet-btn--google" id="googlePay" aria-label="Pay with Google Pay">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.2z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.7 0-10.6-3.9-12.3-9.1H4.3v5.7C8 41.3 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.3C2.8 17.1 2 20.4 2 24s.8 6.9 2.3 9.9l7.4-5.7z"/><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 8 6.7 4.3 14.1l7.4 5.7c1.7-5.2 6.6-9.1 12.3-9.1z"/></svg>
+              <span>Pay</span>
+            </button>
+          </div>
+          <p class="wallets__note">Use the card already in your wallet — bank verification is built in.</p>
+          <div class="or-split">or pay with a card</div>
+          <div class="pick-list" id="pmList"></div>
+
+          <div id="savedPay" class="hidden" style="margin-top:14px">
+            <div class="field" id="fSavedCvv" style="margin-bottom:0;max-width:220px"><label class="field__label" for="savedCvv">Security code</label><div class="control"><span class="control__prefix" data-icon="lockKey"></span><input id="savedCvv" inputmode="numeric" maxlength="4" type="password" placeholder="•••" autocomplete="cc-csc"></div><div class="field__hint" id="hSavedCvv"></div></div>
+          </div>
+
+          <div id="newPay" class="hidden" style="margin-top:14px">
+            <div class="field" id="fCard">
+              <label class="field__label" id="cardLabel"><span>Card details</span><span class="card-secure"><span data-icon="lock"></span> Secured by Moneris</span></label>
+              <div class="card-box" id="cardBox">
+                <div class="card-box__frame" id="monerisFrame"></div>
+                <span class="card-box__brands" id="cardBrands" aria-hidden="true"><i data-brand="Visa">VISA</i><i data-brand="Mastercard">MC</i><i data-brand="Amex">AMEX</i></span>
+              </div>
+              <div class="field__hint" id="hCard">Number, expiry and security code go straight to Moneris from this field. They never reach our servers.</div>
+            </div>
+            <div class="field" id="fCcName"><label class="field__label" for="ccName">Name on card</label><div class="control"><input id="ccName" autocomplete="cc-name" placeholder="As printed on the card" spellcheck="false"></div><div class="field__hint" id="hCcName"></div></div>
+            <label class="check" style="align-items:flex-start" id="ccSaveRow"><input type="checkbox" id="ccSave"><span class="check__box" style="margin-top:2px"><span data-icon="check"></span></span><span>Save this card to my account for next time. Moneris stores it as a token; we never keep the number.</span></label>
+          </div>
+          </div>
+          <div id="posPayBlock" class="hidden">
+            <div class="notice" id="posPayHint" style="margin-top:4px">
+              <strong>Pay at your Vanstro POS.</strong> This dealer account does not charge a card here. Confirm to create the order and send the amount to your Moneris Go terminal.
+            </div>
+            <div id="posPayStatus" class="notice hidden" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card__head"><h3>Billing address</h3></div>
+        <div class="card__body">
+          <div class="pick-list">
+            <label class="pick is-on"><input type="radio" name="bill" value="same" checked><span class="pick__radio"></span><div class="pick__body"><strong>Same as shipping</strong><address id="billSame"></address></div></label>
+            <label class="pick"><input type="radio" name="bill" value="other"><span class="pick__radio"></span><div class="pick__body"><strong>Different billing address</strong></div></label>
+          </div>
+          <div id="billOther" class="hidden" style="margin-top:12px">
+            <div class="field" id="billPick"><label class="field__label" for="billSel">Billing address</label><div class="control"><select id="billSel"></select></div><div class="field__hint"></div></div>
+            <!-- Guests have no address book: the billing address is typed inline and sent with the order. -->
+            <form id="billForm" class="hidden" novalidate>
+              <div class="grid-2">
+                <div class="field" id="fBName"><label class="field__label" for="bName">Full name</label><div class="control"><input id="bName" autocomplete="billing name" placeholder="Name on the invoice"></div><div class="field__hint" id="hBName"></div></div>
+                <div class="field"><label class="field__label" for="bCompany">Company <span class="opt">optional</span></label><div class="control"><input id="bCompany" autocomplete="billing organization"></div><div class="field__hint"></div></div>
+              </div>
+              <div class="field" id="fBStreet"><label class="field__label" for="bStreet">Street address</label><div class="control"><input id="bStreet" autocomplete="billing address-line1"></div><div class="field__hint" id="hBStreet"></div></div>
+              <div class="grid-3">
+                <div class="field"><label class="field__label" for="bUnit">Unit <span class="opt">optional</span></label><div class="control"><input id="bUnit" autocomplete="billing address-line2"></div><div class="field__hint"></div></div>
+                <div class="field" id="fBCity"><label class="field__label" for="bCity">City</label><div class="control"><input id="bCity" autocomplete="billing address-level2"></div><div class="field__hint" id="hBCity"></div></div>
+                <div class="field" id="fBProv"><label class="field__label" for="bProv">Province</label><div class="control"><select id="bProv" autocomplete="billing address-level1"><option value="">Select…</option></select></div><div class="field__hint" id="hBProv"></div></div>
+              </div>
+              <div class="grid-2">
+                <div class="field" id="fBPostal"><label class="field__label" for="bPostal">Postal code</label><div class="control"><input id="bPostal" autocomplete="billing postal-code" placeholder="A1A 1A1" maxlength="7" autocapitalize="characters" spellcheck="false"></div><div class="field__hint" id="hBPostal"></div></div>
+                <div class="field"><label class="field__label">Country</label><div class="control"><span class="control__prefix"><span class="flag" aria-hidden="true"></span></span><input value="Canada" disabled></div><div class="field__hint"></div></div>
+              </div>
+            </form>
+          </div>
+          <p class="notice" id="payAuthNote" style="margin-top:14px">By paying you authorize a charge of <b id="ntTotal"></b> CAD. It appears as <b>VANSTRO</b> on your statement.</p>
+        </div>
+        <div class="card__foot card__foot--split">
+          <button class="btn btn--ghost" data-goto="2"><span class="btn__icon" data-icon="arrowLeft"></span> Back</button>
+          <button class="btn btn--primary" id="payBtn"><span class="btn__icon" data-icon="lock"></span><span id="payBtnLabel">Pay</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PLACING (payment → order) ================= -->
+    <section class="section" id="s-placing">
+      <div class="card"><div class="placing">
+        <div class="spinner" aria-hidden="true"></div>
+        <h3 id="placingTitle">We’re confirming your payment</h3>
+        <ol id="placingSteps">
+          <li data-k="auth"><span data-icon="checkCircle"></span> Authorized</li>
+          <li data-k="verify"><span data-icon="checkCircle"></span> Verifying with Moneris</li>
+          <li data-k="order"><span data-icon="checkCircle"></span> Creating your order</li>
+          <li data-k="dealer"><span data-icon="checkCircle"></span> Notifying your local dealer</li>
+          <li data-k="email"><span data-icon="checkCircle"></span> Sending your receipt</li>
+        </ol>
+        <p class="muted small">Don’t close this page or press back.</p>
+      </div></div>
+    </section>
+
+    <!-- ================= CONFIRMATION ================= -->
+    <section class="section" id="s-done">
+      <div class="card"><div class="card__body done-head">
+        <span class="ok"><span data-icon="check"></span></span>
+        <div>
+          <h2>Order confirmed</h2>
+          <p><span id="dnThanks">Thanks, Guannan.</span> Your receipt is on its way to <b id="dnEmail">demo@vanstro.ca</b></p>
+          <p style="margin-top:6px">Order <code id="dnOrder">VS-2026-018342</code> <button class="icon-btn" style="width:28px;height:28px;vertical-align:middle" id="copyOrder" aria-label="Copy order number"><span data-icon="copy"></span></button> · <span id="dnWhen"></span></p>
+        </div>
+      </div></div>
+
+      <div class="card" id="deliveryCard">
+        <div class="card__body" style="padding-top:16px">
+          <div class="deliv" id="dvEmail"><span data-icon="mail"></span><div class="deliv__meta"><strong>Receipt sent</strong><span class="muted small" id="dvEmailMeta"></span></div><span class="chip chip--green" id="dvEmailChip">Sent</span><button class="link-btn" id="resendEmail">Resend</button><button class="link-btn" data-open="changeEmail">Another email</button></div>
+          <div class="deliv" id="dvSms"><span data-icon="smartphone"></span><div class="deliv__meta"><strong>SMS</strong><span class="muted small" id="dvSmsMeta"></span></div><span class="chip" id="dvSmsChip">Not requested</span><button class="link-btn" id="sendSms">Send</button></div>
+        </div>
+      </div>
+
+      <div class="card" id="dealerDone">
+        <div class="card__head row row--between"><h3 id="ddTitle">Your local dealer</h3><span class="chip chip--orange">Independent dealer</span></div>
+        <div class="card__body">
+          <div class="dealer-contact" id="ddContact"></div>
+          <div class="dealer-role" id="ddRole" style="margin-top:14px"></div>
+        </div>
+        <div class="card__foot card__foot--split">
+          <a class="link-btn" href="https://www.vanstro.ca/dealer-services-and-responsibility/" target="_blank" rel="noopener" style="padding:0">VanStro &amp; local dealer responsibilities</a>
+          <div class="row"><a class="btn btn--secondary btn--sm" id="ddCall" href="#"><span class="btn__icon" data-icon="phone"></span>Call dealer</a><a class="btn btn--primary btn--sm" id="ddMail" href="#"><span class="btn__icon" data-icon="mail"></span>Email dealer</a></div>
+        </div>
+      </div>
+
+      <div class="card receipt" id="receipt">
+        <div class="receipt__top">
+          <div>
+            <img class="vs-logo" src="/account/assets/brand/logo-navy.png" alt="VANSTRO">
+            <div class="receipt__co"><b>Vanstro Global Supply Inc.</b> <span class="muted">(Seller)</span><br>856 Century Street, Winnipeg MB R3H 0M5 · Canada<br>GST/HST No. <b id="rcBn"></b><span id="rcQst"></span><br>support@vanstro.ca · 204 221 2288</div>
+          </div>
+          <div class="receipt__no"><strong id="rcOrder">Order VS-2026-018342</strong><span id="rcDate"></span><br><span id="rcTitle">Tax invoice / receipt</span></div>
+        </div>
+        <div class="receipt__grid">
+          <div><h5>Billed to</h5><div id="rcBill"></div></div>
+          <div><h5>Shipped to</h5><div id="rcShip"></div></div>
+          <div><h5>Payment</h5><div id="rcPay"></div></div>
+          <div><h5 id="rcDealerH">Local dealer</h5><div id="rcDealer"></div></div>
+        </div>
+        <table>
+          <thead><tr><th>Item</th><th class="n">Qty</th><th class="n">Unit</th><th class="n">Amount</th></tr></thead>
+          <tbody id="rcItems"></tbody>
+        </table>
+        <div class="receipt__totals" id="rcTotals"></div>
+        <div class="receipt__legal" id="rcLegal"></div>
+        <div class="receipt__actions" style="margin-top:16px"><button class="btn btn--secondary btn--sm" onclick="window.print()"><span class="btn__icon" data-icon="printer"></span>Print</button><button class="btn btn--secondary btn--sm" id="dlPdf2"><span class="btn__icon" data-icon="fileText"></span>Download PDF</button><button class="btn btn--ghost btn--sm" id="copyOrder2"><span class="btn__icon" data-icon="copy"></span>Copy order number</button></div>
+      </div>
+
+      <!-- Guest checkout · R7 "save your details": one step to an account that already owns this order. -->
+      <div class="card hidden" id="guestAccountCard">
+        <div class="card__head row row--between"><h3>Save your details for next time</h3><span class="chip chip--navy">Optional</span></div>
+        <div class="card__body" style="display:grid;gap:10px">
+          <p class="muted" style="margin:0">You checked out as a guest. Create a password for <b id="gaEmail"></b> and this order moves into your account — track it, download the tax invoice any time, and reorder in one click. Your address stays saved for next time.</p>
+          <ul class="small" style="margin:0;padding-left:18px;color:var(--vs-text-2);display:grid;gap:4px">
+            <li>Order history and invoices in one place (kept 7 years)</li>
+            <li>Saved addresses and one-click reorder with your local dealer</li>
+            <li>No marketing unless you opt in</li>
+          </ul>
+        </div>
+        <div class="card__foot card__foot--split">
+          <a class="link-btn" id="gaTrack" href="order-status.html" style="padding:0">Just track this order</a>
+          <a class="btn btn--primary js-register" id="gaCreate" href="/account/register"><span class="btn__icon" data-icon="user"></span>Create account</a>
+        </div>
+      </div>
+
+      <div class="card" id="storedCard">
+        <div class="card__body" style="display:grid;gap:8px">
+          <p id="stText"><b>Card numbers don’t pass through us.</b> We keep your order, address, and last 4. Export or delete in <a href="/account">your account</a>.</p>
+          <p class="muted small hidden" id="stVault">A Moneris token was saved for this card — you can remove it in Payment methods.</p>
+        </div>
+      </div>
+
+      <div class="card" id="nextCard"><div class="card__body row" style="justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <p class="muted small" id="nextNote">Your local dealer will contact you to quote and arrange delivery — this is billed separately, not included in your order total.</p>
+        <div class="row"><a class="btn btn--secondary" href="/account#orders" id="nextTrack">Track order</a><a class="btn btn--primary" href="https://www.vanstro.ca/products/">Continue shopping</a></div>
+      </div></div>
+    </section>
+  </main>
+
+  <!-- ================= ORDER SUMMARY ================= -->
+  <aside class="co__side">
+    <div class="card">
+      <div class="card__head row row--between"><h3>Order summary</h3><span class="muted small" id="sumCount"></span></div>
+      <div class="card__body">
+        <div class="sum__items" id="sumItems"></div>
+        <div class="sum__lines" id="sumLines"></div>
+        <div class="sum__total"><span class="k" id="lblTotal">Total</span><span><span class="v" id="sumTotal"></span><span class="cur">CAD</span></span></div>
+        <p class="tax-note" id="taxNote" style="margin-top:10px">Taxes calculated for <b>Manitoba</b>, your shipping province.</p>
+      </div>
+    </div>
+    <div class="trust" id="trust">
+      <p>Card details go straight to Moneris. We never see or store your card number.</p>
+      <ul>
+        <li><span data-icon="check"></span><span>TLS 1.3 in transit</span></li>
+        <li><span data-icon="check"></span><span>Export or delete in your account</span></li>
+      </ul>
+      <div class="trust__foot"><span class="trust__badge">Moneris</span><span class="trust__badge">PCI SAQ-A</span><span class="trust__badge">3-D Secure</span></div>
+      <button type="button" class="link-btn" data-open="security" style="justify-self:start;padding:0">How payment is protected</button>
+    </div>
+    <p class="muted small" style="text-align:center">Need help? <a href="https://www.vanstro.ca/contact/">Chat</a> · <a href="tel:+12042212288">204 221 2288</a></p>
+  </aside>
+</div>
+
+<footer class="site-footer" data-site-footer></footer>
+
+<!-- ================= 3-D Secure challenge (issuer ACS, shown in a modal iframe) ================= -->
+<div class="modal-backdrop hidden" id="acsModal">
+  <div class="modal acs" style="max-width:420px" role="dialog" aria-modal="true" aria-label="Card verification by your bank">
+    <div class="acs__bank"><span>Maple Trust Bank <small>· Card verification</small></span><span style="font-size:11px;font-weight:400">Verified by Visa</span></div>
+    <div class="acs__body">
+      <p>We sent a one-time code to your mobile ending in <b>0142</b>. Enter it to confirm this purchase.</p>
+      <dl><dt>Merchant</dt><dd>VANSTRO GLOBAL SUPPLY</dd><dt>Amount</dt><dd id="acsAmount"></dd><dt>Card</dt><dd id="acsCard"></dd><dt>Date</dt><dd id="acsDate"></dd></dl>
+      <div class="acs__code"><input id="acsCode" inputmode="numeric" maxlength="6" placeholder="••••••" aria-label="One-time code"></div>
+      <p style="font-size:12px;color:#666;margin:0">Demo: any 6 digits confirm.</p>
+    </div>
+    <div class="acs__foot"><span>Secured by your bank. Vanstro cannot see this code.</span><span class="row" style="gap:8px"><button class="ghost" id="acsCancel">Cancel</button><button id="acsGo">Confirm</button></span></div>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="walletModal">
+  <div class="wallet-sheet" id="walletSheet" role="dialog" aria-modal="true" aria-labelledby="walletTitle">
+    <div class="wallet-sheet__bar">
+      <span class="wallet-sheet__logo" id="walletTitle">
+        <svg class="a" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.7c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1.9-4 2.4-1.7 3-.4 7.3 1.2 9.7.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.2-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.6-3.8zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.8-1.4z"/></svg>
+        <svg class="g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.8-2.1 5.1-4.4 6.7v5.5h7.1c4.2-3.8 6.6-9.5 6.6-16.2z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.6-5.3l-7.1-5.5c-2 1.3-4.5 2.1-7.5 2.1-5.7 0-10.6-3.9-12.3-9.1H4.3v5.7C8 41.3 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.7 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.3C2.8 17.1 2 20.4 2 24s.8 6.9 2.3 9.9l7.4-5.7z"/><path fill="#EA4335" d="M24 10.7c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.4 2 8 6.7 4.3 14.1l7.4 5.7c1.7-5.2 6.6-9.1 12.3-9.1z"/></svg>
+        <span>Pay</span>
+      </span>
+      <button type="button" id="walletCancel">Cancel</button>
+    </div>
+    <div class="wallet-sheet__body">
+      <div class="wallet-sheet__list">
+        <div class="wallet-sheet__row"><span>Card</span><b><i class="wallet-sheet__cardart" aria-hidden="true"></i><span id="walletCard">Visa •••• 4242</span></b><i aria-hidden="true">›</i></div>
+        <div class="wallet-sheet__row"><span>Billing</span><b id="walletBill">Same as shipping</b><i aria-hidden="true">›</i></div>
+        <div class="wallet-sheet__row"><span>Contact</span><b id="walletContact"></b><i aria-hidden="true">›</i></div>
+      </div>
+      <div class="wallet-sheet__total"><span id="walletPayee">Pay Vanstro Global Supply</span><b id="walletAmt"></b></div>
+    </div>
+    <div class="wallet-sheet__foot">
+      <button type="button" class="wallet-sheet__pay" id="walletConfirm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2M9 10v1M15 10v1M12 10v3.5a.5.5 0 0 1-.5.5H11M9.5 15.5c.7.6 1.5 1 2.5 1s1.8-.4 2.5-1"/></svg>
+        <span id="walletConfirmLabel">Pay with Face ID</span>
+      </button>
+      <p class="wallet-sheet__fine">Prototype — nothing is charged. <b>Processed by Moneris</b> · tokenized, 3-D Secure built in.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= Security & privacy statement ================= -->
+<div class="modal-backdrop hidden" id="secModal">
+  <div class="modal" style="max-width:640px">
+    <div class="modal__head"><strong>How your payment and data are protected</strong><button class="icon-btn" data-close aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="modal__body" style="max-height:70vh;overflow:auto;display:grid;gap:14px;font-size:14px;line-height:1.6;color:var(--vs-text-2)">
+      <div><h4 style="margin-bottom:4px">Card payments</h4>Payments are processed by <b>Moneris Solutions Corporation</b> (Toronto, ON), a PCI DSS Level 1 service provider. The card number, expiry date and security code field is served directly by Moneris (Hosted Tokenization) inside this page. Vanstro’s servers never receive, log or store them; our compliance scope is <b>PCI DSS SAQ A</b>. Moneris replaces your card details with a single-use temporary token, which our server sends to Moneris (server-to-server) to take the payment.</div>
+      <div><h4 style="margin-bottom:4px">Apple Pay &amp; Google Pay</h4>Wallet payments are enabled in the Moneris Checkout profile (Payment → Accepted digital wallets). Apple Pay and Google Pay tokenize the card on the device; Moneris decrypts the token. Vanstro never sees a card number. Apple Pay requires your domain to be registered with Apple via Moneris; Google Pay requires HTTPS.</div>
+      <div><h4 style="margin-bottom:4px">Saved cards</h4>If you tick “Save this card”, Moneris stores the card in its <b>Vault</b> and gives Vanstro an opaque token plus the brand, last 4 digits and expiry. You can delete saved cards any time in <a href="/account#payment">My account › Payment methods</a>; deleting removes the Vault record at Moneris.</div>
+      <div><h4 style="margin-bottom:4px">Bank verification (3-D Secure 2)</h4>Your card issuer may ask you to confirm a purchase in its own window. That exchange is between you and your bank; Vanstro only learns whether it succeeded.</div>
+      <div><h4 style="margin-bottom:4px">Encryption &amp; storage</h4>All traffic uses TLS 1.3 with HSTS. Card numbers stay in the Moneris iframe and never reach Vanstro.</div>
+      <div><h4 style="margin-bottom:4px">Privacy (PIPEDA · Quebec Law 25)</h4>We collect only what we need to fulfil the order. Tax invoices are kept 6 years (CRA). You can export or delete other data in your account. Marketing email needs a separate opt-in (CASL).</div>
+      <div><h4 style="margin-bottom:4px">Consumer protection</h4>Before you pay we show the full price in CAD including taxes and delivery, the delivery estimate and our return policy, and give you the chance to correct errors (Ontario CPA 2002 s. 38, Quebec CPA s. 54.4 and equivalents). A copy of your order is emailed immediately after payment.</div>
+    </div>
+    <div class="modal__foot"><button class="btn btn--primary" data-close>Got it</button></div>
+  </div>
+</div>
+
+<!-- ================= Checkout privacy notice (short, just-in-time) ================= -->
+<div class="modal-backdrop hidden" id="privacyModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal__head"><strong>Checkout privacy notice</strong><button class="icon-btn" data-close aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="modal__body" style="font-size:14px;line-height:1.6;color:var(--vs-text-2)">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr><th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--vs-grey-100);color:var(--vs-text-3);font-size:11px;text-transform:uppercase;letter-spacing:.06em">We collect</th><th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--vs-grey-100);color:var(--vs-text-3);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Why</th><th style="text-align:left;padding:6px 0;border-bottom:1px solid var(--vs-grey-100);color:var(--vs-text-3);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Shared with</th></tr></thead>
+        <tbody>
+          <tr><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Email</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Order confirmation, tax receipt, delivery updates</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Email provider (Canada)</td></tr>
+          <tr><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Mobile (optional)</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Carrier delivery texts; SMS receipt if requested</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Carrier, SMS provider</td></tr>
+          <tr><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Shipping / billing address</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Delivery, tax calculation (place of supply), fraud checks (AVS)</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Carrier, Moneris</td></tr>
+          <tr><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Card / wallet</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)">Payment (card, Apple Pay, Google Pay)</td><td style="padding:8px 0;border-bottom:1px solid var(--vs-grey-100)"><b>Moneris only</b>, never Vanstro</td></tr>
+          <tr><td style="padding:8px 0">Consents &amp; timestamps</td><td style="padding:8px 0">Proof of agreement (Terms) and CASL consent</td><td style="padding:8px 0">—</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px" class="small">Invoices kept 6 years (CRA). Questions: <a href="#">privacy@vanstro.ca</a>. <button type="button" class="link-btn" data-open="security" style="padding:0 2px">Full statement</button></p>
+    </div>
+    <div class="modal__foot"><button class="btn btn--primary" data-close>Close</button></div>
+  </div>
+</div>
+
+<!-- ================= Session expired ================= -->
+<div class="modal-backdrop hidden" id="expModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal__head"><strong>Your secure payment session expired</strong></div>
+    <div class="modal__body" style="font-size:14px;color:var(--vs-text-2);line-height:1.6">For your protection, the payment form is valid for 30 minutes. Your cart, address and delivery choice are saved and <b>no payment was taken</b>. Refresh the form to continue.</div>
+    <div class="modal__foot"><a class="btn btn--ghost" href="cart.html" id="expCart">Back to cart</a><button class="btn btn--primary" id="expRefresh">Refresh payment form</button></div>
+  </div>
+</div>
+
+<!-- ================= Change receipt email ================= -->
+<div class="modal-backdrop hidden" id="ceModal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal__head"><strong>Send receipt to another email</strong><button class="icon-btn" data-close aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="modal__body">
+      <div class="field" id="fCe"><label class="field__label" for="ceInput">Email address</label><div class="control"><span class="control__prefix" data-icon="mail"></span><input id="ceInput" type="email" placeholder="accounts@yourcompany.ca"></div><div class="field__hint" id="hCe">Useful for sending the tax invoice to your bookkeeper</div></div>
+    </div>
+    <div class="modal__foot"><button class="btn btn--ghost" data-close>Cancel</button><button class="btn btn--primary" id="ceGo">Send receipt</button></div>
+  </div>
+</div>
+
+<!-- Prototype inspector -->
+<aside class="proto is-collapsed" id="proto" style="display:none">
+  <div class="proto__head"><span>Prototype · states</span><button id="protoToggle" aria-label="Expand">+</button></div>
+  <div class="proto__body">
+    <div class="sec">Steps</div>
+    <button data-demo="step1">1 · Shipping</button><button data-demo="step1Err">1 · Validation errors (new address)</button><button data-demo="step1Fsa">1 · Postal code ≠ province</button>
+    <button data-demo="step2">2 · Review &amp; consent</button><button data-demo="step2Err">2 · Terms not accepted</button>
+    <button data-demo="step3">3 · Payment · saved card</button><button data-demo="step3New">3 · Payment · new card (Moneris frame)</button>
+    <button data-demo="step3Apple">3 · Payment · Apple Pay</button><button data-demo="step3Google">3 · Payment · Google Pay</button>
+    <div class="sec">Payment outcomes</div>
+    <button data-demo="pay3ds">3-D Secure challenge</button><button data-demo="payDeclined">Declined by bank (076 · low funds)</button><button data-demo="payExpiredCard">Expired card (051)</button><button data-demo="payFrameErr">Frame validation errors</button><button data-demo="ticketExpired">Payment session expired</button><button data-demo="placing">Confirming payment (processing)</button>
+    <div class="sec">Confirmation</div>
+    <button data-demo="done">Order confirmed · receipt sent</button><button data-demo="doneSms">Confirmed · email + SMS</button><button data-demo="doneEmailFail">Email delivery failed → Resend</button><button data-demo="doneVault">Confirmed · card saved (Vault)</button>
+    <div class="sec">Tax by province</div>
+    <button data-prov="AB">Alberta · GST 5%</button>
+    <button data-prov="BC">BC · GST + PST</button>
+    <button data-prov="MB">Manitoba · GST + RST</button>
+    <button data-prov="NB">New Brunswick · HST 15%</button>
+    <button data-prov="NL">Newfoundland · HST 15%</button>
+    <button data-prov="NS">Nova Scotia · HST 14%</button>
+    <button data-prov="NT">Northwest Territories · GST 5%</button>
+    <button data-prov="NU">Nunavut · GST 5%</button>
+    <button data-prov="ON">Ontario · HST 13%</button>
+    <button data-prov="PE">PEI · HST 15%</button>
+    <button data-prov="QC">Quebec · GST + QST (FR)</button>
+    <button data-prov="SK">Saskatchewan · GST + PST</button>
+    <button data-prov="YT">Yukon · GST 5%</button>
+  </div>
+</aside>
+
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script src="/account/assets/analytics.js"></script>
+<script src="/account/assets/site-header.js"></script>
+<script src="/account/assets/site-footer.js"></script>
+<script src="/account/assets/tax.js?v=bn-71411"></script>
+<script src="/account/assets/moneris-client.js"></script>
+<script>
+(async function () {
+  const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
+  VS.icons();
+  const setErr = (f, h, m) => { f.classList.add('is-error'); h.innerHTML = VS.I.alert + '<span></span>'; h.querySelector('span').textContent = m; };
+  const clr = (f, h, def) => { f.classList.remove('is-error', 'is-success'); h.textContent = def || ''; };
+  const money = c => lang === 'fr' ? VSTax.formatCADFr(c) : VSTax.formatCAD(c);
+  const q = new URLSearchParams(location.search);
+  let lang = 'en';
+  const GST_HST_BN = '71411 2364 RT0001';
+
+  /* ---------------- data ---------------- */
+  const CART = [];
+  /* cart.html writes the same snapshot to localStorage; use it when present so both pages agree.
+     "No snapshot" keeps the demo order; an *empty* snapshot means the shopper emptied their cart,
+     so send them back there instead of silently checking out the demo lines (deep-linked demos excepted). */
+  try {
+    const saved = JSON.parse(localStorage.getItem('vs.cart') || 'null');
+    if (!saved && !q.get('demo')) location.replace((/^\/fr(\/|$)/.test(location.pathname) ? '/fr' : '') + '/cart' + (q.get('lang') ? '?lang=' + q.get('lang') : ''));
+    else if (saved && Array.isArray(saved.items)) {
+      const items = saved.items.filter(i => i && i.sku && Number.isFinite(i.unit) && i.qty > 0);
+      if (items.length) CART.splice(0, CART.length, ...items.map(i => ({ sku: i.sku, name: i.name, meta: i.meta, unit: Math.round(i.unit), qty: Math.min(50, Math.round(i.qty)), icon: 'box' })));
+      else if (!q.get('demo')) location.replace((/^\/fr(\/|$)/.test(location.pathname) ? '/fr' : '') + '/cart' + (q.get('lang') ? '?lang=' + q.get('lang') : ''));
+    }
+  } catch (e) {}
+  const ADDRESSES = [
+    { id: 1, label: 'Home', name: 'Guannan Zhang', street: '88 Waterfront Dr', unit: 'Unit 1204', city: 'Winnipeg', prov: 'MB', postal: 'R3B 0T3', defShip: true, defBill: true },
+    { id: 2, label: 'Job site', name: 'Guannan Zhang', company: 'Northline Renovations Ltd.', street: '410 Adelaide St W', city: 'Toronto', prov: 'ON', postal: 'M5V 1S8', notes: 'Loading dock · 7am–3pm' },
+  ];
+  /* Participating independent local dealers (generated from the public directory snapshot). */
+  let DEALERS = [
+    { id: 'MB-YUAN', name: 'Yuan Construction Ltd.', code: 'MB01', street: '856 Century St', city: 'Winnipeg', prov: 'MB', postal: 'R3H 0M5', phone: '204 505 2288', email: 'mb01@vanstro.ca', hours: 'Mon–Fri 9 a.m.–5 p.m.', services: ['pickup', 'delivery'], area: 'Winnipeg' },
+    { id: 'ON-WAT', name: 'ON10', code: 'ON10', street: 'Regina Street South', city: 'Waterloo', prov: 'ON', postal: 'N2J 4P9', phone: '431-8772658', email: 'on10@vanstro.ca', hours: '', services: ['pickup', 'delivery'], area: 'Waterloo' },
+    { id: 'QC-PCL', name: 'QC10', code: 'QC10', street: 'Saint-Jean Boulevard', city: 'Pointe-Claire', prov: 'QC', postal: 'H9R 3J3', phone: '431-8772658', email: 'qc10@vanstro.ca', hours: '', services: ['pickup', 'delivery'], area: 'Pointe-Claire' },
+    { id: 'AB-CGY', name: 'AB10', code: 'AB10', street: 'Macleod Trail SE', city: 'Calgary', prov: 'AB', postal: 'T2G 2M3', phone: '431-8772658', email: 'ab10@vanstro.ca', hours: '', services: ['pickup', 'delivery'], area: 'Calgary' },
+    { id: 'BC-SAA', name: 'BC10', code: 'BC10', street: 'Vernon Avenue', city: 'Saanich', prov: 'BC', postal: 'V8X 2W7', phone: '431-8772658', email: 'bc10@vanstro.ca', hours: '', services: ['pickup', 'delivery'], area: 'Saanich' },
+    { id: 'SK-SKT', name: 'SK10', code: 'SK10', street: '3rd Avenue North', city: 'Saskatoon', prov: 'SK', postal: 'S7K 0J5', phone: '431-8772658', email: 'sk10@vanstro.ca', hours: '', services: ['pickup', 'delivery'], area: 'Saskatoon' },
+  ];
+  /* ---- Dealer stock gate (GET /api/stock, the same ERP read path the PDP uses) ----
+     Client mirror of lib/dealer/dealer-stock-id.ts, built from the snapshot rows embedded
+     above: a directory dealer (UUID id + code like "MB01-MAIN") resolves to the ERP snapshot
+     id /api/stock understands ("MB-YUAN"). Anything unmapped passes through untouched so
+     /api/stock fails closed to dealer_no_stock — never silently borrows Yuan's stock. */
+  const normDealerCode = c => String(c || '').trim().toUpperCase().replace(/\s*[-(].*/, '');
+  const STOCK_DEALER_IDS = new Set(DEALERS.map(d => d.id));
+  const STOCK_DEALER_ID_BY_CODE = new Map(DEALERS.map(d => [normDealerCode(d.code), d.id]));
+  const toStockDealerId = d => !d ? '' : (STOCK_DEALER_IDS.has(d.id) ? d.id : (STOCK_DEALER_ID_BY_CODE.get(normDealerCode(d.code)) || d.id));
+  const stockKnown = new Map();      /* "stockDealerId::sku" -> { qty, reason, canOrder } */
+  const stockFetching = new Set();   /* keys currently in flight */
+  let stockReady = false;            /* first evaluation finished */
+  const stockKey = (sid, sku) => sid + '::' + sku;
+  /* Selectable = every cart SKU has qty at that dealer. Unknown pairs stay selectable until
+     evaluated; `unavailable` (ERP transport failure) never blocks, matching lib/stock.ts
+     (assertStock/canOrder). Any OOS or mapping/fetch failure counts as 0. */
+  function dealerSelectable(x) {
+    if (!CART.length) return true;
+    const sid = toStockDealerId(x);
+    return CART.every(i => {
+      const s = stockKnown.get(stockKey(sid, i.sku));
+      if (!s) return true;
+      return s.reason === 'unavailable' || (s.qty > 0 && s.canOrder);
+    });
+  }
+  async function refreshDealerStock() {
+    const jobs = [];
+    for (const x of DEALERS) {
+      const sid = toStockDealerId(x);
+      for (const i of CART) {
+        const key = stockKey(sid, i.sku);
+        if (!sid || stockKnown.has(key) || stockFetching.has(key)) continue;
+        stockFetching.add(key);
+        jobs.push({ key, sid, sku: i.sku });
+      }
+    }
+    if (!jobs.length) { stockReady = true; return; }
+    const settled = await Promise.all(jobs.map(j =>
+      fetch(`/api/stock?sku=${encodeURIComponent(j.sku)}&dealerId=${encodeURIComponent(j.sid)}`)
+        .then(r => r.ok ? r.json() : Promise.reject(new Error('stock ' + r.status)))
+        .then(st => ({ key: j.key, s: { qty: Number(st.qty) || 0, reason: st.reason, canOrder: !!st.canOrder } }))
+        .catch(() => ({ key: j.key, s: { qty: 0, reason: 'dealer_no_stock', canOrder: false } }))
+    ));
+    settled.forEach(({ key, s }) => { stockKnown.set(key, s); stockFetching.delete(key); });
+    stockReady = true;
+    if (typeof renderDealer === 'function') renderDealer();
+  }
+  fetch('/api/dealers').then(r => r.ok ? r.json() : null).then(d => {
+    if (!d || !Array.isArray(d.dealers) || !d.dealers.length) return;
+    DEALERS = d.dealers.map(x => ({
+      id: x.id, name: x.name, code: x.code, street: x.street, city: x.city,
+      prov: x.province, postal: x.postalCode, phone: x.phone, email: x.email,
+      hours: x.hoursEn, services: x.services, area: x.areaEn,
+    }));
+    if (typeof renderDealer === 'function') { renderDealer(); renderShip(); renderSummary(); }
+    refreshDealerStock();
+  }).catch(() => {});
+  const SVC_LABEL = { en: { pickup: 'Pickup', delivery: 'Local delivery', installation: 'Installation', measurement: 'Site measurement', design: 'Design consultation' }, fr: { pickup: 'Ramassage', delivery: 'Livraison locale', installation: 'Installation', measurement: 'Mesure sur place', design: 'Consultation design' } };
+  const SHIP = [
+    { id: 'freight', name: 'Delivery by dealer', cents: 0, quotedByDealer: true, note: 'Quoted by dealer · contacts you after checkout' },
+    { id: 'pickup', name: 'Dealer pickup', eta: 'Ready in 2 days', cents: 0, note: 'At your local dealer', dealerOnly: true },
+  ];
+  const CARDS = [
+    { id: 'tok_visa_4242', brand: 'Visa', last4: '4242', exp: '08/29', def: true },
+    { id: 'tok_mc_4444', brand: 'Mastercard', last4: '4444', exp: '10/26', soon: true },
+  ];
+  const FSA = { A: ['NL'], B: ['NS'], C: ['PE'], E: ['NB'], G: ['QC'], H: ['QC'], J: ['QC'], K: ['ON'], L: ['ON'], M: ['ON'], N: ['ON'], P: ['ON'], R: ['MB'], S: ['SK'], T: ['AB'], V: ['BC'], X: ['NT', 'NU'], Y: ['YT'] };
+  const BRANDCLS = { Visa: 'visa', Mastercard: 'mastercard', Amex: 'amex' };
+
+  /* Guest checkout: no session → no address book, no saved cards, no card vaulting. Everything is typed
+     inline and the order is authorised by the access token POST /api/orders returns (assets/session.js). */
+  let SESSION = (window.VSSession && VSSession.get()) || null;
+  let GUEST = !(SESSION && SESSION.userId);
+  let DEALER_POS = false;
+  const CHECKOUT_POS_KEY = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('ck_' + Date.now() + '_' + Math.random().toString(36).slice(2));
+  let posCreatePromise = null;
+  let placingPos = false;
+  async function loadCheckoutSession() {
+    let me = null;
+    try {
+      const r = await fetch('/api/me', { credentials: 'same-origin' });
+      me = r.ok ? await r.json() : null;
+    } catch (e) { me = null; }
+    /* The server is the authority: an authenticated /api/me (customer or dealer) is signed in. */
+    if (me && me.userId) {
+      GUEST = false;
+      SESSION = { userId: me.userId, email: me.email, name: me.name, role: me.role || 'customer', dealerId: me.dealerId || null };
+      DEALER_POS = SESSION.role === 'dealer';
+      if (DEALER_POS) {
+        state.addrId = 'new';
+        const payBtn = $('#toPayment');
+        if (payBtn) { payBtn.innerHTML = 'Save quote <span class="btn__icon" data-icon="arrowRight"></span>'; VS.icons(payBtn); }
+      }
+    } else {
+      DEALER_POS = false;
+      GUEST = true;
+    }
+  }
+  const state = { step: 1, addrId: (GUEST || DEALER_POS) ? 'new' : 1, newAddr: null, newBill: null, dealerId: null, dealerProv: null, dealerPicked: false, ship: 'freight', notes: '', bill: 'same', billId: 1, pm: 'new', sms: false, marketing: false, order: null };
+  const subtotal = () => CART.reduce((s, i) => s + i.unit * i.qty, 0);
+  /* 'new' with nothing captured yet (proto jumps, lang toggle mid-form) falls back to whatever is in the inputs. */
+  function shipAddresses() {
+    if (GUEST || DEALER_POS) return [];
+    return ADDRESSES;
+  }
+  const curAddr = () => state.addrId === 'new' ? (state.newAddr || readNewAddr()) : shipAddresses().find(a => a.id === state.addrId) || shipAddresses()[0];
+  /* Billing address as the receipt shows it: same as shipping, a saved one (signed in), or the inline guest form. */
+  const curBill = () => state.bill === 'same' ? curAddr() : ((GUEST || DEALER_POS) ? (state.newBill || readBillAddr()) : (ADDRESSES.find(a => a.id === state.billId) || curAddr()));
+  const curProv = () => (curAddr() && curAddr().prov) || 'MB';
+  const dealersFor = prov => DEALERS.filter(d => d.prov === prov);
+  /* Default dealer follows the shipping address (location). A manual pick is kept if the customer changes province. */
+  const curDealer = () => {
+    const sess = window.VSSession && VSSession.get();
+    if (sess && sess.role === 'dealer') {
+      state.dealerId = sess.dealerId || state.dealerId;
+      state.dealerProv = curProv();
+      return DEALERS.find(d => d.id === state.dealerId) || { id: sess.dealerId, name: sess.name || 'Your store', street: '', city: '', prov: curProv(), postal: '', phone: '', hours: '', services: [] };
+    }
+    const still = state.dealerId && DEALERS.find(d => d.id === state.dealerId);
+    if (state.dealerPicked && still) return still;
+    const prov = curProv();
+    if (state.dealerProv !== prov || !still) {
+      const list = dealersFor(prov);
+      state.dealerId = list.length ? list[0].id : null;
+      state.dealerProv = prov;
+    }
+    return DEALERS.find(d => d.id === state.dealerId) || null;
+  };
+  const curShip = () => SHIP.find(s => s.id === state.ship);
+  /* Pickup: place of supply is the selected dealer's province (may differ from ship-to). */
+  /* Promo applied on cart.html (10% off products only; freight stays full price). Tax is charged on the discounted amount. */
+  /* Promo only counts when it rode in on a real (non-empty) snapshot — never on the demo fallback order. */
+  const PROMO = (() => { try { const s = JSON.parse(localStorage.getItem('vs.cart') || 'null'); return s && Array.isArray(s.items) && s.items.length && s.promo === 'VANSTRO10' ? { code: 'VANSTRO10', pct: 10 } : null; } catch (e) { return null; } })();
+  const discount = () => PROMO ? Math.round(subtotal() * PROMO.pct / 100) : 0;
+  const discountLine = () => PROMO ? `<div class="line"><span class="k">${lang === 'fr' ? 'Rabais' : 'Discount'} · ${PROMO.code}</span><span class="v" style="color:var(--vs-green);font-weight:700">− ${money(discount())}</span></div>` : '';
+  /* Static quote carries subtotal/discount too, so renderDone() can show the same lines for static and server orders. */
+  const quote = () => Object.assign(VSTax.quote(state.ship === 'pickup' && curDealer() ? curDealer().prov : curProv(), subtotal() - discount() + curShip().cents), { subtotalCents: subtotal(), discountCents: discount(), promo: PROMO });
+  const dealerAddr = d => `${d.street}, ${d.city} ${d.prov} ${d.postal}`;
+  const svcChips = d => `<span class="svc">${d.services.map(s => `<i>${SVC_LABEL[lang][s]}</i>`).join('')}</span>`;
+  /* Role disclosure, shown at Step 1, on the confirmation page, and repeated in the order emails. */
+  const roleHtml = (d, compact) => {
+    const L = lang === 'fr';
+    if (!d) return L
+      ? `<b>Aucun détaillant participant dans votre province pour l’instant.</b> Vanstro Global Supply Inc. est le vendeur et exécute cette commande directement depuis Winnipeg. Pour le ramassage, la livraison, les retours et le service après-vente, écrivez à <a href="mailto:support@vanstro.ca">support@vanstro.ca</a> ou appelez le 204 221 2288.`
+      : `<b>No participating dealer in your province yet.</b> Vanstro Global Supply Inc. is the Seller and fulfils this order directly from Winnipeg. For pickup, delivery, returns and after-sales help contact <a href="mailto:support@vanstro.ca">support@vanstro.ca</a> or 204 221 2288.`;
+    const link = `<a href="https://www.vanstro.ca/dealer-services-and-responsibility/" target="_blank" rel="noopener">${L ? 'Partage des responsabilités' : 'How responsibilities are split'}</a>`;
+    return L
+      ? `<b>${d.name}</b> s’occupe du ramassage, de la livraison, des retours et du service après-vente. Le vendeur sur votre facture est <b>Vanstro Global Supply Inc.</b> L’installation ou la mesure est facturée séparément par le détaillant et <b>n’est pas incluse</b> dans ce total. ${link}`
+      : `<b>${d.name}</b> handles pickup, delivery, returns and after-sales help. The seller on your invoice is <b>Vanstro Global Supply Inc.</b> Installation or measurement is quoted and billed by the dealer and <b>not included</b> in this total. ${link}`;
+  };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmtAddr = a => `<b>${esc(a.name)}</b>${a.company ? '<br>' + esc(a.company) : ''}<br>${esc(a.street)}${a.unit ? ', ' + esc(a.unit) : ''}<br>${esc(a.city)} ${esc(a.prov)}&nbsp; ${esc(a.postal)}<br>Canada`;
+  const whenStr = d => d.toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-CA', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Winnipeg' }) + ' CT';
+
+  /* ---------------- summary ---------------- */
+  function renderSummary() {
+    $('#sumCount').textContent = CART.reduce((s, i) => s + i.qty, 0) + ' items';
+    $('#sumItems').innerHTML = CART.map(i => `<div class="item"><div class="item__img"><span data-icon="${i.icon}"></span><span class="item__qty">${i.qty}</span></div><div class="item__meta"><strong>${i.name}</strong><span class="muted">${i.meta}</span></div><span class="item__price">${money(i.unit * i.qty)}</span></div>`).join('');
+    const qt = quote(); const sh = curShip();
+    const L = lang === 'fr';
+    let lines = `<div class="line"><span class="k">${L ? 'Sous-total' : 'Subtotal'}</span><span class="v">${money(subtotal())}</span></div>${discountLine()}`;
+    lines += `<div class="line"><span class="k">${L ? 'Livraison' : 'Delivery'} <span class="muted small">· ${sh.name.split(' ·')[0]}</span></span><span class="v${sh.cents ? '' : ' free'}" style="${sh.cents ? '' : 'color:var(--vs-green);font-weight:700'}">${sh.cents ? money(sh.cents) : (sh.quotedByDealer ? (L ? 'Devis du détaillant' : 'Quoted by dealer') : (L ? 'Gratuit' : 'Free'))}</span></div>`;
+    qt.lines.forEach(t => { lines += `<div class="line"><span class="k">${L ? t.labelFr : t.labelEn}${t.noteEn ? `<span class="tip" title="${L ? t.noteFr : t.noteEn}">?</span>` : ''}</span><span class="v">${money(t.cents)}</span></div>`; });
+    $('#sumLines').innerHTML = lines;
+    $('#lblTotal').textContent = L ? 'Total' : 'Total';
+    $('#sumTotal').textContent = money(qt.totalCents);
+    $('#taxNote').innerHTML = L
+      ? `Taxes calculées pour <b>${qt.provinceName}</b>, votre province de livraison.`
+      : `Taxes calculated for <b>${qt.provinceName}</b>, your shipping province.`;
+    $('#dcTotal').textContent = money(qt.totalCents); $('#ntTotal').textContent = money(qt.totalCents);
+    $('#dcEta').textContent = sh.eta || '';
+    $('#payBtnLabel').textContent = DEALER_POS
+      ? `${L ? 'Commander' : 'Place order'} · ${money(qt.totalCents)}`
+      : `${L ? 'Payer' : 'Pay'} CAD ${money(qt.totalCents)}`;
+    VS.icons($('#sumItems'));
+  }
+
+  /* ---------------- step 1 ---------------- */
+  function renderAddresses() {
+    const addrs = shipAddresses();
+    if (state.addrId !== 'new' && !addrs.some(a => a.id === state.addrId)) state.addrId = addrs[0] ? addrs[0].id : 'new';
+    if (!addrs.length) {
+      // Nothing to pick from (guest): show the form straight away instead of a lone "New address" radio.
+      state.addrId = 'new';
+      $('#addrList').innerHTML = '';
+      $('#addrList').classList.add('hidden');
+      $('#addrForm').classList.remove('hidden');
+      $('#addrForm').style.marginTop = '0';
+      return;
+    }
+    $('#addrList').classList.remove('hidden');
+    $('#addrList').innerHTML = addrs.map(a => `<label class="pick${state.addrId === a.id ? ' is-on' : ''}"><input type="radio" name="addr" value="${a.id}" ${state.addrId === a.id ? 'checked' : ''}><span class="pick__radio"></span><div class="pick__body"><strong>${a.label}</strong>${a.defShip ? '<span class="chip chip--navy">Default</span>' : ''}<address>${fmtAddr(a).replace('<b>', '').replace('</b>', '')}</address>${a.notes ? `<span class="muted small">${a.notes}</span>` : ''}</div><span data-icon="${a.prov === 'MB' ? 'home' : 'pin'}" style="width:18px;color:var(--vs-text-3);display:inline-flex"></span></label>`).join('')
+      + `<label class="pick${state.addrId === 'new' ? ' is-on' : ''}"><input type="radio" name="addr" value="new" ${state.addrId === 'new' ? 'checked' : ''}><span class="pick__radio"></span><div class="pick__body"><strong>New address</strong></div><span data-icon="plus" style="width:18px;color:var(--vs-navy);display:inline-flex"></span></label>`;
+    VS.icons($('#addrList'));
+    $$('#addrList input').forEach(r => r.addEventListener('change', () => { state.addrId = r.value === 'new' ? 'new' : +r.value; $$('#addrList .pick').forEach(o => o.classList.toggle('is-on', o.contains(r))); $('#addrForm').classList.toggle('hidden', state.addrId !== 'new'); if (state.addrId !== 'new') { renderDealer(); renderShip(); renderSummary(); } else { lockDealerNewAddr(); state.newAddr = readNewAddr(); renderDealer(); renderShip(); renderSummary(); } }));
+    $('#addrForm').classList.toggle('hidden', state.addrId !== 'new');
+    lockDealerNewAddr();
+  }
+  function lockDealerNewAddr() {
+    $('#aProv').disabled = false;
+    if (!DEALER_POS || $('#aProv').value) return;
+    const store = DEALERS.find(x => x.id === SESSION.dealerId);
+    if (store) $('#aProv').value = store.prov;
+  }
+  Object.entries(VSTax.PROVINCES).forEach(([k, v]) => { ['#aProv', '#bProv'].forEach(sel => { const o = document.createElement('option'); o.value = k; o.textContent = v; $(sel).appendChild(o); }); });
+  const readNewAddr = () => ({ id: 'new', label: 'New address', name: $('#aName').value.trim(), company: $('#aCompany').value.trim(), street: $('#aStreet').value.trim(), unit: $('#aUnit').value.trim(), city: $('#aCity').value.trim(), prov: $('#aProv').value || 'MB', postal: $('#aPostal').value.trim().toUpperCase() });
+  const readBillAddr = () => ({ id: 'bill', label: 'Billing', name: $('#bName').value.trim(), company: $('#bCompany').value.trim(), street: $('#bStreet').value.trim(), unit: $('#bUnit').value.trim(), city: $('#bCity').value.trim(), prov: $('#bProv').value || '', postal: $('#bPostal').value.trim().toUpperCase() });
+  $('#bPostal').addEventListener('input', e => { let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); if (v.length > 3) v = v.slice(0, 3) + ' ' + v.slice(3); e.target.value = v; clr($('#fBPostal'), $('#hBPostal')); });
+  ['bName', 'bStreet', 'bCity', 'bProv'].forEach(id => $('#' + id).addEventListener(id === 'bProv' ? 'change' : 'input', () => clr($('#f' + id.slice(1, 2).toUpperCase() + id.slice(2)), $('#h' + id.slice(1, 2).toUpperCase() + id.slice(2)))));
+  function validateBillAddr() {
+    const a = readBillAddr(); let ok = true, first = null;
+    const bad = (f, h, m, el) => { setErr($(f), $(h), m); ok = false; first = first || el; };
+    if (a.name.length < 2) bad('#fBName', '#hBName', 'Enter the name for the invoice.', '#bName');
+    if (!a.street) bad('#fBStreet', '#hBStreet', 'Enter a street address.', '#bStreet');
+    if (!a.city) bad('#fBCity', '#hBCity', 'Enter a city.', '#bCity');
+    if (!a.prov) bad('#fBProv', '#hBProv', 'Select a province or territory.', '#bProv');
+    if (!/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] \d[ABCEGHJ-NPRSTV-Z]\d$/.test(a.postal)) bad('#fBPostal', '#hBPostal', 'Enter a valid postal code (A1A 1A1).', '#bPostal');
+    if (!ok) $(first).focus();
+    return ok;
+  }
+  $('#aPostal').addEventListener('input', e => { let v = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); if (v.length > 3) v = v.slice(0, 3) + ' ' + v.slice(3); e.target.value = v; clr($('#fAPostal'), $('#hAPostal')); });
+  $('#aProv').addEventListener('change', () => { state.newAddr = readNewAddr(); clr($('#fAProv'), $('#hAProv')); renderDealer(); renderShip(); renderSummary(); });
+  ['aName', 'aStreet', 'aCity'].forEach(id => $('#' + id).addEventListener('input', () => clr($('#f' + id.slice(1, 2).toUpperCase() + id.slice(2)), $('#h' + id.slice(1, 2).toUpperCase() + id.slice(2)))));
+  $('#aStreet').addEventListener('input', () => clr($('#fAStreet'), $('#hAStreet')));
+
+  function validateNewAddr() {
+    const a = readNewAddr(); let ok = true, first = null;
+    const bad = (f, h, m, el) => { setErr($(f), $(h), m); ok = false; first = first || el; };
+    if (a.name.length < 2) bad('#fAName', '#hAName', 'Enter the recipient’s full name.', '#aName');
+    if (!a.street) bad('#fAStreet', '#hAStreet', 'Enter a street address.', '#aStreet');
+    else if (/\bP\.?\s*O\.?\s*BOX\b|\bCP\b|\bC\.P\./i.test(a.street)) bad('#fAStreet', '#hAStreet', 'Freight can’t be delivered to a PO Box. Use a street address.', '#aStreet');
+    if (!a.city) bad('#fACity', '#hACity', 'Enter a city.', '#aCity');
+    if (!$('#aProv').value) bad('#fAProv', '#hAProv', 'Select a province or territory.', '#aProv');
+    if (!/^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] \d[ABCEGHJ-NPRSTV-Z]\d$/.test(a.postal)) bad('#fAPostal', '#hAPostal', 'Enter a valid postal code (A1A 1A1).', '#aPostal');
+    else if ($('#aProv').value && FSA[a.postal[0]] && !FSA[a.postal[0]].includes($('#aProv').value)) bad('#fAPostal', '#hAPostal', `${a.postal} is a ${FSA[a.postal[0]].map(p => VSTax.PROVINCES[p]).join(' / ')} postal code. Check the province.`, '#aPostal');
+    if (!ok) $(first).focus();
+    return ok;
+  }
+
+  function renderDealer() {
+    const sess = window.VSSession && VSSession.get();
+    const locked = !!(sess && sess.role === 'dealer' && (sess.dealerId || state.dealerId));
+    const L = lang === 'fr';
+    const prov = curProv();
+    const d = curDealer();
+    const dealerContact = x => [x.phone, x.hours].map(s => String(s || '').trim()).filter(Boolean).join(' · ');
+    const row = (x, extraChip) => { const oos = !dealerSelectable(x); const dis = locked || oos; return `<label class="pick${state.dealerId === x.id ? ' is-on' : ''}${dis ? ' is-disabled' : ''}"><input type="radio" name="dealer" value="${x.id}" ${state.dealerId === x.id ? 'checked' : ''} ${dis ? 'disabled' : ''}><span class="pick__radio"></span><div class="pick__body"><strong>${x.name}</strong><span class="chip chip--orange">${L ? 'Détaillant indépendant' : 'Independent dealer'}</span>${oos ? `<span class="chip">${L ? 'Rupture de stock' : 'No stock'}</span>` : ''}${extraChip || ''}<address>${dealerAddr(x)}<br>${dealerContact(x)}</address>${svcChips(x)}</div><span data-icon="pin" style="width:18px;color:var(--vs-text-3);display:inline-flex"></span></label>`; };
+    let html;
+    if (locked) {
+      const store = DEALERS.find(x => x.id === sess.dealerId);
+      html = store ? row(store, '') : `<div class="notice"><b>${L ? 'Ce compte détaillant n’est pas sur la liste.' : 'This dealer account is not on the participating list.'}</b></div>`;
+      $('#dealerSub').textContent = L ? 'Les commandes POS restent sur votre magasin.' : 'POS orders stay with your store.';
+    } else {
+      const local = dealersFor(prov);
+      const others = DEALERS.filter(x => x.prov !== prov);
+      const suggested = !state.dealerPicked && local[0] ? local[0].id : null;
+      const sugChip = `<span class="chip chip--navy">${L ? 'Suggéré' : 'Suggested'}</span>`;
+      const selected = d && DEALERS.some(x => x.id === d.id) ? d : null;
+      const restLocal = local.filter(x => x.id !== state.dealerId);
+      const restOthers = others.filter(x => x.id !== state.dealerId);
+      const restCount = restLocal.length + restOthers.length;
+      html = '';
+      if (local.length) {
+        html += `<p class="dealer-group">${L ? 'Près de l’adresse de livraison' : 'Near your shipping address'} · ${VSTax.PROVINCES[prov]}</p>`;
+      }
+      if (selected) html += row(selected, selected.id === suggested ? sugChip : '');
+      if (restCount) {
+        const moreLabel = L
+          ? (restCount === 1 ? 'Afficher 1 autre détaillant' : `Afficher ${restCount} autres détaillants`)
+          : (restCount === 1 ? 'Show 1 more dealer' : `Show ${restCount} more dealers`);
+        html += `<details class="pick__more" id="dealerMore"><summary aria-expanded="false">${moreLabel}</summary><div class="pick-more-list">`;
+        if (restLocal.length) html += restLocal.map(x => row(x, x.id === suggested ? sugChip : '')).join('');
+        if (restOthers.length) {
+          html += `<p class="dealer-group">${L ? 'Autres détaillants participants' : 'Other participating dealers'}</p>`;
+          html += restOthers.map(x => row(x, '')).join('');
+        }
+        html += `</div></details>`;
+      }
+      if (!html) html = `<div class="notice"><b>${L ? 'Aucun détaillant participant pour l’instant.' : 'No participating dealers yet.'}</b> ${L ? 'Vanstro exécute cette commande directement.' : 'Vanstro fulfils this order directly.'}</div>`;
+      $('#dealerSub').textContent = L
+        ? 'Suggéré selon l’adresse de livraison. Vous pouvez choisir n’importe quel détaillant participant.'
+        : 'Suggested from your shipping address. You can pick any participating dealer.';
+    }
+    $('#dealerList').innerHTML = html;
+    VS.icons($('#dealerList'));
+    const more = $('#dealerMore');
+    if (more) {
+      const sum = more.querySelector('summary');
+      const syncExpanded = () => { if (sum) sum.setAttribute('aria-expanded', more.open ? 'true' : 'false'); };
+      more.addEventListener('toggle', syncExpanded);
+      syncExpanded();
+    }
+    $$('#dealerList input').forEach(r => r.addEventListener('change', () => {
+      if (locked) return;
+      state.dealerId = r.value;
+      state.dealerPicked = true;
+      renderDealer();
+      renderShip();
+      renderSummary();
+    }));
+    $('#dealerRole').innerHTML = roleHtml(d, false);
+  }
+
+  function renderShip() {
+    if (!SHIP.some(s => s.id === state.ship)) state.ship = 'freight';
+    const prov = curProv(); const d = curDealer();
+    $('#delivSub').textContent = VSTax.PROVINCES[prov];
+    const pickupOk = !!(d && d.services.includes('pickup'));
+    if (curShip().dealerOnly && !pickupOk) state.ship = 'freight';
+    const L = lang === 'fr';
+    $('#shipList').innerHTML = SHIP.map(s => {
+      const dis = s.dealerOnly && !pickupOk;
+      const note = s.dealerOnly ? (pickupOk ? `${d.name} · ${dealerAddr(d)}` : (d ? `${d.name} does not offer pickup` : `No participating dealer in ${VSTax.PROVINCES[prov]}`)) : s.note;
+      return `<label class="pick${state.ship === s.id ? ' is-on' : ''}${dis ? ' is-disabled' : ''}"><input type="radio" name="ship" value="${s.id}" ${state.ship === s.id ? 'checked' : ''} ${dis ? 'disabled' : ''}><span class="pick__radio"></span><div class="pick__body"><strong>${s.name}</strong>${s.eta ? ` <span class="muted small" style="display:inline">· ${s.eta}</span>` : ''}<span class="muted">${note}</span></div><span class="pick__price${s.cents ? '' : ' free'}">${s.cents ? money(s.cents) : (s.quotedByDealer ? (L ? 'Devis du détaillant' : 'Quoted by dealer') : (L ? 'Gratuit' : 'Free'))}</span></label>`; }).join('');
+    $$('#shipList input').forEach(r => r.addEventListener('change', () => { state.ship = r.value; $$('#shipList .pick').forEach(o => o.classList.toggle('is-on', o.contains(r))); renderSummary(); }));
+  }
+  $('#notes').addEventListener('input', e => { $('#notesCount').textContent = e.target.value.length; state.notes = e.target.value; });
+  $('#email').addEventListener('input', () => clr($('#fEmail'), $('#hEmail')));
+  $('#phone').addEventListener('input', () => clr($('#fPhone'), $('#hPhone')));
+
+  $('#toReview').addEventListener('click', () => {
+    let ok = true;
+    const em = VS.detectIdentifier($('#email').value);
+    if (!(em.type === 'email' && em.valid)) { setErr($('#fEmail'), $('#hEmail'), 'Enter a valid email.'); ok = false; }
+    const ph = $('#phone').value.trim(); if (ph) { const p = VS.detectIdentifier(ph); if (!(p.type === 'phone' && p.valid)) { setErr($('#fPhone'), $('#hPhone'), 'Enter a 10-digit Canadian mobile number.'); ok = false; } }
+    if (state.addrId === 'new') { if (!validateNewAddr()) ok = false; else { state.newAddr = readNewAddr(); renderDealer(); renderShip(); renderSummary(); } }
+    if (!ok) { VS.toast('Please fix the highlighted fields', 'error'); return; }
+    go(2);
+  });
+
+  /* ---------------- step 2 ---------------- */
+  function renderReview() {
+    const a = curAddr(), s = curShip(); const ph = $('#phone').value.trim();
+    $('#rvContact').innerHTML = `<b>${$('#email').value}</b>${ph ? '<br>+1 ' + ph : ''}`;
+    $('#rvAddr').innerHTML = fmtAddr(a) + (state.notes ? `<br><span class="muted small">“${state.notes}”</span>` : '');
+    const d = curDealer();
+    $('#rvDealer').innerHTML = d ? `<b>${d.name}</b> <span class="chip chip--orange">Independent dealer</span><br>${dealerAddr(d)}<br><span class="muted small">Pickup, delivery coordination, returns and after-sales for this order</span>` : `<b>None in ${VSTax.PROVINCES[curProv()]}</b><br><span class="muted small">Vanstro fulfils this order directly</span>`;
+    $('#rvShip').innerHTML = `<b>${s.name}</b>${s.eta ? ` · ${s.eta}` : ''}${s.id === 'pickup' && d ? ` · <span class="muted">${dealerAddr(d)}</span>` : ''}`;
+    $('#dcReturnsVia').textContent = d ? d.name : 'support@vanstro.ca';
+    $('#cDealerRow').classList.toggle('hidden', !d);
+    if (d) $('#cDealerText').innerHTML = `I understand <b>${d.name}</b> is an independent local dealer and my first contact for pickup, delivery coordination, returns and after-sales help, and that any Dealer Services (installation, measurement, etc.) are agreed and paid separately with the dealer. <a href="https://www.vanstro.ca/dealer-services-and-responsibility/" target="_blank" rel="noopener">Learn more</a> <b style="color:var(--vs-error)">*</b>`;
+    $('#rvItems').innerHTML = CART.map(i => `${i.qty} × ${i.name} <span class="muted">· ${money(i.unit * i.qty)}</span>`).join('<br>');
+    $('#ntEmail').textContent = $('#email').value;
+    $('#ntSms').textContent = ph && state.sms ? ` and by SMS to +1 ${ph}` : '';
+    $('#rcSms').disabled = !ph; $('#rcSms').checked = state.sms && !!ph;
+    $('#rcSms').closest('.check').style.opacity = ph ? 1 : .5;
+  }
+  $('#rcSms').addEventListener('change', e => { state.sms = e.target.checked; renderReview(); });
+  $('#cMarketing').addEventListener('change', e => state.marketing = e.target.checked);
+  $('#cTerms').addEventListener('change', () => { $('#consent').classList.remove('is-error'); $('#hConsent').textContent = ''; });
+  $('#cDealer').addEventListener('change', () => { $('#consent').classList.remove('is-error'); $('#hConsent').textContent = ''; });
+  $('#toPayment').addEventListener('click', async () => {
+    if (!$('#cTerms').checked) { $('#consent').classList.add('is-error'); $('#hConsent').innerHTML = VS.I.alert + '<span> Please review and accept the Terms of Sale to continue.</span>'; $('#cTerms').focus(); return; }
+    if (curDealer() && !$('#cDealer').checked) { $('#consent').classList.add('is-error'); $('#hConsent').innerHTML = VS.I.alert + '<span> Please confirm you understand your local dealer’s role to continue.</span>'; $('#cDealer').focus(); return; }
+    state.consentAt = new Date().toISOString(); state.dealerAckAt = curDealer() ? state.consentAt : null;
+    if (!DEALER_POS) { go(3); return; }
+    const btn = $('#toPayment');
+    btn.disabled = true; btn.classList.add('is-loading');
+    try {
+      const payload = orderPayload('pos');
+      delete payload.payment;
+      payload.checkoutIdempotencyKey = CHECKOUT_POS_KEY;
+      const res = await fetch('/api/quotes', { method: 'POST', credentials: 'include', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        $('#consent').classList.add('is-error');
+        $('#hConsent').innerHTML = VS.I.alert + '<span> ' + (body.detail || body.error || 'Could not save the quote.') + '</span>';
+        return;
+      }
+      location.href = '/account#orders';
+    } catch (e) {
+      $('#consent').classList.add('is-error');
+      $('#hConsent').innerHTML = VS.I.alert + '<span> Could not save the quote. Try again.</span>';
+    } finally {
+      btn.disabled = false; btn.classList.remove('is-loading');
+    }
+  });
+
+  /* ---------------- step 3 ---------------- */
+  let cardFrame = null; // htMount() or mockMount() handle for the card box
+
+  /* ---- live order/payment wiring (scripts/dev-server.mts or the real API) ----
+     When /api/health answers, every payment attempt is a real order:
+       GET  /api/checkout/payment-config → { mode, ht:{ url, profileId } }   (how to render the card box)
+       Pay → cardFrame.tokenize() → temporary token (Moneris Hosted Tokenization; mock:<Brand>:<last4> in mock mode)
+       POST /api/orders → { orderNo, quote, dealer }                         (server re-prices + quotes tax)
+       POST /api/checkout/moneris/pay { orderNo, temporaryToken } → server charges Moneris, issues invoice, sends emails, notifies dealer.
+     Without an API (plain static server) the page keeps simulating the order locally. */
+  const live = { api: null, cfg: null, order: null, lastToken: null, lastHint: null };
+  VSMoneris.api().then(a => {
+    live.api = a || null;
+    if (!a) return;
+    state.pm = 'new';
+    // Customer-facing payment page: no internal wiring/tech-stack strip here (order API /
+    // Hosted Tokenization / ACS are implementation details, not something a paying customer
+    // needs to see). The real trust signals — "Secured by Moneris", the card-field hint, and
+    // the step-2 subtitle — stay untouched below; this was only the internal debug line.
+    if (state.step === 3) renderPayment();
+  });
+  const provinceOf = a => a.prov;
+  function addrPayload(a) { return { name: a.name, company: a.company || undefined, street: a.street, unit: a.unit || undefined, city: a.city, province: provinceOf(a), postalCode: a.postal }; }
+  function orderPayload(method) {
+    const d = curDealer(); const ph = $('#phone').value.trim();
+    return {
+      cart: CART.map(i => ({ sku: i.sku, name: i.name, unitCents: i.unit, qty: i.qty })),
+      contact: { email: $('#email').value.trim(), phone: ph ? ph.replace(/\D/g, '').replace(/^1/, '') : '' },
+      shipping: state.addrId === 'new' ? { address: addrPayload(curAddr()) } : { addressId: String(state.addrId) },
+      dealer: { dealerId: (DEALER_POS && SESSION && SESSION.dealerId) || (d ? d.id : null) },
+      deliveryMethod: state.ship,
+      notes: state.notes || undefined,
+      billing: state.bill === 'same' ? { sameAsShipping: true }
+        : (GUEST || DEALER_POS) ? { sameAsShipping: false, address: addrPayload(curBill()) }
+        : { sameAsShipping: false, addressId: String(state.billId) },
+      consents: { terms: true, privacy: true, marketing: !!state.marketing, smsReceipt: !!(state.sms && ph), dealerRole: !!d && $('#cDealer').checked },
+      payment: method === 'new' ? { method: 'new', saveCard: !GUEST && $('#ccSave').checked } : { method },
+      checkoutIdempotencyKey: method === 'pos' ? CHECKOUT_POS_KEY : undefined,
+      promo: PROMO ? PROMO.code : undefined, // server validates + prices the discount; we only send the code
+      locale: lang === 'fr' ? 'fr-CA' : 'en-CA',
+    };
+  }
+  async function createLiveOrder(method) {
+    const res = await VSMoneris.createOrder(orderPayload(method));
+    // The server re-prices from the catalogue. If its total isn't the one on screen, stop before
+    // anything is charged — the customer must never pay an amount they didn't see.
+    if (res.quote && res.quote.totalCents !== quote().totalCents) {
+      console.warn('server total differs from client quote', res.quote.totalCents, quote().totalCents);
+      const err = new Error('quote_mismatch'); err.status = 409; err.body = { error: 'quote_mismatch', serverCents: res.quote.totalCents, clientCents: quote().totalCents };
+      throw err;
+    }
+    live.order = res;
+    if (window.VSTrack && res && res.orderNo) VSTrack.event('order_created', { orderNo: res.orderNo, channel: res.payChannel || 'ht' });
+    return res;
+  }
+  function describeApiError(e) {
+    const b = (e && e.body) || {};
+    if (b.error === 'quote_mismatch') return `The total has changed since you started (${money(b.clientCents)} → ${money(b.serverCents)}). Nothing was charged. Please review your cart and try again.`;
+    if (b.error === 'promo_invalid' || b.error === 'promo_expired') return `The promo code ${b.promo || ''} is no longer valid. Nothing was charged. Remove it in your cart and try again.`;
+    if (b.error === 'payment_pending') return 'Your bank is still confirming this payment. Don’t retry — we’ll email you as soon as it’s confirmed.';
+    if (b.error === 'dealer_required') return 'Choose a dealer in Step 1 before paying.';
+    if (b.error === 'dealer_province_mismatch') return 'Choose a participating dealer, then try again.';
+    if (b.error === 'pos_store_mismatch') return 'This dealer account can only place orders for its own store.';
+    if (b.error === 'dealer_account_incomplete') return 'This dealer account is not linked to a store. Register with the Vanstro invite code, or contact Vanstro.';
+    if (b.error === 'dealer_not_found') return 'This dealer account is not on the participating list. Contact Vanstro.';
+    if (b.error === 'unknown_sku') return 'A product in this cart is no longer in the catalogue (' + (b.sku || 'SKU') + '). Remove it and try again.';
+    if (b.error === 'pickup_unavailable') return 'Pickup is not available with this dealer. Choose freight delivery.';
+    if (b.error === 'payment_unavailable') return 'Card payments are not available right now (' + (b.detail || 'Moneris not configured') + '). Nothing was charged.';
+    if (b.error === 'wallet_not_available') return 'Apple Pay and Google Pay are not enabled on this store yet. Please pay with a card.';
+    if (b.error === 'order_expired') return 'This payment session expired. Nothing was charged; please try again.';
+    if (b.error === 'invalid_request') return 'Some order details are invalid: ' + JSON.stringify(b.issues && b.issues.fieldErrors || {}).slice(0, 160);
+    if (b.error === 'pos_dealer_only') return 'Pay at POS is only available on a dealer account.';
+    if (b.error === 'pos_not_configured') return 'The POS channel is not enabled. Contact an administrator.';
+    if (b.error === 'pos_terminal_unbound') return 'This store is not bound to a POS terminal.';
+    if (b.error === 'pos_busy') return 'The terminal is busy. Try again in a moment.';
+    if (b.error === 'payment_unresolved') return 'A previous card attempt is still unresolved. Retry the same payment — do not enter a new card.';
+    if (b.error === 'guest_address_required') return 'Please enter your full shipping and billing address to check out as a guest.';
+    if (b.error === 'guest_checkout_unavailable') return 'Guest checkout is not available right now. Sign in to continue, or try again later.';
+    if (b.error === 'rate_limited') return 'Too many attempts from this connection. Please wait a few minutes and try again.';
+    if (b.error === 'email_blocked') return 'This email cannot place new orders. Please contact support.';
+    return (e && e.message) || 'Something went wrong. Nothing was charged.';
+  }
+  function posFailCopy(code) {
+    if (code === 'pos_not_configured') return 'The POS channel is not enabled. Contact an administrator.';
+    if (code === 'pos_terminal_unbound') return 'This store is not bound to a POS terminal.';
+    if (code === 'pos_busy') return 'The terminal is busy. Try again in a moment.';
+    if (code === 'dealer_account_incomplete') return 'This account is not linked to a store.';
+    if (code === 'pos_store_mismatch') return 'This dealer account can only place orders for its own store.';
+    return null;
+  }
+  function showPosStatus(html, isError) {
+    const el = $('#posPayStatus');
+    if (!el) return;
+    el.classList.remove('hidden');
+    el.style.borderColor = isError ? 'var(--vs-red, #b42318)' : '';
+    el.innerHTML = html;
+  }
+  async function ensurePosOrder() {
+    if (live.order && live.order.orderNo) return live.order;
+    if (posCreatePromise) return posCreatePromise;
+    posCreatePromise = createLiveOrder('pos').catch(err => { posCreatePromise = null; throw err; });
+    return posCreatePromise;
+  }
+  async function placePosOrder() {
+    $$('#payAlert .alert').forEach(a => a.remove());
+    if (!DEALER_POS) {
+      alertPay('error', 'We couldn’t place the order', 'Sign in with a dealer account to pay at POS.');
+      return;
+    }
+    if (placingPos) return;
+    placingPos = true;
+    $('#payBtn').disabled = true;
+    if (live.api === null) live.api = (await VSMoneris.api()) || false;
+    if (!live.api) {
+      placingPos = false;
+      $('#payBtn').disabled = false;
+      alertPay('info', 'Order saved on this device', 'Start the API server to create a POS order. Opening My account…');
+      location.href = '/account#orders';
+      return;
+    }
+    let orderNo = live.order && live.order.orderNo;
+    try {
+      const created = await ensurePosOrder();
+      orderNo = created.orderNo;
+    } catch (e) {
+      placingPos = false;
+      $('#payBtn').disabled = false;
+      const code = e && e.body && e.body.error;
+      const specific = posFailCopy(code);
+      alertPay('error', 'We couldn’t place the order', specific || describeApiError(e));
+      return;
+    }
+    showPosStatus('<strong>Sending to your POS…</strong> Order <code>' + orderNo + '</code>', false);
+    try {
+      await VSMoneris.pushPos(orderNo);
+      clearPaidCart();
+      showPosStatus('<strong>Sent to your Vanstro POS.</strong> Order <code>' + orderNo + '</code> is created and unpaid until the terminal captures the card.', false);
+      $('#payBtn').disabled = true;
+    } catch (e) {
+      const code = e && e.body && e.body.error;
+      const specific = posFailCopy(code) || describeApiError(e);
+      showPosStatus('<strong>Order created, not paid.</strong> Order <code>' + orderNo + '</code>. ' + specific + ' <button type="button" class="btn btn--primary btn--sm" id="posRetry">Retry POS</button>', true);
+      const retry = $('#posRetry');
+      if (retry) retry.addEventListener('click', () => { placingPos = false; placePosOrder(); });
+      $('#payBtn').disabled = false;
+    } finally {
+      placingPos = false;
+    }
+  }
+  /* Server charge: the only source of truth for “paid”. */
+  async function settleLive(token, hint) {
+    if (!live.order) return;
+    live.lastToken = token;
+    live.lastHint = hint || null;
+    show('placing'); const li = k => $(`#placingSteps li[data-k="${k}"]`);
+    $$('#placingSteps li').forEach(x => x.classList.remove('cur', 'ok'));
+    const d = curDealer(); $('#placingSteps li[data-k="dealer"]').style.display = d ? '' : 'none';
+    li('auth').classList.add('cur');
+    let res;
+    try { res = await VSMoneris.pay(live.order.orderNo, Object.assign({ temporaryToken: token, cardholderName: $('#ccName').value.trim() || undefined, saveCard: $('#ccSave').checked }, hint ? { hint } : {})); }
+    catch (e) {
+      show('payment');
+      const body = e.body || {};
+      const tokenRejected = e.status === 402 && /token/.test(body.code || body.error || '');
+      const declined = e.status === 402 && !tokenRejected;
+      const expired = e.status === 410;
+      const pending = e.status === 202 || body.error === 'payment_pending';
+      const keepToken = !tokenRejected && !declined && !expired && !pending;
+      if (expired || declined) { live.order = null; live.lastToken = null; live.lastHint = null; }
+      else if (tokenRejected) { live.lastToken = null; live.lastHint = null; }
+      if (pending) { $('#payBtn').disabled = true; alertPay('warning', 'Payment is being confirmed', describeApiError(e)); return; }
+      if (tokenRejected) alertPay('warning', 'Please re-enter your card', body.message || 'Your card details timed out. No charge was made.');
+      else if (declined) alertPay('error', 'That card didn’t go through', (body.message || 'Your bank declined the payment. No charge was made.') + ' Try another card, or contact your bank.');
+      else if (expired) alertPay('warning', 'Your payment session expired', 'Nothing has been charged. Please try again.');
+      else if (e.status === 502 || body.error === 'payment_unavailable' || body.error === 'payment_unresolved') alertPay('warning', body.error === 'payment_unresolved' ? 'Retry the same payment' : 'Payment provider unavailable', describeApiError(e));
+      else alertPay('error', 'We couldn’t confirm the payment', describeApiError(e));
+      if (!keepToken && cardFrame) cardFrame.reset();
+      return;
+    }
+    li('auth').classList.remove('cur'); li('auth').classList.add('ok');
+    ['verify', 'order', ...(d ? ['dealer'] : []), 'email'].reduce((pr, k) => pr.then(async () => { $$('#placingSteps li').forEach(x => x.classList.remove('cur')); li(k).classList.add('cur'); await new Promise(r => setTimeout(r, 500)); li(k).classList.remove('cur'); li(k).classList.add('ok'); }), Promise.resolve())
+      .then(() => { adoptServerOrder(res); renderDone({ emailFail: !!(res.notifications && res.notifications.confirmation && res.notifications.confirmation.failed) }); show('done'); VS.toast(res.notifications && res.notifications.confirmation && res.notifications.confirmation.failed ? 'Order placed — receipt email failed, use Resend' : 'Receipt sent to ' + VS.maskEmail(state.order.email)); });
+  }
+  /* Map the server order onto the shape renderDone() already uses. */
+  function adoptServerOrder(res) {
+    live.order = null; live.lastToken = null; live.lastHint = null;
+    const o = res.order; const p = o.payment || {}; const n = res.notifications || {};
+    state.order = {
+      no: o.orderNo, serverNo: o.orderNo, invoiceNo: o.invoiceNo, at: new Date(p.paidAt || o.createdAt),
+      pay: { wallet: p.wallet, brand: p.brand, last4: p.last4, auth_code: p.authCode, reference_num: p.referenceNo, threeDS: !!p.threeDS },
+      /* The receipt renders from the server's quote (incl. its discount), never the client's PROMO. */
+      quote: { lines: o.quote.tax.lines, totalCents: o.quote.totalCents, provinceName: o.quote.tax.provinceName, qstBn: o.quote.tax.qstBn, subtotalCents: o.quote.subtotalCents, discountCents: o.quote.discountCents || 0, promo: o.quote.promo || null },
+      ship: curShip(), dealer: curDealer(), dealerAckAt: state.dealerAckAt, addr: curAddr(), bill: curBill(),
+      email: o.email, phone: $('#phone').value.trim(), sms: false, vault: !!p.saved,
+      guest: !!o.guest, accessToken: (window.VSSession && VSSession.orderToken(o.orderNo)) || null,
+      notifications: n, dealerNotified: !!(n.dealer && n.dealer.sentAt),
+    };
+    // Remember the last guest order so order-status.html can open it without retyping.
+    if (o.guest) { try { localStorage.setItem('vs.lastOrder', JSON.stringify({ orderNo: o.orderNo, email: o.email, at: Date.now() })); } catch (e) {} }
+    if (window.VSTrack) VSTrack.event('purchase', { orderNo: o.orderNo, channel: p.saved ? 'saved' : 'card', guest: !!o.guest });
+    clearPaidCart();
+  }
+  /* Paid / placed lines must not sit in vs.cart — coming back to checkout would charge them again. Keep saved-for-later and province. */
+  function clearPaidCart() {
+    try {
+      const s = JSON.parse(localStorage.getItem('vs.cart') || 'null') || {};
+      localStorage.setItem('vs.cart', JSON.stringify({ items: [], saved: Array.isArray(s.saved) ? s.saved : [], promo: null, prov: s.prov || 'MB', at: new Date().toISOString() }));
+    } catch (e) { try { localStorage.removeItem('vs.cart'); } catch (e2) {} }
+  }
+  function renderPayment() {
+    const dealerPos = DEALER_POS;
+    $('#htPayBlock').classList.toggle('hidden', dealerPos);
+    $('#posPayBlock').classList.toggle('hidden', !dealerPos);
+    const authNote = $('#payAuthNote');
+    if (authNote) authNote.classList.toggle('hidden', dealerPos);
+    const a = curAddr();
+    $('#billSame').innerHTML = fmtAddr(a).replace('<b>', '').replace('</b>', '').replace(/<br>/g, ', ');
+    $('#billSel').innerHTML = shipAddresses().map(x => `<option value="${x.id}">${x.label} · ${x.street}, ${x.city} ${x.prov}</option>`).join('');
+    $('#billPick').classList.toggle('hidden', GUEST || DEALER_POS); $('#billForm').classList.toggle('hidden', !(GUEST || DEALER_POS));
+    $('#ccSaveRow').classList.toggle('hidden', GUEST); if (GUEST) $('#ccSave').checked = false;
+    if (live.api) state.pm = 'new';
+    const saved = live.api ? '' : CARDS.map(c => `<label class="pick${state.pm === c.id ? ' is-on' : ''}"><input type="radio" name="pm" value="${c.id}" ${state.pm === c.id ? 'checked' : ''}><span class="pick__radio"></span><span class="cbrand cbrand--${BRANDCLS[c.brand]}">${c.brand === 'Visa' ? 'VISA' : c.brand === 'Amex' ? 'AMEX' : ''}</span><div class="pick__body"><strong>${c.brand} •••• ${c.last4}</strong>${c.def ? '<span class="chip chip--navy">Default</span>' : ''}${c.soon ? '<span class="chip chip--orange">Expires soon</span>' : ''}<span class="muted">Expires ${c.exp}</span></div></label>`).join('');
+    $('#pmList').innerHTML = saved
+      + `<label class="pick${state.pm === 'new' ? ' is-on' : ''}"><input type="radio" name="pm" value="new" ${state.pm === 'new' ? 'checked' : ''}><span class="pick__radio"></span><span class="cbrand cbrand--new"><span data-icon="card"></span></span><div class="pick__body"><strong>New card</strong><span class="muted">Visa, Mastercard, Amex</span></div></label>`;
+    VS.icons($('#pmList'));
+    $$('#pmList input').forEach(r => r.addEventListener('change', () => { state.pm = r.value; $$('#pmList .pick').forEach(o => o.classList.toggle('is-on', o.contains(r))); showPm(); }));
+    showPm();
+  }
+  function showPm() {
+    if (DEALER_POS) return;
+    const isNew = state.pm === 'new';
+    $('#savedPay').classList.toggle('hidden', isNew); $('#newPay').classList.toggle('hidden', !isNew);
+    if (isNew && !cardFrame) mountFrame();
+  }
+  const setCardErr = (msg, fields) => { setErr($('#fCard'), $('#hCard'), msg); if (fields && fields.length && cardFrame && cardFrame.focus) cardFrame.focus(); };
+  const clrCardErr = () => clr($('#fCard'), $('#hCard'), 'Number, expiry and security code go straight to Moneris from this field. They never reach our servers.');
+  function showBrand(b) { const w = $('#cardBrands'); w.classList.toggle('has-brand', !!b); $$('#cardBrands i').forEach(i => i.classList.toggle('is-on', i.dataset.brand === b)); }
+  function mountMock() {
+    cardFrame = VSMoneris.mockMount({ divId: 'monerisFrame', onBrand: showBrand });
+    $('#cardBox').addEventListener('input', clrCardErr);
+  }
+  let mounting = false;
+  /* Renders the card box. Live → Moneris Hosted Tokenization iframe; mock/static → our stand-in inputs.
+     No order exists yet: the order is created when the customer presses Pay. */
+  async function mountFrame() {
+    if (DEALER_POS) return;
+    if (mounting) return; mounting = true;
+    try {
+      if (live.api === null) live.api = (await VSMoneris.api()) || false; // health check may still be in flight on deep links
+      if (!live.api) return mountMock();
+      live.cfg = live.cfg || await VSMoneris.paymentConfig();
+      if (live.cfg.mode !== 'live') return mountMock();
+      if (!live.cfg.ht) { $('#payBtn').disabled = true; alertPay('error', 'Card payments unavailable', 'Moneris Hosted Tokenization is not configured (MONERIS_HT_PROFILE_ID). Nothing was charged.'); return; }
+      cardFrame = VSMoneris.htMount({ divId: 'monerisFrame', url: live.cfg.ht.url, profileId: live.cfg.ht.profileId });
+      // The iframe swallows focus events; mirror its focus state onto the box for the ring.
+      const box = $('#cardBox'); const el = cardFrame.element();
+      const sync = () => box.classList.toggle('is-focus', document.activeElement === (cardFrame && cardFrame.element()));
+      window.addEventListener('blur', () => setTimeout(sync, 0)); window.addEventListener('focus', sync); el.addEventListener('load', sync);
+    } catch (e) {
+      alertPay('error', 'We couldn’t load the payment form', describeApiError(e));
+    } finally { mounting = false; }
+  }
+  function remountFrame() { if (cardFrame) { cardFrame.destroy(); cardFrame = null; } $('#monerisFrame').innerHTML = ''; showBrand(''); clrCardErr(); if (state.pm === 'new') mountFrame(); }
+  $$('input[name="bill"]').forEach(r => r.addEventListener('change', () => { state.bill = r.value; $$('input[name="bill"]').forEach(x => x.closest('.pick').classList.toggle('is-on', x.checked)); $('#billOther').classList.toggle('hidden', r.value !== 'other'); }));
+  $('#billSel').addEventListener('change', e => { state.billId = +e.target.value; });
+  $('#savedCvv').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, ''); clr($('#fSavedCvv'), $('#hSavedCvv')); });
+  $('#ccName').addEventListener('input', () => clr($('#fCcName'), $('#hCcName')));
+
+  function alertPay(type, title, body) {
+    const ic = type === 'error' ? 'alert' : type === 'warning' ? 'warn' : 'checkCircle';
+    $('#payAlert').innerHTML = `<div class="alert alert--${type}" role="alert"><span data-icon="${ic}"></span><div><strong>${title}</strong>${body}</div></div>`; VS.icons($('#payAlert')); window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function challenge3DS({ brand, last4, amount }) {
+    return new Promise(res => {
+      $('#acsAmount').textContent = money(amount) + ' CAD'; $('#acsCard').textContent = `${brand} •••• ${last4}`; $('#acsDate').textContent = whenStr(new Date()); $('#acsCode').value = '';
+      $('#acsModal').classList.remove('hidden'); setTimeout(() => $('#acsCode').focus(), 50);
+      const done = v => { $('#acsModal').classList.add('hidden'); $('#acsGo').onclick = $('#acsCancel').onclick = null; $('#acsCode').style.borderColor = ''; $('#payBtn').focus(); res(v); };
+      $('#acsGo').onclick = () => { if ($('#acsCode').value.replace(/\D/g, '').length < 6) { $('#acsCode').style.borderColor = '#b3261e'; $('#acsCode').focus(); return; } done(true); };
+      $('#acsCancel').onclick = () => done(false);
+    });
+  }
+  /* New card: tokenize in the (Moneris or mock) card box → create the order → server charge.
+     Saved card → server-side purchase with the stored payment method (simulated here). */
+  async function payNewCard() {
+    $$('#payAlert .alert').forEach(a => a.remove());
+    if (live.api && live.order && live.lastToken) return settleLive(live.lastToken, live.lastHint);
+    if (!cardFrame) { await mountFrame(); if (!cardFrame) return; }
+    let ok = true;
+    if (GUEST && state.bill === 'other') { if (!validateBillAddr()) ok = false; else state.newBill = readBillAddr(); }
+    if ($('#ccName').value.trim().length < 2) { setErr($('#fCcName'), $('#hCcName'), 'Enter the name as printed on the card.'); ok = false; }
+    let tok;
+    try { tok = await cardFrame.tokenize(); }
+    catch (e) { setCardErr(e.message || 'Check your card details.', e.fields); ok = false; }
+    if (!ok) return;
+    clrCardErr();
+    const t = tok.test; // mock only: outcome the stand-in would produce
+    if (t && t.challenge) { const passed = await challenge3DS({ brand: t.brand, last4: t.last4, amount: quote().totalCents }); if (!passed) { cardFrame.reset(); alertPay('warning', 'Bank verification was cancelled', 'Nothing has been charged. You can try again.'); return; } }
+    if (live.api) {
+      $('#payBtn').classList.add('is-loading'); $('#cardBox').classList.add('is-busy');
+      try { if (!live.order) await createLiveOrder('new'); }
+      catch (e) { alertPay('error', 'We couldn’t start the payment', describeApiError(e)); cardFrame.reset(); return; }
+      finally { $('#payBtn').classList.remove('is-loading'); $('#cardBox').classList.remove('is-busy'); }
+      return settleLive(tok.dataKey);
+    }
+    // Static prototype (no API): simulate the issuer from the test PAN.
+    await new Promise(r => setTimeout(r, 700));
+    const base = { brand: t.brand, last4: t.last4, cardholder: $('#ccName').value.trim(), saveToVault: $('#ccSave').checked };
+    if (t.result === 'd') return onReceipt({ ...base, result: 'd', response_code: t.code, message: t.messageEn });
+    onReceipt({ ...base, result: 'a', response_code: '027', auth_code: String(Math.floor(100000 + Math.random() * 899999)), reference_num: '660' + Date.now().toString().slice(-9) + '0010', threeDS: !!t.challenge });
+  }
+  $('#payBtn').addEventListener('click', async () => {
+    if (DEALER_POS) {
+      $('#payBtn').classList.add('is-loading');
+      try { await placePosOrder(); } finally { $('#payBtn').classList.remove('is-loading'); }
+      return;
+    }
+    if (state.pm === 'new') { $('#payBtn').classList.add('is-loading'); try { await payNewCard(); } finally { $('#payBtn').classList.remove('is-loading'); } return; }
+    if (live.api) { alertPay('warning', 'Saved cards are not enabled', 'Pay with a new card. Vaulted cards are not charged in this prototype.'); state.pm = 'new'; renderPayment(); return; }
+    if ($('#savedCvv').value.length < 3) { setErr($('#fSavedCvv'), $('#hSavedCvv'), 'Enter the 3-digit code on the back of your card (4 on the front for Amex).'); $('#savedCvv').focus(); return; }
+    const c = CARDS.find(x => x.id === state.pm); $('#payBtn').classList.add('is-loading');
+    await new Promise(r => setTimeout(r, 900));
+    const needs3ds = quote().totalCents >= 500000; // demo: issuer steps up on high-value purchases
+    if (needs3ds) { const ok = await challenge3DS({ brand: c.brand, last4: c.last4, amount: quote().totalCents }); if (!ok) { $('#payBtn').classList.remove('is-loading'); alertPay('warning', 'Bank verification was cancelled', 'Nothing has been charged. You can try again.'); return; } }
+    $('#payBtn').classList.remove('is-loading');
+    onReceipt({ result: 'a', response_code: '027', brand: c.brand, last4: c.last4, expiry: c.exp, auth_code: String(Math.floor(100000 + Math.random() * 899999)), reference_num: '660' + Date.now().toString().slice(-9) + '0010', threeDS: needs3ds, vaultToken: c.id });
+  });
+
+  function payWithWallet(kind) {
+    const apple = kind === 'apple';
+    const sheet = $('#walletSheet');
+    sheet.classList.toggle('wallet-sheet--apple', apple);
+    sheet.classList.toggle('wallet-sheet--google', !apple);
+    $('#walletTitle').setAttribute('aria-label', apple ? 'Apple Pay' : 'Google Pay');
+    $('#walletAmt').textContent = money(quote().totalCents) + ' CAD';
+    $('#walletCard').textContent = apple ? 'Visa •••• 4242' : 'Mastercard •••• 4444';
+    const bill = curBill() || curAddr();
+    $('#walletBill').textContent = bill ? `${bill.street}, ${bill.city}` : 'Same as shipping';
+    $('#walletContact').textContent = $('#email').value;
+    $('#walletPayee').textContent = apple ? 'Pay Vanstro Global Supply' : 'Total';
+    $('#walletConfirmLabel').textContent = apple ? 'Pay with Face ID' : 'Pay';
+    $('#walletConfirm').classList.remove('is-busy');
+    $('#walletModal').classList.remove('hidden');
+  }
+  $('#applePay').addEventListener('click', () => payWithWallet('apple'));
+  $('#googlePay').addEventListener('click', () => payWithWallet('google'));
+  /* Cancel / backdrop while the sheet is busy aborts the run: `walletRun` is captured before each await
+     and checked after, so a cancelled attempt never places the order. */
+  let walletRun = 0;
+  const walletBusy = () => $('#walletConfirm').classList.contains('is-busy');
+  function closeWallet() { walletRun++; $('#walletConfirm').classList.remove('is-busy'); $('#walletCancel').disabled = false; $('#walletModal').classList.add('hidden'); const t = $('#' + (($('#walletSheet').classList.contains('wallet-sheet--apple')) ? 'applePay' : 'googlePay')); if (t) t.focus(); }
+  $('#walletCancel').addEventListener('click', closeWallet);
+  $('#walletConfirm').addEventListener('click', async () => {
+    if (walletBusy()) return;
+    const apple = $('#walletSheet').classList.contains('wallet-sheet--apple');
+    const run = ++walletRun;
+    $('#walletConfirm').classList.add('is-busy');
+    if (live.api === null) live.api = (await VSMoneris.api()) || false;
+    if (run !== walletRun) return; // cancelled while checking the API
+    if (live.api) {
+      // Real order for the wallet payment. Mock mode settles it with a mock token; live mode needs the
+      // wallet SDK token (Apple Pay JS / Google Pay API) → the server answers 501 wallet_not_available.
+      if (GUEST && state.bill === 'other' && !validateBillAddr()) { closeWallet(); return; }
+      if (GUEST && state.bill === 'other') state.newBill = readBillAddr();
+      if (live.order && live.lastToken) { closeWallet(); return settleLive(live.lastToken, live.lastHint); }
+      try { if (!live.order) await createLiveOrder(apple ? 'apple_pay' : 'google_pay'); }
+      catch (e) { if (run !== walletRun) return; closeWallet(); alertPay(e.status === 501 ? 'warning' : 'error', e.status === 501 ? 'Wallet not available yet' : 'We couldn’t start the payment', describeApiError(e)); return; }
+      if (run !== walletRun) { return; } // keep pending order so retry reuses it
+      closeWallet();
+      return settleLive(apple ? 'mock:Visa:4242' : 'mock:Mastercard:4444', { wallet: apple ? 'Apple Pay' : 'Google Pay' });
+    }
+    await new Promise(r => setTimeout(r, 900));
+    if (run !== walletRun) return; // cancelled during the "Face ID" pause
+    closeWallet();
+    onReceipt({
+      result: 'a', response_code: '027',
+      wallet: apple ? 'Apple Pay' : 'Google Pay',
+      brand: apple ? 'Visa' : 'Mastercard',
+      last4: apple ? '4242' : '4444',
+      auth_code: String(Math.floor(100000 + Math.random() * 899999)),
+      reference_num: '660' + Date.now().toString().slice(-9) + '0010',
+      threeDS: true,
+    });
+  });
+
+  /* Session expiry (prototype state): Moneris HT tickets and pending orders live 30 minutes. */
+  function expireTicket() { $('#expModal').classList.remove('hidden'); }
+  $('#expRefresh').addEventListener('click', () => { $('#expModal').classList.add('hidden'); live.order = null; $$('#payAlert .alert').forEach(a => a.remove()); remountFrame(); VS.toast('Payment form refreshed'); });
+
+  /* ---------------- receipt → order ---------------- */
+  async function onReceipt(r) {
+    if (r.result !== 'a') {
+      // Surface the issuer's reason (mock tokenizer passes response_code + message, like the live path does).
+      const code = r.response_code || '';
+      const why = r.message ? r.message.replace(/\.?$/, '. ') : '';
+      const hint = code === '051' ? 'Check the expiry date or use another card.' : 'Try another card, or contact your bank.';
+      alertPay('error', 'That card didn’t go through' + (code ? ` (${code})` : ''), why + hint + ' Nothing has been charged.'); if (cardFrame) cardFrame.reset(); return;
+    }
+    state.order = { no: 'VS-2026-0' + (18342 + Math.floor(Math.random() * 40)), at: new Date(), pay: r, quote: quote(), ship: curShip(), dealer: curDealer(), dealerAckAt: state.dealerAckAt, addr: curAddr(), bill: curBill(), email: $('#email').value, phone: $('#phone').value.trim(), sms: state.sms, vault: !!(r.saveToVault || r.vaultToken) && !!r.saveToVault, guest: GUEST };
+    show('placing'); const li = k => $(`#placingSteps li[data-k="${k}"]`);
+    const seq = state.order.dealer ? ['auth', 'verify', 'order', 'dealer', 'email'] : ['auth', 'verify', 'order', 'email'];
+    $('#placingSteps li[data-k="dealer"]').style.display = state.order.dealer ? '' : 'none';
+    for (let i = 0; i < seq.length; i++) { $$('#placingSteps li').forEach(x => x.classList.remove('cur')); li(seq[i]).classList.add('cur'); await new Promise(res => setTimeout(res, i === 0 ? 300 : 800)); li(seq[i]).classList.remove('cur'); li(seq[i]).classList.add('ok'); }
+    clearPaidCart();
+    renderDone(); show('done'); VS.toast('Receipt sent to ' + VS.maskEmail(state.order.email));
+  }
+
+  function renderDone(opts = {}) {
+    const o = state.order; const L = lang === 'fr'; const qt = o.quote;
+    $('#dnOrder').textContent = o.no; $('#rcOrder').textContent = (L ? 'Commande ' : 'Order ') + o.no; $('#dnWhen').textContent = whenStr(o.at);
+    if ($('#dnEmail')) $('#dnEmail').textContent = o.email;
+    const first = ((o.addr && o.addr.name) || (SESSION && SESSION.name) || '').trim().split(/\s+/)[0];
+    $('#dnThanks').textContent = first ? (L ? `Merci, ${first}.` : `Thanks, ${first}.`) : (L ? 'Merci.' : 'Thank you.');
+    /* Guest: no account to point at. Track/invoice links carry the order token; offer the R7 account step. */
+    const guest = !!o.guest;
+    const statusHref = 'order-status.html?o=' + encodeURIComponent(o.no) + (o.accessToken ? '&t=' + encodeURIComponent(o.accessToken) : '');
+    $('#guestAccountCard').classList.toggle('hidden', !guest);
+    if (guest) {
+      $('#gaEmail').textContent = o.email;
+      $('#gaTrack').href = statusHref;
+      $('#gaCreate').setAttribute('data-query', '?order=' + encodeURIComponent(o.no) + '&email=' + encodeURIComponent(o.email) + '&from=checkout' + (o.accessToken ? '&t=' + encodeURIComponent(o.accessToken) : ''));
+      if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(lang === 'fr');
+      $('#stText').innerHTML = `<b>${L ? 'Les numéros de carte ne passent pas par nous.' : 'Card numbers don’t pass through us.'}</b> ${L ? 'Nous conservons votre commande, votre adresse et les 4 derniers chiffres. Pour exporter ou supprimer vos données, écrivez à' : 'We keep your order, address, and last 4. To export or delete your data, write to'} <a href="mailto:privacy@vanstro.ca">privacy@vanstro.ca</a>.`;
+      $('#nextTrack').href = statusHref;
+    } else {
+      $('#stText').innerHTML = `<b>${L ? 'Les numéros de carte ne passent pas par nous.' : 'Card numbers don’t pass through us.'}</b> ${L ? 'Nous conservons votre commande, votre adresse et les 4 derniers chiffres. Exportez ou supprimez dans' : 'We keep your order, address, and last 4. Export or delete in'} <a href="/account">${L ? 'votre compte' : 'your account'}</a>.`;
+      $('#nextTrack').href = '/account#orders';
+    }
+    $('#rcDate').textContent = whenStr(o.at); $('#rcTitle').textContent = (L ? 'Facture / reçu de taxes' : 'Tax invoice / receipt') + (o.invoiceNo ? ' · ' + o.invoiceNo : '');
+    $('#rcBn').textContent = GST_HST_BN; $('#rcQst').innerHTML = qt.qstBn ? ` · ${L ? 'No TVQ' : 'QST No.'} <b>${qt.qstBn}</b>` : '';
+    $('#dvEmailMeta').textContent = `${VS.maskEmail(o.email)} · ${o.at.toLocaleTimeString('en-CA', { timeZone: 'America/Winnipeg' })}`;
+    const emailFail = opts.emailFail;
+    $('#dvEmailChip').className = 'chip ' + (emailFail ? 'chip--error' : 'chip--green'); $('#dvEmailChip').textContent = emailFail ? 'Delivery failed' : 'Sent';
+    $('#dvEmailMeta').textContent = emailFail ? `${VS.maskEmail(o.email)} · mailbox rejected the message. Check the address or resend` : $('#dvEmailMeta').textContent;
+    if (o.sms && o.phone) { $('#dvSmsChip').className = 'chip chip--green'; $('#dvSmsChip').textContent = 'Sent'; $('#dvSmsMeta').textContent = `${VS.maskPhone(o.phone)} · link valid 30 days · standard rates may apply`; $('#sendSms').textContent = 'Resend'; }
+    else { $('#dvSmsChip').className = 'chip'; $('#dvSmsChip').textContent = 'Not requested'; $('#dvSmsMeta').textContent = o.phone ? `Text a receipt link to ${VS.maskPhone(o.phone)}` : (o.guest ? 'No mobile number was given at checkout' : 'Add a mobile number in My account to use SMS receipts'); $('#sendSms').textContent = 'Send'; $('#sendSms').disabled = !o.phone; }
+    $('#stVault').classList.toggle('hidden', !o.vault);
+    $('#rcBill').innerHTML = fmtAddr(o.bill) + `<br>${o.email}`; $('#rcShip').innerHTML = fmtAddr(o.addr) + `<br><span class="muted">${o.ship.name}${o.ship.eta ? ` · ${o.ship.eta}` : ''}</span>`;
+    $('#rcPay').innerHTML = `<b>${o.pay.wallet ? o.pay.wallet + ' · ' : ''}${o.pay.brand} •••• ${o.pay.last4}</b><br>${L ? 'Autorisation' : 'Auth code'} ${o.pay.auth_code}<br>${L ? 'Réf. Moneris' : 'Moneris ref.'} ${o.pay.reference_num}<br>${o.pay.threeDS ? '<span class="chip chip--green" style="margin-top:4px">3-D Secure verified</span>' : '<span class="chip" style="margin-top:4px">Approved · 027</span>'}`;
+    $('#rcItems').innerHTML = CART.map(i => `<tr><td>${i.name}<span class="sku">${i.sku} · ${i.meta}</span></td><td class="n">${i.qty}</td><td class="n">${money(i.unit)}</td><td class="n">${money(i.unit * i.qty)}</td></tr>`).join('');
+    /* Static orders snapshot the client quote (PROMO); server orders carry their own discount. Both render from o.quote. */
+    const sub = qt.subtotalCents != null ? qt.subtotalCents : subtotal();
+    const disc = qt.discountCents != null ? qt.discountCents : discount();
+    const promo = qt.promo || PROMO;
+    const discLine = disc ? `<div class="line"><span class="k">${L ? 'Rabais' : 'Discount'}${promo ? ' · ' + promo.code : ''}</span><span class="v" style="color:var(--vs-green);font-weight:700">− ${money(disc)}</span></div>` : '';
+    let t = `<div class="line"><span class="k">${L ? 'Sous-total' : 'Subtotal'}</span><span class="v">${money(sub)}</span></div>${discLine}<div class="line"><span class="k">${L ? 'Livraison' : 'Delivery'} · ${o.ship.name.split(' ·')[0]}</span><span class="v">${o.ship.cents ? money(o.ship.cents) : (o.ship.quotedByDealer ? (L ? 'Devis du détaillant' : 'Quoted by dealer') : (L ? 'Gratuit' : 'Free'))}</span></div>`;
+    qt.lines.forEach(x => { t += `<div class="line"><span class="k">${L ? x.labelFr : x.labelEn}</span><span class="v">${money(x.cents)}</span></div>`; });
+    t += `<div class="line total"><span class="k">${L ? 'Total payé' : 'Total paid'} (CAD)</span><span class="v">${money(qt.totalCents)}</span></div>`;
+    $('#rcTotals').innerHTML = t;
+    const d = o.dealer;
+    $('#rcDealerH').textContent = L ? 'Détaillant local' : 'Local dealer';
+    $('#rcDealer').innerHTML = d
+      ? `<b>${d.name}</b><br>${dealerAddr(d)}<br>${d.phone}<br><span class="muted">${L ? 'Détaillant indépendant · ramassage, livraison, retours' : 'Independent dealer · pickup, delivery, returns'}</span>`
+      : `<b>${L ? 'Aucun' : 'None'}</b><br><span class="muted">${L ? 'Exécution directe par Vanstro' : 'Fulfilled directly by Vanstro'}</span>`;
+    $('#rcLegal').innerHTML = (L
+      ? `Vendeur : Vanstro Global Supply Inc. Taxes selon la destination (${qt.provinceName}). Paiement Moneris · Vanstro ne conserve pas le numéro de carte. Conservé 6 ans (ARC). Retours : 7 jours après la livraison${d ? ` (premier contact : ${d.name})` : ''}.`
+      : `Seller: Vanstro Global Supply Inc. Tax for ${qt.provinceName}. Paid via Moneris · Vanstro does not keep your card number. Kept 6 years (CRA). Returns: 7 days after delivery${d ? ` (first contact: ${d.name})` : ''}.`)
+      + (d ? (L
+        ? ` ${d.name} est un détaillant local indépendant. Les services du détaillant (installation, mesure, etc.) ne font pas partie de cette facture; ils sont facturés séparément par le détaillant.`
+        : ` ${d.name} is an independent local dealer. Dealer Services (installation, measurement, etc.) are not part of this invoice and are billed separately by the dealer.`) : '');
+    /* Dealer card */
+    $('#ddTitle').textContent = d ? (L ? 'Votre détaillant local' : 'Your local dealer') : (L ? 'Exécution de la commande' : 'Order fulfilment');
+    $('#dealerDone .chip').style.display = d ? '' : 'none';
+    $('#ddContact').innerHTML = d
+      ? `<div><span class="k">${L ? 'Détaillant' : 'Dealer'}</span><b>${d.name}</b><br>${dealerAddr(d)}<br><span class="muted small">${L ? 'Zone' : 'Serves'}: ${d.area}</span>${svcChips(d)}</div>
+         <div><span class="k">${L ? 'Contact' : 'Contact'}</span><a href="tel:+1${d.phone.replace(/\D/g, '')}">${d.phone}</a><br><a href="mailto:${d.email}">${d.email}</a><br><span class="muted small">${d.hours}</span></div>`
+      : `<div style="grid-column:1/-1"><span class="k">${L ? 'Exécuté par' : 'Fulfilled by'}</span><b>Vanstro Global Supply Inc.</b><br>856 Century Street, Winnipeg MB R3H 0M5<br><a href="mailto:support@vanstro.ca">support@vanstro.ca</a> · <a href="tel:+12042212288">204 221 2288</a></div>`;
+    $('#ddRole').innerHTML = roleHtml(d, true);
+    $('#ddCall').href = d ? `tel:+1${d.phone.replace(/\D/g, '')}` : 'tel:+12042212288'; $('#ddMail').href = d ? `mailto:${d.email}?subject=${encodeURIComponent('Vanstro order ' + o.no)}` : `mailto:support@vanstro.ca?subject=${encodeURIComponent('Vanstro order ' + o.no)}`;
+    $('#ddCall').lastChild.textContent = d ? (L ? 'Appeler le détaillant' : 'Call dealer') : (L ? 'Appeler Vanstro' : 'Call Vanstro');
+    $('#ddMail').lastChild.textContent = d ? (L ? 'Écrire au détaillant' : 'Email dealer') : (L ? 'Écrire à Vanstro' : 'Email Vanstro');
+    $('#nextNote').textContent = d
+      ? (o.ship.id === 'pickup' ? `${d.name} will email you when your order is ready for pickup at ${d.city}.` : `${d.name} will contact you at ${o.phone ? VS.maskPhone(o.phone) : VS.maskEmail(o.email)} to quote and arrange delivery — billed separately, not included in this total.`)
+      : 'Your local dealer will contact you to quote and arrange delivery — billed separately, not included in this total.';
+    if (d && o.dealerNotified) $('#nextNote').textContent += L ? ` Le détaillant a reçu la fiche de commande par courriel.` : ` The dealer has been emailed the order sheet.`;
+  }
+  const copyNo = () => { navigator.clipboard && navigator.clipboard.writeText(state.order.no).catch(() => {}); VS.toast('Order number copied'); };
+  $('#copyOrder').addEventListener('click', copyNo); $('#copyOrder2').addEventListener('click', copyNo);
+  $('#dlPdf2').addEventListener('click', async () => {
+    if (!(state.order && state.order.serverNo)) { VS.toast('Generating PDF receipt…'); return; }
+    const btn = $('#dlPdf2');
+    btn.disabled = true;
+    try {
+      const r = await fetch(VSMoneris.invoicePdfUrl(state.order.serverNo), { credentials: 'same-origin', headers: (window.VSSession && VSSession.headers(state.order.serverNo)) || {} });
+      if (!r.ok) { const body = await r.json().catch(() => ({})); throw Object.assign(new Error(body.error || r.statusText), { body }); }
+      const blob = await r.blob();
+      const cd = r.headers.get('content-disposition') || '';
+      const m = cd.match(/filename="?([^";]+)"?/i);
+      const name = (m && m[1]) || ('Vanstro-' + state.order.serverNo + '.pdf');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      VS.toast('Invoice downloaded · ' + name);
+    } catch (e) { VS.toast((e.body && (e.body.message || e.body.error)) || e.message || 'Could not download invoice', 'error'); }
+    finally { btn.disabled = false; }
+  });
+  $('#resendEmail').addEventListener('click', async () => {
+    if (state.order && state.order.serverNo) {
+      $('#resendEmail').disabled = true;
+      try { const r = await VSMoneris.resendReceipt(state.order.serverNo, { kind: 'invoice' }); state.order.notifications.confirmation = { sentAt: r.sentAt }; renderDone(); VS.toast('Tax invoice re-sent to ' + VS.maskEmail(r.to)); }
+      catch (e) { VS.toast(e.status === 429 ? 'Resend limit reached (3 per hour). Try later.' : 'Resend failed: ' + describeApiError(e), 'error'); }
+      finally { $('#resendEmail').disabled = false; }
+      return;
+    }
+    renderDone(); VS.toast('Receipt re-sent to ' + VS.maskEmail(state.order.email));
+  });
+  $('#sendSms').addEventListener('click', () => { state.order.sms = true; renderDone(); VS.toast('Receipt link texted to ' + VS.maskPhone(state.order.phone)); });
+  $('#ceGo').addEventListener('click', async () => {
+    const v = VS.detectIdentifier($('#ceInput').value); if (!(v.type === 'email' && v.valid)) { setErr($('#fCe'), $('#hCe'), 'Enter a valid email address.'); return; }
+    $('#ceModal').classList.add('hidden');
+    if (state.order && state.order.serverNo) {
+      try { const r = await VSMoneris.resendReceipt(state.order.serverNo, { kind: 'invoice', email: v.normalized }); state.order.email = r.to; renderDone(); VS.toast('Tax invoice sent to ' + VS.maskEmail(r.to)); }
+      catch (e) { VS.toast('Send failed: ' + describeApiError(e), 'error'); }
+      return;
+    }
+    state.order.email = v.normalized; renderDone(); VS.toast('Receipt sent to ' + VS.maskEmail(v.normalized));
+  });
+  $('#ceInput').addEventListener('input', () => clr($('#fCe'), $('#hCe'), 'Useful for sending the tax invoice to your bookkeeper'));
+
+  /* ---------------- navigation ---------------- */
+  function show(id) {
+    $$('.section').forEach(s => s.classList.toggle('is-active', s.id === 's-' + id));
+    window.scrollTo({ top: 0 });
+    const hideChrome = (id === 'done' || id === 'placing');
+    $('#steps').style.display = hideChrome ? 'none' : '';
+    $('#pageTitle').style.display = hideChrome ? 'none' : '';
+  }
+  function go(n) {
+    state.step = n;
+    $$('#steps .step').forEach(s => { const k = +s.dataset.step; s.classList.toggle('is-active', k === n); s.classList.toggle('is-done', k < n); s.querySelector('button').disabled = k > n; });
+    $$('#steps .steps__bar').forEach((b, i) => b.classList.toggle('is-done', i + 1 < n));
+    const titles = lang === 'fr'
+      ? [
+          ['Expédition', 'Les taxes suivent la province de destination.'],
+          ['Vérification', 'Aucun montant n’est encore débité.'],
+          ['Paiement', DEALER_POS ? 'Passez la commande et envoyez-la au POS Vanstro.' : 'Apple Pay, Google Pay ou carte. Les numéros de carte vont directement à Moneris.'],
+        ]
+      : [
+          ['Shipping', 'Taxes follow the destination province.'],
+          ['Review', 'Nothing is charged yet.'],
+          ['Payment', DEALER_POS ? 'Place the order and send it to your Vanstro POS.' : 'Apple Pay, Google Pay, or a card. Card numbers go straight to Moneris.'],
+        ];
+    const [h, sub] = titles[n - 1];
+    $('#pageTitle').innerHTML = `<h2>${h}</h2><p>${sub}</p>`;
+    if (n === 2) renderReview(); if (n === 3) renderPayment();
+    show(['shipping', 'review', 'payment'][n - 1]);
+  }
+  $$('#steps .step button').forEach(b => b.addEventListener('click', () => go(+b.closest('.step').dataset.step)));
+  $$('[data-goto]').forEach(b => b.addEventListener('click', () => go(+b.dataset.goto)));
+  /* ---------------- modals: open/close with focus management ---------------- */
+  const MODAL_OPEN = { privacy: '#privacyModal', security: '#secModal', changeEmail: '#ceModal' };
+  let modalTrigger = null;
+  function openModal(sel, trigger) {
+    $$('.modal-backdrop').forEach(x => { if (x.id !== 'acsModal') x.classList.add('hidden'); });
+    modalTrigger = trigger || document.activeElement;
+    const m = $(sel); m.classList.remove('hidden');
+    const first = m.querySelector('input, select, textarea, button:not([data-close]), [href]') || m.querySelector('[data-close]');
+    setTimeout(() => first && first.focus(), 30);
+  }
+  function closeModal(m) {
+    if (!m || m.classList.contains('hidden')) return;
+    if (m.id === 'walletModal') { if (walletBusy()) return; closeWallet(); return; }
+    m.classList.add('hidden');
+    const t = modalTrigger; modalTrigger = null;
+    if (t && document.contains(t) && t.focus) t.focus();
+  }
+  /* Only the page's own triggers: the header burger also carries data-* state and must not open a modal. */
+  $$('main [data-open], .co__side [data-open], .modal-backdrop [data-open], .wrap [data-open]').forEach(b => { if (!MODAL_OPEN[b.dataset.open]) return; b.addEventListener('click', () => openModal(MODAL_OPEN[b.dataset.open], b)); });
+  $$('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(b.closest('.modal-backdrop'))));
+  $$('.modal-backdrop').forEach(m => m.addEventListener('click', e => { if (e.target === m && m.id !== 'acsModal' && m.id !== 'expModal') closeModal(m); }));
+  $$('.modal-backdrop .modal, .modal-backdrop .acs, .modal-backdrop .wallet-sheet').forEach(d => { if (!d.getAttribute('role')) d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true'); const h = d.querySelector('.modal__head strong, h3, h2'); if (h && !d.getAttribute('aria-labelledby')) { if (!h.id) h.id = d.closest('.modal-backdrop').id + 'Title'; d.setAttribute('aria-labelledby', h.id); } });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      const open = $$('.modal-backdrop:not(.hidden)').pop();
+      if (open) {
+        if (open.id === 'acsModal') { e.preventDefault(); $('#acsCancel').click(); return; }
+        if (open.id === 'expModal') return; // session expired: must pick an action
+        e.preventDefault(); closeModal(open);
+        return;
+      }
+      const more = $('#dealerMore');
+      if (more && more.open) {
+        e.preventDefault();
+        more.open = false;
+        const sum = more.querySelector('summary');
+        if (sum) { sum.setAttribute('aria-expanded', 'false'); sum.focus(); }
+      }
+    }
+    if (e.key === 'Enter' && e.target === $('#acsCode')) { e.preventDefault(); $('#acsGo').click(); }
+  });
+  /* Locale: single helper keeps `lang`, <html lang>, and the header globe (is-active + hidden) in step. */
+  function setLang(next) {
+    lang = next; document.documentElement.lang = lang === 'fr' ? 'fr-CA' : 'en-CA';
+    const hdr = $('[data-site-header]'); if (hdr && hdr.setLocale) hdr.setLocale(lang); else $$('.lang button').forEach(x => { x.classList.toggle('is-active', x.dataset.lang === lang); x.hidden = x.dataset.lang !== lang; });
+    if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(lang === 'fr');
+    const stepLabels = lang === 'fr' ? ['Expédition', 'Vérification', 'Paiement'] : ['Shipping', 'Review', 'Payment'];
+    $$('#steps .step button').forEach((b, i) => { const t = b.lastChild; if (t && t.nodeType === 3) t.textContent = (stepLabels[i] || '') + ' '; });
+    renderSummary(); renderDealer(); if (state.order) renderDone();
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+  /* ---------------- prototype panel ---------------- */
+  $('#protoToggle').addEventListener('click', () => { const p = $('#proto'); p.classList.toggle('is-collapsed'); $('#protoToggle').textContent = p.classList.contains('is-collapsed') ? '+' : '–'; });
+  const DEMO_ADDR = {
+    AB: { street: '10025 102A Ave NW', city: 'Edmonton', postal: 'T5J 2Z2' },
+    BC: { street: '1055 W Georgia St', city: 'Vancouver', postal: 'V6E 3P3' },
+    MB: { street: '88 Waterfront Dr', city: 'Winnipeg', postal: 'R3B 0T3' },
+    NB: { street: '570 Queen St', city: 'Fredericton', postal: 'E3B 1A1' },
+    NL: { street: '10 Duckworth St', city: 'St. John’s', postal: 'A1C 1A1' },
+    NS: { street: '1801 Hollis St', city: 'Halifax', postal: 'B3J 3N4' },
+    NT: { street: '5201 50 Ave', city: 'Yellowknife', postal: 'X1A 2N4' },
+    NU: { street: '1085 Mivvik St', city: 'Iqaluit', postal: 'X0A 0H0' },
+    ON: { street: '410 Adelaide St W', city: 'Toronto', postal: 'M5V 1S8' },
+    PE: { street: '97 Queen St', city: 'Charlottetown', postal: 'C1A 4P3' },
+    QC: { street: '1200 Rue Saint-Jacques', city: 'Montréal', postal: 'H3C 4M8' },
+    SK: { street: '1874 Scarth St', city: 'Regina', postal: 'S4P 3Y2' },
+    YT: { street: '2121 2nd Ave', city: 'Whitehorse', postal: 'Y1A 1A1' },
+  };
+  $$('[data-prov]').forEach(b => b.addEventListener('click', () => {
+    const p = b.dataset.prov;
+    const saved = ADDRESSES.find(x => x.prov === p);
+    if (saved) state.addrId = saved.id;
+    else {
+      const d = DEMO_ADDR[p] || { street: '100 Main St', city: 'City', postal: '' };
+      state.addrId = 'new';
+      $('#aName').value = 'Guannan Zhang';
+      $('#aStreet').value = d.street;
+      $('#aCity').value = d.city;
+      $('#aProv').value = p;
+      $('#aPostal').value = d.postal;
+      state.newAddr = readNewAddr();
+    }
+    renderAddresses(); renderDealer(); renderShip();
+    setLang(p === 'QC' ? 'fr' : 'en'); // also re-renders the summary / receipt
+    if (state.step === 2) renderReview();
+    if (state.step === 3) renderPayment();
+    VS.toast(`Taxes now calculated for ${VSTax.PROVINCES[p]}`);
+  }));
+  const fakeOrder = (extra = {}) => { state.order = { no: 'VS-2026-018342', at: new Date(), pay: { brand: 'Visa', last4: '4242', auth_code: '048213', reference_num: '660123456789010010', threeDS: false }, quote: quote(), ship: curShip(), dealer: curDealer(), dealerAckAt: new Date().toISOString(), addr: curAddr(), bill: curAddr(), email: $('#email').value, phone: $('#phone').value.trim(), sms: false, vault: false, guest: GUEST, ...extra }; };
+  /* Fills the (mock) card box and presses Pay. With the real Moneris frame the fields cannot be prefilled — type a test card instead. */
+  async function demoCard(pan, exp, cvv, name) {
+    demo('step3New');
+    // mountFrame() awaits the /api/health probe; wait for the box to actually exist (≤ 3 s) instead of a fixed pause.
+    for (let i = 0; i < 30 && !cardFrame; i++) await new Promise(r => setTimeout(r, 100));
+    $('#ccName').value = name;
+    if (cardFrame && cardFrame.prefill) { cardFrame.prefill({ pan, exp, cvv }); $('#payBtn').click(); }
+    else VS.toast('Type the test card into the Moneris field: ' + pan);
+  }
+  function demo(k) {
+    switch (k) {
+      case 'step1': go(1); break;
+      case 'step1Err': go(1); state.addrId = 'new'; renderAddresses(); ['aName', 'aStreet', 'aCity', 'aPostal'].forEach(i => $('#' + i).value = ''); $('#aStreet').value = 'PO Box 1200'; $('#aProv').value = ''; $('#email').value = 'demo@vanstro'; $('#toReview').click(); break;
+      case 'step1Fsa': go(1); state.addrId = 'new'; renderAddresses(); $('#aName').value = 'Guannan Zhang'; $('#aStreet').value = '410 Adelaide St W'; $('#aCity').value = 'Toronto'; $('#aProv').value = 'MB'; $('#aPostal').value = 'M5V 1S8'; $('#toReview').click(); break;
+      case 'step2': go(2); break;
+      case 'step2Err': go(2); $('#cTerms').checked = false; $('#cDealer').checked = false; $('#toPayment').click(); break;
+      case 'step3': $('#cTerms').checked = true; $('#cDealer').checked = true; go(3); state.pm = 'tok_visa_4242'; renderPayment(); break;
+      case 'step3New': $('#cTerms').checked = true; $('#cDealer').checked = true; go(3); state.pm = 'new'; renderPayment(); break;
+      case 'step3Apple': $('#cTerms').checked = true; $('#cDealer').checked = true; go(3); renderPayment(); payWithWallet('apple'); break;
+      case 'step3Google': $('#cTerms').checked = true; $('#cDealer').checked = true; go(3); renderPayment(); payWithWallet('google'); break;
+      case 'pay3ds': demoCard('4000 0000 0000 3220', '08 / 29', '123', 'Guannan Zhang'); break;
+      case 'payDeclined': demoCard('4000 0000 0000 0002', '08 / 29', '123', 'Guannan Zhang'); break;
+      case 'payExpiredCard': demoCard('4000 0000 0000 0069', '08 / 29', '123', 'Guannan Zhang'); break;
+      case 'payFrameErr': demoCard('4242 4242 4242 4241', '03 / 24', '1', ''); break;
+      case 'ticketExpired': demo('step3'); expireTicket(); break;
+      case 'placing': show('placing'); $$('#placingSteps li').forEach((l, i) => { l.classList.toggle('ok', i < 1); l.classList.toggle('cur', i === 1); }); break;
+      case 'done': fakeOrder(); renderDone(); show('done'); break;
+      case 'doneSms': fakeOrder({ sms: true }); renderDone(); show('done'); break;
+      case 'doneEmailFail': fakeOrder(); renderDone({ emailFail: true }); show('done'); break;
+      case 'doneVault': fakeOrder({ vault: true, pay: { brand: 'Visa', last4: '3220', auth_code: '771902', reference_num: '660123456789010011', threeDS: true } }); renderDone(); show('done'); break;
+    }
+  }
+  $$('[data-demo]').forEach(b => b.addEventListener('click', () => demo(b.dataset.demo)));
+
+  /* ---------------- boot ---------------- */
+  /* Contact card follows the session: signed-in users see who they are; guests get empty fields and a sign-in link. */
+  await loadCheckoutSession();
+  /* French first: the injected contact copy below is localized, and the /fr path must render French. */
+  if (/^\/fr(\/|$)/.test(location.pathname) || q.get('lang') === 'fr') setLang('fr');
+  const frc = lang === 'fr';
+  if (DEALER_POS) {
+    $('#contactSub').innerHTML = frc
+      ? `Commande pour un client · connecté en tant que <b>${SESSION.name || SESSION.email}</b> · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Pas vous ?</a>`
+      : `Placing for a customer · signed in as <b>${SESSION.name || SESSION.email}</b> · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Not you?</a>`;
+    $('#emailLbl').textContent = frc ? 'Courriel du client' : 'Customer email';
+    $('#email').value = '';
+    $('#email').placeholder = frc ? 'courriel@client.com' : 'customer@email.com';
+    $('#phone').value = '';
+    $('#dealerCustNote').classList.remove('hidden');
+    $('#addrTitle').textContent = frc ? 'Adresse du client' : 'Customer address';
+    $('#addrBookLink').classList.add('hidden');
+    $('#aSaveRow').classList.add('hidden'); $('#aSave').checked = false;
+    const store = DEALERS.find(x => x.id === SESSION.dealerId);
+    if (store && !$('#aProv').value) $('#aProv').value = store.prov;
+    $('#cDealer').checked = true;
+  } else if (GUEST) {
+    $('#contactSub').innerHTML = frc
+      ? `Paiement en tant qu’invité · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Connexion</a> pour vos adresses enregistrées et un paiement plus rapide`
+      : `Checking out as a guest · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Sign in</a> for saved addresses and faster checkout`;
+    $('#email').value = ''; $('#phone').value = '';
+    $('#guestNote').textContent = frc
+      ? 'Votre reçu, votre facture fiscale et le lien de suivi iront à ce courriel. Aucun compte n’est nécessaire — vous pourrez en créer un après le paiement pour garder l’historique de vos commandes.'
+      : 'Your receipt, tax invoice and a tracking link go to this email. No account is needed — you can create one after checkout to keep your order history.';
+    $('#guestNote').classList.remove('hidden');
+    $('#addrBookLink').classList.add('hidden');
+    $('#aSaveRow').classList.add('hidden'); $('#aSave').checked = false;
+    // Trust panel: no account to export from.
+    $$('#trust li').forEach(li => { if (/your account/i.test(li.textContent)) li.querySelector('span:last-child').textContent = frc ? 'Reçu et facture fiscale par courriel' : 'Receipt and tax invoice by email'; });
+  } else {
+    $('#contactSub').innerHTML = frc
+      ? `Connecté en tant que <b>${SESSION.name || SESSION.email}</b> · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Pas vous ?</a>`
+      : `Signed in as <b>${SESSION.name || SESSION.email}</b> · <a class="js-login" data-redirect="/checkout" href="/account/login?redirect=/checkout">Not you?</a>`;
+    if (SESSION.email) $('#email').value = SESSION.email;
+  }
+  if (window.VSSession && typeof VSSession.applyAuthHrefs === 'function') VSSession.applyAuthHrefs(lang === 'fr' || /^\/fr(\/|$)/.test(location.pathname));
+  renderAddresses(); renderDealer(); renderShip(); renderSummary(); renderReview();
+  refreshDealerStock();
+  if (q.get('export') === '1') $('#proto').style.display = 'none';
+  if (q.get('prov')) { $(`[data-prov="${q.get('prov')}"]`) && $(`[data-prov="${q.get('prov')}"]`).click(); }
+  if (q.get('demo')) demo(q.get('demo'));
+  if (q.get('modal') === 'security') $('#secModal').classList.remove('hidden');
+  if (q.get('modal') === 'privacy') $('#privacyModal').classList.remove('hidden');
+})();
+</script>
+</body>
+</html>

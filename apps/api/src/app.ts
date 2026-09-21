@@ -1,14 +1,25 @@
-import { prisma } from "@vanstro/db";
+import { prisma, Prisma } from "@vanstro/db";
 import { Hono } from "hono";
 import { createAuthRoutes } from "./routes/auth.js";
 import { createCatalogRoutes } from "./routes/catalog.js";
 import { createCliRoutes } from "./routes/cli.js";
-import { createCommerceRoutes } from "./routes/commerce.js";
+import { createCmsRoutes } from "./routes/cms.js";
+import { CommerceInvariantError, createCommerceRoutes } from "./routes/commerce.js";
+import { createErpIntegrationRoutes } from "./routes/erp-integration.js";
 import { createDashboardRoutes } from "./routes/dashboard.js";
 import { createMcpRoutes } from "./routes/mcp.js";
 import { createPrivacyRoutes } from "./routes/privacy.js";
+import { createAnalyticsRoutes } from "./routes/analytics.js";
+import { createPublicSupportRoutes } from "./dashboard/support.js";
+import { createAiSupportRoutes } from "./support/ai-chat.js";
+import { createPublicStorefrontConfigRoutes } from "./dashboard/s02-settings.js";
 import { createSubmissionRoutes } from "./routes/submissions.js";
 import { rateLimitPublicWrites } from "./middleware/rate-limit.js";
+import { requestIdMiddleware } from "./middleware/request-id.js";
+import { publicError } from "./public-errors.js";
+import { sessionCookieName } from "./auth/session.js";
+import { dashboardCommonQueryReadiness } from "./config.js";
+import { collectRuntimeReadiness, SOURCE_LATEST_MIGRATION } from "./readiness.js";
 
 type HealthPayload = {
   status: "ok";
@@ -17,12 +28,25 @@ type HealthPayload = {
   timestamp: string;
 };
 
+const REQUIRED_MIGRATION = SOURCE_LATEST_MIGRATION;
+
 async function checkDatabase() {
   if (!process.env.DATABASE_URL) return "not_configured" as const;
 
   try {
-    await prisma.$queryRaw`SELECT 1`;
-    return "ok" as const;
+    const migrations = await Promise.race([
+      prisma.$queryRaw<Array<{ applied: boolean }>>`
+        SELECT EXISTS (
+          SELECT 1
+          FROM "_prisma_migrations"
+          WHERE "migration_name" = ${REQUIRED_MIGRATION}
+            AND "finished_at" IS NOT NULL
+            AND "rolled_back_at" IS NULL
+        ) AS applied
+      `,
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Database readiness timeout.")), 2000))
+    ]);
+    return migrations[0]?.applied ? "ok" as const : "error" as const;
   } catch {
     return "error" as const;
   }
@@ -41,9 +65,24 @@ async function healthResponse() {
 
 async function readyResponse() {
   const response = await healthResponse();
-  const statusCode: 200 | 503 = response.data.database === "ok" ? 200 : 503;
+  const query = dashboardCommonQueryReadiness();
+  const runtime = await collectRuntimeReadiness();
+  const cursorReady = !(query.dealers || query.audit) || Boolean(query.activeKid && query.generationHash);
+  const ready = response.data.database === "ok" && cursorReady && runtime.state !== "not_ready";
+  const statusCode: 200 | 503 = ready ? 200 : 503;
+  const withQueryReadiness = { data: {
+    status: ready ? "ok" as const : "error" as const,
+    service: response.data.service,
+    database: response.data.database,
+    timestamp: response.data.timestamp,
+    readiness: runtime.state,
+    contractVersion: runtime.contractVersion,
+    observedAt: runtime.observedAt,
+    staleAfter: runtime.staleAfter,
+    commonQueryV1: { products: query.products, dealers: query.dealers, audit: query.audit, ...(query.dealers || query.audit ? { activeKid: query.activeKid, generationHash: query.generationHash } : {}) }
+  } };
 
-  return { response, statusCode };
+  return { response: withQueryReadiness, statusCode };
 }
 
 function liveResponse() {
@@ -86,7 +125,10 @@ export function createApp() {
     if (origin && allowedOrigins.has(origin)) {
       context.header("Access-Control-Allow-Origin", origin);
       context.header("Access-Control-Allow-Credentials", "true");
-      context.header("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+      context.header(
+        "Access-Control-Allow-Headers",
+        "Authorization, Content-Type, Accept, X-Cart-Token, X-Payment-Signature, X-Reservation-Token, X-Media-Upload-Token, Idempotency-Key, X-Request-Id"
+      );
       context.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
       context.header("Vary", "Origin");
     }
@@ -97,16 +139,35 @@ export function createApp() {
 
     await next();
   });
+  app.use("*", async (context, next) => {
+    const unsafeMethod = !["GET", "HEAD", "OPTIONS"].includes(context.req.method);
+    const usesCookieSession = context.req.header("cookie")?.includes(`${sessionCookieName()}=`) === true
+      && !context.req.header("authorization");
+    if (process.env.VANSTRO_RUNTIME_MODE === "deployment" && unsafeMethod && usesCookieSession) {
+      const origin = context.req.header("origin");
+      if (!origin || !allowedOrigins.has(origin)) {
+        return publicError(context, 403, "AUTH_REQUIRED", "A trusted request origin is required.");
+      }
+    }
+    await next();
+  });
+  app.use("*", requestIdMiddleware);
   app.use("*", rateLimitPublicWrites);
 
   apiRoutes.route("/", createAuthRoutes());
   apiRoutes.route("/", createSubmissionRoutes());
   apiRoutes.route("/", createCommerceRoutes());
   apiRoutes.route("/", createCatalogRoutes());
+  apiRoutes.route("/", createErpIntegrationRoutes());
+  apiRoutes.route("/", createCmsRoutes());
   apiRoutes.route("/", createCliRoutes());
   apiRoutes.route("/", createDashboardRoutes());
   apiRoutes.route("/", createMcpRoutes());
   apiRoutes.route("/", createPrivacyRoutes());
+  apiRoutes.route("/", createAnalyticsRoutes());
+  apiRoutes.route("/", createPublicSupportRoutes());
+  apiRoutes.route("/", createAiSupportRoutes());
+  apiRoutes.route("/", createPublicStorefrontConfigRoutes());
 
   app.get("/health/live", (context) => context.json(liveResponse()));
   app.get("/health/ready", async (context) => {
@@ -124,8 +185,34 @@ export function createApp() {
 
     return context.json(response, statusCode);
   });
-  app.route("/", apiRoutes);
   app.route("/api/v1", apiRoutes);
+
+  app.notFound((context) => publicError(context, 404, "COMMERCE_NOT_FOUND", "The requested resource was not found."));
+
+  app.onError((error, context) => {
+    if (error instanceof CommerceInvariantError) {
+      return publicError(context, 409, "COMMERCE_INVALID", error.message);
+    }
+    // Map well-known Prisma errors to stable codes so dashboard mutations on
+    // missing/duplicate records return 404/409 instead of an opaque 500.
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") return publicError(context, 404, "DASHBOARD_NOT_FOUND", "The requested resource was not found.");
+      if (error.code === "P2002") return publicError(context, 409, "DASHBOARD_CONFLICT", "A record with the same unique value already exists.");
+    }
+    console.error(
+      JSON.stringify({
+        ts: new Date().toISOString(),
+        service: "vanstro-api",
+        level: "error",
+        message: "Unhandled request error.",
+        path: context.req.path,
+        method: context.req.method,
+        requestId: context.res.headers.get("X-Request-Id") ?? undefined,
+        error: error instanceof Error ? error.message : String(error)
+      })
+    );
+    return publicError(context, 500, "INTERNAL_ERROR", "An unexpected error occurred. Please try again.");
+  });
 
   return app;
 }

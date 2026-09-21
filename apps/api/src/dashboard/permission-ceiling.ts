@@ -1,4 +1,5 @@
 import { Prisma } from "@vanstro/db";
+import { isDealerScopedRoleKey } from "./authorization.js";
 
 type PermissionCeilingDatabase = Prisma.TransactionClient;
 
@@ -45,8 +46,11 @@ export async function getActorPermissionCeiling(
 
   const actorRoles = await database.userRole.findMany({
     where: { userId: actorUserId },
-    select: { roleId: true }
+    select: { roleId: true, role: { select: { key: true } } }
   });
+  const globalActorRoleIds = actorRoles
+    .filter((actorRole) => !isDealerScopedRoleKey(actorRole.role.key))
+    .map((actorRole) => actorRole.roleId);
 
   await lockRolesForPermissionChange(database, [
     ...actorRoles.map((actorRole) => actorRole.roleId),
@@ -54,7 +58,7 @@ export async function getActorPermissionCeiling(
   ]);
 
   const actorPermissions = await database.rolePermission.findMany({
-    where: { role: { userRoles: { some: { userId: actorUserId } } } },
+    where: { roleId: { in: globalActorRoleIds } },
     select: { permission: { select: { key: true } } }
   });
 
@@ -75,6 +79,60 @@ export function assertPermissionsWithinActorCeiling(
       `Cannot assign permissions the current user does not have: ${disallowedPermissions.join(", ")}.`
     );
   }
+}
+
+export async function assertManageableUsers(
+  database: PermissionCeilingDatabase,
+  actorUserId: string,
+  targetUserIds: string[]
+) {
+  const uniqueTargetUserIds = [...new Set(targetUserIds)];
+  const actorPermissionSet = await getActorPermissionCeiling(
+    database,
+    actorUserId,
+    [],
+    uniqueTargetUserIds
+  );
+
+  for (const targetUserId of uniqueTargetUserIds) {
+    if (targetUserId === actorUserId) continue;
+
+    const targetPermissions = await database.rolePermission.findMany({
+      where: { role: { userRoles: { some: { userId: targetUserId } } } },
+      select: { permission: { select: { key: true } } }
+    });
+    const disallowedPermissions = [
+      ...new Set(
+        targetPermissions
+          .map((item) => item.permission.key)
+          .filter((permission) => !actorPermissionSet.has(permission))
+      )
+    ].sort();
+
+    if (disallowedPermissions.length) {
+      throw new PermissionCeilingError(
+        403,
+        `Cannot manage a user with permissions the current user does not have: ${disallowedPermissions.join(", ")}.`
+      );
+    }
+  }
+}
+
+export async function assertManageableServiceAccounts(
+  database: PermissionCeilingDatabase,
+  actorUserId: string,
+  serviceAccountIds: string[]
+) {
+  const uniqueIds = [...new Set(serviceAccountIds)];
+  const actorPermissionSet = await getActorPermissionCeiling(database, actorUserId);
+  const targetPermissions = await database.rolePermission.findMany({
+    where: { role: { serviceAccountRoles: { some: { serviceAccountId: { in: uniqueIds } } } } },
+    select: { permission: { select: { key: true } } }
+  });
+  assertPermissionsWithinActorCeiling(
+    targetPermissions.map((item) => item.permission.key),
+    actorPermissionSet
+  );
 }
 
 export async function assertAssignableRoles(

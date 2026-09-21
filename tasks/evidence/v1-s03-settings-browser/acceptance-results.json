@@ -1,0 +1,156 @@
+{
+  "suiteId": "vanstro.s03.commerce.settings.desktop.v1",
+  "testedCommit": "f8f1b1b74db9b2ba0d67a015c72f0fc9a1da5fee",
+  "testedTree": "f8e68c6ab58af7c6c957be082ee00830e7e58ae1",
+  "cases": [
+    {
+      "id": "S03-01",
+      "name": "Five-family panel renders with compiled defaults",
+      "expectation": "commerce/tax/shipping/inventory/order policies and 默认值 projection render",
+      "status": "pass",
+      "observations": [
+        "跳至主要内容\nVanStro 管理后台\n\nS03 QA\n\n平台运营\n设置\n即将推出\n全局搜索\n工作队列\n管理后台\n/\n设置\n设置\n\n当前为简体中文受控后台。页面内容与可见模块由服务器权限决定。\n\n系统已就绪\nFoundation dashboard-foundation.v1 · Authorization dashboard-authorization.v1\nSettings 受控写入\nSettings 模块允许受控写入；其他业务模块仍保持只读。\n当前操作员\nS03 QA\n有效角色\nsuper_admin\n访问范围摘要\n全局\n可读模块\n1 / 21\nCommerce 设置\n\n统一管理结账、税务、配送、库存与订单策略。当前生效值来自编译默认值。\n\n降级\n描述符\nsettings.commerce\n当前发布\n默认值\n生效 generation\n0\n开放草稿\n无\n结账策略\n最低订单金额（CAD"
+      ]
+    },
+    {
+      "id": "S03-02",
+      "name": "Empty validation and history states",
+      "expectation": "尚未验证当前草稿 and 尚无发布历史 shown",
+      "status": "pass",
+      "observations": [
+        "empty states"
+      ]
+    },
+    {
+      "id": "S03-03",
+      "name": "Consumer readiness matrix",
+      "expectation": "consumer readiness matrix renders future obligations before publication",
+      "status": "pass",
+      "observations": [
+        "consumer matrix at compiled defaults"
+      ]
+    },
+    {
+      "id": "S03-04",
+      "name": "Create draft",
+      "expectation": "typed draft with minimumOrderAmountCents 1000 created",
+      "status": "pass",
+      "observations": [
+        "draft created min=1000"
+      ]
+    },
+    {
+      "id": "S03-05",
+      "name": "Structurally invalid value rejected",
+      "expectation": "negative minimum rejected client-side, draft unchanged",
+      "status": "pass",
+      "observations": [
+        "invalid province rejected client-side, draft unchanged"
+      ]
+    },
+    {
+      "id": "S03-06",
+      "name": "Validate draft",
+      "expectation": "validated with no blockers",
+      "status": "pass",
+      "observations": [
+        "validated"
+      ]
+    },
+    {
+      "id": "S03-07",
+      "name": "Safe diff",
+      "expectation": "public field diff visible",
+      "status": "pass",
+      "observations": [
+        "safe diff visible"
+      ]
+    },
+    {
+      "id": "S03-08",
+      "name": "Publish with zero side effects",
+      "expectation": "generation increments, businessWrites/providerCalls/jobs stay 0",
+      "status": "pass",
+      "observations": [
+        "{\"profile\": \"writer\", \"generation\": 1, \"settingsRevision\": 3, \"published\": {\"commercePolicy\": {\"minimumOrderAmountCents\": 1000, \"guestCheckoutEnabled\": true, \"checkoutEnabled\": true}, \"taxPolicy\": {\"enabledProvinceCodes\": [], \"calculationMode\": \"current-tax-rate-table\", \"roundingMode\": \"nearest-cent\"}, \"shippingPolicy\": {\"pickupEnabled\": true, \"deliveryEnabled\": true, \"deliveryFlatFeeCents\": 1500, \"serviceZoneMode\": \"dealer-location-only\", \"fallbackMode\": \"reject\"}, \"inventoryPolicy\": {\"reservationEnabled\": true, \"reservationTtlMinutes\": 30, \"availabilityMode\": \"manual\", \"staleAfterSeconds\": 300, \"staleBehavior\": \"degraded-reject\"}, \"orderPolicy\": {\"allowedLifecycleTransitions\": {\"paid\": [\"processing\", \"fulfilled\", \"cancelled\"], \"processing\": [\"fulfilled\", \"cancelled\"], \"fulfilled\": [], \"cancelled\": []}, \"guestLookupEnabled\": true, \"cancellationMode\": \"erp-confirmed-only\"}}, \"publishedAt\": \"2026-08-07T06:31:24.559Z\", \"drafts\": {}, \"nextVersion\": 3, \"history\": [{\"publicationId\": \"229d5eab-e167-4a66-b5a8-019213f28db2\", \"generation\": \"1\", \"version\": 1, \"status\": \"published\", \"descriptorKeys\": [\"settings.commerce\"], \"changeReason\": \"S03 browser \\u8349\\u7a3f\\u521b\\u5efa\\u539f\\u56e0\\u6587\\u672c\", \"publishedAt\": \"2026-08-07T06:31:24.559Z\", \"rollbackOfPublicationId\": null, \"auditEventId\": \"60f8c502-ff7f-46d6-96ae-f5c33b9179ea\"}], \"businessWrites\": 0, \"providerCalls\": 0, \"jobs\": 0, \"publishedId\": \"229d5eab-e167-4a66-b5a8-019213f28db2\"}"
+      ]
+    },
+    {
+      "id": "S03-09",
+      "name": "Exact-generation readiness (4 ready / 2 coverage-limited degraded)",
+      "expectation": "ready only with exact consumer generation; all consumers implemented_ready",
+      "status": "pass",
+      "observations": [
+        "readiness gen=1 states=['implemented_ready', 'implemented_ready', 'implemented_ready', 'implemented_degraded', 'implemented_degraded', 'implemented_ready']"
+      ]
+    },
+    {
+      "id": "S03-10",
+      "name": "Read-only impact preview",
+      "expectation": "aggregate quote only; zero business/provider/job effects",
+      "status": "pass",
+      "observations": [
+        "preview aggregate-only, zero side effects"
+      ]
+    },
+    {
+      "id": "S03-11",
+      "name": "Rollback draft",
+      "expectation": "rollback_draft created from current publication",
+      "status": "pass",
+      "observations": [
+        "rollback draft created"
+      ]
+    },
+    {
+      "id": "S03-12",
+      "name": "FR static route",
+      "expectation": "/fr/dashboard/settings/commerce renders the same panel",
+      "status": "pass",
+      "observations": [
+        "http://127.0.0.1:4554/fr/dashboard/settings/commerce"
+      ]
+    },
+    {
+      "id": "S03-13",
+      "name": "A11y landmarks",
+      "expectation": "named region and tables present",
+      "status": "pass",
+      "observations": [
+        "named region and tables"
+      ]
+    },
+    {
+      "id": "S03-14",
+      "name": "Zero unexpected console errors",
+      "expectation": "no console error entries",
+      "status": "pass",
+      "observations": []
+    },
+    {
+      "id": "S03-15",
+      "name": "Zero unexpected requests",
+      "expectation": "no requests outside WEB/API/data/blob origins",
+      "status": "pass",
+      "observations": []
+    }
+  ],
+  "counts": {
+    "pass": 15,
+    "fail": 0,
+    "not-executed": 0
+  },
+  "unexpectedConsole": [],
+  "unexpectedRequests": [],
+  "fixtureSafety": {
+    "businessWrites": 0,
+    "providerCalls": 0,
+    "jobs": 0
+  },
+  "sha256": {
+    "s03-fixture.py": "87aa50e37aca254ed732cdbd94519d5f74abbc5e28f20c923050333b70beb165",
+    "s03-definition.json": "c77d83c4c94311b0526df512ac5eee4bcc770c802d6e1d0bf613b7f332c7fe49",
+    "run-s03.sh": "111ef7d8d38d13685d5604da7ee10eebe8153a39ebf504e930421821614a7cf3",
+    "s03-acceptance.py": "7c9388e5171072d33218dac89fe1a1e3826d44ff97c545f77b65b37ade94355f"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "package": {
+    "version": "1.0.3",
+    "variant": "functional-first-migration70",
+    "status": "FROZEN",
+    "parentVersion": "1.0.2",
+    "decision": "Functional-first M70 (F1): keep BEGIN/timeouts/serializable, consume, CONFIG_AUDIT_PRECHECK, the 3 authority2 audit-required constraints, the attestation consume check (without OLD_EXECUTE), and source_latest. Delete the legacy REVOKE ALL ON FUNCTION p08/p09/p10 blocks and the OLD_EXECUTE_REMAINS postasserts (the runner deploys as vanstro_migrator, which is not the owner of those guard-owned functions, so the A+ revokes are not executable and the functional gate does not require the A+ multi-role ACL closure). Resolver DROP/ADD constraint runs under SET LOCAL ROLE vanstro_p02_guard_owner + RESET ROLE (current_user returns to migrator); the two registry INSERTs run as migrator. The 3 v3 functions keep migrator ownership (no ALTER OWNER, no REVOKE) and receive GRANT EXECUTE to vanstro_runtime. Final postassert is limited to attestation, resolver rows, v3 SECURITY DEFINER/search_path, and runtime EXECUTE — no owner/grantor/grantable/public/worker/old-execute purification."
+  },
+  "historyLinks": {
+    "originalV1_0": "/Users/zhangguannan/Documents/codex/vanstro-backups/f1-v15-implementation-authority-clarification-v1.0-candidate-20260804",
+    "v1_0_1": "/Users/zhangguannan/Documents/codex/vanstro-backups/f1-v15-implementation-authority-clarification-v1.0.1-migration69-acl-order-20260810T212004-0500",
+    "v1_0_2": "/Users/zhangguannan/Documents/codex/vanstro-backups/f1-v15-implementation-authority-clarification-v1.0.2-migration70-acl-authority-20260811T155314-0500",
+    "aplusArchive": "/Users/zhangguannan/Documents/codex/vanstro-backups/f1-v15-aplus-gate-a-archive-20260811T174144-0500"
+  },
+  "f0Evidence": {
+    "schemaVersion": "v11-r1-functional-first-run-1",
+    "runnerPath": "qa/v11-auth-browser/run-v11-r1-functional-first-migration.sh",
+    "evidenceRoot": "tasks/evidence/v11-r1-functional-first-migration",
+    "expectedTotal": 81,
+    "prodBaseline": 41
+  },
+  "migration70": {
+    "migrationName": "20260804110000_f1_v15_phase_b",
+    "frozenParentModelSha256": "df097e6c6f4e312f51e6dc7861ae5d422e077ee277f4d0030b3358dc6fc2461c",
+    "begin": "BEGIN;",
+    "timeouts": [
+      "SET LOCAL lock_timeout='5s';",
+      "SET LOCAL statement_timeout='60s';"
+    ],
+    "isolation": "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;",
+    "consume": "SELECT public.f1_consume_no_old_instances_v2(current_setting('vanstro.rollout_id'),current_setting('vanstro.environment'),current_setting('vanstro.manifest_digest'));",
+    "configAuditPrecheck": "DO $$BEGIN IF EXISTS(SELECT 1 FROM public.runtime_config_version WHERE \"authorityVersion\">=2 AND \"successAuditEventId\" IS NULL) THEN RAISE EXCEPTION 'CONFIG_AUDIT_PRECHECK';END IF;END$$;",
+    "constraints": [
+      "ALTER TABLE public.runtime_config_version ADD CONSTRAINT runtime_config_version_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+      "ALTER TABLE public.runtime_config_version VALIDATE CONSTRAINT runtime_config_version_authority2_audit_required;",
+      "ALTER TABLE public.feature_flag_version ADD CONSTRAINT feature_flag_version_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+      "ALTER TABLE public.feature_flag_version VALIDATE CONSTRAINT feature_flag_version_authority2_audit_required;",
+      "ALTER TABLE public.analytics_foundation_event ADD CONSTRAINT analytics_foundation_event_authority2_audit_required CHECK (\"authorityVersion\"<2 OR \"successAuditEventId\" IS NOT NULL) NOT VALID;",
+      "ALTER TABLE public.analytics_foundation_event VALIDATE CONSTRAINT analytics_foundation_event_authority2_audit_required;"
+    ],
+    "attestationConsumeCheck": "DO $$BEGIN IF EXISTS(SELECT 1 FROM public.f1_deployment_instance_attestation WHERE \"rolloutId\"=current_setting('vanstro.rollout_id')) OR NOT EXISTS(SELECT 1 FROM public.f1_deployment_attestation_consumption WHERE \"rolloutId\"=current_setting('vanstro.rollout_id')) THEN RAISE EXCEPTION 'ATTESTATION_CONSUME_POSTASSERT';END IF;END$$;",
+    "sourceLatest": "DO $source_latest$\nBEGIN\n  IF (SELECT count(*) FROM public.f1_source_migration_manifest) <> 68 THEN\n    RAISE EXCEPTION 'F1_PHASE_B_SOURCE_LATEST_POSTASSERT';\n  END IF;\nEND;\n$source_latest$;",
+    "resolver": {
+      "comment": [
+        "-- F1 v1.5 Phase B forward-only controlled read boundaries.  The two list",
+        "-- resources are explicit closed resolver tuples; no caller-supplied scope or",
+        "-- object identifier is trusted by these list functions."
+      ],
+      "guardRole": "vanstro_p02_guard_owner",
+      "dropConstraint": "ALTER TABLE public.f1_p02_resolver_registry\n  DROP CONSTRAINT f1_p02_resolver_registry_closed_check;",
+      "addConstraintTuples": [
+        [
+          "p08_import",
+          "resolver.p08_import",
+          "dashboard_import_batch",
+          "uuid",
+          "read",
+          "dashboard.import.foundation_sample.read"
+        ],
+        [
+          "p08_export",
+          "resolver.p08_export",
+          "dashboard_export_request",
+          "uuid",
+          "read",
+          "dashboard.export.foundation_sample.read"
+        ],
+        [
+          "p09_config",
+          "resolver.p09_config",
+          "runtime_config_version",
+          "row_uuid",
+          "read",
+          "config.read"
+        ],
+        [
+          "p09_flag",
+          "resolver.p09_flag",
+          "feature_flag_version",
+          "row_uuid",
+          "read",
+          "flags.read"
+        ],
+        [
+          "p09_config_list",
+          "resolver.p09_config_list",
+          "runtime_config_version",
+          "literal:latest-authorized",
+          "read",
+          "config.read"
+        ],
+        [
+          "p09_flag_list",
+          "resolver.p09_flag_list",
+          "feature_flag_version",
+          "literal:latest-authorized",
+          "read",
+          "flags.read"
+        ],
+        [
+          "p09_readiness_summary",
+          "resolver.p09_readiness_summary",
+          "worker_heartbeats",
+          "literal:worker-fleet",
+          "read",
+          "readiness.read_summary"
+        ],
+        [
+          "p09_readiness_detail",
+          "resolver.p09_readiness_detail",
+          "worker_heartbeats",
+          "literal:worker-fleet",
+          "read",
+          "readiness.read_detail"
+        ],
+        [
+          "p10_analytics_ingestion",
+          "resolver.p10_analytics_ingestion",
+          "foundation_sample",
+          "uuid",
+          "ingest",
+          "analytics.ingest"
+        ],
+        [
+          "p10_release_family",
+          "resolver.p10_release_family",
+          "analytics_foundation_release",
+          "six-field-family",
+          "read",
+          "analytics.release.read"
+        ]
+      ],
+      "addConstraint": "ALTER TABLE public.f1_p02_resolver_registry\n  ADD CONSTRAINT f1_p02_resolver_registry_closed_check CHECK (\n    (\"resourceType\", \"resolverId\", \"tableName\", \"idSemantics\", \"operationKey\", \"permissionKey\") IN (\n      ('p08_import','resolver.p08_import','dashboard_import_batch','uuid','read','dashboard.import.foundation_sample.read'),\n      ('p08_export','resolver.p08_export','dashboard_export_request','uuid','read','dashboard.export.foundation_sample.read'),\n      ('p09_config','resolver.p09_config','runtime_config_version','row_uuid','read','config.read'),\n      ('p09_flag','resolver.p09_flag','feature_flag_version','row_uuid','read','flags.read'),\n      ('p09_config_list','resolver.p09_config_list','runtime_config_version','literal:latest-authorized','read','config.read'),\n      ('p09_flag_list','resolver.p09_flag_list','feature_flag_version','literal:latest-authorized','read','flags.read'),\n      ('p09_readiness_summary','resolver.p09_readiness_summary','worker_heartbeats','literal:worker-fleet','read','readiness.read_summary'),\n      ('p09_readiness_detail','resolver.p09_readiness_detail','worker_heartbeats','literal:worker-fleet','read','readiness.read_detail'),\n      ('p10_analytics_ingestion','resolver.p10_analytics_ingestion','foundation_sample','uuid','ingest','analytics.ingest'),\n      ('p10_release_family','resolver.p10_release_family','analytics_foundation_release','six-field-family','read','analytics.release.read')\n    )\n  );",
+      "insertColumns": [
+        "resourceType",
+        "resolverId",
+        "tableName",
+        "idSemantics",
+        "operationKey",
+        "permissionKey"
+      ],
+      "insertRows": [
+        [
+          "p09_config_list",
+          "resolver.p09_config_list",
+          "runtime_config_version",
+          "literal:latest-authorized",
+          "read",
+          "config.read"
+        ],
+        [
+          "p09_flag_list",
+          "resolver.p09_flag_list",
+          "feature_flag_version",
+          "literal:latest-authorized",
+          "read",
+          "flags.read"
+        ]
+      ]
+    },
+    "v3Functions": [
+      {
+        "identity": "public.p09_config_list_v3(text,text,text,text[],text[])",
+        "sql": "CREATE OR REPLACE FUNCTION public.p09_config_list_v3(\n  session_token_hash text,\n  expected_context_revision text,\n  expected_scope_kind text,\n  expected_dealer_ids text[],\n  expected_location_ids text[]\n) RETURNS TABLE(\n  \"configKey\" text,\n  \"schemaVersion\" text,\n  \"activeVersion\" integer,\n  \"safeValue\" jsonb,\n  \"updatedAt\" timestamptz\n)\nLANGUAGE plpgsql\nSTABLE\nSECURITY DEFINER\nSET search_path = pg_catalog, public\nAS $phase_b$\nBEGIN\n  IF expected_context_revision IS NULL THEN\n    RAISE EXCEPTION 'P09_CONFIG_DENIED' USING ERRCODE = '42501';\n  END IF;\n\n  RETURN QUERY\n  WITH latest AS (\n    SELECT DISTINCT ON (\n      r.\"configKey\", r.\"authorizationScopeKind\",\n      r.\"dealerIdsSnapshot\", r.\"locationIdsSnapshot\"\n    ) r.*\n    FROM public.runtime_config_version AS r\n    WHERE r.\"contextRevision\" = expected_context_revision\n      AND r.\"activationStatus\" = 'active'\n      AND r.\"authorizationScopeKind\" = expected_scope_kind\n      AND r.\"dealerIdsSnapshot\" = expected_dealer_ids\n      AND r.\"locationIdsSnapshot\" = expected_location_ids\n    ORDER BY\n      r.\"configKey\" COLLATE \"C\" ASC,\n      r.\"authorizationScopeKind\" COLLATE \"C\" ASC,\n      r.\"dealerIdsSnapshot\" ASC,\n      r.\"locationIdsSnapshot\" ASC,\n      r.generation DESC,\n      r.version DESC,\n      r.\"createdAt\" DESC,\n      r.id DESC\n  ), authorized AS (\n    SELECT l.*\n    FROM latest AS l\n    CROSS JOIN LATERAL public.p02_resolve_persisted_authority_v3(\n      session_token_hash,\n      'p09_config',\n      l.id::text,\n      'read',\n      'config.read',\n      expected_context_revision,\n      l.generation\n    ) AS a\n    WHERE a.outcome = 'authorized'\n  )\n  SELECT\n    a.\"configKey\",\n    a.\"schemaVersion\",\n    a.version,\n    a.\"effectiveValue\",\n    COALESCE(a.\"activatedAt\", a.\"createdAt\")\n  FROM authorized AS a\n  ORDER BY\n    a.\"configKey\" COLLATE \"C\" ASC,\n    a.\"authorizationScopeKind\" COLLATE \"C\" ASC,\n    a.\"dealerIdsSnapshot\" ASC,\n    a.\"locationIdsSnapshot\" ASC,\n    a.id ASC;\nEND;\n$phase_b$;"
+      },
+      {
+        "identity": "public.p09_flag_list_v3(text,text,text,text[],text[])",
+        "sql": "CREATE OR REPLACE FUNCTION public.p09_flag_list_v3(\n  session_token_hash text,\n  expected_context_revision text,\n  expected_scope_kind text,\n  expected_dealer_ids text[],\n  expected_location_ids text[]\n) RETURNS TABLE(\n  \"flagKey\" text,\n  \"schemaVersion\" text,\n  \"activeState\" text,\n  \"version\" integer,\n  \"updatedAt\" timestamptz\n)\nLANGUAGE plpgsql\nSTABLE\nSECURITY DEFINER\nSET search_path = pg_catalog, public\nAS $phase_b$\nBEGIN\n  IF expected_context_revision IS NULL THEN\n    RAISE EXCEPTION 'P09_FLAG_DENIED' USING ERRCODE = '42501';\n  END IF;\n\n  RETURN QUERY\n  WITH latest AS (\n    SELECT DISTINCT ON (\n      r.\"flagKey\", r.\"authorizationScopeKind\",\n      r.\"dealerIdsSnapshot\", r.\"locationIdsSnapshot\"\n    ) r.*\n    FROM public.feature_flag_version AS r\n    WHERE r.\"contextRevision\" = expected_context_revision\n      AND r.\"activationStatus\" = 'active'\n      AND r.\"authorizationScopeKind\" = expected_scope_kind\n      AND r.\"dealerIdsSnapshot\" = expected_dealer_ids\n      AND r.\"locationIdsSnapshot\" = expected_location_ids\n    ORDER BY\n      r.\"flagKey\" COLLATE \"C\" ASC,\n      r.\"authorizationScopeKind\" COLLATE \"C\" ASC,\n      r.\"dealerIdsSnapshot\" ASC,\n      r.\"locationIdsSnapshot\" ASC,\n      r.generation DESC,\n      r.version DESC,\n      r.\"createdAt\" DESC,\n      r.id DESC\n  ), authorized AS (\n    SELECT l.*\n    FROM latest AS l\n    CROSS JOIN LATERAL public.p02_resolve_persisted_authority_v3(\n      session_token_hash,\n      'p09_flag',\n      l.id::text,\n      'read',\n      'flags.read',\n      expected_context_revision,\n      l.generation\n    ) AS a\n    WHERE a.outcome = 'authorized'\n  )\n  SELECT\n    a.\"flagKey\",\n    a.\"schemaVersion\",\n    a.\"effectiveState\",\n    a.version,\n    COALESCE(a.\"activatedAt\", a.\"createdAt\")\n  FROM authorized AS a\n  ORDER BY\n    a.\"flagKey\" COLLATE \"C\" ASC,\n    a.\"authorizationScopeKind\" COLLATE \"C\" ASC,\n    a.\"dealerIdsSnapshot\" ASC,\n    a.\"locationIdsSnapshot\" ASC,\n    a.id ASC;\nEND;\n$phase_b$;"
+      },
+      {
+        "identity": "public.p10_list_release_day_v3(text,date,text)",
+        "sql": "CREATE OR REPLACE FUNCTION public.p10_list_release_day_v3(\n  session_token_hash text,\n  release_day date,\n  expected_context_revision text\n) RETURNS SETOF jsonb\nLANGUAGE plpgsql\nSTABLE\nSECURITY DEFINER\nSET search_path = pg_catalog, public\nAS $phase_b$\nDECLARE\n  release_row public.analytics_foundation_release%ROWTYPE;\n  authority record;\nBEGIN\n  IF release_day IS NULL OR expected_context_revision IS NULL THEN\n    RAISE EXCEPTION 'P10_RELEASE_DENIED' USING ERRCODE = '42501';\n  END IF;\n\n  FOR release_row IN\n    SELECT r.*\n    FROM public.analytics_foundation_release AS r\n    WHERE r.\"releaseDay\" = release_day\n      AND r.\"authorizationScopeKind\" = 'global'\n      AND r.\"fieldVisibilityProfile\" = 'safe'\n      AND r.\"authorityVersion\" = 2\n    ORDER BY\n      r.\"metricDefinitionVersion\" COLLATE \"C\" ASC,\n      r.\"identityEpoch\" COLLATE \"C\" ASC,\n      r.\"suppressionPolicyVersion\" COLLATE \"C\" ASC,\n      r.\"fieldVisibilityProfile\" COLLATE \"C\" ASC,\n      r.id ASC\n  LOOP\n    SELECT * INTO authority\n    FROM public.p02_resolve_persisted_authority_v3(\n      session_token_hash,\n      'p10_release_family',\n      release_row.\"scopeFingerprint\" || '|' || release_row.\"releaseDay\"::text || '|' ||\n        release_row.\"metricDefinitionVersion\" || '|' || release_row.\"identityEpoch\" || '|' ||\n        release_row.\"suppressionPolicyVersion\" || '|' || release_row.\"fieldVisibilityProfile\",\n      'read',\n      'analytics.release.read',\n      expected_context_revision,\n      0::bigint\n    );\n\n    IF authority.outcome = 'authorized' THEN\n      RETURN NEXT jsonb_build_object(\n        'releaseId', release_row.id,\n        'releaseDay', release_row.\"releaseDay\",\n        'metricDefinitionVersion', release_row.\"metricDefinitionVersion\",\n        'identityEpoch', release_row.\"identityEpoch\",\n        'suppressionPolicyVersion', release_row.\"suppressionPolicyVersion\",\n        'fieldVisibilityProfile', release_row.\"fieldVisibilityProfile\",\n        'status', release_row.status,\n        'completeness', release_row.completeness,\n        'cells', COALESCE((\n          SELECT jsonb_agg(\n            jsonb_build_object(\n              'cellKey', c.\"cellKey\",\n              'state', c.state,\n              'valueKind', c.\"valueKind\",\n              'publishedValue', CASE WHEN c.state = 'published' THEN c.\"publishedValue\" ELSE NULL END\n            )\n            ORDER BY CASE c.\"cellKey\"\n              WHEN 'complement' THEN 1\n              WHEN 'denominator' THEN 2\n              WHEN 'engage' THEN 3\n              WHEN 'numerator' THEN 4\n              WHEN 'rate' THEN 5\n              WHEN 'view' THEN 6\n              ELSE 7\n            END, c.\"cellKey\" COLLATE \"C\" ASC\n          )\n          FROM public.analytics_foundation_release_cell AS c\n          WHERE c.\"releaseId\" = release_row.id\n        ), '[]'::jsonb)\n      );\n    END IF;\n  END LOOP;\nEND;\n$phase_b$;"
+      }
+    ],
+    "grants": [
+      "GRANT EXECUTE ON FUNCTION public.p09_config_list_v3(text,text,text,text[],text[]) TO vanstro_runtime;",
+      "GRANT EXECUTE ON FUNCTION public.p09_flag_list_v3(text,text,text,text[],text[]) TO vanstro_runtime;",
+      "GRANT EXECUTE ON FUNCTION public.p10_list_release_day_v3(text,date,text) TO vanstro_runtime;"
+    ],
+    "postassert": {
+      "attestation": "  IF EXISTS (\n    SELECT 1 FROM public.f1_deployment_instance_attestation\n    WHERE \"rolloutId\" = current_setting('vanstro.rollout_id')\n  ) OR NOT EXISTS (\n    SELECT 1 FROM public.f1_deployment_attestation_consumption\n    WHERE \"rolloutId\" = current_setting('vanstro.rollout_id')\n  ) THEN\n    RAISE EXCEPTION 'F1_PHASE_B_ATTESTATION_POSTASSERT';\n  END IF;",
+      "resolverRows": "  IF NOT EXISTS (\n    SELECT 1 FROM public.f1_p02_resolver_registry\n    WHERE (\"resourceType\", \"resolverId\", \"tableName\", \"idSemantics\", \"operationKey\", \"permissionKey\") =\n      ('p09_config_list','resolver.p09_config_list','runtime_config_version','literal:latest-authorized','read','config.read')\n  ) OR NOT EXISTS (\n    SELECT 1 FROM public.f1_p02_resolver_registry\n    WHERE (\"resourceType\", \"resolverId\", \"tableName\", \"idSemantics\", \"operationKey\", \"permissionKey\") =\n      ('p09_flag_list','resolver.p09_flag_list','feature_flag_version','literal:latest-authorized','read','flags.read')\n  ) THEN\n    RAISE EXCEPTION 'F1_PHASE_B_RESOLVER_POSTASSERT';\n  END IF;",
+      "v3Hardening": "  IF EXISTS (\n    SELECT 1 FROM pg_proc\n    WHERE oid IN (\n      'public.p09_config_list_v3(text,text,text,text[],text[])'::regprocedure,\n      'public.p09_flag_list_v3(text,text,text,text[],text[])'::regprocedure,\n      'public.p10_list_release_day_v3(text,date,text)'::regprocedure\n    )\n      AND (NOT prosecdef OR proconfig IS DISTINCT FROM ARRAY['search_path=pg_catalog, public']::text[])\n  ) THEN\n    RAISE EXCEPTION 'F1_PHASE_B_FUNCTION_HARDENING_POSTASSERT';\n  END IF;",
+      "runtimeExecute": "  IF NOT has_function_privilege('vanstro_runtime','public.p09_config_list_v3(text,text,text,text[],text[])','EXECUTE')\n     OR NOT has_function_privilege('vanstro_runtime','public.p09_flag_list_v3(text,text,text,text[],text[])','EXECUTE')\n     OR NOT has_function_privilege('vanstro_runtime','public.p10_list_release_day_v3(text,date,text)','EXECUTE') THEN\n    RAISE EXCEPTION 'F1_PHASE_B_ACL_POSTASSERT';\n  END IF;"
+    }
+  }
+}

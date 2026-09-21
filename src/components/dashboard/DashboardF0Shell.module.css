@@ -1,0 +1,62 @@
+.shell { min-height: 100dvh; color: #17211c; background: #f4f6f3; font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; overflow-wrap: anywhere; }
+.skipLink { position: fixed; z-index: 60; top: .5rem; left: .5rem; transform: translateY(-200%); padding: .75rem 1rem; color: #fff; background: #173e2b; }
+.skipLink:focus { transform: translateY(0); }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; color: #fff; background: #173e2b; }
+.identity { min-width: 0; display: flex; align-items: center; gap: .75rem; }
+.logo { width: auto; height: 2.5rem; object-fit: contain; filter: brightness(0) invert(1); }
+.menuButton, .drawerHeader button { min-width: 2.75rem; min-height: 2.75rem; border: 1px solid #b8cbbf; border-radius: .5rem; color: inherit; background: transparent; }
+.topbarActions { display: flex; align-items: center; gap: .6rem; }
+.userMenu { position: relative; }
+.userMenuTrigger { display: flex; align-items: center; gap: .5rem; min-height: 2.75rem; border: 1px solid #b8cbbf; border-radius: .5rem; padding: .5rem .9rem; color: #fff; background: transparent; font: inherit; }
+.userMenuTrigger:hover { background: #28563b; }
+.userMenuLabel { max-width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.userMenuChevron { color: #b9cec0; }
+.userMenuPopup { position: absolute; z-index: 50; right: 0; top: calc(100% + .4rem); min-width: 13rem; border: 1px solid #395746; border-radius: .5rem; padding: .4rem; color: #17211c; background: #fff; box-shadow: 0 .6rem 1.5rem rgb(0 0 0 / .2); }
+.userMenuSummary { display: grid; gap: .15rem; padding: .5rem .65rem .6rem; border-bottom: 1px solid #d5ddd7; }
+.userMenuSummary strong { color: #173e2b; overflow-wrap: anywhere; }
+.userMenuSummary span { color: #536258; font-size: .8125rem; }
+.userMenuLogout { display: block; width: 100%; margin-top: .3rem; border: 0; border-radius: .4rem; padding: .6rem .65rem; color: #17211c; background: transparent; text-align: left; font: inherit; }
+.userMenuLogout:hover, .userMenuLogout:focus-visible { background: #eaf1ec; }
+.userMenuLogout:disabled { opacity: .65; cursor: not-allowed; }
+.layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr); min-height: calc(100dvh - 4rem); }
+.desktopSidebar { padding: 1rem .75rem; border-right: 1px solid #395746; color: #fff; background: #173e2b; }
+.nav { display: grid; gap: .75rem; }
+.navGroup { display: grid; gap: .2rem; }
+.navGroup h3 { margin: .25rem .75rem; color: #b9cec0; font-size: .75rem; }
+.nav a, .nav button { display: block; width: 100%; border: 0; border-radius: .4rem; padding: .65rem .75rem; color: inherit; background: transparent; text-align: left; text-decoration: none; font: inherit; }
+.comingSoonNav { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .65rem .75rem; color: #a9b8af; font: inherit; }
+.comingSoonNav small { flex: none; border: 1px solid #5d7a68; border-radius: 999px; padding: .1rem .5rem; color: #b9cec0; font-size: .6875rem; }
+.comingSoonFeature { display: block; padding: .65rem .75rem; color: #a9b8af; font: inherit; }
+.nav a:hover { background: #28563b; }
+.nav a[aria-current="page"] { color: #173e2b; background: #fff; font-weight: 700; }
+.main { min-width: 0; padding: 2rem; }
+.main:focus { outline: none; }
+.main:focus-visible, .menuButton:focus-visible, .nav a:focus-visible, .retry:focus-visible, .drawerHeader button:focus-visible, .userMenuTrigger:focus-visible, .userMenuLogout:focus-visible, .breadcrumb a:focus-visible { outline: 3px solid #b55400; outline-offset: 3px; }
+.breadcrumb { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 .75rem; color: #536258; font-size: .875rem; }
+.breadcrumbItem { display: inline-flex; align-items: center; gap: .45rem; }
+.breadcrumbSeparator { color: #93a29a; }
+.breadcrumb a { color: #23623f; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb [aria-current="page"] { color: #17211c; font-weight: 700; }
+.pageHeader { margin-bottom: 1.25rem; }
+.pageHeader h1 { margin: 0 0 .35rem; color: #173e2b; font-size: 2rem; }
+.pageHeader p { max-width: 65ch; margin: 0; color: #536258; }
+.statusRow { display: flex; flex-wrap: wrap; gap: 0; margin: 0 0 1rem; border: 1px solid #d5ddd7; border-radius: .5rem; background: #fff; }
+.statusRowItem { flex: 1 1 12rem; padding: .6rem 1rem; }
+.statusRow dt { color: #536258; font-size: .75rem; }
+.statusRow dd { margin: .15rem 0 0; font-weight: 700; }
+.contentState, .state { border: 1px solid #d5ddd7; border-radius: .75rem; padding: 1rem; background: #fff; }
+.contentState h2, .state h1 { margin-top: 0; }
+.state { max-width: 38rem; margin: 4rem auto; text-align: center; }
+.retry { min-height: 2.75rem; padding: .65rem 1rem; border: 0; border-radius: .45rem; color: #fff; background: #23623f; font: inherit; font-weight: 700; }
+.modalRoot { position: fixed; z-index: 40; inset: 0; display: flex; }
+.backdrop { position: absolute; inset: 0; border: 0; background: rgb(0 0 0 / .48); }
+.mobileDrawer { position: relative; z-index: 1; width: min(20rem, 88vw); max-height: 100dvh; overflow-y: auto; overscroll-behavior: contain; padding: 1rem .75rem 2rem; color: #fff; background: #173e2b; box-shadow: .5rem 0 1.5rem rgb(0 0 0 / .18); }
+.drawerHeader { position: sticky; top: -1rem; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: -1rem -.75rem .75rem; padding: .75rem 1rem; background: #173e2b; }
+.drawerHeader h2 { margin: 0; font-size: 1rem; }
+.drawerClose { min-width: 2.75rem; min-height: 2.75rem; }
+@media (min-width: 761px) { .menuButton, .modalRoot { display: none; } }
+@media (max-width: 760px) { .layout { display: block; min-height: auto; } .desktopSidebar { display: none; } .main { padding: 1.25rem; } }
+@media (max-width: 390px) { .identity strong { display: none; } .menuButton { white-space: nowrap; } .logo { height: 2rem; width: 7.5rem; } .main { padding: 1rem; } .pageHeader h1 { font-size: 1.75rem; } }
+@media (prefers-reduced-motion: reduce) { .skipLink { scroll-behavior: auto; } }
+@media (forced-colors: active) { .topbar, .desktopSidebar, .mobileDrawer, .drawerHeader { color: CanvasText; background: Canvas; } .nav a[aria-current="page"] { border: 2px solid Highlight; color: HighlightText; background: Highlight; } .menuButton, .retry, .drawerHeader button, .contentState, .statusRow, .mobileDrawer, .userMenuTrigger { border: 2px solid CanvasText; } .main:focus-visible, .menuButton:focus-visible, .nav a:focus-visible, .retry:focus-visible, .drawerHeader button:focus-visible, .userMenuTrigger:focus-visible { outline-color: Highlight; } }

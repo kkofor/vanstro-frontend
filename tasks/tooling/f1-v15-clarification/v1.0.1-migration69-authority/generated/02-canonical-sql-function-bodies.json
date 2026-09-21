@@ -1,0 +1,585 @@
+{
+  "header": {
+    "generated": "GENERATED — DO NOT EDIT",
+    "generatorSha256": "f19cee679a0c112b62e5cc19465ffce409adfd4a32b97a2101bd6013e7627301",
+    "modelSha256": "7376e74962984bf4a73733edcfdf308b979d62a0fc34a8ee9c11e9e013a181a8",
+    "packageVersion": "1.0.1",
+    "parentFrozenManifestSha256": "e6c3cb275b3ecee17022418586613f6739757802b705bd17444b5c95be5a6e8f",
+    "schemaSha256": "b40af890b5a81e3aacde2d2715c6b10fe0a64f930d0c3c5eb97c147e5ae56f2b",
+    "status": "FROZEN"
+  },
+  "sqlFunctionBodies": [
+    {
+      "callers": [
+        "vanstro_p08_guard_owner",
+        "vanstro_p09_guard_owner",
+        "vanstro_p10_guard_owner",
+        "vanstro_p04_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p02_resolve_persisted_authority_v3(session_token_hash text,resource_type text,resource_id text,operation_key text,required_permission text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(outcome text,reason text,actor_id text,scope_kind text,dealer_ids text[],location_ids text[],resource_revision bigint,resolver_id text,grant_provenance jsonb) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE reg public.f1_p02_resolver_registry%ROWTYPE;uid text;target_scope text;target_dealers text[];target_locations text[];target_context text;target_revision bigint;provenance jsonb;has_global boolean;BEGIN SELECT * INTO reg FROM public.f1_p02_resolver_registry WHERE \"resourceType\"=resource_type AND \"operationKey\"=operation_key AND \"permissionKey\"=required_permission;IF NOT FOUND THEN RETURN QUERY SELECT 'denied','unknown_tuple',NULL::text,NULL::text,NULL::text[],NULL::text[],NULL::bigint,NULL::text,NULL::jsonb;RETURN;END IF;SELECT s.\"userId\" INTO uid FROM public.refresh_sessions s JOIN public.users u ON u.id=s.\"userId\" WHERE s.\"tokenHash\"=session_token_hash AND s.\"revokedAt\" IS NULL AND s.\"expiresAt\">CURRENT_TIMESTAMP AND u.status='active' AND u.kind='admin';IF uid IS NULL THEN RETURN QUERY SELECT 'denied','session_denied',NULL::text,NULL::text,NULL::text[],NULL::text[],NULL::bigint,reg.\"resolverId\",NULL::jsonb;RETURN;END IF;CASE resource_type WHEN 'p08_import' THEN SELECT \"authorizationScopeKind\",\"dealerIdsSnapshot\",\"locationIdsSnapshot\",\"contextRevision\",version::bigint INTO target_scope,target_dealers,target_locations,target_context,target_revision FROM public.dashboard_import_batch WHERE id::text=resource_id;WHEN 'p08_export' THEN SELECT \"authorizationScopeKind\",\"dealerIdsSnapshot\",\"locationIdsSnapshot\",\"contextRevision\",version::bigint INTO target_scope,target_dealers,target_locations,target_context,target_revision FROM public.dashboard_export_request WHERE id::text=resource_id;WHEN 'p09_config' THEN SELECT \"authorizationScopeKind\",\"dealerIdsSnapshot\",\"locationIdsSnapshot\",\"contextRevision\",generation INTO target_scope,target_dealers,target_locations,target_context,target_revision FROM public.runtime_config_version WHERE id::text=resource_id;WHEN 'p09_flag' THEN SELECT \"authorizationScopeKind\",\"dealerIdsSnapshot\",\"locationIdsSnapshot\",\"contextRevision\",generation INTO target_scope,target_dealers,target_locations,target_context,target_revision FROM public.feature_flag_version WHERE id::text=resource_id;WHEN 'p10_analytics_ingestion' THEN SELECT \"authorizationScopeKind\",\"dealerIdsSnapshot\",\"locationIdsSnapshot\",\"contextRevision\",version::bigint INTO target_scope,target_dealers,target_locations,target_context,target_revision FROM public.foundation_sample WHERE id::text=resource_id;ELSE target_scope:='global';target_dealers:=ARRAY[]::text[];target_locations:=ARRAY[]::text[];target_context:=expected_context_revision;target_revision:=expected_target_revision;END CASE;IF target_scope IS NULL THEN RETURN QUERY SELECT 'not_found','resource_not_found',uid,NULL::text,NULL::text[],NULL::text[],NULL::bigint,reg.\"resolverId\",NULL::jsonb;RETURN;END IF;WITH direct_grants AS (SELECT 'direct_user_role' source_kind,ur.id user_role_id,NULL::text membership_id,NULL::integer membership_revision,r.id role_id,r.key role_key,rp.id role_permission_id,p.id permission_id,p.key permission_key,NULL::text dealer_id,NULL::text location_id FROM public.user_roles ur JOIN public.roles r ON r.id=ur.\"roleId\" JOIN public.role_permissions rp ON rp.\"roleId\"=r.id JOIN public.permissions p ON p.id=rp.\"permissionId\" WHERE ur.\"userId\"=uid AND p.key=required_permission AND r.key<>'dealer_admin'),membership_grants AS (SELECT 'dealer_membership_role',NULL::text,m.id,m.revision,r.id,r.key,rp.id,p.id,p.key,m.\"dealerId\",dl.id FROM public.dealer_memberships m JOIN public.dealers d ON d.id=m.\"dealerId\" AND d.status='active' JOIN public.dealer_membership_roles mr ON mr.\"membershipId\"=m.id JOIN public.roles r ON r.id=mr.\"roleId\" JOIN public.role_permissions rp ON rp.\"roleId\"=r.id JOIN public.permissions p ON p.id=rp.\"permissionId\" AND p.key=required_permission LEFT JOIN public.dealer_membership_locations ml ON ml.\"membershipId\"=m.id AND ml.\"dealerId\"=m.\"dealerId\" LEFT JOIN public.dealer_locations dl ON dl.id=ml.\"dealerLocationId\" AND dl.\"dealerId\"=ml.\"dealerId\" AND dl.status='active' WHERE m.\"userId\"=uid AND m.status='active' AND m.\"revokedAt\" IS NULL AND m.\"validFrom\"<=CURRENT_TIMESTAMP AND (m.\"expiresAt\" IS NULL OR m.\"expiresAt\">CURRENT_TIMESTAMP) AND r.key='dealer_admin'),g AS (SELECT * FROM direct_grants UNION ALL SELECT * FROM membership_grants) SELECT EXISTS(SELECT 1 FROM g WHERE source_kind='direct_user_role'),COALESCE(jsonb_agg(to_jsonb(g) ORDER BY source_kind,membership_id,user_role_id,role_id,dealer_id,location_id),'[]'::jsonb) INTO has_global,provenance FROM g;IF provenance='[]'::jsonb THEN RETURN QUERY SELECT 'denied','permission_denied',uid,NULL::text,NULL::text[],NULL::text[],target_revision,reg.\"resolverId\",provenance;RETURN;END IF;IF NOT has_global AND ((target_scope='global') OR (target_scope='dealer' AND EXISTS(SELECT 1 FROM unnest(target_dealers) d WHERE NOT EXISTS(SELECT 1 FROM jsonb_to_recordset(provenance) x(source_kind text,dealer_id text,location_id text) WHERE x.dealer_id=d))) OR (target_scope='location' AND EXISTS(SELECT 1 FROM public.dealer_locations dl WHERE dl.id=ANY(target_locations) AND dl.\"dealerId\"=ANY(target_dealers) AND NOT EXISTS(SELECT 1 FROM jsonb_to_recordset(provenance) x(source_kind text,dealer_id text,location_id text) WHERE x.dealer_id=dl.\"dealerId\" AND (x.location_id IS NULL OR x.location_id=dl.id))))) THEN RETURN QUERY SELECT 'denied','scope_denied',uid,target_scope,target_dealers,target_locations,target_revision,reg.\"resolverId\",provenance;RETURN;END IF;IF expected_context_revision IS NULL OR expected_target_revision IS NULL OR target_context IS DISTINCT FROM expected_context_revision OR target_revision IS DISTINCT FROM expected_target_revision THEN RETURN QUERY SELECT 'stale','context_or_target_revision_changed',uid,target_scope,target_dealers,target_locations,target_revision,reg.\"resolverId\",provenance;RETURN;END IF;RETURN QUERY SELECT 'authorized','authorized',uid,target_scope,target_dealers,target_locations,target_revision,reg.\"resolverId\",provenance;END $fn$;\n",
+      "canonicalSqlSha256": "b0d1b7ad87f201522f330e68d9333f0a18014436ace079f09d9004b00d150ea0",
+      "id": "function.p02_resolve_persisted_authority_v3",
+      "identitySignature": "public.p02_resolve_persisted_authority_v3(text,text,text,text,text,text,bigint)",
+      "name": "p02_resolve_persisted_authority_v3",
+      "owner": "vanstro_p02_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "f1_p02_resolver_registry",
+        "refresh_sessions",
+        "users",
+        "roles",
+        "permissions",
+        "fixed resource tables"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p08_guard_owner",
+        "vanstro_p09_guard_owner",
+        "vanstro_p10_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p04_write_forward_audit_v4(session_token_hash text, resource_type text, resource_id text, operation_key text, required_permission text, expected_context_revision text, expected_target_revision bigint, audit_action text, audit_resource_type text, audit_result text, audit_reason text, request_id text, safe_metadata jsonb) RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; v_id uuid:=gen_random_uuid(); v_now timestamptz:=CURRENT_TIMESTAMP; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,resource_type,resource_id,operation_key,required_permission,expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P04_AUTHORITY_%',upper(a.outcome) USING ERRCODE='42501'; END IF; INSERT INTO public.audit_events(\"id\",\"eventVersion\",\"occurredAt\",\"actorType\",\"actorId\",\"actorDisplayClass\",\"effectiveRoles\",\"permissionGrants\",\"authorizationScopeKind\",\"dealerIds\",\"locationIds\",\"contextRevision\",\"authorizationContractVersion\",\"action\",\"resourceType\",\"resourceId\",\"result\",\"reason\",\"requestId\",\"source\",\"metadata\",\"sensitive\",\"retentionClass\",\"retentionPolicyVersion\",\"expiresAt\",\"createdAt\") VALUES(v_id,'audit-event.v1',v_now,'admin_user',a.actor_id,'staff','[]'::jsonb,jsonb_build_array(jsonb_build_object('permissionKey',required_permission,'scopeKind',a.scope_kind,'dealerIds',a.dealer_ids,'locationIds',a.location_ids)),a.scope_kind,to_jsonb(a.dealer_ids),to_jsonb(a.location_ids),'f1-v15-clarification','dashboard-authorization.v1',audit_action,audit_resource_type,resource_id,audit_result,audit_reason,request_id,'dashboard_api',COALESCE(safe_metadata,'{}'::jsonb),false,'default','audit-retention.v1',v_now+interval '730 days',v_now); RETURN v_id; END $fn$;\n",
+      "canonicalSqlSha256": "820f944162bf9c0da65cf5f242f03e5f44e6570e0bd5b32294d06e5b32b51357",
+      "id": "function.p04_write_forward_audit_v4",
+      "identitySignature": "public.p04_write_forward_audit_v4(text,text,text,text,text,text,bigint,text,text,text,text,text,jsonb)",
+      "name": "p04_write_forward_audit_v4",
+      "owner": "vanstro_p04_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02_resolve_persisted_authority_v3",
+        "audit_events complete row"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_worker_lifecycle_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_worker_startup_v2(instance_id text,registry_version text,registry_fingerprint text,supported_job_types text[],declared_capacity integer,observed_at timestamptz,nonce_hash text) RETURNS TABLE(instance_id_out text,generation_out bigint,lifecycle_version_out integer) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE current_row public.worker_heartbeats%ROWTYPE;next_generation bigint;canonical_types text[]:=ARRAY['analytics.release.seal','analytics.source.cleanup'];BEGIN IF registry_version<>'async-job-registry.v2' OR registry_fingerprint<>'a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' OR nonce_hash!~'^[0-9a-f]{64}$' OR (SELECT array_agg(DISTINCT x ORDER BY x) FROM unnest(supported_job_types)x)<>canonical_types OR declared_capacity<0 OR declared_capacity>1024 OR observed_at>CURRENT_TIMESTAMP+interval '5 seconds' THEN RAISE EXCEPTION 'P09_WORKER_V2_INVALID';END IF;SELECT * INTO current_row FROM public.worker_heartbeats WHERE key=instance_id FOR UPDATE;next_generation:=COALESCE(current_row.\"generation\",0)+1;INSERT INTO public.worker_heartbeats(key,\"instanceId\",\"lastStartedAt\",\"lifecycleState\",\"claimEnabled\",\"declaredCapacity\",\"effectiveCapacity\",\"supportedJobTypes\",\"registryVersion\",\"registryFingerprint\",\"generation\",\"lifecycleVersion\",\"startedObservedAt\",\"heartbeatObservedAt\",\"updatedAt\") VALUES(instance_id,instance_id,observed_at,'active',true,declared_capacity,declared_capacity,canonical_types,registry_version,registry_fingerprint,next_generation,0,observed_at,observed_at,CURRENT_TIMESTAMP) ON CONFLICT(key) DO UPDATE SET \"lifecycleState\"='active',\"claimEnabled\"=true,\"declaredCapacity\"=EXCLUDED.\"declaredCapacity\",\"effectiveCapacity\"=EXCLUDED.\"effectiveCapacity\",\"supportedJobTypes\"=canonical_types,\"registryVersion\"=registry_version,\"registryFingerprint\"=registry_fingerprint,\"generation\"=next_generation,\"lifecycleVersion\"=0,\"startedObservedAt\"=observed_at,\"heartbeatObservedAt\"=observed_at,\"drainingStartedAt\"=NULL,\"shutdownObservedAt\"=NULL,\"updatedAt\"=CURRENT_TIMESTAMP;RETURN QUERY SELECT instance_id,next_generation,0;END $fn$;\n",
+      "canonicalSqlSha256": "2c7547591d95df47524583a071beba325b0a3eb70d2b5f1088f62aa238cf1f6e",
+      "id": "function.p09_worker_startup_v2",
+      "identitySignature": "public.p09_worker_startup_v2(text,text,text,text[],integer,timestamptz,text)",
+      "name": "p09_worker_startup_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "worker_heartbeats",
+        "registry v2 exact five job set",
+        "nonce hash"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_worker_lifecycle_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_worker_heartbeat_v2(instance_id text,expected_generation bigint,expected_version integer,effective_capacity integer,observed_at timestamptz,request_hash text) RETURNS TABLE(generation_out bigint,lifecycle_version_out integer,lifecycle_state_out text) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN IF request_hash!~'^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'P09_WORKER_REQUEST_HASH_INVALID'; END IF; RETURN QUERY SELECT * FROM public.p09_worker_heartbeat(instance_id,expected_generation,expected_version,effective_capacity,observed_at); END $fn$;\n",
+      "canonicalSqlSha256": "c881fa33571018b6a7719027cf2797564e54c9178211baa181b64e1c2747a48f",
+      "id": "function.p09_worker_heartbeat_v2",
+      "identitySignature": "public.p09_worker_heartbeat_v2(text,bigint,integer,integer,timestamptz,text)",
+      "name": "p09_worker_heartbeat_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p09_worker_heartbeat",
+        "request hash",
+        "CAS"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_worker_lifecycle_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_worker_transition_v2(instance_id text,expected_generation bigint,expected_version integer,target_state text,observed_at timestamptz,request_hash text) RETURNS TABLE(generation_out bigint,lifecycle_version_out integer,lifecycle_state_out text) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN IF request_hash!~'^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'P09_WORKER_REQUEST_HASH_INVALID'; END IF; RETURN QUERY SELECT * FROM public.p09_worker_transition(instance_id,expected_generation,expected_version,target_state,observed_at); END $fn$;\n",
+      "canonicalSqlSha256": "60e5f84c12b5363faba98a649ff087c893a699e5f491fcb995e60971451e4f83",
+      "id": "function.p09_worker_transition_v2",
+      "identitySignature": "public.p09_worker_transition_v2(text,bigint,integer,text,timestamptz,text)",
+      "name": "p09_worker_transition_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p09_worker_transition",
+        "request hash",
+        "CAS"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p09_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_observe_readiness_internal_v2() RETURNS TABLE(readiness_state text,reason_code text,active_count bigint,stale_count bigint,total_capacity bigint,observed_at timestamptz,predicate_bitmap jsonb,secondary_reasons text[]) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a bigint;d bigint;sh bigint;st bigint;inc bigint;cap bigint;total bigint;missing_family bigint;family_capacity bigint;bits jsonb;primary_reason text;primary_state text;secondary text[];now_at timestamptz:=CURRENT_TIMESTAMP;BEGIN SELECT count(*) FILTER(WHERE fresh AND compatible AND \"lifecycleState\"='active'),count(*) FILTER(WHERE fresh AND compatible AND \"lifecycleState\"='draining'),count(*) FILTER(WHERE fresh AND compatible AND \"lifecycleState\"='shutdown'),count(*) FILTER(WHERE NOT fresh),count(*) FILTER(WHERE fresh AND NOT compatible),COALESCE(sum(\"effectiveCapacity\") FILTER(WHERE fresh AND compatible AND \"lifecycleState\"='active' AND \"claimEnabled\"),0),count(*) INTO a,d,sh,st,inc,cap,total FROM (SELECT *,\"heartbeatObservedAt\">now_at-interval '2 minutes' fresh,(\"registryVersion\"='async-job-registry.v2' AND \"registryFingerprint\"='a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' AND \"supportedJobTypes\"=ARRAY['analytics.release.seal','analytics.source.cleanup']) compatible FROM public.worker_heartbeats WHERE \"lifecycleState\" IS NOT NULL)x;SELECT count(*) FILTER(WHERE NOT EXISTS(SELECT 1 FROM public.f1_readiness_principal_job_capacity c WHERE c.\"principalRole\"=required.principal_role AND required.job_type=ANY(c.\"supportedJobTypes\") AND c.\"registryVersion\"='async-job-registry.v2' AND c.\"registryFingerprint\"='a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' AND c.\"observedAt\">now_at-interval '15 seconds' AND c.\"claimEnabled\" AND c.\"capacity\">0)) INTO missing_family FROM (VALUES('vanstro_worker_runtime','analytics.release.seal'),('vanstro_worker_runtime','analytics.source.cleanup'),('vanstro_signer_admin_runtime','security.signer.manage'),('vanstro_kms_rotation_runtime','analytics.subject-key.rotate'),('vanstro_dsar_runtime','privacy.subject.purge')) required(principal_role,job_type);SELECT COALESCE(sum(c.\"capacity\"),0) INTO family_capacity FROM public.f1_readiness_principal_job_capacity c WHERE c.\"registryVersion\"='async-job-registry.v2' AND c.\"registryFingerprint\"='a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' AND c.\"observedAt\">now_at-interval '15 seconds' AND c.\"claimEnabled\" AND c.\"capacity\">0 AND EXISTS(SELECT 1 FROM (VALUES('vanstro_worker_runtime','analytics.release.seal'),('vanstro_worker_runtime','analytics.source.cleanup'),('vanstro_signer_admin_runtime','security.signer.manage'),('vanstro_kms_rotation_runtime','analytics.subject-key.rotate'),('vanstro_dsar_runtime','privacy.subject.purge')) required(principal_role,job_type) WHERE required.principal_role=c.\"principalRole\" AND required.job_type=ANY(c.\"supportedJobTypes\"));bits:=jsonb_build_object('migration_incompatible',NOT EXISTS(SELECT 1 FROM public.f1_readiness_health_source WHERE \"sourceKey\"='migration' AND healthy AND \"observedAt\">now_at-interval '15 seconds'),'database_unavailable',NOT EXISTS(SELECT 1 FROM public.f1_readiness_health_source WHERE \"sourceKey\"='database' AND healthy AND \"observedAt\">now_at-interval '15 seconds'),'registry_incompatible',inc>0,'no_worker_observed',total=0,'all_workers_stale',total>0 AND st=total,'all_workers_shutdown',total>0 AND sh=total,'all_workers_draining',total>0 AND d+sh=total AND d>0,'zero_claim_capacity',cap=0 OR missing_family>0,'required_storage_unavailable',NOT EXISTS(SELECT 1 FROM public.f1_readiness_health_source WHERE \"sourceKey\"='storage' AND healthy AND \"observedAt\">now_at-interval '30 seconds'),'required_parser_unavailable',NOT EXISTS(SELECT 1 FROM public.f1_readiness_health_source WHERE \"sourceKey\"='parser' AND healthy AND \"observedAt\">now_at-interval '30 seconds'),'optional_provider_degraded',EXISTS(SELECT 1 FROM public.f1_readiness_health_source WHERE \"sourceKey\"='optional_provider' AND NOT healthy AND \"observedAt\">now_at-interval '30 seconds'));SELECT reason,state INTO primary_reason,primary_state FROM (VALUES(1,'migration_incompatible','not_ready'),(2,'database_unavailable','not_ready'),(3,'registry_incompatible','not_ready'),(4,'no_worker_observed','not_ready'),(5,'all_workers_stale','stale'),(6,'all_workers_shutdown','not_ready'),(7,'all_workers_draining','not_ready'),(8,'zero_claim_capacity','not_ready'),(9,'required_storage_unavailable','not_ready'),(10,'required_parser_unavailable','not_ready'),(11,'optional_provider_degraded','degraded')) v(priority,reason,state) WHERE COALESCE((bits->>reason)::boolean,false) ORDER BY priority LIMIT 1;IF primary_reason IS NULL THEN primary_reason:='ready';primary_state:='ready';END IF;SELECT COALESCE(array_agg(reason ORDER BY priority) FILTER(WHERE reason<>primary_reason),ARRAY[]::text[]) INTO secondary FROM (VALUES(1,'migration_incompatible'),(2,'database_unavailable'),(3,'registry_incompatible'),(4,'no_worker_observed'),(5,'all_workers_stale'),(6,'all_workers_shutdown'),(7,'all_workers_draining'),(8,'zero_claim_capacity'),(9,'required_storage_unavailable'),(10,'required_parser_unavailable'),(11,'optional_provider_degraded')) v(priority,reason) WHERE COALESCE((bits->>reason)::boolean,false);RETURN QUERY SELECT primary_state,primary_reason,a,st,family_capacity,now_at,bits,secondary;END $fn$;",
+      "canonicalSqlSha256": "5a255f6fe0c1abb836baa34bc2aca29745a06fc52ecaccd8af13c75d9f779a40",
+      "id": "function.p09_observe_readiness_internal_v2",
+      "identitySignature": "public.p09_observe_readiness_internal_v2()",
+      "name": "p09_observe_readiness_internal_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "worker_heartbeats DB-time"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_readiness_summary_v2(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(readiness_state text,reason_code text,active_count bigint,stale_count bigint,total_capacity bigint,observed_at timestamptz) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; r record; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p09_readiness_summary',resource_id,'read','readiness.read_summary',expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P09_READINESS_DENIED' USING ERRCODE='42501'; END IF; SELECT * INTO r FROM public.p09_observe_readiness_internal_v2(); RETURN QUERY SELECT r.readiness_state,r.reason_code,r.active_count,r.stale_count,r.total_capacity,r.observed_at; END $fn$;\n",
+      "canonicalSqlSha256": "5a3ab899c7f148b57abe501c907f33b054c4269cd53af0e7f68f6c103ee41227",
+      "id": "function.p09_readiness_summary_v2",
+      "identitySignature": "public.p09_readiness_summary_v2(text,text,text,bigint)",
+      "name": "p09_readiness_summary_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02_resolve_persisted_authority_v3",
+        "p09_observe_readiness_internal_v2"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_readiness_detail_v2(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(readiness_state text,reason_code text,active_count bigint,stale_count bigint,total_capacity bigint,observed_at timestamptz,secondary_reasons text[]) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; r record; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p09_readiness_detail',resource_id,'read','readiness.read_detail',expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P09_READINESS_DENIED' USING ERRCODE='42501'; END IF; SELECT * INTO r FROM public.p09_observe_readiness_internal_v2(); RETURN QUERY SELECT r.readiness_state,r.reason_code,r.active_count,r.stale_count,r.total_capacity,r.observed_at,r.secondary_reasons; END $fn$;\n",
+      "canonicalSqlSha256": "2255ce0dcb97ad92a988139a2647fc643c5a11127647540ef2b5d4deb6679bd6",
+      "id": "function.p09_readiness_detail_v2",
+      "identitySignature": "public.p09_readiness_detail_v2(text,text,text,bigint)",
+      "name": "p09_readiness_detail_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02_resolve_persisted_authority_v3",
+        "p09_observe_readiness_internal_v2"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_config_list_v2(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(config_key text,schema_version text,active_version integer,safe_value jsonb,updated_at timestamptz) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p09_config',resource_id,'read','config.read',expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P09_CONFIG_DENIED' USING ERRCODE='42501'; END IF; RETURN QUERY SELECT r.\"configKey\",r.\"schemaVersion\",r.version,r.\"effectiveValue\",COALESCE(r.\"activatedAt\",r.\"createdAt\") FROM public.runtime_config_version r WHERE r.id::text=resource_id ORDER BY r.version DESC LIMIT 1; END $fn$;\n",
+      "canonicalSqlSha256": "9c4a7661679ade912ab027913e420a66669a40ec6de325955623d45cf3d152cc",
+      "id": "function.p09_config_list_v2",
+      "identitySignature": "public.p09_config_list_v2(text,text,text,bigint)",
+      "name": "p09_config_list_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02 resolver",
+        "runtime_config_version"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_flag_list_v2(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(flag_key text,schema_version text,active_state text,version integer,updated_at timestamptz) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p09_flag',resource_id,'read','flags.read',expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P09_FLAG_DENIED' USING ERRCODE='42501'; END IF; RETURN QUERY SELECT r.\"flagKey\",r.\"schemaVersion\",r.\"effectiveState\",r.version,COALESCE(r.\"activatedAt\",r.\"createdAt\") FROM public.feature_flag_version r WHERE r.id::text=resource_id ORDER BY r.version DESC LIMIT 1; END $fn$;\n",
+      "canonicalSqlSha256": "d2a997b899970977127d3e54c1489fb7514f9368da45c5dd0ec813a3b7025759",
+      "id": "function.p09_flag_list_v2",
+      "identitySignature": "public.p09_flag_list_v2(text,text,text,bigint)",
+      "name": "p09_flag_list_v2",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02 resolver",
+        "feature_flag_version"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_reject_event_mutation_v1() RETURNS trigger LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE jid uuid;owner_value text;revision_value integer;BEGIN IF TG_OP='DELETE' AND current_user='vanstro_p10_guard_owner' THEN BEGIN jid:=current_setting('app.p10_cleanup_job_id',true)::uuid;owner_value:=current_setting('app.p10_cleanup_lease_owner',true);revision_value:=current_setting('app.p10_cleanup_lease_revision',true)::integer;EXCEPTION WHEN OTHERS THEN jid:=NULL;END;IF jid IS NOT NULL AND EXISTS(SELECT 1 FROM pg_temp.p10_authorized_delete_event_ids x WHERE x.\"eventId\"=OLD.id AND x.\"jobId\"=jid AND x.\"leaseOwner\"=owner_value AND x.\"leaseRevision\"=revision_value) AND EXISTS(SELECT 1 FROM public.async_jobs j WHERE j.id=jid AND j.\"jobType\" IN('analytics.source.cleanup','privacy.subject.purge') AND j.status='running' AND j.\"leaseOwner\"=owner_value AND j.\"leaseRevision\"=revision_value AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL) THEN RETURN OLD;END IF;END IF;RAISE EXCEPTION 'ANALYTICS_FOUNDATION_EVENT_IMMUTABLE';END $fn$;",
+      "canonicalSqlSha256": "b1d00d6d234b0b531ce9987a689a157762d3006e73465819a237ccbdd5c285c4",
+      "id": "function.p10_reject_event_mutation_v1",
+      "identitySignature": "public.p10_reject_event_mutation_v1()",
+      "name": "p10_reject_event_mutation_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "trigger"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_reject_release_mutation_v1() RETURNS trigger LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN RAISE EXCEPTION 'ANALYTICS_FOUNDATION_RELEASE_IMMUTABLE'; END $fn$;\n",
+      "canonicalSqlSha256": "b8e53a27bc3016949aaf9dfdde5cc2ba561e2b2d5754822ab88da2a52169932d",
+      "id": "function.p10_reject_release_mutation_v1",
+      "identitySignature": "public.p10_reject_release_mutation_v1()",
+      "name": "p10_reject_release_mutation_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "trigger"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_reject_release_cell_mutation_v1() RETURNS trigger LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN RAISE EXCEPTION 'ANALYTICS_FOUNDATION_RELEASE_CELL_IMMUTABLE'; END $fn$;\n",
+      "canonicalSqlSha256": "c2f45059f2a38896c5a8344341309846ad5e591887b5746cece9eb9c004a40a7",
+      "id": "function.p10_reject_release_cell_mutation_v1",
+      "identitySignature": "public.p10_reject_release_cell_mutation_v1()",
+      "name": "p10_reject_release_cell_mutation_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "trigger"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_validate_subject_digest_v3(subject_digest bytea,kid text,epoch text,operation_key text) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ SELECT octet_length(subject_digest)=32 AND EXISTS(SELECT 1 FROM public.f1_p10_subject_key_provider k WHERE k.kid=p10_validate_subject_digest_v3.kid AND k.epoch=p10_validate_subject_digest_v3.epoch AND ((k.status='active' AND k.\"activatedAt\"<=CURRENT_TIMESTAMP) OR (operation_key='verify_historical' AND k.status='retired_verification' AND k.\"retiredAt\"+interval '30 days 10 minutes'>CURRENT_TIMESTAMP))) $fn$;\n",
+      "canonicalSqlSha256": "bb50fc6e7adbba1e5449d58865c74d92c42c6e3495c47df63d3b7d9936113cd8",
+      "id": "function.p10_validate_subject_digest_v3",
+      "identitySignature": "public.p10_validate_subject_digest_v3(bytea,text,text,text)",
+      "name": "p10_validate_subject_digest_v3",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "external KMS/HSM HMAC provider",
+        "provider reference only",
+        "active/retired verification registry"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_has_authenticated_consent_v1(digest bytea,kid text,epoch text) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ SELECT COALESCE((SELECT e.action IN ('granted','updated') AND COALESCE((e.preferences->>'analytics')::boolean,false) FROM public.privacy_consent_events e WHERE e.\"authorityVersion\"=2 AND e.\"authenticatedSubjectDigest\"=digest AND e.\"subjectKeyVersion\"=kid AND e.\"identityRealmVersion\"='vanstro.authenticated-user.v1' AND e.\"identityEpoch\"=epoch AND e.\"consentSchemaVersion\"='vanstro.analytics.authenticated-consent.v1' ORDER BY e.\"createdAt\" DESC,e.id DESC LIMIT 1),false) $fn$;\n",
+      "canonicalSqlSha256": "d813d0a0957fe0160e932a2de6840c4089a4a13f2591582f2c75ba4c572cbbe0",
+      "id": "function.p10_has_authenticated_consent_v1",
+      "identitySignature": "public.p10_has_authenticated_consent_v1(bytea,text,text)",
+      "name": "p10_has_authenticated_consent_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "privacy_consent_events exact tuple"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_get_release_day_v2(session_token_hash text,scope_fingerprint text,release_day date,metric_definition_version text,identity_epoch text,suppression_policy_version text,field_visibility_profile text,expected_context_revision text,expected_target_revision bigint) RETURNS TABLE(release_day_out date,status text,completeness text,cells jsonb) LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record; BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p10_release_family',scope_fingerprint||'|'||release_day::text||'|'||metric_definition_version||'|'||identity_epoch||'|'||suppression_policy_version||'|'||field_visibility_profile,'read','analytics.release.read',expected_context_revision,expected_target_revision); IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P10_RELEASE_DENIED' USING ERRCODE='42501'; END IF; RETURN QUERY SELECT x.\"releaseDay\",x.status,x.completeness,COALESCE(jsonb_agg(jsonb_build_object('cellKey',c.\"cellKey\",'state',c.state,'valueKind',c.\"valueKind\",'publishedValue',c.\"publishedValue\") ORDER BY c.\"cellKey\") FILTER(WHERE c.id IS NOT NULL),'[]'::jsonb) FROM public.analytics_foundation_release x LEFT JOIN public.analytics_foundation_release_cell c ON c.\"releaseId\"=x.id WHERE x.\"scopeFingerprint\"=scope_fingerprint AND x.\"releaseDay\"=release_day AND x.\"metricDefinitionVersion\"=metric_definition_version AND x.\"identityEpoch\"=identity_epoch AND x.\"suppressionPolicyVersion\"=suppression_policy_version AND x.\"fieldVisibilityProfile\"=field_visibility_profile GROUP BY x.id; END $fn$;\n",
+      "canonicalSqlSha256": "0d5e52a12cf2dd00e138c6d0fe2d42db1864a3f6fb55b4e77b8b36e788653591",
+      "id": "function.p10_get_release_day_v2",
+      "identitySignature": "public.p10_get_release_day_v2(text,text,date,text,text,text,text,text,bigint)",
+      "name": "p10_get_release_day_v2",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02 resolver",
+        "release table"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_ingest_event_v5(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint,event_id uuid,occurred_at timestamptz,dimensions jsonb,idempotency_hash text,request_id text,subject_digest bytea,subject_kid text,subject_epoch text,assertion_expires_at timestamptz,assertion_nonce text,assertion_signer_id text,assertion_signature bytea) RETURNS TABLE(fact_id uuid,success_audit_event_id uuid,outcome text) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record;digest bytea:=subject_digest;kid text:=subject_kid;epoch text:=subject_epoch;aid uuid;intent_hash text;post_seal boolean;claim public.f1_p10_idempotency%ROWTYPE;BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p10_analytics_ingestion',resource_id,'ingest','analytics.ingest',expected_context_revision,expected_target_revision);IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P10_INGEST_DENIED' USING ERRCODE='42501';END IF;intent_hash:=encode(digest(convert_to(event_id::text||'|'||resource_id||'|'||extract(epoch from occurred_at)::bigint::text||'|'||dimensions::text||'|'||encode(subject_digest,'hex')||'|'||kid||'|'||epoch||'|analytics.ingest|'||expected_context_revision||'|'||expected_target_revision||'|'||assertion_signer_id||'|'||assertion_nonce||'|'||request_id,'UTF8'),'sha256'),'hex');PERFORM pg_advisory_xact_lock(hashtextextended(encode(digest,'hex'),0));IF EXISTS(SELECT 1 FROM public.f1_subject_erasure_tombstone t WHERE t.\"erasureToken\"=public.vanstro_subject_erasure_token_v1(convert_to('vanstro.subject-erasure.v1','UTF8')||digest)) THEN RAISE EXCEPTION 'SUBJECT_ERASED';END IF;SELECT * INTO claim FROM public.f1_p10_idempotency WHERE \"operation\"='ingest' AND \"idempotencyHash\"=idempotency_hash FOR UPDATE;IF FOUND THEN IF claim.\"intentHash\"<>intent_hash THEN RAISE EXCEPTION 'IDEMPOTENCY_CONFLICT' USING ERRCODE='23505';END IF;IF claim.state='completed' THEN RETURN QUERY SELECT claim.\"resultId\",claim.\"auditEventId\",'replay'::text;RETURN;END IF;END IF;PERFORM * FROM public.p10_verify_subject_assertion_v1(session_token_hash,'analytics.ingest',idempotency_hash,intent_hash,digest,kid,epoch,assertion_expires_at,assertion_nonce,assertion_signer_id,assertion_signature);IF NOT public.p10_validate_subject_digest_v3(digest,kid,epoch,'ingest') THEN RAISE EXCEPTION 'P10_SUBJECT_DIGEST_INVALID';END IF;IF NOT public.p10_has_authenticated_consent_v1(digest,kid,epoch) THEN RAISE EXCEPTION 'P10_CONSENT_REQUIRED' USING ERRCODE='42501';END IF;IF idempotency_hash!~'^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'P10_HASH_INVALID';END IF;INSERT INTO public.f1_p10_idempotency(\"operation\",\"idempotencyHash\",\"intentHash\",\"subjectDigest\",\"expiresAt\") VALUES('ingest',idempotency_hash,intent_hash,subject_digest,CURRENT_TIMESTAMP+interval '30 days') ON CONFLICT(\"operation\",\"idempotencyHash\") DO NOTHING;UPDATE public.f1_p10_idempotency SET \"subjectDigest\"=digest WHERE \"operation\"='ingest' AND \"idempotencyHash\"=idempotency_hash AND \"subjectDigest\" IS NULL;SELECT * INTO claim FROM public.f1_p10_idempotency WHERE \"operation\"='ingest' AND \"idempotencyHash\"=idempotency_hash FOR UPDATE;IF claim.\"intentHash\"<>intent_hash THEN RAISE EXCEPTION 'IDEMPOTENCY_CONFLICT' USING ERRCODE='23505';END IF;IF claim.state='completed' THEN RETURN QUERY SELECT claim.\"resultId\",claim.\"auditEventId\",'replay'::text;RETURN;END IF;PERFORM pg_advisory_xact_lock(hashtextextended((occurred_at AT TIME ZONE 'UTC')::date::text||'|metric.v1|'||epoch||'|suppression.k3.v1|safe|'||repeat('0',64),0));SELECT EXISTS(SELECT 1 FROM public.analytics_foundation_release r WHERE r.\"scopeFingerprint\"=repeat('0',64) AND r.\"releaseDay\"=(occurred_at AT TIME ZONE 'UTC')::date AND r.\"metricDefinitionVersion\"='metric.v1' AND r.\"identityEpoch\"=epoch AND r.\"suppressionPolicyVersion\"='suppression.k3.v1' AND r.\"fieldVisibilityProfile\"='safe') INTO post_seal;aid:=public.p04_write_forward_audit_v4(session_token_hash,'p10_analytics_ingestion',resource_id,'ingest','analytics.ingest',expected_context_revision,expected_target_revision,'create','analytics_event','succeeded',NULL,request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','eventType','value','foundation.analytics.observed.v1'))));INSERT INTO public.analytics_foundation_event(id,\"eventName\",\"eventVersion\",\"schemaVersion\",\"schemaFingerprint\",producer,source,\"occurredAt\",\"observedAt\",\"ingestedAt\",\"subjectClass\",\"subjectDigest\",\"authenticatedSubjectDigest\",\"subjectKeyVersion\",\"identityEpoch\",\"contextRevision\",\"authorizationScopeKind\",\"dealerIds\",\"locationIds\",\"scopeFingerprint\",\"fieldVisibilityFingerprint\",\"resourceType\",\"resourceId\",dimensions,\"idempotencyKeyHash\",\"eventIntentHash\",\"occurrenceIdentity\",sequence,provenance,\"consentClass\",\"consentVersion\",late,\"expiresAt\",\"authorityVersion\",\"postSealLate\",\"successAuditEventId\") VALUES(event_id,'foundation.analytics.observed.v1','analytics-event-schema.v1','analytics-event-schema.v1',repeat('0',64),'dashboard_admin','dashboard_api',occurred_at,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'admin_user',encode(digest,'hex'),digest,kid,epoch,'f1-v15-clarification','global',ARRAY[]::text[],ARRAY[]::text[],repeat('0',64),repeat('0',64),'foundation_sample',resource_id,dimensions,idempotency_hash,intent_hash,request_id,0,'p10-owned-conformance','analytics','vanstro.analytics.authenticated-consent.v1',post_seal,CURRENT_TIMESTAMP+interval '30 days',2,post_seal,aid);UPDATE public.f1_p10_idempotency SET state='completed',\"resultId\"=event_id,\"auditEventId\"=aid WHERE \"operation\"='ingest' AND \"idempotencyHash\"=idempotency_hash;UPDATE public.f1_verified_nonce SET \"resultId\"=event_id WHERE \"idempotencyHash\"=idempotency_hash AND \"intentHash\"=intent_hash;RETURN QUERY SELECT event_id,aid,'created'::text;END $fn$;\n",
+      "canonicalSqlSha256": "8331dffa278693e4c820f1168894c0c9b1c828f0d7eb3f6efa00bf931ce3c336",
+      "id": "function.p10_ingest_event_v5",
+      "identitySignature": "public.p10_ingest_event_v5(text,text,text,bigint,uuid,timestamptz,jsonb,text,text,bytea,text,text,timestamptz,text,text,bytea)",
+      "name": "p10_ingest_event_v5",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p02_resolve_persisted_authority_v3",
+        "p04_write_forward_audit_v4",
+        "p10_validate_subject_digest_v2",
+        "p10_has_authenticated_consent_v1",
+        "analytics_foundation_event",
+        "f1_p10_idempotency intent conflict",
+        "p10_verify_subject_assertion_v1"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_release_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_seal_release_day_v2(job_id uuid,lease_owner text,lease_revision integer,retry_generation integer,generation_attempt integer,release_day date,identity_epoch text,request_id text) RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE job public.async_jobs%ROWTYPE; rid uuid:=gen_random_uuid();aid uuid;den bigint;num bigint;comp bigint;state text;epoch text;cutoff timestamptz:=(release_day::timestamp AT TIME ZONE 'UTC')+interval '1 day 10 minutes';BEGIN SELECT * INTO STRICT job FROM public.async_jobs j WHERE j.id=p10_seal_release_day_v2.job_id AND j.\"jobType\"='analytics.release.seal' AND j.\"jobTypeVersion\"='analytics.release.seal.v1' AND j.\"payloadSchemaVersion\"='analytics-release-seal-input.v1' AND j.\"resultSchemaVersion\"='analytics-release-seal-result.v1' AND j.status='running' AND j.\"leaseOwner\"=p10_seal_release_day_v2.lease_owner AND j.\"leaseRevision\"=p10_seal_release_day_v2.lease_revision AND j.\"retryGeneration\"=p10_seal_release_day_v2.retry_generation AND j.\"generationAttempt\"=p10_seal_release_day_v2.generation_attempt AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL AND j.\"payload\"->>'releaseDay'=release_day::text AND j.\"payload\"->>'identityEpoch'=identity_epoch FOR SHARE;PERFORM pg_advisory_xact_lock(hashtextextended(release_day::text||'|metric.v1|'||identity_epoch||'|suppression.k3.v1|safe|'||repeat('0',64),0));SELECT id INTO rid FROM public.analytics_foundation_release WHERE \"scopeFingerprint\"=repeat('0',64) AND \"releaseDay\"=release_day AND \"metricDefinitionVersion\"='metric.v1' AND \"identityEpoch\"=identity_epoch AND \"suppressionPolicyVersion\"='suppression.k3.v1' AND \"fieldVisibilityProfile\"='safe';IF FOUND THEN RETURN rid;END IF;rid:=gen_random_uuid();IF CURRENT_TIMESTAMP<cutoff THEN RAISE EXCEPTION 'P10_PREMATURE_SEAL';END IF; SELECT min(\"identityEpoch\") INTO epoch FROM public.analytics_foundation_event WHERE \"authorityVersion\"=2 AND \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\"<=cutoff;IF epoch IS NULL THEN epoch:=identity_epoch;ELSIF epoch<>identity_epoch THEN RAISE EXCEPTION 'P10_REQUESTED_EPOCH_MISMATCH';END IF;IF EXISTS(SELECT 1 FROM public.analytics_foundation_event WHERE \"authorityVersion\"=2 AND \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\"<=cutoff AND \"identityEpoch\"<>epoch) THEN RAISE EXCEPTION 'P10_CROSS_EPOCH_FORBIDDEN';END IF;WITH clipped AS (SELECT DISTINCT \"authenticatedSubjectDigest\",dimensions->>'category' category FROM public.analytics_foundation_event e WHERE NOT EXISTS(SELECT 1 FROM public.f1_subject_erasure_tombstone t WHERE t.\"erasureToken\"=digest(convert_to('vanstro.subject-erasure.v1','UTF8')||e.\"authenticatedSubjectDigest\",'sha256')) AND \"authorityVersion\"=2 AND \"identityEpoch\"=epoch AND \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\"<=cutoff) SELECT count(DISTINCT c.\"authenticatedSubjectDigest\") FILTER(WHERE category='view'),count(DISTINCT c.\"authenticatedSubjectDigest\") FILTER(WHERE c.category='engage' AND EXISTS(SELECT 1 FROM clipped v WHERE v.\"authenticatedSubjectDigest\"=c.\"authenticatedSubjectDigest\" AND v.category='view')) INTO den,num FROM clipped c;comp:=GREATEST(den-num,0);state:=CASE WHEN den=0 AND num=0 AND comp=0 THEN 'empty' WHEN den IN(1,2) OR num IN(1,2) OR comp IN(1,2) THEN 'suppressed' ELSE 'published' END;aid:=public.p04_write_system_job_audit_v1(job_id,lease_owner,lease_revision,'create','analytics_release',release_day::text,'succeeded',NULL,request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','releaseDay','value',release_day::text))));INSERT INTO public.analytics_foundation_release VALUES(rid,repeat('0',64),release_day,'metric.v1',epoch,'suppression.k3.v1','safe','global',state,CASE WHEN EXISTS(SELECT 1 FROM public.analytics_foundation_event WHERE \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\">cutoff) THEN 'late_excluded' ELSE 'sealed' END,cutoff,CURRENT_TIMESTAMP,(SELECT count(*) FROM public.analytics_foundation_event WHERE \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\">cutoff),2,aid);INSERT INTO public.analytics_foundation_release_event SELECT rid,id FROM public.analytics_foundation_event WHERE \"authorityVersion\"=2 AND \"identityEpoch\"=epoch AND \"occurredAt\">=release_day::timestamp AT TIME ZONE 'UTC' AND \"occurredAt\"<release_day::timestamp AT TIME ZONE 'UTC'+interval '1 day' AND \"ingestedAt\"<=cutoff;INSERT INTO public.analytics_foundation_release_cell(\"id\",\"releaseId\",\"cellKey\",state,\"valueKind\",\"denominatorDistinct\",\"numeratorDistinct\",\"complementDistinct\",\"publishedValue\",completeness) SELECT gen_random_uuid(),rid,k,state,CASE WHEN k='rate' THEN 'rate' ELSE 'count' END,CASE WHEN state='published' THEN den WHEN state='empty' THEN 0 END,CASE WHEN state='published' THEN num WHEN state='empty' THEN 0 END,CASE WHEN state='published' THEN comp WHEN state='empty' THEN 0 END,CASE WHEN state='published' THEN CASE k WHEN 'view' THEN den::numeric WHEN 'engage' THEN num::numeric WHEN 'denominator' THEN den::numeric WHEN 'numerator' THEN num::numeric WHEN 'complement' THEN comp::numeric WHEN 'rate' THEN num::numeric/NULLIF(den,0) END END,'sealed' FROM unnest(ARRAY['view','engage','denominator','numerator','complement','rate']) k;RETURN rid;END $fn$;\n",
+      "canonicalSqlSha256": "946f02b3ee0bed6473f45f305b9f47c1327122005e8d5f7c0a6d659841132269",
+      "id": "function.p10_seal_release_day_v2",
+      "identitySignature": "public.p10_seal_release_day_v2(uuid,text,integer,integer,integer,date,text,text)",
+      "name": "p10_seal_release_day_v2",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p04_write_system_job_audit_v1",
+        "analytics_foundation_event",
+        "analytics_foundation_release",
+        "analytics_foundation_release_cell",
+        "async_jobs exact live lease"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_release_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_cleanup_source_events_v2(job_id uuid,lease_owner text,lease_revision integer,retry_generation integer,generation_attempt integer,through_release_day date,row_limit integer,request_id text) RETURNS integer LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE job public.async_jobs%ROWTYPE; n integer;aid uuid;BEGIN SELECT * INTO STRICT job FROM public.async_jobs j WHERE j.id=p10_cleanup_source_events_v2.job_id AND j.\"jobType\"='analytics.source.cleanup' AND j.\"jobTypeVersion\"='analytics.source.cleanup.v1' AND j.\"payloadSchemaVersion\"='analytics-source-cleanup-input.v1' AND j.\"resultSchemaVersion\"='analytics-source-cleanup-result.v1' AND j.status='running' AND j.\"leaseOwner\"=p10_cleanup_source_events_v2.lease_owner AND j.\"leaseRevision\"=p10_cleanup_source_events_v2.lease_revision AND j.\"retryGeneration\"=p10_cleanup_source_events_v2.retry_generation AND j.\"generationAttempt\"=p10_cleanup_source_events_v2.generation_attempt AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL AND j.\"payload\"->>'throughReleaseDay'=through_release_day::text AND (j.\"payload\"->>'rowLimit')::integer=row_limit FOR SHARE; IF row_limit<1 OR row_limit>10000 OR NOT EXISTS(SELECT 1 FROM public.analytics_foundation_release r WHERE r.\"releaseDay\"=through_release_day AND r.\"scopeFingerprint\"=job.\"payload\"->>'scopeFingerprint' AND r.\"metricDefinitionVersion\"=job.\"payload\"->>'metricDefinitionVersion' AND r.\"identityEpoch\"=job.\"payload\"->>'identityEpoch' AND r.\"suppressionPolicyVersion\"=job.\"payload\"->>'suppressionPolicyVersion' AND r.\"fieldVisibilityProfile\"=job.\"payload\"->>'fieldVisibilityProfile' AND r.\"status\" IN('empty','suppressed','published')) THEN RAISE EXCEPTION 'P10_CLEANUP_NOT_SEALED';END IF;PERFORM set_config('app.p10_cleanup_job_id',job_id::text,true);PERFORM set_config('app.p10_cleanup_lease_owner',lease_owner,true);PERFORM set_config('app.p10_cleanup_lease_revision',lease_revision::text,true);CREATE TEMP TABLE IF NOT EXISTS p10_authorized_delete_event_ids(\"eventId\" uuid PRIMARY KEY,\"jobId\" uuid NOT NULL,\"leaseOwner\" text NOT NULL,\"leaseRevision\" integer NOT NULL) ON COMMIT DROP;GRANT SELECT ON pg_temp.p10_authorized_delete_event_ids TO vanstro_p10_guard_owner;TRUNCATE pg_temp.p10_authorized_delete_event_ids;WITH exact_release AS (SELECT r.id FROM public.analytics_foundation_release r WHERE r.\"releaseDay\"<=through_release_day AND r.\"scopeFingerprint\"=job.\"payload\"->>'scopeFingerprint' AND r.\"metricDefinitionVersion\"=job.\"payload\"->>'metricDefinitionVersion' AND r.\"identityEpoch\"=job.\"payload\"->>'identityEpoch' AND r.\"suppressionPolicyVersion\"=job.\"payload\"->>'suppressionPolicyVersion' AND r.\"fieldVisibilityProfile\"=job.\"payload\"->>'fieldVisibilityProfile'),doomed AS (SELECT e.id FROM public.analytics_foundation_event e JOIN public.analytics_foundation_release_event l ON l.\"eventId\"=e.id JOIN exact_release r ON r.id=l.\"releaseId\" WHERE e.\"expiresAt\"<=CURRENT_TIMESTAMP ORDER BY e.\"expiresAt\" LIMIT row_limit FOR UPDATE OF e SKIP LOCKED),authorized AS (INSERT INTO p10_authorized_delete_event_ids SELECT id,job_id,lease_owner,lease_revision FROM doomed RETURNING \"eventId\"),deleted_ledger AS (DELETE FROM public.analytics_foundation_release_event l USING p10_authorized_delete_event_ids d WHERE l.\"eventId\"=d.\"eventId\" RETURNING l.\"eventId\"),deleted AS (DELETE FROM public.analytics_foundation_event e USING p10_authorized_delete_event_ids d WHERE e.id=d.\"eventId\" RETURNING e.id) SELECT count(*) INTO n FROM deleted;aid:=public.p04_write_system_job_audit_v1(job_id,lease_owner,lease_revision,'delete','analytics_event',through_release_day::text,'succeeded','completed',request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','deletedCount','value',n))));RETURN n;END $fn$;\n",
+      "canonicalSqlSha256": "573fe1abee0e154a303ea78255d815e9ee644c7149c09042268062a8ef815eba",
+      "id": "function.p10_cleanup_source_events_v2",
+      "identitySignature": "public.p10_cleanup_source_events_v2(uuid,text,integer,integer,integer,date,integer,text)",
+      "name": "p10_cleanup_source_events_v2",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "p04_write_system_job_audit_v1",
+        "analytics_foundation_event",
+        "analytics_foundation_release",
+        "async_jobs exact live lease"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_migrator"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.f1_consume_no_old_instances_v2(rollout_id text,environment_name text,expected_manifest_digest text) RETURNS integer LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE expected_count integer;consumed_count integer;telemetry_count integer;BEGIN IF rollout_id IS NULL OR environment_name IS NULL OR expected_manifest_digest!~'^[0-9a-f]{64}$' THEN RAISE EXCEPTION 'ATTESTATION_ARGUMENT_INVALID';END IF;PERFORM pg_advisory_xact_lock(hashtextextended('vanstro-f1-migration70-contract:'||rollout_id,0));IF EXISTS(SELECT 1 FROM public.f1_deployment_attestation_consumption WHERE \"rolloutId\"=rollout_id) THEN RAISE EXCEPTION 'ATTESTATION_REPLAY';END IF;SELECT count(*) INTO expected_count FROM public.f1_deployment_expected_instance e WHERE e.\"rolloutId\"=rollout_id AND e.environment=environment_name AND e.\"expectedManifestDigest\"=expected_manifest_digest;IF expected_count=0 THEN RAISE EXCEPTION 'ATTESTATION_EXPECTED_SET_EMPTY';END IF;CREATE TEMP TABLE eligible_attestation ON COMMIT DROP AS SELECT a.* FROM public.f1_deployment_instance_attestation a JOIN public.f1_deployment_expected_instance e ON e.\"rolloutId\"=a.\"rolloutId\" AND e.\"instanceId\"=a.\"instanceId\" AND e.environment=a.environment WHERE a.\"rolloutId\"=rollout_id AND a.environment=environment_name AND a.\"observedAt\">CURRENT_TIMESTAMP-interval '2 minutes' AND a.\"observedAt\"<=CURRENT_TIMESTAMP+interval '5 seconds' AND a.\"codeVersion\"=e.\"expectedCodeVersion\" AND a.\"schemaCompatibility\"=e.\"expectedSchemaCompatibility\" AND a.\"attestationDigest\"=expected_manifest_digest AND NOT a.draining AND EXISTS(SELECT 1 FROM public.f1_trusted_ed25519_signer s WHERE s.\"signerId\"=a.\"signerId\" AND s.purpose='deployment_attestation' AND s.active AND s.\"notBefore\"<=CURRENT_TIMESTAMP AND s.\"notAfter\">CURRENT_TIMESTAMP AND public.vanstro_verify_ed25519_v1(int4send(octet_length(convert_to('vanstro.deployment-attestation.v1','UTF8')))||convert_to('vanstro.deployment-attestation.v1','UTF8')||int4send(octet_length(convert_to(a.\"rolloutId\",'UTF8')))||convert_to(a.\"rolloutId\",'UTF8')||int4send(octet_length(convert_to(a.environment,'UTF8')))||convert_to(a.environment,'UTF8')||int4send(octet_length(convert_to(a.\"instanceId\",'UTF8')))||convert_to(a.\"instanceId\",'UTF8')||int4send(octet_length(convert_to(a.\"codeVersion\",'UTF8')))||convert_to(a.\"codeVersion\",'UTF8')||int4send(octet_length(convert_to(a.\"schemaCompatibility\"::text,'UTF8')))||convert_to(a.\"schemaCompatibility\"::text,'UTF8')||int4send(octet_length(convert_to(a.\"attestationDigest\",'UTF8')))||convert_to(a.\"attestationDigest\",'UTF8')||int4send(octet_length(convert_to(extract(epoch from a.\"observedAt\")::bigint::text,'UTF8')))||convert_to(extract(epoch from a.\"observedAt\")::bigint::text,'UTF8')||int4send(octet_length(convert_to(a.draining::text,'UTF8')))||convert_to(a.draining::text,'UTF8')||int4send(octet_length(convert_to(a.nonce,'UTF8')))||convert_to(a.nonce,'UTF8')||int4send(octet_length(convert_to(a.\"attestedBy\",'UTF8')))||convert_to(a.\"attestedBy\",'UTF8'),a.signature,s.\"publicKey\")) AND a.\"observedAt\"=(SELECT max(x.\"observedAt\") FROM public.f1_deployment_instance_attestation x WHERE x.\"rolloutId\"=a.\"rolloutId\" AND x.\"instanceId\"=a.\"instanceId\");GET DIAGNOSTICS consumed_count=ROW_COUNT;PERFORM 1 FROM public.f1_deployment_instance_attestation a JOIN eligible_attestation e ON e.\"rolloutId\"=a.\"rolloutId\" AND e.\"instanceId\"=a.\"instanceId\" AND e.\"observedAt\"=a.\"observedAt\" FOR UPDATE;IF consumed_count=0 OR consumed_count<>expected_count OR EXISTS(SELECT \"instanceId\" FROM public.f1_deployment_expected_instance WHERE \"rolloutId\"=rollout_id AND environment=environment_name AND \"expectedManifestDigest\"=expected_manifest_digest EXCEPT SELECT \"instanceId\" FROM eligible_attestation) OR EXISTS(SELECT \"instanceId\" FROM eligible_attestation EXCEPT SELECT \"instanceId\" FROM public.f1_deployment_expected_instance WHERE \"rolloutId\"=rollout_id AND environment=environment_name AND \"expectedManifestDigest\"=expected_manifest_digest) THEN RAISE EXCEPTION 'ATTESTATION_ELIGIBLE_SET_MISMATCH';END IF;SELECT count(*) INTO telemetry_count FROM public.f1_old_call_report r JOIN public.f1_old_function_call_telemetry t ON t.\"reportId\"=r.\"reportId\" JOIN pg_proc p ON p.oid=t.\"functionOid\" WHERE r.\"rolloutId\"=rollout_id AND r.environment=environment_name AND r.\"manifestDigest\"=expected_manifest_digest AND r.\"windowEndedAt\">r.\"windowStartedAt\" AND r.\"windowEndedAt\"<=CURRENT_TIMESTAMP+interval '5 seconds' AND r.\"consumedAt\" IS NULL AND t.\"identitySignature\"='public.'||p.proname||'('||pg_get_function_identity_arguments(p.oid)||')';IF telemetry_count<>31 OR EXISTS(SELECT 1 FROM public.f1_old_function_call_telemetry t JOIN public.f1_old_call_report r ON r.\"reportId\"=t.\"reportId\" WHERE r.\"rolloutId\"=rollout_id AND t.\"callCount\">0) THEN RAISE EXCEPTION 'OLD_FUNCTION_CALLS_REMAIN';END IF;IF (SELECT count(DISTINCT a.\"instanceId\") FROM public.f1_deployment_instance_attestation a WHERE a.\"rolloutId\"=rollout_id AND a.environment=environment_name AND a.\"observedAt\">CURRENT_TIMESTAMP-interval '2 minutes' AND a.\"observedAt\"<=CURRENT_TIMESTAMP+interval '5 seconds')<>expected_count OR EXISTS(SELECT 1 FROM public.f1_deployment_instance_attestation a WHERE a.environment=environment_name AND a.\"codeVersion\"='old68' AND a.\"observedAt\">CURRENT_TIMESTAMP-interval '10 minutes') THEN RAISE EXCEPTION 'ATTESTATION_SET_MISMATCH';END IF;WITH deleted AS (DELETE FROM public.f1_deployment_instance_attestation a USING eligible_attestation e WHERE a.\"rolloutId\"=e.\"rolloutId\" AND a.\"instanceId\"=e.\"instanceId\" AND a.\"observedAt\"=e.\"observedAt\" RETURNING *) SELECT count(*) INTO consumed_count FROM deleted;IF consumed_count<>expected_count THEN RAISE EXCEPTION 'ATTESTATION_CONSUME_MISMATCH';END IF;PERFORM public.f1_consume_old_call_report_v1(rollout_id);INSERT INTO public.f1_deployment_attestation_consumption VALUES(rollout_id,environment_name,expected_manifest_digest,CURRENT_TIMESTAMP,consumed_count);RETURN consumed_count;END $fn$;\n",
+      "canonicalSqlSha256": "2fb50893a8722d62c19eafac68503efbe93265d8a5a975f3718671a802b204d0",
+      "id": "function.f1_consume_no_old_instances_v2",
+      "identitySignature": "public.f1_consume_no_old_instances_v2(text,text,text)",
+      "name": "f1_consume_no_old_instances_v2",
+      "owner": "vanstro_migrator",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "expected instance inventory",
+        "latest signed attestations",
+        "one-use consume ledger",
+        "advisory lock"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_write_authenticated_consent_v1(session_token_hash text,resource_id text,expected_context_revision text,expected_target_revision bigint,subject_digest bytea,kid text,epoch text,consent_action text,idempotency_hash text,request_id text,assertion_expires_at timestamptz,assertion_nonce text,assertion_signer_id text,assertion_signature bytea) RETURNS TABLE(consent_id uuid,audit_event_id uuid,outcome text) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE a record;intent_hash text;cid uuid:=gen_random_uuid();aid uuid;claim public.f1_p10_idempotency%ROWTYPE;BEGIN SELECT * INTO a FROM public.p02_resolve_persisted_authority_v3(session_token_hash,'p10_analytics_ingestion',resource_id,'ingest','analytics.ingest',expected_context_revision,expected_target_revision);IF a.outcome<>'authorized' THEN RAISE EXCEPTION 'P10_CONSENT_DENIED' USING ERRCODE='42501';END IF;intent_hash:=encode(digest(convert_to(encode(subject_digest,'hex')||'|'||kid||'|'||epoch||'|consent.write|'||expected_context_revision||'|'||expected_target_revision||'|'||assertion_signer_id||'|'||assertion_nonce||'|'||request_id||'|'||consent_action,'UTF8'),'sha256'),'hex');PERFORM pg_advisory_xact_lock(hashtextextended(encode(subject_digest,'hex'),0));IF EXISTS(SELECT 1 FROM public.f1_subject_erasure_tombstone t WHERE t.\"erasureToken\"=public.vanstro_subject_erasure_token_v1(convert_to('vanstro.subject-erasure.v1','UTF8')||subject_digest)) THEN RAISE EXCEPTION 'SUBJECT_ERASED';END IF;SELECT * INTO claim FROM public.f1_p10_idempotency WHERE \"operation\"='consent' AND \"idempotencyHash\"=idempotency_hash FOR UPDATE;IF FOUND THEN IF claim.\"intentHash\"<>intent_hash THEN RAISE EXCEPTION 'IDEMPOTENCY_CONFLICT' USING ERRCODE='23505';END IF;IF claim.state='completed' THEN RETURN QUERY SELECT claim.\"resultId\",claim.\"auditEventId\",'replay'::text;RETURN;END IF;END IF;PERFORM * FROM public.p10_verify_subject_assertion_v1(session_token_hash,'consent.write',idempotency_hash,intent_hash,subject_digest,kid,epoch,assertion_expires_at,assertion_nonce,assertion_signer_id,assertion_signature);IF NOT public.p10_validate_subject_digest_v3(subject_digest,kid,epoch,'new_consent') OR consent_action NOT IN('granted','updated','withdrawn') THEN RAISE EXCEPTION 'P10_CONSENT_INVALID';END IF;INSERT INTO public.f1_p10_idempotency(\"operation\",\"idempotencyHash\",\"intentHash\",\"subjectDigest\",\"expiresAt\") VALUES('consent',idempotency_hash,intent_hash,subject_digest,CURRENT_TIMESTAMP+interval '30 days') ON CONFLICT DO NOTHING;SELECT * INTO claim FROM public.f1_p10_idempotency WHERE \"operation\"='consent' AND \"idempotencyHash\"=idempotency_hash FOR UPDATE;IF claim.\"intentHash\"<>intent_hash THEN RAISE EXCEPTION 'IDEMPOTENCY_CONFLICT' USING ERRCODE='23505';END IF;IF claim.state='completed' THEN RETURN QUERY SELECT claim.\"resultId\",claim.\"auditEventId\",'replay'::text;RETURN;END IF;aid:=public.p04_write_forward_audit_v4(session_token_hash,'p10_analytics_ingestion',resource_id,'ingest','analytics.ingest',expected_context_revision,expected_target_revision,'create','privacy_consent','succeeded',NULL,request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','consentAction','value',consent_action))));INSERT INTO public.privacy_consent_events(id,\"anonymousId\",preferences,source,\"createdAt\",action,\"authenticatedSubjectDigest\",\"subjectKeyVersion\",\"identityRealmVersion\",\"identityEpoch\",\"consentSchemaVersion\",\"authorityVersion\") VALUES(cid,'auth-consent:'||gen_random_uuid()::text,jsonb_build_object('analytics',consent_action IN('granted','updated')),'dashboard',CURRENT_TIMESTAMP,consent_action,subject_digest,kid,'vanstro.authenticated-user.v1',epoch,'vanstro.analytics.authenticated-consent.v1',2);INSERT INTO public.f1_p10_consent_command(\"id\",\"subjectDigest\",\"kid\",\"epoch\",\"action\",\"idempotencyHash\",\"intentHash\",\"expiresAt\",\"successAuditEventId\") VALUES(cid,subject_digest,kid,epoch,consent_action,idempotency_hash,intent_hash,CURRENT_TIMESTAMP+interval '30 days',aid);UPDATE public.f1_p10_idempotency SET state='completed',\"resultId\"=cid,\"auditEventId\"=aid WHERE \"operation\"='consent' AND \"idempotencyHash\"=idempotency_hash;UPDATE public.f1_verified_nonce SET \"resultId\"=cid WHERE \"idempotencyHash\"=idempotency_hash AND \"intentHash\"=intent_hash;RETURN QUERY SELECT cid,aid,'created'::text;END $fn$;\n",
+      "canonicalSqlSha256": "348da426c34249a32ba754b371929ffe17a08f5a1c60ecdbce56163f4467dee5",
+      "id": "function.p10_write_authenticated_consent_v1",
+      "identitySignature": "public.p10_write_authenticated_consent_v1(text,text,text,bigint,bytea,text,text,text,text,text,timestamptz,text,text,bytea)",
+      "name": "p10_write_authenticated_consent_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "P02 v3",
+        "digest verifier",
+        "P04 audit",
+        "atomic idempotency",
+        "signed subject assertion consent.write"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_verify_subject_assertion_v1(session_token_hash text,operation_key text,idempotency_hash text,intent_hash text,subject_digest bytea,kid text,epoch text,expires_at timestamptz,nonce text,signer_id text,signature bytea) RETURNS TABLE(actor_id text,digest bytea,verified_kid text,verified_epoch text) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE uid text;sid text;pubkey bytea;payload bytea;BEGIN SELECT s.\"userId\",s.id INTO uid,sid FROM public.refresh_sessions s JOIN public.users u ON u.id=s.\"userId\" WHERE s.\"tokenHash\"=session_token_hash AND s.\"revokedAt\" IS NULL AND s.\"expiresAt\">CURRENT_TIMESTAMP AND u.status='active';IF uid IS NULL OR expires_at<=CURRENT_TIMESTAMP OR expires_at>CURRENT_TIMESTAMP+interval '5 minutes' OR nonce!~'^[A-Za-z0-9_-]{22,128}$' OR octet_length(subject_digest)<>32 THEN RAISE EXCEPTION 'SUBJECT_ASSERTION_INVALID';END IF;payload:=int4send(octet_length(convert_to('vanstro.subject-assertion.v1','UTF8')))||convert_to('vanstro.subject-assertion.v1','UTF8')||int4send(octet_length(convert_to(uid,'UTF8')))||convert_to(uid,'UTF8')||int4send(octet_length(convert_to(sid,'UTF8')))||convert_to(sid,'UTF8')||int4send(octet_length(convert_to(encode(digest(session_token_hash,'sha256'),'hex'),'UTF8')))||convert_to(encode(digest(session_token_hash,'sha256'),'hex'),'UTF8')||int4send(octet_length(convert_to(kid,'UTF8')))||convert_to(kid,'UTF8')||int4send(octet_length(convert_to(epoch,'UTF8')))||convert_to(epoch,'UTF8')||int4send(octet_length(convert_to(operation_key,'UTF8')))||convert_to(operation_key,'UTF8')||int4send(octet_length(convert_to(extract(epoch from expires_at)::bigint::text,'UTF8')))||convert_to(extract(epoch from expires_at)::bigint::text,'UTF8')||int4send(octet_length(convert_to(nonce,'UTF8')))||convert_to(nonce,'UTF8')||int4send(octet_length(convert_to(encode(subject_digest,'hex'),'UTF8')))||convert_to(encode(subject_digest,'hex'),'UTF8')||int4send(octet_length(convert_to(idempotency_hash,'UTF8')))||convert_to(idempotency_hash,'UTF8')||int4send(octet_length(convert_to(intent_hash,'UTF8')))||convert_to(intent_hash,'UTF8');IF NOT EXISTS(SELECT 1 FROM public.f1_trusted_ed25519_signer s WHERE s.\"signerId\"=signer_id AND s.purpose='kms_hmac_subject_assertion' AND s.active AND s.\"notBefore\"<=CURRENT_TIMESTAMP AND s.\"notAfter\">CURRENT_TIMESTAMP AND public.vanstro_verify_ed25519_v1(payload,signature,s.\"publicKey\")) THEN RAISE EXCEPTION 'SUBJECT_ASSERTION_SIGNATURE_INVALID';END IF;INSERT INTO public.f1_verified_nonce(\"purpose\",nonce,operation,\"idempotencyHash\",\"intentHash\",\"subjectDigest\",\"expiresAt\",\"consumedAt\") VALUES('subject_assertion',nonce,operation_key,idempotency_hash,intent_hash,subject_digest,expires_at,CURRENT_TIMESTAMP);RETURN QUERY SELECT uid,subject_digest,kid,epoch;EXCEPTION WHEN unique_violation THEN RAISE EXCEPTION 'SUBJECT_ASSERTION_REPLAY';END $fn$;\n",
+      "canonicalSqlSha256": "ea40b56fa70105bf65e7c5105dd5f49b62f7de828d0972bc2c79f566fcd97a31",
+      "id": "function.p10_verify_subject_assertion_v1",
+      "identitySignature": "public.p10_verify_subject_assertion_v1(text,text,text,text,bytea,text,text,timestamptz,text,text,bytea)",
+      "name": "p10_verify_subject_assertion_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "preprovisioned Ed25519 verifier",
+        "session actor binding",
+        "nonce replay table"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_guard_owner",
+        "vanstro_p10_dsar_guard_owner"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p04_write_system_job_audit_v1(job_id uuid,lease_owner text,lease_revision integer,audit_action text,audit_resource_type text,audit_resource_id text,audit_result text,audit_reason text,request_id text,safe_metadata jsonb) RETURNS uuid LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE j public.async_jobs%ROWTYPE;aid uuid:=gen_random_uuid();BEGIN SELECT * INTO STRICT j FROM public.async_jobs aj WHERE aj.id=p04_write_system_job_audit_v1.job_id AND aj.status='running' AND aj.\"leaseOwner\"=p04_write_system_job_audit_v1.lease_owner AND aj.\"leaseRevision\"=p04_write_system_job_audit_v1.lease_revision AND aj.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND aj.\"attemptDeadline\">CURRENT_TIMESTAMP AND aj.\"cancellationRequestedAt\" IS NULL FOR SHARE;INSERT INTO public.audit_events(\"id\",\"eventVersion\",\"occurredAt\",\"actorType\",\"actorId\",\"actorDisplayClass\",\"effectiveRoles\",\"permissionGrants\",\"authorizationScopeKind\",\"dealerIds\",\"locationIds\",\"contextRevision\",\"authorizationContractVersion\",\"action\",\"resourceType\",\"resourceId\",\"result\",\"reason\",\"requestId\",\"source\",\"metadata\",\"sensitive\",\"retentionClass\",\"retentionPolicyVersion\",\"expiresAt\",\"createdAt\") VALUES(aid,'audit-event.v1',CURRENT_TIMESTAMP,'worker',lease_owner,'machine',j.\"effectiveRoles\",j.\"permissionGrants\",j.\"authorizationScopeKind\",j.\"dealerIds\",j.\"locationIds\",j.\"contextRevision\",'system-authorization.v1',audit_action,audit_resource_type,audit_resource_id,audit_result,audit_reason,request_id,'worker',COALESCE(safe_metadata,'{}'::jsonb),false,'default','audit-retention.v1',CURRENT_TIMESTAMP+interval '730 days',CURRENT_TIMESTAMP);RETURN aid;END $fn$;\n",
+      "canonicalSqlSha256": "d756550ffe4cb5d468dab4610c08dd6e13023ee65082af05dd5151e67bca107b",
+      "id": "function.p04_write_system_job_audit_v1",
+      "identitySignature": "public.p04_write_system_job_audit_v1(uuid,text,integer,text,text,text,text,text,text,jsonb)",
+      "name": "p04_write_system_job_audit_v1",
+      "owner": "vanstro_p04_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "locked async_jobs live lease",
+        "audit_events complete occurrence snapshot"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_kms_rotation_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_rotate_subject_kid_v1(job_id uuid,lease_owner text,lease_revision integer,retry_generation integer,generation_attempt integer,expected_current_kid text,new_kid text,new_provider_ref text,request_id text) RETURNS text LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE current_key public.f1_p10_subject_key_provider%ROWTYPE;aid uuid;BEGIN PERFORM 1 FROM public.async_jobs j WHERE j.id=job_id AND j.\"jobType\"='analytics.subject-key.rotate' AND j.\"jobTypeVersion\"='analytics.subject-key.rotate.v1' AND j.\"payloadSchemaVersion\"='analytics-subject-key-rotate-input.v1' AND j.\"resultSchemaVersion\"='analytics-subject-key-rotate-result.v1' AND j.status='running' AND j.\"leaseOwner\"=lease_owner AND j.\"leaseRevision\"=lease_revision AND j.\"retryGeneration\"=retry_generation AND j.\"generationAttempt\"=generation_attempt AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL AND j.payload->>'expectedCurrentKid'=expected_current_kid AND j.payload->>'newKid'=new_kid AND j.payload->>'providerKeyRef'=new_provider_ref AND j.payload->>'requestId'=request_id FOR SHARE;IF NOT FOUND OR new_kid!~'^[a-z0-9][a-z0-9._-]{0,31}$' OR new_provider_ref!~'^kms://[A-Za-z0-9/_:.-]{8,240}$' OR NOT EXISTS(SELECT 1 FROM public.f1_kms_provider_allowlist a WHERE a.active AND a.purpose='authenticated_subject_hmac' AND a.\"notBefore\"<=CURRENT_TIMESTAMP AND a.\"notAfter\">CURRENT_TIMESTAMP AND new_provider_ref LIKE a.\"providerPrefix\"||'%') THEN RAISE EXCEPTION 'KID_ROTATION_INVALID';END IF;SELECT * INTO STRICT current_key FROM public.f1_p10_subject_key_provider WHERE status='active' FOR UPDATE;IF current_key.kid<>expected_current_kid OR EXISTS(SELECT 1 FROM public.f1_p10_subject_key_provider WHERE kid=new_kid) THEN RAISE EXCEPTION 'KID_ROTATION_CAS_STALE';END IF;UPDATE public.f1_p10_subject_key_provider SET status='retired_verification',\"retiredAt\"=CURRENT_TIMESTAMP WHERE kid=expected_current_kid AND status='active';IF NOT FOUND THEN RAISE EXCEPTION 'KID_ROTATION_CAS_STALE';END IF;INSERT INTO public.f1_p10_subject_key_provider(kid,\"providerKeyRef\",epoch,status,\"activatedAt\") VALUES(new_kid,new_provider_ref,'vanstro.analytics.subject-epoch.v1:'||new_kid,'active',CURRENT_TIMESTAMP);aid:=public.p04_write_system_job_audit_v1(job_id,lease_owner,lease_revision,'update','runtime_config',new_kid,'succeeded','completed',request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','previousKid','value',current_key.kid),jsonb_build_object('key','newKid','value',new_kid))));RETURN new_kid;END $fn$;",
+      "canonicalSqlSha256": "c52bcb5bd5592fb7da769a1add0f56daba16586ed6428101bcb33b0e8e6e05c0",
+      "id": "function.p10_rotate_subject_kid_v1",
+      "identitySignature": "public.p10_rotate_subject_kid_v1(uuid,text,integer,integer,integer,text,text,text,text)",
+      "name": "p10_rotate_subject_kid_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "locked Worker Job",
+        "key registry",
+        "system Audit",
+        "KMS provider allowlist"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_signer_admin_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_manage_trusted_signer_v1(job_id uuid,lease_owner text,lease_revision integer,retry_generation integer,generation_attempt integer,operation text,signer_id text,public_key bytea,purpose text,not_before timestamptz,not_after timestamptz,request_id text) RETURNS text LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE aid uuid;BEGIN PERFORM 1 FROM public.async_jobs j WHERE j.id=job_id AND j.\"jobType\"='security.signer.manage' AND j.\"jobTypeVersion\"='security.signer.manage.v1' AND j.\"payloadSchemaVersion\"='security-signer-manage-input.v1' AND j.\"resultSchemaVersion\"='security-signer-manage-result.v1' AND j.status='running' AND j.\"leaseOwner\"=lease_owner AND j.\"leaseRevision\"=lease_revision AND j.\"retryGeneration\"=retry_generation AND j.\"generationAttempt\"=generation_attempt AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL AND j.payload->>'operation'=operation AND j.payload->>'signerId'=signer_id AND j.payload->>'publicKeyHash'=encode(digest(public_key,'sha256'),'hex') AND j.payload->>'purpose'=purpose AND (j.payload->>'notBefore')::timestamptz=not_before AND (j.payload->>'notAfter')::timestamptz=not_after AND j.payload->>'requestId'=request_id FOR SHARE;IF NOT FOUND OR operation NOT IN('bootstrap','rotate','revoke') OR purpose NOT IN('kms_hmac_subject_assertion','deployment_attestation','old_call_telemetry') OR octet_length(public_key)<>32 OR not_after<=not_before THEN RAISE EXCEPTION 'SIGNER_MANAGEMENT_INVALID';END IF;IF operation='revoke' THEN UPDATE public.f1_trusted_ed25519_signer SET active=false,\"notAfter\"=LEAST(\"notAfter\",CURRENT_TIMESTAMP) WHERE \"signerId\"=signer_id;IF NOT FOUND THEN RAISE EXCEPTION 'SIGNER_NOT_FOUND';END IF;ELSE IF EXISTS(SELECT 1 FROM public.f1_trusted_ed25519_signer s WHERE s.\"signerId\"=signer_id) THEN RAISE EXCEPTION 'SIGNER_HISTORY_IMMUTABLE';END IF;INSERT INTO public.f1_trusted_ed25519_signer VALUES(signer_id,public_key,purpose,true,not_before,not_after,CURRENT_TIMESTAMP);END IF;aid:=public.p04_write_system_job_audit_v1(job_id,lease_owner,lease_revision,'update','runtime_config',signer_id,'succeeded','completed',request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','signerOperation','value',operation),jsonb_build_object('key','purpose','value',purpose))));RETURN signer_id;END $fn$;\n",
+      "canonicalSqlSha256": "74a8e4b7d30340f23c81710c77eca5dcebf9458b4c61b29403801f2bb14da081",
+      "id": "function.p10_manage_trusted_signer_v1",
+      "identitySignature": "public.p10_manage_trusted_signer_v1(uuid,text,integer,integer,integer,text,text,bytea,text,timestamptz,timestamptz,text)",
+      "name": "p10_manage_trusted_signer_v1",
+      "owner": "vanstro_p10_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "security.signer.manage Job lease",
+        "signer window",
+        "system Audit"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_p10_dsar_cap"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p10_dsar_purge_subject_v1(job_id uuid,lease_owner text,lease_revision integer,retry_generation integer,generation_attempt integer,subject_digest bytea,retention_cutoff timestamptz,request_id text) RETURNS integer LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE n integer:=0;x integer;aid uuid;erasure_token bytea;prior public.f1_subject_erasure_tombstone%ROWTYPE;intent_hash text;BEGIN PERFORM 1 FROM public.async_jobs j WHERE j.id=job_id AND j.\"jobType\"='privacy.subject.purge' AND j.\"jobTypeVersion\"='privacy.subject.purge.v1' AND j.\"payloadSchemaVersion\"='privacy-subject-purge-input.v1' AND j.\"resultSchemaVersion\"='privacy-subject-purge-result.v1' AND j.status='running' AND j.\"leaseOwner\"=lease_owner AND j.\"leaseRevision\"=lease_revision AND j.\"retryGeneration\"=retry_generation AND j.\"generationAttempt\"=generation_attempt AND j.\"leaseExpiresAt\">CURRENT_TIMESTAMP AND j.\"attemptDeadline\">CURRENT_TIMESTAMP AND j.\"cancellationRequestedAt\" IS NULL AND j.payload->>'subjectDigestHex'=encode(subject_digest,'hex') AND (j.payload->>'retentionCutoff')::timestamptz=retention_cutoff AND j.payload->>'requestId'=request_id FOR SHARE;IF NOT FOUND OR retention_cutoff>CURRENT_TIMESTAMP-interval '30 days' THEN RAISE EXCEPTION 'DSAR_PURGE_NOT_ELIGIBLE';END IF;PERFORM pg_advisory_xact_lock(hashtextextended(encode(subject_digest,'hex'),0));erasure_token:=public.vanstro_subject_erasure_token_v1(convert_to('vanstro.subject-erasure.v1','UTF8')||subject_digest);intent_hash:=encode(digest(convert_to(encode(erasure_token,'hex')||'|'||job_id::text||'|'||request_id||'|'||extract(epoch from retention_cutoff)::bigint::text,'UTF8'),'sha256'),'hex');SELECT * INTO prior FROM public.f1_subject_erasure_tombstone WHERE \"erasureToken\"=erasure_token AND \"retentionCutoff\"=retention_cutoff;IF FOUND THEN IF prior.\"intentHash\"<>intent_hash OR prior.\"jobId\"<>job_id OR prior.\"requestId\"<>request_id THEN RAISE EXCEPTION 'DSAR_REPLAY_CONFLICT';END IF;RETURN prior.\"purgedRows\";END IF;DELETE FROM public.f1_verified_nonce WHERE \"subjectDigest\"=subject_digest AND \"expiresAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;DELETE FROM public.f1_p10_consent_command WHERE \"subjectDigest\"=subject_digest AND \"expiresAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;PERFORM set_config('app.p10_cleanup_job_id',job_id::text,true);PERFORM set_config('app.p10_cleanup_lease_owner',lease_owner,true);PERFORM set_config('app.p10_cleanup_lease_revision',lease_revision::text,true);CREATE TEMP TABLE IF NOT EXISTS p10_authorized_delete_event_ids(\"eventId\" uuid PRIMARY KEY,\"jobId\" uuid NOT NULL,\"leaseOwner\" text NOT NULL,\"leaseRevision\" integer NOT NULL) ON COMMIT DROP;GRANT SELECT ON pg_temp.p10_authorized_delete_event_ids TO vanstro_p10_guard_owner;TRUNCATE pg_temp.p10_authorized_delete_event_ids;INSERT INTO p10_authorized_delete_event_ids SELECT e.id,job_id,lease_owner,lease_revision FROM public.analytics_foundation_event e WHERE e.\"authenticatedSubjectDigest\"=subject_digest AND e.\"expiresAt\"<=retention_cutoff;DELETE FROM public.analytics_foundation_release_event l USING public.analytics_foundation_event e WHERE l.\"eventId\"=e.id AND e.\"authenticatedSubjectDigest\"=subject_digest AND e.\"expiresAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;DELETE FROM public.analytics_foundation_event WHERE \"authenticatedSubjectDigest\"=subject_digest AND \"expiresAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;DELETE FROM public.privacy_consent_events WHERE \"authenticatedSubjectDigest\"=subject_digest AND \"createdAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;DELETE FROM public.f1_p10_idempotency WHERE \"subjectDigest\"=subject_digest AND \"expiresAt\"<=retention_cutoff;GET DIAGNOSTICS x=ROW_COUNT;n:=n+x;aid:=public.p04_write_system_job_audit_v1(job_id,lease_owner,lease_revision,'delete','analytics_event',encode(erasure_token,'hex'),'succeeded','completed',request_id,jsonb_build_object('schemaVersion','audit-metadata.v1','entries',jsonb_build_array(jsonb_build_object('key','purgedRows','value',n))));INSERT INTO public.f1_subject_erasure_tombstone(\"erasureToken\",\"retentionCutoff\",\"intentHash\",\"jobId\",\"requestId\",\"purgedRows\",\"auditEventId\",\"erasedAt\") VALUES(erasure_token,retention_cutoff,intent_hash,job_id,request_id,n,aid,CURRENT_TIMESTAMP);RETURN n;END $fn$;\n",
+      "canonicalSqlSha256": "924d1357956a3da722bf2d53a3241b6e8e2757b17a3002e63851b2317db46dc6",
+      "id": "function.p10_dsar_purge_subject_v1",
+      "identitySignature": "public.p10_dsar_purge_subject_v1(uuid,text,integer,integer,integer,bytea,timestamptz,text)",
+      "name": "p10_dsar_purge_subject_v1",
+      "owner": "vanstro_p10_dsar_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "privacy.subject.purge Job lease",
+        "retention cutoff",
+        "subject advisory lock",
+        "system Audit"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_telemetry_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.f1_ingest_signed_old_call_report_v1(report_id uuid,rollout_id text,environment_name text,manifest_digest text,window_started_at timestamptz,window_ended_at timestamptz,collector_nonce text,collector_signer_id text,rows_value jsonb,signature bytea) RETURNS integer LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE payload bytea;report_digest bytea;inserted integer;BEGIN IF jsonb_typeof(rows_value)<>'array' OR jsonb_array_length(rows_value)<>31 OR window_ended_at<=window_started_at OR window_ended_at<window_started_at+interval '10 minutes' OR window_ended_at>CURRENT_TIMESTAMP+interval '5 seconds' OR window_ended_at<CURRENT_TIMESTAMP-interval '2 minutes' THEN RAISE EXCEPTION 'TELEMETRY_REPORT_INVALID';END IF;report_digest:=digest(convert_to(rows_value::text,'UTF8'),'sha256');payload:=int4send(length(convert_to('vanstro.old-call-report.v1','UTF8')))||convert_to('vanstro.old-call-report.v1','UTF8')||int4send(length(convert_to(report_id::text,'UTF8')))||convert_to(report_id::text,'UTF8')||int4send(length(convert_to(rollout_id,'UTF8')))||convert_to(rollout_id,'UTF8')||int4send(length(convert_to(environment_name,'UTF8')))||convert_to(environment_name,'UTF8')||int4send(length(convert_to(manifest_digest,'UTF8')))||convert_to(manifest_digest,'UTF8')||int4send(length(convert_to(extract(epoch from window_started_at)::bigint::text,'UTF8')))||convert_to(extract(epoch from window_started_at)::bigint::text,'UTF8')||int4send(length(convert_to(extract(epoch from window_ended_at)::bigint::text,'UTF8')))||convert_to(extract(epoch from window_ended_at)::bigint::text,'UTF8')||int4send(length(convert_to(collector_nonce,'UTF8')))||convert_to(collector_nonce,'UTF8')||int4send(length(convert_to(collector_signer_id,'UTF8')))||convert_to(collector_signer_id,'UTF8')||int4send(length(convert_to(encode(report_digest,'hex'),'UTF8')))||convert_to(encode(report_digest,'hex'),'UTF8');IF NOT EXISTS(SELECT 1 FROM public.f1_trusted_ed25519_signer s WHERE s.\"signerId\"=collector_signer_id AND s.purpose='old_call_telemetry' AND s.active AND s.\"notBefore\"<=window_started_at AND s.\"notAfter\">=window_ended_at AND public.vanstro_verify_ed25519_v1(payload,signature,s.\"publicKey\")) THEN RAISE EXCEPTION 'TELEMETRY_SIGNATURE_INVALID';END IF;INSERT INTO public.f1_old_call_report VALUES(report_id,rollout_id,environment_name,manifest_digest,window_started_at,window_ended_at,collector_nonce,collector_signer_id,report_digest,signature,NULL);INSERT INTO public.f1_old_function_call_telemetry SELECT report_id,rollout_id,x.\"functionOid\"::oid,x.\"identitySignature\",x.\"callCount\",x.\"lastCalledAt\" FROM jsonb_to_recordset(rows_value)x(\"functionOid\" bigint,\"identitySignature\" text,\"callCount\" bigint,\"lastCalledAt\" timestamptz);GET DIAGNOSTICS inserted=ROW_COUNT;IF inserted<>31 OR EXISTS(SELECT 1 FROM public.f1_old_function_call_telemetry t WHERE t.\"reportId\"=report_id AND ((t.\"callCount\"=0 AND t.\"lastCalledAt\" IS NOT NULL) OR (t.\"callCount\">0 AND (t.\"lastCalledAt\" IS NULL OR t.\"lastCalledAt\"<window_started_at OR t.\"lastCalledAt\">window_ended_at)) OR t.\"callCount\"<0)) OR EXISTS(SELECT \"functionOid\",\"identitySignature\" FROM public.f1_old_function_registry EXCEPT SELECT \"functionOid\",\"identitySignature\" FROM public.f1_old_function_call_telemetry WHERE \"reportId\"=report_id) OR EXISTS(SELECT \"functionOid\",\"identitySignature\" FROM public.f1_old_function_call_telemetry WHERE \"reportId\"=report_id EXCEPT SELECT \"functionOid\",\"identitySignature\" FROM public.f1_old_function_registry) THEN RAISE EXCEPTION 'TELEMETRY_ROW_COUNT';END IF;RETURN inserted;END $fn$;\n",
+      "canonicalSqlSha256": "fe8d9a9608d60648243b96633fd0833efe21d4a1ffffb45c250f66972cebe41e",
+      "id": "function.f1_ingest_signed_old_call_report_v1",
+      "identitySignature": "public.f1_ingest_signed_old_call_report_v1(uuid,text,text,text,timestamptz,timestamptz,text,text,jsonb,bytea)",
+      "name": "f1_ingest_signed_old_call_report_v1",
+      "owner": "vanstro_telemetry_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "external direct Ed25519 verifier",
+        "trusted telemetry signer",
+        "exact 31-row JSON report"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_migrator"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.f1_consume_old_call_report_v1(rollout_id text) RETURNS void LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ BEGIN UPDATE public.f1_old_call_report SET \"consumedAt\"=CURRENT_TIMESTAMP WHERE \"rolloutId\"=rollout_id AND \"consumedAt\" IS NULL;IF NOT FOUND THEN RAISE EXCEPTION 'OLD_CALL_REPORT_CONSUME_FAILED';END IF;END $fn$;\n",
+      "canonicalSqlSha256": "342ece1fcb18a09e9f0fe77bf8450da3e7c10e37c72b322422d221fda0a50401",
+      "id": "function.f1_consume_old_call_report_v1",
+      "identitySignature": "public.f1_consume_old_call_report_v1(text)",
+      "name": "f1_consume_old_call_report_v1",
+      "owner": "vanstro_telemetry_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "signed old-call report"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_worker_runtime",
+        "vanstro_signer_admin_runtime",
+        "vanstro_kms_rotation_runtime",
+        "vanstro_dsar_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_report_principal_job_capacity_v1(principal_role text,pool_instance text,incarnation_id text,supported_job_types text[],registry_version text,registry_fingerprint text,capacity integer,claim_enabled boolean,observed_at timestamptz,expected_generation bigint) RETURNS bigint LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE allowed boolean;current_generation bigint;next_generation bigint;canonical_types text[];BEGIN canonical_types:=CASE principal_role WHEN 'vanstro_worker_runtime' THEN ARRAY['analytics.release.seal','analytics.source.cleanup'] WHEN 'vanstro_signer_admin_runtime' THEN ARRAY['security.signer.manage'] WHEN 'vanstro_kms_rotation_runtime' THEN ARRAY['analytics.subject-key.rotate'] WHEN 'vanstro_dsar_runtime' THEN ARRAY['privacy.subject.purge'] ELSE NULL END;allowed:=CASE principal_role WHEN 'vanstro_worker_runtime' THEN pg_has_role(session_user,'vanstro_worker_lifecycle_cap','MEMBER') WHEN 'vanstro_signer_admin_runtime' THEN pg_has_role(session_user,'vanstro_p10_signer_admin_cap','MEMBER') WHEN 'vanstro_kms_rotation_runtime' THEN pg_has_role(session_user,'vanstro_p10_kms_rotation_cap','MEMBER') WHEN 'vanstro_dsar_runtime' THEN pg_has_role(session_user,'vanstro_p10_dsar_cap','MEMBER') ELSE false END;IF NOT allowed OR session_user<>principal_role OR supported_job_types<>canonical_types OR registry_version<>'async-job-registry.v2' OR registry_fingerprint<>'a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' OR capacity<0 OR expected_generation<1 OR observed_at<CURRENT_TIMESTAMP-interval '5 seconds' OR observed_at>CURRENT_TIMESTAMP+interval '5 seconds' THEN RAISE EXCEPTION 'PRINCIPAL_CAPACITY_REPORT_DENIED' USING ERRCODE='42501';END IF;SELECT \"generation\" INTO current_generation FROM public.f1_readiness_principal_job_capacity WHERE \"principalRole\"=principal_role AND \"poolInstance\"=pool_instance AND \"incarnationId\"=incarnation_id FOR UPDATE;IF NOT FOUND OR current_generation<>expected_generation THEN RAISE EXCEPTION 'PRINCIPAL_CAPACITY_STALE';END IF;next_generation:=current_generation+1;UPDATE public.f1_readiness_principal_job_capacity SET \"capacity\"=p09_report_principal_job_capacity_v1.capacity,\"claimEnabled\"=claim_enabled,\"observedAt\"=CURRENT_TIMESTAMP,\"generation\"=next_generation WHERE \"principalRole\"=principal_role AND \"poolInstance\"=pool_instance AND \"incarnationId\"=incarnation_id AND \"generation\"=current_generation;IF NOT FOUND THEN RAISE EXCEPTION 'PRINCIPAL_CAPACITY_STALE';END IF;RETURN next_generation;END $fn$;",
+      "canonicalSqlSha256": "800c06acaa4787d5821b77629dd2035a33e7b25269f93bb00568da9270d3a743",
+      "id": "function.p09_report_principal_job_capacity_v1",
+      "identitySignature": "public.p09_report_principal_job_capacity_v1(text,text,text,text[],text,text,integer,boolean,timestamptz,bigint)",
+      "name": "p09_report_principal_job_capacity_v1",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "f1_readiness_principal_job_capacity",
+        "principal capability memberships",
+        "exact async-job registry v2"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    },
+    {
+      "callers": [
+        "vanstro_worker_runtime",
+        "vanstro_signer_admin_runtime",
+        "vanstro_kms_rotation_runtime",
+        "vanstro_dsar_runtime"
+      ],
+      "canonicalSql": "CREATE OR REPLACE FUNCTION public.p09_claim_principal_capacity_pool_v1(principal_role text,supported_job_types text[],registry_version text,registry_fingerprint text,capacity integer,claim_enabled boolean,observed_at timestamptz) RETURNS TABLE(pool_instance text,incarnation_id text,generation bigint) LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path=pg_catalog,public AS $fn$ DECLARE allowed boolean;canonical_types text[];pool_value text;incarnation_value text;BEGIN canonical_types:=CASE principal_role WHEN 'vanstro_worker_runtime' THEN ARRAY['analytics.release.seal','analytics.source.cleanup'] WHEN 'vanstro_signer_admin_runtime' THEN ARRAY['security.signer.manage'] WHEN 'vanstro_kms_rotation_runtime' THEN ARRAY['analytics.subject-key.rotate'] WHEN 'vanstro_dsar_runtime' THEN ARRAY['privacy.subject.purge'] ELSE NULL END;allowed:=CASE principal_role WHEN 'vanstro_worker_runtime' THEN pg_has_role(session_user,'vanstro_worker_lifecycle_cap','MEMBER') WHEN 'vanstro_signer_admin_runtime' THEN pg_has_role(session_user,'vanstro_p10_signer_admin_cap','MEMBER') WHEN 'vanstro_kms_rotation_runtime' THEN pg_has_role(session_user,'vanstro_p10_kms_rotation_cap','MEMBER') WHEN 'vanstro_dsar_runtime' THEN pg_has_role(session_user,'vanstro_p10_dsar_cap','MEMBER') ELSE false END;IF NOT allowed OR session_user<>principal_role OR supported_job_types<>canonical_types OR registry_version<>'async-job-registry.v2' OR registry_fingerprint<>'a456065e5ee6ea13812c457dc21ef53efff26ee0a7f49dd964e4f547077a9e74' OR capacity<0 OR observed_at<CURRENT_TIMESTAMP-interval '5 seconds' OR observed_at>CURRENT_TIMESTAMP+interval '5 seconds' THEN RAISE EXCEPTION 'PRINCIPAL_CAPACITY_CLAIM_DENIED' USING ERRCODE='42501';END IF;DELETE FROM public.f1_readiness_principal_job_capacity WHERE \"observedAt\"<=CURRENT_TIMESTAMP-interval '2 minutes';pool_value:=principal_role||':pool:'||gen_random_uuid()::text;incarnation_value:=principal_role||':incarnation:'||gen_random_uuid()::text;INSERT INTO public.f1_readiness_principal_job_capacity VALUES(principal_role,pool_value,incarnation_value,canonical_types,registry_version,registry_fingerprint,capacity,claim_enabled,CURRENT_TIMESTAMP,1);RETURN QUERY SELECT pool_value,incarnation_value,1::bigint;END $fn$;",
+      "canonicalSqlSha256": "7537d1cfc08098cad92f10da9ec2107659944e7ecfa07d9be93cc7b0fa14f6ec",
+      "id": "function.p09_claim_principal_capacity_pool_v1",
+      "identitySignature": "public.p09_claim_principal_capacity_pool_v1(text,text[],text,text,integer,boolean,timestamptz)",
+      "name": "p09_claim_principal_capacity_pool_v1",
+      "owner": "vanstro_p09_guard_owner",
+      "reason": "implementation_audit_missing_authority",
+      "requires": [
+        "f1_readiness_principal_job_capacity",
+        "gen_random_uuid",
+        "principal capability memberships"
+      ],
+      "searchPath": "pg_catalog, public",
+      "securityDefiner": true
+    }
+  ]
+}

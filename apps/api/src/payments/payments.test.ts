@@ -1,0 +1,257 @@
+import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
+import test from "node:test";
+import { DemoCardPaymentProvider } from "./demo.js";
+import { ManualPaymentProvider } from "./manual.js";
+import { MonerisPaymentProvider, type MonerisConfig } from "./moneris.js";
+
+const SECRET = "manual-callback-test-secret";
+
+function sign(sessionId: string, providerPaymentId: string) {
+  return createHmac("sha256", SECRET).update(`${sessionId}:${providerPaymentId}`).digest("hex");
+}
+
+test("manual provider verifies a correctly signed callback", async () => {
+  const provider = new ManualPaymentProvider(SECRET);
+  const result = await provider.verify({
+    paymentSessionId: "sess-1",
+    amountCents: 1000,
+    currency: "CAD",
+    providerPaymentId: "pay-1",
+    signature: sign("sess-1", "pay-1")
+  });
+  assert.deepEqual(result, { ok: true, providerPaymentId: "pay-1" });
+});
+
+test("manual provider rejects an invalid signature", async () => {
+  const provider = new ManualPaymentProvider(SECRET);
+  const result = await provider.verify({
+    paymentSessionId: "sess-1",
+    amountCents: 1000,
+    currency: "CAD",
+    providerPaymentId: "pay-1",
+    signature: "deadbeef"
+  });
+  assert.equal(result.ok, false);
+});
+
+test("manual provider rejects a missing providerPaymentId", async () => {
+  const provider = new ManualPaymentProvider(SECRET);
+  const result = await provider.verify({ paymentSessionId: "sess-1", amountCents: 1000, currency: "CAD", signature: "x" });
+  assert.equal(result.ok, false);
+});
+
+test("manual provider initiate is a no-op handoff", async () => {
+  const provider = new ManualPaymentProvider(SECRET);
+  const result = await provider.initiate({ paymentSessionId: "sess-1", amountCents: 1000, currency: "CAD", email: "a@b.ca" });
+  assert.deepEqual(result, { provider: "manual" });
+});
+
+test("demo card provider issues and verifies a session-bound ticket", async () => {
+  const provider = new DemoCardPaymentProvider();
+  const initiated = await provider.initiate({ paymentSessionId: "demo-session", amountCents: 1234, currency: "CAD", email: "demo@example.com" });
+  assert.equal(initiated.provider, "demo");
+  assert.equal(initiated.demo, true);
+  assert.ok(initiated.ticket);
+  assert.equal((await provider.verify({ paymentSessionId: "demo-session", amountCents: 1234, currency: "CAD", ticket: initiated.ticket })).ok, true);
+  assert.equal((await provider.verify({ paymentSessionId: "other-session", amountCents: 1234, currency: "CAD", ticket: initiated.ticket })).ok, false);
+});
+
+const monerisConfig: MonerisConfig = {
+  environment: "qa",
+  storeId: "store1",
+  apiToken: "token1",
+  checkoutId: "chkt1"
+};
+
+test("moneris initiate returns a ticket from a successful preload", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({ response: { success: "true", ticket: "ticket-abc" } }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.initiate({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", email: "a@b.ca" });
+  assert.equal(result.ticket, "ticket-abc");
+  assert.equal(result.provider, "moneris");
+});
+
+test("moneris initiate throws when preload fails", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({ response: { success: "false" } }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  await assert.rejects(() => provider.initiate({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", email: "a@b.ca" }));
+});
+
+test("moneris verify confirms a successful receipt", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: {
+          order_no: "order-1",
+          txn_total: "25.00",
+          transaction_no: "txn-123",
+          cc: { result: { success: "true" } }
+        }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.deepEqual(result, { ok: true, providerPaymentId: "txn-123" });
+});
+
+test("moneris verify rejects mismatched order_no", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { order_no: "other-order", txn_total: "25.00", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects mismatched amount", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { order_no: "order-1", txn_total: "10.00", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects a successful receipt without order_no", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { txn_total: "25.00", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects a successful receipt without amount", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { order_no: "order-1", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects a successful receipt without transaction number", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({
+      response: {
+        success: "true",
+        receipt: { order_no: "order-1", txn_total: "25.00", cc: { result: { success: "true" } } }
+      }
+    }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify rejects an unsuccessful receipt", async () => {
+  const fetchMock: typeof fetch = async () =>
+    new Response(JSON.stringify({ response: { success: "true", receipt: { cc: { result: { success: "false" } } } } }), { status: 200 });
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD", ticket: "ticket-abc" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris verify requires a ticket", async () => {
+  const provider = new MonerisPaymentProvider(monerisConfig, async () => new Response("{}"));
+  const result = await provider.verify({ paymentSessionId: "order-1", amountCents: 2500, currency: "CAD" });
+  assert.equal(result.ok, false);
+});
+
+test("moneris refund posts the original order and transaction number", async () => {
+  let requestUrl = "";
+  let requestBody = "";
+  const fetchMock: typeof fetch = async (input, init) => {
+    requestUrl = String(input);
+    requestBody = String(init?.body);
+    return new Response(
+      "<?xml version=\"1.0\"?><response><receipt>"
+        + "<ReceiptId>order-1</ReceiptId><ResponseCode>027</ResponseCode>"
+        + "<Complete>true</Complete><Message>APPROVED</Message>"
+        + "<TxnNumber>refund-123</TxnNumber><TimedOut>false</TimedOut>"
+        + "</receipt></response>",
+      { status: 200 }
+    );
+  };
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.refund({
+    orderId: "order-1",
+    providerPaymentId: "txn-123",
+    amountCents: 2500,
+    currency: "CAD"
+  });
+  assert.deepEqual(result, { ok: true, providerRefundId: "refund-123" });
+  assert.equal(requestUrl, "https://esqa.moneris.com/gateway2/servlet/MpgRequest");
+  assert.match(requestBody, /<status_check>false<\/status_check>/);
+  assert.match(requestBody, /<order_id>order-1<\/order_id>/);
+  assert.match(requestBody, /<amount>25\.00<\/amount>/);
+  assert.match(requestBody, /<txn_number>txn-123<\/txn_number>/);
+});
+
+test("moneris refund performs one status check after an unknown result", async () => {
+  const bodies: string[] = [];
+  const fetchMock: typeof fetch = async (_input, init) => {
+    bodies.push(String(init?.body));
+    if (bodies.length === 1) throw new Error("socket closed");
+    return new Response(
+      "<?xml version=\"1.0\"?><response><receipt>"
+        + "<ResponseCode>027</ResponseCode><Complete>true</Complete>"
+        + "<Message>APPROVED</Message><TxnNumber>refund-456</TxnNumber><TimedOut>false</TimedOut>"
+        + "</receipt></response>",
+      { status: 200 }
+    );
+  };
+  const provider = new MonerisPaymentProvider(monerisConfig, fetchMock);
+  const result = await provider.refund({
+    orderId: "order-2",
+    providerPaymentId: "txn-456",
+    amountCents: 100,
+    currency: "CAD"
+  });
+  assert.deepEqual(result, { ok: true, providerRefundId: "refund-456" });
+  assert.equal(bodies.length, 2);
+  assert.match(bodies[1]!, /<status_check>true<\/status_check>/);
+});
+
+test("moneris refund rejects non-CAD and declined responses", async () => {
+  const provider = new MonerisPaymentProvider(monerisConfig, async () =>
+    new Response(
+      "<?xml version=\"1.0\"?><response><receipt>"
+        + "<ResponseCode>481</ResponseCode><Complete>true</Complete>"
+        + "<Message>DECLINED</Message><TimedOut>false</TimedOut>"
+        + "</receipt></response>",
+      { status: 200 }
+    )
+  );
+  assert.deepEqual(await provider.refund({
+    orderId: "order-3",
+    providerPaymentId: "txn-789",
+    amountCents: 100,
+    currency: "USD"
+  }), { ok: false, reason: "Moneris Canada refunds require CAD.", retryable: false });
+  assert.deepEqual(await provider.refund({
+    orderId: "order-3",
+    providerPaymentId: "txn-789",
+    amountCents: 100,
+    currency: "CAD"
+  }), { ok: false, reason: "DECLINED", retryable: false });
+});

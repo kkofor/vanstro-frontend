@@ -16,59 +16,61 @@ import { ArticleSummary, Banner, Dealer, ProductSummary } from "@/lib/api/api-co
 import { ProductCard } from "@/components/product/ProductCard";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
 import { assetPath } from "@/lib/assets";
+import { DEFAULT_LOCALE } from "@/lib/i18n/locale";
+import { canonicalCatalogUrl } from "@/lib/i18n/routes";
+import { handleCanonicalCatalogClick } from "@/lib/i18n/canonical-catalog";
+import type { CatalogCategoryOption } from "@/lib/product/catalog-config";
 
 type HomePageV11Props = {
   banner: Banner;
   products: ProductSummary[];
   articles: ArticleSummary[];
   dealers: Dealer[];
+  categories: CatalogCategoryOption[];
 };
 
-const categoryCards = [
-  {
-    title: "Kitchen",
-    text: "Cabinets, vanities, hardware",
-    href: "/products?category=kitchen-cabinets",
+/**
+ * Display assets for the category entry cards, keyed by canonical category
+ * slug. The set of cards, their order and labels come from the Website API
+ * `/categories` payload; this map only decorates known categories with
+ * curated imagery and falls back to the generic hero image for new ones.
+ */
+const CATEGORY_CARD_IMAGES: Readonly<
+  Record<string, { image: string; width: number; height: number; text: string; large?: boolean }>
+> = {
+  "kitchen-cabinets": {
     image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
     width: 1672,
     height: 941,
+    text: "Cabinets, vanities, hardware",
     large: true
   },
-  {
-    title: "Bathroom",
-    text: "Vanities and fixtures",
-    href: "/products?category=bathroom-vanities",
+  "bathroom-vanities": {
     image: assetPath("/assets/original-site/img-b03.gif"),
     width: 602,
-    height: 292
+    height: 292,
+    text: "Vanities and fixtures"
   },
-  {
-    title: "Flooring",
-    text: "Laminate and vinyl",
-    href: "/products?category=flooring",
-    image: assetPath("/assets/original-site/img-b02.gif"),
+  "handle-series": {
+    image: assetPath("/assets/products/kitchen-cabinets/aluminum-alloy-handle-060101111-ctc-96mm-primary.jpg"),
     width: 602,
     height: 292,
-    comingSoon: true
+    text: "Cabinet handles and hardware"
   },
-  {
-    title: "Trim",
-    text: "Baseboards and casings",
-    href: "/products?category=baseboards",
+  "baseboards-and-mouldings": {
     image: assetPath("/assets/original-site/img-b04.gif"),
     width: 1220,
-    height: 292
-  },
-  {
-    title: "Doors and windows",
-    text: "Interior and exterior",
-    href: "/products?category=doors-windows",
-    image: assetPath("/assets/generated/category-doors-windows.webp"),
-    width: 1774,
-    height: 887,
-    comingSoon: true
+    height: 292,
+    text: "Baseboards and casings"
   }
-];
+};
+
+const DEFAULT_CATEGORY_CARD_IMAGE = {
+  image: assetPath("/assets/generated/vanstro-hero-white-v1.webp"),
+  width: 1672,
+  height: 941,
+  text: ""
+} as const;
 
 const fulfillmentSteps = [
   {
@@ -80,8 +82,8 @@ const fulfillmentSteps = [
     text: "Checkout captures customer details, fulfillment choice and online payment."
   },
   {
-    title: "Dealer handles fulfillment",
-    text: "The assigned VanStro dealer receives the order for pickup, delivery or project support."
+    title: "Local dealer confirms fulfillment",
+    text: "The local dealer selected for the order confirms availability and pickup or delivery arrangements."
   }
 ];
 
@@ -126,13 +128,13 @@ const resources = [
 ];
 
 const dealerBenefits = [
-  "Access stocked VanStro product supply",
-  "Receive online orders from local customers",
-  "Use dealer pricing, CRM and POS support",
-  "Get marketing assets and settlement workflows"
+  "Purchase available VanStro products under written commercial terms",
+  "Choose whether to accept customer-selected fulfillment requests",
+  "Use optional product information and order-status tools",
+  "Access optional product images and approved brand materials"
 ];
 
-export function HomePageV11({ banner, products, articles, dealers }: HomePageV11Props) {
+export function HomePageV11({ banner, products, articles, dealers, categories }: HomePageV11Props) {
   const {
     selectedDealerId,
     setSelectedDealer
@@ -152,14 +154,14 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
             <h1>
               <span>Kitchen cabinets and</span>
               {" "}
-              <span>home materials across Canada</span>
+              <span>home materials in participating Canadian service areas</span>
             </h1>
             <p>
               Shop ready-to-order cabinets, vanities and baseboards online. After checkout,
-              a local VanStro dealer handles pickup, delivery or project support.
+              your local dealer confirms pickup, delivery or project-support options.
             </p>
             <div className="hero-actions">
-              <Link className="button button-primary" href="/products" prefetch={false}>
+              <Link className="button button-primary" href={canonicalCatalogUrl(DEFAULT_LOCALE)} prefetch={false} onClick={handleCanonicalCatalogClick(DEFAULT_LOCALE)}>
                 Shop Products
               </Link>
               <Link className="button button-secondary" href="#stores">
@@ -202,33 +204,42 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
         <div className="container">
           <div className="section-heading category-heading">
             <h2 className="section-title">Shop by category</h2>
-            <Link className="section-link" href="/products" prefetch={false}>
+            <Link className="section-link" href={canonicalCatalogUrl(DEFAULT_LOCALE)} prefetch={false} onClick={handleCanonicalCatalogClick(DEFAULT_LOCALE)}>
               View all
               <ArrowRight size={18} strokeWidth={2} />
             </Link>
           </div>
           <div className="category-grid">
-            {categoryCards.map((category) => (
-              <Link
-                className={category.large ? "category-card large" : "category-card"}
-                href={category.href}
-                prefetch={false}
-                key={category.title}
-              >
-                <img
-                  src={category.image}
-                  alt={category.title}
-                  width={category.width}
-                  height={category.height}
-                  loading="lazy"
-                  decoding="async"
-                />
-                {category.comingSoon ? <span className="category-badge">Coming soon</span> : null}
-                <div className="category-copy">
-                  <h3>{category.title}</h3>
-                  <p>{category.text}</p>
-                </div>
-              </Link>
+            {categories.map((category) => {
+              const visual = CATEGORY_CARD_IMAGES[category.slug] ?? DEFAULT_CATEGORY_CARD_IMAGE;
+
+              return (
+                <Link
+                  className={visual.large ? "category-card large" : "category-card"}
+                  href={`/products?category=${category.slug}`}
+                  prefetch={false}
+                  key={category.id}
+                >
+                  <img
+                    src={visual.image}
+                    alt={category.label}
+                    width={visual.width}
+                    height={visual.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="category-copy">
+                    <h3>{category.label}</h3>
+                    <p>{category.description ?? visual.text}</p>
+                  </div>
+                </Link>
+              );
+            })}
+            {Array.from({ length: Math.max(0, 6 - categories.reduce((n, c) => n + (CATEGORY_CARD_IMAGES[c.slug]?.large ? 2 : 1), 0)) }, (_, index) => (
+              <div className="category-card-placeholder" aria-hidden="true" key={`category-placeholder-${index}`}>
+                <img src={assetPath("/assets/generated/category-doors-windows.webp")} alt="" loading="lazy" decoding="async" />
+                <span>Coming soon</span>
+              </div>
             ))}
           </div>
         </div>
@@ -244,7 +255,7 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
                 action.
               </p>
             </div>
-            <Link className="section-link" href="/products" prefetch={false}>
+            <Link className="section-link" href={canonicalCatalogUrl(DEFAULT_LOCALE)} prefetch={false} onClick={handleCanonicalCatalogClick(DEFAULT_LOCALE)}>
               View all products
               <ArrowRight size={18} strokeWidth={2} />
             </Link>
@@ -263,8 +274,9 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
             <span className="eyebrow light">Dealer program</span>
             <h2>For contractors and dealers</h2>
             <p>
-              Join the VanStro dealer network to access supply resources, ecommerce demand,
-              dealer pricing and operating tools across Canadian markets.
+              Apply to participate as an independently owned local dealer with access
+              to VanStro product supply and optional order-administration resources.
+              Customer demand, order volume, revenue and business results are not guaranteed.
             </p>
             <div className="dealer-benefit-list">
               {dealerBenefits.map((benefit) => (
@@ -278,8 +290,8 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
               <Link className="button button-accent" href="/dealers/apply">
                 Become a Dealer
               </Link>
-              <Link className="button button-secondary" href="/account/login">
-                Dealer Login
+              <Link className="button button-secondary" href="/dealer-access">
+                Dealer Portal
                 <ArrowRight size={18} strokeWidth={2} />
               </Link>
             </div>
@@ -352,7 +364,7 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
               </button>
             ))}
           </div>
-          <Link className="button button-primary" href="/products">
+          <Link className="button button-primary" href={canonicalCatalogUrl(DEFAULT_LOCALE)} prefetch={false} onClick={handleCanonicalCatalogClick(DEFAULT_LOCALE)}>
             Shop Selected Store
           </Link>
         </div>
@@ -373,7 +385,7 @@ export function HomePageV11({ banner, products, articles, dealers }: HomePageV11
               ))}
             </div>
             <div className="button-row">
-              <Link className="section-link" href="/articles/how-to-measure-for-cabinets">
+              <Link className="section-link" href="/faq">
                 View all FAQs
                 <ArrowRight size={18} strokeWidth={2} />
               </Link>

@@ -1,0 +1,4474 @@
+{
+  "suiteId": "vanstro.s02.settings.desktop.v1",
+  "testedCommit": "1a440fcac4c9044590189a5a0999f3bfc5c6081e",
+  "testedTree": "5c0a41b309eab3c9681e5cc3f2e7e4ad1e9168f5",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "definitionSha256": "9d8fc5881ccd68381b45f48e1dbc0d29c2c38ed24a3157ee9e7289f634c306a3",
+  "fixtureSha256": "ce04cce7ace908684b75269ebd7c4e2b9db545e2235e15136e6c8abb7c745129",
+  "harnessSha256": "263f3227ef4b824a6deeab01b62ca2dc16ead464eba0e8c25da1d4798586158d",
+  "runnerSha256": "be9b76eb0a4a7fc9271277d803015bf9d8189f082b321e41d8d3264f7be84ae6",
+  "counts": {
+    "pass": 23,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "S02-01",
+      "name": "Login establishes an admin session",
+      "expectation": "login succeeds and the S02 settings panel renders",
+      "status": "pass",
+      "observations": [
+        "dashboard shell and S02 panel rendered"
+      ]
+    },
+    {
+      "id": "S02-02",
+      "name": "S02 page is available",
+      "expectation": "/dashboard/settings/general-storefront renders 通用店面设置 with the settings.general-storefront.v1 descriptor badge",
+      "status": "pass",
+      "observations": [
+        "S02 page and descriptor visible"
+      ]
+    },
+    {
+      "id": "S02-03",
+      "name": "Read-only actor sees no write controls",
+      "expectation": "read-only profile renders 只读模式 with no 创建草稿 control and no publish capability",
+      "status": "pass",
+      "observations": [
+        "read-only banner=True; write actions denied=True; no save/validate/publish controls"
+      ]
+    },
+    {
+      "id": "S02-04",
+      "name": "Create a structurally valid business-invalid draft succeeds",
+      "expectation": "a logoMediaRef pointing at a missing media id is accepted as a draft (no client pre-rejection)",
+      "status": "pass",
+      "observations": [
+        "business-invalid draft created (69d19033) and rendered"
+      ]
+    },
+    {
+      "id": "S02-05",
+      "name": "Server blocker persists the draft as invalid",
+      "expectation": "validate reports 验证未通过 with a blocker and the draft status becomes invalid",
+      "status": "pass",
+      "observations": [
+        "invalid with server blocker"
+      ]
+    },
+    {
+      "id": "S02-06",
+      "name": "PATCH corrects the invalid draft",
+      "expectation": "clearing the missing media ref saves the draft with a bumped version",
+      "status": "pass",
+      "observations": [
+        "PATCH persisted paired refs=True version 1->3"
+      ]
+    },
+    {
+      "id": "S02-07",
+      "name": "Revalidate the corrected draft as validated",
+      "expectation": "validate reports 验证通过 with no blockers",
+      "status": "pass",
+      "observations": [
+        "validated after correction"
+      ]
+    },
+    {
+      "id": "S02-08",
+      "name": "Safe diff shows the exact public value change",
+      "expectation": "diff table lists field-path changes with public sensitivity and zero secrets",
+      "status": "pass",
+      "observations": [
+        "safe diff with field paths and zero secrets"
+      ]
+    },
+    {
+      "id": "S02-09",
+      "name": "Publish executes and returns a generation",
+      "expectation": "publish succeeds with a positive generation and the draft leaves the open list",
+      "status": "pass",
+      "observations": [
+        "publish executed; publishedGeneration=1"
+      ]
+    },
+    {
+      "id": "S02-10",
+      "name": "Public Storefront shows the published changes",
+      "expectation": "/storefront/config returns the published siteDisplayName and announcement, and the SiteHeader displays them",
+      "status": "pass",
+      "observations": [
+        "projection=published name=VanStro QA Storefront; brand-text shows it=True; announcement=True; provider=degraded:VanStro QA Storefront"
+      ]
+    },
+    {
+      "id": "S02-11",
+      "name": "EN and fr locales with fallback",
+      "expectation": "en-CA and fr-CA projections serve; unsupported locales fall back to en-CA",
+      "status": "pass",
+      "observations": [
+        "fr locale=fr-CA; zh-CN falls back to en-CA"
+      ]
+    },
+    {
+      "id": "S02-12",
+      "name": "Media/CMS/Dealer references resolve in the public projection",
+      "expectation": "published logoMediaRef, CMS refs and dealer/location refs resolve to public-safe objects",
+      "status": "pass",
+      "observations": [
+        "dealer={'id': '55555555-5555-4555-8555-555555555555', 'name': 'Yuan Construction Ltd.'}"
+      ]
+    },
+    {
+      "id": "S02-13",
+      "name": "Missing references degrade without breaking the public site",
+      "expectation": "a missing media ref yields degraded projection state while the storefront still renders",
+      "status": "pass",
+      "observations": [
+        "missing reference mode keeps storefront rendering with the published name (visible=True)"
+      ]
+    },
+    {
+      "id": "S02-14",
+      "name": "Stale version yields VERSION_CONFLICT",
+      "expectation": "a stale expectedVersion yields a controlled 409 VERSION_CONFLICT",
+      "status": "pass",
+      "observations": [
+        "stale version validate refused with VERSION_CONFLICT"
+      ]
+    },
+    {
+      "id": "S02-15",
+      "name": "Illegal state yields SETTINGS_STATE_CONFLICT",
+      "expectation": "publishing an unvalidated draft yields a controlled 409 SETTINGS_STATE_CONFLICT",
+      "status": "pass",
+      "observations": [
+        "publish of unvalidated draft refused with SETTINGS_STATE_CONFLICT"
+      ]
+    },
+    {
+      "id": "S02-16",
+      "name": "Malformed UUID yields a controlled 400",
+      "expectation": "a non-UUID draft id returns a stable 400, never a 500",
+      "status": "pass",
+      "observations": [
+        "malformed UUID status 400; valid missing UUID status 404"
+      ]
+    },
+    {
+      "id": "S02-17",
+      "name": "History is append-only with original publication facts",
+      "expectation": "published entries keep their original auditEventId and gains a superseded entry",
+      "status": "pass",
+      "observations": [
+        "published=2 superseded=1; A fact preserved=True"
+      ]
+    },
+    {
+      "id": "S02-18",
+      "name": "Rollback creates a new draft from the current publication",
+      "expectation": "rollback-draft returns a rollback_draft with rollbackOfPublicationId set",
+      "status": "pass",
+      "observations": [
+        "rollback draft bf412dcc-e242-4bfa-8e31-286063487d90 created from bf0ce020-2674-461b-b8cb-bb3f0d61e416"
+      ]
+    },
+    {
+      "id": "S02-19",
+      "name": "Rollback publish restores the previous S02 version on the Storefront",
+      "expectation": "publishing the rollback draft yields a generation above the superseded one and the storefront shows the restored value (not generation 0)",
+      "status": "pass",
+      "observations": [
+        "rollback generation=3 (>0); storefront restored to History Name B"
+      ]
+    },
+    {
+      "id": "S02-20",
+      "name": "Fresh fixture serves compiled_default generation 0 and public fallback",
+      "expectation": "no S02 publication yields compiled_default generation 0 and the public site shows the compiled siteDisplayName",
+      "status": "pass",
+      "observations": [
+        "compiled_default generation 0; storefront fallback name visible=True"
+      ]
+    },
+    {
+      "id": "S02-21",
+      "name": "Static export serves fallback then hydrates the published value",
+      "expectation": "a static server-mode load shows the compiled fallback first then the published value via the public API; an unavailable API keeps the fallback",
+      "status": "pass",
+      "observations": [
+        "compiled fallback pre-hydration=True; published name after hydration=True; API down keeps fallback=True"
+      ]
+    },
+    {
+      "id": "S02-22",
+      "name": "Audit safe snapshot carries real roles and no field values",
+      "expectation": "mutation Audit rows carry effectiveRoles/grants and metadata only with descriptorKey (no siteDisplayName/email values)",
+      "status": "pass",
+      "observations": [
+        "audit roles=['super_admin'] grants=['settings.read', 'settings.write']; metadata={\"descriptorKey\": \"settings.general-storefront\"}"
+      ]
+    },
+    {
+      "id": "S02-23",
+      "name": "Logout and post-logout state are clean",
+      "expectation": "logout returns to login and no protected settings state remains",
+      "status": "pass",
+      "observations": [
+        "post-logout no protected settings state"
+      ]
+    }
+  ],
+  "network": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27024.632
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27024.642
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27026.32
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27026.321
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27026.322
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27026.323
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27026.324
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27026.324
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27026.324
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27026.324
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27026.428
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27026.428
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27026.495
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27026.495
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27026.495
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27026.496
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27026.496
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27026.496
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27026.53
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27026.536
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27026.536
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27026.537
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27026.554
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27026.555
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27026.555
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27026.594
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27026.595
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27026.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27026.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27026.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27026.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27026.633
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27026.634
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27026.634
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27026.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27026.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27026.635
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27026.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27026.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27026.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27026.636
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27026.637
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27026.637
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27026.638
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27026.639
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27026.641
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27026.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27026.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27026.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27026.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27026.644
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27026.644
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27026.644
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27026.656
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27026.656
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27026.696
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27026.696
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27026.697
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27026.697
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27026.697
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27026.697
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27026.713
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27026.739
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27026.739
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27026.739
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27026.74
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27026.74
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27026.741
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27027.492
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27027.492
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27027.53
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27027.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27027.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27027.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27027.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27027.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27027.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27027.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27027.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27027.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27027.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27027.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27027.542
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27027.542
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27027.577
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27027.577
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27027.577
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27027.578
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27027.578
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27027.579
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27027.593
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27027.601
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27027.601
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27027.601
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27027.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27027.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27027.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27028.361
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27028.363
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27028.398
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27028.399
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27028.399
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27028.399
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27028.399
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27028.4
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27028.401
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27028.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27028.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27028.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27028.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27028.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27028.411
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27028.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27028.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27028.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27028.444
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27028.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27028.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27028.461
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27028.469
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27028.469
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27028.469
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27028.486
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27028.487
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27028.487
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/69d19033-0292-4951-ae41-e0aad7dad8a2/validate",
+      "monotonicSeconds": 27029.656
+    },
+    {
+      "method": "PATCH",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/69d19033-0292-4951-ae41-e0aad7dad8a2",
+      "monotonicSeconds": 27031.043
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27031.044
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27031.044
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27031.044
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/69d19033-0292-4951-ae41-e0aad7dad8a2/validate",
+      "monotonicSeconds": 27032.077
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/69d19033-0292-4951-ae41-e0aad7dad8a2/diff",
+      "monotonicSeconds": 27032.078
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/69d19033-0292-4951-ae41-e0aad7dad8a2/publish",
+      "monotonicSeconds": 27034.376
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27034.377
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27034.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27034.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27034.402
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27035.403
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27035.887
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27035.887
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27035.887
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27035.888
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27035.889
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27035.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27035.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27035.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27035.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27035.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27035.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27035.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27035.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27035.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27035.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.909
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.909
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.91
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.91
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.911
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27035.911
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27035.911
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27035.911
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27035.917
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27035.917
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27036.002
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27036.002
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27036.002
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27036.002
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27036.045
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27037.018
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27037.018
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27037.056
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27037.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27037.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27037.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27037.057
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27037.058
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27037.059
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27037.06
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27037.06
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27037.06
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27037.077
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27037.077
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27037.119
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27037.119
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27037.119
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27037.12
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27037.12
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27037.12
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27037.147
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27037.157
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27037.177
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27037.177
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27037.177
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27037.177
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27037.178
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27038.377
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27038.379
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27038.379
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27038.379
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/2f227bae-4a94-4aef-a021-e372ba49008a/validate",
+      "monotonicSeconds": 27039.306
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/2f227bae-4a94-4aef-a021-e372ba49008a/diff",
+      "monotonicSeconds": 27039.307
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/2f227bae-4a94-4aef-a021-e372ba49008a/publish",
+      "monotonicSeconds": 27040.591
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27040.593
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27040.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27040.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27040.62
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27041.522
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27041.587
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27041.587
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27041.587
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27041.588
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27041.588
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27041.588
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27041.588
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27041.588
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27041.589
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27041.589
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27041.589
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27041.589
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27041.589
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27041.59
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27041.591
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27041.591
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27041.602
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27041.602
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27041.602
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27041.602
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.603
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27041.604
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27041.604
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27041.604
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27041.606
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27041.606
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27041.684
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27041.684
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27041.684
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27041.684
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27041.713
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27042.689
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27042.69
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27042.725
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27042.725
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27042.725
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27042.725
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27042.725
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27042.726
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27042.726
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27042.726
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27042.726
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27042.726
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27042.727
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27042.727
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27042.727
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27042.727
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27042.728
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27042.729
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27042.749
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27042.749
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27042.783
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27042.784
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27042.784
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27042.784
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27042.784
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27042.785
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27042.812
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27042.82
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27042.82
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27042.821
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27042.837
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27042.837
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27042.838
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27043.424
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27043.425
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27043.425
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27043.425
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27044.248
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27044.248
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27044.278
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27044.279
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27044.28
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27044.281
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27044.281
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27044.281
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27044.281
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27044.289
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27044.29
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27044.327
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27044.328
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27044.328
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27044.328
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27044.328
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27044.329
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27044.355
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27044.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27044.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27044.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27044.382
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27044.382
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27044.382
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27044.974
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27044.975
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27044.975
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27044.975
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27045.806
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27045.808
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27045.845
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27045.845
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27045.847
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27045.847
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27045.848
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27045.848
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27045.849
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27045.849
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27045.849
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27045.85
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27045.85
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27045.85
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27045.851
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27045.851
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27045.851
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27045.852
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27045.853
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27045.854
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27045.854
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27045.854
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27045.855
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27045.855
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27045.855
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27045.856
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27045.856
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27045.856
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27045.86
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27045.86
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27045.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27045.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27045.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27045.89
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27045.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27045.891
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27045.917
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27045.926
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27045.926
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27045.926
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27045.943
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27045.943
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27045.944
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27046.906
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27046.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27046.908
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27046.908
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/d507dc35-4543-4ca8-af68-33f504075e97/validate",
+      "monotonicSeconds": 27047.744
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/d507dc35-4543-4ca8-af68-33f504075e97/diff",
+      "monotonicSeconds": 27047.745
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/d507dc35-4543-4ca8-af68-33f504075e97/publish",
+      "monotonicSeconds": 27048.93
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27048.931
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27048.954
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27048.954
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27048.954
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27050.266
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27050.268
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27050.268
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27050.268
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf0ce020-2674-461b-b8cb-bb3f0d61e416/validate",
+      "monotonicSeconds": 27051.102
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf0ce020-2674-461b-b8cb-bb3f0d61e416/diff",
+      "monotonicSeconds": 27051.103
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf0ce020-2674-461b-b8cb-bb3f0d61e416/publish",
+      "monotonicSeconds": 27052.29
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=3",
+      "monotonicSeconds": 27052.291
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27052.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27052.315
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27052.316
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27053.215
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27053.216
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27053.248
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27053.248
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27053.249
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27053.249
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27053.249
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27053.249
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27053.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27053.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27053.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27053.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27053.25
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27053.251
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27053.251
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27053.252
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27053.253
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27053.253
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27053.253
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27053.254
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27053.254
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27053.254
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27053.254
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27053.255
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27053.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27053.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27053.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27053.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27053.269
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27053.269
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27053.304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27053.304
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27053.305
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27053.305
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27053.305
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27053.306
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=2",
+      "monotonicSeconds": 27053.308
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27053.332
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27053.357
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27053.357
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27053.357
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27053.358
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27053.358
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27053.358
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history/bf0ce020-2674-461b-b8cb-bb3f0d61e416/rollback-draft",
+      "monotonicSeconds": 27054.337
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf412dcc-e242-4bfa-8e31-286063487d90/validate",
+      "monotonicSeconds": 27055.295
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf412dcc-e242-4bfa-8e31-286063487d90/diff",
+      "monotonicSeconds": 27055.298
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/bf412dcc-e242-4bfa-8e31-286063487d90/publish",
+      "monotonicSeconds": 27055.431
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=5",
+      "monotonicSeconds": 27055.433
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27055.461
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27055.461
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27055.461
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27055.479
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27055.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27055.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27055.531
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27055.532
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27055.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27055.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27055.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27055.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27055.533
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27055.534
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27055.542
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27055.542
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27055.542
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27055.543
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27055.543
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.543
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.543
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.544
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.544
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.544
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27055.545
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27055.545
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27055.545
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27055.562
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27055.562
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27055.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27055.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27055.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27055.643
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27057.175
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27057.231
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27057.232
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27057.232
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27057.232
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27057.232
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27057.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27057.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27057.237
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27057.238
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27057.238
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27057.238
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.239
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27057.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27057.24
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27057.241
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27057.252
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27057.252
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27057.334
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27057.334
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27057.334
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27057.335
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27058.332
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27058.333
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27058.362
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27058.363
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27058.363
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27058.363
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27058.363
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27058.364
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27058.364
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27058.364
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27058.365
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27058.366
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27058.367
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27058.386
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27058.386
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27058.422
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27058.422
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27058.422
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27058.422
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27058.422
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27058.424
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27058.45
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27058.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27058.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27058.479
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27058.479
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27058.479
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27058.479
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27059.23
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27059.231
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27059.231
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27059.231
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/e044d5c1-3c8f-4d70-b22d-7e37554442ff/validate",
+      "monotonicSeconds": 27060.06
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/e044d5c1-3c8f-4d70-b22d-7e37554442ff/diff",
+      "monotonicSeconds": 27060.062
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts/e044d5c1-3c8f-4d70-b22d-7e37554442ff/publish",
+      "monotonicSeconds": 27061.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27061.246
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27061.269
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27061.27
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27061.27
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27062.169
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27062.243
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27062.244
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27062.245
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27062.246
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27062.255
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27062.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27062.256
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27062.257
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27062.258
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.258
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.259
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.259
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.26
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.26
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27062.26
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27062.261
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27062.261
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27062.264
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27062.264
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27062.343
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27062.343
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27062.344
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27062.344
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness?consumerGeneration=1",
+      "monotonicSeconds": 27062.37
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/",
+      "monotonicSeconds": 27063.37
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27063.443
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27063.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27063.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/vanstro-hero-white-v1.webp",
+      "monotonicSeconds": 27063.445
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27063.446
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27063.447
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27063.447
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27063.447
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27063.448
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27063.45
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27063.452
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27063.452
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27063.453
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27063.453
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_06o202d._.js",
+      "monotonicSeconds": 27063.453
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27063.453
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-kitchen-cabinets-v2.webp",
+      "monotonicSeconds": 27063.475
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b03.gif",
+      "monotonicSeconds": 27063.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-end-panel-wep1242-018930942-wep1242-ms-wh-primary.jpg",
+      "monotonicSeconds": 27063.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/category-handle-series-v2.webp",
+      "monotonicSeconds": 27063.478
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/original-site/img-b04.gif",
+      "monotonicSeconds": 27063.483
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/base-cabinet-b30-011770130-b30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/3-drawer-base-3db30-012770130-3db30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/sink-base-sb30-011950130-sb30-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/lazy-susan-base-lsb33-013780130-lsb33-w-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/wall-cabinet-w2730-015190130-w2730-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/kitchen-cabinets/tall-cabinet-u248424-017580130-u248424-pwms-wh-primary.jpg",
+      "monotonicSeconds": 27063.484
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs30-023021011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27063.485
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/products/bathroom-vanities/vanity-cabinet-vs36-023621011-white-with-top-lifestyle-front-primary.jpg",
+      "monotonicSeconds": 27063.485
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27063.501
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27063.501
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27063.578
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27063.578
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27063.578
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27063.581
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront",
+      "monotonicSeconds": 27065.107
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/dashboard/settings/general-storefront/",
+      "monotonicSeconds": 27065.11
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27065.149
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_0dxn5a2._.css",
+      "monotonicSeconds": 27065.15
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27065.15
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27065.15
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27065.15
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27065.151
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_lib_0t_k3mb._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_SettingsFoundationPanel_tsx_1b1pmws._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0d_h_integration_src_components_dashboard_GeneralStorefrontSettingsPanel_tsx_179089j._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardPanels_tsx_0zvtkxn._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_hooks_0_7kpkq._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/0p-a_worktrees_integration_src_components_dashboard_DashboardF0Shell_tsx_0brd2q5._.js",
+      "monotonicSeconds": 27065.152
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_components_dashboard_06a_l7a._.js",
+      "monotonicSeconds": 27065.153
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_0c-qrd_._.js",
+      "monotonicSeconds": 27065.153
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_dashboard_settings_%5Bview%5D_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27065.153
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27065.199
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27065.199
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/foundation",
+      "monotonicSeconds": 27065.233
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27065.234
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27065.235
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27065.235
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27065.236
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/authorization",
+      "monotonicSeconds": 27065.237
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27065.267
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27065.272
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27065.272
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27065.273
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-drafts",
+      "monotonicSeconds": 27065.292
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-history",
+      "monotonicSeconds": 27065.295
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/dashboard/settings/s02-readiness",
+      "monotonicSeconds": 27065.296
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/account/login",
+      "monotonicSeconds": 27065.866
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/account/login/",
+      "monotonicSeconds": 27065.869
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/vanstro-logo.png",
+      "monotonicSeconds": 27066.113
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/assets/generated/support-agent-v1-192.webp",
+      "monotonicSeconds": 27066.114
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_globals_1f7t6tb.css",
+      "monotonicSeconds": 27066.114
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1c3xajv._.js",
+      "monotonicSeconds": 27066.114
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_next-devtools_index_1wa5epj.js",
+      "monotonicSeconds": 27066.114
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-dom_1is40kx._.js",
+      "monotonicSeconds": 27066.114
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_react-server-dom-turbopack_0f6yc-e._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_compiled_1ix0gcd._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_12ipddu._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_1cnec0y._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/13ol_%40swc_helpers_cjs_14cvyjl._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1anvha4._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/turbopack-_claude_worktrees_integration_1uygu2u._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_00n5btv._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/12ne__pnpm_01evoqx._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_layout_tsx_1zuhgtf._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_not-found_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27066.115
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_1pf4wbi._.js",
+      "monotonicSeconds": 27066.116
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/_claude_worktrees_integration_src_app_account_login_page_tsx_1zxofsr._.js",
+      "monotonicSeconds": 27066.116
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+      "monotonicSeconds": 27066.116
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js",
+      "monotonicSeconds": 27066.155
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4560/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_0gid3k5._.js",
+      "monotonicSeconds": 27066.156
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/cart",
+      "monotonicSeconds": 27066.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/account/favorites",
+      "monotonicSeconds": 27066.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/storefront/config?locale=en-CA",
+      "monotonicSeconds": 27066.212
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4561/auth/me",
+      "monotonicSeconds": 27066.213
+    }
+  ],
+  "rawEvidence": {
+    "consoleErrors": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ],
+    "failedRequests": [
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27026.323
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27026.638
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27027.533
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27028.401
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27035.89
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27037.059
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27041.59
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27042.728
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27044.28
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27045.853
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27053.253
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27055.534
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27057.234
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27058.366
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27062.245
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27063.453
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27065.152
+      },
+      {
+        "method": "GET",
+        "url": "http://127.0.0.1:4560/_next/static/chunks/14ev_next_dist_client_components_builtin_global-error_1zxofsr.js",
+        "monotonicSeconds": 27066.116
+      }
+    ]
+  },
+  "expectedEvidence": {
+    "consoleErrors": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: net::ERR_FAILED"
+      }
+    ],
+    "failedRequests": []
+  },
+  "unexpectedEvidence": {
+    "consoleErrors": [],
+    "failedRequests": []
+  }
+}

@@ -1,0 +1,597 @@
+{
+  "schemaVersion": "vanstro.s09.auth-rbac-settings.v1",
+  "status": "IMPLEMENTED_INTEGRATION_CERTIFIED",
+  "package": "S09",
+  "descriptorKey": "settings.auth-rbac",
+  "settingsSchemaVersion": "settings.auth-rbac.v1",
+  "baseline": {
+    "integrationCommit": "68df75567899f976f4480a2f4822cbd75ee0f69b",
+    "integrationTree": "ef328047fd5bc58c8b7b67f0706658b0100f6510",
+    "migrationCount": 75,
+    "latestMigration": "20260805120000_s02_general_storefront",
+    "noMigration76": true
+  },
+  "authority": {
+    "goal": "/Users/zhangguannan/Documents/AI_OS/projects/vanstro/tasks/plans/v1-s09-auth-rbac-settings-continuous-goal.md",
+    "goalSha256": "6d8e9756616bc926ba0f7ee95965c40d228b28d09403704f526125dbe5152ec5",
+    "cg01Port": "cg01.auth-rbac.v1",
+    "cg01Contract": "tasks/contracts/v1-cg01-wave-a-settings-ports.v1.json",
+    "dependsOn": [
+      "S01",
+      "CG01"
+    ],
+    "externalBaselineDependencies": [
+      "P02-current-facts"
+    ]
+  },
+  "classification": {
+    "countsAsWorkPackage": true,
+    "addsDagNode": false,
+    "progressContribution": "1-2 percentage points after certified integration",
+    "partialPublish": false,
+    "externalSideEffects": false,
+    "worker": "none"
+  },
+  "valueSchema": {
+    "typeName": "AuthRbacSettingsValueV1",
+    "exactTopLevelKeys": [
+      "passwordPolicy",
+      "sessionPolicy"
+    ],
+    "passwordPolicy": {
+      "minimumLength": {
+        "type": "integer",
+        "minimum": 12,
+        "maximum": 128,
+        "default": 12,
+        "consumer": "future registration and password-reset writes only"
+      },
+      "resetTokenTtlMinutes": {
+        "type": "integer",
+        "minimum": 5,
+        "maximum": 31,
+        "default": 30,
+        "consumer": "future password-reset token issuance only"
+      }
+    },
+    "sessionPolicy": {
+      "sessionLifetimeMinutes": {
+        "type": "integer",
+        "minimum": 15,
+        "maximum": 11520,
+        "default": 10080,
+        "consumer": "future login and refresh/rotation only"
+      }
+    },
+    "unknownKeys": "reject",
+    "secret": false,
+    "sizeLimitBytes": 4096
+  },
+  "ttlAuthority": {
+    "sessionDefault": {
+      "valueMinutes": 10080,
+      "source": "apps/api/src/auth/session.ts SESSION_TTL_MS",
+      "precedence": "compiled default when no valid publication exists"
+    },
+    "sessionSqlSafetyCeiling": {
+      "valueMinutes": 11520,
+      "source": "auth_authenticate_create_session_v1/auth_rotate_session_v1 interval 8 days",
+      "precedence": "hard safety ceiling, never a default"
+    },
+    "resetDefault": {
+      "valueMinutes": 30,
+      "source": "apps/api/src/routes/auth.ts PASSWORD_RESET_TTL_MS",
+      "precedence": "compiled default when no valid publication exists"
+    },
+    "resetSqlSafetyCeiling": {
+      "valueMinutes": 31,
+      "source": "auth_issue_password_reset_v1 interval 31 minutes",
+      "precedence": "hard tolerance ceiling, never a default"
+    },
+    "unit": "minutes",
+    "invalidBehavior": "validate returns blocker; publish is forbidden; consumer falls back to compiled defaults"
+  },
+  "currentProjection": {
+    "passwordPolicy": {
+      "minimumLength": 12,
+      "hashAlgorithm": "pbkdf2_sha256",
+      "iterations": 310000,
+      "hashLengthBytes": 32,
+      "hashAlgorithmMutable": false,
+      "iterationsMutable": false,
+      "reusePolicy": "not_configurable_v1"
+    },
+    "sessionPolicy": {
+      "sessionLifetimeMinutes": 10080,
+      "rotateOnRefresh": true,
+      "rotateOnRefreshMutable": false,
+      "revokePolicy": "explicit_only",
+      "existingSessionRetroactivity": false
+    },
+    "deploymentImmutable": {
+      "deploymentCookieName": "__Host-vanstro-session",
+      "developmentCookieName": "vanstro-session",
+      "path": "/",
+      "httpOnly": true,
+      "secureInDeployment": true,
+      "sameSite": "Lax",
+      "tokenStorageStatus": "hash_only",
+      "secretStatus": "not_projected"
+    },
+    "rolePermissionImpactPreview": {
+      "enabled": true,
+      "scope": "global",
+      "lastAdminGuard": "assertLastSuperAdminPreserved",
+      "writesRolePermission": false,
+      "createsOrRevokesSession": false
+    }
+  },
+  "lifecycle": {
+    "inherit": "S01/S01B append-only lifecycle with S02 descriptor isolation",
+    "states": [
+      "draft",
+      "invalid",
+      "validated",
+      "activation_failed",
+      "published",
+      "superseded"
+    ],
+    "draftCas": "resource-local settingsRevision",
+    "expectedPublishedVersion": "descriptor-scoped publicationSequence exposed by current projection",
+    "idempotency": "exact replay or conflict; descriptor-scoped s09 operation family",
+    "history": "append-only s01_settings_publication_event partitioned by descriptorKey",
+    "rollback": "creates a new draft and publication; never rewrites history",
+    "atomicBoundary": "publish + Audit + ledger + history",
+    "partialPublish": false
+  },
+  "draftValidation": {
+    "structural": [
+      "exact keys",
+      "integer boundaries",
+      "JSON depth and size",
+      "no secret/token/cookie/hash values"
+    ],
+    "businessBlockers": [
+      "minimumLength below 12 or above 128",
+      "resetTokenTtlMinutes below 5 or above SQL 31-minute ceiling",
+      "sessionLifetimeMinutes below 15 or above SQL 8-day/11520-minute ceiling",
+      "TTL cannot be represented as a unique effective value",
+      "role impact preview would violate assertLastSuperAdminPreserved"
+    ],
+    "warnings": [
+      "session lifetime reduced below compiled 7-day default",
+      "password minimum increased above current 12-character requirement"
+    ],
+    "unknownFields": "reject"
+  },
+  "publishAdapter": {
+    "target": "versioned effective auth policy",
+    "sideEffects": [],
+    "appliesTo": [
+      "future registration",
+      "future password reset issuance",
+      "future login",
+      "future refresh/rotation"
+    ],
+    "doesNotApplyTo": [
+      "existing sessions",
+      "existing password credentials",
+      "Role instances",
+      "Permission instances"
+    ],
+    "forbidden": [
+      "session create",
+      "session revoke",
+      "Role mutation",
+      "Permission mutation",
+      "password rehash",
+      "cookie secret change"
+    ]
+  },
+  "effectivePolicyConsumer": {
+    "resolver": "read-only versioned resolver over the latest published settings.auth-rbac row",
+    "fallback": "compiled defaults when no valid publication exists",
+    "login": "resolve once before calculating the new session expiry",
+    "refreshRotation": "resolve once before calculating the rotated session expiry",
+    "existingSessions": "no retroactive expiry or mutation",
+    "generation": "returns the publicationSequence consumed by the auth operation"
+  },
+  "readinessAdapter": {
+    "sideEffectFree": true,
+    "readyWhen": "publishedGeneration equals effectivePolicyConsumer generation and projection is valid",
+    "degradedReasons": [
+      "publication_missing",
+      "consumer_generation_missing",
+      "consumer_generation_mismatch",
+      "policy_invalid",
+      "database_unavailable",
+      "p02_context_unavailable"
+    ],
+    "neverFakeReady": true
+  },
+  "rolePermissionImpactPreview": {
+    "route": "POST /dashboard/settings/s09-impact-preview",
+    "permission": "settings.read",
+    "request": {
+      "exactKeys": [
+        "targetUserId",
+        "nextStatus",
+        "removeRoleId"
+      ],
+      "atLeastOneChange": true
+    },
+    "response": [
+      "targetUserId",
+      "wouldBlockLastSuperAdmin",
+      "activeSuperAdminCount",
+      "safeReasonCode",
+      "contextRevision"
+    ],
+    "implementation": "transactional read-only calls to P02 authority and assertLastSuperAdminPreserved; expected guard rejection is returned as preview, never committed",
+    "forbidden": [
+      "User write",
+      "Role write",
+      "Permission write",
+      "session create",
+      "session revoke",
+      "Audit write"
+    ]
+  },
+  "explicitSessionRevoke": {
+    "route": "POST /dashboard/settings/s09-session-revoke",
+    "permission": "sessions.revoke",
+    "request": {
+      "exactKeys": [
+        "targetUserId",
+        "reason",
+        "confirmation"
+      ],
+      "confirmationLiteral": "REVOKE_SESSIONS",
+      "reasonLength": [
+        8,
+        500
+      ]
+    },
+    "implementation": "auth_admin_revoke_user_sessions_v1 through authAdminRevokeUserSessions",
+    "separation": "not part of draft, validate, publish, history or rollback",
+    "audit": {
+      "action": "session_revoke",
+      "resourceType": "user",
+      "metadataAllowlist": [
+        "targetUserId",
+        "reasonCode"
+      ],
+      "p02OccurrenceTimeSnapshot": true
+    },
+    "secretDenylist": [
+      "session token",
+      "session token hash",
+      "cookie",
+      "Authorization header",
+      "password hash"
+    ],
+    "rollback": "cannot revive revoked sessions"
+  },
+  "routes": {
+    "settingsLifecycle": [
+      [
+        "GET",
+        "/dashboard/settings/s09-overview",
+        "settings.read"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s09-drafts",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s09-drafts",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s09-drafts/:id",
+        "settings.read"
+      ],
+      [
+        "PATCH",
+        "/dashboard/settings/s09-drafts/:id",
+        "settings.write"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s09-drafts/:id/validate",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s09-drafts/:id/diff",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s09-drafts/:id/publish",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s09-history",
+        "settings.read"
+      ],
+      [
+        "POST",
+        "/dashboard/settings/s09-history/:publicationId/rollback-draft",
+        "settings.write"
+      ],
+      [
+        "GET",
+        "/dashboard/settings/s09-readiness",
+        "settings.read"
+      ]
+    ],
+    "preview": [
+      "POST",
+      "/dashboard/settings/s09-impact-preview",
+      "settings.read"
+    ],
+    "revoke": [
+      "POST",
+      "/dashboard/settings/s09-session-revoke",
+      "sessions.revoke"
+    ],
+    "errorFamilies": {
+      "400": [
+        "SETTINGS_VALIDATION_FAILED",
+        "AUTH_RBAC_CONFIRMATION_INVALID"
+      ],
+      "401": [
+        "AUTH_REQUIRED"
+      ],
+      "403": [
+        "DASHBOARD_FORBIDDEN",
+        "AUTH_SESSION_REVOKE_DENIED"
+      ],
+      "404": [
+        "SETTINGS_DESCRIPTOR_UNAVAILABLE",
+        "AUTH_RBAC_TARGET_NOT_FOUND"
+      ],
+      "409": [
+        "VERSION_CONFLICT",
+        "IDEMPOTENCY_CONFLICT",
+        "SETTINGS_STATE_CONFLICT",
+        "LAST_SUPER_ADMIN_CONFLICT"
+      ]
+    }
+  },
+  "auditDescriptor": {
+    "operationFamily": [
+      "settings.publish",
+      "settings.rollback",
+      "session_revoke"
+    ],
+    "resourceFamily": [
+      "settings.auth-rbac",
+      "user"
+    ],
+    "settingsPermission": "settings.write",
+    "revokePermission": "sessions.revoke",
+    "p02OccurrenceTimeSnapshot": true,
+    "safeMetadata": [
+      "descriptorKey",
+      "schemaVersion",
+      "publicationSequence",
+      "changedFields",
+      "targetUserId",
+      "reasonCode"
+    ],
+    "secretDenylist": [
+      "cookie secret",
+      "session token",
+      "session token hash",
+      "Authorization header",
+      "database credential",
+      "encryption key",
+      "password",
+      "password hash",
+      "password salt",
+      "reset token"
+    ]
+  },
+  "migration76": {
+    "owner": "Backend/S09",
+    "path": "packages/db/prisma/migrations/20260806100000_s09_auth_rbac_settings/migration.sql",
+    "allowed": [
+      "s09_* controlled functions",
+      "settings.auth-rbac descriptor lock domain",
+      "settings_command_operation_check extension",
+      "settings_core_shape_check extension",
+      "runtime_config_registry descriptor allowlist extension",
+      "effective policy projection",
+      "ACL GRANT/REVOKE",
+      "post-assertions"
+    ],
+    "forbidden": [
+      "modify migrations 1-75",
+      "CREATE OR REPLACE s01_* or s02_* functions",
+      "rewrite auth session state machine",
+      "new User/Role/Permission/session tables",
+      "store secrets",
+      "S10 schema"
+    ]
+  },
+  "sharedFileLeases": {
+    "IntegrationFreeze": [
+      "tasks/contracts/v1-s09-auth-rbac-settings.v1.md",
+      "tasks/contracts/v1-s09-auth-rbac-settings.v1.json"
+    ],
+    "BackendS09": [
+      "apps/api/src/dashboard/access.ts",
+      "apps/api/src/dashboard/s09-settings.ts",
+      "apps/api/src/routes/dashboard.ts",
+      "apps/api/src/auth/session.ts",
+      "apps/api/src/routes/auth.ts",
+      "packages/db/src/s09-settings-controlled.ts",
+      "packages/db/src/p02-p04-runtime-controlled.ts",
+      "packages/db/prisma/migrations/20260806100000_s09_auth_rbac_settings/migration.sql"
+    ],
+    "FrontendS09": [
+      "src/lib/api/api-contract.ts",
+      "src/lib/api/runtime-validation.ts",
+      "src/lib/dashboard/s09-settings.ts",
+      "src/lib/dashboard/s09-settings-transport.ts",
+      "src/lib/dashboard/s09-settings-readiness-consumer.ts",
+      "src/components/dashboard/AuthRbacSettingsPanel.tsx",
+      "src/components/dashboard/DashboardF0Shell.tsx",
+      "src/components/dashboard/DashboardF0ReadOnlyContent.tsx",
+      "src/app/dashboard/settings/[view]/page.tsx",
+      "src/app/fr/dashboard/settings/[view]/page.tsx",
+      "src/lib/i18n/routes.ts"
+    ],
+    "P02RbacExclusive": "S09",
+    "P04AuditWrite": "S10 only; S09 consumes existing P04 snapshot and audit function",
+    "migration76": "S09 only"
+  },
+  "acceptanceMatrix": {
+    "normal": [
+      "compiled defaults projection",
+      "create/update/validate/diff/publish",
+      "consumer generation ready",
+      "new login/refresh uses publication",
+      "impact preview zero-write",
+      "explicit revoke with reason and permission",
+      "history and rollback-as-new-publication"
+    ],
+    "failure": [
+      "invalid TTL blocker",
+      "last-admin preview blocker",
+      "malformed UUID",
+      "stale version 409",
+      "idempotency conflict",
+      "401/403/404/409/400",
+      "consumer generation mismatch degraded",
+      "secret denylist",
+      "revoke without sessions.revoke denied"
+    ],
+    "rollback": [
+      "new policy publication only",
+      "existing/revoked sessions remain unchanged",
+      "no Role/Permission mutation"
+    ],
+    "browser": [
+      "current/default/deployment projection",
+      "draft lifecycle",
+      "safe diff",
+      "impact preview",
+      "publish/readiness",
+      "explicit revoke confirmation/reason",
+      "history/rollback",
+      "keyboard/focus/loading/error/empty",
+      "logout/post-logout",
+      "unexpected console/request zero"
+    ]
+  },
+  "scope": {
+    "in": [
+      "Auth/RBAC Settings lifecycle",
+      "future login/refresh policy consumer",
+      "read-only impact preview",
+      "explicit session revoke",
+      "desktop Settings page"
+    ],
+    "out": [
+      "MFA",
+      "SSO",
+      "passkey",
+      "WebAuthn",
+      "SCIM",
+      "password hash migration",
+      "new permission",
+      "automatic Role/Permission mutation",
+      "session creation via Settings",
+      "revoke via publish/rollback",
+      "S10",
+      "UI-1",
+      "v4",
+      "Main",
+      "production"
+    ]
+  },
+  "claims": {
+    "frozen": true,
+    "implemented": true,
+    "integrated": true,
+    "certified": true
+  },
+  "finalIdentity": {
+    "backendCommit": "a30598db4ec5015c87a57479fb4fe04295dd757f",
+    "frontendCommit": "5c3c0f12c8bf15bb3f0e052af5b52a9a260319b0",
+    "integrationCommit": "8ac3ad08d266498c1b9ecb01bb596425f6b86316",
+    "integrationTree": "460ca2a0d3ba584f3d97e26a56d42e159340ffa8",
+    "mergeChain": [
+      {
+        "commit": "19226205b52b771603427904515724b83cee8ccb",
+        "parents": [
+          "8f82e24822f69c101022e2515412b5d05297e554",
+          "a30598db4ec5015c87a57479fb4fe04295dd757f"
+        ],
+        "subject": "merge: integrate S09 Auth/RBAC settings backend into Integration"
+      },
+      {
+        "commit": "c936c07be25f84bcbb0fbc45ae62d7382eaa2389",
+        "parents": [
+          "19226205b52b771603427904515724b83cee8ccb",
+          "78df908523d410018ad5e6a4981454433062e1d4"
+        ],
+        "subject": "merge: integrate S09 Auth/RBAC settings frontend into Integration"
+      },
+      {
+        "commit": "f1164e4a0aa1d22e2e99a0e265007955ab0de8d7",
+        "parents": [
+          "c936c07be25f84bcbb0fbc45ae62d7382eaa2389",
+          "3c68096d804cb5838a6eea5d93566fe9eb32df96"
+        ],
+        "subject": "merge: integrate UI-0 allowlist extension for S09 backend lease files into Integration"
+      },
+      {
+        "commit": "8ac3ad08d266498c1b9ecb01bb596425f6b86316",
+        "parents": [
+          "f1164e4a0aa1d22e2e99a0e265007955ab0de8d7",
+          "5c3c0f12c8bf15bb3f0e052af5b52a9a260319b0"
+        ],
+        "subject": "merge: integrate UI-0 allowlist comment syntax fix into Integration"
+      }
+    ],
+    "migration76": {
+      "path": "packages/db/prisma/migrations/20260806100000_s09_auth_rbac_settings/migration.sql",
+      "owner": "Backend/S09",
+      "unique": true,
+      "migrationsOneTo75Immutable": true,
+      "no77": true,
+      "migrationCount": 76
+    },
+    "testedCommit": "8ac3ad08d266498c1b9ecb01bb596425f6b86316",
+    "testedTree": "460ca2a0d3ba584f3d97e26a56d42e159340ffa8",
+    "gates": {
+      "reviewer": "0 Blocker / 0 High (2 Low fixed in a30598d)",
+      "pg16": "29/29 (S09 15 + S02 14)",
+      "browser": "23/23, unexpected console=0, unexpected requests=0",
+      "ui0Contracts": "24/24",
+      "packageContracts": "271/271",
+      "migrationStatic": "9/9"
+    },
+    "browserEvidence": {
+      "path": "tasks/evidence/v1-s09-settings-browser/acceptance-results.json",
+      "sha256": "dd40304ea6cfb0f71ad6fdcf25a3feda2523773815632203858ef33fd102404e",
+      "testedCommit": "8ac3ad08d266498c1b9ecb01bb596425f6b86316",
+      "lines": 3082,
+      "bytes": 104648
+    },
+    "v2RegisterItems": [
+      "30",
+      "31",
+      "32",
+      "33"
+    ]
+  }
+}

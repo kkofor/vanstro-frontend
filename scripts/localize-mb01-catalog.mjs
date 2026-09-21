@@ -4,18 +4,20 @@ import { dirname, resolve } from "node:path";
 
 const INVENTORY_PATH = resolve(
   process.env.MB01_INVENTORY_PATH ??
-    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/mb01-current-inventory.json"
+    "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/mb01-current-inventory.json"
 );
 const MAPPING_PATH = resolve(
   process.env.MB01_MAPPING_PATH ??
-    "docs/goal-loop/frontend-full-audit/evidence/G3-rework-2026-07-15/asset-source-local-mapping.json"
+    "docs/goal-loop/frontend-full-audit/evidence/G13-live-audit-2026-07-16/controlled-asset-mapping.json"
 );
 const OUTPUT_PATH = resolve("src/lib/data/mb01-products.ts");
+const IMAGE_OVERRIDES_PATH = resolve("scripts/approved-product-image-overrides.json");
+const APPROVED_IMAGE_ASSETS_PATH = resolve("scripts/approved-product-image-assets.json");
 const EVIDENCE_DIR = resolve(
   process.env.MB01_LOCALIZATION_EVIDENCE_DIR ??
     "docs/goal-loop/frontend-full-audit/evidence/G3-implementation-2026-07-16"
 );
-const EXPECTED_PARENT_COUNT = Number(process.env.MB01_EXPECTED_PARENT_COUNT ?? 139);
+const EXPECTED_PARENT_COUNT = Number(process.env.MB01_EXPECTED_PARENT_COUNT ?? 140);
 const EXPECTED_VARIANT_COUNT = Number(process.env.MB01_EXPECTED_VARIANT_COUNT ?? 300);
 const COLOR_OPTIONS = {
   LG: { name: "Light Grey", colorHex: "#c9cbc7" },
@@ -47,6 +49,9 @@ function dimensionsFor(variant) {
   return variant.parametersSpecifications.Dimensions ??
     variant.description.match(/Dimensions:\s*([^C]+?)(?=\s+Carcass:|$)/i)?.[1]?.trim() ??
     variant.description.match(/Center-to-Center:\s*([^O]+?)(?=\s+Overall Length:|$)/i)?.[1]?.trim() ??
+    variant.description.match(/[（(]H\s*[*×x]\s*W[）)]\s*(H[^\s]+\s*[*×x]\s*W\s*[^\s]+\s*[*×x]\s*\d+(?:\.\d+)?\s*ft)/i)?.[1]
+      ?.replace(/\s*[*x]\s*/gi, " × ")
+      .trim() ??
     "See product specifications";
 }
 
@@ -118,7 +123,28 @@ async function mapWithConcurrency(items, concurrency, callback) {
 
 const inventory = JSON.parse(await readFile(INVENTORY_PATH, "utf8"));
 const mappingDocument = JSON.parse(await readFile(MAPPING_PATH, "utf8"));
+const approvedImagePathsBySku = JSON.parse(await readFile(IMAGE_OVERRIDES_PATH, "utf8"));
+const approvedImageAssets = JSON.parse(await readFile(APPROVED_IMAGE_ASSETS_PATH, "utf8")).assets;
 const assets = mappingDocument.assets;
+const approvedAssetPaths = approvedImageAssets.map((asset) => asset.path);
+const overrideBusinessPaths = [...new Set(
+  Object.values(approvedImagePathsBySku).flat().filter((path) => approvedAssetPaths.includes(path))
+)];
+const approvedPathPattern = /^\/assets\/products\/(?:bathroom-vanities|kitchen-cabinets)\/[a-z0-9]+(?:-[a-z0-9]+)*\.jpg$/;
+if (
+  approvedImageAssets.length !== 48 ||
+  new Set(approvedAssetPaths).size !== approvedImageAssets.length ||
+  overrideBusinessPaths.length !== approvedImageAssets.length ||
+  approvedAssetPaths.some((path) => !approvedPathPattern.test(path)) ||
+  approvedAssetPaths.some((path) => !overrideBusinessPaths.includes(path))
+) {
+  throw new Error("Approved product image manifest is incomplete, duplicated, or contains an invalid path");
+}
+for (const paths of Object.values(approvedImagePathsBySku)) {
+  if (paths.some((path) => !/^\/assets\/products\/[a-z0-9/-]+\.(?:gif|jpe?g|png|webp)$/.test(path) || path.includes(".."))) {
+    throw new Error("Approved product image override contains an invalid path");
+  }
+}
 
 if (
   inventory.parents.length !== EXPECTED_PARENT_COUNT ||
@@ -149,6 +175,17 @@ const localPathForUrl = (url) => {
   if (mapping.localizationStatus === "Blocked") return null;
   return mapping.plannedLocalPath;
 };
+
+const approvedStorefrontNamesBySku = {
+  "023021211": "Vanity Cabinet-V3021STDR",
+  "023021311": "Vanity Cabinet-V3021STDL",
+  "023021411": "Vanity Cabinet-V3021TDR",
+  "023021511": "Vanity Cabinet-V3021TDL"
+};
+
+function storefrontName(parent) {
+  return approvedStorefrontNamesBySku[parent.sku] ?? parent.name;
+}
 
 function applyApprovedBusinessCorrections(parent, variant) {
   if (parent.subCategory !== "Accessories") return variant;
@@ -193,12 +230,15 @@ const products = inventory.parents.map((parent) => {
   if (!activeVariant) throw new Error(`Missing active variant ${parent.sku}`);
 
   const id = `mb01-${parent.listedOptionId}`;
-  const toImages = (variant) => variant.images.flatMap((url, index) => {
-    const localPath = localPathForUrl(url);
-    return localPath
-      ? [{ url: localPath, alt: imageAlt(parent.name, variant.sku, index) }]
-      : [];
-  });
+  const name = storefrontName(parent);
+  const toImages = (variant) => {
+    const approvedPaths = approvedImagePathsBySku[variant.sku];
+    const paths = approvedPaths ?? variant.images.flatMap((url) => {
+      const localPath = localPathForUrl(url);
+      return localPath ? [localPath] : [];
+    });
+    return paths.map((url, index) => ({ url, alt: imageAlt(name, variant.sku, index) }));
+  };
   const finishOptions = orderedVariants.map((variant) => {
     const color = colorForModel(variant.modelMpn);
     const images = toImages(variant);
@@ -207,6 +247,10 @@ const products = inventory.parents.map((parent) => {
       name: variantLabel(parent, variant),
       sku: variant.sku,
       manufacturerPartNumber: variant.modelMpn,
+      colorName: color?.name,
+      configuration: color && parent.variants.length > 2
+        ? (/-TOP$/i.test(variant.modelMpn) ? "with-top" : "cabinet-only")
+        : undefined,
       colorHex: color?.colorHex ?? (isHandle ? "#222222" : undefined),
       image: images[0],
       images,
@@ -220,6 +264,8 @@ const products = inventory.parents.map((parent) => {
   });
   const activeColor = colorForModel(activeVariant.modelMpn);
   const isHandle = parent.subCategory === "Handle series";
+  const isBaseboard = parent.subCategory === "Baseboard";
+  const storefrontCategory = isHandle ? "Handle series" : parent.category;
 
   metadataById[id] = {
     sourceProductId: parent.sourceProductId,
@@ -235,15 +281,18 @@ const products = inventory.parents.map((parent) => {
     slug: parent.sourceSlug,
     sku: activeVariant.sku,
     manufacturerPartNumber: activeVariant.modelMpn,
-    name: parent.name,
-    category: parent.category,
-    subCategory: parent.subCategory,
+    name,
+    category: storefrontCategory,
+    subCategory: isHandle ? undefined : parent.subCategory,
     price: activeVariant.priceCad,
     unit: "each",
     dimensions: dimensionsFor(activeVariant),
-    finish: activeColor?.name ?? (isHandle ? "Matte Black" : "White finish"),
-    colorName: activeColor?.name ?? (isHandle ? "Matte Black" : undefined),
+    finish: activeColor?.name ?? (isHandle ? "Matte Black" : isBaseboard ? "Putty White" : "White finish"),
+    colorName: activeColor?.name ?? (isHandle ? "Matte Black" : isBaseboard ? "Putty White" : undefined),
     colorHex: activeColor?.colorHex ?? (isHandle ? "#222222" : undefined),
+    packageQuantity: isBaseboard
+      ? { each: 1, innerPack: 10, displayLabel: "10 lengths per package" }
+      : undefined,
     finishOptions: finishOptions.length > 1 ? finishOptions : undefined,
     dealerStock: { winnipeg: 0 },
     availability: {
@@ -307,7 +356,8 @@ await writeFile(
         role,
         order
       }))
-    }))
+    })),
+    approvedBusinessAssets: approvedImageAssets
   }, null, 2),
   "utf8"
 );

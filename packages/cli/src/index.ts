@@ -1,4 +1,6 @@
-type Command = "erp-jobs-list" | "erp-jobs-retry" | "email-outbox-list" | "email-outbox-retry";
+import { importKnowledgeBase } from "./kb-import.js";
+
+type Command = "erp-jobs-list" | "erp-jobs-retry" | "email-outbox-list" | "email-outbox-retry" | "kb:import";
 
 type CliConfig = {
   apiBaseUrl: string;
@@ -14,6 +16,7 @@ function usage() {
     "  erp-jobs-retry <jobId>",
     "  email-outbox-list",
     "  email-outbox-retry <outboxId>",
+    "  kb:import --dir <path> [--dry-run]",
     "",
     "Required environment:",
     "  VANSTRO_API_BASE_URL=https://api.example.com/api/v1",
@@ -53,8 +56,24 @@ async function request(config: CliConfig, path: string, method = "GET") {
   return body;
 }
 
-function parseCommand(args: string[]): { command: Command; id?: string } {
+function parseCommand(args: string[]) {
+  if (args.includes("--help") || args.includes("-h")) {
+    console.log(usage());
+    return { command: undefined as Command | undefined, id: undefined };
+  }
+  if (args.includes("--version") || args.includes("-v")) {
+    console.log("0.1.0");
+    return { command: undefined as Command | undefined, id: undefined };
+  }
+
   const [command, id] = args;
+
+  if (command === "kb:import") {
+    const dirIndex = args.indexOf("--dir");
+    const dir = dirIndex >= 0 ? args[dirIndex + 1] : undefined;
+    if (!dir || dir.startsWith("--")) throw new Error("kb:import requires --dir <path>.\n\n" + usage());
+    return { command, id: dir, dryRun: args.includes("--dry-run") };
+  }
 
   if (
     command !== "erp-jobs-list" &&
@@ -69,11 +88,22 @@ function parseCommand(args: string[]): { command: Command; id?: string } {
     throw new Error(`${command} requires an id.\n\n${usage()}`);
   }
 
-  return { command, id };
+  return { command, id, dryRun: false };
+
 }
 
 export async function runCli(args = process.argv.slice(2), env = process.env) {
-  const { command, id } = parseCommand(args);
+  const { command, id, dryRun } = parseCommand(args);
+  if (!command) return;
+  if (command === "kb:import") {
+    let database;
+    if (!dryRun) {
+      if (!env.DATABASE_URL?.trim()) throw new Error("DATABASE_URL is required for a real knowledge-base import.");
+      database = (await import("@vanstro/db")).prisma;
+    }
+    const summary = await importKnowledgeBase(id!, { dryRun, database });
+    return summary;
+  }
   const config = getConfig(env);
 
   switch (command) {

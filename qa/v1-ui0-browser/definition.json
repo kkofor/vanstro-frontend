@@ -1,0 +1,25 @@
+{
+  "suiteId": "vanstro.ui0.desktop.browser.v1",
+  "scope": "Owned UI-0 browser candidate fixture; no product route or static artifact",
+  "viewport": { "width": 1440, "height": 1000 },
+  "evidenceDirectory": "tasks/evidence/v1-ui0-omp-trial/browser",
+  "cases": [
+    { "id": "UI0-B01", "name": "Server render hydrates without mismatch" },
+    { "id": "UI0-B02", "name": "Dialog trigger opens and close returns focus" },
+    { "id": "UI0-B03", "name": "Escape closes the active dialog" },
+    { "id": "UI0-B04", "name": "Tab and Shift+Tab remain contained" },
+    { "id": "UI0-B05", "name": "Nested dialog closes independently" },
+    { "id": "UI0-B06", "name": "Content portals after hydration" },
+    { "id": "UI0-B07", "name": "Open dialog locks document scrolling" },
+    { "id": "UI0-B08", "name": "Overlay policy is safe by default and supports explicit dismissal" },
+    { "id": "UI0-B09", "name": "Title and description label the dialog" },
+    { "id": "UI0-B10", "name": "Close control has stable Chinese text" },
+    { "id": "UI0-B11", "name": "Forced colors retain visible boundaries" },
+    { "id": "UI0-B12", "name": "Reduced motion removes material animation" },
+    { "id": "UI0-B13", "name": "Destructive Button hover has computed style" },
+    { "id": "UI0-B14", "name": "Input typography matches desktop density" },
+    { "id": "UI0-B15", "name": "Dialog computed colors use UI tokens" },
+    { "id": "UI0-B16", "name": "Tailwind utilities emit layout output" },
+    { "id": "UI0-B17", "name": "Legacy sentinel is not restyled by UI classes" }
+  ]
+}

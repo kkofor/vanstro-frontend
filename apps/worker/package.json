@@ -5,13 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "start": "tsx src/index.ts",
     "once": "tsx src/index.ts --once",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "test": "tsx --test src/**/*.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vanstro/db": "workspace:*",
-    "nodemailer": "^9.0.3"
+    "nodemailer": "^9.0.3",
+    "pdfjs-dist": "5.4.624",
+    "sharp": "0.34.5"
   },
   "devDependencies": {
     "@types/nodemailer": "^8.0.1",

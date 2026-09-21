@@ -14,6 +14,7 @@ type SecondaryPageHeroProps = {
     height?: number;
   };
   className?: string;
+  unified?: boolean;
 };
 
 export function SecondaryPageHero({
@@ -22,13 +23,15 @@ export function SecondaryPageHero({
   children,
   actions,
   image,
-  className
+  className,
+  unified = false
 }: SecondaryPageHeroProps) {
   return (
-    <section className={["page-hero", "secondary-page-hero", className].filter(Boolean).join(" ")}>
-      <div className="container secondary-page-hero-grid">
-        <div className="secondary-page-hero-copy">
-          <PageBreadcrumb items={breadcrumbs} />
+    <section className={["page-hero", "secondary-page-hero", unified && "unified-content-hero", className].filter(Boolean).join(" ")}>
+      <div className={["container", "secondary-page-hero-grid", unified && "unified-content-hero-grid"].filter(Boolean).join(" ")}>
+        {unified ? <PageBreadcrumb className="unified-content-hero-breadcrumb" items={breadcrumbs} /> : null}
+        <div className={["secondary-page-hero-copy", unified && "unified-content-hero-copy"].filter(Boolean).join(" ")}>
+          {!unified ? <PageBreadcrumb items={breadcrumbs} /> : null}
           <h1>{title}</h1>
           <div className="secondary-page-hero-body">{children}</div>
           {actions ? <div className="secondary-page-hero-actions">{actions}</div> : null}

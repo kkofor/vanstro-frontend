@@ -1,0 +1,33 @@
+{
+  "suiteId": "vanstro.s01b.settings.desktop.v1",
+  "viewport": { "width": 1440, "height": 1000 },
+  "scope": "S01B Settings contract conformance closure desktop acceptance",
+  "testedCommit": "DYNAMIC",
+  "cases": [
+    { "id": "S01B-01", "name": "Login establishes an admin session", "expectation": "login succeeds and the dashboard shell renders" },
+    { "id": "S01B-02", "name": "Overview and registry render the single available descriptor", "expectation": "settings-center.v1 overview and the core refresh descriptor appear" },
+    { "id": "S01B-03", "name": "Create a structurally valid business-invalid draft succeeds", "expectation": "value 10 is accepted into a draft (no client 15..300 pre-rejection)" },
+    { "id": "S01B-04", "name": "Validate returns invalid with a blocker", "expectation": "validate reports 验证未通过 with a blocker issue and the draft becomes invalid" },
+    { "id": "S01B-05", "name": "Publish control is unavailable / server state conflict for the invalid draft", "expectation": "publish is refused (state conflict) or disabled while invalid" },
+    { "id": "S01B-06", "name": "Typed PATCH corrects the invalid draft to 60", "expectation": "the invalid draft is corrected and becomes editable again" },
+    { "id": "S01B-07", "name": "Revalidate the corrected draft as validated", "expectation": "validate reports 已验证 with no blockers" },
+    { "id": "S01B-08", "name": "Safe diff shows the exact public value change", "expectation": "diff table shows before/after with public sensitivity and zero secrets" },
+    { "id": "S01B-09", "name": "Publish A (60 -> 90) with explicit confirmation", "expectation": "publish succeeds atomically and navigates to history" },
+    { "id": "S01B-10", "name": "Publish B (90 -> 120) supersedes A", "expectation": "a second publication succeeds" },
+    { "id": "S01B-11", "name": "History keeps A's original publish fact and Audit id", "expectation": "A's published entry still shows 已发布 with its original Audit id" },
+    { "id": "S01B-12", "name": "Supersession is appended and visible as 已被后续版本取代", "expectation": "A gains an appended superseded entry with the stable Chinese label" },
+    { "id": "S01B-13", "name": "Rollback draft from the current publication", "expectation": "rollback creates a new draft with the source value" },
+    { "id": "S01B-14", "name": "Rollback publication appends a rollback_published event", "expectation": "publishing the rollback draft appends a new published event" },
+    { "id": "S01B-15", "name": "Version conflict is distinguished from state conflict", "expectation": "a stale expectedVersion yields VERSION_CONFLICT copy, not state conflict" },
+    { "id": "S01B-16", "name": "State conflict is distinguished from version conflict", "expectation": "publishing an unvalidated draft yields SETTINGS_STATE_CONFLICT copy" },
+    { "id": "S01B-17", "name": "Malformed UUID yields a stable controlled 400", "expectation": "a non-UUID draft id returns a controlled 400, never a 500" },
+    { "id": "S01B-18", "name": "Forbidden profile cannot mutate", "expectation": "a read-only actor sees no create/publish controls" },
+    { "id": "S01B-19", "name": "Degraded readiness is shown, never fake-ready", "expectation": "no-publication readiness renders degraded with reason" },
+    { "id": "S01B-20", "name": "No secret appears in the DOM", "expectation": "no email/password/token/secret/connection string in the body text" },
+    { "id": "S01B-21", "name": "Published refresh interval drives the Overview cadence", "expectation": "a validated draft's safe-diff before value binds the Overview refresh cadence" },
+    { "id": "S01B-22", "name": "Readiness consumer generation mismatch is degraded", "expectation": "a stale consumer generation renders degraded rather than ready" },
+    { "id": "S01B-23", "name": "Mutation Audit records real roles and permission snapshot", "expectation": "a create mutation Audit row carries real effective roles and settings.write grant" },
+    { "id": "S01B-24", "name": "Settings writer sees 受控写入, read-only sees 只读模式", "expectation": "the shell access-mode banner follows the server capability" },
+    { "id": "S01B-25", "name": "Logout and post-logout state are clean", "expectation": "logout returns to login and no protected state remains" }
+  ]
+}

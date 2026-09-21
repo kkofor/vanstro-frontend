@@ -1,0 +1,1417 @@
+/* Migrated from vanity-selector-260904 src/app/globals.css — header + footer chrome.
+   Source: /Users/zhangguannan/Documents/codex/vanstro/.claude/worktrees/vanity-selector-260904/src/app/globals.css
+   Selectors and declarations copied, not rewritten. */
+:root {
+  --color-ink: #003f3f;
+  --color-ink-2: #0f5554;
+  --color-muted: #5f7376;
+  --color-line: #d9e1df;
+  --color-soft: #f5f8f7;
+  --color-surface: #ffffff;
+  --color-accent: #f28a0b;
+  --color-accent-dark: #c86700;
+  --color-accent-text: #8a4300;
+  /* --vi-amber-dark: same-hue ΔS/ΔL from old accent→accent-dark on #FE9437
+     => HSL(28.0402, 100%, 50.1961%) = #FF7801 (hover fill).
+     --vi-amber-text is NOT derived from --color-accent-text; CTA label uses
+     production near-black #10201D for contrast on amber. */
+  --vi-ink: #004732;
+  --vi-green: #2EB24F;
+  --vi-amber: #FE9437;
+  --vi-amber-dark: #FF7801;
+  --vi-amber-text: #10201D;
+  --vi-mist: #8CB8A6;
+  --vi-utility-bg: #172120;
+  --font-display: "HarmonyOS Sans", "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Segoe UI Variable Text", "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --nav-products-bg: rgba(0, 27, 27, 0.34);
+  --nav-partner-border: rgba(255, 255, 255, 0.42);
+  --nav-item-hover-bg: rgba(255, 255, 255, 0.09);
+  --color-success: #0b7a4b;
+  --color-error: #a33125;
+  --color-error-soft: #fff4f2;
+  --color-warning-soft: #fff8eb;
+  --color-focus: #126b69;
+  --color-text: #10201d;
+  --color-text-muted: #315b60;
+  --shadow-soft: 0 18px 55px rgba(0, 63, 63, 0.11);
+  --shadow-panel: 0 10px 24px rgba(0, 63, 63, 0.08);
+  --shadow-floating: 0 18px 46px rgba(0, 63, 63, 0.16);
+  --focus-ring: 0 0 0 3px rgba(18, 107, 105, 0.24);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --container: 1440px;
+  --page-gutter: 48px;
+  --header-control-height: 44px;
+  --brand-logo-height: calc(var(--header-control-height) * 1.2);
+  --sticky-content-offset: 196px;
+  --section-tight: 34px;
+  --section-base: 46px;
+  --section-wide: 58px;
+  --ui-background: var(--color-surface);
+  --ui-foreground: var(--color-text);
+  --ui-surface: var(--color-surface);
+  --ui-surface-muted: var(--color-soft);
+  --ui-border: var(--color-line);
+  --ui-primary: var(--color-ink);
+  --ui-primary-hover: var(--color-ink-2);
+  --ui-primary-foreground: var(--color-surface);
+  --ui-accent: var(--color-accent);
+  --ui-accent-hover: var(--color-accent-dark);
+  --ui-accent-foreground: var(--color-text);
+  --ui-muted-foreground: var(--color-text-muted);
+  --ui-success: var(--color-success);
+  --ui-warning: var(--color-accent-text);
+  --ui-error: var(--color-error);
+  --ui-error-surface: var(--color-error-soft);
+  --ui-focus: var(--color-focus);
+  --ui-radius-sm: var(--radius-sm);
+  --ui-radius-md: var(--radius-md);
+  --ui-radius-lg: var(--radius-lg);
+  --ui-shadow-panel: var(--shadow-panel);
+  --ui-shadow-floating: var(--shadow-floating);
+  --font-display: "HarmonyOS Sans", "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Segoe UI Variable Text", "Segoe UI Variable Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --ui-font-sans: var(--font-body);
+  /* shadcn component aliases: keep the official primitives on the brand tokens. */
+  --background: var(--ui-background);
+  --foreground: var(--ui-foreground);
+  --card: var(--ui-surface);
+  --card-foreground: var(--ui-foreground);
+  --popover: var(--ui-surface);
+  --popover-foreground: var(--ui-foreground);
+  --primary: var(--ui-primary);
+  --primary-foreground: var(--ui-primary-foreground);
+  --secondary: var(--ui-surface);
+  --secondary-foreground: var(--ui-foreground);
+  --muted: var(--ui-surface-muted);
+  --muted-foreground: var(--ui-muted-foreground);
+  --accent: var(--ui-accent);
+  --accent-foreground: var(--ui-accent-foreground);
+  --destructive: var(--ui-error);
+  --destructive-foreground: var(--ui-primary-foreground);
+  --border: var(--ui-border);
+  --input: var(--ui-border);
+  --ring: var(--ui-focus);
+}
+.container {
+  width: min(100% - var(--page-gutter), var(--container));
+  margin-inline: auto;
+}
+/* Storefront chrome renders in the storefront body font (globals.css `body { font-family: var(--font-body) }`),
+   not in the prototype's vi.css font — the metrics differ enough to change how the header/footer wrap. */
+.site-header,
+.site-footer {
+  font-family: var(--font-body);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: white;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.header-utility {
+  background: var(--vi-utility-bg);
+  color: white;
+}
+
+.header-utility-inner {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  min-height: 40px;
+  align-items: center;
+  gap: 24px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.header-utility-inner p {
+  margin: 0;
+  color: white;
+  text-align: center;
+}
+
+.utility-locale,
+.utility-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.utility-locale a,
+.utility-locale span,
+.utility-links a {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  color: white;
+}
+
+.utility-locale a {
+  border-left: 1px solid rgba(255, 255, 255, 0.32);
+  padding-left: 18px;
+}
+
+.utility-links {
+  justify-content: flex-end;
+}
+
+.utility-links a + a {
+  border-left: 1px solid rgba(255, 255, 255, 0.32);
+  padding-left: 18px;
+}
+
+.header-main {
+  background: white;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.mobile-panel-anchor {
+  position: relative;
+}
+
+.header-inner {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 220px minmax(420px, 1fr) 164px minmax(234px, auto);
+  align-items: center;
+  gap: 28px;
+}
+
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  width: 220px;
+  min-width: 220px;
+  height: var(--header-control-height);
+}
+.header-inner .brand-link {
+  position: relative;
+  left: 42px;
+  z-index: 2;
+}
+.header-inner .brand-logo {
+  width: 178px;
+  max-width: 178px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-logo {
+  width: auto;
+  height: var(--brand-logo-height);
+}
+
+.brand-text {
+  display: none;
+}
+
+.header-announcement {
+  background: var(--color-ink-2);
+  color: #fff;
+}
+
+.header-announcement p {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 8px var(--page-gutter);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.header-nav-bar {
+  width: 100%;
+  height: 46px;
+  background: #004440;
+  color: white;
+}
+
+@media (min-width: 1181px) {
+  .header-nav-bar {
+    margin-bottom: 6px;
+  }
+}
+
+.header-nav-inner {
+  /* Width comes from .container (same as .header-utility-inner).
+     Do not cap at 1280px: that centered a narrower box and added an extra
+     (viewport-1280)/2 indent on wide screens (80px extra at 1920). */
+  display: flex;
+  height: 46px;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 24px;
+  padding-left: 42px;
+}
+.header-nav-inner .desktop-nav {
+  margin-left: 0;
+  flex: none;
+  width: max-content;
+}
+.header-nav-inner .catalog-nav-item {
+  width: max-content;
+  flex: none;
+}
+.header-nav-inner .catalog-nav-trigger {
+  width: max-content;
+  max-width: max-content;
+  flex: none;
+  padding: 0 16px;
+}
+
+.header-dealer-login,
+.header-nav-inner .header-dealer-login.vs-ui-button {
+  display: inline-flex;
+  margin-left: auto;
+  height: 28px;
+  align-self: center;
+  align-items: center;
+  border: 1px solid var(--nav-partner-border);
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  padding: 0 12px;
+  text-transform: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header-dealer-login:hover,
+.header-nav-inner .header-dealer-login.vs-ui-button:hover {
+  background: var(--nav-item-hover-bg);
+  color: #fff;
+}
+
+.desktop-nav {
+  display: flex;
+  height: 44px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.desktop-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desktop-nav-item {
+  position: relative;
+  display: flex;
+  height: 44px;
+  align-items: stretch;
+}
+
+.desktop-nav a,
+.catalog-nav-trigger {
+  display: inline-flex;
+  height: 44px;
+  min-height: 44px;
+  flex-direction: row;
+  align-items: center;
+  gap: 7px;
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  padding: 0 16px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.desktop-nav a:hover,
+.desktop-nav a:focus-visible,
+.catalog-nav-trigger:hover,
+.catalog-nav-trigger:focus-visible {
+  border-radius: 0;
+  background: var(--nav-item-hover-bg);
+  color: white;
+  text-decoration: none;
+}
+
+.catalog-nav-item {
+  z-index: 2;
+}
+
+.catalog-nav-trigger {
+  position: relative;
+  background: transparent;
+}
+
+.catalog-nav-trigger[aria-expanded="true"] {
+  background: transparent;
+}
+
+.catalog-nav-trigger > svg {
+  position: static;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  margin-left: 0;
+  top: 0;
+}
+
+.catalog-nav-trigger:focus-visible,
+.desktop-nav a:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: -2px;
+}
+
+.catalog-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 80;
+  width: 258px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 47, 47, 0.14);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: white;
+  box-shadow: 0 16px 34px rgba(0, 39, 39, 0.18);
+}
+
+.catalog-dropdown[hidden] {
+  display: none;
+}
+
+.catalog-dropdown-heading {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  background: var(--color-ink);
+  color: white;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.04em;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.catalog-dropdown-list {
+  display: grid;
+  background: white;
+}
+
+.catalog-dropdown-list a,
+.catalog-dropdown-list [role="menuitem"] {
+  min-height: 46px;
+  border-top: 1px solid #ebf0ef;
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 850;
+  padding: 0 18px;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out;
+}
+
+.catalog-dropdown-list a:hover,
+.catalog-dropdown-list a:focus-visible,
+.catalog-dropdown-list [role="menuitem"]:hover,
+.catalog-dropdown-list [role="menuitem"]:focus-visible {
+  background: #e7f1ef;
+  color: #004440;
+}
+
+/* Scoped to Resource Center / Support / Company only. Catalog keeps 258px + row rules. */
+.catalog-dropdown.nav-menu-dropdown {
+  width: max-content;
+  min-width: 180px;
+}
+.catalog-dropdown.nav-menu-dropdown .catalog-dropdown-list a,
+.catalog-dropdown.nav-menu-dropdown .catalog-dropdown-list [role="menuitem"] {
+  min-height: 36px;
+  border-top: none;
+  padding: 0 16px;
+}
+
+.nav-cta-row {
+  display: flex;
+  height: 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-cta {
+  display: inline-flex;
+  height: 34px;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.24px;
+  line-height: normal;
+  padding: 0 18px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.nav-cta:focus-visible {
+  outline: 2px solid white;
+  outline-offset: -2px;
+}
+
+.nav-cta.ghost {
+  border-color: var(--nav-partner-border);
+  background: transparent;
+  color: white;
+}
+
+.nav-cta.ghost:hover,
+.nav-cta.ghost:focus-visible {
+  background: var(--nav-item-hover-bg);
+  color: white;
+}
+
+.nav-cta.accent {
+  border-color: var(--vi-amber);
+  background: var(--vi-amber);
+  color: var(--vi-amber-text);
+}
+
+.nav-cta.accent:hover,
+.nav-cta.accent:focus-visible {
+  border-color: var(--vi-amber-dark);
+  background: var(--vi-amber-dark);
+  color: var(--vi-amber-text);
+}
+
+.header-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 70px);
+  align-items: center;
+  justify-content: end;
+  gap: 12px;
+}
+
+.header-actions[data-authenticated="true"] {
+  grid-template-columns: repeat(5, minmax(0, 64px));
+  gap: 6px;
+}
+
+.header-actions[data-authenticated="true"] .icon-action {
+  width: 64px;
+  min-width: 0;
+}
+
+.header-actions[data-authenticated="true"] .icon-action span {
+  max-width: 60px;
+}
+
+.dealer-nav {
+  position: relative;
+  min-width: 164px;
+}
+
+.dealer-current-button {
+  display: inline-flex;
+  width: 100%;
+  height: var(--header-control-height);
+  min-height: var(--header-control-height);
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #cbd6d3;
+  border-radius: 3px;
+  background: var(--color-soft);
+  color: var(--color-ink);
+  padding: 0 12px;
+  text-align: left;
+}
+
+.dealer-current-button svg {
+  color: var(--color-accent);
+}
+
+.dealer-current-button span {
+  display: grid;
+  gap: 0;
+}
+
+.dealer-current-button strong {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.dealer-current-button em {
+  color: var(--color-success);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.dealer-postal {
+  display: grid;
+  grid-template-columns: minmax(92px, 1fr) auto;
+  min-height: 40px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: white;
+}
+
+.dealer-postal input {
+  min-width: 0;
+  border: 0;
+  padding: 0 10px;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+.dealer-postal button {
+  min-width: 64px;
+  border: 0;
+  background: var(--color-ink);
+  color: white;
+  padding: 0 12px;
+  font-weight: 800;
+}
+
+.dealer-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 70;
+  width: min(420px, calc(100vw - 32px));
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: white;
+  box-shadow: var(--shadow-soft);
+  padding: 14px;
+}
+
+.dealer-menu[hidden] {
+  display: none;
+}
+
+.dealer-menu > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-muted);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.dealer-menu > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dealer-menu button {
+  display: grid;
+  gap: 4px;
+  min-height: 58px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-ink);
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.dealer-menu button.active {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: white;
+}
+
+.dealer-menu small {
+  color: inherit;
+  opacity: 0.72;
+}
+
+.search-box {
+  position: relative;
+  min-width: 0;
+}
+
+.search-box input {
+  width: 100%;
+  height: var(--header-control-height);
+  border: 1px solid var(--color-line);
+  border-radius: 3px;
+  padding: 0 102px 0 16px;
+  color: var(--color-ink);
+  outline: none;
+}
+
+.search-box input:focus {
+  border-color: var(--color-ink-2);
+  box-shadow: 0 0 0 3px rgba(15, 77, 82, 0.14);
+}
+
+.search-box button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 88px;
+  height: var(--header-control-height);
+  border: 0;
+  border-radius: 0 3px 3px 0;
+  background: #004440;
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+button.icon-action {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.icon-action {
+  display: inline-grid;
+  height: var(--header-control-height);
+  min-height: var(--header-control-height);
+  align-content: center;
+  justify-items: center;
+  gap: 4px;
+  min-width: 70px;
+  color: var(--color-ink);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.icon-action[hidden] {
+  display: none;
+}
+
+.header-actions .lang {
+  display: contents;
+}
+
+.header-actions .icon-action,
+.header-actions .icon-action.vs-ui-button {
+  height: var(--header-control-height);
+  min-height: var(--header-control-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-size: 11px;
+  font-weight: 900;
+  box-shadow: none;
+  transition: color 200ms ease-out, transform 200ms ease-out;
+}
+.header-actions .icon-action:hover,
+.header-actions .icon-action.vs-ui-button:hover,
+.header-actions .icon-action:focus-visible {
+  background: transparent;
+  color: #004440;
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-actions .icon-action:hover,
+  .header-actions .icon-action.vs-ui-button:hover {
+    transform: none;
+  }
+}
+
+.icon-action span {
+  max-width: 64px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-store-label {
+  color: var(--color-ink);
+  font-size: 13px;
+}
+
+.mobile-menu-trigger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: white;
+  color: var(--color-ink);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.mobile-menu-trigger[data-menu-open="true"] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: white;
+}
+
+.header-nav-bar .catalog-nav-trigger {
+  height: 46px;
+  min-height: 46px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: white;
+}
+
+.header-nav-bar .catalog-nav-trigger:hover,
+.header-nav-bar .catalog-nav-trigger[data-state="open"],
+.header-nav-bar .catalog-nav-trigger[data-state="open"]:hover {
+  border-radius: 0;
+  background: var(--nav-item-hover-bg);
+  color: white;
+  text-decoration: none;
+}
+
+[data-slot="popover-content"].dealer-menu {
+  position: relative;
+  right: auto;
+  top: auto;
+}
+
+.mobile-sheet-content {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.mobile-sheet-content .mobile-panel {
+  display: grid;
+  position: static;
+  top: auto;
+  max-height: none;
+  overflow: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.mobile-panel {
+  display: none;
+}
+.site-footer {
+  margin-top: 64px;
+  border-top: 1px solid var(--color-line);
+  background: white;
+}
+body:has(.home-faq) .site-footer {
+  margin-top: 12px;
+  padding-top: 0;
+}
+
+body:has(.catalog-page) .site-footer,
+body:has(.auth-page) .site-footer,
+body:has(.commerce-page-hero) .site-footer,
+body:has(.account-workspace) .site-footer {
+  margin-top: 0;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.72fr);
+  justify-content: end;
+  gap: 40px;
+  align-items: stretch;
+  padding: 42px 0 32px;
+}
+
+.footer-brand {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-width: 0;
+  max-width: 360px;
+}
+
+.footer-brand img {
+  width: 190px;
+  height: auto;
+}
+
+.footer-brand p {
+  display: flex;
+  width: 340px;
+  max-width: 340px;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--vi-amber);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.footer-brand p::before {
+  content: "";
+  width: 32px;
+  flex: none;
+  height: 2px;
+  background: currentColor;
+}
+.footer-brand p::after {
+  content: "";
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  height: 2px;
+  background: currentColor;
+}
+
+.footer-contact-list {
+  display: grid;
+  gap: 10px;
+}
+
+.footer-contact-list span,
+.footer-contact-list .footer-contact-link,
+.footer-contact-list .footer-contact-link.vs-ui-button {
+  display: flex;
+  width: fit-content;
+  min-height: 0;
+  height: auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #315b60;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-decoration: none;
+}
+.footer-contact-list .footer-contact-link:hover,
+.footer-contact-list .footer-contact-link.vs-ui-button:hover,
+.footer-contact-list .footer-contact-link:focus-visible {
+  background: transparent;
+  color: #004440;
+  text-decoration: underline;
+}
+
+.footer-contact-list svg {
+  flex: 0 0 auto;
+  color: var(--color-accent-dark);
+}
+
+.footer-link-grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 44px;
+  row-gap: 34px;
+  border-top: 0;
+  padding: 32px 0;
+}
+.footer-groups {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+}
+.footer-group {
+  display: flex;
+  width: max-content;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-group h2 {
+  margin: 0 0 4px;
+  color: #004440;
+  font-size: 14px;
+}
+
+.footer-group-link,
+.footer-group .footer-group-link.vs-ui-button {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 0;
+  height: auto;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0;
+  line-height: 1.45;
+  border: 0;
+  background: transparent;
+  color: #004440;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.footer-group-link:hover,
+.footer-group .footer-group-link.vs-ui-button:hover {
+  background: transparent;
+  color: #003330;
+  text-decoration: underline;
+}
+
+.footer-help,
+.footer-help.vs-ui-card {
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  background: var(--color-soft);
+  box-shadow: var(--shadow-panel);
+  color: var(--color-ink);
+  padding: 26px;
+}
+
+.footer-help > span {
+  display: inline-flex;
+  margin-bottom: 10px;
+  color: var(--vi-amber);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.footer-help h2 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: 24px;
+  line-height: 1.15;
+}
+
+.footer-help p {
+  margin: 12px 0 0;
+  color: var(--color-muted);
+  line-height: 1.45;
+}
+
+.footer-help-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.footer-help-shop,
+.footer-help-shop.vs-ui-button {
+  border-color: #004440;
+  background: #004440;
+  color: #fff;
+}
+
+.footer-social {
+  display: flex;
+  margin-top: 0;
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+  margin-left: 0;
+  border-top: 1px solid var(--color-line);
+  background: #f4f5f5;
+  padding: 22px max(calc(var(--page-gutter) / 2), calc((100% - var(--container)) / 2));
+  color: #004440;
+  font-size: 12px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #004440;
+  line-height: 1.45;
+}
+/* Prototype-only guard: when the copyright + 7 legal links don't fit on one line (≈1300px and below),
+   drop the whole legal row under the copyright instead of orphaning the last link on its own line. */
+.footer-bottom {
+  flex-wrap: wrap;
+}
+.footer-bottom p {
+  flex: 1 0 auto;
+  white-space: nowrap;
+}
+.footer-bottom .footer-legal {
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.footer-brand .social-links {
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.social-links a {
+  display: inline-flex;
+  color: inherit;
+  text-decoration: none;
+}
+
+.social-links span {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: white;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.social-links span:hover {
+  background: var(--color-accent-dark);
+  transform: translateY(-1px);
+}
+
+.social-links span:hover .social-icon-cutout {
+  fill: var(--color-accent-dark);
+}
+
+.social-links svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.social-links svg.lucide {
+  fill: none;
+  stroke: currentColor;
+}
+
+.social-links .social-icon-line {
+  fill: none;
+}
+
+.social-links .social-icon-line rect,
+.social-links .social-icon-line circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+}
+
+.social-links .social-icon-line .social-icon-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+.social-links .social-icon-cutout {
+  fill: var(--color-ink);
+}
+
+.footer-legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 8px;
+}
+
+.footer-legal-link,
+.footer-legal .footer-legal-link.vs-ui-button {
+  display: inline-flex;
+  min-height: 24px;
+  height: auto;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  color: #004440;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0;
+  text-decoration: none;
+}
+
+.footer-legal > * + * {
+  margin-left: 14px;
+  border-left: 1px solid #c7d0ce;
+  padding-left: 14px;
+}
+
+.footer-legal-link:hover,
+.footer-legal .footer-legal-link.vs-ui-button:hover {
+  background: transparent;
+  color: #003330;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 1220px) {
+  :root {
+    --sticky-content-offset: 96px;
+  }
+
+  .header-utility,
+  .header-nav-bar {
+    display: none;
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 76px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand-link {
+    min-width: 0;
+    width: auto;
+  }
+
+  .mobile-menu-trigger {
+    display: grid;
+    place-items: center;
+    flex: 0 0 44px;
+    margin-left: auto;
+  }
+
+  .header-inner > .search-box,
+  .header-inner > .dealer-nav,
+  .header-actions {
+    display: none;
+  }
+
+  .dealer-nav.compact {
+    min-width: 0;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .dealer-nav.compact .dealer-current-button {
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-soft);
+    padding: 0 14px;
+  }
+
+  .dealer-nav.compact .dealer-postal {
+    min-height: 44px;
+  }
+
+  .dealer-nav.compact .dealer-menu {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .mobile-panel {
+    display: grid;
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    z-index: 70;
+    gap: 16px;
+    max-height: min(calc(100dvh - 92px), 620px);
+    overflow-y: auto;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: white;
+    padding: 16px;
+    box-shadow: 0 24px 70px rgba(5, 54, 59, 0.18);
+  }
+
+  .mobile-panel[hidden] {
+    display: none;
+  }
+
+  .mobile-panel .search-box {
+    min-width: 0;
+  }
+
+  .mobile-panel .search-box input {
+    height: 46px;
+  }
+
+  .mobile-panel .search-box button {
+    height: 46px;
+  }
+
+  .mobile-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .mobile-quick-actions[data-authenticated="true"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mobile-quick-actions a,
+  .mobile-quick-actions button {
+    display: grid;
+    min-width: 0;
+    min-height: 72px;
+    place-items: center;
+    gap: 6px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: var(--color-soft);
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .mobile-quick-actions span {
+    overflow-wrap: anywhere;
+  }
+
+  .mobile-nav-list {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-md);
+    background: white;
+  }
+
+  .mobile-nav-list a {
+    display: flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border-bottom: 1px solid var(--color-line);
+    padding: 0 14px;
+    color: var(--color-ink);
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .mobile-nav-list a:last-child {
+    border-bottom: 0;
+  }
+
+  .mobile-store-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--radius-md);
+    background: var(--color-ink);
+    padding: 14px;
+    color: white;
+  }
+
+  .mobile-store-label span {
+    display: grid;
+    gap: 2px;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .mobile-store-label strong {
+    color: white;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 980px) {
+  :root {
+    --page-gutter: 32px;
+  }
+
+  .container {
+    width: min(100% - var(--page-gutter), var(--container));
+  }
+
+  .footer-link-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer-groups {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner {
+    min-height: 68px;
+  }
+
+  .brand-logo {
+    width: auto;
+    height: var(--brand-logo-height);
+  }
+
+  .footer-link-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-bottom {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-left: 0;
+    padding-inline: 0;
+    padding-block: 18px;
+  }
+
+  .footer-help-actions .button {
+    width: 100%;
+  }
+
+  .footer-legal {
+    justify-content: flex-start;
+    gap: 12px 16px;
+  }
+
+  .footer-legal > * + * {
+    margin-left: 0;
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  /* Reset the desktop "Prototype-only guard" (unscoped .footer-bottom{flex-wrap:wrap}
+     + .footer-bottom p{white-space:nowrap} rules above, for ~1300px desktop).
+     At this 640px breakpoint .footer-bottom also gets flex-direction:column,
+     so the unreset flex-wrap:wrap combined into flex-flow:column wrap and sized
+     .footer-legal to its own unwrapped max-content width (409px) instead of
+     the 358px column-flex parent; separately the unreset white-space:nowrap
+     kept the copyright line un-wrapped at its full 409px text width. Both
+     pushed the document past the 390px viewport. nowrap->normal lets the
+     copyright text wrap to the 358px column width; margin-left:auto on
+     .footer-legal is also cleared for the same cross-axis reason. */
+  .footer-bottom {
+    flex-wrap: nowrap;
+  }
+  .footer-bottom p {
+    white-space: normal;
+  }
+  .footer-bottom .footer-legal {
+    margin-left: 0;
+  }
+
+}

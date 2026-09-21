@@ -16,15 +16,23 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: deployedPath("/"),
       disallow: [
-        deployedPath("/account/"),
-        deployedPath("/cart/"),
-        deployedPath("/checkout/"),
-        deployedPath("/cookie-settings/"),
-        deployedPath("/dashboard/"),
-        deployedPath("/favorites/"),
-        deployedPath("/orders/"),
-        deployedPath("/v1-1/")
-      ]
+        "/account/",
+        "/cart/",
+        "/checkout/",
+        "/cookie-settings/",
+        "/dashboard/",
+        "/favorites/",
+        "/orders/",
+        "/v1-1/",
+        "/fr/account/",
+        "/fr/cart/",
+        "/fr/checkout/",
+        "/fr/cookie-settings/",
+        "/fr/dashboard/",
+        "/fr/favorites/",
+        "/fr/orders/",
+        "/fr/v1-1/"
+      ].map(deployedPath)
     },
     sitemap: sitemapUrl,
     host: `${new URL(siteBaseUrl).origin}${basePath}`

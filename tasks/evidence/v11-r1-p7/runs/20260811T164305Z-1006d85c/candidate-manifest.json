@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "v11-r1-p7-run-1",
+  "kind": "candidate-closure",
+  "runId": "20260811T164305Z-1006d85c",
+  "generatedAt": "2026-08-11T16:43:06Z",
+  "testedCandidateKind": "working-tree",
+  "baseHead": "f9520ecef495b7c13210bd17aa26508ea2aee406",
+  "baseTree": "31f85bdba8870c0942c2e5468a33709827794e04",
+  "files": [
+    {
+      "path": "packages/db/prisma/migrations/20260804100000_f1_v15_expand/migration.sql",
+      "category": "migration69",
+      "sha256": "07c2591b57b27f08573348e3601601c2dc0ecc74e61f8ba27d29d3258231d051"
+    },
+    {
+      "path": "packages/db/prisma/migrations/20260804110000_f1_v15_phase_b/migration.sql",
+      "category": "migration70",
+      "sha256": "5789b68576b375bc94adec6373b6c02a976c3e5a3813697c5bbadf266977713b"
+    },
+    {
+      "path": "packages/db/prisma/schema.prisma",
+      "category": "product-input",
+      "sha256": "44bb72503b929717af80d6cc05f5d82b1dff0e64e9f93ad079a588905d7da069"
+    },
+    {
+      "path": "qa/v11-auth-browser/f1-source-manifest.sql",
+      "category": "harness",
+      "sha256": "cccee976446d14b9822939af6219463c31b5ff6de54f2ea48e98a454840f9819"
+    },
+    {
+      "path": "qa/v11-auth-browser/run-v11-r1-p7-migration-drill.sh",
+      "category": "harness",
+      "sha256": "db21322c31068d3817b4700a2b29edc452a259bdbea15e9f0c08957226292581"
+    },
+    {
+      "path": "qa/v11-auth-browser/v11-p7-fixture.mjs",
+      "category": "harness",
+      "sha256": "6c05da89fc786c3f45108caf3be6dceb152a836c3e254bccdfcbb921dac2f614"
+    },
+    {
+      "path": "qa/v11-auth-browser/v11-r1-p7-evidence.mjs",
+      "category": "harness",
+      "sha256": "537054ae33db99436b68056cc000385fc6477a15ad3fd97fecb4991d36ccd374"
+    },
+    {
+      "path": "qa/v11-auth-browser/v11-r1-p7-evidence.test.mjs",
+      "category": "harness",
+      "sha256": "37b2022d3705ed5b5a85fb673fcb8eb08416585f140ba1120e1473497c06c483"
+    },
+    {
+      "path": "scripts/f1-migration69-authority.test.mjs",
+      "category": "harness",
+      "sha256": "053669ea4b6c82668865d431b2359e682e72fa3763807411d357a8cd42721f04"
+    },
+    {
+      "path": "scripts/f1-migration70-static.test.mjs",
+      "category": "harness",
+      "sha256": "23a49c55ecca00aac6c95e0c1e16f6469a6aede637aedc5fa6285c38b56a0c86"
+    },
+    {
+      "path": "scripts/f1-migration71-owned-pg16.mjs",
+      "category": "harness",
+      "sha256": "864ab7a2f2c63d8515e24ad820a9494598a8be12fb696810186ea597562be9ef"
+    },
+    {
+      "path": "scripts/f1-migration71-static.test.mjs",
+      "category": "harness",
+      "sha256": "a3039a3fb5b5b465624b9f9457067475b11835d83ce5c6a563b14feca60d9289"
+    },
+    {
+      "path": "scripts/test-f1-migration69.sh",
+      "category": "harness",
+      "sha256": "3b569cf01ecb22b3f770b0f5b8250e324aaac1c99b009ee878c1ccac0dadf9e8"
+    },
+    {
+      "path": "scripts/test-f1-migration70.sh",
+      "category": "harness",
+      "sha256": "1720a54fb51071eee96f206ed0e21288f8fbe07ec742904b73ce21dcae07f9e7"
+    },
+    {
+      "path": "scripts/test-f1-migration71.sh",
+      "category": "harness",
+      "sha256": "ce38c0f6cd71af00eca71aa04a9c65441d1f604130b9aea3015a25d4816c5a69"
+    },
+    {
+      "path": "tasks/tooling/f1-v15-clarification/03-old68-runtime-surface.json",
+      "category": "fixture-input",
+      "sha256": "03d05ff3223f17ace3a2dd473b2767ee8f08c88a441f76366094e375ee107622"
+    },
+    {
+      "path": "tasks/tooling/f1-v15-clarification/owned-pg16-conformance.mjs",
+      "category": "conformance",
+      "sha256": "9121bc6bc09c8d08cb333cc4045b99103ff440e628a75c01a3295861f979d479"
+    }
+  ]
+}

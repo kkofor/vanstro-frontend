@@ -1,0 +1,14 @@
+-- Vanity product names: hyphen → one ASCII space. name column only.
+UPDATE public.products SET name = 'Vanity Cabinet VS24' WHERE slug = 'vanity-cabinet-vs24-384';
+UPDATE public.products SET name = 'Vanity Cabinet VS27' WHERE slug = 'vanity-cabinet-vs27-404';
+UPDATE public.products SET name = 'Vanity Cabinet VS30' WHERE slug = 'vanity-cabinet-vs30-405';
+UPDATE public.products SET name = 'Vanity Cabinet VS36' WHERE slug = 'vanity-cabinet-vs36-406';
+UPDATE public.products SET name = 'Vanity Cabinet V4221' WHERE slug = 'vanity-cabinet-v4221-401';
+UPDATE public.products SET name = 'Vanity Cabinet V4821' WHERE slug = 'vanity-cabinet-v4821-402';
+UPDATE public.products SET name = 'Vanity Cabinet V663522' WHERE slug = 'vanity-cabinet-v663522-403';
+UPDATE public.products SET name = 'Vanity Cabinet V3621TDL' WHERE slug = 'vanity-cabinet-v3621tdl-412';
+UPDATE public.products SET name = 'Vanity Cabinet V3621TDR' WHERE slug = 'vanity-cabinet-v3621tdr-413';
+UPDATE public.products SET name = 'Vanity Cabinet V3021TDL' WHERE slug = 'vanity-cabinet-v3021-doors-tdl-415';
+UPDATE public.products SET name = 'Vanity Cabinet V3021TDR' WHERE slug = 'vanity-cabinet-v3021-doors-tdr-414';
+UPDATE public.products SET name = 'Vanity Cabinet V3021STDL' WHERE slug = 'vanity-cabinet-v3021-door-tdl-400';
+UPDATE public.products SET name = 'Vanity Cabinet V3021STDR' WHERE slug = 'vanity-cabinet-v3021-door-tdr-398';

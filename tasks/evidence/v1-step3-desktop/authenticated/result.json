@@ -1,0 +1,494 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "vanstro.dashboard.authenticated-desktop-journey.v1",
+  "testedCommit": "c51585b105185e0e7298d3dc42114d3d37b362a9",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "definitionSha256": "38843d040aa7d372fae087346ade0e7a329dc98ccbc74040c433a03d427df55a",
+  "fixtureSha256": "760ecde4b6646b86e8737851fe50624766f8f85e728b24a6a0c3bfaa8d22645c",
+  "harnessSha256": "7eb74e54061b799c270017a9b5e0ce6ca25cc3d2d43a1211db72c1f2cb081999",
+  "runnerSha256": "6f5493f37ef9d3354e08b5a91fc3060caddd06a023cdad4636aefb212b90ffbf",
+  "counts": {
+    "pass": 11,
+    "fail": 0,
+    "intentional-skip": 0,
+    "not-executed": 0
+  },
+  "cases": [
+    {
+      "id": "DESK-A01",
+      "name": "Login establishes the fixture session",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/account/",
+      "visibleAssertion": "login POST returned 200",
+      "api": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:4491/api/v1/auth/login",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        }
+      ],
+      "failedRequests": [],
+      "screenshot": "evidence/screenshots/DESK-A01.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A02",
+      "name": "Foundation renders Shell actor and modules",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard",
+      "visibleAssertion": "Shell and actor visible",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A02.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A03",
+      "name": "Authorization loads without contract failure",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard",
+      "visibleAssertion": "authorization contract rendered",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/authorization",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/f664ff3c1c40bad5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A03.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A04",
+      "name": "Operations and Readiness load successful responses",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/runtime?view=readiness",
+      "visibleAssertion": "Readiness page rendered",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/2734ee77c1e363b5.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/runtime/readiness/detail?scopeKind=global",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A04.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A05",
+      "name": "Jobs list and detail load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=jobs",
+      "visibleAssertion": "Jobs list/detail fixture contract",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs/adapters",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/jobs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A05.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A06",
+      "name": "Work Queue list loads",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=work-queue",
+      "visibleAssertion": "Work Queue fixture contract",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/work-queue/adapters",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [],
+      "screenshot": "evidence/screenshots/DESK-A06.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A07",
+      "name": "Notifications list loads",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/operations?view=notifications",
+      "visibleAssertion": "Notifications fixture contract",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/notifications?queryVersion=common-query.v1&limit=50&includeUnread=true",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [],
+      "screenshot": "evidence/screenshots/DESK-A07.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A08",
+      "name": "Media list and safe detail path load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/media",
+      "visibleAssertion": "Media safe list/detail fixture; no provider/storage side effect",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "status": 200
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4490/_next/static/webpack/3a9722fcac66b400.webpack.hot-update.json",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media?queryVersion=common-query.v1&limit=50&includeSummary=true",
+          "error": "net::ERR_ABORTED"
+        },
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/media/adapters",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A08.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A09",
+      "name": "Audit list and detail load",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/audit",
+      "visibleAssertion": "Audit list/detail fixture contract",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/audit-logs?queryVersion=common-query.v1&limit=50",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A09.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A10",
+      "name": "Logout succeeds",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/audit",
+      "visibleAssertion": "logout POST returned 200",
+      "api": [
+        {
+          "method": "POST",
+          "url": "http://127.0.0.1:4491/api/v1/auth/logout",
+          "status": 200
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [],
+      "screenshot": "evidence/screenshots/DESK-A10.png",
+      "environment": "controlled-local-fixture"
+    },
+    {
+      "id": "DESK-A11",
+      "name": "Post-logout Dashboard cannot retain authenticated content",
+      "status": "pass",
+      "url": "http://127.0.0.1:4490/dashboard/",
+      "visibleAssertion": "authenticated actor no longer visible",
+      "api": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "status": 401
+        }
+      ],
+      "consoleErrors": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)"
+        }
+      ],
+      "failedRequests": [
+        {
+          "method": "GET",
+          "url": "http://127.0.0.1:4491/api/v1/dashboard/foundation",
+          "error": "net::ERR_ABORTED"
+        }
+      ],
+      "screenshot": "evidence/screenshots/DESK-A11.png",
+      "environment": "controlled-local-fixture"
+    }
+  ],
+  "unexpectedConsoleErrors": [],
+  "unexpectedFailedRequests": [],
+  "responseCount": 73,
+  "startStop": {
+    "started": true,
+    "cleanupAttempted": true,
+    "ownedPidsTerminated": true,
+    "portsClosed": true
+  },
+  "resultSha256": "0c68e3ba3bd5e33aaea79bd6306e6c6b3798b434b16089dfa641c4df273bfc51"
+}

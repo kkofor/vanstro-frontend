@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-08-11T23:52:00.351Z",
+  "generatorSha256": "050e044af1c30200a84307138d6023e01c043ae03340e3e6eb9360ef9d9eb84f",
+  "migration70Sha256": "93e3657383c8d1f9ae023cdcd1344a33cf49090444dcbbcdabe2ab3e0d525288",
+  "modelSha256": "7d68c0a10c22fa5f758bb3d144132efce81123b035c417339211dd8eeb97beb8",
+  "packageVersion": "1.0.3",
+  "schemaSha256": "f352bd03a6c4fffa7dcb44d48c8c4e38d4cc2a5bf7f1edc906c594819b3fd5e3",
+  "status": "FROZEN"
+}

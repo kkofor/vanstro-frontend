@@ -1,0 +1,193 @@
+{
+  "suiteId": "vanstro.s08.api-service-accounts.settings.desktop.v1",
+  "testedCommit": "372c48d7ade89d1cc86839d3266bc83b4990aa34",
+  "testedTree": "942f3e16343abc601932b25f93fd3b992a706a94",
+  "cases": [
+    {
+      "id": "S08-01",
+      "name": "Four-family panel renders with compiled defaults",
+      "expectation": "token lifecycle / machine scope / rate limit / audit-invocation policies and 编译默认值 projection render",
+      "status": "pass",
+      "observations": [
+        "跳至主要内容\nVanStro 管理后台\n\nS08 QA\n\n平台运营\n设置\n即将推出\n全局搜索\n工作队列\n管理后台\n/\n设置\n设置\n\n当前为简体中文受控后台。页面内容与可见模块由服务器权限决定。\n\n系统已就绪\nFoundation dashboard-foundation.v1 · Authorization dashboard-authorization.v1\nSettings 受控写入\nSettings 模块允许受控写入；其他业务模块仍保持只读。\n当前操作员\nS08 QA\n有效角色\nsuper_admin\n访问范围摘要\n全局\n可读模块\n1 / 21\nAPI 与服务账号设置\n\n统一管理令牌生命周期、机器范围、速率限制与审计调用策略。设置只存策略；服务账号与令牌业务动作显式且独立，明文令牌仅出现一次。当前生效值来自编译默认值。\n\n降级\n描述符\nsettings.api-service-acc"
+      ]
+    },
+    {
+      "id": "S08-02",
+      "name": "Empty validation, history, account and invocation views",
+      "expectation": "尚未验证当前草稿 / 尚无发布历史 shown; safe account and invocation views render",
+      "status": "pass",
+      "observations": [
+        "empty states and safe views"
+      ]
+    },
+    {
+      "id": "S08-03",
+      "name": "Consumer readiness matrix (5 ready + 1 future obligation)",
+      "expectation": "matrix renders implemented_ready consumers and the ERP Product API machine future obligation",
+      "status": "pass",
+      "observations": [
+        "consumer matrix at compiled defaults"
+      ]
+    },
+    {
+      "id": "S08-04",
+      "name": "Create draft",
+      "expectation": "typed draft with tokenLifecyclePolicy.defaultTtlDays 120 created",
+      "status": "pass",
+      "observations": [
+        "draft created defaultTtlDays=120"
+      ]
+    },
+    {
+      "id": "S08-05",
+      "name": "Unknown role key validation blocker",
+      "expectation": "server rejects ROGUE_ROLE with S08_ROLE_UNKNOWN; draft invalid",
+      "status": "pass",
+      "observations": [
+        "unknown role key rejected by server validation"
+      ]
+    },
+    {
+      "id": "S08-06",
+      "name": "Validate draft after fix",
+      "expectation": "validated with no blockers",
+      "status": "pass",
+      "observations": [
+        "validated after fix"
+      ]
+    },
+    {
+      "id": "S08-07",
+      "name": "Safe diff",
+      "expectation": "public policy field diff visible",
+      "status": "pass",
+      "observations": [
+        "safe diff visible"
+      ]
+    },
+    {
+      "id": "S08-08",
+      "name": "Publish with zero side effects",
+      "expectation": "generation increments, businessWrites/providerCalls/jobs stay 0",
+      "status": "pass",
+      "observations": [
+        "{\"profile\": \"writer\", \"generation\": 1, \"settingsRevision\": 6, \"published\": {\"tokenLifecyclePolicy\": {\"defaultTtlDays\": 120, \"maximumTtlDays\": 365, \"rotationOverlapMinutes\": 0, \"maximumActiveTokensPerAccount\": 1, \"requireExpiry\": false}, \"machineScopePolicy\": {\"allowedRoleKeys\": [], \"allowedPermissionFamilies\": [], \"environment\": \"production\", \"dealerLocationScopeMode\": \"global\", \"denySensitivePermissionsByDefault\": true}, \"rateLimitPolicy\": {\"requestsPerMinute\": 100, \"burst\": 0, \"mode\": \"per-token\", \"retryAfterSemantics\": \"seconds\"}, \"auditInvocationPolicy\": {\"invocationRetentionDays\": 365, \"metadataRedactionMode\": \"standard\", \"lastUsedTrackingEnabled\": true, \"failedAuthenticationAuditEnabled\": true}}, \"publishedId\": \"e195d1e7-d55c-46cd-97aa-8722c4cdf4c1\", \"publishedAt\": \"2026-08-07T16:11:34.884Z\", \"drafts\": {}, \"nextVersion\": 6, \"history\": [{\"publicationId\": \"e195d1e7-d55c-46cd-97aa-8722c4cdf4c1\", \"generation\": \"1\", \"version\": 1, \"status\": \"published\", \"descriptorKeys\": [\"settings.api-service-account\"], \"changeReason\": \"S08 browser \\u8349\\u7a3f\\u521b\\u5efa\\u539f\\u56e0\\u6587\\u672c\", \"publishedAt\": \"2026-08-07T16:11:34.884Z\", \"rollbackOfPublicationId\": null, \"auditEventId\": \"b7054dc6-81be-42f1-b251-8f0b847a7117\"}], \"serviceAccounts\": [{\"id\": \"c7815857-16c2-4f80-8a5a-83d4c62b9a5f\", \"key\": \"svc-catalog-reader\", \"name\": \"\\u5546\\u54c1\\u76ee\\u5f55\\u8bfb\\u53d6\\u670d\\u52a1\", \"status\": \"active\", \"roles\": [\"erp_catalog_reader\"], \"environment\": \"production\", \"createdAt\": \"2026-08-07T16:11:20.398Z\"}, {\"id\": \"264fc914-68df-4685-af23-1c2dd34bf2fd\", \"key\": \"svc-order-sync\", \"name\": \"\\u8ba2\\u5355\\u540c\\u6b65\\u670d\\u52a1\", \"status\": \"active\", \"roles\": [\"erp_order_sync\"], \"environment\": \"production\", \"createdAt\": \"2026-08-07T16:11:20.398Z\"}], \"tokens\": {\"c7815857-16c2-4f80-8a5a-83d4c62b9a5f\": [], \"264fc914-68df-4685-af23-1c2dd34bf2fd\": []}, \"tokenCreates\": {}, \"tokenRotates\": {}, \"invocations\": [{\"id\": \"441f433e-c132-4b5e-bb57-da8336fc1536\", \"serviceAccount\": {\"id\": \"c7815857-16c2-4f80-8a5a-83d4c62b9a5f\", \"key\": \"svc-catalog-reader\", \"name\": \"\\u5546\\u54c1\\u76ee\\u5f55\\u8bfb\\u53d6\\u670d\\u52a1\"}, \"toolKey\": \"catalog.list\", \"status\": \"succeeded\", \"createdAt\": \"2026-08-07T16:11:20.398Z\", \"errorClass\": null}, {\"id\": \"a9540147-f233-4640-abeb-385d3d1d1445\", \"serviceAccount\": {\"id\": \"c7815857-16c2-4f80-8a5a-83d4c62b9a5f\", \"key\": \"svc-catalog-reader\", \"name\": \"\\u5546\\u54c1\\u76ee\\u5f55\\u8bfb\\u53d6\\u670d\\u52a1\"}, \"toolKey\": \"catalog.get\", \"status\": \"rate_limited\", \"createdAt\": \"2026-08-07T16:11:20.398Z\", \"errorClass\": \"RATE_LIMITED\"}, {\"id\": \"cd8b1c6c-926e-4eb0-b96c-c777c5f8ba2c\", \"serviceAccount\": {\"id\": \"264fc914-68df-4685-af23-1c2dd34bf2fd\", \"key\": \"svc-order-sync\", \"name\": \"\\u8ba2\\u5355\\u540c\\u6b65\\u670d\\u52a1\"}, \"toolKey\": \"orders.get\", \"status\": \"failed\", \"createdAt\": \"2026-08-07T16:11:20.398Z\", \"errorClass\": \"DEPENDENCY_UNAVAILABLE\"}], \"businessWrites\": 0, \"providerCalls\": 0, \"jobs\": 0}"
+      ]
+    },
+    {
+      "id": "S08-09",
+      "name": "Exact-generation readiness (5 ready / 1 future obligation)",
+      "expectation": "degraded with exactly 5 implemented_ready at exact generation and erp-product-api-machine future_obligation",
+      "status": "pass",
+      "observations": [
+        "readiness gen=1 states=['implemented_ready', 'implemented_ready', 'implemented_ready', 'implemented_ready', 'implemented_ready', 'future_obligation']"
+      ]
+    },
+    {
+      "id": "S08-10",
+      "name": "Read-only impact preview",
+      "expectation": "aggregate policy only; zero business/provider/job effects; no plaintext/tokenHash material",
+      "status": "pass",
+      "observations": [
+        "preview aggregate-only, zero side effects, no token material"
+      ]
+    },
+    {
+      "id": "S08-11",
+      "name": "Rollback draft",
+      "expectation": "rollback_draft created from current publication",
+      "status": "pass",
+      "observations": [
+        "rollback draft created"
+      ]
+    },
+    {
+      "id": "S08-12",
+      "name": "Token create one-time reveal",
+      "expectation": "plaintext revealed exactly once; second read and list never return plaintext",
+      "status": "pass",
+      "observations": [
+        "plaintext revealed exactly once; absent after dismissal and on second read"
+      ]
+    },
+    {
+      "id": "S08-13",
+      "name": "Rotate overlap + idempotent replay no plaintext",
+      "expectation": "predecessor rotated with narrowed expiry; replay returns plaintextAvailable=false and no second token",
+      "status": "pass",
+      "observations": [
+        "rotate overlap + replay (active=1)"
+      ]
+    },
+    {
+      "id": "S08-14",
+      "name": "Revoke",
+      "expectation": "token revoked with revokedAt; never restored",
+      "status": "pass",
+      "observations": [
+        "token revoked"
+      ]
+    },
+    {
+      "id": "S08-15",
+      "name": "Invocation safe view",
+      "expectation": "only id/serviceAccount/toolKey/status/createdAt/errorClass; never input/output/error",
+      "status": "pass",
+      "observations": [
+        "safe invocation fields only"
+      ]
+    },
+    {
+      "id": "S08-16",
+      "name": "FR static route",
+      "expectation": "/fr/dashboard/settings/api-service-accounts renders the same panel",
+      "status": "pass",
+      "observations": [
+        "http://127.0.0.1:4574/fr/dashboard/settings/api-service-accounts"
+      ]
+    },
+    {
+      "id": "S08-17",
+      "name": "A11y landmarks",
+      "expectation": "named region and tables present",
+      "status": "pass",
+      "observations": [
+        "named region and tables"
+      ]
+    },
+    {
+      "id": "S08-18",
+      "name": "Zero unexpected console errors",
+      "expectation": "no console error entries",
+      "status": "pass",
+      "observations": []
+    },
+    {
+      "id": "S08-19",
+      "name": "Zero unexpected requests",
+      "expectation": "no requests outside WEB/API/data/blob origins",
+      "status": "pass",
+      "observations": []
+    }
+  ],
+  "counts": {
+    "pass": 19,
+    "fail": 0,
+    "notExecuted": 0
+  },
+  "unexpectedConsole": [],
+  "unexpectedRequests": [],
+  "fixtureSafety": {
+    "businessWrites": 0,
+    "providerCalls": 0,
+    "jobs": 0
+  },
+  "sha256": {
+    "s08-definition.json": "9eb0891d41871160007af2d15069524d8ae87d675d4bc4e44fc0ef63907fde22",
+    "s08-acceptance.py": "8b08c58819f8c2e19a33287fd190cb628f42d96e2de4c00edf6f4fcc50aec632",
+    "run-s08.sh": "315e23af20945412452c0b01a3bb46bab0bde203beeeb361e4572ca8997caa92",
+    "s08-fixture.py": "2dde8b76ca4e74391d542268b04cccc1feaad8995735de0d6df64344304ac0d1"
+  },
+  "mode": "UI against Browser fixture (real Backend evidence is the disposable PG16 S08 09/10 run)"
+}

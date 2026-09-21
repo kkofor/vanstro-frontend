@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./globals.css";
 import { AppChrome } from "@/components/layout/AppChrome";
-import { CookieBar } from "@/components/layout/CookieBar";
-import { CookiePreferenceDrawer } from "@/components/layout/CookiePreferenceDrawer";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import { StorefrontProvider } from "@/components/storefront/StorefrontProvider";
-import { DocumentLanguage } from "@/components/layout/DocumentLanguage";
+import { LocaleBoundary } from "@/components/i18n/LocaleBoundary";
+import { CustomerSessionProvider } from "@/components/account/CustomerSessionProvider";
 import { organizationSchema, serializeJsonLd } from "@/lib/seo/schema";
 import { getSiteBaseUrl } from "@/lib/seo/site";
+import { getCatalogCategories, getDealersPreview } from "@/lib/api/server";
 
 const siteBaseUrl = getSiteBaseUrl();
 
@@ -20,24 +22,42 @@ export const metadata: Metadata = {
   ...(siteBaseUrl ? { metadataBase: new URL(siteBaseUrl) } : {})
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const schema = organizationSchema();
+  // Storefront category navigation (header dropdown, footer) is driven by the
+  // Website API `/categories` payload. A failure degrades to the static copy
+  // instead of breaking the site shell.
+  const categories = await getCatalogCategories().catch(() => []);
+  const dealers = await getDealersPreview().catch(() => []);
 
   return (
-    <html lang="en-CA">
+    <html lang="en-CA" suppressHydrationWarning>
+      <head>
+        <link
+          rel="preload"
+          href="/fonts/inter/inter-latin-wght-normal.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
-        <DocumentLanguage />
         {schema ? (
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }}
           />
         ) : null}
-        <StorefrontProvider>
-          <AppChrome>{children}</AppChrome>
-          <CookieBar />
-          <CookiePreferenceDrawer />
-        </StorefrontProvider>
+        <LocaleBoundary categories={categories} dealers={dealers}>
+          <CustomerSessionProvider>
+            <StorefrontProvider>
+              <AppChrome>{children}</AppChrome>
+              <Suspense fallback={null}>
+                <PageViewTracker />
+              </Suspense>
+            </StorefrontProvider>
+          </CustomerSessionProvider>
+        </LocaleBoundary>
       </body>
     </html>
   );

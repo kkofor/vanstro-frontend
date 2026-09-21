@@ -7,6 +7,12 @@ const COLOR_OPTIONS = {
   LG: { name: "Light Grey", colorHex: "#c9cbc7" },
   WH: { name: "White", colorHex: "#f7f6f2" }
 };
+const APPROVED_STOREFRONT_NAMES_BY_SKU = {
+  "023021211": "Vanity Cabinet-V3021STDR",
+  "023021311": "Vanity Cabinet-V3021STDL",
+  "023021411": "Vanity Cabinet-V3021TDR",
+  "023021511": "Vanity Cabinet-V3021TDL"
+};
 
 function decodeHtml(value) {
   const entities = {
@@ -80,6 +86,7 @@ function parseDescription(html) {
 
 function mapCategory(sourceCategory) {
   if (/vanit/i.test(sourceCategory)) return "Bathroom Vanities";
+  if (/handle/i.test(sourceCategory)) return "Handle series";
   if (/baseboard|casing/i.test(sourceCategory)) return "Baseboards & Mouldings";
   return "Kitchen Cabinets";
 }
@@ -142,7 +149,7 @@ async function crawl() {
     const html = await fetchHtml(sourceUrl);
     const sourceSlug = new URL(sourceUrl).pathname.split("/").filter(Boolean).at(-1);
     const sourceProductId = sourceSlug.match(/-(\d+)$/)?.[1] ?? sourceSlug;
-    const productName = cleanText(html.match(/<h1>([\s\S]*?)<\/h1>/i)?.[1] ?? sourceSlug);
+    const sourceProductName = cleanText(html.match(/<h1>([\s\S]*?)<\/h1>/i)?.[1] ?? sourceSlug);
     const breadcrumb = cleanText(html.match(/<p class="breadcrumb">[\s\S]*?<a[^>]*>([\s\S]*?)<\/a>/i)?.[1] ?? "");
     const category = mapCategory(breadcrumb);
     const { lines, specifications } = parseDescription(html);
@@ -159,9 +166,13 @@ async function crawl() {
       }
       return { listing, option };
     });
+    const approvedStorefrontName = selectedOptions
+      .map(({ listing }) => APPROVED_STOREFRONT_NAMES_BY_SKU[listing.sku])
+      .find(Boolean);
 
     for (const { listing, option } of selectedOptions) {
       const id = `mb01-${option.id}`;
+      const productName = approvedStorefrontName ?? sourceProductName;
       const multiple = selectedOptions.length > 1;
       const slug = multiple ? `${sourceSlug}-${slugify(option.name)}` : sourceSlug;
       const optionColorCode = getColorCode(option.name);
@@ -259,7 +270,7 @@ async function crawl() {
       details[id] = {
         sourceUrl,
         sourceProductId,
-        sourceProductName: productName,
+        sourceProductName,
         sourceCategory: breadcrumb,
         description: lines.join(" "),
         productHighlights: lines,

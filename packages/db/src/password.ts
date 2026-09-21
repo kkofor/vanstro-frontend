@@ -29,6 +29,8 @@ export function hashPassword(password: string): PasswordHashData {
   };
 }
 
+export function derivePasswordHash(password:string,stored:Pick<PasswordHashData,"algorithm"|"passwordSalt"|"iterations">){if(stored.algorithm!=="pbkdf2_sha256")throw new Error("PASSWORD_ALGORITHM_INVALID");return pbkdf2Sync(password,stored.passwordSalt,stored.iterations,HASH_LENGTH_BYTES,HASH_DIGEST).toString("hex")}
+
 export function verifyPassword(password: string, stored: PasswordHashData) {
   if (stored.algorithm !== "pbkdf2_sha256") return false;
 

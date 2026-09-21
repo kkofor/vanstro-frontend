@@ -57,6 +57,11 @@ def parse_args() -> argparse.Namespace:
         description="从指定 Git 提交构建静态站点，通过宝塔 API 上传到全新版本目录并切换站点根目录。"
     )
     parser.add_argument("--commit", default="HEAD", help="要部署的 Git 提交，默认 HEAD")
+    parser.add_argument(
+        "--include-tracked-worktree",
+        action="store_true",
+        help="在指定提交之上包含当前 tracked 工作区差异；不会包含 untracked 文件",
+    )
     parser.add_argument("--domain", default="vanstro.ca", help="宝塔站点主域名")
     parser.add_argument("--www-domain", default="www.vanstro.ca", help="附加 www 域名；传空字符串可禁用")
     parser.add_argument("--server-ip", required=True, help="不依赖 DNS 的 HTTP 验证目标 IP")
@@ -167,9 +172,9 @@ class BtApi:
             print(f"上传 {name}: {offset}/{total} ({offset * 100 / total:.1f}%)", flush=True)
 
 
-def ensure_clean_tracked_worktree(repo: Path) -> None:
+def ensure_tracked_worktree(repo: Path, *, allow_changes: bool) -> None:
     status = run(["git", "-C", str(repo), "status", "--porcelain=v1", "--untracked-files=no"])
-    if status:
+    if status and not allow_changes:
         raise DeploymentError("tracked 工作区不干净；为避免部署未提交源码，已停止")
     run(["git", "-C", str(repo), "diff", "--check"])
 
@@ -185,10 +190,34 @@ def export_commit(repo: Path, commit_sha: str, destination: Path) -> None:
         archive.extractall(destination, filter="data")
 
 
+def export_tracked_worktree(repo: Path, commit_sha: str, destination: Path) -> None:
+    export_commit(repo, commit_sha, destination)
+    diff_path = destination.parent / "tracked-worktree.patch"
+    with diff_path.open("wb") as output:
+        result = subprocess.run(
+            ["git", "-C", str(repo), "diff", "--binary", "--full-index", commit_sha, "--"],
+            check=False,
+            stdout=output,
+            stderr=subprocess.PIPE,
+        )
+    if result.returncode != 0:
+        message = result.stderr.decode("utf-8", "replace")
+        raise DeploymentError(f"无法导出 tracked 工作区差异：{message}")
+    if diff_path.stat().st_size:
+        run(["git", "apply", "--binary", str(diff_path)], cwd=destination)
+
+
 def build_static_export(source: Path, domain: str) -> Path:
     run(["pnpm", "install", "--frozen-lockfile"], cwd=source)
+    run(["pnpm", "--filter", "@vanstro/commerce", "build"], cwd=source)
     run(["pnpm", "run", "typecheck:web"], cwd=source)
     env = os.environ.copy()
+    website_api_base_url = env.get("VANSTRO_WEBSITE_API_BASE_URL", "").strip()
+    if not website_api_base_url:
+        raise DeploymentError("VANSTRO_WEBSITE_API_BASE_URL 是生产静态构建的必填项")
+    env["VANSTRO_WEBSITE_API_BASE_URL"] = website_api_base_url
+    if not env.get("NEXT_PUBLIC_API_BASE_URL", "").strip():
+        env["NEXT_PUBLIC_API_BASE_URL"] = website_api_base_url
     env["NEXT_PUBLIC_BASE_PATH"] = ""
     env["NEXT_PUBLIC_SITE_URL"] = f"https://{domain}"
     run(["pnpm", "run", "build:pages"], cwd=source, env=env)
@@ -203,6 +232,63 @@ def create_archive(output: Path, archive_path: Path) -> None:
     with tarfile.open(archive_path, "w:gz") as archive:
         for path in sorted(output.rglob("*")):
             archive.add(path, arcname=path.relative_to(output), recursive=False)
+
+
+def read_site_root(api: BtApi, domain: str) -> str:
+    site_rows = [site for site in api.list_sites(domain) if site.get("name") == domain]
+    if len(site_rows) != 1:
+        raise DeploymentError("无法唯一读取回滚时的宝塔站点记录")
+    site_root = str(site_rows[0].get("path") or "").strip()
+    if not site_root:
+        raise DeploymentError(f"回滚时宝塔站点记录缺少 site.path：{domain}")
+    return site_root
+
+
+def read_nginx_root(api: BtApi, domain: str) -> str:
+    config_path = f"/www/server/panel/vhost/nginx/{domain}.conf"
+    response = api.call("/files?action=GetFile", {"path": config_path})
+    content = response.get("data") if isinstance(response, dict) else None
+    if not isinstance(content, str):
+        raise DeploymentError(f"无法读取 nginx 配置：{config_path}: {response!r}")
+    match = re.search(r"(?m)^\s*root\s+([^;#]+?)\s*;", content)
+    if not match:
+        raise DeploymentError(f"nginx 配置中未找到实际 root：{config_path}")
+    return match.group(1).strip()
+
+
+def rollback_after_verification_failure(
+    api: BtApi,
+    *,
+    domain: str,
+    site_id: int,
+    intended_target: str,
+    server_ip: str,
+    manifest: list[dict[str, Any]],
+) -> None:
+    """Rollback only when nginx and BaoTa agree on the current root."""
+    nginx_root = read_nginx_root(api, domain)
+    site_root = read_site_root(api, domain)
+    if nginx_root != site_root:
+        raise DeploymentError(
+            "拒绝回滚：nginx 实际 root (A) 与宝塔 site.path (B) 不一致；"
+            f" A={nginx_root!r}；B={site_root!r}。"
+            "手工恢复提示：请人工核对并修复 nginx 配置与宝塔 site.path 后，"
+            "再重新执行回滚；不会自动选择 A 或 B。"
+        )
+
+    rollback = api.require_success(
+        "/site?action=SetPath",
+        {"id": str(site_id), "path": intended_target},
+    )
+    rolled_back_root = read_site_root(api, domain)
+    if rolled_back_root != intended_target:
+        raise DeploymentError(
+            "回滚后站点根目录不符合预期："
+            f"预期回滚目标 {intended_target!r}，实际 site.path {rolled_back_root!r}；"
+            "已停止，需人工核对 nginx 与宝塔配置。"
+        )
+    print(f"完整性验证失败，回滚站点根目录到 {intended_target}: {rollback!r}", file=sys.stderr)
+    verify_http(server_ip, domain, manifest)
 
 
 def ensure_site(api: BtApi, domain: str, www_domain: str, site_root: str) -> int:
@@ -255,6 +341,7 @@ def build_manifest(output: Path) -> list[dict[str, Any]]:
 def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> None:
     def verify_file(row: dict[str, Any]) -> dict[str, Any] | None:
         path = "/" + urllib.parse.quote(row["path"], safe="/%:@!$&'()*+,;=-._~")
+        cache_busted_path = f"{path}?verify={row['sha256'][:16]}"
         last_error = ""
         for attempt in range(3):
             try:
@@ -262,15 +349,20 @@ def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> 
                     "Host": domain,
                     "User-Agent": "VanStro-Integrity/1.0",
                     "Accept-Encoding": "identity",
+                    "Cache-Control": "no-cache, no-store, max-age=0",
+                    "Pragma": "no-cache",
                 }
                 connection = http.client.HTTPConnection(server_ip, 80, timeout=30)
-                connection.request("GET", path, headers=headers)
+                connection.request("GET", cache_busted_path, headers=headers)
                 response = connection.getresponse()
                 body = response.read()
                 redirect = response.getheader("Location", "")
                 connection.close()
                 if response.status in {301, 302, 307, 308} and redirect.startswith(f"https://{domain}"):
-                    secure_path = urllib.parse.urlsplit(redirect).path or path
+                    secure_url = urllib.parse.urlsplit(redirect)
+                    secure_path = secure_url.path or path
+                    if secure_url.query:
+                        secure_path += f"?{secure_url.query}"
                     connection = http.client.HTTPSConnection(
                         server_ip,
                         443,
@@ -297,6 +389,20 @@ def verify_http(server_ip: str, domain: str, manifest: list[dict[str, Any]]) -> 
                 time.sleep(0.3 * (attempt + 1))
         return {"path": row["path"], "error": last_error}
 
+    readiness_row = next(
+        (row for row in manifest if row["path"].endswith("/_clientMiddlewareManifest.js")),
+        next(row for row in manifest if row["path"] == "index.html"),
+    )
+    deadline = time.monotonic() + 30
+    while True:
+        readiness_failure = verify_file(readiness_row)
+        if readiness_failure is None:
+            break
+        if time.monotonic() >= deadline:
+            raise DeploymentError(f"站点切换后新构建未就绪：{readiness_failure!r}")
+        print(f"等待新构建生效：{readiness_row['path']}", flush=True)
+        time.sleep(1)
+
     failures = []
     with ThreadPoolExecutor(max_workers=12) as pool:
         futures = [pool.submit(verify_file, row) for row in manifest]
@@ -317,6 +423,7 @@ def main() -> int:
     args = parse_args()
     api_key = require_env("BT_API_KEY")
     panel_url = require_env("BT_PANEL_URL")
+    require_env("VANSTRO_WEBSITE_API_BASE_URL")
     repo = args.repo.resolve()
     if not (repo / ".git").exists():
         raise DeploymentError(f"不是 Git 仓库：{repo}")
@@ -325,7 +432,7 @@ def main() -> int:
     if args.release_suffix and not re.fullmatch(r"[a-zA-Z0-9-]+", args.release_suffix):
         raise DeploymentError("--release-suffix 仅允许字母、数字和连字符")
 
-    ensure_clean_tracked_worktree(repo)
+    ensure_tracked_worktree(repo, allow_changes=args.include_tracked_worktree)
     commit_sha = resolve_commit(repo, args.commit)
     version = commit_sha[:12]
     if args.release_suffix:
@@ -352,7 +459,10 @@ def main() -> int:
         temp = Path(temp_name)
         source = temp / "source"
         source.mkdir()
-        export_commit(repo, commit_sha, source)
+        if args.include_tracked_worktree:
+            export_tracked_worktree(repo, commit_sha, source)
+        else:
+            export_commit(repo, commit_sha, source)
         output = build_static_export(source, args.domain)
         manifest = build_manifest(output)
         archive_path = temp / package_name
@@ -363,6 +473,7 @@ def main() -> int:
             f"commit={commit_sha}\n"
             f"domain={args.domain}\n"
             "build=static-export\n"
+            f"tracked_worktree={'included' if args.include_tracked_worktree else 'excluded'}\n"
             f"archive_sha256={archive_sha256}\n"
         ).encode()
         chunk_size = args.chunk_mib * 1024 * 1024
@@ -402,8 +513,14 @@ def main() -> int:
         verify_http(args.server_ip, args.domain, manifest)
     except Exception:
         if previous_root and previous_root != release_root:
-            rollback = api.call("/site?action=SetPath", {"id": str(site_id), "path": previous_root})
-            print(f"完整性验证失败，回滚站点根目录到 {previous_root}: {rollback!r}", file=sys.stderr)
+            rollback_after_verification_failure(
+                api,
+                domain=args.domain,
+                site_id=site_id,
+                intended_target=previous_root,
+                server_ip=args.server_ip,
+                manifest=manifest,
+            )
         raise
 
     print(json.dumps(

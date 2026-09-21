@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your cart · VANSTRO</title>
+<link rel="stylesheet" href="/account/assets/vi.css">
+<link rel="stylesheet" href="/account/assets/storefront-chrome.css">
+<style>
+  .site { background: var(--vs-bg-page); min-height: 100vh; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 20px 24px 80px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; column-gap: 32px; row-gap: 14px; align-items: start; }
+  .page-title { grid-column: 1 / -1; }
+  .ct__main { display: grid; gap: 14px; min-width: 0; }
+  /* the storefront header is sticky too; keep the summary below it */
+  .ct__side { position: sticky; top: calc(var(--header-h, 72px) + 20px); display: grid; gap: 12px; align-self: start; }
+  .wrap > .stack:empty { display: none; }
+  .wrap > .stack { grid-column: 1 / -1; }
+  .ct__main .card, .ct__side .card { border-radius: 12px; }
+  .ct__main .card__head { padding: 18px 22px 0; }
+  .ct__main .card__body { padding: 14px 22px 20px; }
+  .ct__main .card__foot { padding: 14px 22px; }
+  .ct__main .field { margin-bottom: 0; }
+  .ct__main .control { border-color: var(--vs-border-strong); }
+  .ct__side .card__head { padding: 16px 18px 0; }
+  .ct__side .card__body { padding: 14px 18px 16px; }
+  #alerts .alert { margin-bottom: 0; }
+  .alert .row { margin-left: auto; }
+  .alert .link-btn { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-weight: 700; color: inherit; text-decoration: underline; }
+
+  .page-title { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 0 2px 0; flex-wrap: wrap; }
+  .page-title h2 { font-size: 26px; line-height: 1.15; letter-spacing: -0.01em; }
+  .page-title p { color: var(--vs-text-3); font-size: 14px; margin-top: 4px; }
+  .page-title a { font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 4px; }
+  .page-title a svg { width: 16px; height: 16px; transform: rotate(180deg); }
+  .card__head h3 { font-size: 17px; letter-spacing: -0.005em; }
+  .card__head .sub { color: var(--vs-text-3); font-size: 13px; margin-top: 3px; }
+
+  /* ---- Cart lines ---- */
+  .lines { display: grid; }
+  .ln { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 16px; padding: 18px 0; border-top: 1px solid var(--vs-grey-100); align-items: start; position: relative; }
+  .ln:first-child { border-top: 0; padding-top: 6px; }
+  .ln.is-busy { opacity: .55; pointer-events: none; }
+  .ln.is-out .ln__img img { filter: grayscale(1); opacity: .6; }
+  .ln.is-out .ln__name, .ln.is-out .ln__total { color: var(--vs-text-3); }
+  .ln__img { width: 96px; height: 96px; border-radius: 10px; border: 1px solid var(--vs-grey-100); background: var(--vs-grey-50); overflow: hidden; }
+  .ln__img img { width: 100%; height: 100%; object-fit: cover; }
+  .ln__meta { display: grid; gap: 4px; min-width: 0; }
+  .ln__name { font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--vs-text); }
+  .ln__name:hover { text-decoration: underline; }
+  .ln__spec { font-size: 13px; color: var(--vs-text-3); }
+  .ln__sku { font-family: var(--vs-mono); font-size: 11.5px; color: var(--vs-text-3); letter-spacing: .01em; }
+  .ln__unit { font-size: 13px; color: var(--vs-text-2); margin-top: 2px; }
+  .ln__unit s { color: var(--vs-text-3); margin-left: 6px; }
+  .ln__stock { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 12.5px; color: var(--vs-text-3); flex-wrap: wrap; }
+  .ln__stock .chip { height: 20px; font-size: 10.5px; }
+  .ln__ctl { display: flex; align-items: center; gap: 14px; margin-top: 10px; flex-wrap: wrap; }
+  .ln__acts { display: flex; gap: 14px; }
+  .ln__acts button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-size: 13px; font-weight: 700; color: var(--vs-navy); display: inline-flex; align-items: center; gap: 4px; }
+  .ln__acts button:hover { text-decoration: underline; }
+  .ln__acts button svg { width: 14px; height: 14px; }
+  .ln__acts button.danger { color: var(--vs-error); }
+  .ln__right { text-align: right; display: grid; gap: 4px; justify-items: end; }
+  .ln__total { font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ln__each { font-size: 12px; color: var(--vs-text-3); }
+  .ln__warn { margin-top: 8px; display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--vs-orange-ink); }
+  .ln__warn.err { color: var(--vs-error); }
+  .ln__warn svg { width: 15px; height: 15px; flex: none; margin-top: 1px; }
+  .ln__warn button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-weight: 700; color: inherit; text-decoration: underline; }
+
+  /* quantity stepper: 36px tall to sit inside a line; the +/- are buttons so they are keyboard-reachable */
+  .qty { display: inline-flex; align-items: stretch; height: 36px; border: 1px solid var(--vs-border-strong); border-radius: var(--vs-r-sm); background: #fff; overflow: hidden; }
+  .qty:focus-within { border-color: var(--vs-navy); box-shadow: var(--vs-focus); }
+  .qty button { width: 34px; border: 0; background: transparent; cursor: pointer; color: var(--vs-navy); display: inline-flex; align-items: center; justify-content: center; }
+  .qty button:hover { background: var(--vs-navy-50); }
+  .qty button:disabled { color: var(--vs-grey-300); cursor: not-allowed; background: transparent; }
+  .qty button svg { width: 16px; height: 16px; }
+  .qty input { width: 44px; border: 0; border-left: 1px solid var(--vs-grey-100); border-right: 1px solid var(--vs-grey-100); text-align: center; font-weight: 700; font-size: 14px; outline: 0; -moz-appearance: textfield; font-variant-numeric: tabular-nums; }
+  .qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .qty__unit { font-size: 12.5px; color: var(--vs-text-3); }
+
+  /* skeleton while a quantity change round-trips */
+  .skel { display: inline-block; height: 14px; width: 72px; border-radius: 4px; background: linear-gradient(90deg, var(--vs-grey-100), var(--vs-grey-50), var(--vs-grey-100)); background-size: 200% 100%; animation: vs-skel 1s linear infinite; }
+  @keyframes vs-skel { to { background-position: -200% 0; } }
+
+  /* ---- Dealer strip ---- */
+  .dealer { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 12px 16px; border-radius: 10px; background: #fff; border: 1px solid var(--vs-grey-100); font-size: 13.5px; }
+  .dealer svg { width: 20px; height: 20px; color: var(--vs-navy); }
+  .dealer b { color: var(--vs-text); }
+  .dealer .muted { display: block; font-size: 12.5px; }
+  .dealer a { font-weight: 700; font-size: 13px; white-space: nowrap; }
+
+  /* ---- Promo ---- */
+  .promo { display: flex; gap: 10px; align-items: flex-start; }
+  .promo .field { flex: 1; }
+  /* line the Apply button up with the input: label (13px × 1.5 + 6px gap) above, hint (16px + 6px gap) below */
+  .promo .btn { height: var(--vs-control-h); margin-top: calc(13px * 1.5 + 6px); }
+  .promo-on { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-radius: 8px; background: var(--vs-green-50); color: #0b5d48; font-size: 13.5px; }
+  .promo-on b { font-family: var(--vs-mono); letter-spacing: .04em; }
+  .promo-on button { background: none; border: 0; cursor: pointer; font: inherit; font-size: 12.5px; font-weight: 700; color: inherit; text-decoration: underline; padding: 0; }
+
+  /* ---- Saved for later ---- */
+  .saved { display: grid; gap: 10px; }
+  .sv { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; font-size: 14px; }
+  .sv__img { width: 56px; height: 56px; border-radius: 8px; overflow: hidden; border: 1px solid var(--vs-grey-100); background: var(--vs-grey-50); }
+  .sv__img img { width: 100%; height: 100%; object-fit: cover; }
+  .sv__meta strong { display: block; font-size: 14px; line-height: 1.3; }
+  .sv__meta .muted { font-size: 12.5px; }
+  .sv__acts { display: flex; gap: 8px; }
+
+  /* ---- Empty cart: same two-column skeleton as a populated cart. The Items card keeps its head,
+     the body becomes one left-aligned "line" (thumb + copy + actions); summary stays at $0.00. ---- */
+  .empty-ln { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; padding: 6px 0 4px; align-items: start; }
+  .empty-ln__img { width: 96px; height: 96px; border-radius: 10px; border: 1px dashed var(--vs-border-strong); background: var(--vs-grey-50); color: var(--vs-text-3); display: flex; align-items: center; justify-content: center; }
+  .empty-ln__img svg { width: 30px; height: 30px; }
+  .empty-ln h4 { font-size: 15px; line-height: 1.3; }
+  .empty-ln p { font-size: 13px; color: var(--vs-text-3); margin-top: 4px; max-width: 520px; line-height: 1.5; }
+  .empty-ln__acts { display: flex; align-items: center; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+  .empty-ln__acts a:not(.btn) { font-size: 13px; font-weight: 700; }
+  .empty-cats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .empty-cats a { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--vs-border-strong); background: #fff; font-size: 13px; font-weight: 700; color: var(--vs-navy); text-decoration: none; }
+  .empty-cats a:hover { background: var(--vs-navy-50); border-color: var(--vs-navy); }
+
+  /* ---- Recommendations (empty cart): product tiles that add straight into vs.cart ---- */
+  .reco { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .rc { display: grid; grid-template-rows: auto 1fr auto; gap: 8px; min-width: 0; }
+  .rc__img { display: block; aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--vs-grey-100); background: var(--vs-grey-50); overflow: hidden; }
+  .rc__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .25s ease; }
+  .rc:hover .rc__img img { transform: scale(1.03); }
+  .rc__name { font-size: 14px; font-weight: 700; line-height: 1.3; color: var(--vs-text); display: block; }
+  .rc__name:hover { text-decoration: underline; }
+  .rc__spec { font-size: 12.5px; color: var(--vs-text-3); display: block; margin-top: 2px; }
+  .rc__price { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 4px; display: flex; align-items: baseline; gap: 6px; }
+  .rc__price small { font-size: 12px; font-weight: 400; color: var(--vs-text-3); }
+  .rc__stock { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--vs-text-3); margin-top: 2px; }
+  .rc__stock .chip { height: 20px; font-size: 10.5px; }
+  .rc .btn { width: 100%; margin-top: 4px; }
+
+  /* ---- Summary ---- */
+  .sum__lines { display: grid; gap: 8px; padding: 0 0 14px; border-bottom: 1px solid var(--vs-grey-100); font-size: 14px; }
+  .line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .line .k { color: var(--vs-text-2); display: flex; align-items: center; gap: 6px; }
+  .line .k .tip { width: 15px; height: 15px; border-radius: 50%; border: 1px solid var(--vs-border-strong); font-size: 10px; display: inline-flex; align-items: center; justify-content: center; color: var(--vs-text-3); cursor: help; }
+  .line .v { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .line .v.ok { color: var(--vs-green); font-weight: 700; }
+  .line .v.est { color: var(--vs-text-3); font-size: 13px; }
+  .line.sub { font-size: 12px; color: var(--vs-text-3); margin-top: -4px; padding-left: 14px; }
+  .sum__total { display: flex; justify-content: space-between; align-items: baseline; padding-top: 14px; }
+  .sum__total .k { font-weight: 700; font-size: 15px; }
+  .sum__total .v { font-weight: 700; font-size: 22px; color: var(--vs-navy); font-variant-numeric: tabular-nums; }
+  .sum__total .cur { font-size: 12px; font-weight: 700; color: var(--vs-text-3); margin-left: 4px; }
+  .tax-note { font-size: 12px; color: var(--vs-text-3); line-height: 1.5; }
+  .tax-note b { color: var(--vs-text-2); }
+  .est-prov { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--vs-text-3); margin-top: 10px; }
+  .est-prov select { border: 0; background: transparent; color: var(--vs-navy); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 0; outline: 0; }
+  .est-prov select:focus-visible { box-shadow: var(--vs-focus); border-radius: 4px; }
+  .sum__cta { display: grid; gap: 10px; margin-top: 16px; }
+  .sum__cta .btn svg { width: 16px; height: 16px; }
+  .pay-with { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; color: var(--vs-text-3); }
+  .pay-with i { font-style: normal; font-weight: 800; font-size: 10px; letter-spacing: .02em; border: 1px solid var(--vs-grey-200); border-radius: 3px; padding: 1px 5px; color: var(--vs-text-2); }
+  .pay-with .w { display: inline-flex; align-items: center; gap: 2px; font-weight: 700; color: var(--vs-text-2); font-size: 12px; }
+  .pay-with .w svg { width: 13px; height: 13px; }
+  .blocked { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--vs-error); }
+  .blocked svg { width: 15px; height: 15px; flex: none; margin-top: 1px; }
+
+  .trust { padding: 14px 16px; display: grid; gap: 8px; background: var(--vs-navy-50); color: var(--vs-text); border-radius: 10px; }
+  .trust ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 12px; color: var(--vs-text-2); }
+  .trust li { display: flex; gap: 6px; align-items: flex-start; }
+  .trust li svg { width: 13px; height: 13px; color: var(--vs-navy); flex: none; margin-top: 2px; }
+  .trust p { font-size: 13px; color: var(--vs-text-2); line-height: 1.45; }
+
+  @media (max-width: 980px) { .wrap { grid-template-columns: 1fr; } .ct__side { position: static; } }
+  @media (max-width: 640px) {
+    .wrap { padding: 14px 14px 72px; }
+    .ln { grid-template-columns: 72px minmax(0, 1fr); }
+    .ln__img { width: 72px; height: 72px; }
+    .ln__right { grid-column: 2; justify-items: start; text-align: left; flex-direction: row; display: flex; gap: 8px; align-items: baseline; }
+    .promo { flex-direction: column; }
+    .promo .btn { width: 100%; }
+    .dealer { grid-template-columns: auto 1fr; }
+    .dealer a { grid-column: 2; }
+    .empty-ln { grid-template-columns: 72px minmax(0, 1fr); }
+    .empty-ln__img { width: 72px; height: 72px; }
+    .empty-ln__acts .btn { width: 100%; }
+    .reco { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  }
+</style>
+</head>
+<body class="site">
+
+<header class="site-header" data-site-header data-cart-href="/cart" data-login-href="/login" data-account-href="/account"></header>
+
+<div class="wrap">
+  <div class="page-title">
+    <div><h2 id="ttl">Your cart</h2><p id="ttlSub"></p></div>
+    <a href="https://www.vanstro.ca/" id="continue"><span data-icon="chevron"></span><span>Continue shopping</span></a>
+  </div>
+  <div id="alerts" class="stack" style="gap:10px"></div>
+
+  <main class="ct__main">
+
+    <div class="dealer" id="dealer">
+      <span data-icon="pin"></span>
+      <span><b>Yuan Construction · Winnipeg</b><span class="muted" id="dealerRole">Handles pickup, delivery, returns and after-sales help. Installation is quoted separately.</span></span>
+      <a href="account.html#dealer" id="dealerChange">Change dealer</a>
+    </div>
+
+    <!-- Lines -->
+    <div class="card" id="linesCard">
+      <div class="card__head row row--between"><h3 id="hItems">Items</h3><span class="muted small" id="hCount"></span></div>
+      <div class="card__body"><div class="lines" id="lines"></div></div>
+      <div class="card__foot" style="justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <span class="muted small" id="footNote">Prices in CAD, before tax. Stock is reserved for 60 minutes once you start checkout.</span>
+        <button type="button" class="btn btn--ghost btn--sm" id="clearCart">Clear cart</button>
+      </div>
+    </div>
+
+    <!-- Empty: same Items card, one placeholder line instead of product lines (same /cart URL) -->
+    <div class="card hidden" id="emptyCard">
+      <div class="card__head row row--between"><h3 id="emptyH">Your cart is empty</h3><span class="muted small" id="emptySubE">0 items</span></div>
+      <div class="card__body">
+        <div class="empty-ln">
+          <div class="empty-ln__img" aria-hidden="true"><span data-icon="cart"></span></div>
+          <div>
+            <p id="emptyP">Anything you add is saved to your account and priced by your dealer, Yuan Construction · Winnipeg.</p>
+            <div class="empty-ln__acts">
+              <a class="btn btn--primary" href="https://www.vanstro.ca/products/" id="emptyBrowse">Continue shopping</a>
+              <a href="account.html#orders" id="emptyOrders">Reorder from a past order</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card__foot" style="justify-content:flex-start;gap:12px;flex-wrap:wrap">
+        <span class="muted small" id="emptyDestLbl">Shop by category</span>
+        <div class="empty-cats">
+          <a id="emptyDestCab" href="https://www.vanstro.ca/products?category=kitchen-cabinets"><span id="emptyDestCabT">Kitchen cabinets</span></a>
+          <a id="emptyDestVan" href="https://www.vanstro.ca/products?category=bathroom-vanities"><span id="emptyDestVanT">Bathroom vanities</span></a>
+          <a id="emptyDestPan" href="https://www.vanstro.ca/products?category=wall-panels"><span id="emptyDestPanT">Wall panels</span></a>
+          <a id="emptyDestHw" href="https://www.vanstro.ca/products?category=hardware"><span id="emptyDestHwT">Hardware</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations: only while the cart is empty; "Add to cart" writes a real line into vs.cart -->
+    <div class="card hidden" id="recoCard">
+      <div class="card__head row row--between"><h3 id="hReco">Popular right now</h3><a href="https://www.vanstro.ca/products/" class="small" id="recoAll" style="font-weight:700">View all products</a></div>
+      <div class="card__body"><div class="reco" id="reco"></div></div>
+    </div>
+
+    <!-- Promo -->
+    <div class="card" id="promoCard">
+      <div class="card__body" style="padding-top:18px">
+        <div id="promoOff" class="promo">
+          <div class="field" id="fPromo">
+            <label class="field__label" for="promo" id="lPromo">Promo or dealer code</label>
+            <div class="control"><input id="promo" autocomplete="off" spellcheck="false" placeholder="e.g. VANSTRO10" style="text-transform:uppercase"></div>
+            <div class="field__hint" id="hPromo">One code per order. Dealer trade pricing is applied to your account, not here.</div>
+          </div>
+          <button type="button" class="btn btn--secondary" id="promoGo">Apply</button>
+        </div>
+        <div id="promoOn" class="promo-on hidden"><span><span data-icon="check" style="display:inline-flex;vertical-align:-3px;margin-right:6px"></span><span id="promoOnText"></span></span><button type="button" id="promoRemove">Remove</button></div>
+      </div>
+    </div>
+
+    <!-- Saved for later -->
+    <div class="card hidden" id="savedCard">
+      <div class="card__head row row--between"><h3 id="hSaved">Saved for later</h3><span class="muted small" id="savedCount"></span></div>
+      <div class="card__body"><div class="saved" id="saved"></div></div>
+    </div>
+  </main>
+
+  <!-- ================= SUMMARY ================= -->
+  <aside class="ct__side" id="sumSide">
+    <div class="card">
+      <div class="card__head row row--between"><h3 id="hSum">Order summary</h3><span class="muted small" id="sumCount"></span></div>
+      <div class="card__body">
+        <div class="sum__lines" id="sumLines"></div>
+        <div class="sum__total"><span class="k" id="lblTotal">Estimated total</span><span><span class="v" id="sumTotal"></span><span class="cur">CAD</span></span></div>
+        <div class="est-prov"><span data-icon="pin" style="display:inline-flex;width:14px;height:14px"></span><span id="estLbl">Estimated for</span><select id="prov" aria-label="Province for tax estimate"></select></div>
+        <p class="tax-note" id="taxNote" style="margin-top:8px"></p>
+        <div class="sum__cta">
+          <div class="blocked hidden" id="blocked"><span data-icon="alert"></span><span id="blockedText"></span></div>
+          <a class="btn btn--primary btn--block" href="/checkout" id="checkout"><span data-icon="lock"></span><span id="checkoutLbl">Proceed to checkout</span></a>
+          <div class="pay-with"><span id="payWith">Pay with</span><i>VISA</i><i>MC</i><i>AMEX</i><span class="w"><span data-icon="apple"></span>Pay</span><span class="w"><span data-icon="google"></span>Pay</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="trust">
+      <p id="trustP">Checkout is secured by Moneris. Delivery and taxes are confirmed on the next page, before you pay.</p>
+      <ul id="trustUl">
+        <li><span data-icon="check"></span><span>30-day returns through your dealer</span></li>
+        <li><span data-icon="check"></span><span>Your cart is saved to your account</span></li>
+      </ul>
+    </div>
+    <p class="muted small" style="text-align:center" id="help">Need help? <a href="https://www.vanstro.ca/contact/">Chat</a> · <a href="tel:+12042212288">204 221 2288</a></p>
+  </aside>
+</div>
+
+<footer class="site-footer" data-site-footer></footer>
+
+<!-- Remove confirmation (only for the last unit of a high-value line) -->
+<div class="modal-backdrop hidden" id="rmModal">
+  <div class="modal" style="max-width:420px" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+    <div class="modal__head"><strong id="rmTitle">Remove from cart?</strong><button class="icon-btn" data-close aria-label="Close"><span data-icon="close"></span></button></div>
+    <div class="modal__body" style="font-size:14px;color:var(--vs-text-2);line-height:1.6" id="rmBody"></div>
+    <div class="modal__foot"><button class="btn btn--ghost" data-close id="rmCancel">Keep it</button><button class="btn btn--secondary" id="rmSave">Save for later</button><button class="btn btn--danger" id="rmGo">Remove</button></div>
+  </div>
+</div>
+
+<script src="/account/assets/vi.js"></script>
+<script src="/account/assets/session.js"></script>
+<script src="/account/assets/site-header.js"></script>
+<script src="/account/assets/site-footer.js"></script>
+<script src="/account/assets/tax.js?v=bn-71411"></script>
+<script src="/account/assets/catalogue-data.js"></script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
+  VS.icons();
+  const q = new URLSearchParams(location.search);
+  let lang = 'en';
+  const L = () => lang === 'fr';
+  const money = c => L() ? VSTax.formatCADFr(c) : VSTax.formatCAD(c);
+  const KEY = 'vs.cart';
+  const SITE = 'https://www.vanstro.ca';
+  const MAX_QTY = 50;
+
+  /* ---------------- catalogue (what the storefront would return for each SKU) ---------------- */
+  const CATALOG = {
+    'KC-SHK-SAGE-12': { name: 'Shaker Kitchen Cabinet Set · Sage', nameFr: 'Ensemble d’armoires de cuisine Shaker · Sauge', meta: '12 pcs · soft-close · assembled', metaFr: '12 pièces · fermeture douce · assemblé', unit: 624000, img: 'assets/products/cabinet-set.jpg', url: SITE + '/products/kitchen-cabinets/', stock: 6, lead: 'Ships in 2–3 days', leadFr: 'Expédié en 2 à 3 jours' },
+    'WP-SLAT-WAL-2440': { name: 'Slat Wall Panel · Walnut', nameFr: 'Panneau mural à lattes · Noyer', meta: '2440 × 600 mm · acoustic felt back', metaFr: '2440 × 600 mm · dos en feutre acoustique', unit: 18900, img: 'assets/products/slat-wall-panel.jpg', url: SITE + '/products/wall-panels/', stock: 40, lead: 'In stock', leadFr: 'En stock' },
+    'HW-HINGE-SC-10': { name: 'Soft-close hinge kit', nameFr: 'Ensemble de charnières à fermeture douce', meta: '10 pack · 110°', metaFr: 'Paquet de 10 · 110°', unit: 4800, img: 'assets/products/hinge-kit.png', url: SITE + '/products/hardware/', stock: 120, lead: 'In stock', leadFr: 'En stock' },
+  };
+  /* Same French name-prefix / finish rules as src/lib/product/product-localization.ts
+     (NAME_PREFIXES / FR_FINISH). catalogue-data.js is an English-only snapshot; this cart
+     page has no server render, so the same translation table is duplicated here rather
+     than copying the English string into the "French" field. Keep this list in sync with
+     the TS source if either changes. */
+  const FR_NAME_PREFIXES = [
+    ['Wall Cabinet (GD)', 'Armoire murale avec porte vitrée '],
+    ['3-Drawer Base', 'Armoire de base à 3 tiroirs '],
+    ['Diagonal Corner Wall', 'Armoire murale d’angle diagonale '],
+    ['Decorative Moulding', 'Moulure décorative '],
+    ['Microwave Cabinet', 'Armoire pour four à micro-ondes '],
+    ['Oven Tall Cabinet', 'Armoire haute pour four '],
+    ['Open End Shelf', 'Étagère d’extrémité ouverte '],
+    ['Lazy Susan Base', 'Armoire de base avec plateau tournant '],
+    ['Vanity Cabinet ', 'Meuble-lavabo '],
+    ['Wall End Panel', 'Panneau d’extrémité mural '],
+    ['Base End Panel', 'Panneau d’extrémité de base '],
+    ['Tall End Panel', 'Panneau d’extrémité d’armoire haute '],
+    ['Wall Cabinet', 'Armoire murale '],
+    ['Base Cabinet', 'Armoire de base '],
+    ['Sink Base', 'Armoire de base pour évier '],
+    ['Tall Cabinet', 'Armoire haute '],
+    ['Tall Filler', 'Fileur pour armoire haute '],
+    ['Toe Kick', 'Coup-de-pied '],
+    ['Baseboard-', 'Plinthe '],
+    ['Casing-', 'Moulure de cadrage '],
+    ['Filler', 'Fileur '],
+    ['Handle', 'Poignée '],
+  ];
+  const FR_FINISH = {
+    'Light Grey': 'Gris pâle',
+    'Light Grey cabinet only': 'Gris pâle, sans comptoir',
+    'Light Grey with top': 'Gris pâle avec comptoir',
+    'Matte Black': 'Noir mat',
+    'Painted or stained finish': 'Fini peint ou teint',
+    'PVC white': 'PVC blanc',
+    'Putty White': 'Blanc mastic',
+    'Standard finish': 'Fini standard',
+    White: 'Blanc',
+    'White cabinet only': 'Blanc, sans comptoir',
+    'White finish': 'Fini blanc',
+    'White with top': 'Blanc avec comptoir',
+  };
+  function normalizeDisplayName(name) { return String(name || '').replace(/\s+/g, ' ').trim(); }
+  function translateProductNameFr(name) {
+    const n = normalizeDisplayName(name);
+    const hit = FR_NAME_PREFIXES.find(pair => n.startsWith(pair[0]));
+    return hit ? normalizeDisplayName(hit[1] + n.slice(hit[0].length)) : n;
+  }
+  function translateFinishFr(value) { return value ? (FR_FINISH[value] || value) : value; }
+
+  /* Live SKUs (assets/catalogue-data.js, same snapshot products.html and the server use). Prototype lines above win on collision.
+     Stock/lead are not in the public feed: treat as in stock, standard lead. */
+  (window.VS_CATALOGUE || []).forEach(p => {
+    if (CATALOG[p.sku]) return;
+    const meta = [p.dims, p.finish].filter(Boolean).join(' · ');
+    const finishFr = translateFinishFr(p.finish);
+    const metaFr = [p.dims, finishFr].filter(Boolean).join(' · ');
+    CATALOG[p.sku] = { name: p.name, nameFr: translateProductNameFr(p.name), meta, metaFr, unit: p.cents, img: p.img, url: SITE + '/products/' + p.slug + '/?sku=' + p.sku, stock: 99, lead: 'Ships in 2–3 days', leadFr: 'Expédié en 2 à 3 jours' };
+  });
+  const DEFAULT = { items: [
+    { sku: 'KC-SHK-SAGE-12', qty: 1 },
+    { sku: 'WP-SLAT-WAL-2440', qty: 4 },
+    { sku: 'HW-HINGE-SC-10', qty: 2 },
+  ], saved: [], promo: null, prov: 'MB' };
+  const PROMOS = {
+    VANSTRO10: { pct: 10, label: '10% off products' , labelFr: '10 % de rabais sur les produits' },
+    SPRING25: { expired: '2026-05-31' },
+  };
+
+  /* ---------------- state ---------------- */
+  /* per-line overrides used by prototype states: { sku: { stock, unit, was, out } } */
+  let over = {};
+  /* busy = SKUs with a quantity change still "in flight"; several lines can be busy at once. */
+  const busy = new Set(); let syncErr = null, undo = null, undoTimer = null, lastPromoErr = null;
+  const busySku = () => busy.size > 0;
+
+  const clampQty = n => Math.max(1, Math.min(MAX_QTY, Math.round(Number(n) || 1)));
+  /* Snapshots may contain PDP lines not present in the public catalogue feed. Keep every valid line and let prod() use its saved metadata. */
+  function load() {
+    try {
+      const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (s && Array.isArray(s.items)) {
+        const items = s.items
+          .filter(i => i && typeof i.sku === 'string' && i.sku.trim() && Number(i.qty) > 0)
+          .map(i => ({ ...i, sku: i.sku.trim(), qty: clampQty(i.qty) }));
+        const saved = (Array.isArray(s.saved) ? s.saved : [])
+          .filter(i => i && typeof i.sku === 'string' && i.sku.trim() && Number(i.qty) > 0 && !items.some(x => x.sku === i.sku))
+          .map(i => ({ ...i, sku: i.sku.trim(), qty: clampQty(i.qty) }));
+        return { items, saved, promo: items.length && PROMOS[s.promo] && !PROMOS[s.promo].expired ? s.promo : null, prov: VSTax.PROVINCES[s.prov] ? s.prov : DEFAULT.prov };
+      }
+    } catch (e) {}
+    return { items: [], saved: [], promo: null, prov: DEFAULT.prov };
+  }
+  /* checkout.html reads the same key: keep the snapshot flat (name/meta/unit/qty) so it needs no catalogue.
+     Unavailable lines and a promo on an empty cart are not written — checkout has no concept of either. */
+  function save() {
+    if (!state.items.length) state.promo = null;
+    const items = state.items.filter(i => !prod(i.sku).out).map(i => { const p = prod(i.sku); return { sku: i.sku, name: p.name, meta: p.meta, unit: p.unit, qty: i.qty, icon: 'box', img: p.img }; });
+    localStorage.setItem(KEY, JSON.stringify({ items, saved: state.saved, promo: items.length ? state.promo : null, prov: state.prov, at: new Date().toISOString() }));
+  }
+  let state;
+  const prod = sku => {
+    const base = CATALOG[sku] || {};
+    const snap = [...(state.items || []), ...(state.saved || [])].find(i => i.sku === sku) || {};
+    const merged = { ...base, ...snap, ...(over[sku] || {}) };
+    return { ...merged, nameFr: merged.nameFr || merged.name, metaFr: merged.metaFr || merged.meta, stock: merged.stock ?? 99, lead: merged.lead ?? 'Ships in 2–3 days', leadFr: merged.leadFr ?? 'Expédié en 2 à 3 jours', url: merged.url || `${SITE}/products/?sku=${encodeURIComponent(sku)}` };
+  };
+  state = load(); /* after the helpers above — load() depends on clampQty */
+  const line = i => ({ ...i, p: prod(i.sku), total: prod(i.sku).unit * i.qty });
+  const units = () => state.items.reduce((s, i) => s + i.qty, 0);
+  const subtotal = () => state.items.filter(i => !prod(i.sku).out).reduce((s, i) => s + prod(i.sku).unit * i.qty, 0);
+  const discount = () => { const pr = state.promo && PROMOS[state.promo]; return pr && pr.pct ? Math.round(subtotal() * pr.pct / 100) : 0; };
+  /* Blockers stop checkout: an unavailable line, or a quantity above what the dealer can supply. */
+  const blockers = () => state.items.map(line).filter(l => l.p.out || l.qty > l.p.stock);
+
+  /* ---------------- copy ---------------- */
+  const T = {
+    en: { title: 'Your cart', cont: 'Continue shopping', items: 'Items', sum: 'Order summary', total: 'Estimated total', est: 'Estimated for', checkout: 'Proceed to checkout', payWith: 'Pay with', clear: 'Clear cart',
+      sub: (n, u) => `${n} ${n === 1 ? 'product' : 'products'} · ${u} ${u === 1 ? 'item' : 'items'}`, unitsShort: u => `${u} ${u === 1 ? 'item' : 'items'}`,
+      subtotal: 'Subtotal', delivery: 'Delivery', deliveryEst: 'Quoted by dealer · chosen at checkout', pickup: 'or free dealer pickup', discount: c => `Discount · ${c}`, taxes: 'Estimated taxes',
+      taxNote: p => `Estimate for <b>${p}</b>. Final tax and delivery are shown at checkout before you pay.`,
+      footNote: 'Prices in CAD, before tax. Stock is reserved for 60 minutes once you start checkout.',
+      remove: 'Remove', saveLater: 'Save for later', moveToCart: 'Move to cart', each: 'each', qtyLbl: 'Quantity', saved: 'Saved for later',
+      inStock: 'In stock', low: n => `Only ${n} left`, out: 'No longer available', shipsFrom: 'Ships from Winnipeg', pickupAt: 'or pick up at Yuan Construction',
+      lowMsg: (n) => `Your dealer has ${n} in stock. Reduce the quantity to continue, or`, lowAlt: 'ask about a backorder', outMsg: 'This item was discontinued after you added it. Remove it to continue.',
+      priceUp: (o, n) => `Price updated from ${o} to ${n} since you added it.`, priceDown: (o, n) => `Price dropped from ${o} to ${n} since you added it.`,
+      maxMsg: `Maximum ${MAX_QTY} per order online. For larger quantities contact your dealer for trade pricing.`,
+      blockedOut: 'Remove the unavailable item to continue to checkout.', blockedLow: 'Reduce quantities to what is in stock to continue.', blockedEmpty: 'Your cart is empty.', blockedBusy: 'Still saving your last change — one moment.',
+      docTitle: 'Your cart · VANSTRO', promoPh: 'e.g. VANSTRO10', provAria: 'Province for tax estimate', close: 'Close', clearConfirm: 'Clear the cart? Saved-for-later items are kept.',
+      undo: name => `Removed “${name}”.`, undoBtn: 'Undo', savedToast: 'Saved for later', movedToast: 'Moved to cart', cleared: 'Cart cleared',
+      promoLbl: 'Promo or dealer code', promoHint: 'One code per order. Dealer trade pricing is applied to your account, not here.', apply: 'Apply', promoOn: (c, l) => `${c} applied · ${l}`,
+      promoEmpty: 'Enter a code first.', promoBad: 'We don’t recognise this code. Check the spelling or ask your dealer.', promoExpired: d => `This code expired on ${d}.`, promoApplied: 'Code applied', promoRemoved: 'Code removed',
+      syncErr: 'We couldn’t save your last change.', retry: 'Retry', dismiss: 'Dismiss', synced: 'Cart updated',
+      emptyH: 'Your cart is empty', emptyP: 'Anything you add is saved to your account and priced by your dealer, Yuan Construction · Winnipeg.', emptySub: '0 items', browse: 'Continue shopping', reorder: 'Reorder from a past order',
+      destLbl: 'Shop by category', destCab: 'Kitchen cabinets', destVan: 'Bathroom vanities', destPan: 'Wall panels', destHw: 'Hardware',
+      reco: 'Popular right now', recoAll: 'View all products', addToCart: 'Add to cart', added: n => `Added “${n}” to your cart`,
+      rmTitle: 'Remove from cart?', rmBody: (n, t) => `<b>${n}</b> (${t}) will be removed. You can also keep it in “Saved for later” without holding stock.`, keep: 'Keep it',
+      dealerRole: 'Handles pickup, delivery, returns and after-sales help. Installation is quoted separately.', changeDealer: 'Change dealer',
+      trust: 'Checkout is secured by Moneris. Delivery and taxes are confirmed on the next page, before you pay.', trust1: '30-day returns through your dealer', trust2: 'Your cart is saved to your account', help: 'Need help?' },
+    fr: { title: 'Votre panier', cont: 'Continuer vos achats', items: 'Articles', sum: 'Sommaire de la commande', total: 'Total estimé', est: 'Estimé pour', checkout: 'Passer à la caisse', payWith: 'Payer avec', clear: 'Vider le panier',
+      sub: (n, u) => `${n} ${n === 1 ? 'produit' : 'produits'} · ${u} ${u === 1 ? 'article' : 'articles'}`, unitsShort: u => `${u} ${u === 1 ? 'article' : 'articles'}`,
+      subtotal: 'Sous-total', delivery: 'Livraison', deliveryEst: 'Sur devis du détaillant · choisie à la caisse', pickup: 'ou ramassage gratuit chez le détaillant', discount: c => `Rabais · ${c}`, taxes: 'Taxes estimées',
+      taxNote: p => `Estimation pour <b>${p}</b>. Les taxes et la livraison finales sont affichées à la caisse avant le paiement.`,
+      footNote: 'Prix en CAD, avant taxes. Le stock est réservé 60 minutes dès que vous commencez le paiement.',
+      remove: 'Retirer', saveLater: 'Garder pour plus tard', moveToCart: 'Remettre au panier', each: 'chacun', qtyLbl: 'Quantité', saved: 'Gardés pour plus tard',
+      inStock: 'En stock', low: n => `Il n’en reste que ${n}`, out: 'Non disponible', shipsFrom: 'Expédié de Winnipeg', pickupAt: 'ou ramassage chez Yuan Construction',
+      lowMsg: (n) => `Votre détaillant en a ${n} en stock. Réduisez la quantité pour continuer, ou`, lowAlt: 'demandez une commande différée', outMsg: 'Cet article a été retiré du catalogue après l’ajout. Retirez-le pour continuer.',
+      priceUp: (o, n) => `Le prix est passé de ${o} à ${n} depuis l’ajout.`, priceDown: (o, n) => `Le prix a baissé de ${o} à ${n} depuis l’ajout.`,
+      maxMsg: `Maximum ${MAX_QTY} par commande en ligne. Pour de plus grandes quantités, contactez votre détaillant.`,
+      blockedOut: 'Retirez l’article non disponible pour passer à la caisse.', blockedLow: 'Réduisez les quantités au stock disponible pour continuer.', blockedEmpty: 'Votre panier est vide.', blockedBusy: 'Enregistrement de votre dernière modification — un instant.',
+      docTitle: 'Votre panier · VANSTRO', promoPh: 'p. ex. VANSTRO10', provAria: 'Province pour l’estimation des taxes', close: 'Fermer', clearConfirm: 'Vider le panier ? Les articles gardés pour plus tard sont conservés.',
+      undo: name => `« ${name} » retiré.`, undoBtn: 'Annuler', savedToast: 'Gardé pour plus tard', movedToast: 'Remis au panier', cleared: 'Panier vidé',
+      promoLbl: 'Code promo ou détaillant', promoHint: 'Un code par commande. Les prix de gros sont appliqués à votre compte, pas ici.', apply: 'Appliquer', promoOn: (c, l) => `${c} appliqué · ${l}`,
+      promoEmpty: 'Entrez d’abord un code.', promoBad: 'Code inconnu. Vérifiez l’orthographe ou demandez à votre détaillant.', promoExpired: d => `Ce code a expiré le ${d}.`, promoApplied: 'Code appliqué', promoRemoved: 'Code retiré',
+      syncErr: 'Votre dernière modification n’a pas été enregistrée.', retry: 'Réessayer', dismiss: 'Fermer', synced: 'Panier mis à jour',
+      emptyH: 'Votre panier est vide', emptyP: 'Tout ce que vous ajoutez est enregistré dans votre compte et tarifé par votre détaillant, Yuan Construction · Winnipeg.', emptySub: '0 article', browse: 'Continuer vos achats', reorder: 'Recommander une commande passée',
+      destLbl: 'Magasiner par catégorie', destCab: 'Armoires de cuisine', destVan: 'Meubles-lavabos', destPan: 'Panneaux muraux', destHw: 'Quincaillerie',
+      reco: 'Populaires en ce moment', recoAll: 'Voir tous les produits', addToCart: 'Ajouter au panier', added: n => `« ${n} » ajouté au panier`,
+      rmTitle: 'Retirer du panier ?', rmBody: (n, t) => `<b>${n}</b> (${t}) sera retiré. Vous pouvez aussi le garder pour plus tard sans réserver de stock.`, keep: 'Garder',
+      dealerRole: 'S’occupe du ramassage, de la livraison, des retours et du service après-vente. L’installation est facturée séparément.', changeDealer: 'Changer de détaillant',
+      trust: 'Le paiement est sécurisé par Moneris. La livraison et les taxes sont confirmées à la page suivante, avant le paiement.', trust1: 'Retours sous 30 jours via votre détaillant', trust2: 'Votre panier est enregistré dans votre compte', help: 'Besoin d’aide ?' },
+  };
+  const t = k => T[lang][k];
+  const pName = p => L() ? p.nameFr : p.name;
+  const pMeta = p => L() ? p.metaFr : p.meta;
+
+  /* ---------------- render ---------------- */
+  function renderStatic() {
+    const c = T[lang];
+    $('#ttl').textContent = c.title; $('#continue').lastElementChild.textContent = c.cont;
+    $('#hItems').textContent = c.items; $('#hSum').textContent = c.sum; $('#lblTotal').textContent = c.total; $('#estLbl').textContent = c.est;
+    $('#checkoutLbl').textContent = c.checkout; $('#payWith').textContent = c.payWith; $('#clearCart').textContent = c.clear; $('#footNote').textContent = c.footNote;
+    $('#lPromo').textContent = c.promoLbl; $('#promoGo').textContent = c.apply; $('#promoRemove').textContent = c.remove; $('#hSaved').textContent = c.saved;
+    /* Guests: the cart lives in this browser, not an account; no order history to reorder from. */
+    const signedIn = !!(window.VSSession && VSSession.isSignedIn && VSSession.isSignedIn());
+    $('#emptyH').textContent = c.emptyH; $('#emptyP').textContent = signedIn ? c.emptyP : c.emptyP.replace(/saved to your account|enregistré dans votre compte/, L() ? 'gardé dans ce navigateur' : 'kept in this browser'); $('#emptyBrowse').textContent = c.browse;
+    $('#emptyOrders').textContent = signedIn ? c.reorder : (L() ? 'Suivre une commande' : 'Track an order'); $('#emptyOrders').href = signedIn ? '/account#orders' : '/order-status';
+    $('#emptyDestLbl').textContent = c.destLbl; $('#emptySubE').textContent = c.emptySub;
+    $('#emptyDestCabT').textContent = c.destCab; $('#emptyDestVanT').textContent = c.destVan; $('#emptyDestPanT').textContent = c.destPan; $('#emptyDestHwT').textContent = c.destHw;
+    $('#hReco').textContent = c.reco; $('#recoAll').textContent = c.recoAll;
+    $('#rmTitle').textContent = c.rmTitle; $('#rmCancel').textContent = c.keep; $('#rmSave').textContent = c.saveLater; $('#rmGo').textContent = c.remove;
+    $('#dealerRole').textContent = c.dealerRole; $('#dealerChange').textContent = c.changeDealer;
+    const trust2 = signedIn ? c.trust2 : (L() ? 'Payez en tant qu’invité — aucun compte requis' : 'Check out as a guest — no account needed');
+    $('#trustP').textContent = c.trust; $('#trustUl').innerHTML = `<li>${VS.I.check}<span>${c.trust1}</span></li><li>${VS.I.check}<span>${trust2}</span></li>`;
+    $('#help').innerHTML = `${c.help} <a href="${SITE}/contact/">${L() ? 'Clavardage' : 'Chat'}</a> · <a href="tel:+12042212288">204 221 2288</a>`;
+    if (lastPromoErr) showPromoErr(lastPromoErr); else $('#hPromo').textContent = c.promoHint;
+    document.title = c.docTitle; $('#promo').placeholder = c.promoPh;
+    $('#prov').setAttribute('aria-label', c.provAria); $('#rmModal .icon-btn[data-close]').setAttribute('aria-label', c.close);
+    $('#continue').href = L() ? SITE + '/fr/' : SITE + '/';
+    $('#emptyBrowse').href = L() ? SITE + '/fr/products/' : SITE + '/products/';
+    const fr = L() ? '/fr' : '';
+    $('#emptyDestCab').href = SITE + fr + '/products?category=kitchen-cabinets';
+    $('#emptyDestVan').href = SITE + fr + '/products?category=bathroom-vanities';
+    $('#emptyDestPan').href = SITE + fr + '/products?category=wall-panels';
+    $('#emptyDestHw').href = SITE + fr + '/products?category=hardware'; $('#recoAll').href = SITE + fr + '/products';
+    const sel = $('#prov'); sel.innerHTML = Object.keys(VSTax.PROVINCES).map(k => `<option value="${k}">${VSTax.PROVINCES[k]}</option>`).join(''); sel.value = state.prov;
+  }
+
+  function stockHtml(l) {
+    const c = T[lang];
+    if (l.p.out) return `<span class="chip chip--error">${c.out}</span>`;
+    if (l.p.stock <= 5 || l.qty > l.p.stock) return `<span class="chip chip--orange">${c.low(l.p.stock)}</span><span>${L() ? l.p.leadFr : l.p.lead}</span>`;
+    return `<span class="chip chip--green">${c.inStock}</span><span>${L() ? l.p.leadFr : l.p.lead} · ${c.shipsFrom} ${c.pickupAt}</span>`;
+  }
+  function lineHtml(l) {
+    const c = T[lang]; const busy = isBusy(l.sku);
+    let warn = '';
+    if (l.p.out) warn = `<div class="ln__warn err">${VS.I.alert}<span>${c.outMsg}</span></div>`;
+    else if (l.qty > l.p.stock) warn = `<div class="ln__warn">${VS.I.warn}<span>${c.lowMsg(l.p.stock)} <button type="button" data-backorder="${l.sku}">${c.lowAlt}</button>.</span></div>`;
+    else if (l.qty >= MAX_QTY) warn = `<div class="ln__warn">${VS.I.info}<span>${c.maxMsg}</span></div>`;
+    if (l.p.was && !l.p.out) warn += `<div class="ln__warn" style="color:var(--vs-text-2)">${VS.I.info}<span>${l.p.was < l.p.unit ? c.priceUp(money(l.p.was), money(l.p.unit)) : c.priceDown(money(l.p.was), money(l.p.unit))}</span></div>`;
+    return `<div class="ln${busy ? ' is-busy' : ''}${l.p.out ? ' is-out' : ''}" data-sku="${l.sku}">
+      <a class="ln__img" href="${l.p.url}" tabindex="-1" aria-hidden="true"><img src="${l.p.img}" alt=""></a>
+      <div class="ln__meta">
+        <a class="ln__name" href="${l.p.url}">${pName(l.p)}</a>
+        <span class="ln__spec">${pMeta(l.p)}</span>
+        <span class="ln__sku">${l.sku}</span>
+        <span class="ln__unit">${money(l.p.unit)} ${c.each}${l.p.was ? `<s>${money(l.p.was)}</s>` : ''}</span>
+        <div class="ln__stock">${stockHtml(l)}</div>
+        <div class="ln__ctl">
+          ${l.p.out ? '' : `<div class="qty" role="group" aria-label="${c.qtyLbl}">
+            <button type="button" data-dec="${l.sku}" aria-label="−1" ${l.qty <= 1 ? 'disabled' : ''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+            <input type="number" inputmode="numeric" min="1" max="${MAX_QTY}" value="${l.qty}" data-qty="${l.sku}" aria-label="${c.qtyLbl}">
+            <button type="button" data-inc="${l.sku}" aria-label="+1" ${l.qty >= MAX_QTY ? 'disabled' : ''}>${VS.I.plus}</button>
+          </div>`}
+          <div class="ln__acts">
+            ${l.p.out ? '' : `<button type="button" data-save="${l.sku}">${c.saveLater}</button>`}
+            <button type="button" class="danger" data-rm="${l.sku}">${VS.I.trash}${c.remove}</button>
+          </div>
+        </div>
+        ${warn}
+      </div>
+      <div class="ln__right">
+        <span class="ln__total">${busy ? '<span class="skel"></span>' : (l.p.out ? '—' : money(l.total))}</span>
+        ${l.qty > 1 && !l.p.out ? `<span class="ln__each">${l.qty} × ${money(l.p.unit)}</span>` : ''}
+      </div>
+    </div>`;
+  }
+
+  const isBusy = sku => busy.has(sku);
+  /* Re-rendering #lines replaces the DOM; put keyboard focus back on the same control (matched by data-* attr + SKU). */
+  function renderLines() {
+    const ae = document.activeElement; let focusSel = null;
+    if (ae && $('#lines').contains(ae)) { const k = ['inc', 'dec', 'qty', 'save', 'rm'].find(k => ae.dataset[k]); if (k) focusSel = `[data-${k}="${ae.dataset[k]}"]`; }
+    renderLinesInner();
+    if (focusSel) { const el = $('#lines ' + focusSel); if (el && !el.disabled) el.focus(); else { const fb = $('#lines [data-qty]'); if (fb) fb.focus(); } }
+  }
+  function renderLinesInner() {
+    const c = T[lang]; const has = state.items.length > 0;
+    $('#linesCard').classList.toggle('hidden', !has); $('#emptyCard').classList.toggle('hidden', has); $('#recoCard').classList.toggle('hidden', has); $('#promoCard').classList.toggle('hidden', !has);
+    $('#ttlSub').textContent = has ? c.sub(state.items.length, units()) : c.emptySub;
+    $('#hCount').textContent = has ? c.unitsShort(units()) : '';
+    $('#lines').innerHTML = state.items.map(line).map(lineHtml).join('');
+    /* recommendations: catalogue items not already saved for later */
+    if (!has) $('#reco').innerHTML = Object.keys(CATALOG).filter(sku => !DEFAULT.items.some(i => i.sku === sku) && !state.saved.some(s => s.sku === sku)).slice(0, 3).map(sku => { const p = prod(sku);
+      return `<div class="rc" data-sku="${sku}">
+        <a class="rc__img" href="${p.url}" tabindex="-1" aria-hidden="true"><img src="${p.img}" alt=""></a>
+        <div><a class="rc__name" href="${p.url}">${pName(p)}</a><span class="rc__spec">${pMeta(p)}</span>
+          <div class="rc__price">${money(p.unit)}<small>${c.each}</small></div>
+          <div class="rc__stock"><span class="chip chip--green">${c.inStock}</span><span>${L() ? p.leadFr : p.lead}</span></div></div>
+        <button type="button" class="btn btn--secondary btn--sm" data-add="${sku}"><span class="btn__icon">${VS.I.plus}</span>${c.addToCart}</button>
+      </div>`; }).join('');
+    /* saved for later */
+    $('#savedCard').classList.toggle('hidden', !state.saved.length);
+    $('#savedCount').textContent = state.saved.length ? state.saved.length : '';
+    $('#saved').innerHTML = state.saved.map(s => { const p = prod(s.sku); return `<div class="sv"><span class="sv__img"><img src="${p.img}" alt=""></span><div class="sv__meta"><strong>${pName(p)}</strong><span class="muted">${s.qty > 1 ? s.qty + ' × ' : ''}${money(p.unit)} · ${pMeta(p)}</span></div><div class="sv__acts"><button type="button" class="btn btn--secondary btn--sm" data-move="${s.sku}">${c.moveToCart}</button><button type="button" class="icon-btn" data-drop="${s.sku}" aria-label="${c.remove}">${VS.I.trash}</button></div></div>`; }).join('');
+    /* promo */
+    const pr = state.promo && PROMOS[state.promo];
+    $('#promoOff').classList.toggle('hidden', !!pr); $('#promoOn').classList.toggle('hidden', !pr);
+    if (pr) $('#promoOnText').textContent = c.promoOn(state.promo, L() ? pr.labelFr : pr.label);
+  }
+
+  function renderAlerts() {
+    const c = T[lang]; let html = '';
+    if (syncErr) html += `<div class="alert alert--error" role="alert">${VS.I.alert}<div><strong>${c.syncErr}</strong>${syncErr.detail || ''}</div><span class="row" style="gap:12px"><button type="button" class="link-btn" data-retry>${c.retry}</button><button type="button" class="link-btn" data-dismiss style="font-weight:400">${c.dismiss}</button></span></div>`;
+    if (undo) html += `<div class="alert alert--info" role="status">${VS.I.info}<div>${c.undo(pName(prod(undo.item.sku)))}</div><span class="row"><button type="button" class="link-btn" data-undo>${c.undoBtn}</button></span></div>`;
+    $('#alerts').innerHTML = html;
+  }
+
+  function renderSummary() {
+    const c = T[lang]; const has = state.items.length > 0;
+    $('#sumCount').textContent = has ? c.unitsShort(units()) : '';
+    const sub = subtotal(); const disc = discount(); const taxable = Math.max(0, sub - disc);
+    const qt = taxable ? VSTax.quote(state.prov, taxable) : null;
+    let lines = `<div class="line"><span class="k">${c.subtotal}</span><span class="v">${money(sub)}</span></div>`;
+    if (disc) lines += `<div class="line"><span class="k">${c.discount(state.promo)}</span><span class="v ok">− ${money(disc)}</span></div>`;
+    lines += `<div class="line"><span class="k">${c.delivery}</span><span class="v est">${c.deliveryEst}</span></div><div class="line sub"><span>${c.pickup}</span></div>`;
+    if (qt) qt.lines.forEach(x => { lines += `<div class="line"><span class="k">${c.taxes} · ${L() ? x.labelFr : x.labelEn}${x.noteEn ? `<span class="tip" title="${L() ? x.noteFr : x.noteEn}">?</span>` : ''}</span><span class="v">${money(x.cents)}</span></div>`; });
+    else lines += `<div class="line"><span class="k">${c.taxes}</span><span class="v">${money(0)}</span></div>`;
+    $('#sumLines').innerHTML = lines;
+    $('#sumTotal').textContent = money(qt ? qt.totalCents : 0);
+    $('#taxNote').innerHTML = c.taxNote(VSTax.PROVINCES[state.prov]);
+    /* CTA */
+    const b = blockers(); const ok = has && !b.length && !busySku();
+    const cta = $('#checkout'); cta.classList.toggle('is-disabled', !ok); cta.setAttribute('aria-disabled', String(!ok)); cta.tabIndex = ok ? 0 : -1; cta.setAttribute('href', ok ? '/checkout' : '#');
+    $('#blocked').classList.toggle('hidden', !b.length);
+    if (b.length) $('#blockedText').textContent = b.some(l => l.p.out) ? c.blockedOut : c.blockedLow;
+  }
+  /* Why the CTA is disabled right now — used for the toast when someone clicks it anyway. */
+  function blockReason() {
+    const c = T[lang];
+    if (!state.items.length) return c.blockedEmpty;
+    if (busySku()) return c.blockedBusy;
+    const b = blockers(); return b.some(l => l.p.out) ? c.blockedOut : c.blockedLow;
+  }
+  function renderAll() { renderStatic(); renderLines(); renderAlerts(); renderSummary(); }
+
+  /* ---------------- mutations (each one "round-trips" then saves) ---------------- */
+  function commit(fn, { toast } = {}) {
+    fn(); save(); renderLines(); renderSummary();
+    if (toast) VS.toast(toast);
+  }
+  /* Quantity edits show the busy state for one line while the server confirms; a failure keeps the old value and offers Retry. */
+  function setQty(sku, n, { fail } = {}) {
+    const it = state.items.find(i => i.sku === sku); if (!it) return;
+    if (isBusy(sku)) return; /* one change per line at a time; the line is pointer-blocked but keyboard input isn't */
+    n = clampQty(n);
+    if (n === it.qty) { renderLines(); return; }
+    const prev = it.qty; it.qty = n; busy.add(sku); renderLines(); renderSummary();
+    setTimeout(() => {
+      busy.delete(sku);
+      if (fail) {
+        if (it.qty === n) it.qty = prev; /* only roll back if nothing else touched the line meanwhile */
+        syncErr = { retry: () => { syncErr = null; renderAlerts(); setQty(sku, n); } }; renderAlerts();
+      } else { save(); if (n >= MAX_QTY && n > prev) VS.toast(T[lang].maxMsg); }
+      renderLines(); renderSummary();
+    }, fail ? 900 : 450);
+  }
+  function removeLine(sku) {
+    const idx = state.items.findIndex(i => i.sku === sku); if (idx < 0) return;
+    const [item] = state.items.splice(idx, 1);
+    undo = { item, idx }; clearTimeout(undoTimer); undoTimer = setTimeout(() => { undo = null; renderAlerts(); }, 8000);
+    save(); renderLines(); renderAlerts(); renderSummary();
+    $('#alerts [data-undo]')?.focus();
+  }
+  function saveForLater(sku) {
+    const idx = state.items.findIndex(i => i.sku === sku); if (idx < 0) return;
+    commit(() => { const [item] = state.items.splice(idx, 1); const ex = state.saved.find(s => s.sku === sku); if (ex) ex.qty = clampQty(ex.qty + item.qty); else state.saved.push({ sku: item.sku, qty: item.qty }); }, { toast: T[lang].savedToast });
+  }
+  function moveToCart(sku) {
+    const s = state.saved.find(x => x.sku === sku); if (!s) return;
+    commit(() => { state.saved = state.saved.filter(x => x.sku !== sku); const ex = state.items.find(i => i.sku === sku); if (ex) ex.qty = clampQty(ex.qty + s.qty); else state.items.push({ sku, qty: clampQty(s.qty) }); }, { toast: T[lang].movedToast });
+  }
+  /* Promo validation. `lastPromoErr` remembers which message is showing so a language switch can re-render it. */
+  function promoErrText(k) {
+    const c = T[lang];
+    if (k === 'empty') return c.promoEmpty;
+    if (k === 'bad') return c.promoBad;
+    return c.promoExpired(new Date(PROMOS[k.slice(8)].expired + 'T12:00:00').toLocaleDateString(L() ? 'fr-CA' : 'en-CA', { dateStyle: 'long' }));
+  }
+  function showPromoErr(k) {
+    lastPromoErr = k; const f = $('#fPromo'), h = $('#hPromo');
+    f.classList.add('is-error'); h.innerHTML = VS.I.alert + '<span></span>'; h.querySelector('span').textContent = promoErrText(k);
+  }
+  function clearPromoErr() { lastPromoErr = null; $('#fPromo').classList.remove('is-error'); $('#hPromo').textContent = T[lang].promoHint; }
+  function applyPromo(code) {
+    code = String(code || '').trim().toUpperCase();
+    if (!code) return showPromoErr('empty');
+    const pr = PROMOS[code];
+    if (!pr) return showPromoErr('bad');
+    if (pr.expired) return showPromoErr('expired:' + code);
+    clearPromoErr(); $('#promo').value = '';
+    commit(() => { state.promo = code; }, { toast: T[lang].promoApplied });
+  }
+
+  function addToCart(sku) {
+    if (!CATALOG[sku]) return;
+    commit(() => { const ex = state.items.find(i => i.sku === sku); if (ex) ex.qty = clampQty(ex.qty + 1); else state.items.push({ sku, qty: 1 }); }, { toast: T[lang].added(pName(prod(sku))) });
+    $('#lines [data-qty]')?.focus();
+  }
+
+  /* ---------------- events ---------------- */
+  $('#reco').addEventListener('click', e => { const b = e.target.closest('button[data-add]'); if (b) addToCart(b.dataset.add); });
+  $('#lines').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const d = b.dataset;
+    if (d.inc) { const it = state.items.find(i => i.sku === d.inc); setQty(d.inc, it.qty + 1); }
+    if (d.dec) { const it = state.items.find(i => i.sku === d.dec); setQty(d.dec, it.qty - 1); }
+    if (d.save) saveForLater(d.save);
+    if (d.backorder) VS.toast(L() ? 'Demande envoyée à Yuan Construction — réponse sous 1 jour ouvrable' : 'Request sent to Yuan Construction — they reply within 1 business day');
+    if (d.rm) {
+      const l = line(state.items.find(i => i.sku === d.rm));
+      /* High-value lines get a confirm with a "save for later" escape hatch; small lines remove instantly with Undo. */
+      if (!l.p.out && l.total >= 100000) openRm(d.rm, l, b);
+      else removeLine(d.rm);
+    }
+  });
+  $('#lines').addEventListener('change', e => { const i = e.target.closest('input[data-qty]'); if (i) setQty(i.dataset.qty, i.value); });
+  $('#lines').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input[data-qty]')) { e.preventDefault(); e.target.blur(); } });
+  $('#saved').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.move) moveToCart(b.dataset.move);
+    if (b.dataset.drop) commit(() => { state.saved = state.saved.filter(s => s.sku !== b.dataset.drop); });
+  });
+  $('#alerts').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    if ('undo' in b.dataset && undo) { clearTimeout(undoTimer); const u = undo; undo = null; commit(() => { state.items.splice(Math.min(u.idx, state.items.length), 0, u.item); }); renderAlerts(); }
+    if ('retry' in b.dataset && syncErr) syncErr.retry();
+    if ('dismiss' in b.dataset) { syncErr = null; renderAlerts(); }
+  });
+  /* Remove-confirm modal: focus moves in on open, Escape / backdrop close, focus returns to the trigger. */
+  let rmSku = null, rmTrigger = null;
+  function openRm(sku, l, trigger) {
+    rmSku = sku; rmTrigger = trigger;
+    $('#rmBody').innerHTML = T[lang].rmBody(pName(l.p), money(l.total));
+    $('#rmModal').classList.remove('hidden'); $('#rmCancel').focus();
+  }
+  function closeRm() {
+    $('#rmModal').classList.add('hidden'); rmSku = null;
+    const t = rmTrigger; rmTrigger = null;
+    if (t && document.contains(t)) t.focus(); else $('#lines [data-qty]')?.focus();
+  }
+  $('#rmGo').addEventListener('click', () => { const s = rmSku; closeRm(); if (s) removeLine(s); });
+  $('#rmSave').addEventListener('click', () => { const s = rmSku; closeRm(); if (s) saveForLater(s); });
+  $('#rmModal').querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closeRm));
+  $('#rmModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeRm(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#rmModal').classList.contains('hidden')) { e.preventDefault(); closeRm(); } });
+  $('#clearCart').addEventListener('click', () => { if (!state.items.length) return; if (!confirm(T[lang].clearConfirm)) return; commit(() => { state.items = []; state.promo = null; }, { toast: T[lang].cleared }); });
+  $('#promoGo').addEventListener('click', () => applyPromo($('#promo').value));
+  $('#promo').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); applyPromo(e.target.value); } });
+  $('#promo').addEventListener('input', () => { if (lastPromoErr) clearPromoErr(); });
+  $('#promoRemove').addEventListener('click', () => commit(() => { state.promo = null; }, { toast: T[lang].promoRemoved }));
+  $('#prov').addEventListener('change', e => { state.prov = e.target.value; save(); renderSummary(); });
+  $('#checkout').addEventListener('click', e => { if ($('#checkout').classList.contains('is-disabled') || !state.items.length) { e.preventDefault(); VS.toast(blockReason(), 'error'); return; } save(); });
+  $('#dealerChange').addEventListener('click', e => { e.preventDefault(); VS.toast(L() ? 'Le choix du détaillant se fait dans l’en-tête (Dealer) — prototype' : 'Dealer is chosen from the header (Dealer menu) — prototype'); });
+
+  function setLang(l) {
+    lang = l; document.documentElement.lang = l === 'fr' ? 'fr-CA' : 'en-CA';
+    $$('.lang button').forEach(x => { const on = x.dataset.lang === l; x.classList.toggle('is-active', on); x.hidden = !on; });
+    renderAll();
+  }
+  $$('.lang button').forEach(b => b.addEventListener('click', () => { if (b.dataset.lang !== lang) setLang(b.dataset.lang); }));
+
+  /* ---------------- boot ---------------- */
+  renderAll();
+  if (/^\/fr(\/|$)/.test(location.pathname) || q.get('lang') === 'fr') setLang('fr');
+})();
+</script>
+</body>
+</html>

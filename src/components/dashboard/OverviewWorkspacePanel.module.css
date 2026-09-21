@@ -1,0 +1,15 @@
+.workspace { display: grid; gap: 1rem; }
+.groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.group { border: 1px solid #d5ddd7; border-radius: .75rem; padding: 1rem; background: #fff; }
+.group h3, .shortcuts h3 { margin: 0 0 .6rem; color: #173e2b; font-size: .875rem; }
+.group dl { display: grid; gap: .5rem; margin: 0; }
+.stat { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.stat dt { color: #536258; font-size: .875rem; }
+.stat dd { margin: 0; color: #17211c; font-weight: 700; }
+.shortcuts { border: 1px solid #d5ddd7; border-radius: .75rem; padding: 1rem; background: #fff; }
+.shortcuts ul { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.shortcuts a { display: inline-block; border: 1px solid #b8cbbf; border-radius: 999px; padding: .4rem .8rem; color: #23623f; text-decoration: none; }
+.shortcuts a:hover { background: #eaf1ec; }
+.generatedAt { margin: 0; color: #536258; font-size: .8125rem; }
+.retry { min-height: 2.75rem; padding: .65rem 1rem; border: 0; border-radius: .45rem; color: #fff; background: #23623f; font: inherit; font-weight: 700; }
+.workspace:focus-visible, .shortcuts a:focus-visible, .retry:focus-visible { outline: 3px solid #b55400; outline-offset: 3px; }

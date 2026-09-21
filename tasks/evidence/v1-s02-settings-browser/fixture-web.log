@@ -1,0 +1,44 @@
+[WARN] Unsupported engine: wanted: {"node":">=22 <23"} (current: {"node":"v25.9.0","pnpm":"11.13.0"})
+$ next dev
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:4560
+- Network:       http://192.168.0.40:4560
+- Environments: .env.local, .env
+✓ Ready in 309ms
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of /Users/zhangguannan/Documents/codex/vanstro/pnpm-workspace.yaml as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * /Users/zhangguannan/Documents/codex/vanstro/.claude/worktrees/integration/pnpm-workspace.yaml
+
+
+ GET /dashboard/settings/general-storefront/ 200 in 1672ms (next.js: 1439ms, generate-params: 264ms, application-code: 233ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 31ms (next.js: 3ms, generate-params: 1549µs, application-code: 28ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 33ms (next.js: 3ms, generate-params: 1810µs, application-code: 30ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 32ms (next.js: 3ms, generate-params: 1728µs, application-code: 29ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET / 200 in 481ms (next.js: 292ms, application-code: 189ms)
+ GET /dashboard/settings/general-storefront/ 200 in 32ms (next.js: 4ms, generate-params: 2ms, application-code: 28ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET / 200 in 62ms (next.js: 1497µs, application-code: 60ms)
+ GET /dashboard/settings/general-storefront/ 200 in 30ms (next.js: 3ms, generate-params: 1695µs, application-code: 27ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 25ms (next.js: 3ms, generate-params: 1501µs, application-code: 22ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 31ms (next.js: 4ms, generate-params: 1822µs, application-code: 28ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /dashboard/settings/general-storefront/ 200 in 27ms (next.js: 4ms, generate-params: 1764µs, application-code: 23ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET / 200 in 47ms (next.js: 1322µs, application-code: 46ms)
+ GET / 200 in 52ms (next.js: 1316µs, application-code: 51ms)
+ GET /dashboard/settings/general-storefront/ 200 in 23ms (next.js: 3ms, generate-params: 1545µs, application-code: 20ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET / 200 in 71ms (next.js: 1478µs, application-code: 69ms)
+ GET / 200 in 67ms (next.js: 1395µs, application-code: 66ms)
+ GET /dashboard/settings/general-storefront/ 200 in 34ms (next.js: 4ms, generate-params: 3ms, application-code: 30ms)
+[browser] Image with src "http://127.0.0.1:4560/assets/vanstro-logo.png" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+ GET /account/login/ 200 in 240ms (next.js: 190ms, application-code: 50ms)

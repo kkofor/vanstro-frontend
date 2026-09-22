@@ -229,6 +229,43 @@ export function matchesCatalogCategory(
   );
 }
 
+export function matchesCatalogQuery(
+  product: Pick<
+    ProductSummary,
+    "name" | "sku" | "manufacturerPartNumber" | "category" | "subCategory" | "dimensions" | "finish" | "colorName" | "finishOptions" | "variantSkus"
+  >,
+  query: string
+): boolean {
+  if (!query) return true;
+  const finishOptionText = product.finishOptions
+    ?.flatMap((option) => [
+      option.name,
+      option.sku ?? "",
+      option.manufacturerPartNumber ?? "",
+      option.dimensions ?? ""
+    ])
+    .join(" ") ?? "";
+  const variantSkuText = product.variantSkus
+    ?.flatMap((variant) => [variant.skuCode, variant.manufacturerPartNumber ?? ""])
+    .join(" ") ?? "";
+  const haystack = [
+    product.name,
+    product.sku,
+    product.manufacturerPartNumber ?? "",
+    product.category,
+    product.subCategory ?? "",
+    product.dimensions,
+    product.finish ?? "",
+    product.colorName ?? "",
+    finishOptionText,
+    variantSkuText
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(query);
+}
+
 export function getCatalogSubcategoryOptions(locale: CatalogLocale = "en-CA"): CatalogSubcategoryOption[] {
   return locale === "fr-CA"
     ? CATALOG_SUBCATEGORY_OPTIONS.map((option) => ({ ...option, label: FR_SUBCATEGORY_LABELS[option.id] ?? option.label }))

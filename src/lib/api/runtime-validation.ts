@@ -1558,6 +1558,17 @@ export const validateWebsiteApiProduct: RuntimeValidator<WebsiteApiProduct> = (
             : { verifiedBuyer: booleanValue(review.verifiedBuyer, `${reviewPath}.verifiedBuyer`) })
         };
       })(product.reviews, `${path}.reviews`);
+  const variantSkus = product.variantSkus === undefined
+    ? undefined
+    : arrayOf((skuValue, skuPath = "variantSku") => {
+        const variantSku = objectValue(skuValue, skuPath);
+        return {
+          skuCode: stringValue(variantSku.skuCode, `${skuPath}.skuCode`),
+          ...(variantSku.manufacturerPartNumber === undefined || variantSku.manufacturerPartNumber === null || typeof variantSku.manufacturerPartNumber === "string"
+            ? { manufacturerPartNumber: variantSku.manufacturerPartNumber ?? null }
+            : {})
+        };
+      })(product.variantSkus, `${path}.variantSkus`);
 
   return {
     id: stringValue(product.id, `${path}.id`),
@@ -1616,6 +1627,7 @@ export const validateWebsiteApiProduct: RuntimeValidator<WebsiteApiProduct> = (
     ...(product.manufacturerPartNumber === undefined || product.manufacturerPartNumber === null || typeof product.manufacturerPartNumber === "string"
       ? { manufacturerPartNumber: product.manufacturerPartNumber ?? null }
       : {}),
+    ...(variantSkus === undefined ? {} : { variantSkus }),
     ...(ratingSummary === undefined ? {} : { ratingSummary }),
     ...(reviews === undefined ? {} : { reviews })
   };

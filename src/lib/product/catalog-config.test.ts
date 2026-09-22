@@ -281,3 +281,76 @@ test("storefront category projection uses Kitchen → Vanity → Baseboard → H
   );
   assert.equal(options[3].label, "Handle Series");
 });
+
+type SearchableProduct = Pick<
+  ProductSummary,
+  | "name"
+  | "sku"
+  | "manufacturerPartNumber"
+  | "category"
+  | "subCategory"
+  | "dimensions"
+  | "finish"
+  | "colorName"
+  | "finishOptions"
+  | "variantSkus"
+>;
+
+function searchableProduct(overrides: Partial<SearchableProduct> = {}): SearchableProduct {
+  return {
+    name: "Vanity Cabinet V3021",
+    sku: "V3021STDL",
+    category: "Bathroom Vanities",
+    dimensions: "30 in W",
+    ...overrides
+  };
+}
+
+test("catalog query matches a product by any of its variant SKU codes", async () => {
+  const { matchesCatalogQuery } = await catalogModule;
+  const product = searchableProduct({
+    variantSkus: [
+      { skuCode: "023021313", manufacturerPartNumber: "V3021STDL-PWMS-LG-TOP" },
+      { skuCode: "060102411" }
+    ]
+  });
+
+  assert.equal(matchesCatalogQuery(product, "023021313"), true, "variant skuCode hits the parent product");
+  assert.equal(matchesCatalogQuery(product, "060102411"), true, "variant without a part number still hits by skuCode");
+  assert.equal(matchesCatalogQuery(product, "023021399"), false, "unknown variant code never hits");
+});
+
+test("catalog query matches variant manufacturer part numbers case-insensitively", async () => {
+  const { matchesCatalogQuery } = await catalogModule;
+  const product = searchableProduct({
+    variantSkus: [{ skuCode: "023021313", manufacturerPartNumber: "V3021STDL-PWMS-LG-TOP" }]
+  });
+
+  assert.equal(matchesCatalogQuery(product, "v3021stdl-pwms-lg-top"), true, "normalized query hits the stored part number");
+  assert.equal(matchesCatalogQuery(product, "pwms-lg"), true, "partial part number hits");
+});
+
+test("catalog query keeps name, primary sku and manufacturer part number searchable", async () => {
+  const { matchesCatalogQuery } = await catalogModule;
+  const product = searchableProduct({ manufacturerPartNumber: "VS-V3021STDL" });
+
+  assert.equal(matchesCatalogQuery(product, ""), true, "empty query matches every product");
+  assert.equal(matchesCatalogQuery(product, "vanity"), true, "name keyword hits");
+  assert.equal(matchesCatalogQuery(product, "v3021stdl"), true, "primary sku hits");
+  assert.equal(matchesCatalogQuery(product, "vs-v3021stdl"), true, "product manufacturerPartNumber hits");
+  assert.equal(matchesCatalogQuery(product, "unrelated-term"), false, "non-matching query is rejected");
+});
+
+test("catalog query is null-safe when variant fields are absent or null", async () => {
+  const { matchesCatalogQuery } = await catalogModule;
+  const product = searchableProduct({
+    variantSkus: [{ skuCode: "023021313", manufacturerPartNumber: null }]
+  });
+
+  assert.equal(matchesCatalogQuery(product, "023021313"), true, "null manufacturerPartNumber is skipped safely");
+  assert.equal(
+    matchesCatalogQuery(searchableProduct(), "anything"),
+    false,
+    "missing variantSkus contributes nothing to the haystack"
+  );
+});

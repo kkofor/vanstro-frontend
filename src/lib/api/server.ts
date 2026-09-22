@@ -186,6 +186,7 @@ function mapWebsiteProductToSummary(product: WebsiteApiProduct): ProductSummary 
     inStock: true,
     brand: "VanStro",
     manufacturerPartNumber: product.manufacturerPartNumber ?? `VS-${sku}`,
+    variantSkus: product.variantSkus,
     finish: specifications.Finish,
     colorName: specifications.Color,
     finishOptions: product.finishOptions
@@ -239,6 +240,7 @@ function projectProductCard(product: ProductSummary, locale: SiteLocale = "en-CA
     sku: product.sku,
     brand: product.brand,
     manufacturerPartNumber: product.manufacturerPartNumber,
+    variantSkus: product.variantSkus,
     name: product.name,
     category: localizeProductTaxonomyLabel(product.category, locale),
     categorySlug: product.categorySlug,

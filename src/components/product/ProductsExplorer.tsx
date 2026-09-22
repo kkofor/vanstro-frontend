@@ -20,6 +20,7 @@ import {
   CATALOG_PAGE_SIZE,
   type CatalogCategoryOption,
   matchesCatalogCategory,
+  matchesCatalogQuery,
   getCatalogSortOptions,
   getCatalogSubcategoryOptions,
   getCatalogWidthOptions
@@ -100,33 +101,6 @@ function matchesCategory(
   locale: SiteLocale
 ) {
   return matchesCatalogCategory(product, category, locale);
-}
-
-function matchesQuery(product: ProductSummary, query: string) {
-  if (!query) return true;
-  const finishOptionText = product.finishOptions
-    ?.flatMap((option) => [
-      option.name,
-      option.sku ?? "",
-      option.manufacturerPartNumber ?? "",
-      option.dimensions ?? ""
-    ])
-    .join(" ") ?? "";
-  const haystack = [
-    product.name,
-    product.sku,
-    product.manufacturerPartNumber ?? "",
-    product.category,
-    product.subCategory ?? "",
-    product.dimensions,
-    product.finish ?? "",
-    product.colorName ?? "",
-    finishOptionText
-  ]
-    .join(" ")
-    .toLowerCase();
-
-  return haystack.includes(query);
 }
 
 function resolveExactQueryVariant(product: ProductSummary, query: string) {
@@ -517,7 +491,7 @@ export function ProductsExplorer({ products, categories, filterableCategories, l
 
   const filteredProducts = useMemo(() => {
     const nextProducts = categoryProducts
-      .filter((product) => matchesQuery(product, normalizedQuery))
+      .filter((product) => matchesCatalogQuery(product, normalizedQuery))
       .filter((product) =>
         (Object.entries(selectedFacets) as Array<[FacetKey, string[]]>).every(([facetKey, values]) => {
           if (!values.length) return true;

@@ -1321,6 +1321,8 @@ export type ProductSummary = {
   sku: string;
   brand?: string;
   manufacturerPartNumber?: string;
+  /** All active variant SKU identities on the product (list payloads carry them for storefront search matching). */
+  variantSkus?: { skuCode: string; manufacturerPartNumber?: string | null }[];
   name: string;
   category: string;
   /** Canonical category slug from the Website API; the business key for category matching. */
@@ -1398,6 +1400,7 @@ export type WebsiteApiProduct = {
   dimensions?: string | null;
   finishOptions?: ProductFinishOption[];
   manufacturerPartNumber?: string | null;
+  variantSkus?: { skuCode: string; manufacturerPartNumber?: string | null }[];
   ratingSummary?: ProductRatingSummary;
   reviews?: ProductReview[];
 };

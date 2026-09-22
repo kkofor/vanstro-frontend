@@ -14,7 +14,7 @@ const ASKED_KEY = "vanstro.geo-asked";
  */
 export function LocationDetector() {
   const { dealers } = useLocale();
-  const { setSelectedDealer } = useStorefront();
+  const { applyDetectedDealer } = useStorefront();
   const coordsRef = useRef<{ lat: number; lng: number } | null>(null);
   const askedRef = useRef(false);
 
@@ -26,7 +26,7 @@ export function LocationDetector() {
       const nearest = nearestDealerLocation(lat, lng, dealerMapLocations);
       if (!nearest) return;
       const dealer = matchDealerForMapLocation(nearest, dealers);
-      if (dealer) setSelectedDealer(dealer);
+      if (dealer) applyDetectedDealer(dealer);
     };
 
     const request = (interactive: boolean) => {
@@ -83,7 +83,7 @@ export function LocationDetector() {
       return;
     }
     start();
-  }, [dealers, setSelectedDealer]);
+  }, [dealers, applyDetectedDealer]);
 
   return null;
 }

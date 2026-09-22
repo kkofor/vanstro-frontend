@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { CheckCircle2, ChevronDown, MapPin, Navigation, Truck, X } from "lucide-react";
 import type { Dealer, ProductInventory, ProductSummary } from "@/lib/api/api-contract";
 import { useStorefront } from "@/components/storefront/StorefrontProvider";
@@ -56,6 +57,7 @@ export function ProductDealerSelector({
   const french = locale === "fr-CA";
   const { setSelectedDealer } = useStorefront();
   const [open, setOpen] = useState(false);
+  const [modalHost, setModalHost] = useState<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const sheetRef = useRef<HTMLElement>(null);
   const closeSelector = useCallback(() => setOpen(false), []);
@@ -91,6 +93,14 @@ export function ProductDealerSelector({
   );
   const selectedInventoryClass = getInventoryStatusClass(selectedInventory);
   const selectedInventoryLabel = getInventoryLabel(selectedInventory, locale);
+
+  // Portal into .pdp-page: the modal must escape the .pdp-purchase-actions
+  // stacking context (position:relative;z-index:1) so its fixed overlay beats
+  // the sticky .anchors nav (z-index:5); keeping .pdp-page as ancestor keeps
+  // the .pdp-page-scoped stylesheet rules applying.
+  useEffect(() => {
+    setModalHost(document.querySelector<HTMLElement>(".pdp-page"));
+  }, []);
 
   useModalFocus({
     active: open,
@@ -157,15 +167,16 @@ export function ProductDealerSelector({
         </span>
       </button>
 
-      <div
-        ref={modalRef}
-        id="pdp-dealer-modal"
-        className="pdp-dealer-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="pdp-dealer-modal-title"
-        hidden={!open}
-      >
+      {modalHost ? createPortal(
+        <div
+          ref={modalRef}
+          id="pdp-dealer-modal"
+          className="pdp-dealer-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pdp-dealer-modal-title"
+          hidden={!open}
+        >
           <button
             className="pdp-dealer-backdrop"
             type="button"
@@ -246,7 +257,9 @@ export function ProductDealerSelector({
               })}
             </div>
           </section>
-        </div>
+        </div>,
+        modalHost
+      ) : null}
     </>
   );
 }

@@ -87,6 +87,8 @@ type StorefrontContextValue = {
   persistenceReady: boolean;
   storefrontConfigState: StorefrontConfigState;
   setSelectedDealer: (dealer: Dealer) => void;
+  /** Geo-detection path: applies only until the user picks a dealer manually. */
+  applyDetectedDealer: (dealer: Dealer) => void;
   setPostalCode: (postalCode: string) => void;
   addToCart: (product: ProductSummary, quantity?: number) => Promise<StorefrontActionResult>;
   updateCartQuantity: (cartItemId: string, quantity: number) => Promise<StorefrontActionResult>;
@@ -305,6 +307,15 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
   });
   const storefrontConfigRef = useRef<StorefrontConfigState>(storefrontConfigState);
   storefrontConfigRef.current = storefrontConfigState;
+  /** Set once the user picks a dealer manually; geo-detection must not override it. */
+  const manualDealerChoiceRef = useRef(false);
+
+  const applyDealerSelection = useCallback((dealer: Dealer) => {
+    setSelectedDealerId(dealer.id);
+    setSelectedDealerName(dealer.name);
+    setSelectedDealerLocationId(dealer.dealerLocationId ?? "");
+    setSelectedDealerCode(dealer.code ?? "");
+  }, []);
 
   const refreshCart = useCallback(() => {
     setCartState({ status: "loading" });
@@ -532,10 +543,12 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       persistenceReady: hydrated,
       storefrontConfigState,
       setSelectedDealer(dealer) {
-        setSelectedDealerId(dealer.id);
-        setSelectedDealerName(dealer.name);
-        setSelectedDealerLocationId(dealer.dealerLocationId ?? "");
-        setSelectedDealerCode(dealer.code ?? "");
+        manualDealerChoiceRef.current = true;
+        applyDealerSelection(dealer);
+      },
+      applyDetectedDealer(dealer) {
+        if (manualDealerChoiceRef.current) return;
+        applyDealerSelection(dealer);
       },
       setPostalCode(nextPostalCode) {
         setPostalCodeState(nextPostalCode.trim().toUpperCase());
@@ -696,6 +709,7 @@ export function StorefrontProvider({ children }: { children: ReactNode }) {
       runMutation,
       refreshFavorites,
       refreshCart,
+      applyDealerSelection,
       copy
     ]
   );

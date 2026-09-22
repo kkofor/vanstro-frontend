@@ -148,6 +148,11 @@ test("storefrontActivePriceWhere treats null bounds as unbounded", () => {
   assert.equal(isBuyable(where, candidate({ effectiveFrom: null, effectiveUntil: null })), true);
 });
 
+test("productListInclude does not cap the skus relation", () => {
+  // Regression guard: a `take` here silently re-hides variant SKUs from search.
+  assert.equal(productListInclude().skus.take, undefined);
+});
+
 test("productListInclude and productDetailInclude use the unified buyable-price rule", () => {
   const listPrices = productListInclude().skus.include.prices;
   assert.deepEqual(listPrices.where, storefrontActivePriceWhere());

@@ -216,6 +216,30 @@ test("formatStorefrontProduct websiteApi dimensions is null, not empty string, w
   assert.equal(formatted.websiteApi.finishOptions, undefined);
 });
 
+test("formatStorefrontProduct websiteApi variantSkus lists every SKU's skuCode and manufacturerPartNumber", () => {
+  const product = baseProduct({
+    skus: [
+      { id: "sku-1", skuCode: "SKU-1", name: "Fixture SKU", manufacturerPartNumber: "MPN-1", attributes: {} },
+      { id: "sku-2", skuCode: "SKU-2", name: "Fixture SKU B", manufacturerPartNumber: null, attributes: {} },
+      { id: "sku-3", skuCode: "023021313", name: "Fixture SKU C", manufacturerPartNumber: "V3021STDL-PWMS-LG-TOP", attributes: {} }
+    ]
+  });
+  const formatted = formatStorefrontProduct(product);
+  assert.deepEqual(formatted.websiteApi.variantSkus, [
+    { skuCode: "SKU-1", manufacturerPartNumber: "MPN-1" },
+    { skuCode: "SKU-2", manufacturerPartNumber: null },
+    { skuCode: "023021313", manufacturerPartNumber: "V3021STDL-PWMS-LG-TOP" }
+  ]);
+});
+
+test("formatStorefrontProduct websiteApi variantSkus holds the single SKU for single-SKU products", () => {
+  const formatted = formatStorefrontProduct(productWithPrices([{ amountCents: 1250, currency: CAD }]));
+  assert.deepEqual(formatted.websiteApi.variantSkus, [{ skuCode: "SKU-1", manufacturerPartNumber: null }]);
+
+  const noSkus = formatStorefrontProduct(baseProduct());
+  assert.deepEqual(noSkus.websiteApi.variantSkus, []);
+});
+
 test("duplicate active prices resolve to the latest effectiveFrom (include order, first row)", () => {
   // The include returns in-window prices ordered by effectiveFrom desc, nulls last;
   // the formatter consumes the first row, matching cart/checkout selection.

@@ -165,6 +165,10 @@ export function formatStorefrontProduct(product: ProductWithRelations, options: 
     dimensions: product.dimensions ?? null,
     finishOptions: Array.isArray(product.finishOptions) ? product.finishOptions : undefined,
     manufacturerPartNumber: product.manufacturerPartNumber ?? primarySku?.manufacturerPartNumber ?? null,
+    variantSkus: product.skus.map((sku) => ({
+      skuCode: sku.skuCode,
+      manufacturerPartNumber: sku.manufacturerPartNumber ?? null
+    })),
     ratingSummary: {
       average: Number(averageRating.toFixed(1)),
       count: reviews.length,
@@ -217,7 +221,6 @@ export function productListInclude() {
     skus: {
       where: { status: "active" as const },
       orderBy: { sortOrder: "asc" as const },
-      take: 1,
       include: {
         prices: {
           where: storefrontActivePriceWhere(),

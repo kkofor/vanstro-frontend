@@ -1622,12 +1622,6 @@ button.icon-action {
   text-decoration: none;
 }
 
-[data-slot="popover-content"].dealer-menu {
-  position: relative;
-  right: auto;
-  top: auto;
-}
-
 .mobile-sheet-content {
   background: var(--color-surface);
   color: var(--color-ink);
@@ -15160,10 +15154,6 @@ body.review-modal-open {
     animation: none;
     transition: none;
   }
-}
-
-.pdp-page .pdp-dealer-backdrop {
-  background: rgba(255, 255, 255, 0.72);
 }
 
 /* Keep the sticky purchase panel clear of the fixed desktop header while scrolling. */

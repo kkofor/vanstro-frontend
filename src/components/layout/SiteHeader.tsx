@@ -30,7 +30,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Sheet,
   SheetContent,
@@ -182,54 +181,72 @@ function DealerNavSelector({ compact = false }: { compact?: boolean }) {
     if (dealer) setSelectedDealer(dealer);
   }
 
+  // Plain anchored dropdown — the Radix portal used to teleport .dealer-menu to
+  // document.body where it lost its .dealer-nav anchor and rendered as a
+  // full-width in-flow strip over the header (bug: deformed picker).
+  const navRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <div className={compact ? "dealer-nav compact" : "dealer-nav"}>
-        <PopoverTrigger asChild>
-          <button
-            className="dealer-current-button"
-            type="button"
-            aria-expanded={open}
-          >
-            <MapPin size={18} strokeWidth={2.2} />
-            <span>
-              <strong>{selectedDealer.city}</strong>
-              <em>{hoursLabel}</em>
-            </span>
-          </button>
-        </PopoverTrigger>
-        <PopoverContent align="end" className="dealer-menu w-[min(420px,calc(100vw-32px))] p-3.5">
-          <span>{copy.dealer.choose}</span>
-          <form className="dealer-postal" onSubmit={handlePostalSubmit}>
-            <Input
-              aria-label={copy.dealer.postalCode}
-              value={postalDraft}
-              placeholder={selectedDealer.postalCode}
-              onChange={(event) => setPostalDraft(event.target.value)}
-            />
-            <Button type="submit" variant="primary" size="sm">
-              {copy.dealer.apply}
-            </Button>
-          </form>
-          <div>
-            {prodDealers.map((dealer) => (
-              <button
-                className={dealer.id === selectedDealer.id ? "active" : ""}
-                type="button"
-                onClick={() => {
-                  setSelectedDealer(dealer);
-                  setOpen(false);
-                }}
-                key={dealer.id}
-              >
-                <strong>{dealer.city}</strong>
-                <small>{dealer.postalCode}</small>
-              </button>
-            ))}
-          </div>
-        </PopoverContent>
+    <div className={compact ? "dealer-nav compact" : "dealer-nav"} ref={navRef}>
+      <button
+        className="dealer-current-button"
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        onClick={() => setOpen((next) => !next)}
+      >
+        <MapPin size={18} strokeWidth={2.2} />
+        <span>
+          <strong>{selectedDealer.city}</strong>
+          <em>{hoursLabel}</em>
+        </span>
+      </button>
+      <div className="dealer-menu" hidden={!open}>
+        <span>{copy.dealer.choose}</span>
+        <form className="dealer-postal" onSubmit={handlePostalSubmit}>
+          <Input
+            aria-label={copy.dealer.postalCode}
+            value={postalDraft}
+            placeholder={selectedDealer.postalCode}
+            onChange={(event) => setPostalDraft(event.target.value)}
+          />
+          <Button type="submit" variant="primary" size="sm">
+            {copy.dealer.apply}
+          </Button>
+        </form>
+        <div>
+          {prodDealers.map((dealer) => (
+            <button
+              className={dealer.id === selectedDealer.id ? "active" : ""}
+              type="button"
+              onClick={() => {
+                setSelectedDealer(dealer);
+                setOpen(false);
+              }}
+              key={dealer.id}
+            >
+              <strong>{dealer.city}</strong>
+              <small>{dealer.postalCode}</small>
+            </button>
+          ))}
+        </div>
       </div>
-    </Popover>
+    </div>
   );
 }
 

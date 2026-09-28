@@ -21,7 +21,7 @@
 
 | 元素 | 规则 |
 |---|---|
-| 面板 | 信封动效环 + “Check your email” + 掩码地址 `g•••••n@gmail.com` |
+| 面板 | 信封动效环 + “Check your email” + 掩码地址 `j•••••e@example.com` |
 | 链接 | 15 分钟一次性；点开落 Step 3（原型 “Open the link (demo)” 按钮） |
 | 重发 | 60s 冷却；计入 3 次 / 小时 |
 | 没收到 | 信息横幅：查垃圾邮件、倒计时结束后重发、Contact support；**无短信兜底**（手机号不作为找回凭据，避免 SIM 交换攻击） |

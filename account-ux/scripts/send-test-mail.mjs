@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * One-shot ACS Email smoke test.
- * Usage: node scripts/send-test-mail.mjs alex.cici@gmail.com
+ * Usage: node scripts/send-test-mail.mjs jane.doe@example.com
  */
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';

@@ -88,7 +88,7 @@ Alert 只内置 `default` / `destructive`，需在 `components/ui/alert.tsx` 的
 | `SocialButtons` | 2 × `Button variant=google|apple` | `onGoogle onApple` | loading；遵守 Google / Apple 品牌规范（不着色、图标+文字） |
 | `OtpField` | `InputOTP` + 倒计时 + Resend `Button variant=link` | `length=6 ttl=600 resendAfter=60 onComplete onResend` | idle / verifying / error（剩余次数）/ expired / locked |
 | `Stepper` | 3 步 圆点 + 连线 | `steps current` | done（勾）/ current（实心）/ upcoming |
-| `MaskedDestination` | 文本 + `Button variant=link`（Change） | `type value` | `g•••n@gmail.com` / `+1 (•••) •••-0142` |
+| `MaskedDestination` | 文本 + `Button variant=link`（Change） | `type value` | `j•••e@example.com` / `+1 (•••) •••-0142` |
 | `AuthShell` | 左品牌区（`bg-brand-navy-900` + 反白 Logo + 辅助图形）+ 右表单区 | `title subtitle children footer` | 登录 / 忘记密码共用；<960px 折叠品牌区 |
 | `RedirectOverlay` | 全屏 `Card` + `Progress` + 手动链接 | `name target delay=1800` | 登录成功跳转 |
 | `AvatarUploader` | `Avatar xl` + 相机 `Button size=icon` + `Dropzone` | `src onFile maxSize=5MB min=200 accept=[jpeg,png,webp]` | idle / drag-over / error / uploaded（可 Remove） |

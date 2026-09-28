@@ -138,7 +138,7 @@ export async function sendMail(input: SendInput): Promise<SendResult> {
   }
 }
 
-/** Mask for UI: g•••••n@gmail.com */
+/** Mask for UI: j•••••e@example.com */
 export function maskEmail(email: string): string {
   const [user, domain] = email.split("@")
   if (!domain) return email

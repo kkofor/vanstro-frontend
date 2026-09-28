@@ -854,7 +854,7 @@ pnpm qa:local-staging
 ### 16.1 实际目录
 
 ```text
-服务器：root@64.83.13.251
+服务器：deploy@<PRODUCTION_HOST>
 
 生产根目录：/opt/vanstro-production/
 生产 app：/opt/vanstro-production/app/
@@ -879,7 +879,7 @@ vanstro-production-migrate-1（one-shot，完成后退出）
 推荐先执行只读状态：
 
 ```bash
-ssh -o ControlPath=/tmp/vanstro-ssh-control/%C root@64.83.13.251 \
+ssh -o ControlPath=/tmp/vanstro-ssh-control/%C deploy@<PRODUCTION_HOST> \
   'cd /opt/vanstro-production/app && \
    docker compose --env-file /opt/vanstro-production/.env.production \
    -p vanstro-production \
@@ -889,10 +889,10 @@ ssh -o ControlPath=/tmp/vanstro-ssh-control/%C root@64.83.13.251 \
 日志：
 
 ```bash
-ssh -o ControlPath=/tmp/vanstro-ssh-control/%C root@64.83.13.251 \
+ssh -o ControlPath=/tmp/vanstro-ssh-control/%C deploy@<PRODUCTION_HOST> \
   'docker logs --since 15m vanstro-production-api-1'
 
-ssh -o ControlPath=/tmp/vanstro-ssh-control/%C root@64.83.13.251 \
+ssh -o ControlPath=/tmp/vanstro-ssh-control/%C deploy@<PRODUCTION_HOST> \
   'docker logs --since 15m vanstro-production-worker-1'
 ```
 
@@ -929,13 +929,13 @@ vanstro-staging_staging_postgres_backups
 站点配置：
 
 ```text
-/www/server/panel/vhost/nginx/vanstro.ca.conf
+<NGINX_VHOST_DIR>/vanstro.ca.conf
 ```
 
 扩展配置：
 
 ```text
-/www/server/panel/vhost/nginx/extension/vanstro.ca/api.conf
+<NGINX_VHOST_DIR>/extension/vanstro.ca/api.conf
 ```
 
 当前 API location：
@@ -955,8 +955,8 @@ location = /health/ready {
 日志：
 
 ```text
-/www/wwwlogs/vanstro.ca.log
-/www/wwwlogs/vanstro.ca.error.log
+<NGINX_LOG_DIR>/vanstro.ca.log
+<NGINX_LOG_DIR>/vanstro.ca.error.log
 ```
 
 当前 nginx 仅允许 `TLSv1.2 TLSv1.3`。配置已通过 `nginx -t`，并用 OpenSSL 验证 TLS 1.1 被拒绝、TLS 1.2 成功。
@@ -994,13 +994,13 @@ packages/db/src/migrate-production.ts
 变更前：
 
 ```text
-/www/backup/vanstro-production/20260727T201109Z-before-inventory-10/vanstro-production.dump
+<BACKUP_DIR>/vanstro-production/20260727T201109Z-before-inventory-10/vanstro-production.dump
 ```
 
 E2E 完成后最新备份：
 
 ```text
-/www/backup/vanstro-production/20260727T202215Z-after-customer-chain-e2e/vanstro-production.dump
+<BACKUP_DIR>/vanstro-production/20260727T202215Z-after-customer-chain-e2e/vanstro-production.dump
 ```
 
 均为 PostgreSQL custom format，mode 600，并通过 SHA-256、`pg_restore --list` 验证。
@@ -1132,7 +1132,7 @@ git branch --show-current
 git rev-parse HEAD
 git stash list
 
-ssh -o ControlPath=/tmp/vanstro-ssh-control/%C root@64.83.13.251 \
+ssh -o ControlPath=/tmp/vanstro-ssh-control/%C deploy@<PRODUCTION_HOST> \
   'docker ps -a --filter name=vanstro-production --format "{{.Names}}|{{.Image}}|{{.Status}}|{{.Ports}}"'
 
 curl -fsS https://vanstro.ca/health/live

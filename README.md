@@ -1,21 +1,69 @@
 # VanStro
 
-Canada-focused home materials commerce platform: Next.js storefront + Dashboard,
-Hono API, background worker, and PostgreSQL — in one monorepo.
+**An open-source, bilingual (EN / fr-CA) commerce and dealer-fulfillment platform built for the Canadian market.**
 
-| Surface | URL (local) | Notes |
-| --- | --- | --- |
-| Storefront | http://localhost:3000 | EN + fr-CA |
-| Dashboard | http://localhost:3000/dashboard | Admin RBAC |
-| API | http://localhost:4000/api/v1 | Health: `/health/ready` |
+Most open-source storefronts assume a single warehouse shipping to one country's conventions. Canadian home-materials businesses work differently: orders are fulfilled by a network of local dealers, customers expect French and English, addresses follow Canada Post formats, and payment happens by card, in-store POS, or cash on pickup. VanStro is a full-stack TypeScript monorepo that handles that workflow end to end.
 
-**Latest launch-loop commit:** `3eb35c5` (2026-07-26) — checkout → pay → orders → CRM/email → ERP/ops.
+## What it does
 
-Historical static demo (may lag the monorepo):
+- **Storefront.** Catalog browsing with search, filters, and sort; product pages with finish variants (SKU, model, and image); cart; pickup or delivery checkout; English and French (fr-CA) routes.
+- **Dealer fulfillment.** A selected dealer location fulfills the order for pickup or delivery. Businesses can apply to become dealers at `/dealers/apply`.
+- **Addresses.** Delivery checkout can call Canada Post AddressComplete when `CANADA_POST_API_KEY` is set. Without a key, the customer enters the address by hand.
+- **Payments and orders.** Checkout accepts card (Moneris), in-store POS, or cash. The order page shows a status timeline, and guests can look an order up at `/orders/lookup`.
+- **Operations.** The dashboard is role-based (RBAC). It includes CRM contacts, an email outbox, ERP sync jobs, audit logs, media, and first-party page analytics that are stored only when `consentAnalytics` is true.
 
-[https://kkofor.github.io/vanstro-frontend/](https://kkofor.github.io/vanstro-frontend/)
+## Architecture
 
-## Documentation map (start here for handoff)
+| Area | Implementation |
+| --- | --- |
+| Storefront and dashboard | Next.js App Router, React 19, TypeScript, Tailwind CSS |
+| HTTP API | Hono on Node (`apps/api`), base path `/api/v1` |
+| Background worker | Node poll loop (`apps/worker`): email outbox, ERP sync, catalog sync |
+| Database | PostgreSQL 16 and Prisma (`packages/db`), including migrations, seed data, and RBAC |
+| Local runtime | Docker Compose for PostgreSQL; disposable PostgreSQL 16 containers for API and migration tests |
+| Contract snapshot | `pnpm generate:openapi` writes OpenAPI 3.1 to `docs/openapi/vanstro-api.json` |
+| Static demo | GitHub Pages workflow in `.github/workflows/deploy-pages.yml` |
+
+## Quick start
+
+Requirements: Node.js 22, pnpm 11.13.0 via Corepack, and Docker. Compose starts PostgreSQL 16 on port `15432`, which is what `.env.example` expects.
+
+```bash
+corepack enable
+pnpm install
+cp .env.example .env
+docker compose up -d
+pnpm db:generate && pnpm db:migrate && pnpm db:seed
+pnpm stack:dev
+```
+
+`pnpm stack:dev` starts the API (`:4000`), the worker, and the Next.js app (`:3000`).
+
+| Surface | URL |
+| --- | --- |
+| Storefront | http://localhost:3000 |
+| Dashboard | http://localhost:3000/dashboard |
+| API | http://localhost:4000/api/v1 (readiness: `/health/ready`) |
+
+Replace the placeholder secrets in `.env` before seeding. Do not commit `.env`.
+
+## Live demo
+
+A static storefront build is published at [https://kkofor.github.io/vanstro-frontend/](https://kkofor.github.io/vanstro-frontend/). It can lag this monorepo. It does not run the API, worker, or dashboard.
+
+## Quality gates
+
+`pnpm qa:ci` is the combined check: typecheck, API tests on disposable PostgreSQL 16, consent and storefront contract tests, a static Pages build, and artifact checks (SEO, French document language, 404s). Run it before a release. For a smaller change, run `pnpm typecheck` and the tests that cover the files you touched. Details are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues privately; see [SECURITY.md](SECURITY.md).
+
+## License
+
+[MIT](LICENSE). Copyright (c) 2026 kkofor.
+
+## Maintainer documentation
 
 | Doc | Audience |
 | --- | --- |

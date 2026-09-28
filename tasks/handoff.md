@@ -585,7 +585,7 @@ pnpm api:smoke   # API smoke passed.
 1. 生产 `api.vanstro.ca` DNS/TLS 现状可能仍未就绪（早期任务书如此描述；**本会话未复核生产 DNS**）。
 2. 业务税率表 seed 的各省税率是否被财务最终批准：**未确认**。
 3. `DELIVERY_FLAT_FEE_CENTS` 默认 1500 是否为最终运费政策：**未确认**。
-4. ERP `vanstro.xin` product API 字段稳定性：**假定**现有 sync 映射仍有效。
+4. ERP product API（`ERP_PRODUCT_API_BASE_URL`）字段稳定性：**假定**现有 sync 映射仍有效。
 5. Moneris Checkout JS URL / QA 环境是否变更：**未向 Moneris 复核**。
 6. 支付回调后 `quantityOnHand` 与 ERP 所有权长期规则：代码已扣减；与「ERP 为库存唯一真源」的长期政策是否冲突需产品确认。
 7. 工作树其他 agent 的未提交改动可能与本 handoff 并行存在。

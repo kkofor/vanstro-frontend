@@ -22,7 +22,7 @@ This document defines what the Dashboard full-control workstream delivered versu
 See `docs/reports/erp-product-api-integration-2026-07-26.md`.
 
 - `GET /integrations/erp/catalog/skus` — local catalog export for ERP
-- `GET /integrations/erp/upstream/*` — proxy to vanstro.xin product APIs
+- `GET /integrations/erp/upstream/*` — proxy to the ERP product API at `ERP_PRODUCT_API_BASE_URL`
 - `GET /products/:identifier/erp-colors` — public color enrichment from ERP `colorList`
 - `ProductSkuErpMapping.erpProductId` / `erpSkuId` + dashboard sku-mapping CRUD
 

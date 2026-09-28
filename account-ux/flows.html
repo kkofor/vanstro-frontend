@@ -161,7 +161,7 @@ flowchart TD
   F -- 仅社交账号 --> F2[信息：该账号使用 Google 登录<br/>可继续为其添加密码] --> E
   F -- 账号不存在 --> G[同样进入 Step 2<br/>防枚举：不透露账号是否存在]
   F -- 发送成功 --> G
-  G --> H[Step 2 · Check your email<br/>掩码显示 g•••••n@gmail.com<br/>链接 15 分钟一次性 · 52s 后可重发]
+  G --> H[Step 2 · Check your email<br/>掩码显示 j•••••e@example.com<br/>链接 15 分钟一次性 · 52s 后可重发]
   H -- 重发 --> H2[新链接作废旧链接<br/>计入 3 次/小时] --> H
   H -- 点开邮件链接 --> I{校验 token}
   I -- 有效 --> J[Step 3 · 设置新密码<br/>强度条 + 4 条规则 · 确认密码 · 👁 切换<br/>默认勾选“登出其他设备”<br/>卡头 token 倒计时]

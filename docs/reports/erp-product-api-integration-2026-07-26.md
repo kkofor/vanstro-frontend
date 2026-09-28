@@ -6,7 +6,7 @@ source: 产品模块API对接文档(3).md (ERP/CRM owners)
 
 # ERP product module integration
 
-This workstream connects the VanStro website API to the upstream ERP **product module** hosted at `http://www.vanstro.xin/api/Product`.
+This workstream connects the VanStro website API to the upstream ERP **product module**. The base URL comes from `ERP_PRODUCT_API_BASE_URL` (for example `https://erp.example.com/api/Product`). When that variable is unset, product sync and upstream proxies stay disabled.
 
 The upstream spec covers **products, SKUs, colors, and categories only**. CRM endpoints were not included in the handoff document.
 
@@ -35,7 +35,7 @@ Envelope: `{ code: 1|0, msg, time, data }` — `code=1` success.
 ## Configuration
 
 ```bash
-ERP_PRODUCT_API_BASE_URL="http://www.vanstro.xin/api/Product"
+ERP_PRODUCT_API_BASE_URL="https://erp.example.com/api/Product"
 ```
 
 ## Data model

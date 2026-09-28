@@ -132,7 +132,7 @@
 |---|---|---|
 | We hold | 五格清单：Account details（姓名 / 邮箱 / 手机 / 语言）· Orders & quotes（订单 / 发票 / 退货）· Addresses & cards（地址、卡 token，**无卡号**）· Consent records（CASL 要求保留）· Activity（登录、设备、清单） | PIPEDA 查阅权要求用户能知道持有哪些类别；Law 25 要求告知保存目的与期限 |
 | Export a copy | 文案 + `Request my data` 次级按钮（download 图标） | Law 25 §27 可携权：结构化、常用格式 → JSON + CSV；30 天法定上限，文案同时承诺「通常当日」 |
-| 点击后 | 按钮禁用 → `✓ Requested`，提示改为「Check g•••••n@gmail.com…」；Toast | 幂等：24 小时内重复请求返回 429，前端只保持 Requested 态，不报错 |
+| 点击后 | 按钮禁用 → `✓ Requested`，提示改为「Check j•••••e@example.com…」；Toast | 幂等：24 小时内重复请求返回 429，前端只保持 Requested 态，不报错 |
 | Automated decisions | secure-note：说明地址校验 / 风控为自动化，可 `Request a review` 人工复核；隐私官邮箱 `privacy@vanstro.ca` | Law 25 §12.1 自动化决策告知与复核权；隐私官联系方式必须可见 |
 
 - 导出邮件的下载链接 7 天有效，打开需重新登录（防转发泄露）。
